@@ -13,8 +13,7 @@ import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule }
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
-import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
-import { PhoneCommunicationCreateModule } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
+import { PhoneCommunicationCreateComponent, PhoneCommunicationCreateModule } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
@@ -26,6 +25,7 @@ import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
+import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 
 const create = {
   [ids.Catalogue]: CatalogueEditComponent,
@@ -47,6 +47,7 @@ const create = {
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
+  [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
   [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
   [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
@@ -73,6 +74,7 @@ const edit = {
   [ids.PartNumber]: IGoodIdentificationEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
   [ids.ProductNumber]: IGoodIdentificationEditComponent,
+  [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
@@ -101,6 +103,7 @@ const edit = {
     SalesOrderCreateModule,
     SalesOrderItemEditModule,
     SalesTermEditModule,
+    SerialisedItemCharacteristicEditModule,
     WorkTaskCreateModule,
   ],
   entryComponents: [
@@ -122,6 +125,7 @@ const edit = {
     SalesOrderCreateComponent,
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
+    SerialisedItemCharacteristicEditComponent,
     WorkTaskCreateComponent,
   ],
   providers: [

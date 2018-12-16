@@ -1,7 +1,6 @@
 import { Subject } from 'rxjs';
 
-import { Deletable } from '../../../../domain';
-import { Action, ActionTarget, Invoked, Context } from '../../../../angular';
+import { Action, ActionTarget } from '../../../../angular';
 
 import { EditService } from './edit.service';
 import { ISessionObject } from '../../../../framework';

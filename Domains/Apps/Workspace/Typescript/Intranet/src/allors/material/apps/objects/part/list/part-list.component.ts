@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Sort, SessionObject, } from '../../../../../framework';
-import { ErrorService, MediaService, ContextService, NavigationService, Invoked, MetaService } from '../../../../../angular';
+import { ErrorService, MediaService, ContextService, NavigationService, Invoked, MetaService, RefreshService } from '../../../../../angular';
 import { AllorsFilterService } from '../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
@@ -60,6 +60,7 @@ export class PartListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigationService: NavigationService,
     public mediaService: MediaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,

@@ -14,6 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -202,7 +203,12 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.organisation.id,
+          objectType: this.organisation.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

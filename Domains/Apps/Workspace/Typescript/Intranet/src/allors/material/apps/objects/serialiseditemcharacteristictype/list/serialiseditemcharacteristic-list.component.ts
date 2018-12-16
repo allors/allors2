@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService, EditService } from '../../../..';
 
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
 
@@ -19,15 +19,16 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './productcharacteristic-list.component.html',
+  templateUrl: './serialiseditemcharacteristic-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
+export class SerialisedItemCharacteristicListComponent implements OnInit, OnDestroy {
 
   public title = 'Product Characteristic';
 
   table: Table<Row>;
 
+  edit: Action;
   delete: Action;
 
   private subscription: Subscription;
@@ -38,6 +39,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigateService: NavigateService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -46,6 +48,11 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
     titleService: Title,
   ) {
     titleService.setTitle(this.title);
+
+    this.edit = editService.edit();
+    this.edit.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
 
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
@@ -59,9 +66,10 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         { name: 'description' }
       ],
       actions: [
-        navigateService.edit(),
+        this.edit,
         this.delete
       ],
+      defaultAction: this.edit
     });
   }
 

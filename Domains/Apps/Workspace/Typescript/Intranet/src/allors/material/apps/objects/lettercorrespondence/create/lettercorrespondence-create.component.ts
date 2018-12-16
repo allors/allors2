@@ -11,6 +11,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
+import { ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './lettercorrespondence-create.component.html',
@@ -240,7 +241,12 @@ export class LetterCorrespondenceCreateComponent
 
     this.allors.context.save().subscribe(
       (saved: Saved) => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.communicationEvent.id,
+          objectType: this.communicationEvent.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
       (error: Error) => {
         this.errorService.handle(error);

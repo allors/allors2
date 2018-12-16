@@ -65,9 +65,8 @@ import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.
 import * as PartOverview from 'src/allors/material/apps/objects/part/overview/part-overview.module';
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
-import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/productcharacteristic/list/productcharacteristic-list.module';
+import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/list/serialiseditemcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
-import * as ProductCharacteristic from 'src/allors/material/apps/objects/productcharacteristic/edit/productcharacteristic-edit.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktask-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
@@ -137,9 +136,8 @@ const modules = [
   PartOverview.PartOverviewModule,
   CataloguesOverview.CataloguesOverviewModule,
   CategoriesOverview.ProductCategoriesOverviewModule,
-  ProductCharacteristicsOverview.ProductCharacteristicsOverviewModule,
+  ProductCharacteristicsOverview.SerialisedItemCharacteristicListModule,
   ProductTypesOverview.ProductTypesOverviewModule,
-  ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
   WorkTaskList.WorkTaskListModule,
   WorkTaskOverview.WorkTaskOverviewModule,
@@ -194,7 +192,7 @@ export const routes: Routes = [
           { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.ProductCategoriesOverviewComponent },
-          { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
+          { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
           { path: 'productTypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
       },
@@ -254,13 +252,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'productCharacteristic',
-        children: [
-          { path: '', data: addData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristic.ProductCharacteristicComponent },
-          { path: ':id', data: editData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristic.ProductCharacteristicComponent },
         ],
       },
       {

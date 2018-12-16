@@ -12,6 +12,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './person-create.component.html',
@@ -167,7 +168,12 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.person.id,
+          objectType: this.person.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

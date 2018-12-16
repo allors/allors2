@@ -12,6 +12,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './worktask-create.component.html',
@@ -95,7 +96,12 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.workTask.id,
+          objectType: this.workTask.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

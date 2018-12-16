@@ -13,6 +13,7 @@ import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './requestforquote-create.component.html',
@@ -95,8 +96,12 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
-      },
+        const data: ObjectData = {
+          id: this.request.id,
+          objectType: this.request.objectType,
+        };
+
+        this.dialogRef.close(data);      },
         (error: Error) => {
           this.errorService.handle(error);
         });

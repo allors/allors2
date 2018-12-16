@@ -12,7 +12,7 @@ import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { ProductQuoteCreateComponent } from '../../productquote/create/productquote-create.module';
-import { CreateData, ObjectService } from '../../../../../material/base/services/object';
+import { CreateData, ObjectService, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './salesorder-create.component.html',
@@ -552,8 +552,12 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
-      },
+        const data: ObjectData = {
+          id: this.order.id,
+          objectType: this.order.objectType,
+        };
+
+        this.dialogRef.close(data);      },
         (error: Error) => {
           this.errorService.handle(error);
         });

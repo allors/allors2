@@ -1,0 +1,38 @@
+<form *ngIf="productCharacteristic" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div mat-dialog-content>
+
+      <div class="row">
+          <a-mat-input class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.Name"></a-mat-input>
+          <a-mat-select class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.UnitOfMeasure" [options]="allUoms" display="Name"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <mat-expansion-panel class="col" *ngIf="locales">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Translations
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div *ngFor="let locale of locales; let i = index">
+              <mat-divider *ngIf="i > 0"></mat-divider>
+              <div class="row">
+                <a-mat-localised-text class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+      </div>
+    </div>
+    
+    <div mat-dialog-actions>
+      <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    </div>
+  
+  </form>

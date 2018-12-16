@@ -10,7 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData } from 'src/allors/material/base/services/object';
+import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './productcategory-edit.component.html',
@@ -114,7 +114,12 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.category.id,
+          objectType: this.category.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

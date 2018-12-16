@@ -12,7 +12,7 @@ import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData } from 'src/allors/material/base/services/object';
+import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
@@ -124,7 +124,12 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe((saved: Saved) => {
-        this.dialogRef.close();
+        const data: ObjectData = {
+          id: this.catalogue.id,
+          objectType: this.catalogue.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

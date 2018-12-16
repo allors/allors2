@@ -1,20 +1,22 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { Title } from '@angular/platform-browser';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { StateService } from '../../../services/state';
 
 @Component({
-  templateUrl: './productcharacteristic-edit.component.html',
+  templateUrl: './serialiseditemcharacteristic-edit.component.html',
   providers: [ContextService]
 })
-export class ProductCharacteristicComponent implements OnInit, OnDestroy {
+export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDestroy {
 
   public title = 'Product Characteristic';
   public subTitle: string;
@@ -24,7 +26,6 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   public productCharacteristic: SerialisedItemCharacteristicType;
 
   public singleton: Singleton;
-  public locales: Locale[];
   public uoms: UnitOfMeasure[];
   public timeFrequencies: TimeFrequency[];
   public allUoms: IUnitOfMeasure[];
@@ -33,12 +34,12 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<SerialisedItemCharacteristicEditComponent>,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    titleService: Title) {
-
-    titleService.setTitle(this.title);
+    private stateService: StateService) {
 
     this.m = this.metaService.m;
   }
@@ -47,21 +48,20 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = this.route.url
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap((url: any) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const create = (this.data as EditData).id === undefined;
+          const { id, objectType, associationRoleType } = this.data;
 
           const pulls = [
-            pull.SerialisedItemCharacteristic(
+            pull.SerialisedItemCharacteristicType(
               {
                 object: id,
                 include: {
-                  SerialisedItemCharacteristicType: {
-                    LocalisedNames: {
-                      Locale: x,
-                    }
+                  LocalisedNames: {
+                    Locale: x,
                   }
                 }
               }
@@ -84,20 +84,25 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, create }) => {
 
-        this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedItemCharacteristicType;
-        if (!this.productCharacteristic) {
+        this.productCharacteristic = loaded.objects.SerialisedItemCharacteristicType as SerialisedItemCharacteristicType;
+        if (create) {
+          this.title = 'Add Product Characteristic';
           this.productCharacteristic = this.allors.context.create('SerialisedItemCharacteristicType') as SerialisedItemCharacteristicType;
+        } else {
+          this.title = 'Edit Product Characteristic';
         }
 
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.locales = this.singleton.AdditionalLocales;
-        this.uoms = loaded.collections.uoms as UnitOfMeasure[];
-        this.timeFrequencies = loaded.collections.timeFrequencies as TimeFrequency[];
+        this.singleton = loaded.collections.Singletons[0] as Singleton;
+        this.uoms = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
+        this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         this.allUoms = this.uoms.concat(this.timeFrequencies).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       }, this.errorService.handler);
   }
@@ -113,14 +118,15 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        const data: ObjectData = {
+          id: this.productCharacteristic.id,
+          objectType: this.productCharacteristic.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }
