@@ -1,4 +1,4 @@
-import { Component, Self } from '@angular/core';
+import { Component, Self, Input, OnInit } from '@angular/core';
 
 import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
 import { IGoodIdentification } from '../../../../../../domain';
@@ -6,7 +6,8 @@ import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table } from '../../../../../../material';
 import { MatSnackBar } from '@angular/material';
 import { ObjectService, CreateData } from '../../../../../../material/base/services/object';
-import { ISessionObject } from '../../../../../../framework';
+import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
+import { Step } from 'src/allors/framework/database/data/Step';
 
 interface Row extends TableRow {
   object: IGoodIdentification;
@@ -20,7 +21,8 @@ interface Row extends TableRow {
   templateUrl: './igoodIdentification-panel.component.html',
   providers: [PanelService]
 })
-export class IGoodIdentificationsPanel {
+export class IGoodIdentificationsPanel implements OnInit {
+  @Input() roleType: RoleType;
 
   m: Meta;
 
@@ -50,18 +52,21 @@ export class IGoodIdentificationsPanel {
     public objectService: ObjectService,
     public refreshService: RefreshService,
     public deleteService: DeleteService,
-    private snackBar: MatSnackBar,
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.manager.context);
+  }
 
-    panel.name = 'igoodidentification';
-    panel.title = 'IGood Identification';
-    panel.icon = 'fingerprint';
-    panel.expandable = true;
+  ngOnInit() {
 
-    this.delete = deleteService.delete(panel.manager.context);
+    this.delete = this.deleteService.delete(this.panel.manager.context);
+
+    this.panel.name = 'igoodidentification';
+    this.panel.title = 'IGood Identification';
+    this.panel.icon = 'fingerprint';
+    this.panel.expandable = true;
+
+    this.delete = this.deleteService.delete(this.panel.manager.context);
 
     this.table = new Table({
       selection: true,
@@ -76,38 +81,40 @@ export class IGoodIdentificationsPanel {
       defaultAction: this.edit,
     });
 
-    const pullName = `${panel.name}_${this.m.IGoodIdentification.name}`;
+    const pullName = `${this.panel.name}_${this.m.IGoodIdentification.name}`;
 
-    panel.onPull = (pulls) => {
-      const { pull, x } = this.metaService;
-
-      const id = this.panel.manager.id;
+    this.panel.onPull = (pulls) => {
+      const { x, tree } = this.metaService;
+      const { id, objectType } = this.panel.manager;
 
       pulls.push(
-        pull.Good({
+        new Pull(objectType, {
           name: pullName,
           object: id,
-          fetch: {
-            GoodIdentifications: {
-              include: {
+          fetch: new Fetch({
+            step: new Step({
+              propertyType: this.roleType,
+              include: tree.IGoodIdentification({
                 GoodIdentificationType: x,
-              }
-            }
-          }
+              })
+            })
+          })
         })
       );
+
+      this.panel.onPulled = (loaded) => {
+        this.objects = loaded.collections[pullName] as IGoodIdentification[];
+        this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+        this.table.data = this.objects.map((v) => {
+          return {
+            object: v,
+            type: v.GoodIdentificationType && v.GoodIdentificationType.Name,
+            identification: v.Identification,
+          } as Row;
+        });
+      };
     };
 
-    panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as IGoodIdentification[];
-      this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
-      this.table.data = this.objects.map((v) => {
-        return {
-          object: v,
-          type: v.GoodIdentificationType && v.GoodIdentificationType.Name,
-          identification: v.Identification,
-        } as Row;
-      });
-    };
   }
+
 }

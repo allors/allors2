@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed && good" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed && part" (click)="panel.toggle()">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<form *ngIf="panel.isExpanded && good" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="panel.isExpanded && part" #form="ngForm" (submit)="save()" novalidate>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{panel.title}}</mat-card-title>
@@ -24,8 +24,7 @@
 
         <mat-tab label="General">
           <div class="row pt-3">
-            <a-mat-input class="col-md" *ngIf="add" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-input>
-            <a-mat-static class="col-md" *ngIf="edit" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-static>
+            <a-mat-static class="col-md" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-static>
             <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.Name"></a-mat-input>
           </div>
 
