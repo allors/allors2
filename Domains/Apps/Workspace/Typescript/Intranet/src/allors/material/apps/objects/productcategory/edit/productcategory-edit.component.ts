@@ -1,52 +1,45 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
-import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { CatScope, InternalOrganisation, Locale, ProductCategory } from '../../../../../domain';
+import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
-import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
+import { switchMap, map } from 'rxjs/operators';
+import { CreateData, EditData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './category-edit.component.html',
+  templateUrl: './productcategory-edit.component.html',
   providers: [ContextService]
 })
-export class CategoryComponent implements OnInit, OnDestroy {
+export class ProductCategoryEditComponent implements OnInit, OnDestroy {
 
   public m: Meta;
+  public title: string;
 
   public category: ProductCategory;
-  public title: string;
-  public subTitle: string;
-
   public locales: Locale[];
   public categories: ProductCategory[];
   public catScopes: CatScope[];
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
-
   private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<ProductCategoryEditComponent>,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -54,11 +47,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const create = (this.data as EditData).id === undefined;
+          const { id, objectType, associationRoleType } = this.data;
 
           const pulls = [
             this.fetcher.locales,
@@ -82,24 +76,30 @@ export class CategoryComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, create }) => {
 
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-        this.category = loaded.objects.category as ProductCategory;
-        this.categories = loaded.collections.categories as ProductCategory[];
+        this.allors.context.reset();
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.category = loaded.objects.ProductCategory as ProductCategory;
+        this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopes as CatScope[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
-        if (!this.category) {
+        if (create) {
+          this.title = 'Add Category';
           this.category = this.allors.context.create('ProductCategory') as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
+        } else {
+          this.title = 'Edit Category';
         }
 
-        this.title = 'Category';
-        this.subTitle = this.category.Name;
       }, this.errorService.handler);
   }
 
@@ -114,18 +114,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        this.dialogRef.close();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

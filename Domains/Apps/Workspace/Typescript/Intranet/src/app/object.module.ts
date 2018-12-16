@@ -4,14 +4,18 @@ import { MatDialogModule } from '@angular/material';
 
 import { ids } from '../allors/meta/generated';
 
+import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
+import { GoodCreateComponent, GoodCreateModule } from '../allors/material/apps/objects/good/create/good-create.module';
 import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
 import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateModule } from '../allors/material/apps/objects/facetofacecommunication/create/facetofacecommunication-create.module';
 import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule } from '../allors/material/apps/objects/lettercorrespondence/create/lettercorrespondence-create.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
+import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
 import { PhoneCommunicationCreateModule } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
+import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
@@ -22,9 +26,6 @@ import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
-import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
-import { GoodCreateComponent, GoodCreateModule } from 'src/allors/material/apps/objects/good/create/good-create.module';
-import { CatalogueEditComponent, CatalogueEditModule } from 'src/allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 
 const create = {
   [ids.Catalogue]: CatalogueEditComponent,
@@ -33,12 +34,14 @@ const create = {
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
+  [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationCreateComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceCreateComponent,
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationCreateComponent,
   [ids.ProductQuote]: ProductQuoteCreateComponent,
+  [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
@@ -61,6 +64,7 @@ const edit = {
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
+  [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
@@ -89,6 +93,7 @@ const edit = {
     PartCreateModule,
     PersonCreateModule,
     PhoneCommunicationCreateModule,
+    ProductCategoryEditModule,
     ProductQuoteCreateModule,
     QuoteItemEditModule,
     RequestItemEditModule,
@@ -109,6 +114,7 @@ const edit = {
     PersonCreateComponent,
     PartCreateComponent,
     PhoneCommunicationCreateComponent,
+    ProductCategoryEditComponent,
     ProductQuoteCreateComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,

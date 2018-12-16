@@ -64,11 +64,9 @@ import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/go
 import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
 import * as PartOverview from 'src/allors/material/apps/objects/part/overview/part-overview.module';
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
-import * as CategoriesOverview from 'src/allors/material/apps/objects/category/list/category-list.module';
+import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/productcharacteristic/list/productcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
-import * as Catalogue from 'src/allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
-import * as Category from 'src/allors/material/apps/objects/category/edit/category-edit.module';
 import * as ProductCharacteristic from 'src/allors/material/apps/objects/productcharacteristic/edit/productcharacteristic-edit.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktask-list.module';
@@ -138,10 +136,9 @@ const modules = [
   PartList.PartListModule,
   PartOverview.PartOverviewModule,
   CataloguesOverview.CataloguesOverviewModule,
-  CategoriesOverview.CategoriesOverviewModule,
+  CategoriesOverview.ProductCategoriesOverviewModule,
   ProductCharacteristicsOverview.ProductCharacteristicsOverviewModule,
   ProductTypesOverview.ProductTypesOverviewModule,
-  Category.CategoryModule,
   ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
   WorkTaskList.WorkTaskListModule,
@@ -196,7 +193,7 @@ export const routes: Routes = [
           { path: 'parts', data: listData({ id: ids.Part }), component: PartList.PartListComponent },
           { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
+          { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.ProductCategoriesOverviewComponent },
           { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
@@ -257,13 +254,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'category',
-        children: [
-          { path: '', data: addData({ id: ids.ProductCategory }), component: Category.CategoryComponent },
-          { path: ':id', data: editData({ id: ids.ProductCategory }), component: Category.CategoryComponent },
         ],
       },
       {

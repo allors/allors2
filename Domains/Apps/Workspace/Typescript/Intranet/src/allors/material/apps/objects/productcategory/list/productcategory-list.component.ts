@@ -3,11 +3,10 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService, EditService } from '../../../..';
 
 import { ProductCategory } from '../../../../../domain';
 
@@ -18,15 +17,16 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './category-list.component.html',
+  templateUrl: './productcategory-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class CategoriesOverviewComponent implements OnInit, OnDestroy {
+export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Category';
 
   table: Table<Row>;
 
+  edit: Action;
   delete: Action;
 
   private subscription: Subscription;
@@ -37,6 +37,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigateService: NavigateService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -45,6 +46,11 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
     titleService: Title,
   ) {
     titleService.setTitle(this.title);
+
+    this.edit = editService.edit();
+    this.edit.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
 
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
@@ -58,9 +64,10 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
         { name: 'description' }
       ],
       actions: [
-        navigateService.edit(),
+        this.edit,
         this.delete
       ],
+      defaultAction: this.edit
     });
   }
 

@@ -1,17 +1,9 @@
-<form class="a-edit" #form="ngForm" (submit)="save()">
+<form *ngIf="category" #form="ngForm" (submit)="save()" novalidate>
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <h3 mat-dialog-title>{{title}}</h3>
 
-  <div>
-
-    <mat-card *ngIf="category">
-      <mat-card-content class="container-fluid">
+  <div mat-dialog-content>
+    <div mat-dialog-content>
 
         <div class="row">
           <a-mat-file class="col-md-12" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
@@ -45,14 +37,12 @@
           </mat-expansion-panel>
         </div>
 
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <mat-toolbar>
-    <span class="col"></span>
-    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-  </mat-toolbar>
-
-</form>
+      </div>
+    </div>
+    
+    <div mat-dialog-actions>
+      <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    </div>
+  
+  </form>

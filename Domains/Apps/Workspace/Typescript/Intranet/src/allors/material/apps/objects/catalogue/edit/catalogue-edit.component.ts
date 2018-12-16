@@ -83,12 +83,12 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
             pull.CatScope()];
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }))
-          .pipe(
-            map((loaded) => ({ loaded, create }))
-          );
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe(({loaded, create}) => {
+      .subscribe(({ loaded, create }) => {
 
         this.allors.context.reset();
 
@@ -102,8 +102,8 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Catalogue';
           this.catalogue = this.allors.context.create('Catalogue') as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
-        } else{
-          this.title= 'Edit Catalogue';
+        } else {
+          this.title = 'Edit Catalogue';
         }
 
       }, this.errorService.handler);
@@ -124,7 +124,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        this.dialogRef.close();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -141,9 +141,5 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }
