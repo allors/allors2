@@ -1,20 +1,20 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { Subscription } from 'rxjs';
-
-import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './producttype-edit.component.html',
   providers: [ContextService]
 })
-export class ProductTypeComponent implements OnInit, OnDestroy {
+export class ProductTypeEditComponent implements OnInit, OnDestroy {
 
   public title = 'Edit Product Type';
   public subTitle: string;
@@ -29,10 +29,12 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<ProductTypeEditComponent>,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService) {
+    private stateService: StateService) {
 
     this.m = this.metaService.m;
   }
@@ -41,11 +43,12 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = this.route.url
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap((url: any) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const create = (this.data as EditData).id === undefined;
+          const { id, objectType, associationRoleType } = this.data;
 
           const pulls = [
             pull.ProductType({
@@ -60,17 +63,23 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, create }) => {
 
-        this.productType = loaded.objects.productType as ProductType;
-        if (!this.productType) {
+        if (create) {
+          this.title = 'Add Product Type';
           this.productType = this.allors.context.create('ProductType') as ProductType;
+        } else {
+          this.title = 'Edit Product Type';
+          this.productType = loaded.objects.ProductType as ProductType;
         }
 
-        this.characteristics = loaded.collections.characteristics as SerialisedItemCharacteristicType[];
+        this.characteristics = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
       }, this.errorService.handler);
   }
 
@@ -85,14 +94,15 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        const data: ObjectData = {
+          id: this.productType.id,
+          objectType: this.productType.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

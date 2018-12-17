@@ -25,7 +25,8 @@ import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
-import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
+import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
+import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
 
 const create = {
   [ids.Catalogue]: CatalogueEditComponent,
@@ -40,8 +41,9 @@ const create = {
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationCreateComponent,
-  [ids.ProductQuote]: ProductQuoteCreateComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
+  [ids.ProductQuote]: ProductQuoteCreateComponent,
+  [ids.ProductType]: ProductTypeEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
@@ -62,6 +64,7 @@ const create = {
 
 const edit = {
   [ids.Catalogue]: CatalogueEditComponent,
+  [ids.EanIdentification]: IGoodIdentificationEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
@@ -72,8 +75,8 @@ const edit = {
   [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
   [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
   [ids.PartNumber]: IGoodIdentificationEditComponent,
-  [ids.EanIdentification]: IGoodIdentificationEditComponent,
   [ids.ProductNumber]: IGoodIdentificationEditComponent,
+  [ids.ProductType]: ProductTypeEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
@@ -97,6 +100,7 @@ const edit = {
     PhoneCommunicationCreateModule,
     ProductCategoryEditModule,
     ProductQuoteCreateModule,
+    ProductTypeEditModule,
     QuoteItemEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
@@ -119,6 +123,7 @@ const edit = {
     PhoneCommunicationCreateComponent,
     ProductCategoryEditComponent,
     ProductQuoteCreateComponent,
+    ProductTypeEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,

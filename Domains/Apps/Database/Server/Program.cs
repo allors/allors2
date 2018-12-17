@@ -39,7 +39,6 @@ namespace Allors.Server
                     var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/apps.appSettings.json";
                     config.AddJsonFile(myAppSettings, true);
                 })
-
                 .ConfigureLogging(logging =>
                     {
                         logging.ClearProviders();

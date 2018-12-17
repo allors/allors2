@@ -67,7 +67,6 @@ import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/list/serialiseditemcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
-import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 
@@ -137,7 +136,6 @@ const modules = [
   CategoriesOverview.ProductCategoriesOverviewModule,
   ProductCharacteristicsOverview.SerialisedItemCharacteristicListModule,
   ProductTypesOverview.ProductTypesOverviewModule,
-  ProductType.ProductTypeModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
 ];
@@ -252,15 +250,6 @@ export const routes: Routes = [
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
         ],
       },
-      {
-        path: 'productType',
-        children: [
-          { path: '', data: addData({ id: ids.ProductType }), component: ProductType.ProductTypeComponent },
-          { path: ':id', data: editData({ id: ids.ProductType }), component: ProductType.ProductTypeComponent },
-        ],
-      },
-
-
       {
         path: 'purchaseinvoice',
         children: [

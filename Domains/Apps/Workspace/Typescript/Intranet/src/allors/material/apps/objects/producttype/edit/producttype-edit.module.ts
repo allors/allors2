@@ -18,15 +18,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { ProductTypeComponent } from './producttype-edit.component';
-export { ProductTypeComponent } from './producttype-edit.component';
+import { ProductTypeEditComponent } from './producttype-edit.component';
+export { ProductTypeEditComponent } from './producttype-edit.component';
 
 @NgModule({
   declarations: [
-    ProductTypeComponent,
+    ProductTypeEditComponent,
   ],
   exports: [
-    ProductTypeComponent,
+    ProductTypeEditComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -63,4 +63,4 @@ export { ProductTypeComponent } from './producttype-edit.component';
     RouterModule,
   ],
 })
-export class ProductTypeModule { }
+export class ProductTypeEditModule { }
