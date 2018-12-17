@@ -27,7 +27,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistBic)
+            if (!string.IsNullOrEmpty(this.Bic))
             {
                 if (!Regex.IsMatch(this.Bic, "^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$"))
                 {

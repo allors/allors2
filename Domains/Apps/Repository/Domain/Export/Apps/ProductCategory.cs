@@ -151,6 +151,39 @@ namespace Allors.Repository
         [Workspace]
         public Product[] AllProducts { get; set; }
 
+        #region Allors
+        [Id("5889B718-100F-4444-AA5D-3B56FD33AD91")]
+        [AssociationId("BE94D710-A504-4C7E-9325-9AA36C0D208B")]
+        [RoleId("690C5D0B-25A3-4CA0-A5F1-D583C928456F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public SerialisedItem[] SerialisedItems { get; set; }
+
+        #region Allors
+        [Id("E62219C6-6F31-408F-8447-5E7DE310C603")]
+        [AssociationId("9AEF59C6-2B11-49CF-976A-2680B00AA0A1")]
+        [RoleId("35077816-C8A4-4881-96F5-A89865AF5AC7")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public SerialisedInventoryItem[] SerialisedInventoryItems { get; set; }
+
+        #region Allors
+        [Id("A34B5082-8B4C-41D7-B1C2-DC42D8805BE7")]
+        [AssociationId("9FDAC4C4-D2E9-4B9E-9B03-00E458059F5C")]
+        [RoleId("DAFF3F86-0BDF-4F77-AA69-FEBA6A3B2235")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public NonSerialisedInventoryItem[] NonSerialisedInventoryItems { get; set; }
+
         #region inherited methods
 
 
