@@ -40,8 +40,12 @@ namespace Allors.Domain
             string postalCode,
             string locality,
             Country country,
-            string countryCode,
-            string phone,
+            string phone1CountryCode,
+            string phone1,
+            ContactMechanismPurpose phone1Purpose,
+            string phone2CountryCode,
+            string phone2,
+            ContactMechanismPurpose phone2Purpose,
             string emailAddress,
             string websiteAddress,
             string taxNumber,
@@ -68,16 +72,6 @@ namespace Allors.Domain
                     .WithAddress1(address)
                     .WithPostalBoundary(new PostalBoundaryBuilder(session).WithPostalCode(postalCode).WithLocality(locality).WithCountry(country).Build())
                     .Build();
-
-            TelecommunicationsNumber phoneNumber = null;
-            if (!string.IsNullOrEmpty(phone))
-            {
-                phoneNumber = new TelecommunicationsNumberBuilder(session).WithContactNumber(phone).Build();
-                if (!string.IsNullOrEmpty(countryCode))
-                {
-                    phoneNumber.CountryCode = countryCode;
-                }
-            }
 
             var email = new EmailAddressBuilder(session)
                 .WithElectronicAddressString(emailAddress)
@@ -135,12 +129,41 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
                 .Build());
 
-            if (phoneNumber != null)
+            TelecommunicationsNumber phoneNumber1 = null;
+            if (!string.IsNullOrEmpty(phone1))
+            {
+                phoneNumber1 = new TelecommunicationsNumberBuilder(session).WithContactNumber(phone1).Build();
+                if (!string.IsNullOrEmpty(phone1CountryCode))
+                {
+                    phoneNumber1.CountryCode = phone1CountryCode;
+                }
+            }
+
+            if (phoneNumber1 != null)
             {
                 organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                     .WithUseAsDefault(true)
-                    .WithContactMechanism(phoneNumber)
-                    .WithContactPurpose(new ContactMechanismPurposes(session).SalesOffice)
+                    .WithContactMechanism(phoneNumber1)
+                    .WithContactPurpose(phone1Purpose)
+                    .Build());
+            }
+
+            TelecommunicationsNumber phoneNumber2 = null;
+            if (!string.IsNullOrEmpty(phone2))
+            {
+                phoneNumber2 = new TelecommunicationsNumberBuilder(session).WithContactNumber(phone2).Build();
+                if (!string.IsNullOrEmpty(phone2CountryCode))
+                {
+                    phoneNumber2.CountryCode = phone2CountryCode;
+                }
+            }
+
+            if (phoneNumber2 != null)
+            {
+                organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                    .WithUseAsDefault(true)
+                    .WithContactMechanism(phoneNumber2)
+                    .WithContactPurpose(phone2Purpose)
                     .Build());
             }
 

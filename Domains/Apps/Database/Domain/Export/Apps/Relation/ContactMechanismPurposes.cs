@@ -233,7 +233,7 @@ namespace Allors.Domain
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Operations")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operations").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MobilePhoneNumberId)
+                .WithUniqueId(OperationsId)
                 .WithIsActive(true)
                 .Build();
         }

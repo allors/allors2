@@ -40,7 +40,7 @@ namespace Allors.Domain
 
         private void DeriveIban(IDerivation derivation)
         {
-            if (this.ExistIban)
+            if (!string.IsNullOrEmpty(this.Iban))
             {
                 var iban = Regex.Replace(this.Iban, @"\s", string.Empty).ToUpper(); // remove empty space & convert all uppercase
 
