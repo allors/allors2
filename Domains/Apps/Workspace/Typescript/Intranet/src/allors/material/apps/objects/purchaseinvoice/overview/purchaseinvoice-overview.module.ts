@@ -1,34 +1,46 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PurchaseInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
-export { PurchaseInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
+import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
+import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+
+import { PurchaseInvoiceOverviewSummaryModule } from './summary/purchaseinvoice-overview-summary.module';
+import { PurchaseInvoiceOverviewDetailModule } from './detail/purchaseinvoice-overview-detail.module';
+import { PurchaseInvoiceItemOverviewPanelModule } from '../../purchaseinvoiceitem/overview/panel/purchaseinvoiceitem-overview-panel.module';
+
+export { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
+import { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
 
 @NgModule({
   declarations: [
-    PurchaseInvoiceOverviewComponent,
+    PurchasInvoiceOverviewComponent,
   ],
   exports: [
-    PurchaseInvoiceOverviewComponent,
+    PurchasInvoiceOverviewComponent,
   ],
   imports: [
+    PurchaseInvoiceOverviewSummaryModule,
+    PurchaseInvoiceOverviewDetailModule,
+    PurchaseInvoiceItemOverviewPanelModule,
+    
+    CommunicationEventOverviewPanelModule,
+    PartyContactMechanismOverviewPanelModule,
+    SerialisedItemOverviewPanelModule,
+    WorkEffortPartyAssignmentOverviewPanelModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -36,10 +48,9 @@ export { PurchaseInvoiceOverviewComponent } from './purchaseinvoice-overview.com
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    CommonModule,
 
-    FormsModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -55,6 +66,9 @@ export { PurchaseInvoiceOverviewComponent } from './purchaseinvoice-overview.com
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+
+    CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],

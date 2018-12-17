@@ -182,6 +182,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Part Part { get; set; }
 
         #region Allors
@@ -191,6 +192,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Product Product { get; set; }
 
         #region inherited methods

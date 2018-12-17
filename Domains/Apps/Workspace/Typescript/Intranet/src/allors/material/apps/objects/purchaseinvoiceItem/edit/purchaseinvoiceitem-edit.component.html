@@ -1,64 +1,57 @@
-<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="invoiceItem" #form="ngForm" (submit)="save()">
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <h3 mat-dialog-title>{{title}}</h3>
 
-  <div>
+  <div mat-dialog-content>
+    <div mat-dialog-content>
 
-    <mat-card *ngIf="invoiceItem">
+      <div class="row" *ngIf="!invoiceItem.isNew">
+        <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.PurchaseInvoiceItemState"
+          display="Name" label="Status"></a-mat-static>
+      </div>
 
-      <mat-card-content class="container-fluid">
+      <div class="row" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType">
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType"
+          [options]="invoiceItemTypes" display="Name"></a-mat-select>
+        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
+      </div>
 
-        <div class="row" *ngIf="!invoiceItem.isNew">
-          <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.PurchaseInvoiceItemState" display="Name" label="Status"></a-mat-static>
-        </div>
+      <div class="row" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
+        <a-mat-autocomplete class="col-md" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType"
+          [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)"
+          [filter]="stateService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType"
+          [options]="invoiceItemTypes" display="Name"></a-mat-select>
+      </div>
 
-        <div class="row" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType">
-          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
-          <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
-        </div>
+      <div class="row" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType">
+        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Quantity"></a-mat-input>
+        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice"></a-mat-input>
+      </div>
 
-        <div class="row" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
-          <a-mat-autocomplete class="col-md" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
-          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
-        </div>
+      <div class="row">
+        <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedVatRegime"
+          [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
+        <a-mat-static class="col-md" [object]="invoiceItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+        <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.UnitVat"></a-mat-static>
+        <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.TotalIncVat"></a-mat-static>
+      </div>
 
-        <div class="row" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType">
-          <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Quantity"></a-mat-input>
-          <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice"></a-mat-input>
-        </div>
+      <div class="row">
+        <a-mat-static class="col-md" *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Comment"></a-mat-static>
+        <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Comment" class="col-md-12"></a-mat-textarea>
+        <a-mat-static class="col-md" *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.InternalComment"></a-mat-static>
+        <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InternalComment" class="col-md-12"></a-mat-textarea>
+        <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Message" class="col-md-12"></a-mat-textarea>
+      </div>
 
-        <div class="row">
-          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedVatRegime" [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
-          <a-mat-static class="col-md" [object]="invoiceItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
-          <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.UnitVat"></a-mat-static>
-          <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.TotalIncVat"></a-mat-static>
-        </div>
+    </div>
 
-        <div class="row">
-          <a-mat-static class="col-md" *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Comment"></a-mat-static>
-          <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Comment" class="col-md-12"></a-mat-textarea>
-          <a-mat-static class="col-md" *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.InternalComment"></a-mat-static>
-          <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InternalComment" class="col-md-12"></a-mat-textarea>
-          <a-mat-textarea class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Message" class="col-md-12"></a-mat-textarea>
-        </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    </div>
 
-      </mat-card-content>
-    </mat-card>
   </div>
-
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
 
 </form>

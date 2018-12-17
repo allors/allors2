@@ -8,11 +8,12 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
+import { NavigateService } from 'src/allors/material/base/actions';
 
 interface Row {
   purchaseInvoice: PurchaseInvoice;
@@ -49,7 +50,8 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
-    public navigation: NavigationService,
+    public refreshService: RefreshService,
+    public navigation: NavigateService,
     public mediaService: MediaService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar,

@@ -27,6 +27,8 @@ import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/materia
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
+import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from 'src/allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from 'src/allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 
 const create = {
   [ids.Catalogue]: CatalogueEditComponent,
@@ -56,6 +58,8 @@ const create = {
   [ids.PartNumber]: IGoodIdentificationEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
   [ids.ProductNumber]: IGoodIdentificationEditComponent,
+  [ids.PurchaseInvoice]: PurchaseInvoiceCreateComponent,
+  [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
@@ -77,6 +81,7 @@ const edit = {
   [ids.PartNumber]: IGoodIdentificationEditComponent,
   [ids.ProductNumber]: IGoodIdentificationEditComponent,
   [ids.ProductType]: ProductTypeEditComponent,
+  [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
@@ -101,6 +106,8 @@ const edit = {
     ProductCategoryEditModule,
     ProductQuoteCreateModule,
     ProductTypeEditModule,
+    PurchaseInvoiceCreateModule,
+    PurchaseInvoiceItemEditModule,
     QuoteItemEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
@@ -124,6 +131,8 @@ const edit = {
     ProductCategoryEditComponent,
     ProductQuoteCreateComponent,
     ProductTypeEditComponent,
+    PurchaseInvoiceCreateComponent,
+    PurchaseInvoiceItemEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,

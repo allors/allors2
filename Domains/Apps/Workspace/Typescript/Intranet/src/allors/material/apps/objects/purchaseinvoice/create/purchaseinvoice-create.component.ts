@@ -1,27 +1,27 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Contains, Equals, Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
-import { Meta, PullFactory } from '../../../../../meta';
+import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { SalesTermEditComponent } from '../../salesterm/edit/salesterm-edit.module';
 
 @Component({
-  templateUrl: './purchaseinvoice-edit.component.html',
+  templateUrl: './purchaseinvoice-create.component.html',
   providers: [ContextService]
 })
-export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
+  public title = 'Edit Purchase Invoice';
 
-  public title: string;
-  public subTitle: string;
   public invoice: PurchaseInvoice;
   public order: PurchaseOrder;
   public currencies: Currency[];
@@ -45,7 +45,6 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousShipToEndCustomer: Party;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private fetcher: Fetcher;
 
@@ -64,18 +63,18 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() public allors: ContextService,
+    @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<SalesTermEditComponent>,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -83,13 +82,15 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const id = this.route.snapshot.paramMap.get('id');
+          const create = (this.data as EditData).id === undefined;
+          const { objectType, associationRoleType } = this.data;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({
@@ -103,55 +104,20 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                this.allors.context.reset();
-                this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-                this.currencies = loaded.collections.currencies as Currency[];
-                this.purchaseInvoiceTypes = loaded.collections.purchaseInvoiceTypes as PurchaseInvoiceType[];
-
-                const fetches = [
-                  this.fetcher.internalOrganisation,
-                  pull.PurchaseInvoice({
-                    include: {
-                      BilledFrom: x,
-                      BilledFromContactPerson: x,
-                      BillToCustomer: x,
-                      BillToCustomerContactMechanism: x,
-                      BillToCustomerContactPerson: x,
-                      ShipToEndCustomer: x,
-                      ShipToEndCustomerAddress: x,
-                      ShipToEndCustomerContactPerson: x,
-                      PurchaseInvoiceState: x,
-                      PurchaseOrder: x,
-                    }
-                  }),
-                  pull.PurchaseInvoice({
-                    object: id,
-                    fetch: {
-                      PurchaseOrder: x,
-                    }
-                  })
-                ];
-
-                return this.allors.context.load('Pull', new PullRequest({ pulls: fetches }));
-              })
-            );
         })
       )
       .subscribe((loaded) => {
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.currencies = loaded.collections.Currencies as Currency[];
+        this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
+
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
-        if (!this.invoice) {
-          this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
-          this.invoice.BilledTo = internalOrganisation;
-          this.title = 'Add Purchase Invoice';
-        } else {
-          this.title = 'Purchase Invoice from: ' + this.invoice.BilledFrom.PartyName;
-        }
+        this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
+        this.invoice.BilledTo = internalOrganisation;
 
         if (this.invoice.BilledFrom) {
           this.updateBilledFrom(this.invoice.BilledFrom);
@@ -254,7 +220,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
     const cancelFn: () => void = () => {
       this.allors.context.invoke(this.invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -290,7 +256,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
     const approveFn: () => void = () => {
       this.allors.context.invoke(this.invoice.Approve)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -330,7 +296,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
           this.allors.context.invoke(invoice.Finish)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-              this.refresh();
+              this.refreshService.refresh();
             },
               (error: Error) => {
                 this.errorService.handle(error);
@@ -350,15 +316,16 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/accountspayable/invoice/' + this.invoice.id]);
+        const data: ObjectData = {
+          id: this.invoice.id,
+          objectType: this.invoice.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public goBack(): void {

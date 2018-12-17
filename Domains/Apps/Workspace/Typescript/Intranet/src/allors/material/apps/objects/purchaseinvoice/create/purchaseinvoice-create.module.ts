@@ -22,16 +22,16 @@ import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
 
-import { PurchaseInvoiceEditComponent } from './purchaseinvoice-edit.component';
+import { PurchaseInvoiceCreateComponent } from './purchaseinvoice-create.component';
 
-export { PurchaseInvoiceEditComponent } from './purchaseinvoice-edit.component';
+export { PurchaseInvoiceCreateComponent } from './purchaseinvoice-create.component';
 
 @NgModule({
   declarations: [
-    PurchaseInvoiceEditComponent,
+    PurchaseInvoiceCreateComponent,
   ],
   exports: [
-    PurchaseInvoiceEditComponent,
+    PurchaseInvoiceCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -74,4 +74,4 @@ export { PurchaseInvoiceEditComponent } from './purchaseinvoice-edit.component';
     RouterModule,
   ],
 })
-export class PurchaseInvoiceEditModule { }
+export class PurchaseInvoiceCreateModule { }

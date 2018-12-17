@@ -183,14 +183,18 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     //   this.orderItem.SurchargeAdjustment = surchargeAdjustment;
     // }
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/salesOrder/' + this.order.id]);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    this.allors.context.save()
+    .subscribe((saved: Saved) => {
+      const data: ObjectData = {
+        id: this.orderItem.id,
+        objectType: this.orderItem.objectType,
+      };
+
+      this.dialogRef.close(data);
+    },
+      (error: Error) => {
+        this.errorService.handle(error);
+      });
   }
 
   public update(): void {

@@ -11,7 +11,6 @@ import { moduleData, listData, overviewData, editData, addData } from '../allors
 
 import * as PurchaseInvoiceList from '../allors/material/apps/objects/purchaseinvoice/list/purchaseinvoice-list.module';
 import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purchaseinvoice/overview/purchaseinvoice-overview.module';
-import * as PurchaseInvoiceEdit from '../allors/material/apps/objects/purchaseinvoice/edit/purchaseinvoice-edit.module';
 import * as PurchaseInvoiceItemEdit from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
 
 import * as SalesInvoiceList from '../allors/material/apps/objects/salesinvoice/list/salesinvoice-list.module';
@@ -104,7 +103,6 @@ const modules = [
 
   PurchaseInvoiceList.PurchaseInvoiceListModule,
   PurchaseInvoiceOverview.PurchaseInvoiceOverviewModule,
-  PurchaseInvoiceEdit.PurchaseInvoiceEditModule,
   PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditModule,
 
   RepeatingSalesInvoiceEdit.RepeatingSalesInvoiceEditModule,
@@ -198,7 +196,7 @@ export const routes: Routes = [
         path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
         children: [
           { path: 'purchaseinvoices', data: listData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
-          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
+          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
           { path: 'salesinvoices', data: listData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
           { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
@@ -248,15 +246,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'purchaseinvoice',
-        children: [
-          { path: '', component: PurchaseInvoiceEdit.PurchaseInvoiceEditComponent },
-          { path: ':id', component: PurchaseInvoiceEdit.PurchaseInvoiceEditComponent },
-          { path: ':id/item', component: PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditComponent },
-          { path: ':id/item/:itemId', component: PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditComponent },
         ],
       },
       {

@@ -13,6 +13,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialFactoryFabModule } from '../../../../base/components/factoryfab/factoryfab.module';
 
 import { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
 export { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
@@ -25,6 +26,7 @@ export { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
     PurchaseInvoiceListComponent,
   ],
   imports: [
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilterModule,
     AllorsMaterialHeaderModule,
