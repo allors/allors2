@@ -1,29 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.ProductType">
-    <Position X="9" Y="2.5" Width="1.75" />
+  <Interface Name="Allors.Domain.RepeatingSalesInvoice">
+    <Position X="9" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAgAAAAAAAIAAAAAAAIAAAAAAACAEAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="SerialisedItemCharacteristicTypes" />
+      <Property Name="Source" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.SerialisedItemCharacteristicType">
-    <Position X="13" Y="2.5" Width="2.5" />
+  <Interface Name="Allors.Domain.SalesInvoice" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="UnitOfMeasure" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.IUnitOfMeasure" Collapsed="true">
-    <Position X="17" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAQBAAAAgAAAAAAAAAAAACAAAAAAAAAAAAAAACAA=</HashCode>
+      <HashCode>ohkBAQhMAAIAUgwQABAAAAJAmEAAkAgAAAY0AQBCQAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

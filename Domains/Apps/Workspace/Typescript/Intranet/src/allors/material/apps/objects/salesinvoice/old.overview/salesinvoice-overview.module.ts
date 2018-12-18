@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatDatepickerModule, MatExpansionModule, MatDialogModule, MatCheckboxModule } from '@angular/material';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
@@ -18,28 +18,19 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PersonInlineModule } from '../../person/inline/person-inline.module';
-import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
-import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
-
-import { SalesInvoiceEditComponent } from './salesinvoice-edit.component';
-export { SalesInvoiceEditComponent } from './salesinvoice-edit.component';
+import { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component';
+export { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component';
 
 @NgModule({
   declarations: [
-    SalesInvoiceEditComponent,
+    SalesInvoiceOverviewComponent,
   ],
   exports: [
-    SalesInvoiceEditComponent,
+    SalesInvoiceOverviewComponent,
   ],
   imports: [
-    AllorsMaterialAutoCompleteModule,
-    AllorsMaterialChipsModule,
-    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
-    AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
-    AllorsMaterialLocalisedTextModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
@@ -51,26 +42,21 @@ export { SalesInvoiceEditComponent } from './salesinvoice-edit.component';
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
-    MatDatepickerModule,
-    MatDialogModule,
+    MatChipsModule,
     MatDividerModule,
-    MatExpansionModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
-    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PersonInlineModule,
-    ContactMechanismInlineModule,
-    PostalAddressInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class SalesInvoiceEditModule { }
+export class SalesInvoiceOverviewModule { }

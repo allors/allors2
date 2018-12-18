@@ -7,7 +7,7 @@ import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -40,9 +40,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
   public dataSource = new MatTableDataSource<Row>();
 
   private sort$: BehaviorSubject<Sort>;
-  private refresh$: BehaviorSubject<Date>;
   private pager$: BehaviorSubject<PageEvent>;
-
   private subscription: Subscription;
 
   constructor(
@@ -51,6 +49,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
@@ -60,7 +59,6 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
   }
 
@@ -81,7 +79,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -151,14 +149,6 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public goBack(): void {
-    this.location.back();
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public sort(event: Sort): void {
