@@ -29,18 +29,7 @@ namespace Allors.Domain
 
         public static void AppsOnDerive(this Service @this, ObjectOnDerive method)
         {
-            if (@this.ProductCategories.Count == 1 && !@this.ExistPrimaryProductCategory)
-            {
-                @this.PrimaryProductCategory = @this.ProductCategories.First;
-            }
-
-            if (@this.ExistPrimaryProductCategory && !@this.ExistProductCategories)
-            {
-                @this.AddProductCategory(@this.PrimaryProductCategory);
-            }
-
             @this.AppsOnDeriveVirtualProductPriceComponent();
-            @this.AppsOnDeriveProductCategoriesExpanded();
         }
     }
 }

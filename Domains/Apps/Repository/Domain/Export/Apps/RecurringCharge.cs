@@ -17,8 +17,6 @@ namespace Allors.Repository
 
         public decimal Rate { get; set; }
 
-        public RevenueValueBreak RevenueValueBreak { get; set; }
-
         public PartyClassification PartyClassification { get; set; }
 
         public OrderQuantityBreak OrderQuantityBreak { get; set; }
@@ -28,8 +26,6 @@ namespace Allors.Repository
         public Product Product { get; set; }
 
         public Part Part { get; set; }
-
-        public RevenueQuantityBreak RevenueQuantityBreak { get; set; }
 
         public ProductFeature ProductFeature { get; set; }
 

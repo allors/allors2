@@ -73,10 +73,7 @@ namespace Allors.Domain
                 this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
             }
 
-            this.AddProductCategory(this.PrimaryProductCategory);
-
             this.DeriveVirtualProductPriceComponent();
-            this.DeriveProductCategoriesExpanded(derivation);
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -103,31 +100,6 @@ namespace Allors.Domain
                             product.AddToBasePrice(basePrice);
                         }
                     }
-                }
-            }
-        }
-
-        public void DeriveProductCategoriesExpanded(IDerivation derivation)
-        {
-            this.RemoveProductCategoriesExpanded();
-
-            if (this.ExistPrimaryProductCategory)
-            {
-                this.AddProductCategoriesExpanded(this.PrimaryProductCategory);
-                foreach (ProductCategory superJacent in this.PrimaryProductCategory.SuperJacent)
-                {
-                    this.AddProductCategoriesExpanded(superJacent);
-                    superJacent.AppsOnDeriveAllProducts(derivation);
-                }
-            }
-
-            foreach (ProductCategory productCategory in this.ProductCategories)
-            {
-                this.AddProductCategoriesExpanded(productCategory);
-                foreach (ProductCategory superJacent in productCategory.SuperJacent)
-                {
-                    this.AddProductCategoriesExpanded(superJacent);
-                    superJacent.AppsOnDeriveAllProducts(derivation);
                 }
             }
         }
@@ -159,16 +131,6 @@ namespace Allors.Domain
                 foreach (EstimatedProductCost estimatedProductCosts in this.EstimatedProductCosts)
                 {
                     estimatedProductCosts.Delete();
-                }
-
-                foreach (PartyProductRevenue revenue in this.PartyProductRevenuesWhereProduct)
-                {
-                    revenue.Delete();
-                }
-
-                foreach (ProductRevenue revenue in this.ProductRevenuesWhereProduct)
-                {
-                    revenue.Delete();
                 }
             }
         }

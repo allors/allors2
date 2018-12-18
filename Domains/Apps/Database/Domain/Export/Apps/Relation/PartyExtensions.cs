@@ -298,7 +298,6 @@ namespace Allors.Domain
             @this.AppsOnDeriveOpenOrderAmount();
             @this.AppsOnDeriveAmountDue(derivation);
             @this.AppsOnDeriveAmountOverDue(derivation);
-            @this.AppsOnDeriveRevenue();
         }
 
         public static void AppsOnPostDerive(this Party @this, ObjectOnPostDerive method)
@@ -437,31 +436,6 @@ namespace Allors.Domain
                             {
                                 partyFinancial.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
                             }
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void AppsOnDeriveRevenue(this Party @this)
-        {
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
-            {
-                partyFinancial.YTDRevenue = 0;
-                partyFinancial.LastYearsRevenue = 0;
-
-                foreach (PartyRevenue partyRevenue in @this.PartyRevenuesWhereParty)
-                {
-                    if (Equals(partyRevenue.InternalOrganisation, partyFinancial.InternalOrganisation))
-                    {
-                        if (partyRevenue.Year == DateTime.UtcNow.Year)
-                        {
-                            partyFinancial.YTDRevenue += partyRevenue.Revenue;
-                        }
-
-                        if (partyRevenue.Year == DateTime.UtcNow.AddYears(-1).Year)
-                        {
-                            partyFinancial.LastYearsRevenue += partyRevenue.Revenue;
                         }
                     }
                 }

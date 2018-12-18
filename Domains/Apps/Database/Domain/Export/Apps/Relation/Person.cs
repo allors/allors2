@@ -98,7 +98,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
-            this.AppsOnDeriveCommission();
             this.SyncTimeSheet();
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
@@ -162,28 +161,6 @@ namespace Allors.Domain
                     (partyContactMechanism.ExistThroughDate && partyContactMechanism.ThroughDate < DateTime.UtcNow))
                 {
                     this.AddInactivePartyContactMechanism(partyContactMechanism);
-                }
-            }
-        }
-
-        public void AppsOnDeriveCommission()
-        {
-            this.YTDCommission = 0;
-            this.LastYearsCommission = 0;
-
-            foreach (SalesRepCommission salesRepCommission in this.SalesRepCommissionsWhereSalesRep)
-            {
-                if (salesRepCommission.Commission.HasValue)
-                {
-                    if (salesRepCommission.Year == DateTime.UtcNow.Year)
-                    {
-                        this.YTDCommission += salesRepCommission.Commission.Value;
-                    }
-
-                    if (salesRepCommission.Year == DateTime.UtcNow.AddYears(-1).Year)
-                    {
-                        this.LastYearsCommission += salesRepCommission.Commission.Value;
-                    }
                 }
             }
         }

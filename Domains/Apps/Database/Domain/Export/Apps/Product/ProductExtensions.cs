@@ -35,6 +35,13 @@ namespace Allors.Domain
                     .Build();
             }
 
+            if (!@this.ExistPrimaryProductCategory && @this.ProductCategoriesWhereProduct.Count == 1)
+            {
+                @this.PrimaryProductCategory = @this.ProductCategoriesWhereProduct.First;
+            }
+
+            @this.AppsOnDeriveProductCategoriesExpanded();
+
             //VendorProduct activeVendorProduct = null;
             //foreach (VendorProduct vendorProduct in @this.VendorProductsWhereProduct)
             //{
@@ -90,21 +97,14 @@ namespace Allors.Domain
         {
             @this.RemoveProductCategoriesExpanded();
 
-            if (@this.ExistPrimaryProductCategory)
-            {
-                @this.AddProductCategoriesExpanded(@this.PrimaryProductCategory);
-                foreach (ProductCategory ancestor in @this.PrimaryProductCategory.SuperJacent)
-                {
-                    @this.AddProductCategoriesExpanded(ancestor);
-                }
-            }
-
-            foreach (ProductCategory productCategory in @this.ProductCategories)
+            foreach (ProductCategory productCategory in @this.ProductCategoriesWhereProduct)
             {
                 @this.AddProductCategoriesExpanded(productCategory);
-                foreach (ProductCategory ancestor in productCategory.SuperJacent)
+                foreach (ProductCategory superJacent in productCategory.SuperJacent)
                 {
-                    @this.AddProductCategoriesExpanded(ancestor);
+                    @this.AddProductCategoriesExpanded(superJacent);
+                    superJacent.AppsOnDeriveAllProducts();
+                    superJacent.AppsDeriveSerialisedItems();
                 }
             }
         }

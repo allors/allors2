@@ -53,8 +53,6 @@ namespace Allors.Repository
 
         public PriceComponent[] BasePrices { get; set; }
 
-        public ProductCategory[] ProductCategories { get; set; }
-
         public Guid UniqueId { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

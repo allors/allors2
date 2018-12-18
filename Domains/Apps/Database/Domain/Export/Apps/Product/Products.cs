@@ -98,27 +98,6 @@ namespace Allors.Domain
                                 discount = Math.Round((productBasePrice * percentage) / 100, 2);
                                 productDiscount += discount;
                             }
-
-                            ////Revenuebreaks on quantity and value are mutually exclusive.
-                            if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                            {
-                                if (revenueBreakDiscount == 0)
-                                {
-                                    revenueBreakDiscount = discount;
-                                }
-                                else
-                                {
-                                    ////Apply highest of the two. Revert the other one. 
-                                    if (discount > revenueBreakDiscount)
-                                    {
-                                        productDiscount -= revenueBreakDiscount;
-                                    }
-                                    else
-                                    {
-                                        productDiscount -= discount;
-                                    }
-                                }
-                            }
                         }
 
                         if (priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
@@ -136,27 +115,6 @@ namespace Allors.Domain
                                 var percentage = surchargeComponent.Percentage.HasValue ? surchargeComponent.Percentage.Value : 0;
                                 surcharge = Math.Round((productBasePrice * percentage) / 100, 2);
                                 productSurcharge += surcharge;
-                            }
-
-                            ////Revenuebreaks on quantity and value are mutually exclusive.
-                            if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                            {
-                                if (revenueBreakSurcharge == 0)
-                                {
-                                    revenueBreakSurcharge = surcharge;
-                                }
-                                else
-                                {
-                                    ////Apply highest of the two. Revert the other one. 
-                                    if (surcharge > revenueBreakSurcharge)
-                                    {
-                                        productSurcharge -= revenueBreakSurcharge;
-                                    }
-                                    else
-                                    {
-                                        productSurcharge -= surcharge;
-                                    }
-                                }
                             }
                         }
                     }

@@ -56,17 +56,6 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         string InternalComment { get; set; }
-
-        #region Allors
-        [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
-        [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
-        [RoleId("922b63dc-1714-4cf2-aa0c-cb81831e59b1")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        ProductCategory PrimaryProductCategory { get; set; }
         
         #region Allors
         [Id("05a2e95a-e5f1-45bc-a8ca-4ebfad3290b5")]
@@ -213,13 +202,14 @@ namespace Allors.Repository
         PriceComponent[] BasePrices { get; set; }
 
         #region Allors
-        [Id("f8cc75cb-d328-42ac-a1e7-c490435ed7a4")]
-        [AssociationId("61f71101-6877-4751-aad1-d3ab194dc6ce")]
-        [RoleId("1dbceee7-811b-4bfe-8cd4-177f41cb6d17")]
+        [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
+        [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
+        [RoleId("922b63dc-1714-4cf2-aa0c-cb81831e59b1")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         [Workspace]
-        ProductCategory[] ProductCategories { get; set; }
+        ProductCategory PrimaryProductCategory { get; set; }
     }
 }

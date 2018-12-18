@@ -142,58 +142,5 @@ namespace Allors.Domain
 
             Assert.Equal(242M, partyFinancial.OpenOrderAmount);
         }
-
-        [Fact(Skip = "to repair")]
-        public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
-            var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
-            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
-
-            this.Session.Derive();
-
-            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
-
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-
-            this.Session.Derive();
-
-            var date1 = DateTimeFactory.CreateDate(DateTime.UtcNow.AddYears(-1).Year, 1, 1);
-            var date2 = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 1, 1);
-            var date3 = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 2, 1);
-
-            new SalesInvoiceBuilder(this.Session)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
-                .WithInvoiceDate(date1)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithComment("invoice1")
-                .Build();
-
-            new SalesInvoiceBuilder(this.Session)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
-                .WithInvoiceDate(date2)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithComment("invoice2")
-                .Build();
-
-            new SalesInvoiceBuilder(this.Session)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
-                .WithInvoiceDate(date3)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithComment("invoice3")
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(10M, partyFinancial.LastYearsRevenue);
-            Assert.Equal(200M, partyFinancial.YTDRevenue);
-        }
     }
 }

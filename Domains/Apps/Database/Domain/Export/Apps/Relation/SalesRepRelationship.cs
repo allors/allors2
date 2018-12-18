@@ -36,24 +36,5 @@ namespace Allors.Domain
                 this.Delete();
             }
         }
-
-        public void AppsOnDeriveCommission()
-        {
-            this.YTDCommission = 0;
-            this.LastYearsCommission = 0;
-
-            foreach (SalesRepCommission salesRepCommission in this.SalesRepresentative.SalesRepCommissionsWhereSalesRep)
-            {
-                if (salesRepCommission.Year == DateTime.UtcNow.Year)
-                {
-                    this.YTDCommission += salesRepCommission.Year;
-                }
-
-                if (salesRepCommission.Year == DateTime.UtcNow.AddYears(-1).Year)
-                {
-                    this.LastYearsCommission += salesRepCommission.Year;
-                }
-            }
-        }
     }
 }
