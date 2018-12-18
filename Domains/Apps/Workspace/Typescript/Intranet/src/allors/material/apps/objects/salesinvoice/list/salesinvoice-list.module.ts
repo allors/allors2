@@ -14,6 +14,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 import { SalesInvoiceListComponent } from './salesinvoice-list.component';
+import { AllorsMaterialFactoryFabModule } from 'src/allors/material/base/components/factoryfab/factoryfab.module';
 export { SalesInvoiceListComponent } from './salesinvoice-list.component';
 
 @NgModule({
@@ -24,6 +25,7 @@ export { SalesInvoiceListComponent } from './salesinvoice-list.component';
     SalesInvoiceListComponent,
   ],
   imports: [
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilterModule,
     AllorsMaterialHeaderModule,

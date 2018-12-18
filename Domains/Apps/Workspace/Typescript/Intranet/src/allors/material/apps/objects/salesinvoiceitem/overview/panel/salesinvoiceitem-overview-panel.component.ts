@@ -1,29 +1,29 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget } from '../../../../../../angular';
-import { RequestItem as SalesOrderItem, SalesTerm, SalesInvoice } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
+import { RequestItem as SalesOrderItem, SalesInvoiceItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../../material/base/services/object';
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../base/services/object';
 interface Row extends TableRow {
-  object: SalesTerm;
-  name: string;
-  value: string;
+  object: SalesInvoiceItem;
+  item: string;
+  quantity: number;
 }
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'salesterm-overview-panel',
-  templateUrl: './salesterm-overview-panel.component.html',
+  selector: 'salesinvoiceitem-overview-panel',
+  templateUrl: './salesinvoiceitem-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SalesTermOverviewPanelComponent {
+export class SalesInvoiceItemOverviewPanelComponent {
   m: Meta;
 
-  objects: SalesTerm[];
+  salesInvoiceItems: SalesInvoiceItem[];
   table: Table<Row>;
 
   delete: Action;
@@ -57,8 +57,8 @@ export class SalesTermOverviewPanelComponent {
 
     this.m = this.metaService.m;
 
-    panel.name = 'salesterm';
-    panel.title = 'Sales Terms';
+    panel.name = 'salesinvoicetitem';
+    panel.title = 'Sales Invoice Items';
     panel.icon = 'contacts';
     panel.expandable = true;
 
@@ -67,8 +67,8 @@ export class SalesTermOverviewPanelComponent {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'value' },
+        { name: 'item' },
+        { name: 'quantity' },
       ],
       actions: [
         this.edit,
@@ -77,8 +77,7 @@ export class SalesTermOverviewPanelComponent {
       defaultAction: this.edit,
     });
 
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
-    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
+    const pullName = `${panel.name}_${this.m.SalesInvoiceItem.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -86,41 +85,28 @@ export class SalesTermOverviewPanelComponent {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.SalesOrder({
-          name: salesOrderPullName,
-          object: id,
-          fetch: {
-            SalesTerms: {
-              include: {
-                TermType: x,
-              }
-            }
-          }
-        }),
         pull.SalesInvoice({
-          name: salesInvoicePullName,
+          name: pullName,
           object: id,
           fetch: {
-            SalesTerms: {
+            SalesInvoiceItems: {
               include: {
-                TermType: x,
+                InvoiceItemType: x,
               }
             }
           }
-        })
-
-      );
+        }));
     };
 
     panel.onPulled = (loaded) => {
 
-      this.objects = loaded.collections[salesOrderPullName] as SalesTerm[] || loaded.collections[salesInvoicePullName] as SalesTerm[];
-      this.table.total = loaded.values[`${salesOrderPullName}_total`] || loaded.values[`${salesInvoicePullName}_total`] || this.objects.length;
-      this.table.data = this.objects.map((v) => {
+      this.salesInvoiceItems = loaded.collections[pullName] as SalesInvoiceItem[];
+      this.table.total = loaded.values[`${pullName}_total`] || this.salesInvoiceItems.length;
+      this.table.data = this.salesInvoiceItems.map((v) => {
         return {
           object: v,
-          name: v.TermType && v.TermType.Name,
-          value: v.TermValue,
+          item:  (v.InvoiceItemType && v.InvoiceItemType.Name) || '',
+          quantity: v.Quantity,
         } as Row;
       });
     };

@@ -1,72 +1,59 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
-
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { Meta } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './salesinvoice-overview.component.html',
-  providers: [ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
-  public title = 'Sales Invoice Overview';
+  title = 'Sales Invoice';
+
   public order: SalesOrder;
   public invoice: SalesInvoice;
   public repeatingInvoices: RepeatingSalesInvoice[];
   public repeatingInvoice: RepeatingSalesInvoice;
   public goods: Good[] = [];
 
-  private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
+  subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
+    public refreshService: RefreshService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
-    private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    public mediaService: MediaService,
-    private dialogService: AllorsMaterialDialogService) {
+    private stateService: StateService,
+    public injector: Injector,
+    titleService: Title,
+  ) {
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.m = this.metaService.m;
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('items saved', 'close', { duration: 1000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const { m, pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.Organisation;
+          this.panelManager.expanded = navRoute.panel();
+
+          const { id } = this.panelManager;
 
           const pulls = [
             pull.SalesInvoice({
@@ -123,7 +110,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
               }),
             pull.RepeatingSalesInvoice(
               {
-                predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, value: id }),
+                predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
                 include: {
                   Frequency: x,
                   DayOfWeek: x
@@ -131,144 +118,34 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
               }),
           ];
 
-          return this.allors.context
+          this.panelManager.onPull(pulls);
+
+          return this.panelManager.context
             .load('Pull', new PullRequest({ pulls }));
         })
-
       )
       .subscribe((loaded) => {
-        this.allors.context.reset();
-        this.goods = loaded.collections.goods as Good[];
-        this.order = loaded.objects.order as SalesOrder;
-        this.invoice = loaded.objects.invoice as SalesInvoice;
-        this.repeatingInvoices = loaded.collections.repeatingInvoices as RepeatingSalesInvoice[];
+
+        this.panelManager.context.session.reset();
+
+        this.panelManager.onPulled(loaded);
+
+        this.goods = loaded.collections.Goods as Good[];
+        this.order = loaded.objects.SalesOrder as SalesOrder;
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
         if (this.repeatingInvoices.length > 0) {
           this.repeatingInvoice = this.repeatingInvoices[0];
         } else {
           this.repeatingInvoice = undefined;
         }
-      }, this.errorService.handler);
-  }
 
-  public print() {
-    //
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public send(): void {
-
-    this.allors.context.invoke(this.invoice.Send)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public cancel(): void {
-
-    this.allors.context.invoke(this.invoice.CancelInvoice)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public writeOff(): void {
-
-    this.allors.context.invoke(this.invoice.WriteOff)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public reopen(): void {
-
-    this.allors.context.invoke(this.invoice.Reopen)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public credit(): void {
-
-    this.allors.context.invoke(this.invoice.Credit)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public copy(): void {
-
-    this.allors.context.invoke(this.invoice.Copy)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this item?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(invoiceItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public deleteSalesTerm(salesTerm: SalesTerm): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this order term?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(salesTerm.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
   }
 }

@@ -27,6 +27,7 @@ namespace Allors.Server
 
     using Allors.Data;
     using Allors.Domain;
+    using Allors.Meta;
     using Allors.Services;
 
     using Org.BouncyCastle.Utilities.Collections;
@@ -52,6 +53,17 @@ namespace Allors.Server
         public void Execute(PullResponseBuilder response)
         {
             var @object = this.session.Instantiate(this.pull.Object);
+
+            var objectType = this.pull.ObjectType as IComposite;
+            var @class = @object.Strategy?.Class;
+
+            if (@class != null && objectType != null)
+            {
+                if (!@class.IsAssignableFrom(objectType))
+                {
+                    return;
+                }
+            }
 
             if (this.pull.Results != null)
             {

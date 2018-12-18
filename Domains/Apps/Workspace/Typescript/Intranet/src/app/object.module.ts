@@ -27,8 +27,10 @@ import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/materia
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from 'src/allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
-import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from 'src/allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
+import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
+import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
+import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 
 const create = {
   [ids.Catalogue]: CatalogueEditComponent,
@@ -49,6 +51,8 @@ const create = {
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
+  [ids.SalesInvoice]: SalesInvoiceCreateComponent,
+  [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
@@ -75,6 +79,7 @@ const edit = {
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
+  [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
   [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
@@ -111,6 +116,8 @@ const edit = {
     QuoteItemEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
+    SalesInvoiceCreateModule,
+    SalesInvoiceItemEditModule,
     SalesOrderCreateModule,
     SalesOrderItemEditModule,
     SalesTermEditModule,
@@ -136,6 +143,8 @@ const edit = {
     QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,
+    SalesInvoiceCreateComponent,
+    SalesInvoiceItemEditComponent,
     SalesOrderCreateComponent,
     SalesOrderItemEditComponent,
     SalesTermEditComponent,

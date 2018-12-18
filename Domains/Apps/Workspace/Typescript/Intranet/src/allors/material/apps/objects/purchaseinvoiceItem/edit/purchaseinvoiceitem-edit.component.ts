@@ -64,6 +64,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
           const pulls = [
             pull.PurchaseInvoice(
               {
+                // TODO:
                 object: id
               }
             ),

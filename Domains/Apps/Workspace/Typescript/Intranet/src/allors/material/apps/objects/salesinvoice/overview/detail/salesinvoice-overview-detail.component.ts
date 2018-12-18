@@ -1,30 +1,34 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, InternalOrganisation, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, SalesOrder, SalesInvoice, RepeatingSalesInvoice } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { Meta } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './salesinvoice-edit.component.html',
-  providers: [ContextService]
+  // tslint:disable-next-line:component-selector
+  selector: 'salesinvoice-overview-detail',
+  templateUrl: './salesinvoice-overview-detail.component.html',
+  providers: [ContextService, PanelService]
 })
-export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
+export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
-  public title: string;
-  public subTitle: string;
-  public invoice: SalesInvoice;
   public order: SalesOrder;
+  public invoice: SalesInvoice;
+  public repeatingInvoices: RepeatingSalesInvoice[];
+  public repeatingInvoice: RepeatingSalesInvoice;
+  public goods: Good[] = [];
+
   public internalOrganisations: InternalOrganisation[];
   public currencies: Currency[];
   public vatRates: VatRate[];
@@ -53,65 +57,161 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
+
   private fetcher: Fetcher;
-
-  get showBillToOrganisations(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToPeople(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Person';
-  }
-
-  get showShipToOrganisations(): boolean {
-    return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToPeople(): boolean {
-    return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === 'Person';
-  }
-
-  get showBillToEndCustomerOrganisations(): boolean {
-    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToEndCustomerPeople(): boolean {
-    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === 'Person';
-  }
-
-  get showShipToEndCustomerOrganisations(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToEndCustomerPeople(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === 'Person';
-  }
+  private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
+    public refreshService: RefreshService,
+    public location: Location,
     private errorService: ErrorService,
-    private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
-
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
+
+    panel.name = 'detail';
+    panel.title = 'Purchase Invoice Details';
+    panel.icon = 'business';
+    panel.expandable = true;
+
+    // Normal
+    const salesInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
+    const goodPullName = `${panel.name}_${this.m.Good.name}`;
+    const repeatingSalesInvoicePullName = `${panel.name}_${this.m.Good.name}`;
+
+    panel.onPull = (pulls) => {
+      const { m, pull, x } = this.metaService;
+
+      const { id } = this.panel.manager;
+
+      pulls.push(
+        pull.SalesInvoice({
+          name: salesInvoicePullName,
+          object: id,
+          include: {
+            SalesInvoiceItems: {
+              Product: x,
+              InvoiceItemType: x,
+            },
+            SalesTerms: {
+              TermType: x,
+            },
+            BillToCustomer: x,
+            BillToContactPerson: x,
+            ShipToCustomer: x,
+            ShipToContactPerson: x,
+            ShipToEndCustomer: x,
+            ShipToEndCustomerContactPerson: x,
+            SalesInvoiceState: x,
+            CreatedBy: x,
+            LastModifiedBy: x,
+            SalesOrder: x,
+            BillToContactMechanism: {
+              PostalAddress_PostalBoundary: {
+                Country: x
+              }
+            },
+            ShipToAddress: {
+              PostalBoundary: {
+                Country: x
+              }
+            },
+            BillToEndCustomerContactMechanism: {
+              PostalAddress_PostalBoundary: {
+                Country: x
+              }
+            },
+            ShipToEndCustomerAddress: {
+              PostalBoundary: {
+                Country: x
+              }
+            }
+          }
+        }),
+        pull.SalesInvoice({
+          name: salesOrderPullName,
+          object: id,
+          fetch: {
+            SalesOrder: x
+          }
+        }),
+        pull.Good({
+          name: goodPullName,
+          sort: new Sort(m.Good.Name),
+        }),
+        pull.RepeatingSalesInvoice({
+          name: repeatingSalesInvoicePullName,
+          predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
+          include: {
+            Frequency: x,
+            DayOfWeek: x
+          }
+        }),
+      );
+    };
+
+    panel.onPulled = (loaded) => {
+      this.goods = loaded.collections.Goods as Good[];
+      this.order = loaded.objects.SalesOrder as SalesOrder;
+      this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+      this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
+      if (this.repeatingInvoices.length > 0) {
+        this.repeatingInvoice = this.repeatingInvoices[0];
+      } else {
+        this.repeatingInvoice = undefined;
+      }
+    };
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    // Maximized
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        filter((v) => {
+          return this.panel.isExpanded;
+        }),
+        switchMap(([urlSegments, date, , internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          this.order = undefined;
+
+          const { m, pull, x } = this.metaService;
+          const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.SalesInvoice({
+              object: id,
+              include: {
+                BillToCustomer: x,
+                BillToContactMechanism: x,
+                BillToContactPerson: x,
+                ShipToCustomer: x,
+                ShipToAddress: x,
+                ShipToContactPerson: x,
+                BillToEndCustomer: x,
+                BillToEndCustomerContactMechanism: x,
+                BillToEndCustomerContactPerson: x,
+                ShipToEndCustomer: x,
+                ShipToEndCustomerAddress: x,
+                ShipToEndCustomerContactPerson: x,
+                SalesInvoiceState: x,
+                SalesOrder: x,
+              },
+            }),
+            pull.SalesInvoice({
+              object: id,
+              fetch: {
+                SalesOrder: x
+              }
+            }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({
@@ -126,63 +226,19 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                this.allors.context.reset();
-                this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-                this.currencies = loaded.collections.currencies as Currency[];
-                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
-
-                const fetches = [
-                  this.fetcher.internalOrganisation,
-                  pull.SalesInvoice({
-                    object: id,
-                    include: {
-                      BillToCustomer: x,
-                      BillToContactMechanism: x,
-                      BillToContactPerson: x,
-                      ShipToCustomer: x,
-                      ShipToAddress: x,
-                      ShipToContactPerson: x,
-                      BillToEndCustomer: x,
-                      BillToEndCustomerContactMechanism: x,
-                      BillToEndCustomerContactPerson: x,
-                      ShipToEndCustomer: x,
-                      ShipToEndCustomerAddress: x,
-                      ShipToEndCustomerContactPerson: x,
-                      SalesInvoiceState: x,
-                      SalesOrder: x,
-                    },
-                  }),
-                  pull.SalesInvoice({
-                    object: id,
-                    fetch: {
-                      SalesOrder: x
-                    }
-                  })
-                ];
-
-                return this.allors.context.load('Pull', new PullRequest({ pulls: fetches }));
-              })
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
-
       )
       .subscribe((loaded) => {
-        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.order = loaded.objects.order as SalesOrder;
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.allors.context.reset();
 
-        if (!this.invoice) {
-          this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
-          this.invoice.BilledFrom = internalOrganisation;
-          this.invoice.AdvancePayment = 0;
-          this.title = 'Add Sales Invoice';
-        } else {
-          this.title = 'Sales Invoice for: ' + this.invoice.BillToCustomer.PartyName;
-        }
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.currencies = loaded.collections.Currencies as Currency[];
+        this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
+
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.order = loaded.objects.SalesOrder as SalesOrder;
 
         if (this.invoice.BillToCustomer) {
           this.updateBillToCustomer(this.invoice.BillToCustomer);
@@ -205,6 +261,12 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
         this.previousBillToCustomer = this.invoice.BillToCustomer;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       }, this.errorService.handler);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public billToContactPersonCancelled(): void {
@@ -327,243 +389,16 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
     this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public send(): void {
-
-    const sendFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.Send)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                sendFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            sendFn();
-          }
-        });
-    } else {
-      sendFn();
-    }
-  }
-
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.CancelInvoice)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public writeOff(): void {
-
-    const writeOffFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.WriteOff)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                writeOffFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            writeOffFn();
-          }
-        });
-    } else {
-      writeOffFn();
-    }
-  }
-
-  public reopen(): void {
-
-    const reopenFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.Reopen)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                reopenFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            reopenFn();
-          }
-        });
-    } else {
-      reopenFn();
-    }
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   public save(): void {
 
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public billToCustomerSelected(party: Party) {
-    if (party) {
-      this.updateBillToCustomer(party);
-    }
-  }
-
-  public billToEndCustomerSelected(party: Party) {
-    if (party) {
-      this.updateBillToEndCustomer(party);
-    }
-  }
-
-  public shipToCustomerSelected(party: Party) {
-    if (party) {
-      this.updateShipToCustomer(party);
-    }
-  }
-
-  public shipToEndCustomerSelected(party: Party) {
-    if (party) {
-      this.updateShipToEndCustomer(party);
-    }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  private updateShipToCustomer(party: Party): void {
-    const { pull, tree, x } = this.metaService;
-
-    const pulls = [
-      pull.Party({
-        object: party.id,
-        fetch: {
-          PartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism({
-          ContactMechanism: {
-            PostalAddress_PostalBoundary: {
-              Country: x
-            }
-          }
-        })
-      }),
-      pull.Party({
-        fetch: {
-          CurrentContacts: x
-        }
-      })
-    ];
-
-    this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-          this.invoice.ShipToAddress = null;
-          this.invoice.ShipToContactPerson = null;
-          this.previousShipToCustomer = this.invoice.ShipToCustomer;
-        }
-
-        if (this.invoice.ShipToCustomer !== null && this.invoice.BillToCustomer === null) {
-          this.invoice.BillToCustomer = this.invoice.ShipToCustomer;
-          this.updateBillToCustomer(this.invoice.ShipToCustomer);
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToContacts = loaded.collections.currentContacts as Person[];
-      }, this.errorService.handler);
   }
 
   private updateBillToCustomer(party: Party) {
@@ -612,6 +447,51 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
+      }, this.errorService.handler);
+  }
+
+  private updateShipToCustomer(party: Party): void {
+    const { pull, tree, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          PartyContactMechanisms: x
+        },
+        include: tree.PartyContactMechanism({
+          ContactMechanism: {
+            PostalAddress_PostalBoundary: {
+              Country: x
+            }
+          }
+        })
+      }),
+      pull.Party({
+        fetch: {
+          CurrentContacts: x
+        }
+      })
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
+          this.invoice.ShipToAddress = null;
+          this.invoice.ShipToContactPerson = null;
+          this.previousShipToCustomer = this.invoice.ShipToCustomer;
+        }
+
+        if (this.invoice.ShipToCustomer !== null && this.invoice.BillToCustomer === null) {
+          this.invoice.BillToCustomer = this.invoice.ShipToCustomer;
+          this.updateBillToCustomer(this.invoice.ShipToCustomer);
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.shipToContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -707,4 +587,5 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
   }
+
 }
