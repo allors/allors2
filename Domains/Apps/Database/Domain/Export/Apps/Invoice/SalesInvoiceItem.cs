@@ -513,6 +513,7 @@ namespace Allors.Domain
             var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
 
             this.RemoveSalesReps();
+
             if (this.ExistProduct)
             {
                 foreach (ProductCategory productCategory in this.Product.ProductCategoriesWhereAllProduct)
@@ -520,10 +521,8 @@ namespace Allors.Domain
                     this.AddSalesRep(SalesRepRelationships.SalesRep(customer, productCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
                 }
             }
-            else
-            {
-                this.AddSalesRep(SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
-            }
+
+            this.AddSalesRep(SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
         }
 
         public void AppsDelete(DeletableDelete method)

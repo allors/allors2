@@ -99,7 +99,8 @@ namespace Allors.Domain
                 {
                     @this.AddProductCategoriesExpanded(superJacent);
                     superJacent.AppsOnDeriveAllProducts();
-                    superJacent.AppsDeriveSerialisedItems();
+                    superJacent.AppsDeriveAllSerialisedItemsForSale();
+                    superJacent.AppsDeriveAllNonSerialisedInventoryItemsForSale();
                 }
             }
         }

@@ -160,18 +160,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Workspace]
-        public SerialisedItem[] SerialisedItems { get; set; }
-
-        #region Allors
-        [Id("E62219C6-6F31-408F-8447-5E7DE310C603")]
-        [AssociationId("9AEF59C6-2B11-49CF-976A-2680B00AA0A1")]
-        [RoleId("35077816-C8A4-4881-96F5-A89865AF5AC7")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Workspace]
-        public SerialisedInventoryItem[] SerialisedInventoryItems { get; set; }
+        public SerialisedItem[] AllSerialisedItemsForSale { get; set; }
 
         #region Allors
         [Id("A34B5082-8B4C-41D7-B1C2-DC42D8805BE7")]
@@ -182,7 +171,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Workspace]
-        public NonSerialisedInventoryItem[] NonSerialisedInventoryItems { get; set; }
+        public NonSerialisedInventoryItem[] AllNonSerialisedInventoryItemsForSale { get; set; }
 
         #region inherited methods
 

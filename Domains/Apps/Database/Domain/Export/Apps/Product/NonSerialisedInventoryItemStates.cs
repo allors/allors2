@@ -46,26 +46,31 @@ namespace Allors.Domain
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
                 .WithName("Good")
+                .WithAvailableForSale(true)
                 .Build();
 
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(BeingRepairedId)
                 .WithName("Being Repared")
+                .WithAvailableForSale(false)
                 .Build();
 
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SlightlyDamagedId)
                 .WithName("Slightly Damaged")
+                .WithAvailableForSale(true)
                 .Build();
 
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(DefectiveId)
                 .WithName("Defective")
+                .WithAvailableForSale(false)
                 .Build();
 
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(ScrapId)
                 .WithName("Scrap")
+                .WithAvailableForSale(false)
                 .Build();
         }
     }
