@@ -24,8 +24,7 @@
 
         <mat-tab label="General">
           <div class="row pt-3">
-            <a-mat-input class="col-md" *ngIf="add" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-input>
-            <a-mat-static class="col-md" *ngIf="edit" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-static>
+            <a-mat-static class="col-md" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-static>
             <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
           </div>
 
@@ -37,13 +36,13 @@
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
             <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.Part" [options]="parts" display="Name"></a-mat-select>
           </div>
-
+<!-- 
           <div class="row">
             <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories"
               display="Name"></a-mat-select>
             <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories"
               display="Name"></a-mat-select>
-          </div>
+          </div> -->
 
           <div class="row">
             <a-mat-static class="col-md" [object]="good.Part?.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>

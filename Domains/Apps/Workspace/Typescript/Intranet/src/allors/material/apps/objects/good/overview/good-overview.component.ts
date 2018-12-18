@@ -56,7 +56,6 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
                 GoodIdentifications: {
                   GoodIdentificationType: x
                 },
-                ProductCategories: x,
                 Part: {
                   Brand: x,
                   Model: x
