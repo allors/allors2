@@ -8,7 +8,7 @@ namespace Tests.Intranet
     using Tests.Intranet.CatalogueTests;
     using Tests.Intranet.PersonTests;
     using Tests.Intranet.ProductCategoryTest;
-    using Tests.Intranet.ProductCharacteristicTest;
+    using Tests.Intranet.SerialisedItemCharacteristicTest;
     using Tests.Intranet.ProductQuoteTest;
     using Tests.Intranet.ProductTest;
     using Tests.Intranet.ProductTypeTest;
@@ -121,10 +121,10 @@ namespace Tests.Intranet
             return new ProductListPage(this.Driver);
         }
 
-        public ProductCharacteristicListPage NavigateToProductCharacteristicList()
+        public SerialisedItemCharacteristicListPage NavigateToProductCharacteristicList()
         {
             this.Navigate(this.ProductsGroup, this.ProductCharacteristics);
-            return new ProductCharacteristicListPage(this.Driver);
+            return new SerialisedItemCharacteristicListPage(this.Driver);
         }
 
         public ProductTypeListPage NavigateToProductTypeList()

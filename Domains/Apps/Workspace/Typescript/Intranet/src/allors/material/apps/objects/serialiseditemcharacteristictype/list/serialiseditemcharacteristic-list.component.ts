@@ -24,7 +24,7 @@ interface Row extends TableRow {
 })
 export class SerialisedItemCharacteristicListComponent implements OnInit, OnDestroy {
 
-  public title = 'Product Characteristic';
+  public title = 'Product Characteristics';
 
   table: Table<Row>;
 

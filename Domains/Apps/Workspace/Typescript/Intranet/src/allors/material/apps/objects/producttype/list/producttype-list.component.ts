@@ -22,7 +22,7 @@ interface Row extends TableRow {
 })
 export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
-  public title = 'Product Type';
+  public title = 'Product Types';
 
   table: Table<Row>;
 

@@ -1,4 +1,4 @@
-namespace Tests.Intranet.ProductCharacteristicTest
+namespace Tests.Intranet.SerialisedItemCharacteristicTest
 {
     using Tests.Intranet;
 
@@ -6,9 +6,9 @@ namespace Tests.Intranet.ProductCharacteristicTest
 
     using Tests.Components.Html;
 
-    public class ProductCharacteristicListPage : MainPage
+    public class SerialisedItemCharacteristicListPage : MainPage
     {
-        public ProductCharacteristicListPage(IWebDriver driver)
+        public SerialisedItemCharacteristicListPage(IWebDriver driver)
             : base(driver)
         {
         }

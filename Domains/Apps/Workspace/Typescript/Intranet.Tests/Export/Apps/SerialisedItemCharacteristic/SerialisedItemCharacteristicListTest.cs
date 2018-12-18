@@ -1,11 +1,11 @@
-namespace Tests.Intranet.ProductCharacteristicTest
+namespace Tests.Intranet.SerialisedItemCharacteristicTest
 {
     using Xunit;
 
     [Collection("Test collection")]
-    public class ProductCharacteristicListTest : Test
+    public class SerialisedItemCharacteristicListTest : Test
     {
-        public ProductCharacteristicListTest(TestFixture fixture)
+        public SerialisedItemCharacteristicListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
