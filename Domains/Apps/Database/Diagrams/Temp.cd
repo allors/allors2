@@ -3,22 +3,20 @@
   <Interface Name="Allors.Domain.ProductCategory">
     <Position X="3.25" Y="2.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAgCAAAAAA0AASAAAAQAACAAAIAACEIAAw=</HashCode>
+      <HashCode>AAAgAAAAAAAgCAAAAAAkAASAAAAQAACAAAIAACEIAAw=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Products" />
+      <Property Name="AllProducts" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Product">
     <Position X="8.5" Y="2.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAKgA=</HashCode>
+      <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAIgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="PrimaryProductCategory" />
-    </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Service" Collapsed="true">
     <Position X="8" Y="9" Width="1.5" />

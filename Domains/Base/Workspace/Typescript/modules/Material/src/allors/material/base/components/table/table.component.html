@@ -32,7 +32,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="table.columnNames"></tr>
-    <tr mat-row *matRowDef="let row; columns: table.columnNames;"></tr>
+    <tr mat-row *matRowDef="let row; columns: table.columnNames;" [attr.data-allors-id]="row.object?.id"></tr>
   </table>
 </div>
 
