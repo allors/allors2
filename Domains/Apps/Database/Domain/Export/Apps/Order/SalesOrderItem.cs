@@ -992,6 +992,7 @@ namespace Allors.Domain
         public void AppsOnDeriveSalesRep(IDerivation derivation)
         {
             this.RemoveSalesReps();
+
             if (this.ExistProduct)
             {
                 foreach (ProductCategory productCategory in this.Product.ProductCategoriesWhereAllProduct)
@@ -999,10 +1000,8 @@ namespace Allors.Domain
                     this.AddSalesRep(SalesRepRelationships.SalesRep(this.ShipToParty, productCategory, this.SalesOrderWhereSalesOrderItem.OrderDate));
                 }
             }
-            else
-            {
-                this.AddSalesRep(SalesRepRelationships.SalesRep(this.ShipToParty, null, this.SalesOrderWhereSalesOrderItem.OrderDate));
-            }
+
+            this.AddSalesRep(SalesRepRelationships.SalesRep(this.ShipToParty, null, this.SalesOrderWhereSalesOrderItem.OrderDate));
         }
 
         public void AppsOnDeriveVatRegime(IDerivation derivation)

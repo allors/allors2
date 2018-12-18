@@ -553,5 +553,395 @@ namespace Allors.Domain
             Assert.Equal(1, productCategory122.AllProducts.Count);
             Assert.Contains(good122, productCategory122.AllProducts);
         }
+
+        [Fact]
+        public void GivenProductCategoryHierarchy_WhenDeriving_ThenAllSerialisedItemsForSaleAreSet()
+        {
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var good1 = new GoodBuilder(this.Session)
+                .WithName("good1")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("1")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
+            var serialisedItem1Not = new SerialisedItemBuilder(this.Session).WithSerialNumber("1Not").Build();  // This one must be excluded
+            good1.Part.AddSerialisedItem(serialisedItem1);
+            good1.Part.AddSerialisedItem(serialisedItem1Not);
+
+            var good2 = new GoodBuilder(this.Session)
+                .WithName("good2")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("2")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem2a = new SerialisedItemBuilder(this.Session).WithSerialNumber("2a").WithAvailableForSale(true).Build();
+            var serialisedItem2b = new SerialisedItemBuilder(this.Session).WithSerialNumber("2b").WithAvailableForSale(true).Build();
+            good2.Part.AddSerialisedItem(serialisedItem2a);
+            good2.Part.AddSerialisedItem(serialisedItem2b);
+
+            var good11 = new GoodBuilder(this.Session)
+                .WithName("good11")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good11")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("3")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem11 = new SerialisedItemBuilder(this.Session).WithSerialNumber("11").WithAvailableForSale(true).Build();
+            good11.Part.AddSerialisedItem(serialisedItem11);
+
+            var good12 = new GoodBuilder(this.Session)
+                .WithName("good12")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good12")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("4")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem12 = new SerialisedItemBuilder(this.Session).WithSerialNumber("12").WithAvailableForSale(true).Build();
+            good12.Part.AddSerialisedItem(serialisedItem12);
+
+            var good111 = new GoodBuilder(this.Session)
+                .WithName("good111")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good111")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("5")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem111 = new SerialisedItemBuilder(this.Session).WithSerialNumber("111").WithAvailableForSale(true).Build();
+            good111.Part.AddSerialisedItem(serialisedItem111);
+
+            var good121 = new GoodBuilder(this.Session)
+                .WithName("good121")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good121")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("6")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem121 = new SerialisedItemBuilder(this.Session).WithSerialNumber("121").WithAvailableForSale(true).Build();
+            good121.Part.AddSerialisedItem(serialisedItem121);
+
+            var good122 = new GoodBuilder(this.Session)
+                .WithName("good122")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good122")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("7")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                            .Build())
+                .Build();
+
+            var serialisedItem122 = new SerialisedItemBuilder(this.Session).WithSerialNumber("122").WithAvailableForSale(true).Build();
+            good122.Part.AddSerialisedItem(serialisedItem122);
+
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("1")
+                .WithProduct(good1)
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("2")
+                .WithProduct(good2)
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1")
+                .WithParent(productCategory1)
+                .WithProduct(good11)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2")
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .WithProduct(good12)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1.1")
+                .WithParent(productCategory11)
+                .WithProduct(good111)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.1")
+                .WithParent(productCategory12)
+                .WithProduct(good121)
+                .Build();
+            var productCategory122 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.2")
+                .WithParent(productCategory12)
+                .WithProduct(good122)
+                .Build();
+
+
+            this.Session.Derive();
+
+            Assert.Equal(6, productCategory1.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem1, productCategory1.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem11, productCategory1.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem12, productCategory1.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem111, productCategory1.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem121, productCategory1.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem122, productCategory1.AllSerialisedItemsForSale);
+
+            Assert.Equal(5, productCategory2.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem2a, productCategory2.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem2b, productCategory2.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem12, productCategory2.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem121, productCategory2.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem122, productCategory2.AllSerialisedItemsForSale);
+
+            Assert.Equal(2, productCategory11.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem11, productCategory11.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem111, productCategory11.AllSerialisedItemsForSale);
+
+            Assert.Equal(3, productCategory12.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem12, productCategory12.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem121, productCategory12.AllSerialisedItemsForSale);
+            Assert.Contains(serialisedItem122, productCategory12.AllSerialisedItemsForSale);
+
+            Assert.Equal(1, productCategory111.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem111, productCategory111.AllSerialisedItemsForSale);
+
+            Assert.Equal(1, productCategory121.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem121, productCategory121.AllSerialisedItemsForSale);
+
+            Assert.Equal(1, productCategory122.AllSerialisedItemsForSale.Count);
+            Assert.Contains(serialisedItem122, productCategory122.AllSerialisedItemsForSale);
+        }
+
+        [Fact]
+        public void GivenProductCategoryHierarchy_WhenDeriving_ThenAllNonSerialisedInventoryItemsForSaleAreSet()
+        {
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var good1 = new GoodBuilder(this.Session)
+                .WithName("good1")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("1")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+            var item1Not = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Scrap).Build();
+
+            var good2 = new GoodBuilder(this.Session)
+                .WithName("good2")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("2")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item2a = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good2.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+            var item2b = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good2.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).SlightlyDamaged).Build();
+
+            var good11 = new GoodBuilder(this.Session)
+                .WithName("good11")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good11")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("3")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item11 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good11.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            var good12 = new GoodBuilder(this.Session)
+                .WithName("good12")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good12")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("4")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item12 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good12.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            var good111 = new GoodBuilder(this.Session)
+                .WithName("good111")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good111")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("5")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item111 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good111.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            var good121 = new GoodBuilder(this.Session)
+                .WithName("good121")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good121")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("6")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item121 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good121.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            var good122 = new GoodBuilder(this.Session)
+                .WithName("good122")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good122")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("7")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
+                .Build();
+
+            var item122 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good122.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("1")
+                .WithProduct(good1)
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("2")
+                .WithProduct(good2)
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1")
+                .WithParent(productCategory1)
+                .WithProduct(good11)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2")
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .WithProduct(good12)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1.1")
+                .WithParent(productCategory11)
+                .WithProduct(good111)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.1")
+                .WithParent(productCategory12)
+                .WithProduct(good121)
+                .Build();
+            var productCategory122 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.2")
+                .WithParent(productCategory12)
+                .WithProduct(good122)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(6, productCategory1.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item1, productCategory1.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item11, productCategory1.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item12, productCategory1.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item111, productCategory1.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item121, productCategory1.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item122, productCategory1.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(5, productCategory2.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item2a, productCategory2.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item2b, productCategory2.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item12, productCategory2.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item121, productCategory2.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item122, productCategory2.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(2, productCategory11.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item11, productCategory11.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item111, productCategory11.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(3, productCategory12.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item12, productCategory12.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item121, productCategory12.AllNonSerialisedInventoryItemsForSale);
+            Assert.Contains(item122, productCategory12.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(1, productCategory111.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item111, productCategory111.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(1, productCategory121.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item121, productCategory121.AllNonSerialisedInventoryItemsForSale);
+
+            Assert.Equal(1, productCategory122.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Contains(item122, productCategory122.AllNonSerialisedInventoryItemsForSale);
+        }
     }
 }

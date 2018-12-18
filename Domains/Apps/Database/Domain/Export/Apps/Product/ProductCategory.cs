@@ -106,7 +106,8 @@ namespace Allors.Domain
             this.AppsOnDeriveSuperJacent(derivation);
             this.AppsOnDeriveChildren(derivation);
             this.AppsOnDeriveAllProducts();
-            this.AppsDeriveSerialisedItems();
+            this.AppsDeriveAllSerialisedItemsForSale();
+            this.AppsDeriveAllNonSerialisedInventoryItemsForSale();
         }
 
         public void AppsOnDeriveSuperJacent(IDerivation derivation)
@@ -146,11 +147,40 @@ namespace Allors.Domain
             this.AllProducts = allProducts.ToArray();
         }
 
-        public void AppsDeriveSerialisedItems()
+        public void AppsDeriveAllSerialisedItemsForSale()
         {
-            var allgoods = this.AllProducts.Where(v => v is Good).ToArray() as Good[];
+            var allGoods = new List<Good>();
+            foreach (Product product in this.AllProducts)
+            {
+                if (product.GetType().Name == typeof(Good).Name)
+                {
+                    allGoods.Add((Good)product);
+                }
+            }
 
-            this.SerialisedItems = allgoods?.SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+            this.AllSerialisedItemsForSale = allGoods?.SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+        }
+
+        public void AppsDeriveAllNonSerialisedInventoryItemsForSale()
+        {
+            foreach (Product product in this.AllProducts)
+            {
+                if (product.GetType().Name == typeof(Good).Name)
+                {
+                    var good = (Good)product;
+
+                    if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
+                    {
+                        foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in good.Part.InventoryItemsWherePart)
+                        {
+                            if (nonSerialisedInventoryItem.NonSerialisedInventoryItemState.AvailableForSale)
+                            {
+                                this.AddAllNonSerialisedInventoryItemsForSale(nonSerialisedInventoryItem);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

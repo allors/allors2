@@ -49,14 +49,6 @@ namespace Allors.Domain
             builder.WithName("service");
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            var service = builder.Build();
-            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            category.AddProduct(service);
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -85,14 +77,6 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            var service = builder.Build();
-            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            category.AddProduct(service);
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -106,10 +90,6 @@ namespace Allors.Domain
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
-
-            var productNumber = new ProductNumberBuilder(this.Session)
-                .WithIdentification("3")
-                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -143,13 +123,6 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithPart(finishedGood);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithGoodIdentification(productNumber);
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

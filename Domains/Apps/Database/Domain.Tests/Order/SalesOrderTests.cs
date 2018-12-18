@@ -2503,20 +2503,6 @@ namespace Allors.Domain
 
             parentProductCategory.AddProduct(good2);
 
-            var good3 = new GoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("3")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(vatRate21)
-                .WithName("good3")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                        .WithIdentification("3")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
-                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
-
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -2526,7 +2512,7 @@ namespace Allors.Domain
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good1)
+                .WithProduct(good2)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -2535,30 +2521,17 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, order.SalesReps.Count);
-            Assert.Contains(salesrep1, order.SalesReps);
+            Assert.Equal(2, order.SalesReps.Count);
+            Assert.Contains(salesrep2, order.SalesReps);
+            Assert.Contains(salesrep3, order.SalesReps);
 
             var item2 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good2)
+                .WithProduct(good1)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item2);
-
-            this.Session.Derive();
-
-            Assert.Equal(2, order.SalesReps.Count);
-            Assert.Contains(salesrep1, order.SalesReps);
-            Assert.Contains(salesrep2, order.SalesReps);
-
-            var item3 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good3)
-                .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
-                .Build();
-
-            order.AddSalesOrderItem(item3);
 
             this.Session.Derive();
 

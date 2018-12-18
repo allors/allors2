@@ -1188,7 +1188,7 @@ namespace Allors.Domain
         {
             var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
             var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for customer").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -1257,20 +1257,6 @@ namespace Allors.Domain
 
             parentProductCategory.AddProduct(good2);
 
-            var good3 = new GoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithName("good")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                        .WithIdentification("3")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
-                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
-
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
                 .WithBillToContactMechanism(contactMechanism)
@@ -1292,29 +1278,15 @@ namespace Allors.Domain
                 .WithActualUnitPrice(5)
                 .Build();
 
-            var item3 = new SalesInvoiceItemBuilder(this.Session)
-                .WithProduct(good3)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .WithQuantity(3)
-                .WithActualUnitPrice(5)
-                .Build();
-
-            invoice.AddSalesInvoiceItem(item1);
-
-            this.Session.Derive();
-
-            Assert.Equal(1, invoice.SalesReps.Count);
-            Assert.Contains(salesrep1, invoice.SalesReps);
-
             invoice.AddSalesInvoiceItem(item2);
 
             this.Session.Derive();
 
             Assert.Equal(2, invoice.SalesReps.Count);
-            Assert.Contains(salesrep1, invoice.SalesReps);
             Assert.Contains(salesrep2, invoice.SalesReps);
+            Assert.Contains(salesrep3, invoice.SalesReps);
 
-            invoice.AddSalesInvoiceItem(item3);
+            invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
 
