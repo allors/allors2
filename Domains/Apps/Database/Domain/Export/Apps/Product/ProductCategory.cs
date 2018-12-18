@@ -158,7 +158,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.AllSerialisedItemsForSale = allGoods?.SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+            this.AllSerialisedItemsForSale = allGoods.Where(v => v.ExistPart).SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
         }
 
         public void AppsDeriveAllNonSerialisedInventoryItemsForSale()
@@ -169,7 +169,7 @@ namespace Allors.Domain
                 {
                     var good = (Good)product;
 
-                    if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
+                    if (good.ExistPart && good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
                     {
                         foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in good.Part.InventoryItemsWherePart)
                         {
