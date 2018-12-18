@@ -861,7 +861,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.good.AddProductCategory(category);
+            category.AddProduct(this.good);
 
             this.Session.Derive();
 
@@ -906,7 +906,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.good.AddProductCategory(category);
+            category.AddProduct(this.good);
 
             this.Session.Derive();
 
@@ -953,7 +953,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.good.AddProductCategory(category);
+            category.AddProduct(this.good);
 
             this.Session.Derive();
 
@@ -998,7 +998,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.good.AddProductCategory(category);
+            category.AddProduct(this.good);
 
             this.Session.Derive();
 

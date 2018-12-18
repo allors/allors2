@@ -141,6 +141,17 @@ namespace Allors.Repository
         public CatScope CatScope { get; set; }
 
         #region Allors
+        [Id("2C9927CA-BA9C-4F4A-8BE5-19523D9FDFA2")]
+        [AssociationId("770C78CF-7766-4B9C-83C7-CDE38E128836")]
+        [RoleId("6DBF75F3-A40B-4020-96CD-26CF46D45C93")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public Product[] Products { get; set; }
+
+        #region Allors
         [Id("293A6FED-2EFD-464F-9FCB-5C24E74DCE80")]
         [AssociationId("00A1038B-DA0E-4FA4-8458-46D3B6420AA9")]
         [RoleId("E3EE43F8-81B5-45EC-BF82-987EC4D45344")]

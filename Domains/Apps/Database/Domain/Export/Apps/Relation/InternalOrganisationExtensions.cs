@@ -203,37 +203,37 @@ namespace Allors.Domain
         public static string NextPurchaseInvoiceNumber(this InternalOrganisation @this)
         {
             var purchaseInvoiceNumber = @this.PurchaseInvoiceCounter.NextValue();
-            return string.Concat(@this.PurchaseInvoiceNumberPrefix, purchaseInvoiceNumber);
+            return string.Concat(@this.ExistPurchaseInvoiceNumberPrefix ? @this.PurchaseInvoiceNumberPrefix: string.Empty, purchaseInvoiceNumber);
         }
 
         public static string NextQuoteNumber(this InternalOrganisation @this)
         {
             var quoteNumber = @this.QuoteCounter.NextValue();
-            return string.Concat(@this.QuoteNumberPrefix, quoteNumber);
+            return string.Concat(@this.ExistQuoteNumberPrefix ? @this.QuoteNumberPrefix : string.Empty, quoteNumber);
         }
 
         public static string NextRequestNumber(this InternalOrganisation @this)
         {
             var requestNumber = @this.RequestCounter.NextValue();
-            return string.Concat(@this.RequestNumberPrefix, requestNumber);
+            return string.Concat(@this.ExistRequestNumberPrefix ? @this.RequestNumberPrefix : string.Empty, requestNumber);
         }
 
         public static string NextShipmentNumber(this InternalOrganisation @this)
         {
             var shipmentNumber = @this.IncomingShipmentCounter.NextValue();
-            return string.Concat(@this.IncomingShipmentNumberPrefix, shipmentNumber);
+            return string.Concat(@this.ExistIncomingShipmentNumberPrefix ? @this.IncomingShipmentNumberPrefix : string.Empty, shipmentNumber);
         }
 
         public static string NextPurchaseOrderNumber(this InternalOrganisation @this)
         {
-            var purchaseOrderNumber = @this.PurchaseInvoiceCounter.NextValue();
-            return string.Concat(@this.PurchaseOrderNumberPrefix, purchaseOrderNumber);
+            var purchaseOrderNumber = @this.PurchaseOrderCounter.NextValue();
+            return string.Concat(@this.ExistPurchaseOrderNumberPrefix? @this.PurchaseOrderNumberPrefix : string.Empty, purchaseOrderNumber);
         }
 
         public static string NextPartNumber(this InternalOrganisation @this)
         {
             var partNumber = @this.PartNumberCounter.NextValue();
-            return string.Concat(@this.PartNumberPrefix, partNumber);
+            return string.Concat(@this.ExistPartNumberPrefix ? @this.PartNumberPrefix : string.Empty, partNumber);
         }
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this)

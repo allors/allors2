@@ -38,27 +38,6 @@ namespace Allors.Domain
                     surcharge = Math.Round((@this.UnitBasePrice * percentage) / 100, 2);
                     @this.UnitSurcharge += surcharge;
                 }
-
-                ////Revenuebreaks on quantity and value are mutually exclusive.
-                if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                {
-                    if (revenueBreakSurcharge == 0)
-                    {
-                        revenueBreakSurcharge = surcharge;
-                    }
-                    else
-                    {
-                        ////Apply highest of the two. Revert the other one. 
-                        if (surcharge > revenueBreakSurcharge)
-                        {
-                            @this.UnitSurcharge -= revenueBreakSurcharge;
-                        }
-                        else
-                        {
-                            @this.UnitSurcharge -= surcharge;
-                        }
-                    }
-                }
             }
 
             return revenueBreakSurcharge;
@@ -81,27 +60,6 @@ namespace Allors.Domain
                     var percentage = discountComponent.Percentage ?? 0;
                     discount = Math.Round((@this.UnitBasePrice * percentage) / 100, 2);
                     @this.UnitDiscount += discount;
-                }
-
-                ////Revenuebreaks on quantity and value are mutually exclusive.
-                if (priceComponent.ExistRevenueQuantityBreak || priceComponent.ExistRevenueValueBreak)
-                {
-                    if (revenueBreakDiscount == 0)
-                    {
-                        revenueBreakDiscount = discount;
-                    }
-                    else
-                    {
-                        ////Apply highest of the two. Revert the other one. 
-                        if (discount > revenueBreakDiscount)
-                        {
-                            @this.UnitDiscount -= revenueBreakDiscount;
-                        }
-                        else
-                        {
-                            @this.UnitDiscount -= discount;
-                        }
-                    }
                 }
             }
 

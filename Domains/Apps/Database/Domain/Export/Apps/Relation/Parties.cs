@@ -26,13 +26,5 @@ namespace Allors.Domain
             setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose);
             setup.AddDependency(this.ObjectType, M.Settings);
         }
-
-        public static void AppsOnDeriveRevenues(ISession session)
-        {
-            foreach (Party party in session.Extent<Party>())
-            {
-                party.AppsOnDeriveRevenue();
-            }
-        }
     }
 }

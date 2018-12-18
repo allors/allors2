@@ -22,17 +22,6 @@ namespace Allors.Domain
 
     public partial class People
     {
-        public static void AppsOnDeriveCommissions(ISession session)
-        {
-            foreach (Person person in session.Extent<Person>())
-            {
-                if (person.ExistSalesRepRevenuesWhereSalesRep)
-                {
-                    person.AppsOnDeriveCommission();
-                }
-            }
-        }
-
         protected override void AppsSetup(Setup config)
         {
             var internalOrganisations = this.Session.Extent<Organisation>();

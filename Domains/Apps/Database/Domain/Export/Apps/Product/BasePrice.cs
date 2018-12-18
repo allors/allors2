@@ -45,17 +45,6 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.BasePrice.OrderValue, ErrorMessages.BasePriceOrderValueNotAllowed);
             }
 
-            if (this.ExistRevenueQuantityBreak)
-            {
-                derivation.Validation.AddError(this, M.BasePrice.RevenueQuantityBreak, ErrorMessages.BasePriceRevenueQuantityBreakNotAllowed);
-            }
-
-            if (this.ExistRevenueValueBreak)
-            {
-                derivation.Validation.AddError(this, M.BasePrice.RevenueValueBreak, ErrorMessages.BasePriceRevenueValueBreakNotAllowed);
-            }
-
-
             if (this.ExistPrice)
             {
                 if (!this.ExistCurrency)

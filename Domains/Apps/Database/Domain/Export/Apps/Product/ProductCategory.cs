@@ -110,7 +110,8 @@ namespace Allors.Domain
 
             this.AppsOnDeriveSuperJacent(derivation);
             this.AppsOnDeriveChildren(derivation);
-            this.AppsOnDeriveAllProducts(derivation);
+            this.AppsOnDeriveAllProducts();
+            this.AppsDeriveSerialisedItems();
         }
 
         public void AppsOnDeriveSuperJacent(IDerivation derivation)
@@ -138,9 +139,9 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveAllProducts(IDerivation derivation)
+        public void AppsOnDeriveAllProducts()
         {
-            var allProducts = new List<Product>(this.ProductsWhereProductCategory);
+            var allProducts = new List<Product>(this.Products);
 
             foreach (ProductCategory child in this.Children)
             {
@@ -148,6 +149,13 @@ namespace Allors.Domain
             }
 
             this.AllProducts = allProducts.ToArray();
+        }
+
+        public void AppsDeriveSerialisedItems()
+        {
+            var allgoods = this.AllProducts.Where(v => v is Good).ToArray() as Good[];
+
+            this.SerialisedItems = allgoods?.SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
         }
     }
 }

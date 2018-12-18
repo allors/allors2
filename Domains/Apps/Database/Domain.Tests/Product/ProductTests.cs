@@ -53,44 +53,28 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithProductCategory(new ProductCategoryBuilder(this.Session).WithName("category").Build());
-            builder.Build();
+            var service = builder.Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            category.AddProduct(service);
 
             Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenDeliverableBasedServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithName("service")
-                .WithPrimaryProductCategory(productCategory)
-                .WithVatRate(vatRate21)
-                .Build();
-
-            this.Session.Derive(); 
-            
-            Assert.Contains(productCategory, deliverableBasedService.ProductCategories);
         }
 
         [Fact]
         public void GivenDeliverableBasedServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithName("service")
+                .WithVatRate(vatRate21)
+                .Build();
+
             var productCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("category")
                 .Build();
 
-            var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithName("service")
-                .WithProductCategory(productCategory)
-                .WithVatRate(vatRate21)
-                .Build();
+            productCategory.AddProduct(deliverableBasedService);
 
             this.Session.Derive(); 
 
@@ -164,34 +148,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenGoodWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(vatRate21)
-                .WithPrimaryProductCategory(productCategory)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                        .WithIdentification("1")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
-                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
-
-            this.Session.Derive(); 
-
-            Assert.Contains(productCategory, good.ProductCategories);
-        }
-
-        [Fact]
         public void GivenGoodWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -253,7 +209,6 @@ namespace Allors.Domain
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new PartBuilder(this.Session)
@@ -263,6 +218,8 @@ namespace Allors.Domain
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
+            productCategory111.AddProduct(good);
+
             this.Session.Derive(); 
 
             Assert.Equal(4, good.ProductCategoriesExpanded.Count);
@@ -271,7 +228,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory2, good.ProductCategoriesExpanded);
 
-            good.AddProductCategory(productCategory121);
+            productCategory121.AddProduct(good);
 
             this.Session.Derive();
 
@@ -318,7 +275,6 @@ namespace Allors.Domain
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new PartBuilder(this.Session)
@@ -327,6 +283,8 @@ namespace Allors.Domain
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
+            productCategory111.AddProduct(good);
 
             this.Session.Derive(); 
 
@@ -350,7 +308,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory2, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory3, good.ProductCategoriesExpanded);
 
-            good.AddProductCategory(productCategory121);
+            productCategory121.AddProduct(good);
 
             this.Session.Derive();
 
@@ -403,7 +361,6 @@ namespace Allors.Domain
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new PartBuilder(this.Session)
@@ -412,6 +369,8 @@ namespace Allors.Domain
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
+            productCategory111.AddProduct(good);
 
             this.Session.Derive(); 
 
@@ -460,44 +419,28 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build());
-            builder.Build();
+            var service = builder.Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            category.AddProduct(service);
 
             Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenTimeAndMaterialsServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var productCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithName("TimeAndMaterialsService")
-                .WithPrimaryProductCategory(productCategory)
-                .WithVatRate(vatRate21)
-                .Build();
-
-            this.Session.Derive(); 
-
-            Assert.Contains(productCategory, timeAndMaterialsService.ProductCategories);
         }
 
         [Fact]
         public void GivenTimeAndMaterialsServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithName("TimeAndMaterialsService")
+                .WithVatRate(vatRate21)
+                .Build();
+
             var productCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("category")
                 .Build();
 
-            var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithName("TimeAndMaterialsService")
-                .WithProductCategory(productCategory)
-                .WithVatRate(vatRate21)
-                .Build();
+            productCategory.AddProduct(timeAndMaterialsService);
 
             this.Session.Derive(); 
 

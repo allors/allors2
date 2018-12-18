@@ -39,16 +39,6 @@ namespace Allors.Repository
         decimal Rate { get; set; }
         
         #region Allors
-        [Id("1da8c258-fb73-4cce-88f3-3c39d21a7996")]
-        [AssociationId("191fa580-ad8b-4151-90e1-58c4c512ab68")]
-        [RoleId("c3519e5a-981d-453f-ab7b-edf9f29556cc")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        RevenueValueBreak RevenueValueBreak { get; set; }
-        
-        #region Allors
         [Id("3230c33b-42ac-4eb4-b0c9-9791cc5604d7")]
         [AssociationId("0d248d95-468e-4a19-9e84-45065dfc0006")]
         [RoleId("8e87149c-0c44-4e02-b784-eeef963a4333")]
@@ -97,16 +87,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         Part Part { get; set; }
-
-        #region Allors
-        [Id("5b91ebce-6ebe-4d5f-a8bc-22cd7e7d688a")]
-        [AssociationId("de72aa4b-17f1-4037-99e5-95f30c1f8f90")]
-        [RoleId("78d118ed-dcb7-4b8a-84ae-d1a9fdf11643")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        RevenueQuantityBreak RevenueQuantityBreak { get; set; }
       
         #region Allors
         [Id("6c0744ee-b730-490d-bb0c-b6be95211371")]

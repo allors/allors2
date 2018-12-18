@@ -116,7 +116,7 @@ namespace Allors.Domain
             {
                 withProductCategory = true;
 
-                foreach (ProductCategory productCategory in product.ProductCategories)
+                foreach (ProductCategory productCategory in product.ProductCategoriesWhereProduct)
                 {
                     if (productCategory.Equals(priceComponent.ProductCategory))
                     {
@@ -126,7 +126,7 @@ namespace Allors.Domain
 
                 if (productCategoryValid == false)
                 {
-                    foreach (ProductCategory productCategory in product.ProductCategories)
+                    foreach (ProductCategory productCategory in product.ProductCategoriesWhereProduct)
                     {
                         foreach (ProductCategory ancestor in productCategory.SuperJacent)
                         {

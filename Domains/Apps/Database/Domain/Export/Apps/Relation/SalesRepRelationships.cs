@@ -20,14 +20,6 @@ namespace Allors.Domain
     
     public partial class SalesRepRelationships
     {
-        public static void DeriveCommissions(ISession session)
-        {
-            foreach (SalesRepRelationship salesRepRelationship in session.Extent<SalesRepRelationship>())
-            {
-                salesRepRelationship.AppsOnDeriveCommission();
-            }
-        }
-
         public static Person SalesRep(Organisation customer, ProductCategory productCategory, DateTime date)
         {
             Person salesRep = null;
