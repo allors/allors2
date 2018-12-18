@@ -88,11 +88,6 @@ namespace Allors.Domain
                 this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
             }
 
-            if (this.ExistProductCategoriesWhereParent && this.ExistPackage)
-            {
-                derivation.Validation.AddError(this, M.ProductCategory.Package, ErrorMessages.ProductCategoryPackageOnlyAtLowestLevel);
-            }
-
             if (!this.ExistCategoryImage)
             {
                 this.CategoryImage = this.strategy.Session.GetSingleton().Settings.NoImageAvailableImage;

@@ -43,38 +43,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenLeafeProductCategory_WhenPackageIsDefined_ThenValidationHasNoErrors()
-        {
-            var package = new PackageBuilder(this.Session).WithName("package").Build();
-
-            new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .WithPackage(package)
-                .Build();
-
-            Assert.False(new NonLogging.Derivation(this.Session).Derive().HasErrors);
-
-            this.Session.Rollback();
-        }
-
-        [Fact]
-        public void GivenParentProductCategory_WhenPackageIsDefined_ThenValidationHasErrors()
-        {
-            var package = new PackageBuilder(this.Session).WithName("package").Build();
-
-            var parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithDescription("parent")
-                .Build();
-
-            var childProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithDescription("child")
-                .WithParent(parentProductCategory).
-                Build();
-
-            Assert.True(new NonLogging.Derivation(this.Session).Derive().HasErrors);
-        }
-
-        [Fact]
         public void GivenProductCategory_WhenDeriving_ThenSuperJacentAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)

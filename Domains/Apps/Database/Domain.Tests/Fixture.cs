@@ -130,19 +130,15 @@ namespace Allors
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
                 var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
-                var package1 = new PackageBuilder(session).WithName("package1").Build();
-                var package2 = new PackageBuilder(session).WithName("package2").Build();
 
                 var catMain = new ProductCategoryBuilder(session).WithName("main cat").Build();
                 var cat1 = new ProductCategoryBuilder(session)
                     .WithName("cat for good1")
                     .WithParent(catMain)
-                    .WithPackage(package1)
                     .Build();
                 var cat2 = new ProductCategoryBuilder(session)
                     .WithName("cat for good2")
                     .WithParent(catMain)
-                    .WithPackage(package2)
                     .Build();
 
                 new GoodBuilder(session)

@@ -208,8 +208,17 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         ProductCategory PrimaryProductCategory { get; set; }
+
+        #region Allors
+        [Id("7E261117-4621-4020-A12D-FAAB8463E912")]
+        [AssociationId("0A44508B-E511-4016-9BD8-CCFC64D69E56")]
+        [RoleId("75C1D133-5591-43F8-B787-BEC8355612B1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ProductCategory[] SecondaryProductCategories { get; set; }
     }
 }

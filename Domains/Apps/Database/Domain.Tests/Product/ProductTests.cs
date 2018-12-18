@@ -82,6 +82,63 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenTimeAndMaterialsService_WhenDeriving_ThenRequiredRelationsMustExist()
+        {
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var builder = new TimeAndMaterialsServiceBuilder(this.Session);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithName("good");
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithVatRate(vatRate21);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            var service = builder.Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            category.AddProduct(service);
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+        }
+
+        [Fact]
+        public void GivenTimeAndMaterialsServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
+        {
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithName("TimeAndMaterialsService")
+                .WithVatRate(vatRate21)
+                .Build();
+
+            var productCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("category")
+                .Build();
+
+            productCategory.AddProduct(timeAndMaterialsService);
+
+            this.Session.Derive();
+
+            Assert.Equal(productCategory, timeAndMaterialsService.PrimaryProductCategory);
+        }
+
+        [Fact]
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -173,6 +230,47 @@ namespace Allors.Domain
             this.Session.Derive(); 
 
             Assert.Equal(productCategory, good.PrimaryProductCategory);
+        }
+
+
+        [Fact]
+        public void GivenGood_WhenChangingCategory_ThenPrimaryProductCategoryCannotBeRemoved()
+        {
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("category1")
+                .Build();
+
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("category2")
+                .Build();
+
+            var good = new GoodBuilder(this.Session)
+                .WithName("good")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("1")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .Build();
+
+            productCategory1.AddProduct(good);
+            productCategory2.AddProduct(good);
+            good.PrimaryProductCategory = productCategory1;
+
+            this.Session.Derive();
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+
+            productCategory1.RemoveProduct(good);
+
+            this.Session.Derive();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -388,63 +486,6 @@ namespace Allors.Domain
             Assert.Contains(productCategory111, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory11, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
-        }
-
-        [Fact]
-        public void GivenTimeAndMaterialsService_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var builder = new TimeAndMaterialsServiceBuilder(this.Session);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithName("good");
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithVatRate(vatRate21);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            var service = builder.Build();
-            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            category.AddProduct(service);
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenTimeAndMaterialsServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithName("TimeAndMaterialsService")
-                .WithVatRate(vatRate21)
-                .Build();
-
-            var productCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            productCategory.AddProduct(timeAndMaterialsService);
-
-            this.Session.Derive(); 
-
-            Assert.Equal(productCategory, timeAndMaterialsService.PrimaryProductCategory);
         }
     }
 }

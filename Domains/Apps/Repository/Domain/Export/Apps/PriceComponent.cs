@@ -59,16 +59,6 @@ namespace Allors.Repository
         OrderQuantityBreak OrderQuantityBreak { get; set; }
         
         #region Allors
-        [Id("52883992-8e1b-472a-9cc7-67d4824a2cd4")]
-        [AssociationId("5a14b240-2eb3-4051-b9cb-8eefb0fd1722")]
-        [RoleId("ac8e7099-f0bd-492f-bbd9-5890060c56eb")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        PackageQuantityBreak PackageQuantityBreak { get; set; }
-        
-        #region Allors
         [Id("55c43896-ba79-4752-8fd4-7fd8501d64b6")]
         [AssociationId("38475cd5-ee15-4507-a810-f77ef0fb5cab")]
         [RoleId("9e905572-d1bf-435b-8238-3a00da09f243")]

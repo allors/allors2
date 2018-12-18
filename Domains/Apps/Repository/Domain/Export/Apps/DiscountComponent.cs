@@ -21,8 +21,6 @@ namespace Allors.Repository
 
         public OrderQuantityBreak OrderQuantityBreak { get; set; }
 
-        public PackageQuantityBreak PackageQuantityBreak { get; set; }
-
         public Product Product { get; set; }
 
         public Part Part { get; set; }
