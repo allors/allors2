@@ -39,7 +39,6 @@ export class GoodOverviewSummaryComponent {
             GoodIdentifications: {
               GoodIdentificationType: x
             },
-            ProductCategories: x,
             Part: {
               Brand: x,
               Model: x

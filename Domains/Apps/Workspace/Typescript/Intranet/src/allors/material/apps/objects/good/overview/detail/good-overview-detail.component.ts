@@ -80,13 +80,12 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
             GoodIdentifications: {
               GoodIdentificationType: x
             },
-            ProductCategories: x,
             Part: {
               Brand: x,
               Model: x
             }
           }
-        })
+        }),
       );
     };
 
@@ -137,7 +136,6 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
                   Model: x
                 },
                 PrimaryPhoto: x,
-                ProductCategories: x,
                 GoodIdentifications: x,
                 Photos: x,
                 ElectronicDocuments: x,

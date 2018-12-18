@@ -14,13 +14,14 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
 import { StateService } from '../../../services/state';
 
-import { Good } from '../../../../../domain';
+import { Good, ProductCategory } from '../../../../../domain';
 import { Fetcher } from '../../Fetcher';
 import { Meta } from 'src/allors/meta';
 
 interface Row {
   good: Good;
   name: string;
+  categories: string;
   qoh: number;
 }
 
@@ -32,7 +33,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
 
   public title = 'Products';
 
-  public displayedColumns = ['select', 'name', 'category', 'qty on hand', 'menu'];
+  public displayedColumns = ['select', 'name', 'categories', 'qty on hand', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -144,9 +145,22 @@ export class GoodListComponent implements OnInit, OnDestroy {
               sort: sorter.create(sort),
               include: {
                 LocalisedNames: x,
-                PrimaryProductCategory: x,
                 PrimaryPhoto: x,
                 Part: x
+              },
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
+            }),
+            pull.Good({
+              predicate,
+              sort: sorter.create(sort),
+              fetch: {
+                ProductCategoriesWhereProduct: {
+                  include: {
+                    Products: x,
+                  }
+                },
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -162,12 +176,13 @@ export class GoodListComponent implements OnInit, OnDestroy {
         this.total = loaded.values.Goods_total;
 
         const goods = loaded.collections.Goods as Good[];
+        const productCategories = loaded.collections.ProductCategories as ProductCategory[];
 
         this.dataSource.data = goods.map((v) => {
           return {
             good: v,
             name: v.Name,
-            category: v.PrimaryProductCategory,
+            categories: productCategories.filter(w => w.Products.includes(v)).join(', '),
             qoh: v.Part.QuantityOnHand
           } as Row;
         });
