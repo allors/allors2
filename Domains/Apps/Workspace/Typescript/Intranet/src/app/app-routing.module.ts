@@ -147,7 +147,7 @@ export const routes: Routes = [
       },
       // Relations
       {
-        path: 'relations', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
+        path: 'contacts', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
         children: [
           { path: 'people', data: listData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
           { path: 'person/:id', data: overviewData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
@@ -163,20 +163,20 @@ export const routes: Routes = [
 
       // Orders
       {
-        path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
+        path: 'sales', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
         children: [
-          { path: 'requests', data: listData({ id: ids.Request, icon: 'share' }), component: RequestsForQuoteList.RequestForQuoteListComponent },
-          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
-          { path: 'productQuotes', data: listData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
-          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesOrders', data: listData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
-          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
+          { path: 'requestsforquote', data: listData({ id: ids.Request, icon: 'share' }), component: RequestsForQuoteList.RequestForQuoteListComponent },
+          { path: 'requestforquote/:id', data: overviewData({ id: ids.Request }), component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
+          { path: 'productquotes', data: listData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
+          { path: 'productquote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
+          { path: 'salesorders', data: listData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesorder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
         ],
       },
 
       // Catalogues
       {
-        path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
+        path: 'products', data: moduleData({ title: 'Products', icon: 'build' }),
         children: [
           { path: 'goods', data: listData({ id: ids.Good }), component: GoodList.GoodListComponent },
           { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
@@ -184,8 +184,8 @@ export const routes: Routes = [
           { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.ProductCategoriesOverviewComponent },
-          { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
-          { path: 'productTypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
+          { path: 'productcharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
+          { path: 'producttypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
       },
 

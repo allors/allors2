@@ -5,11 +5,18 @@ namespace Tests.Intranet
 
     using Tests.Components;
     using Tests.Components.Html;
-    using Tests.Intranet.AccountsPayable;
-    using Tests.Intranet.Orders;
-    using Tests.Intranet.Products;
-    using Tests.Intranet.Relations;
-    using Tests.Intranet.WorkEfforts;
+    using Tests.Intranet.CatalogueTests;
+    using Tests.Intranet.PersonTests;
+    using Tests.Intranet.ProductCategoryTest;
+    using Tests.Intranet.ProductCharacteristicTest;
+    using Tests.Intranet.ProductQuoteTest;
+    using Tests.Intranet.ProductTest;
+    using Tests.Intranet.ProductTypeTest;
+    using Tests.Intranet.PurchaseInvoiceTest;
+    using Tests.Intranet.RequestsForQuoteTest;
+    using Tests.Intranet.SalesInvoicesOverviewTest;
+    using Tests.Intranet.SalesOrderTest;
+    using Tests.Intranet.WorkEffortOverviewTests;
 
     public class Sidenav : Page
     {
@@ -23,45 +30,45 @@ namespace Tests.Intranet
 
         public Anchor Home => new Anchor(this.Driver, this.ByHref("/"));
 
-        public Element RelationsGroup => this.Group("Relations");
+        public Element ContactsGroup => this.Group("Contacts");
 
-        public Anchor PersonList => this.Link("/relations/people");
+        public Anchor People => this.Link("/contacts/people");
         
-        public Anchor Organisations => this.Link("/relations/organisations");
+        public Anchor Organisations => this.Link("/contacts/organisations");
 
-        public Anchor Communications => this.Link("/relations/communicationevents");
+        public Anchor CommunicationEvents => this.Link("/contacts/communicationevents");
 
-        public Element OrdersGroup => this.Group("Orders");
+        public Element SalesGroup => this.Group("Sales");
 
-        public Anchor Requests => this.Link("/orders/requests");
+        public Anchor RequestsForQuote => this.Link("/sales/requestsforquote");
 
-        public Anchor Quotes => this.Link("/orders/productQuotes");
+        public Anchor ProductQuotes => this.Link("/sales/productquotes");
 
-        public Anchor Orders => this.Link("/orders/salesOrders");
+        public Anchor SalesOrders => this.Link("/sales/salesorders");
 
-        public Element CataloguesGroup => this.Group("Catalogues");
+        public Element ProductsGroup => this.Group("Products");
 
-        public Anchor Catalogues => this.Link("/catalogues/catalogues");
+        public Anchor Goods => this.Link("/products/goods");
 
-        public Anchor Categories => this.Link("/catalogues/categories");
+        public Anchor Parts => this.Link("/products/parts");
 
-        public Anchor Products => this.Link("/catalogues/goods");
+        public Anchor Catalogues => this.Link("/products/catalogues");
 
-        public Anchor ProductCharacteristics => this.Link("/catalogues/productCharacteristics");
+        public Anchor Categories => this.Link("/products/categories");
 
-        public Anchor ProductTypes => this.Link("/catalogues/productTypes");
+        public Anchor ProductCharacteristics => this.Link("/products/productcharacteristics");
 
-        public Element AccountsPayableGroup => this.Group("Accounts Payable");
+        public Anchor ProductTypes => this.Link("/products/producttypes");
 
-        public Anchor AccountsPayableInvoices => this.Link("/accountspayable/invoices");
+        public Element AccountingGroup => this.Group("Accounting");
 
-        public Element AccountsReceivableGroup => this.Group("Accounts Receivable");
+        public Anchor PurchaseInvoices => this.Link("/accounting/purchaseinvoices");
 
-        public Anchor AccountsReceivableInvoices => this.Link("/accountsreceivable/invoices");
+        public Anchor SalesInvoices => this.Link("/accounting/salesinvoices");
 
         public Element WorkEffortsGroup => this.Group("Work Efforts");
 
-        public Anchor Tasks => this.Link("/workefforts/worktasks");
+        public Anchor WorkEfforts => this.Link("/workefforts/workefforts");
 
         public Button Toggle => new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
 
@@ -74,86 +81,74 @@ namespace Tests.Intranet
 
         public PersonListPage NavigateToPersonList()
         {
-            this.Navigate(this.RelationsGroup, this.PersonList);
+            this.Navigate(this.ContactsGroup, this.People);
             return new PersonListPage(this.Driver);
         }
 
-        //public OrganisationsOverviewPage NavigateToOrganisations()
-        //{
-        //    this.Navigate(this.RelationsGroup, this.Organisations);
-        //    return new OrganisationsOverviewPage(this.Driver);
-        //}
-
-        //public CommunicationsOverviewPage NavigateToCommunications()
-        //{
-        //    this.Navigate(this.RelationsGroup, this.Communications);
-        //    return new CommunicationsOverviewPage(this.Driver);
-        //}
-
-        public RequestsOverviewPage NavigateToRequests()
+        public RequestForQuoteListPage NavigateToRequestForQuoteList()
         {
-            this.Navigate(this.OrdersGroup, this.Requests);
-            return new RequestsOverviewPage(this.Driver);
+            this.Navigate(this.SalesGroup, this.RequestsForQuote);
+            return new RequestForQuoteListPage(this.Driver);
         }
 
-        public QuotesOverviewPage NavigateToQuotes()
+        public ProductQuoteListPage NavigateToProductQuoteList()
         {
-            this.Navigate(this.OrdersGroup, this.Quotes);
-            return new QuotesOverviewPage(this.Driver);
+            this.Navigate(this.SalesGroup, this.ProductQuotes);
+            return new ProductQuoteListPage(this.Driver);
         }
 
-        public OrdersOverviewPage NavigateToOrders()
+        public SalesOrderListPage NavigateToSalesOrderList()
         {
-            this.Navigate(this.OrdersGroup, this.Orders);
-            return new OrdersOverviewPage(this.Driver);
+            this.Navigate(this.SalesGroup, this.SalesOrders);
+            return new SalesOrderListPage(this.Driver);
         }
 
-        public CataloguesOverviewPage NavigateToCatalogues()
+        public CatalogueListPage NavigateToCatalogueList()
         {
-            this.Navigate(this.CataloguesGroup, this.Catalogues);
-            return new CataloguesOverviewPage(this.Driver);
+            this.Navigate(this.ProductsGroup, this.Catalogues);
+            return new CatalogueListPage(this.Driver);
         }
 
-        public CategoriesOverviewPage NavigateToCategories()
+        public ProductCategorieListPage NavigateToCategoryList()
         {
-            this.Navigate(this.CataloguesGroup, this.Categories);
-            return new CategoriesOverviewPage(this.Driver);
+            this.Navigate(this.ProductsGroup, this.Categories);
+            return new ProductCategorieListPage(this.Driver);
         }
 
-        public ProductsOverviewPage NavigateToProducts()
+        public ProductListPage NavigateToProductList()
         {
-            this.Navigate(this.CataloguesGroup, this.Products);
-            return new ProductsOverviewPage(this.Driver);
+            this.Navigate(this.ProductsGroup, this.Goods);
+            return new ProductListPage(this.Driver);
         }
 
-        public ProductCharacteristicsOverviewPage NavigateToProductCharacteristics()
+        public ProductCharacteristicListPage NavigateToProductCharacteristicList()
         {
-            this.Navigate(this.CataloguesGroup, this.ProductCharacteristics);
-            return new ProductCharacteristicsOverviewPage(this.Driver);
+            this.Navigate(this.ProductsGroup, this.ProductCharacteristics);
+            return new ProductCharacteristicListPage(this.Driver);
         }
 
-        public ProductTypesOverviewPage NavigateToProductTypes()
+        public ProductTypeListPage NavigateToProductTypeList()
         {
-            this.Navigate(this.CataloguesGroup, this.ProductTypes);
-            return new ProductTypesOverviewPage(this.Driver);
+            this.Navigate(this.ProductsGroup, this.ProductTypes);
+            return new ProductTypeListPage(this.Driver);
         }
 
-        public InvoicesOverviewPage NavigateToAccountsPayableInvoices()
+        public PurchaseInvoiceListPage NavigateToPurchaseInvoiceList()
         {
-            this.Navigate(this.AccountsPayableGroup, this.AccountsPayableInvoices);
-            return new InvoicesOverviewPage(this.Driver);
+            this.Navigate(this.AccountingGroup, this.PurchaseInvoices);
+            return new PurchaseInvoiceListPage(this.Driver);
         }
 
-        public global::Tests.Intranet.AccountsReceivable.InvoicesOverviewPage NavigateToAccountsReceivableInvoices()
+        public SalesInvoiceListPage NavigateToSalesInvoiceList()
         {
-            this.Navigate(this.AccountsReceivableGroup, this.AccountsReceivableInvoices);
-            return new global::Tests.Intranet.AccountsReceivable.InvoicesOverviewPage(this.Driver);
+            this.Navigate(this.AccountingGroup, this.SalesInvoices);
+            return new SalesInvoiceListPage(this.Driver);
         }
 
-        public TasksOverviewPage NavigateToTasks()
+        public WorkEffortListPage NavigateToWorkEffortList()
         {
-            this.Navigate(this.WorkEffortsGroup, this.Tasks);
-            return new TasksOverviewPage(this.Driver);
+            this.Navigate(this.WorkEffortsGroup, this.WorkEfforts);
+            return new WorkEffortListPage(this.Driver);
         }
 
         private void Navigate(Element group, Anchor link)
