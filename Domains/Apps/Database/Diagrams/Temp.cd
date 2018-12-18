@@ -1,19 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.RepeatingSalesInvoice">
-    <Position X="9" Y="2.5" Width="1.5" />
+  <Interface Name="Allors.Domain.ProductCategory">
+    <Position X="3.25" Y="2.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAgAAAAAAAIAAAAAAAIAAAAAAACAEAAABAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAgCAAAAAA0AASAAAAQAACAAAIAACEIAAw=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Source" />
+      <Property Name="Products" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.SalesInvoice" Collapsed="true">
-    <Position X="12.5" Y="2.5" Width="1.5" />
+  <Interface Name="Allors.Domain.Product">
+    <Position X="8.5" Y="2.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>ohkBAQhMAAIAUgwQABAAAAJAmEAAkAgAAAY0AQBCQAA=</HashCode>
+      <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAKgA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PrimaryProductCategory" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Service" Collapsed="true">
+    <Position X="8" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Good" Collapsed="true">
+    <Position X="10.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAIAAAECABAAABAAAAAAAAAAABAAAAAAAAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

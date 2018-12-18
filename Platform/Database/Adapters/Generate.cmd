@@ -26,5 +26,5 @@ cd ../
 dotnet msbuild Adapters.sln /target:Clean /verbosity:minimal
 dotnet msbuild Adapters.sln /target:Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal
 
-dotnet Generate\bin\Debug\netcoreapp2.0\Generate.dll
+dotnet Generate\bin\Debug\netcoreapp2.2\Generate.dll
 
