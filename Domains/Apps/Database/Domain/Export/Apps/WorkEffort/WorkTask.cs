@@ -78,7 +78,6 @@ namespace Allors.Domain
             public string ContactTelephone;
             public string PaymentTerms;
             public string Facility;
-            public string SalesRep;
 
             public WorkTaskPrintModel(WorkTask workTask)
             {
@@ -105,8 +104,6 @@ namespace Allors.Domain
                 {
                     if (workTask.OrderItemFulfillment is SalesOrderItem salesOrderItem)
                     {
-                        this.SalesRep = salesOrderItem.SalesRep.PartyName;
-
                         if (salesOrderItem.ExistSalesTerms)
                         {
                             var salesTerms = salesOrderItem.SalesTerms;

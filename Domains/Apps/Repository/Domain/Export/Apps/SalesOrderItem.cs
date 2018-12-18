@@ -441,11 +441,11 @@ namespace Allors.Repository
         [AssociationId("23af5657-ed05-43c2-aeed-d268204528d2")]
         [RoleId("42a88fb9-84bc-4e35-83ff-6cb5c0cf3c96")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         [Derived]
         [Indexed]
-        public Person SalesRep { get; set; }
+        public Person[] SalesReps { get; set; }
 
         #region Allors
         [Id("b2d2645e-0d3f-473e-b277-6f890b9b911e")]

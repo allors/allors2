@@ -348,11 +348,11 @@ namespace Allors.Repository
         [AssociationId("F240D6B6-5094-42E3-9EA1-83CCFB3F8C51")]
         [RoleId("9160C227-BA4F-4FB5-9083-AA8DDE1CB086")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         [Derived]
         [Indexed]
-        public Person SalesRep { get; set; }
+        public Person[] SalesReps { get; set; }
 
         #region Allors
         [Id("1837DB18-F0D5-4A84-88B9-09EF35D98A24")]

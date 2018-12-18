@@ -200,25 +200,5 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         PriceComponent[] BasePrices { get; set; }
-
-        #region Allors
-        [Id("039a9481-940b-4953-a1b5-6c56f35a238b")]
-        [AssociationId("ee6d841a-78f4-47c7-be8a-d4bd7ed81609")]
-        [RoleId("922b63dc-1714-4cf2-aa0c-cb81831e59b1")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        ProductCategory PrimaryProductCategory { get; set; }
-
-        #region Allors
-        [Id("7E261117-4621-4020-A12D-FAAB8463E912")]
-        [AssociationId("0A44508B-E511-4016-9BD8-CCFC64D69E56")]
-        [RoleId("75C1D133-5591-43F8-B787-BEC8355612B1")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        ProductCategory[] SecondaryProductCategories { get; set; }
     }
 }

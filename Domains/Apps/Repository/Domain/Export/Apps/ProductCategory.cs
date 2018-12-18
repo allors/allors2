@@ -137,7 +137,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
         [Workspace]
         public Product[] Products { get; set; }
 

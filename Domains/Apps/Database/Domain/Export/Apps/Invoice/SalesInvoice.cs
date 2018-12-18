@@ -464,7 +464,6 @@ namespace Allors.Domain
                     .WithDetails(salesInvoiceItem.Details)
                     .WithInternalComment(salesInvoiceItem.InternalComment)
                     .WithMessage(salesInvoiceItem.Message)
-                    .WithSalesRep(salesInvoiceItem.SalesRep)
                     .WithFacility(salesInvoiceItem.Facility)
                     .Build();
 
@@ -591,7 +590,6 @@ namespace Allors.Domain
                     .WithComment(salesInvoiceItem.Comment)
                     .WithDetails(salesInvoiceItem.Details)
                     .WithInternalComment(salesInvoiceItem.InternalComment)
-                    .WithSalesRep(salesInvoiceItem.SalesRep)
                     .WithFacility(salesInvoiceItem.Facility)
                     .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
                     .Build();
@@ -619,7 +617,10 @@ namespace Allors.Domain
             this.RemoveSalesReps();
             foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
             {
-                this.AddSalesRep(item.SalesRep);
+                foreach (Person salesRep in item.SalesReps)
+                {
+                    this.AddSalesRep(salesRep);
+                }
             }
         }
 

@@ -13,10 +13,6 @@ namespace Allors.Repository
 
         public string InternalComment { get; set; }
 
-        public ProductCategory PrimaryProductCategory { get; set; }
-
-        public ProductCategory[] SecondaryProductCategories { get; set; }
-
         public DateTime SupportDiscontinuationDate { get; set; }
 
         public DateTime SalesDiscontinuationDate { get; set; }

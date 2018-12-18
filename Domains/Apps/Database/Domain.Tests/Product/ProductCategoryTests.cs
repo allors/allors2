@@ -390,36 +390,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductCategoryHierarchy_WhenDeriving_ThenAllProductAreSet()
         {
-            var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithName("1")
-                .Build();
-            var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithName("2")
-                .Build();
-            var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithName("1.1")
-                .WithParent(productCategory1)
-                .Build();
-            var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
-                .Build();
-            var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithName("1.1.1")
-                .WithParent(productCategory11)
-                .Build();
-            var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithName("1.2.1")
-                .WithParent(productCategory12)
-                .Build();
-            var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithName("1.2.2")
-                .WithParent(productCategory12)
-                .Build();
-
-            this.Session.Derive();
-
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
@@ -435,8 +405,6 @@ namespace Allors.Domain
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            productCategory1.AddProduct(good1);
-
             var good2 = new GoodBuilder(this.Session)
                 .WithName("good2")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
@@ -450,14 +418,11 @@ namespace Allors.Domain
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            productCategory2.AddProduct(good2);
-
             var good11 = new GoodBuilder(this.Session)
                 .WithName("good11")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good11")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithPrimaryProductCategory(productCategory11)
                 .WithVatRate(vatRate21)
                 .WithPart(new PartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
@@ -465,8 +430,6 @@ namespace Allors.Domain
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
-
-            productCategory11.AddProduct(good11);
 
             var good12 = new GoodBuilder(this.Session)
                 .WithName("good12")
@@ -481,8 +444,6 @@ namespace Allors.Domain
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            productCategory12.AddProduct(good12);
-
             var good111 = new GoodBuilder(this.Session)
                 .WithName("good111")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
@@ -495,8 +456,6 @@ namespace Allors.Domain
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
-
-            productCategory111.AddProduct(good111);
 
             var good121 = new GoodBuilder(this.Session)
                 .WithName("good121")
@@ -511,14 +470,11 @@ namespace Allors.Domain
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            productCategory121.AddProduct(good121);
-
             var good122 = new GoodBuilder(this.Session)
                 .WithName("good122")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good122")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
-                .WithPrimaryProductCategory(productCategory122)
                 .WithVatRate(vatRate21)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
@@ -527,7 +483,41 @@ namespace Allors.Domain
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            productCategory122.AddProduct(good122);
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("1")
+                .WithProduct(good1)
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("2")
+                .WithProduct(good2)
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1")
+                .WithParent(productCategory1)
+                .WithProduct(good11)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2")
+                .WithParent(productCategory1)
+                .WithParent(productCategory2)
+                .WithProduct(good12)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1.1")
+                .WithParent(productCategory11)
+                .WithProduct(good111)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.1")
+                .WithParent(productCategory12)
+                .WithProduct(good121)
+                .Build();
+            var productCategory122 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.2")
+                .WithParent(productCategory12)
+                .WithProduct(good122)
+                .Build();
+
 
             this.Session.Derive();
 

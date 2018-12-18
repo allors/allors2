@@ -92,28 +92,12 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("ancestor")
-                .Build();
-
-            this.parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("parent")
-                .WithParent(this.ancestorProductCategory)
-                .Build();
-
-            this.productCategory = new ProductCategoryBuilder(this.Session)
-                .WithName("gizmo")
-                .Build();
-
-            this.productCategory.AddParent(this.parentProductCategory);
-
             this.good = new GoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -127,40 +111,6 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithCustomer(this.shipToCustomer).Build();
 
-            //this.partyRevenueHistory = new PartyRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithCurrency(euro)
-            //    .WithSingleton(this.internalOrganisation)
-            //    .WithParty(this.billToCustomer)
-            //    .WithRevenue(100M)
-            //    .Build();
-
-            //this.productCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithCurrency(euro)
-            //    .WithSingleton(this.internalOrganisation)
-            //    .WithParty(this.billToCustomer)
-            //    .WithProductCategory(this.productCategory)
-            //    .WithRevenue(100M)
-            //    .WithQuantity(10)
-            //    .Build();
-
-            //this.parentProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithCurrency(euro)
-            //    .WithSingleton(this.internalOrganisation)
-            //    .WithParty(this.billToCustomer)
-            //    .WithProductCategory(this.parentProductCategory)
-            //    .WithRevenue(100M)
-            //    .WithQuantity(10)
-            //    .Build();
-
-            //this.ancestorProductCategoryRevenueHistory = new PartyProductCategoryRevenueHistoryBuilder(this.DatabaseSession)
-            //    .WithCurrency(euro)
-            //    .WithSingleton(this.internalOrganisation)
-            //    .WithParty(this.billToCustomer)
-            //    .WithProductCategory(this.ancestorProductCategory)
-            //    .WithRevenue(100M)
-            //    .WithQuantity(10)
-            //    .Build();
-
             this.variantGood = new GoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
@@ -168,7 +118,6 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("2")
@@ -183,7 +132,6 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("3")
@@ -200,8 +148,22 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
+
+            this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("ancestor")
+                .Build();
+
+            this.parentProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("parent")
+                .WithParent(this.ancestorProductCategory)
+                .Build();
+
+            this.productCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("gizmo")
+                .Build();
+
+            this.productCategory.AddParent(this.parentProductCategory);
 
             this.goodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.part)
@@ -1407,8 +1369,9 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
-                Build();
+                .WithParent(parentProductCategory)
+                .WithProduct(this.good)
+                .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep1)
@@ -1430,8 +1393,6 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .Build();
 
-            this.good.PrimaryProductCategory = childProductCategory;
-
             this.Session.Derive();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -1444,7 +1405,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.SalesRep, salesrep1);
+            Assert.Contains(salesrep1, orderItem.SalesReps);
         }
 
         [Fact]
@@ -1460,8 +1421,9 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
-                Build();
+                .WithParent(parentProductCategory)
+                .WithProduct(this.good)
+                .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep2)
@@ -1476,8 +1438,6 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .Build();
 
-            this.good.PrimaryProductCategory = childProductCategory;
-
             this.Session.Derive();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -1490,7 +1450,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.SalesRep, salesrep2);
+            Assert.Contains(salesrep2, orderItem.SalesReps);
         }
 
         [Fact]
@@ -1540,7 +1500,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.SalesRep, salesrep3);
+            Assert.Contains(salesrep3, orderItem.SalesReps);
         }
 
         [Fact]

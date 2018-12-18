@@ -245,10 +245,10 @@ namespace Allors.Repository
         [AssociationId("0618fddc-dee4-4cd4-9d4d-b7356be9dc65")]
         [RoleId("d61277d3-b916-4783-9de0-48f9eb6808c4")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public Person SalesRep { get; set; }
+        public Person[] SalesReps { get; set; }
 
         #region Allors
         [Id("a04f506f-7ac9-4ab9-8f3f-1aba1ae76a67")]

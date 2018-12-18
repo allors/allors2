@@ -2228,6 +2228,7 @@ namespace Allors.Domain
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
                 .WithParent(parentProductCategory)
+                .WithProduct(this.good)
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
@@ -2250,8 +2251,6 @@ namespace Allors.Domain
                 .WithCustomer(this.invoice.BillToCustomer)
                 .Build();
 
-            this.good.PrimaryProductCategory = childProductCategory;
-
             this.Session.Derive();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session)
@@ -2265,7 +2264,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(invoiceItem.SalesRep, salesrep1);
+            Assert.Contains(salesrep1, invoiceItem.SalesReps);
         }
 
         [Fact]
@@ -2278,6 +2277,7 @@ namespace Allors.Domain
             var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
+                .WithProduct(this.good)
                 .Build();
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
@@ -2305,8 +2305,6 @@ namespace Allors.Domain
                 .WithCustomer(this.invoice.BillToCustomer)
                 .Build();
 
-            this.good.PrimaryProductCategory = parentProductCategory;
-
             this.Session.Derive();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session)
@@ -2320,7 +2318,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(invoiceItem.SalesRep, salesrep2);
+            Assert.Contains(salesrep2, invoiceItem.SalesReps);
         }
 
         [Fact]
@@ -2371,7 +2369,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(invoiceItem.SalesRep, salesrep3);
+            Assert.Contains(salesrep3, invoiceItem.SalesReps);
         }
 
         [Fact]

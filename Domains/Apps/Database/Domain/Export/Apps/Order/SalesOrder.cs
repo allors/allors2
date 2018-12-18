@@ -509,7 +509,10 @@ namespace Allors.Domain
             this.RemoveSalesReps();
             foreach (SalesOrderItem item in this.ValidOrderItems)
             {
-                this.AddSalesRep(item.SalesRep);
+                foreach (Person salesRep in item.SalesReps)
+                {
+                    this.AddSalesRep(salesRep);
+                }
             }
         }
 

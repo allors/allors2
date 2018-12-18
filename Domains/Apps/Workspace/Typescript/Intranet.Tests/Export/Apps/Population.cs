@@ -129,33 +129,6 @@ namespace Tests.Intranet
                                             .Build())
                 .Build();
 
-            var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithInternalOrganisation(allors)
-                .WithName("Best selling gizmo's")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meest verkochte gizmo's").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithInternalOrganisation(allors)
-                .WithName("Big Gizmo's")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Grote Gizmo's").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var productCategory3 = new ProductCategoryBuilder(this.Session)
-                .WithInternalOrganisation(allors)
-                .WithName("Small gizmo's")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kleine gizmo's").WithLocale(dutchLocale).Build())
-                .Build();
-
-            new CatalogueBuilder(this.Session)
-                .WithInternalOrganisation(allors)
-                .WithName("New gizmo's")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe gizmo's").WithLocale(dutchLocale).Build())
-                .WithDescription("Latest in the world of Gizmo's")
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Laatste in de wereld van Gizmo's").WithLocale(dutchLocale).Build())
-                .WithProductCategory(productCategory1)
-                .Build();
-
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var brand = new BrandBuilder(this.Session)
@@ -181,7 +154,6 @@ namespace Tests.Intranet
                 .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood)
                 .Build();
 
@@ -204,7 +176,6 @@ namespace Tests.Intranet
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood2)
                 .Build();
 
@@ -229,8 +200,37 @@ namespace Tests.Intranet
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood3)
+                .Build();
+
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(allors)
+                .WithName("Best selling gizmo's")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meest verkochte gizmo's").WithLocale(dutchLocale).Build())
+                .Build();
+
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(allors)
+                .WithName("Big Gizmo's")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Grote Gizmo's").WithLocale(dutchLocale).Build())
+                .Build();
+
+            var productCategory3 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(allors)
+                .WithName("Small gizmo's")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kleine gizmo's").WithLocale(dutchLocale).Build())
+                .WithProduct(good1)
+                .WithProduct(good2)
+                .WithProduct(good3)
+                .Build();
+
+            new CatalogueBuilder(this.Session)
+                .WithInternalOrganisation(allors)
+                .WithName("New gizmo's")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe gizmo's").WithLocale(dutchLocale).Build())
+                .WithDescription("Latest in the world of Gizmo's")
+                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Laatste in de wereld van Gizmo's").WithLocale(dutchLocale).Build())
+                .WithProductCategory(productCategory1)
                 .Build();
 
             this.Session.Derive();

@@ -236,7 +236,6 @@ namespace Allors.Domain
 
             var salesOrderItem = salesOrder.SalesOrderItems.First;
             salesOrder.AddValidOrderItem(salesOrderItem);
-            salesOrderItem.SalesRep = salesPerson;
 
             //// Work Effort Inventory Assignmets
             var part1 = this.CreatePart("P1");

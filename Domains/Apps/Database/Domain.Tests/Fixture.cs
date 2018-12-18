@@ -131,24 +131,13 @@ namespace Allors
 
                 var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
 
-                var catMain = new ProductCategoryBuilder(session).WithName("main cat").Build();
-                var cat1 = new ProductCategoryBuilder(session)
-                    .WithName("cat for good1")
-                    .WithParent(catMain)
-                    .Build();
-                var cat2 = new ProductCategoryBuilder(session)
-                    .WithName("cat for good2")
-                    .WithParent(catMain)
-                    .Build();
-
-                new GoodBuilder(session)
+                var good1 = new GoodBuilder(session)
                     .WithGoodIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
                     .WithVatRate(vatRate21)
                     .WithName("good1")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
-                    .WithPrimaryProductCategory(cat1)
                     .WithPart(new PartBuilder(session)
                         .WithGoodIdentification(new PartNumberBuilder(session)
                             .WithIdentification("1")
@@ -156,14 +145,13 @@ namespace Allors
                         .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
                     .Build();
 
-                new GoodBuilder(session)
+                var good2 = new GoodBuilder(session)
                     .WithGoodIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("2")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
                     .WithVatRate(vatRate21)
                     .WithName("good2")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
-                    .WithPrimaryProductCategory(cat2)
                     .WithPart(new PartBuilder(session)
                         .WithGoodIdentification(new PartNumberBuilder(session)
                             .WithIdentification("2")
@@ -171,19 +159,33 @@ namespace Allors
                         .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
                     .Build();
 
-                new GoodBuilder(session)
+                var good3 = new GoodBuilder(session)
                     .WithGoodIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("3")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
                     .WithVatRate(vatRate21)
                     .WithName("good3")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
-                    .WithPrimaryProductCategory(cat2)
                     .WithPart(new PartBuilder(session)
                         .WithGoodIdentification(new PartNumberBuilder(session)
                             .WithIdentification("3")
                             .WithGoodIdentificationType(new GoodIdentificationTypes(session).Part).Build())
                         .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                    .Build();
+
+                var catMain = new ProductCategoryBuilder(session).WithName("main cat").Build();
+
+                var cat1 = new ProductCategoryBuilder(session)
+                    .WithName("cat for good1")
+                    .WithParent(catMain)
+                    .WithProduct(good1)
+                    .Build();
+
+                var cat2 = new ProductCategoryBuilder(session)
+                    .WithName("cat for good2")
+                    .WithParent(catMain)
+                    .WithProduct(good2)
+                    .WithProduct(good3)
                     .Build();
 
                 session.Derive();

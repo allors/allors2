@@ -20,7 +20,7 @@ namespace Allors.Domain
     
     public partial class SalesRepRelationships
     {
-        public static Person SalesRep(Organisation customer, ProductCategory productCategory, DateTime date)
+        public static Person SalesRep(Party customer, ProductCategory productCategory, DateTime date)
         {
             Person salesRep = null;
             var salesRepRelationships = customer.SalesRepRelationshipsWhereCustomer;

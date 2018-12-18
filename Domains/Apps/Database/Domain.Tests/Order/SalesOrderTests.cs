@@ -2478,13 +2478,14 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(childProductCategory)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
+            childProductCategory.AddProduct(good1);
 
             var good2 = new GoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
@@ -2493,13 +2494,14 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(parentProductCategory)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("2")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
+            parentProductCategory.AddProduct(good2);
 
             var good3 = new GoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
@@ -2508,7 +2510,6 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithName("good3")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithPart(new PartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("3")

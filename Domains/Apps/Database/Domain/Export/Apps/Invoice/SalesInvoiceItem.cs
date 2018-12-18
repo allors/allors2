@@ -510,16 +510,19 @@ namespace Allors.Domain
 
         public void AppsOnDeriveSalesRep(IDerivation derivation)
         {
-            if (this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer is Organisation customer)
+            var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
+
+            this.RemoveSalesReps();
+            if (this.ExistProduct)
             {
-                if (this.ExistProduct)
+                foreach (ProductCategory productCategory in this.Product.ProductCategoriesWhereAllProduct)
                 {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
+                    this.AddSalesRep(SalesRepRelationships.SalesRep(customer, productCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
                 }
-                else
-                {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
-                }
+            }
+            else
+            {
+                this.AddSalesRep(SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
             }
         }
 

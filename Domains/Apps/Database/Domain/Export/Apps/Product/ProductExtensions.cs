@@ -35,11 +35,6 @@ namespace Allors.Domain
                     .Build();
             }
 
-            if (!@this.ExistPrimaryProductCategory && @this.ProductCategoriesWhereProduct.Count == 1)
-            {
-                @this.PrimaryProductCategory = @this.ProductCategoriesWhereProduct.First;
-            }
-
             @this.AppsOnDeriveProductCategoriesExpanded();
 
             //VendorProduct activeVendorProduct = null;

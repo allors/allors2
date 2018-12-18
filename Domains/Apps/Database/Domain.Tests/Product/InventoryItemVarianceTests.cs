@@ -101,7 +101,6 @@ namespace Allors.Domain
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
-                .WithPrimaryProductCategory(category)
                 .WithPart(part)
                 .Build();
 

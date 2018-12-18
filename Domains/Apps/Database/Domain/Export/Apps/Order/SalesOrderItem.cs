@@ -991,17 +991,17 @@ namespace Allors.Domain
 
         public void AppsOnDeriveSalesRep(IDerivation derivation)
         {
-            this.SalesRep = null;
-            if (this.ShipToParty is Organisation customer)
+            this.RemoveSalesReps();
+            if (this.ExistProduct)
             {
-                if (this.ExistProduct)
+                foreach (ProductCategory productCategory in this.Product.ProductCategoriesWhereAllProduct)
                 {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesOrderWhereSalesOrderItem.OrderDate);
+                    this.AddSalesRep(SalesRepRelationships.SalesRep(this.ShipToParty, productCategory, this.SalesOrderWhereSalesOrderItem.OrderDate));
                 }
-                else
-                {
-                    this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.SalesOrderWhereSalesOrderItem.OrderDate);
-                }
+            }
+            else
+            {
+                this.AddSalesRep(SalesRepRelationships.SalesRep(this.ShipToParty, null, this.SalesOrderWhereSalesOrderItem.OrderDate));
             }
         }
 
