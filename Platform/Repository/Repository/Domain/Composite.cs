@@ -53,7 +53,7 @@ namespace Allors.Repository.Domain
             }
         }
 
-        public abstract IEnumerable<Interface> Interfaces { get; }
+        public abstract Interface[] Interfaces { get; }
 
         public Dictionary<string, Attribute> AttributeByName { get; }
 
@@ -69,21 +69,21 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, Method> MethodByName { get; }
 
-        public IEnumerable<Property> Properties => this.PropertyByRoleName.Values;
+        public Property[] Properties => this.PropertyByRoleName.Values.ToArray();
 
-        public IEnumerable<Property> DefinedProperties => this.PropertyByRoleName.Values.Where(v => v.DefiningProperty == null);
+        public Property[] DefinedProperties => this.PropertyByRoleName.Values.Where(v => v.DefiningProperty == null).ToArray();
 
-        public IEnumerable<Property> ImplementedProperties => this.PropertyByRoleName.Values.Where(v => v.DefiningProperty != null);
+        public Property[] ImplementedProperties => this.PropertyByRoleName.Values.Where(v => v.DefiningProperty != null).ToArray();
 
-        public IEnumerable<Property> DefinedReverseProperties => this.DefinedReversePropertyByAssociationName.Values;
+        public Property[] DefinedReverseProperties => this.DefinedReversePropertyByAssociationName.Values.ToArray();
 
-        public IEnumerable<Property> InheritedReverseProperties => this.InheritedReversePropertyByAssociationName.Values;
+        public Property[] InheritedReverseProperties => this.InheritedReversePropertyByAssociationName.Values.ToArray();
 
-        public IEnumerable<Method> Methods => this.MethodByName.Values;
+        public Method[] Methods => this.MethodByName.Values.ToArray();
 
-        public IEnumerable<Method> DefinedMethods => this.MethodByName.Values.Where(v => v.DefiningMethod == null);
+        public Method[] DefinedMethods => this.MethodByName.Values.Where(v => v.DefiningMethod == null).ToArray();
 
-        public IEnumerable<Method> InheritedMethods => this.MethodByName.Values.Where(v => v.DefiningMethod != null);
+        public Method[] InheritedMethods => this.MethodByName.Values.Where(v => v.DefiningMethod != null).ToArray();
 
         public override string ToString()
         {

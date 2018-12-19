@@ -100,17 +100,17 @@ namespace Allors.Repository.Domain
             }
         }
 
-        public IEnumerable<Domain> Domains => this.DomainByName.Values;
+        public Domain[] Domains => this.DomainByName.Values.ToArray();
 
-        public IEnumerable<Unit> Units => this.UnitBySingularName.Values;
+        public Unit[] Units => this.UnitBySingularName.Values.ToArray();
 
-        public IEnumerable<Interface> Interfaces => this.InterfaceBySingularName.Values;
+        public Interface[] Interfaces => this.InterfaceBySingularName.Values.ToArray();
 
-        public IEnumerable<Class> Classes => this.ClassBySingularName.Values;
+        public Class[] Classes => this.ClassBySingularName.Values.ToArray();
 
-        public IEnumerable<Type> Types => this.Composites.Cast<Type>().Union(this.Units);
+        public Type[] Types => this.Composites.Cast<Type>().Union(this.Units).ToArray();
 
-        public IEnumerable<Composite> Composites => this.ClassBySingularName.Values.Cast<Composite>().Union(this.InterfaceBySingularName.Values);
+        public Composite[] Composites => this.ClassBySingularName.Values.Cast<Composite>().Union(this.InterfaceBySingularName.Values).ToArray();
 
         public Dictionary<string, Domain> DomainByName { get; }
 

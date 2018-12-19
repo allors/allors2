@@ -120,8 +120,10 @@ $repository.Composites:{composite|$inheritance(composite)$}; separator="\n"$
 		
 		internal void BuildRoles()
 		{
-$repository.Composites:{composite|$relations(composite)$}; separator="\n"$
+$repository.Composites:{composite|				BuildRoles$composite.SingularName$();}; separator="\n"$
 		}
+
+$repository.Composites:{composite|$relations(composite)$}; separator="\n"$
 
 		internal void BuildInheritedRoles()
 		{
@@ -175,7 +177,16 @@ $endif$
 inheritance(composite) ::= <<$composite.ImplementedInterfaces:{implementedInterface|$inheritance_implentedInterface(composite, implementedInterface)$}; separator="\n"$>>
 inheritance_implentedInterface(composite, implementedInterface) ::= <<            new Inheritance(this.metaPopulation){ Subtype = (Composite)Meta$composite.SingularName$.Instance.ObjectType, Supertype = Meta$implementedInterface.SingularName$.Instance.Interface};>>
 
-relations(composite) ::= <<$composite.DefinedProperties:{property|$relation(property)$}; separator="\n"$>>
+relations(composite) ::= <<
+
+	private void BuildRoles$composite.SingularName$() {
+
+$composite.DefinedProperties:{property|$relation(property)$}; separator="\n"$
+	}
+
+>>
+
+
 relation(property) ::= <<
 	{
 		var relationType = new RelationType(this.metaPopulation, new System.Guid("$property.AttributeByName.Id.Value$"), new System.Guid("$property.AttributeByName.AssociationId.Value$"), new System.Guid("$property.AttributeByName.RoleId.Value$"));

@@ -23,6 +23,7 @@ namespace Allors.Repository.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Interface : Composite
     {
@@ -33,7 +34,7 @@ namespace Allors.Repository.Domain
             this.InheritedPropertyByRoleName = new Dictionary<string, Property>();
         }
 
-        public override IEnumerable<Interface> Interfaces
+        public override Interface[] Interfaces
         {
             get
             {
@@ -43,7 +44,7 @@ namespace Allors.Repository.Domain
                     implementedInterface.AddInterfaces(interfaces);
                 }
 
-                return interfaces;
+                return interfaces.ToArray();
             }
         }
 
@@ -60,7 +61,7 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, Property> InheritedPropertyByRoleName { get; }
 
-        public IEnumerable<Property> InheritedProperties => this.InheritedPropertyByRoleName.Values;
+        public Property[] InheritedProperties => this.InheritedPropertyByRoleName.Values.ToArray();
 
         public override string ToString()
         {

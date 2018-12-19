@@ -23,6 +23,7 @@ namespace Allors.Repository.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Class : Composite
     {
@@ -34,7 +35,7 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, PartialClass> PartialByDomainName { get; }
 
-        public override IEnumerable<Interface> Interfaces
+        public override Interface[] Interfaces
         {
             get
             {
@@ -44,7 +45,7 @@ namespace Allors.Repository.Domain
                     interfaces.UnionWith(implementedInterface.Interfaces);
                 }
 
-                return interfaces;
+                return interfaces.ToArray();
             }
         }
 
