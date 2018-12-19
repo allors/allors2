@@ -4,8 +4,8 @@
     <div class="row">
       <div class="col">
         <a *ngIf="part" (click)="navigationService.list(m.Part)">Parts</a>
-        <a *ngIf="owner?.objectType === allors.m.Organisation" (click)="navigationService.list(m.Organisation)">Organisations</a>
-        <a *ngIf="owner?.objectType === allors.m.Person" (click)="navigationService.list(m.Person)">People</a>
+        <a *ngIf="owner?.objectType === metaService.m.Organisation" (click)="navigationService.list(m.Organisation)">Organisations</a>
+        <a *ngIf="owner?.objectType === metaService.m.Person" (click)="navigationService.list(m.Person)">People</a>
         <span *ngIf="add"> / Add serialised item</span>
         <span *ngIf="part && edit && item"> / <a (click)="navigationService.overview(part)">{{part.Name}}</a> / Edit serialised item</span>
         <span *ngIf="owner && edit && item"> / <a (click)="navigationService.overview(owner)">{{owner.displayName}}</a> / Edit serialised item</span>
@@ -46,12 +46,12 @@
 
               <div class="row">
                 <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships" display="Name"></a-mat-select>
-                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.OwnedBy" [filter]="organisationFilter.create(scope)" display="Name"></a-mat-autocomplete>
+                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.OwnedBy" [filter]="organisationFilter.create(allors.context)" display="Name"></a-mat-autocomplete>
               </div>
 
               <div class="row">
                 <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.SuppliedBy" [options]="activeSuppliers" display="Name"></a-mat-select>
-                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.RentedBy" [filter]="organisationFilter.create(scope)" display="Name"></a-mat-autocomplete>
+                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.RentedBy" [filter]="organisationFilter.create(allors.context)" display="Name"></a-mat-autocomplete>
               </div>
 
               <div class="row">

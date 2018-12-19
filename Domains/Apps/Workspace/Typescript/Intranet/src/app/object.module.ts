@@ -32,7 +32,7 @@ import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../
 import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 
-const create = {
+export const create = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
   [ids.Good]: GoodCreateComponent,
@@ -70,7 +70,7 @@ const create = {
   [ids.Part]: PartCreateComponent,
 };
 
-const edit = {
+export const edit = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,

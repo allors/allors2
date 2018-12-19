@@ -52,15 +52,15 @@
 
                 <h3 mat-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
                 <h3 mat-line> {{partyContactMechanism.Contact}}</h3>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.EmailAddress">{{
+                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.EmailAddress">{{
                     partyContactMechanism.ContactMechanism.ElectronicAddressString}} </div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.WebAddress">{{
+                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.WebAddress">{{
                     partyContactMechanism.ContactMechanism.ElectronicAddressString}}</div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.TelecommunicationsNumber">{{
+                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.TelecommunicationsNumber">{{
                     partyContactMechanism.ContactMechanism.CountryCode}} {{
                     partyContactMechanism.ContactMechanism.AreaCode}} {{
                     partyContactMechanism.ContactMechanism.ContactNumber}}</div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.PostalAddress">{{
+                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.PostalAddress">{{
                     partyContactMechanism.ContactMechanism.Address1}} {{
                     partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
                     {{partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{
@@ -93,10 +93,10 @@
 
         <button mat-button [matMenuTriggerFor]="menuAddContact">Add new</button>
         <mat-menu #menuAddContact="matMenu">
-            <button mat-menu-item (click)="add(allors.m.WebAddress.objectType)">Web</button>
-            <button mat-menu-item (click)="add(allors.m.EmailAddress.objectType)">Email</button>
-            <button mat-menu-item (click)="add(allors.m.PostalAddress.objectType)">Postal</button>
-            <button mat-menu-item (click)="add(allors.m.TelecommunicationsNumber.objectType)">Telecom</button>
+            <button mat-menu-item (click)="add(metaService.m.WebAddress.objectType)">Web</button>
+            <button mat-menu-item (click)="add(metaService.m.EmailAddress.objectType)">Email</button>
+            <button mat-menu-item (click)="add(metaService.m.PostalAddress.objectType)">Postal</button>
+            <button mat-menu-item (click)="add(metaService.m.TelecommunicationsNumber.objectType)">Telecom</button>
         </mat-menu>
 
     </div>
