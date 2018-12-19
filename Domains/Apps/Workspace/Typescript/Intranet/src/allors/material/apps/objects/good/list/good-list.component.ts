@@ -1,25 +1,21 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { MatSnackBar, MatTableDataSource, MatDialog, PageEvent } from '@angular/material';
-import { SelectionModel } from '@angular/cdk/collections';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment';
 
-import { PullRequest, And, Like, Sort, SessionObject } from '../../../../../framework';
-import { ErrorService, MediaService, ContextService, NavigationService, Invoked, MetaService, RefreshService } from '../../../../../angular';
-import { AllorsFilterService } from '../../../../../angular/base/filter';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Sorter } from '../../../../base/sorting';
-import { StateService } from '../../../services/state';
+import { PullRequest, And, Like } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
 import { Good, ProductCategory } from '../../../../../domain';
-import { Fetcher } from '../../Fetcher';
-import { Meta } from 'src/allors/meta';
 
-interface Row {
-  good: Good;
+import { ObjectService } from '../../../../../material/base/services/object';
+
+
+interface Row extends TableRow {
+  object: Good;
   name: string;
   categories: string;
   qoh: number;
@@ -31,122 +27,85 @@ interface Row {
 })
 export class GoodListComponent implements OnInit, OnDestroy {
 
-  public title = 'Products';
+  public title = 'Goods';
 
-  public displayedColumns = ['select', 'name', 'categories', 'qty on hand', 'menu'];
-  public selection = new SelectionModel<Row>(true, []);
+  table: Table<Row>;
 
-  public total: number;
-  public dataSource = new MatTableDataSource<Row>();
-
-  private sort$: BehaviorSubject<Sort>;
-  private refresh$: BehaviorSubject<Date>;
-  private pager$: BehaviorSubject<PageEvent>;
+  delete: Action;
 
   private subscription: Subscription;
-  private readonly fetcher: Fetcher;
-
-  public m: Meta;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
+    public factoryService: ObjectService,
+    public refreshService: RefreshService,
+    public navigateService: NavigateService,
+    public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    private location: Location,
-    private titleService: Title,
-    private stateService: StateService) {
+    titleService: Title) {
 
-    this.titleService.setTitle(this.title);
+    titleService.setTitle(this.title);
 
-    this.m = this.metaService.m;
+    this.delete = deleteService.delete(allors.context);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
-    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'name', sort: true},
+        { name: 'categories'},
+        { name: 'qoh' },
+      ],
+      actions: [
+        navigateService.overview(),
+        this.delete
+      ],
+      defaultAction: navigateService.overview(),
+    });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Good.Name, parameter: 'Name' }),
-      new Like({ roleType: m.Good.Keywords, parameter: 'Keyword' }),
-      // new ContainedIn({
-      //   propertyType: m.Good.GoodIdentifications,
-      //   extent: new Filter({
-      //     objectType: m.GoodIdentification,
-      //     predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'Sku' })
-      //   })
-      // }),
-      // new Contains({ propertyType: m.Good.ProductCategories, parameter: 'Category' }),
-      // new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
-      // new ContainedIn({
-      //   propertyType: m.Good.Part,
-      //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' })
-      //   })
-      // }),
-      // new ContainedIn({
-      //   propertyType: m.Good.Part,
-      //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
-      //   })
-      // }),
-      // new ContainedIn({
-      //   propertyType: m.Good.Part,
-      //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
-      //   })
-      // }),
-      // new ContainedIn({
-      //   propertyType: m.Good.Part,
-      //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' })
-      //   })
-      // }),
+      new Like({ roleType: m.Good.Name, parameter: 'name' }),
+      new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
     ]);
 
     this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: m.Good.Name
+        name: [m.Good.Name],
       }
     );
 
-    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            this.fetcher.internalOrganisation,
             pull.Good({
               predicate,
               sort: sorter.create(sort),
               include: {
-                LocalisedNames: x,
+                Part: x,
                 PrimaryPhoto: x,
-                Part: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -161,11 +120,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
                     Products: x,
                   }
                 },
-              },
-              arguments: this.filterService.arguments(filterFields),
-              skip: pageEvent.pageIndex * pageEvent.pageSize,
-              take: pageEvent.pageSize,
-            }),
+              }
+            })
           ];
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }));
@@ -173,16 +129,16 @@ export class GoodListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.total = loaded.values.Goods_total;
 
         const goods = loaded.collections.Goods as Good[];
         const productCategories = loaded.collections.ProductCategories as ProductCategory[];
 
-        this.dataSource.data = goods.map((v) => {
+        this.table.total = loaded.values.Goods_total;
+        this.table.data = goods.map((v) => {
           return {
-            good: v,
+            object: v,
             name: v.Name,
-            categories: productCategories.filter(w => w.Products.includes(v)).join(', '),
+            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.Name).join(', '),
             qoh: v.Part.QuantityOnHand
           } as Row;
         });
@@ -192,72 +148,6 @@ export class GoodListComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-  }
-
-  public get hasSelection() {
-    return !this.selection.isEmpty();
-  }
-
-  public get hasDeleteSelection() {
-    return this.selectedGoods.filter((v) => v.CanExecuteDelete).length > 0;
-  }
-
-  public get selectedGoods() {
-    return this.selection.selected.map(v => v.good);
-  }
-
-  public isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public goBack(): void {
-    this.location.back();
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public sort(event: Sort): void {
-    this.sort$.next(event);
-  }
-
-  public page(event: PageEvent): void {
-    this.pager$.next(event);
-  }
-
-  public delete(good: Good | Good[]): void {
-
-    const goods = good instanceof SessionObject ? [good as Good] : good instanceof Array ? good : [];
-    const methods = goods.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
-
-    if (methods.length > 0) {
-      this.dialogService
-        .confirm(
-          methods.length === 1 ?
-            { message: 'Are you sure you want to delete this good?' } :
-            { message: 'Are you sure you want to delete these goods?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.invoke(methods)
-              .subscribe(() => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          }
-        });
     }
   }
 }
