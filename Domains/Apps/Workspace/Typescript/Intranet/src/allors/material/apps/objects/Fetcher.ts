@@ -11,7 +11,7 @@ export class Fetcher {
 
   public get internalOrganisation(): Pull {
 
-    return this.pull.InternalOrganisation({
+    return this.pull.Organisation({
       name: 'InternalOrganisation',
       object: this.stateService.internalOrganisationId,
       include: {

@@ -159,7 +159,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.organisation = loaded.objects.Organisation as Organisation;
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.customerRelationship = loaded.collections.CustomerRelationships[0] as CustomerRelationship;
         this.supplierRelationship = loaded.collections.SupplierRelationships[0] as SupplierRelationship;

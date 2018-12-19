@@ -4,7 +4,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { CatScope, InternalOrganisation, Locale, ProductCategory } from '../../../../../domain';
+import { CatScope, InternalOrganisation, Locale, ProductCategory, Organisation } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -86,7 +86,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.category = loaded.objects.ProductCategory as ProductCategory;
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopes as CatScope[];

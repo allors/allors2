@@ -92,7 +92,7 @@ export class PhoneCommunicationCreateComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.employees = internalOrganisation.ActiveEmployees;
 
         this.person = loaded.objects.Person as Person;

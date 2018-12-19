@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
-import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
+import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask, Organisation } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -106,7 +106,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
         this.priorities = loaded.collections.priorities as Priority[];
         this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
         this.employees = internalOrganisation.ActiveEmployees;
       }, this.errorService.handler);
   }

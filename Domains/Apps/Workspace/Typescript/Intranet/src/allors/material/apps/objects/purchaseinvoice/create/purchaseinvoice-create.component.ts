@@ -114,7 +114,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
         this.invoice.BilledTo = internalOrganisation;

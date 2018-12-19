@@ -43,6 +43,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
   parts: Part[];
   goodIdentificationTypes: GoodIdentificationType[];
   productNumber: ProductNumber;
+  selectedCategories: ProductCategory[] = [];
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -70,7 +71,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
-          let pulls = [
+          const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
             pull.VatRate(),
@@ -92,7 +93,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facility = internalOrganisation.DefaultFacility;
 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
@@ -145,6 +146,10 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
+
+    this.selectedCategories.forEach((category: ProductCategory) => {
+      category.AddProduct(this.good);
+    });
 
     this.allors.context.save()
       .subscribe(() => {

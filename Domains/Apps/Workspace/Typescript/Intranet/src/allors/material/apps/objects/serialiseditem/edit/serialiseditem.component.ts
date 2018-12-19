@@ -157,7 +157,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, add }) => {
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facility = internalOrganisation.DefaultFacility;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));

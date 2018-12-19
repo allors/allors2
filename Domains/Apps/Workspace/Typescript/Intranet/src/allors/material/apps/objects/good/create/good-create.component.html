@@ -1,6 +1,6 @@
 <form *ngIf="good" class="a-edit" #form="ngForm" (submit)="save()">
 
-  <h3 mat-dialog-title>{{title}}</h3>
+  <h3 mat-dialog-title>Add a new Good</h3>
 
   <div>
 
@@ -24,10 +24,12 @@
           </div>
 
           <div class="row">
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories"
-              display="Name"></a-mat-select>
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories"
-              display="Name"></a-mat-select>
+            <mat-form-field class="col-md">
+              <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
 
           <div class="row">

@@ -204,7 +204,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms
             .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress)

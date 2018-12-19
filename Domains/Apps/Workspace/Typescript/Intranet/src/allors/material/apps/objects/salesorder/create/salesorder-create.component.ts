@@ -131,7 +131,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
 
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = internalOrganisation;

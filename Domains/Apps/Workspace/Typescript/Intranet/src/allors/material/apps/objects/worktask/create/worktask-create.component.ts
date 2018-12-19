@@ -84,7 +84,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.organisations = loaded.collections.Organisations as Organisation[];
 

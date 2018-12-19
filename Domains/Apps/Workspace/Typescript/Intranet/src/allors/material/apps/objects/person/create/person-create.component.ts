@@ -116,7 +116,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
         this.organisations = loaded.collections.Organisations as Organisation[];
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];

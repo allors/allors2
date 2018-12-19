@@ -128,7 +128,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.organisation = loaded.objects.Organisation as Organisation;
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         if (this.organisation) {
           this.customerRelationship = loaded.collections.CustomerRelationships[0] as CustomerRelationship;

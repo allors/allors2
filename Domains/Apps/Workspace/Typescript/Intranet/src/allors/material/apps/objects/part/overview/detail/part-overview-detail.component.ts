@@ -177,7 +177,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facility = internalOrganisation.DefaultFacility;
 
         this.part = loaded.objects.Part as Part;

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
-import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../domain';
+import { Good, Part, PriceComponent, InternalOrganisation, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -107,7 +107,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.good = loaded.objects.Good as Good;
         this.part = loaded.objects.Part as Part;
 

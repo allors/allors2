@@ -195,7 +195,7 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
         this.ownEmailAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms

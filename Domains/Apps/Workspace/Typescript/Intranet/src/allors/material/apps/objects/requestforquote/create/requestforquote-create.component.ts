@@ -74,7 +74,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.currencies = loaded.collections.Currencies as Currency[];
 

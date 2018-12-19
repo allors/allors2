@@ -96,7 +96,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.quote = loaded.objects.productQuote as ProductQuote;
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = internalOrganisation;

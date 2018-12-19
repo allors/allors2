@@ -105,7 +105,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facility = internalOrganisation.DefaultFacility;
 
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];

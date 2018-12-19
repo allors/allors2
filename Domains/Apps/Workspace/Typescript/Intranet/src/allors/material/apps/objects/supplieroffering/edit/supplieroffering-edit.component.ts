@@ -120,7 +120,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
         this.part = loaded.objects.Part as Part;
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
         if (add) {

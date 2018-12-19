@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
+import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -96,7 +96,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.categories = loaded.collections.Categories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopes as CatScope[];
-        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         if (create) {
           this.title = 'Add Catalogue';

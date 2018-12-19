@@ -148,7 +148,7 @@ export class LetterCorrespondenceCreateComponent
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) =>
             v.CurrentPartyContactMechanisms
