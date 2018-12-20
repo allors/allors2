@@ -75,7 +75,8 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
           disabled: () => false,
           execute: (target: ActionTarget) => {
             if (!Array.isArray(target)) {
-              this.navigateService.navigationService.add(this.m.InventoryItemTransaction, target, this.part);
+              // TODO:
+              // this.navigateService.navigationService.add(this.m.InventoryItemTransaction, target, this.part);
             }
           },
           result: null

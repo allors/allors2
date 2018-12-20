@@ -6,10 +6,12 @@ import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
 import { MenuService, Loaded, ContextService, MetaService } from '../../allors/angular';
-import { Equals, PullRequest } from '../../allors/framework';
+import { Equals, PullRequest, ObjectType } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
+
+import { MenuItem, menu } from './main.menu';
 
 @Component({
   styleUrls: ['main.component.scss'],
@@ -42,15 +44,20 @@ export class MainComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.menuService.pagesByModule.forEach((pages, module) => {
-      const sideMenuItem = {
-        icon: module.icon,
-        title: module.title,
-        link: !module.children || module.children.length === 0 ? module.link : undefined,
-        children: pages.map((page) => {
+    menu.forEach((menuItem) => {
+      const objectType = this.metaService.m.metaObjectById[menuItem.id] as ObjectType;
+
+      const sideMenuItem: SideMenuItem = {
+        icon: menuItem.icon || objectType && objectType.icon,
+        title: menuItem.title || objectType && objectType.displayName,
+        link: menuItem.link || objectType && objectType.list,
+        children: menuItem.children && menuItem.children.map((childMenuItem) => {
+
+          const childObjectType = this.metaService.m.metaObjectById[childMenuItem.id] as ObjectType;
           return {
-            title: page.title,
-            link: page.link,
+            icon: childMenuItem.icon || childObjectType && childObjectType.icon,
+            title: childMenuItem.title || childObjectType && childObjectType.displayName,
+            link: childMenuItem.link || childObjectType && childObjectType.list,
           };
         }),
       };

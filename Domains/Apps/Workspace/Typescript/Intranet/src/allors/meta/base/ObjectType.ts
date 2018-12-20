@@ -5,8 +5,10 @@ const displayName = Symbol('displayName');
 
 declare module '../../framework/meta/ObjectType' {
     interface ObjectType {
-        icon;
-        displayName;
+        icon: string;
+        displayName: string;
+        list: string;
+        overview: string;
     }
 }
 

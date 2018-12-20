@@ -99,11 +99,11 @@ export class PartyContactMechanismOverviewPanelComponent {
   }
 
   add(objectType: ObjectType) {
-    this.navigation.add(objectType, this.person);
+    // TODO:
   }
 
   edit(object: ISessionObject) {
-    this.navigation.edit(object, this.person);
+    // TODO:
   }
 
   remove(partyContactMechanism: PartyContactMechanism): void {

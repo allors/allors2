@@ -157,9 +157,9 @@ export const edit = {
     { provide: OBJECT_EDIT_TOKEN, useValue: edit },
   ]
 })
-export class ObjectModule {
+export class AppDialogModule {
 
-  constructor(@Optional() @SkipSelf() core: ObjectModule) {
+  constructor(@Optional() @SkipSelf() core: AppDialogModule) {
     if (core) {
       throw new Error('Use FactoryModule from AppModule');
     }

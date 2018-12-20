@@ -20,10 +20,12 @@ export class NavigateEditAction implements Action {
   execute = (target: ActionTarget) => {
     if (Array.isArray(target)) {
       if (target.length > 0) {
-        this.navigateService.navigationService.edit(target[0]);
+        // TODO:
+        // this.navigateService.navigationService.edit(target[0]);
       }
     } else {
-      this.navigateService.navigationService.edit(target);
+        // TODO:
+        // this.navigateService.navigationService.edit(target);
     }
 
     this.result.next(true);
