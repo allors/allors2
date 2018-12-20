@@ -2,48 +2,52 @@ namespace Tests.Intranet.PersonTests
 {
     using System.Linq;
 
+    using Allors;
     using Allors.Domain;
 
     using Tests.Components;
+    using Tests.Intranet.ProductTest;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class PersonEditTest : Test
+    public class GoodEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly ProductListPage goods;
 
-        public PersonEditTest(TestFixture fixture)
+        public GoodEditTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.goods = dashboard.Sidenav.NavigateToProductList();
         }
 
         [Fact]
         public void Add()
         {
-            this.people.AddNew.Click();
-            var before = new People(this.Session).Extent().ToArray();
+            this.goods.AddNew.Click();
+            var before = new Goods(this.Session).Extent().ToArray();
 
-            var page = new PersonEditPage(this.Driver);
+            var page = new GoodEditPage(this.Driver);
 
-            page.FirstName.Value = "Jos";
-            page.LastName.Value = "Smos";
+            page.Name.Value = "Mercedes Vito";
+            page.Description.Value = "Vans. Born to run.";
+            page.Part.Value = "finished good";
 
             page.Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new People(this.Session).Extent().ToArray();
+            var after = new Goods(this.Session).Extent().ToArray();
 
             Assert.Equal(after.Length, before.Length + 1);
 
-            var person = after.Except(before).First();
+            var good = after.Except(before).First();
 
-            Assert.Equal("Jos", person.FirstName);
-            Assert.Equal("Smos", person.LastName);
+            Assert.Equal("Mercedes Vito", good.Name);
+            Assert.Equal("Vans. Born to run.", good.Description);
+            Assert.Equal("finished good", good.Part.Name);
         }
 
         [Fact]
@@ -55,7 +59,7 @@ namespace Tests.Intranet.PersonTests
 
             //var personOverview = this.people.Select(person);
             //var page = personOverview.Edit();
-
+            
             //page.Salutation.Value = "Mr.";
 
             //page.FirstName.Text = "Jos";

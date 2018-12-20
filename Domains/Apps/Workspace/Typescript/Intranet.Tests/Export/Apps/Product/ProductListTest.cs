@@ -3,9 +3,9 @@ namespace Tests.Intranet.ProductTest
     using Xunit;
 
     [Collection("Test collection")]
-    public class ProductsListTest : Test
+    public class ProductListTest : Test
     {
-        public ProductsListTest(TestFixture fixture)
+        public ProductListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();

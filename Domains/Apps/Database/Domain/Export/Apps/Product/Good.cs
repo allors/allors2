@@ -58,6 +58,11 @@ namespace Allors.Domain
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Good).Build());
             }
 
+            if (!this.ExistGoodIdentifications)
+            {
+                derivation.Validation.AssertExists(this, M.Good.GoodIdentifications);
+            }
+
             if (!this.ExistVariants)
             {
                 derivation.Validation.AssertExists(this, M.Good.Part);

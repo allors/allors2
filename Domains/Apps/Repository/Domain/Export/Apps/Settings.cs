@@ -90,6 +90,7 @@ namespace Allors.Repository
         [AssociationId("06D7AA12-6398-4074-8584-046AA66E7B2A")]
         [RoleId("434C5608-147F-4B00-8BD1-461980B2576C")]
         #endregion
+        [Workspace]
         [Required]
         public bool UseGlobalProductNumber { get; set; }
 
