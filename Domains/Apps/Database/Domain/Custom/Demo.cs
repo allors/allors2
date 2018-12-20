@@ -148,6 +148,9 @@ namespace Allors
                 .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("G1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
@@ -170,6 +173,9 @@ namespace Allors
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("G2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("Tiny red round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -194,6 +200,9 @@ namespace Allors
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("G3")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("Tiny green round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -211,6 +220,9 @@ namespace Allors
                 .Build();
 
             var good4 = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("G4")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("Tiny purple round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine paarse ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)

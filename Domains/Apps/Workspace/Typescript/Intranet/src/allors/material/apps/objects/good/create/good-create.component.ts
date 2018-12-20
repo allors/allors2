@@ -5,12 +5,12 @@ import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../domain';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './good-create.component.html',
@@ -47,6 +47,8 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private fetcher: Fetcher;
+  settings: Settings;
+  goodNumberType: GoodIdentificationType;
 
   constructor(
     @Self() private allors: ContextService,
@@ -74,6 +76,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
+            this.fetcher.Settings,
             pull.VatRate(),
             pull.GoodIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
@@ -101,17 +104,20 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.settings = loaded.objects.Settings as Settings;
 
         const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
+        this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.good = this.allors.context.create('Good') as Good;
         this.good.VatRate = vatRateZero;
 
-        this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
-        this.productNumber.GoodIdentificationType = goodNumberType;
+        if (!this.settings.UseGlobalProductNumber) {
+          this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
+          this.productNumber.GoodIdentificationType = this.goodNumberType;
 
-        this.good.AddGoodIdentification(this.productNumber);
+          this.good.AddGoodIdentification(this.productNumber);
+        }
 
         this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
         this.vendorProduct.Product = this.good;
@@ -136,9 +142,18 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
+    this.selectedCategories.forEach((category: ProductCategory) => {
+      category.AddProduct(this.good);
+    });
+
     this.allors.context.save()
       .subscribe(() => {
-        this.navigationService.back();
+        const data: ObjectData = {
+          id: this.good.id,
+          objectType: this.good.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -146,10 +161,6 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-
-    this.selectedCategories.forEach((category: ProductCategory) => {
-      category.AddProduct(this.good);
-    });
 
     this.allors.context.save()
       .subscribe(() => {

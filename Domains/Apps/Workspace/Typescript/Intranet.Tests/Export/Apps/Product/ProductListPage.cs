@@ -15,6 +15,6 @@ namespace Tests.Intranet.ProductTest
 
         public Input Name => new Input(this.Driver, formControlName: "name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
     }
 }
