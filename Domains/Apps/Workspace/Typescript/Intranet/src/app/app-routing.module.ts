@@ -143,109 +143,109 @@ export const routes: Routes = [
     path: '', component: MainComponent,
     children: [
       {
-        path: '', data: moduleData({ title: 'Home', icon: 'home' }), component: DashboardComponent,
+        path: '', component: DashboardComponent,
       },
       // Relations
       {
-        path: 'contacts', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
+        path: 'contacts',
         children: [
-          { path: 'people', data: listData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
-          { path: 'person/:id', data: overviewData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
-          { path: 'organisations', data: listData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
-          { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationOverviewComponent },
-          { path: 'communicationevents', data: listData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
-          { path: 'emailcommunication/:id', data: overviewData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
-          { path: 'facetofacecommunication/:id', data: overviewData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
-          { path: 'lettercorrespondence/:id', data: overviewData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
-          { path: 'phonecommunicationevent/:id', data: overviewData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
+          { path: 'people', component: PersonList.PersonListComponent, },
+          { path: 'person/:id', component: PersonOverview.PersonOverviewComponent },
+          { path: 'organisations', component: OrganisationList.OrganisationListComponent },
+          { path: 'organisation/:id', component: OrganisationOverview.OrganisationOverviewComponent },
+          { path: 'communicationevents', component: CommunicationEventList.CommunicationEventListComponent },
+          { path: 'emailcommunication/:id', component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
+          { path: 'facetofacecommunication/:id', component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
+          { path: 'lettercorrespondence/:id', component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
+          { path: 'phonecommunicationevent/:id', component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
 
       // Orders
       {
-        path: 'sales', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
+        path: 'sales',
         children: [
-          { path: 'requestsforquote', data: listData({ id: ids.Request, icon: 'share' }), component: RequestsForQuoteList.RequestForQuoteListComponent },
-          { path: 'requestforquote/:id', data: overviewData({ id: ids.Request }), component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
-          { path: 'productquotes', data: listData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
-          { path: 'productquote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesorders', data: listData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
-          { path: 'salesorder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
+          { path: 'requestsforquote', component: RequestsForQuoteList.RequestForQuoteListComponent },
+          { path: 'requestforquote/:id', component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
+          { path: 'productquotes', component: ProductQuotesOverview.ProductQuotesOverviewComponent },
+          { path: 'productquote/:id', component: ProductQuoteOverview.ProductQuoteOverviewComponent },
+          { path: 'salesorders', component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesorder/:id', component: SalesOrderOverview.SalesOrderOverviewComponent },
         ],
       },
 
       // Catalogues
       {
-        path: 'products', data: moduleData({ title: 'Products', icon: 'build' }),
+        path: 'products',
         children: [
-          { path: 'goods', data: listData({ id: ids.Good }), component: GoodList.GoodListComponent },
-          { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
-          { path: 'parts', data: listData({ id: ids.Part }), component: PartList.PartListComponent },
-          { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
-          { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'productcategories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.ProductCategoriesOverviewComponent },
-          { path: 'serialiseditemcharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
-          { path: 'producttypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
+          { path: 'goods', component: GoodList.GoodListComponent },
+          { path: 'good/:id', component: GoodOverview.GoodOverviewComponent },
+          { path: 'parts', component: PartList.PartListComponent },
+          { path: 'part/:id', component: PartOverview.PartOverviewComponent },
+          { path: 'catalogues', component: CataloguesOverview.CataloguesOverviewComponent },
+          { path: 'productcategories', component: CategoriesOverview.ProductCategoriesOverviewComponent },
+          { path: 'serialiseditemcharacteristics', component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
+          { path: 'producttypes', component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
       },
 
       // Accounting
       {
-        path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
+        path: 'accounting',
         children: [
-          { path: 'purchaseinvoices', data: listData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
-          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
-          { path: 'salesinvoices', data: listData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
-          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
+          { path: 'purchaseinvoices', component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
+          { path: 'purchaseinvoice/:id', component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
+          { path: 'salesinvoices', component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
 
       // WorkEfforts
       {
-        path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
+        path: 'workefforts',
         children: [
-          { path: 'workefforts', data: listData({ id: ids.WorkEffort, icon: 'timer' }), component: WorkEffortList.WorkEffortListComponent },
-          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
+          { path: 'workefforts', component: WorkEffortList.WorkEffortListComponent },
+          { path: 'worktask/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
 
-      { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
-      { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },
+      // { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
+      // { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },
 
-      { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
-      { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
+      // { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
+      // { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
 
-      { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
-      { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
-      { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
-      { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
-      { path: 'telecommunicationsnumber', data: addData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
-      { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
-      { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
-      { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
+      // { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
+      // { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
+      // { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
+      // { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
+      // { path: 'telecommunicationsnumber', data: addData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
+      // { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
+      // { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
+      // { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
 
-      { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
-      { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
+      // { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
+      // { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
 
-      { path: 'supplieroffering', data: addData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
-      { path: 'supplieroffering/:id', data: editData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
+      // { path: 'supplieroffering', data: addData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
+      // { path: 'supplieroffering/:id', data: editData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
 
-      {
-        path: 'communicationevent',
-        children: [
-          { path: ':id/worktask', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
-          { path: ':id/worktask/:roleId', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
-        ],
-      },
+      // {
+      //   path: 'communicationevent',
+      //   children: [
+      //     { path: ':id/worktask', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
+      //     { path: ':id/worktask/:roleId', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
+      //   ],
+      // },
 
 
-      {
-        path: 'request',
-        children: [
-          { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
-          { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
+      // {
+      //   path: 'request',
+      //   children: [
+      //     { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
+      //     { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
+      //   ],
+      // },
     ],
   },
 ];

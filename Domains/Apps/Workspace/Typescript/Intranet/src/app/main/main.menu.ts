@@ -8,7 +8,6 @@ export interface MenuItem {
   children?: MenuItem[];
 }
 
-
 export const menu: MenuItem[] = [
   { title: 'Home', link: '/' },
   {

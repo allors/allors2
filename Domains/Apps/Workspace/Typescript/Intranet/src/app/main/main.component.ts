@@ -11,7 +11,7 @@ import { StateService } from '../../allors/material/apps/services/state/state.se
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { MenuItem, menu } from './main.menu';
+import { menu } from './main.menu';
 
 @Component({
   styleUrls: ['main.component.scss'],
