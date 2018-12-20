@@ -25,9 +25,9 @@
             string[,] config =
                 {
                     { "Database/Templates/domain.cs.stg", "Database/Domain/generated" },
-                    { "Database/Templates/uml.cs.stg", "Database/Diagrams" },
+                    { "Database/Templates/uml.cs.stg", "Database/Domain.Diagrams/generated" },
 
-                    { "Workspace/Csharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams" },
+                    { "Workspace/Csharp/Templates/uml.cs.stg", "Workspace/CSharp/Diagrams/generated" },
                     { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
                     { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
 

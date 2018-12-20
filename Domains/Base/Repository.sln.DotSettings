@@ -1,4 +1,14 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A0EA9C4CE5DBDB40B6F4DDA40E96E834/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A0EA9C4CE5DBDB40B6F4DDA40E96E834/AbsolutePath/@EntryValue">C:\Users\koen\Documents\GitHub\allors2\Platform\Repository\fileTemplates.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A0EA9C4CE5DBDB40B6F4DDA40E96E834/RelativePath/@EntryValue">..\..\..\Platform\Repository\fileTemplates.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=C54065A5D439DF43BD5582F3786ED11D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=C54065A5D439DF43BD5582F3786ED11D/AbsolutePath/@EntryValue">C:\Users\koen\Documents\GitHub\allors2\Platform\Repository\liveTemplates.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=C54065A5D439DF43BD5582F3786ED11D/RelativePath/@EntryValue">..\..\..\Platform\Repository\liveTemplates.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA0EA9C4CE5DBDB40B6F4DDA40E96E834/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA0EA9C4CE5DBDB40B6F4DDA40E96E834/RelativePriority/@EntryValue">1</s:Double>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileC54065A5D439DF43BD5582F3786ED11D/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileC54065A5D439DF43BD5582F3786ED11D/RelativePriority/@EntryValue">2</s:Double>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=13DE14E26020614E965163F2455EC343/Categories/=Imported_002020_002F08_002F2018/@EntryIndexedValue">Imported 20/08/2018</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=56C220D0A078B649B6C296253D953832/Categories/=Imported_002020_002F08_002F2018/@EntryIndexedValue">Imported 20/08/2018</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8B3A86DB826E0A4DBD96E95B256AA518/@KeyIndexDefined">True</s:Boolean>

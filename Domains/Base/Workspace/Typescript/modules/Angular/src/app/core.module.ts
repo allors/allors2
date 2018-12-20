@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { environment } from '../environments/environment';
 
 import {
-  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule, MenuModule
+  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule
 } from '../allors/angular';
 
 @NgModule({
@@ -26,9 +26,8 @@ import {
     AllorsRefreshModule.forRoot(),
     MediaModule.forRoot({ url: environment.url }),
 
-    // Menu/Navigation
+    // Navigation
     NavigationModule.forRoot(),
-    MenuModule.forRoot(),
   ],
   providers: [
   ],

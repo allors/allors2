@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  authenticationUrl: 'TestAuthentication/Token',
   production: false,
+  authenticationUrl: 'TestAuthentication/Token',
   url: 'http://localhost:5000/',
 };
 

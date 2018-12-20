@@ -169,6 +169,26 @@ namespace Allors.Repository
         [Indexed]
         public Person[] CycleMany { get; set; }
 
+        #region Allors
+        [Id("607C1D85-E722-40BC-A4D6-0C6A7244AF6A")]
+        [AssociationId("1AFD34A4-F075-4034-92D9-85EDDC6998D2")]
+        [RoleId("FB4834EB-344E-46ED-8D75-BF0C442C7078")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Data OneData { get; set; }
+
+        #region Allors
+        [Id("897DA15E-C250-441F-8F5C-6F9F3E7870EB")]
+        [AssociationId("3B9B5811-C034-45A1-91DD-2A7C11FC5EC2")]
+        [RoleId("658A5F21-58F2-413F-BEA0-DE9C3F1F8AB0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        public Data[] ManyDatas { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 
