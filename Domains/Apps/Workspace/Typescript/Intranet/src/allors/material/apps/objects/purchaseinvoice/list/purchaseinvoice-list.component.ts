@@ -13,7 +13,7 @@ import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
-import { NavigateService } from 'src/allors/material/base/actions';
+import { NavigateService } from 'src/allors/material/base/services/actions';
 
 interface Row {
   purchaseInvoice: PurchaseInvoice;

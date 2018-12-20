@@ -10,7 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { TableRow, Table } from 'src/allors/material/base/components/table';
-import { NavigateService } from 'src/allors/material/base/actions';
+import { NavigateService } from 'src/allors/material/base/services/actions';
 
 interface Row extends TableRow {
   object: InventoryItem;

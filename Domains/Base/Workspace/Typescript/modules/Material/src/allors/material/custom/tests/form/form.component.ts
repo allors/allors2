@@ -9,7 +9,8 @@ import { Meta } from '../../../../meta';
 import { Person, Data } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
 import { ErrorService, SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
-import { RadioGroupOption } from '../../../base/components/radiogroup/radiogroup.component';
+import { RadioGroupOption } from '../../../../material';
+
 import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({

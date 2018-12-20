@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import {
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
+  MatMenuModule, MatToolbarModule
+} from '@angular/material';
 
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
-         MatMenuModule, MatToolbarModule } from '@angular/material';
-
-import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialInputModule, AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule } from '../../../../material';
+import {
+  AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialDatetimepickerModule, AllorsMaterialSelectModule, AllorsMaterialInputModule,
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule,
+  AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule
+} from '../../../../material';
 
 import { FormComponent } from './form.component';
-import { FormsModule } from '../../../../../../node_modules/@angular/forms';
-import { AllorsMaterialDatetimepickerModule } from '../../../base/components/datetimepicker';
-
 export { FormComponent } from './form.component';
 
 @NgModule({
@@ -52,4 +55,4 @@ export { FormComponent } from './form.component';
     AllorsMaterialTextAreaModule,
   ],
 })
-export class FormModule {}
+export class FormModule { }

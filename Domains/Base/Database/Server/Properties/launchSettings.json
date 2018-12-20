@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WebApi": {
+    "Kestrel": {
       "commandName": "Project",
       "launchUrl": "api/values",
       "environmentVariables": {

@@ -1,6 +1,7 @@
 import { Sort } from '@angular/material';
 
 import { Action } from '../../../../angular';
+
 import { Column } from './Column';
 
 export interface TableConfig {

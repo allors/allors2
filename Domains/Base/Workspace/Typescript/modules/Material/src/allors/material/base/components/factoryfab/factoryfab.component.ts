@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ObjectType } from '../../../../framework';
-import { CreateData, ObjectData } from '../../services/object';
-import { ObjectService } from '../../services/object';
+import { CreateData, ObjectData, ObjectService } from '../../services/object';
 
 @Component({
   // tslint:disable-next-line:component-selector

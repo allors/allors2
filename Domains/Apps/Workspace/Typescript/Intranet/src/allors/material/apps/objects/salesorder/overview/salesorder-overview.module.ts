@@ -4,13 +4,13 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';

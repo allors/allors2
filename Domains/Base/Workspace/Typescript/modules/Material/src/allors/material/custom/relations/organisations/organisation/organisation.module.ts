@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule, MatMenuModule } from '@angular/material';
 
-import { AllorsMaterialAutoCompleteModule, AllorsMaterialInputModule, AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSlideToggleModule, AllorsMaterialSliderModule, AllorsMaterialTextAreaModule, AllorsMaterialRadioGroupModule } from '../../../../../material';
+import { AllorsMaterialAutoCompleteModule, AllorsMaterialDatetimepickerModule, AllorsMaterialInputModule, AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSlideToggleModule, AllorsMaterialSliderModule, AllorsMaterialTextAreaModule, AllorsMaterialRadioGroupModule } from '../../../../../material';
 
 import { OrganisationComponent } from './organisation.component';
-import { RouterModule } from '../../../../../../../node_modules/@angular/router';
-import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/datetimepicker';
 export { OrganisationComponent } from './organisation.component';
 
 @NgModule({

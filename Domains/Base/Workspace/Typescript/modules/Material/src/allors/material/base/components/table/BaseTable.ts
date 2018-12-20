@@ -2,6 +2,7 @@ import { MatTableDataSource, PageEvent, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { Action } from '../../../../angular';
+
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';

@@ -5,19 +5,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatDatepickerModule, MatExpansionModule, MatDialogModule } from '@angular/material';
 
 
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
+import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
+import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
+import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
+import { AllorsMaterialFilesModule } from '../../../..//base/components/role/files';
+import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
+import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/role/localisedtext';
+import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { SalesInvoiceItemEditComponent } from './salesinvoiceitem-edit.component';
 export { SalesInvoiceItemEditComponent } from './salesinvoiceitem-edit.component';

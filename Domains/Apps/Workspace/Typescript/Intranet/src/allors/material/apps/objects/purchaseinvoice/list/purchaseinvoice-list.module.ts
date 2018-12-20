@@ -5,14 +5,14 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
+import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialFilterModule } from '../../../../base/components/filter';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 import { AllorsMaterialFactoryFabModule } from '../../../../base/components/factoryfab/factoryfab.module';
 
 import { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';

@@ -4,17 +4,17 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-import { AllorsMaterialDatepickerModule } from './../../../../../base/components/datepicker/datepicker.module';
-import { AllorsMaterialDatetimepickerModule } from './../../../../../base/components/datetimepicker/datetimepicker.module';
-import { AllorsMaterialChipsModule } from './../../../../../base/components/chips/chips.module';
-import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialDatepickerModule } from './../../../../../base/components/role/datepicker';
+import { AllorsMaterialDatetimepickerModule } from './../../../../../base/components/role/datetimepicker';
+import { AllorsMaterialChipsModule } from './../../../../../base/components/role/chips';
+import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
 import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
-import { AllorsMaterialInputModule } from '../../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
 import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
 import { EmailCommunicationOverviewDetailComponent } from './emailcommunication-overview-detail.component';
