@@ -12,4 +12,6 @@ function link(src, dst){
 }
 
 link ('../../../../../../Platform/Workspace/Typescript/src/allors/framework', 'src/allors');
+
+link ('../Domain/src/allors/meta/base', 'src/allors/meta');
 link ('../Angular/src/allors/angular/base', 'src/allors/angular');

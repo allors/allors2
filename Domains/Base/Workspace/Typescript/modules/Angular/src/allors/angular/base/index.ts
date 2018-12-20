@@ -10,8 +10,6 @@ export * from './framework';
 export * from './humanize';
 export * from './logging';
 export * from './media';
-export * from './menu';
 export * from './navigation';
 export * from './refresh';
-export * from './router';
 export * from './panels';
