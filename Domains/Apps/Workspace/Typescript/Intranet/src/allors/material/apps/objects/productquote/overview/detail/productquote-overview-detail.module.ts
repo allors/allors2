@@ -14,7 +14,7 @@ import { AllorsMaterialStaticModule } from '../../../../../base/components/role/
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
 import { AllorsMaterialAutoCompleteModule } from 'src/allors/material/base/components/role/autocomplete';
 
-import { CommunicationEventOverviewPanelModule } from '../../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { CommunicationEventPanelModule } from '../../../communicationevent/overview/panel/communicationevent-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -36,7 +36,7 @@ export { ProductQuoteOverviewDetailComponent } from './productquote-overview-det
     PersonInlineModule,
     ContactMechanismInlineModule,
 
-    CommunicationEventOverviewPanelModule,
+    CommunicationEventPanelModule,
     PartyContactMechanismOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

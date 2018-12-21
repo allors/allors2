@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -35,15 +35,16 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
   genders: Enumeration[];
   salutations: Enumeration[];
   organisationContactKinds: OrganisationContactKind[];
+  selectedContactKinds: OrganisationContactKind[] = [];
 
   roles: PersonRole[];
-  selectableRoles: PersonRole[] = [];
-  activeRoles: PersonRole[] = [];
+  selectedRoles: PersonRole[] = [];
   customerRelationship: CustomerRelationship;
   employment: Employment;
 
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
+  private salesRepRole: PersonRole;
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
@@ -81,9 +82,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Locale({
-              sort: new Sort(m.Locale.Name)
-            }),
+            this.fetcher.locales,
             pull.GenderType({
               predicate: new Equals({ propertyType: m.GenderType.IsActive, value: true }),
               sort: new Sort(m.GenderType.Name),
@@ -125,6 +124,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
         this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
         this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
+        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === '2D41946C-4A77-456F-918A-2E83E6C12D7F');
 
         this.person = this.allors.context.create('Person') as Person;
 
@@ -139,30 +139,29 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    if (this.activeRoles.indexOf(this.customerRole) > -1) {
+    if (this.selectedRoles.indexOf(this.customerRole) > -1) {
       const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
       customerRelationship.Customer = this.person;
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
-    if (this.activeRoles.indexOf(this.customerRole) > -1) {
-      this.customerRelationship.ThroughDate = null;
-    }
-
-    if (this.activeRoles.indexOf(this.employeeRole) > -1 ) {
+    if (this.selectedRoles.indexOf(this.employeeRole) > -1 ) {
       const employment = this.allors.context.create('Employment') as Employment;
       employment.Employee = this.person;
       employment.Employer = this.internalOrganisation;
     }
 
-    if (this.activeRoles.indexOf(this.employeeRole) > -1 && this.employment) {
-      this.employment.ThroughDate = null;
+    if (this.selectedRoles.indexOf(this.salesRepRole) > -1 ) {
+      const salesRepRelationship = this.allors.context.create('SalesRepRelationship') as SalesRepRelationship;
+      salesRepRelationship.SalesRepresentative = this.person;
+      salesRepRelationship.Customer = this.internalOrganisation;
     }
 
-    if (this.organisationContactRelationship === undefined && this.organisation !== undefined) {
+    if (this.organisation !== undefined) {
       const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
       organisationContactRelationship.Contact = this.person;
       organisationContactRelationship.Organisation = this.organisation;
+      organisationContactRelationship.ContactKinds = this.selectedContactKinds;
     }
 
     this.allors.context

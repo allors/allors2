@@ -1,5 +1,7 @@
 namespace Tests.Intranet
 {
+    using Allors.Meta;
+
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
@@ -54,9 +56,9 @@ namespace Tests.Intranet
 
         public Anchor Catalogues => this.Link("/products/catalogues");
 
-        public Anchor Categories => this.Link("/products/categories");
+        public Anchor Categories => this.Link("/products/productcategories");
 
-        public Anchor ProductCharacteristics => this.Link("/products/productcharacteristics");
+        public Anchor ProductCharacteristics => this.Link(M.SerialisedItemCharacteristic.ObjectType);
 
         public Anchor ProductTypes => this.Link("/products/producttypes");
 
@@ -179,9 +181,19 @@ namespace Tests.Intranet
             return new Anchor(this.Driver, this.ByHref(href));
         }
 
+        private Anchor Link(ObjectType objectType)
+        {
+            return new Anchor(this.Driver, this.ByObjectType(objectType));
+        }
+
         private By ByHref(string href)
         {
             return new ByChained(this.Selector, By.CssSelector($"a[href='{href}']"));
+        }
+
+        private By ByObjectType(ObjectType objectType)
+        {
+            return new ByChained(this.Selector, By.CssSelector($"a[data-allors-id='{objectType.IdAsNumberString}']"));
         }
     }
 }

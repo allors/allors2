@@ -27,7 +27,7 @@ interface Row extends TableRow {
 })
 export class GoodListComponent implements OnInit, OnDestroy {
 
-  public title = 'Goods';
+  public title = 'Products';
 
   table: Table<Row>;
 

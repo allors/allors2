@@ -1,13 +1,10 @@
 namespace Tests.Intranet.PersonTests
 {
-    using Allors.Domain;
-
     using Tests.Intranet;
 
     using OpenQA.Selenium;
 
     using Tests.Components.Html;
-    using Tests.Components.Material;
 
     public class PersonOverviewPage : MainPage
     {
@@ -16,13 +13,13 @@ namespace Tests.Intranet.PersonTests
         {
         }
 
-        public Button EditButton => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
+        public Element DetailPanel => new Element(this.Driver, By.Id("detail"));
 
-        public MaterialList List => new MaterialList(this.Driver);
+        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
         public PersonEditPage Edit()
         {
-            this.EditButton.Click();
+            this.DetailPanel.Click();
             return new PersonEditPage(this.Driver);
         }
     }

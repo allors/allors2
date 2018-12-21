@@ -13,31 +13,30 @@
       </div>
 
       <div class="row">
-        <mat-form-field class="col-md">
-          <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
-            <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <a-mat-select class="col-md" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
-          [options]="organisationContactKinds" display="Description" multiple="true"></a-mat-select>
-      </div>
-
-      <div class="row">
         <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
         <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
-        <mat-form-field class="col-md" *ngIf="!organisationContactRelationship && !organisation">
+        <mat-form-field class="col-md">
           <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
             <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="col-md" *ngIf="(!organisationContactRelationship && organisation) || (organisationContactRelationship && !person.IsNew)">
-          <input matInput type="type" [ngModel]="organisation.Name" name="Organisation" placeholder="Organisation"
-            readonly="true">
+        <mat-form-field class="col-md">
+          <mat-select name="role" [(ngModel)]="selectedRoles" placeholder="Roles" multiple="true">
+            <mat-option *ngFor="let role of roles" [value]="role">{{ role.Name }}</mat-option>
+          </mat-select>
         </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select name="contactKind" [(ngModel)]="selectedContactKinds" placeholder="Contact kind" multiple="true">
+            <mat-option *ngFor="let kind of organisationContactKinds" [value]="kind">{{ kind.Description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
       </div>
 
       <div class="row">

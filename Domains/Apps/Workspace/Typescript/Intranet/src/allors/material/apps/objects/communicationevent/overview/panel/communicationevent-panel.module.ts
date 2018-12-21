@@ -8,19 +8,21 @@ import { AllorsMaterialFileModule } from '../../../../../base/components/role/fi
 import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialTableModule } from '../../../../../base/components/table';
+import { AllorsMaterialFactoryFabModule } from '../../../../../base/components/factoryfab/factoryfab.module';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
 
-import { CommunicationEventOverviewPanelComponent } from './communicationevent-overview-panel.component';
-export { CommunicationEventOverviewPanelComponent } from './communicationevent-overview-panel.component';
+import { CommunicationEventsPanel } from './communicationevent-panel.component';
+export { CommunicationEventsPanel } from './communicationevent-panel.component';
 
 @NgModule({
   declarations: [
-    CommunicationEventOverviewPanelComponent,
+    CommunicationEventsPanel,
   ],
   exports: [
-    CommunicationEventOverviewPanelComponent,
+    CommunicationEventsPanel,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -30,6 +32,9 @@ export { CommunicationEventOverviewPanelComponent } from './communicationevent-o
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsMaterialFactoryFabModule,
+    AllorsMaterialTableModule,
+
     CommonModule,
     FormsModule,
     MatButtonModule,
@@ -49,4 +54,4 @@ export { CommunicationEventOverviewPanelComponent } from './communicationevent-o
     RouterModule,
   ],
 })
-export class CommunicationEventOverviewPanelModule { }
+export class CommunicationEventPanelModule { }

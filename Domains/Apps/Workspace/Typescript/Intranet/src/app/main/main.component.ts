@@ -50,6 +50,7 @@ export class MainComponent implements OnInit, OnDestroy {
         icon: menuItem.icon || objectType && objectType.icon,
         title: menuItem.title || objectType && objectType.displayName,
         link: menuItem.link || objectType && objectType.list,
+        id: objectType && objectType.id,
         children: menuItem.children && menuItem.children.map((childMenuItem) => {
 
           const childObjectType = this.metaService.m.metaObjectById[childMenuItem.id] as ObjectType;
@@ -57,6 +58,7 @@ export class MainComponent implements OnInit, OnDestroy {
             icon: childMenuItem.icon || childObjectType && childObjectType.icon,
             title: childMenuItem.title || childObjectType && childObjectType.displayName,
             link: childMenuItem.link || childObjectType && childObjectType.list,
+            id: childObjectType && childObjectType.id,
           };
         }),
       };

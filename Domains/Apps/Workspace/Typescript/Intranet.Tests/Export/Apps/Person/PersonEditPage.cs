@@ -16,11 +16,17 @@ namespace Tests.Intranet.PersonTests
 
         public MaterialSelect Salutation => new MaterialSelect(this.Driver, roleType: M.Person.Salutation);
 
+        public MaterialSelect Gender => new MaterialSelect(this.Driver, roleType: M.Person.Gender);
+
+        public MaterialSelect Locale => new MaterialSelect(this.Driver, roleType: M.Person.Locale);
+
         public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
 
         public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
 
         public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
+
+        public MaterialInput Function => new MaterialInput(this.Driver, roleType: M.Person.Function);
 
         public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
 

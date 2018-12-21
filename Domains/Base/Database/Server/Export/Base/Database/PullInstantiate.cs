@@ -59,7 +59,7 @@ namespace Allors.Server
 
             if (@class != null && objectType != null)
             {
-                if (!@class.IsAssignableFrom(objectType))
+                if (!objectType.IsAssignableFrom(@class))
                 {
                     return;
                 }

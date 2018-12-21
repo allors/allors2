@@ -3,7 +3,7 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}}
+        <a [routerLink]="['/contacts/people']">People</a> / {{person?.displayName}}
       </div>
     </div>
   </div>
@@ -20,13 +20,13 @@
 
         <person-overview-detail></person-overview-detail>
 
-        <communicationevent-overview-panel></communicationevent-overview-panel>
-
+        <communicationevent-panel></communicationevent-panel>
+<!--
         <partycontactmechanism-overview-panel></partycontactmechanism-overview-panel>
 
         <serialiseditem-overview-panel></serialiseditem-overview-panel>
 
-        <workeffortpartyassignment-overview-panel></workeffortpartyassignment-overview-panel>
+        <workeffortpartyassignment-overview-panel></workeffortpartyassignment-overview-panel> -->
 
       </div>
     </div>
