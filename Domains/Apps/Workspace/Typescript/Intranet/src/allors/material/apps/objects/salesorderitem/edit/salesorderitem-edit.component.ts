@@ -184,7 +184,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     // }
 
     this.allors.context.save()
-    .subscribe((saved: Saved) => {
+    .subscribe(() => {
       const data: ObjectData = {
         id: this.orderItem.id,
         objectType: this.orderItem.objectType,

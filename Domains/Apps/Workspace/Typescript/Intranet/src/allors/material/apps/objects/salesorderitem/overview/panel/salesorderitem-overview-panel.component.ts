@@ -1,13 +1,12 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
 import { RequestItem as SalesOrderItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
-import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../../material/base/services/object';
+import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
 interface Row extends TableRow {
   object: SalesOrderItem;
   item: string;
@@ -28,20 +27,13 @@ export class SalesOrderItemOverviewPanelComponent {
   table: Table<Row>;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
-      associationRoleType: this.metaService.m.Request.RequestItems,
+      associationRoleType: this.metaService.m.SalesOrder.SalesOrderItems,
     };
   }
 
@@ -53,6 +45,7 @@ export class SalesOrderItemOverviewPanelComponent {
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
+    public editService: EditService,
     public snackBar: MatSnackBar
   ) {
 
@@ -64,6 +57,7 @@ export class SalesOrderItemOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
+    this.edit = editService.edit();
 
     this.table = new Table({
       selection: true,

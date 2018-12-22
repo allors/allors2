@@ -28,7 +28,6 @@ import * as OrganisationOverview from 'src/allors/material/apps/objects/organisa
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
 
 import * as EmailCommunicationOverview from 'src/allors/material/apps/objects/emailcommunication/overview/emailcommunication-overview.module';
-import * as FaceToFaceCommunicationOverview from 'src/allors/material/apps/objects/facetofacecommunication/overview/facetofacecommunication-overview.module';
 import * as LetterCorrespondenceOverview from 'src/allors/material/apps/objects/lettercorrespondence/overview/lettercorrespondence-overview.module';
 import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/phonecommunication/overview/phonecommunication-overview.module';
 
@@ -70,7 +69,6 @@ const modules = [
   CommunicationEventList.CommunicationEventListModule,
 
   EmailCommunicationOverview.EmailCommunicationOverviewModule,
-  FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewModule,
   LetterCorrespondenceOverview.LetterCorrespondenceOverviewModule,
   PhoneCommunicationOverview.PhoneCommunicationOverviewModule,
 
@@ -152,7 +150,6 @@ export const routes: Routes = [
           { path: 'organisation/:id', component: OrganisationOverview.OrganisationOverviewComponent },
           { path: 'communicationevents', component: CommunicationEventList.CommunicationEventListComponent },
           { path: 'emailcommunication/:id', component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
-          { path: 'facetofacecommunication/:id', component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
           { path: 'lettercorrespondence/:id', component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
           { path: 'phonecommunicationevent/:id', component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],

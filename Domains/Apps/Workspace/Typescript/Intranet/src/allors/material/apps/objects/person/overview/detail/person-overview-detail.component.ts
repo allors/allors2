@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, tap } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, NavigationActivatedRoute } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, Person } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -52,6 +52,9 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     const pullName = `${this.panel.name}_${this.m.Person.name}`;
 
     panel.onPull = (pulls) => {
+
+      this.person = undefined;
+
       if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
@@ -79,17 +82,12 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(
-      this.route.url,
-      this.route.queryParams,
-      this.refreshService.refresh$,
-      this.stateService.internalOrganisationId$,
-    )
+    this.subscription = this.panel.manager.on$
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, , , internalOrganisationId]) => {
+        switchMap(() => {
 
           this.person = undefined;
 
@@ -110,14 +108,17 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
             }),
             pull.Person({
               object: id,
-              include: {
-                Picture: x,
+              fetch: {
+                OrganisationContactRelationshipsWhereContact: x
               }
             }),
             pull.Person({
               object: id,
-              fetch: {
-                OrganisationContactRelationshipsWhereContact: x
+              include: {
+                Gender: x,
+                Salutation: x,
+                Locale: x,
+                Picture: x,
               }
             }),
           ];

@@ -8,7 +8,7 @@ import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
 import { GoodCreateComponent, GoodCreateModule } from '../allors/material/apps/objects/good/create/good-create.module';
 import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
-import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateModule } from '../allors/material/apps/objects/facetofacecommunication/create/facetofacecommunication-create.module';
+import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
 import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule } from '../allors/material/apps/objects/lettercorrespondence/create/lettercorrespondence-create.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
@@ -40,7 +40,7 @@ export const create = {
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
-  [ids.FaceToFaceCommunication]: FaceToFaceCommunicationCreateComponent,
+  [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceCreateComponent,
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.Person]: PersonCreateComponent,
@@ -73,6 +73,7 @@ export const create = {
 export const edit = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
+  [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
@@ -100,7 +101,7 @@ export const edit = {
 
     CatalogueEditModule,
     EmailCommunicationCreateModule,
-    FaceToFaceCommunicationCreateModule,
+    FaceToFaceCommunicationEditModule,
     GoodCreateModule,
     IGoodIdentificationEditModule,
     LetterCorrespondenceCreateModule,
@@ -127,7 +128,7 @@ export const edit = {
   entryComponents: [
     CatalogueEditComponent,
     EmailCommunicationCreateComponent,
-    FaceToFaceCommunicationCreateComponent,
+    FaceToFaceCommunicationEditComponent,
     GoodCreateComponent,
     IGoodIdentificationEditComponent,
     LetterCorrespondenceCreateComponent,

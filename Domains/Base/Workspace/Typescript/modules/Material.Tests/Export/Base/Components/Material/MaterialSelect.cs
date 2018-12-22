@@ -33,6 +33,9 @@ namespace Tests.Components.Material
                 var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{value}'] span");
                 var option = this.Driver.FindElement(optionSelector);
                 option.Click();
+
+                this.Driver.WaitForAngular();
+                this.Driver.FindElement(By.TagName("body")).SendKeys(Keys.Escape);
             }
         }
 

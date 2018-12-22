@@ -14,15 +14,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
 
-import { CommunicationEventsPanel } from './communicationevent-panel.component';
-export { CommunicationEventsPanel } from './communicationevent-panel.component';
+import { CommunicationEventOverviewPanelComponent } from './communicationevent-overview-panel.component';
+export { CommunicationEventOverviewPanelComponent as CommunicationEventsPanel } from './communicationevent-overview-panel.component';
 
 @NgModule({
   declarations: [
-    CommunicationEventsPanel,
+    CommunicationEventOverviewPanelComponent,
   ],
   exports: [
-    CommunicationEventsPanel,
+    CommunicationEventOverviewPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -54,4 +54,4 @@ export { CommunicationEventsPanel } from './communicationevent-panel.component';
     RouterModule,
   ],
 })
-export class CommunicationEventPanelModule { }
+export class CommunicationEventOverviewPanelModule { }

@@ -1,12 +1,11 @@
-import { Component, Self, Input, OnInit } from '@angular/core';
+import { Component, Self, OnInit } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, ActionTarget, NavigationService, ErrorService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 import { ObjectService, CreateData } from '../../../../../base/services/object';
-import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
-import { Step } from 'src/allors/framework/database/data/Step';
+import { ISessionObject } from '../../../../../../framework';
 
 interface Row extends TableRow {
   object: CommunicationEvent;
@@ -19,11 +18,11 @@ interface Row extends TableRow {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'communicationevent-panel',
-  templateUrl: './communicationevent-panel.component.html',
+  selector: 'communicationevent-overview-panel',
+  templateUrl: './communicationevent-overview-panel.component.html',
   providers: [PanelService]
 })
-export class CommunicationEventsPanel implements OnInit {
+export class CommunicationEventOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
@@ -31,14 +30,7 @@ export class CommunicationEventsPanel implements OnInit {
   table: Table<Row>;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -46,27 +38,30 @@ export class CommunicationEventsPanel implements OnInit {
       associationObjectType: this.panel.manager.objectType,
     };
   }
+
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public objectService: ObjectService,
     public refreshService: RefreshService,
+    public navigationService: NavigationService,
+    public errorService: ErrorService,
     public deleteService: DeleteService,
-  ) {
+    public editService: EditService
+    ) {
 
     this.m = this.metaService.m;
   }
 
   ngOnInit() {
 
-    this.delete = this.deleteService.delete(this.panel.manager.context);
-
-    this.panel.name = 'abc';
+    this.panel.name = 'communicationevent';
     this.panel.title = 'Communication events';
     this.panel.icon = 'message';
     this.panel.expandable = true;
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
+    this.edit = this.editService.edit();
 
     this.table = new Table({
       selection: true,
@@ -114,9 +109,9 @@ export class CommunicationEventsPanel implements OnInit {
           object: v,
           type: v.objectType.name,
           description: v.Description,
-          involved: v.InvolvedParties.join(', '),
+          involved: v.InvolvedParties.map(w => w.displayName).join(', '),
           status: v.CommunicationEventState.Name,
-          purpose: v.EventPurposes.join(', '),
+          purpose: v.EventPurposes.map(w => w.Name).join(', '),
         } as Row;
       });
     };

@@ -108,6 +108,10 @@ namespace Tests.Intranet
                 useProductNumberCounter: false,
                 usePartNumberCounter: false);
 
+            this.SetupUser(allors, "employee1@allors.com", "first", "allors employee", "letmein");
+            this.SetupUser(allors, "employee2@allors.com", "second", "allors employee", "letmein");
+            this.SetupUser(dipu, "employee1@allors.com", "first", "dipu employee", "letmein");
+
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -500,7 +504,7 @@ line2")
             return template;
         }
 
-        private void SetupUser(string email, string firstName, string lastName, string password)
+        private void SetupUser(Organisation organisation, string email, string firstName, string lastName, string password)
         {
             var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
 
@@ -519,7 +523,7 @@ line2")
                     .WithUseAsDefault(true)
                     .Build());
 
-            new EmploymentBuilder(this.Session).WithEmployee(person).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(person).WithEmployer(organisation).Build();
 
             new UserGroups(this.Session).Administrators.AddMember(person);
             new UserGroups(this.Session).Creators.AddMember(person);

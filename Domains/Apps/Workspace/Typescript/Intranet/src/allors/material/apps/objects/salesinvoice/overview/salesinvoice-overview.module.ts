@@ -12,7 +12,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { CommunicationEventPanelModule } from '../../communicationevent/overview/panel/communicationevent-panel.module';
+import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -38,7 +38,7 @@ import { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component
     SalesInvoiceItemOverviewPanelModule,
     SalesTermOverviewPanelModule,
 
-    CommunicationEventPanelModule,
+    CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

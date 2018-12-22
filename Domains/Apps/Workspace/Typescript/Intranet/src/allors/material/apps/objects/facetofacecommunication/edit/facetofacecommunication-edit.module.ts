@@ -18,15 +18,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 
-import { FaceToFaceCommunicationCreateComponent } from './facetofacecommunication-create.component';
-export { FaceToFaceCommunicationCreateComponent } from './facetofacecommunication-create.component';
+import { FaceToFaceCommunicationEditComponent } from './facetofacecommunication-edit.component';
+export { FaceToFaceCommunicationEditComponent } from './facetofacecommunication-edit.component';
 
 @NgModule({
   declarations: [
-    FaceToFaceCommunicationCreateComponent,
+    FaceToFaceCommunicationEditComponent,
   ],
   exports: [
-    FaceToFaceCommunicationCreateComponent,
+    FaceToFaceCommunicationEditComponent,
   ],
   imports: [
     AllorsMaterialChipsModule,
@@ -62,4 +62,4 @@ export { FaceToFaceCommunicationCreateComponent } from './facetofacecommunicatio
     RouterModule,
   ],
 })
-export class FaceToFaceCommunicationCreateModule { }
+export class FaceToFaceCommunicationEditModule { }

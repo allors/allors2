@@ -49,6 +49,8 @@ export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 
+          this.panelManager.on();
+
           const pulls = [
             pull.Person({
               object: this.panelManager.id,
