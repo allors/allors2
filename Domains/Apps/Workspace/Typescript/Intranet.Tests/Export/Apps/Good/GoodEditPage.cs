@@ -22,11 +22,11 @@ namespace Tests.Intranet.PersonTests
 
         public MaterialDatePicker SalesDiscontinuationDate  => new MaterialDatePicker(this.Driver, roleType: M.Good.SalesDiscontinuationDate);
 
-        public MaterialSelect Part => new MaterialSelect(this.Driver, roleType: M.Good.Part);
+        public MaterialSingleSelect Part => new MaterialSingleSelect(this.Driver, roleType: M.Good.Part);
 
-        public MaterialSelect Brand => new MaterialSelect(this.Driver, roleType: M.Part.Brand);
+        public MaterialSingleSelect Brand => new MaterialSingleSelect(this.Driver, roleType: M.Part.Brand);
 
-        public MaterialSelect Model => new MaterialSelect(this.Driver, roleType: M.Part.Model);
+        public MaterialSingleSelect Model => new MaterialSingleSelect(this.Driver, roleType: M.Part.Model);
 
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

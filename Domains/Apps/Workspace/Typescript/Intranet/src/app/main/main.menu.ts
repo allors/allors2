@@ -49,7 +49,7 @@ export const menu: MenuItem[] = [
     ]
   },
   {
-    title: 'WorkEffort',
+    title: 'WorkEfforts',
     icon: 'business',
     children: [
       { id: ids.WorkEffort },

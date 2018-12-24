@@ -1,43 +1,50 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
+import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './facetofacecommunication-edit.component.html',
+  templateUrl: './phonecommunication-edit.component.html',
   providers: [ContextService]
 })
-export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
+export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  addCaller = false;
+  addReceiver = false;
+  addPhoneNumber = false;
+
+  communicationEvent: PhoneCommunication;
   party: Party;
   person: Person;
   organisation: Organisation;
   purposes: CommunicationEventPurpose[];
   contacts: Party[] = [];
-  communicationEvent: FaceToFaceCommunication;
-  addParticipant = false;
-  eventStates: CommunicationEventState[];
+  phonenumbers: ContactMechanism[] = [];
+  employees: Person[] = [];
   title: string;
 
   private subscription: Subscription;
+  eventStates: CommunicationEventState[];
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<FaceToFaceCommunicationEditComponent>,
-    public metaService: MetaService,
+    public dialogRef: MatDialogRef<PhoneCommunicationEditComponent>,
     public refreshService: RefreshService,
+    public metaService: MetaService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private stateService: StateService) {
 
@@ -55,7 +62,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
-            pull.FaceToFaceCommunication({
+            pull.PhoneCommunication({
               object: this.data.id,
               include: {
                 EventPurposes: x,
@@ -88,14 +95,18 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
               pull.Organisation({
                 object: this.data.associationId,
                 include: {
-                  CurrentContacts: x,
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: x
                   }
                 }
               }),
               pull.Person({
                 object: this.data.associationId,
+                include: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
+                }
               }),
               pull.Person({
                 object: this.data.associationId,
@@ -103,7 +114,6 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
                   OrganisationContactRelationshipsWhereContact: {
                     Organisation: {
                       include: {
-                        CurrentContacts: x,
                         CurrentPartyContactMechanisms: {
                           ContactMechanism: x,
                         }
@@ -128,7 +138,9 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
+
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.employees = internalOrganisation.ActiveEmployees;
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
@@ -145,22 +157,23 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           this.contacts.push(this.person);
         }
 
-        if (isCreate) {
-          this.title = 'Add Meeting';
-          this.communicationEvent = this.allors.context.create('FaceToFaceCommunication') as FaceToFaceCommunication;
+        // TODO: phone number from organisation, person or contacts ...
+        // this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
 
-          if (!!this.person) {
-            this.communicationEvent.AddParticipant(this.person);
-          }
+        if (isCreate) {
+          this.title = 'Add Phone call';
+          this.communicationEvent = this.allors.context.create('PhoneCommunication') as PhoneCommunication;
+          this.communicationEvent.IncomingCall = false;
 
           this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
-          this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
+
+          this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
 
           if (this.communicationEvent.CanWriteActualEnd) {
-            this.title = 'Edit Meeting';
+            this.title = 'Edit Phone call';
           } else {
-            this.title = 'View Meeting';
+            this.title = 'View Phone call';
           }
         }
       }, this.errorService.handler);
@@ -172,15 +185,34 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public participantAdded(person: Person): void {
-
-    this.communicationEvent.AddParticipant(person);
+  public phoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
 
     if (!!this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-      relationShip.Contact = person;
-      relationShip.Organisation = this.organisation;
+      this.organisation.AddPartyContactMechanism(partyContactMechanism);
     }
+
+    const phonenumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+    this.communicationEvent.AddContactMechanism(phonenumber);
+
+    this.phonenumbers.push(phonenumber);
+  }
+
+  public callerAdded(caller: Person): void {
+
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = caller;
+    relationShip.Organisation = this.organisation;
+
+    this.communicationEvent.AddCaller(caller);
+  }
+
+  public receiverAdded(receiver: Person): void {
+
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = receiver;
+    relationShip.Organisation = this.organisation;
+
+    this.communicationEvent.AddReceiver(receiver);
   }
 
   public save(): void {

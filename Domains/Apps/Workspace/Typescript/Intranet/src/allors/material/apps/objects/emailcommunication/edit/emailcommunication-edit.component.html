@@ -1,5 +1,4 @@
 <form *ngIf="communicationEvent" #form="ngForm" (submit)="save()" novalidate>
-  <h1></h1>
 
   <h3 mat-dialog-title>{{title}}</h3>
 
@@ -9,36 +8,30 @@
       <div class="row">
         <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState"
           [options]="eventStates" display="Name"></a-mat-select>
-          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+        <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
           [options]="purposes" display="Name"></a-mat-select>
+        <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-mat-slidetoggle>
       </div>
 
       <div class="row">
-        <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.Subject"
-          class="col-md"></a-mat-input>
+        <a-mat-select class="col-md-12" [object]="communicationEvent"
+          [roleType]="m.EmailCommunication.Originator" [options]="allEmailAddresses" display="displayName" label="From"></a-mat-select>
+        <a-mat-chips class="col-md-12"  [object]="communicationEvent"
+          [roleType]="m.EmailCommunication.Addressees" [options]="allEmailAddresses" display="displayName" label="To"></a-mat-chips>
       </div>
 
       <div class="row">
-        <div class="col-12">
-          <div class="row">
-            <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants"
-              [options]="contacts" display="displayName"></a-mat-chips>
-            <button mat-mini-fab color="accent" type="button" (click)="addParticipant = !addParticipant">
-              <mat-icon *ngIf="!addParticipant">add</mat-icon>
-              <mat-icon *ngIf="addParticipant">close</mat-icon>
-            </button>
-          </div>
-        </div>
+        <a-mat-chips class="col-md-12"  [object]="communicationEvent"
+          [roleType]="m.EmailCommunication.CarbonCopies" [options]="allEmailAddresses" display="displayName" label="CC"></a-mat-chips>
+        <a-mat-chips class="col-md-12"  [object]="communicationEvent"
+          [roleType]="m.EmailCommunication.BlindCopies" [options]="allEmailAddresses" display="displayName" label="BC"></a-mat-chips>
+      </div>
 
-        <div class="col-12" *ngIf="addParticipant">
-          <mat-card>
-            <mat-card-header>Add a new person</mat-card-header>
-            <mat-card-content>
-              <person-inline (cancelled)="addParticipant = false" (saved)="participantAdded($event); addParticipant = false">
-              </person-inline>
-            </mat-card-content>
-          </mat-card>
-        </div>
+      <div class="row">
+        <a-mat-input class="col-md" [object]="communicationEvent.EmailTemplate" [roleType]="m.EmailTemplate.SubjectTemplate"
+          label="Subject"></a-mat-input>
+        <a-mat-textarea class="col-md-12" [object]="communicationEvent.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate"
+          label="Body"></a-mat-textarea>
       </div>
 
       <div class="row">

@@ -1,43 +1,49 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
+import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { CommunicationEventPurpose, EmailAddress, EmailCommunication, EmailTemplate, Party, Person, Organisation, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData, CreateData, EditData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './facetofacecommunication-edit.component.html',
+  templateUrl: './emailcommunication-edit.component.html',
   providers: [ContextService]
 })
-export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
+export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  addOriginator = false;
+  addAddressee = false;
+
+  communicationEvent: EmailCommunication;
   party: Party;
   person: Person;
   organisation: Organisation;
   purposes: CommunicationEventPurpose[];
   contacts: Party[] = [];
-  communicationEvent: FaceToFaceCommunication;
-  addParticipant = false;
-  eventStates: CommunicationEventState[];
   title: string;
 
+  allEmailAddresses: EmailAddress[];
+  emailTemplate: EmailTemplate;
+
   private subscription: Subscription;
+  eventStates: CommunicationEventState[];
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<FaceToFaceCommunicationEditComponent>,
-    public metaService: MetaService,
+    public dialogRef: MatDialogRef<EmailCommunicationEditComponent>,
     public refreshService: RefreshService,
+    public metaService: MetaService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private stateService: StateService) {
 
@@ -48,6 +54,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
+
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([]) => {
@@ -55,11 +62,12 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
-            pull.FaceToFaceCommunication({
+            pull.EmailCommunication({
               object: this.data.id,
               include: {
                 EventPurposes: x,
-                CommunicationEventState: x
+                CommunicationEventState: x,
+                EmailTemplate: x
               }
             }),
             pull.Organisation({
@@ -72,6 +80,9 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
                   }
                 }
               }
+            }),
+            pull.EmailAddress({
+              sort: new Sort(m.EmailAddress.ElectronicAddressString)
             }),
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
@@ -128,6 +139,8 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
+        this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
+
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.person = loaded.objects.Person as Person;
@@ -146,21 +159,21 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
         }
 
         if (isCreate) {
-          this.title = 'Add Meeting';
-          this.communicationEvent = this.allors.context.create('FaceToFaceCommunication') as FaceToFaceCommunication;
-
-          if (!!this.person) {
-            this.communicationEvent.AddParticipant(this.person);
-          }
+          this.title = 'Add Email';
+          this.communicationEvent = this.allors.context.create('EmailCommunication') as EmailCommunication;
+          this.emailTemplate = this.allors.context.create('EmailTemplate') as EmailTemplate;
+          this.communicationEvent.EmailTemplate = this.emailTemplate;
+          this.communicationEvent.Originator = this.party && this.party.GeneralEmail;
+          this.communicationEvent.IncomingMail = false;
 
           this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
-          this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
+          this.communicationEvent = loaded.objects.EmailCommunication as EmailCommunication;
 
           if (this.communicationEvent.CanWriteActualEnd) {
-            this.title = 'Edit Meeting';
+            this.title = 'Edit Email';
           } else {
-            this.title = 'View Meeting';
+            this.title = 'View Email';
           }
         }
       }, this.errorService.handler);
@@ -169,17 +182,6 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-  }
-
-  public participantAdded(person: Person): void {
-
-    this.communicationEvent.AddParticipant(person);
-
-    if (!!this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-      relationShip.Contact = person;
-      relationShip.Organisation = this.organisation;
     }
   }
 

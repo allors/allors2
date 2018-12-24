@@ -60,10 +60,10 @@ namespace Allors.Repository
         [AssociationId("E728A709-525D-49A2-BDBE-36FA4E281118")]
         [RoleId("F4043DF9-FACB-4C37-97EB-753409FBA012")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress[] PostalAddresses { get; set; }
+        public PostalAddress PostalAddress { get; set; }
 
         #region Allors
         [Id("AD7AE076-7849-43ED-857B-DA3DA959CD8D")]

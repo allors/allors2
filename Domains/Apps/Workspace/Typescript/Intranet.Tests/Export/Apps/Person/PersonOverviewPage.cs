@@ -8,6 +8,10 @@ namespace Tests.Intranet.PersonTests
 
     using Tests.Components.Html;
     using Tests.Components.Material;
+    using Tests.Intranet.EmailCommunicationTests;
+    using Tests.Intranet.FaceToFaceCommunicationTests;
+    using Tests.Intranet.LetterCorrespondenceTests;
+    using Tests.Intranet.PhoneCommunicationTests;
 
     public class PersonOverviewPage : MainPage
     {
@@ -25,6 +29,12 @@ namespace Tests.Intranet.PersonTests
         public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
 
         public Button BtnFaceToFaceCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='FaceToFaceCommunication']"));
+
+        public Button BtnEmailCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='EmailCommunication']"));
+
+        public Button BtnLetterCorrespondence => new Button(this.Driver, By.CssSelector("button[data-allors-class='LetterCorrespondence']"));
+
+        public Button BtnPhoneCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='PhoneCommunication']"));
 
         public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
@@ -54,6 +64,72 @@ namespace Tests.Intranet.PersonTests
             cell.Click();
 
             return new FaceToFaceCommunicationEditPage(this.Driver);
+        }
+
+        public EmailCommunicationEditPage NewEmailCommunication()
+        {
+            this.CommunicationEventPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnEmailCommunication.Click();
+
+            return new EmailCommunicationEditPage(this.Driver);
+        }
+
+        public EmailCommunicationEditPage SelectEmailCommunication(CommunicationEvent communication)
+        {
+            this.CommunicationEventPanel.Click();
+
+            var row = this.Table.FindRow(communication);
+            var cell = row.FindCell("description");
+            cell.Click();
+
+            return new EmailCommunicationEditPage(this.Driver);
+        }
+
+        public LetterCorrespondenceEditPage NewLetterCorrespondence()
+        {
+            this.CommunicationEventPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnLetterCorrespondence.Click();
+
+            return new LetterCorrespondenceEditPage(this.Driver);
+        }
+
+        public LetterCorrespondenceEditPage SelectLetterCorrespondence(CommunicationEvent communication)
+        {
+            this.CommunicationEventPanel.Click();
+
+            var row = this.Table.FindRow(communication);
+            var cell = row.FindCell("description");
+            cell.Click();
+
+            return new LetterCorrespondenceEditPage(this.Driver);
+        }
+
+        public PhoneCommunicationEditPage NewPhoneCommunication()
+        {
+            this.CommunicationEventPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnPhoneCommunication.Click();
+
+            return new PhoneCommunicationEditPage(this.Driver);
+        }
+
+        public PhoneCommunicationEditPage SelectPhoneCommunication(CommunicationEvent communication)
+        {
+            this.CommunicationEventPanel.Click();
+
+            var row = this.Table.FindRow(communication);
+            var cell = row.FindCell("description");
+            cell.Click();
+
+            return new PhoneCommunicationEditPage(this.Driver);
         }
     }
 }

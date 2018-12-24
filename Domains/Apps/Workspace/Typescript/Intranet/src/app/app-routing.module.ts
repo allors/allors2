@@ -27,10 +27,6 @@ import * as OrganisationOverview from 'src/allors/material/apps/objects/organisa
 
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
 
-import * as EmailCommunicationOverview from 'src/allors/material/apps/objects/emailcommunication/overview/emailcommunication-overview.module';
-import * as LetterCorrespondenceOverview from 'src/allors/material/apps/objects/lettercorrespondence/overview/lettercorrespondence-overview.module';
-import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/phonecommunication/overview/phonecommunication-overview.module';
-
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
 
 import * as EmailAddressEdit from 'src/allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
@@ -67,10 +63,6 @@ import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/ove
 const modules = [
 
   CommunicationEventList.CommunicationEventListModule,
-
-  EmailCommunicationOverview.EmailCommunicationOverviewModule,
-  LetterCorrespondenceOverview.LetterCorrespondenceOverviewModule,
-  PhoneCommunicationOverview.PhoneCommunicationOverviewModule,
 
   EditSerialisedItem.SerialisedItemModule,
 
@@ -149,9 +141,6 @@ export const routes: Routes = [
           { path: 'organisations', component: OrganisationList.OrganisationListComponent },
           { path: 'organisation/:id', component: OrganisationOverview.OrganisationOverviewComponent },
           { path: 'communicationevents', component: CommunicationEventList.CommunicationEventListComponent },
-          { path: 'emailcommunication/:id', component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
-          { path: 'lettercorrespondence/:id', component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
-          { path: 'phonecommunicationevent/:id', component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
 

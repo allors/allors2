@@ -1,4 +1,4 @@
-namespace Tests.Intranet.FaceToFaceCommunicationTests
+namespace Tests.Intranet.PhoneCommunicationTests
 {
     using Allors.Meta;
 
@@ -7,9 +7,9 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
     using Tests.Components.Html;
     using Tests.Components.Material;
 
-    public class FaceToFaceCommunicationEditPage : MainPage
+    public class PhoneCommunicationEditPage : MainPage
     {
-        public FaceToFaceCommunicationEditPage(IWebDriver driver)
+        public PhoneCommunicationEditPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -18,7 +18,13 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialChips Participants => new MaterialChips(this.Driver, roleType: M.FaceToFaceCommunication.Participants);
+        public MaterialChips Receivers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Receivers);
+
+        public MaterialChips Callers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Callers);
+
+        public MaterialSlideToggle IncomingCall => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.IncomingCall);
+
+        public MaterialSlideToggle LeftVoiceMail => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.LeftVoiceMail);
 
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
 
@@ -29,6 +35,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
         public MaterialDatetimePicker ActualStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualStart);
 
         public MaterialDatetimePicker ActualEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualEnd);
+
+        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.CommunicationEvent.Comment);
 
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

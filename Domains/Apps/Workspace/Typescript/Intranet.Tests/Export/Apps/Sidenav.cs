@@ -34,43 +34,43 @@ namespace Tests.Intranet
 
         public Element ContactsGroup => this.Group("Contacts");
 
-        public Anchor People => this.Link("/contacts/people");
+        public Anchor People => this.Link(M.Person.ObjectType);
         
-        public Anchor Organisations => this.Link("/contacts/organisations");
+        public Anchor Organisations => this.Link(M.Organisation.ObjectType);
 
-        public Anchor CommunicationEvents => this.Link("/contacts/communicationevents");
+        public Anchor CommunicationEvents => this.Link(M.CommunicationEvent.ObjectType);
 
         public Element SalesGroup => this.Group("Sales");
 
-        public Anchor RequestsForQuote => this.Link("/sales/requestsforquote");
+        public Anchor RequestsForQuote => this.Link(M.RequestForQuote.ObjectType);
 
-        public Anchor ProductQuotes => this.Link("/sales/productquotes");
+        public Anchor ProductQuotes => this.Link(M.ProductQuote.ObjectType);
 
-        public Anchor SalesOrders => this.Link("/sales/salesorders");
+        public Anchor SalesOrders => this.Link(M.SalesOrder.ObjectType);
 
         public Element ProductsGroup => this.Group("Products");
 
-        public Anchor Goods => this.Link("/products/goods");
+        public Anchor Goods => this.Link(M.Good.ObjectType);
 
-        public Anchor Parts => this.Link("/products/parts");
+        public Anchor Parts => this.Link(M.Part.ObjectType);
 
-        public Anchor Catalogues => this.Link("/products/catalogues");
+        public Anchor Catalogues => this.Link(M.Catalogue.ObjectType);
 
-        public Anchor Categories => this.Link("/products/productcategories");
+        public Anchor Categories => this.Link(M.ProductCategory.ObjectType);
 
         public Anchor ProductCharacteristics => this.Link(M.SerialisedItemCharacteristic.ObjectType);
 
-        public Anchor ProductTypes => this.Link("/products/producttypes");
+        public Anchor ProductTypes => this.Link(M.ProductType.ObjectType);
 
         public Element AccountingGroup => this.Group("Accounting");
 
-        public Anchor PurchaseInvoices => this.Link("/accounting/purchaseinvoices");
+        public Anchor PurchaseInvoices => this.Link(M.PurchaseInvoice.ObjectType);
 
-        public Anchor SalesInvoices => this.Link("/accounting/salesinvoices");
+        public Anchor SalesInvoices => this.Link(M.SalesInvoice);
 
-        public Element WorkEffortsGroup => this.Group("Work Efforts");
+        public Element WorkEffortsGroup => this.Group("WorkEfforts");
 
-        public Anchor WorkEfforts => this.Link("/workefforts/workefforts");
+        public Anchor WorkEfforts => this.Link(M.WorkEffort.ObjectType);
 
         public Button Toggle => new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
 

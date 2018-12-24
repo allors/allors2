@@ -1,11 +1,11 @@
-namespace Tests.Intranet.PersonTests
+namespace Tests.Intranet.GoodTests
 {
     using System.Linq;
 
-    using Allors;
     using Allors.Domain;
 
     using Tests.Components;
+    using Tests.Intranet.PersonTests;
     using Tests.Intranet.ProductTest;
 
     using Xunit;

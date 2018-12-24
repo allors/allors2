@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
+import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -13,21 +13,25 @@ import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './facetofacecommunication-edit.component.html',
+  templateUrl: './lettercorrespondence-edit.component.html',
   providers: [ContextService]
 })
-export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
+export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
+
+  addSender = false;
+  addReceiver = false;
+  addAddress = false;
 
   party: Party;
   person: Person;
   organisation: Organisation;
   purposes: CommunicationEventPurpose[];
-  contacts: Party[] = [];
-  communicationEvent: FaceToFaceCommunication;
-  addParticipant = false;
+  postalAddresses: ContactMechanism[] = [];
+  communicationEvent: LetterCorrespondence;
   eventStates: CommunicationEventState[];
+  contacts: Party[] = [];
   title: string;
 
   private subscription: Subscription;
@@ -35,9 +39,10 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<FaceToFaceCommunicationEditComponent>,
-    public metaService: MetaService,
+    public dialogRef: MatDialogRef<LetterCorrespondenceEditComponent>,
     public refreshService: RefreshService,
+    public metaService: MetaService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private stateService: StateService) {
 
@@ -55,7 +60,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
-            pull.FaceToFaceCommunication({
+            pull.LetterCorrespondence({
               object: this.data.id,
               include: {
                 EventPurposes: x,
@@ -68,7 +73,11 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
@@ -80,6 +89,14 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
             pull.CommunicationEventState({
               sort: new Sort(m.CommunicationEventState.Name)
             }),
+            pull.PostalAddress({
+              include: {
+                PostalBoundary: {
+                  Country: x
+                }
+              },
+              sort: new Sort(m.PostalAddress.Address1)
+            }),
           ];
 
           if (isCreate) {
@@ -90,7 +107,11 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
                 include: {
                   CurrentContacts: x,
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }),
@@ -105,7 +126,11 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
                       include: {
                         CurrentContacts: x,
                         CurrentPartyContactMechanisms: {
-                          ContactMechanism: x,
+                          ContactMechanism: {
+                            PostalAddress_PostalBoundary: {
+                              Country: x,
+                            }
+                          },
                         }
                       }
                     }
@@ -128,6 +153,8 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
+        this.postalAddresses = loaded.collections.PostalAddresses as PostalAddress[];
+
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.person = loaded.objects.Person as Person;
@@ -146,21 +173,18 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
         }
 
         if (isCreate) {
-          this.title = 'Add Meeting';
-          this.communicationEvent = this.allors.context.create('FaceToFaceCommunication') as FaceToFaceCommunication;
-
-          if (!!this.person) {
-            this.communicationEvent.AddParticipant(this.person);
-          }
+          this.title = 'Add Letter';
+          this.communicationEvent = this.allors.context.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent.IncomingLetter = true;
 
           this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
-          this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
+          this.communicationEvent = loaded.objects.LetterCorrespondence as LetterCorrespondence;
 
           if (this.communicationEvent.CanWriteActualEnd) {
-            this.title = 'Edit Meeting';
+            this.title = 'Edit Letter';
           } else {
-            this.title = 'View Meeting';
+            this.title = 'View Letter';
           }
         }
       }, this.errorService.handler);
@@ -172,21 +196,37 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public participantAdded(person: Person): void {
+  public senderAdded(sender: Person): void {
 
-    this.communicationEvent.AddParticipant(person);
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = sender;
+    relationShip.Organisation = this.organisation;
 
-    if (!!this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-      relationShip.Contact = person;
-      relationShip.Organisation = this.organisation;
-    }
+    this.communicationEvent.AddOriginator(sender);
+  }
+
+  public receiverAdded(receiver: Person): void {
+
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = receiver;
+    relationShip.Organisation = this.organisation;
+
+    this.communicationEvent.AddReceiver(receiver);
+  }
+
+  public addressAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    const postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.postalAddresses.push(postalAddress);
+    this.communicationEvent.PostalAddress = postalAddress;
   }
 
   public save(): void {
 
-    this.allors.context.save()
-      .subscribe(() => {
+    this.allors.context.save().subscribe(
+      () => {
         const data: ObjectData = {
           id: this.communicationEvent.id,
           objectType: this.communicationEvent.objectType,
@@ -194,8 +234,9 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      (error: Error) => {
+        this.errorService.handle(error);
+      }
+    );
   }
 }

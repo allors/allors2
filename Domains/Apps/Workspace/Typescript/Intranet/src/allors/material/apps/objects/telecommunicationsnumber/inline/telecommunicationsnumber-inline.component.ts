@@ -52,8 +52,8 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
-        this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
+        this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as ContactMechanismType[];
 
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.telecommunicationsNumber = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;

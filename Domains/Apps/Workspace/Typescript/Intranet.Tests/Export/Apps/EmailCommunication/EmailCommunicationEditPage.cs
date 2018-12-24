@@ -1,4 +1,4 @@
-namespace Tests.Intranet.FaceToFaceCommunicationTests
+namespace Tests.Intranet.EmailCommunicationTests
 {
     using Allors.Meta;
 
@@ -7,9 +7,9 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
     using Tests.Components.Html;
     using Tests.Components.Material;
 
-    public class FaceToFaceCommunicationEditPage : MainPage
+    public class EmailCommunicationEditPage : MainPage
     {
-        public FaceToFaceCommunicationEditPage(IWebDriver driver)
+        public EmailCommunicationEditPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -18,9 +18,19 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialChips Participants => new MaterialChips(this.Driver, roleType: M.FaceToFaceCommunication.Participants);
+        public MaterialSlideToggle IncomingMail => new MaterialSlideToggle(this.Driver, roleType: M.EmailCommunication.IncomingMail);
 
-        public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
+        public MaterialSingleSelect Originator => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.Originator);
+
+        public MaterialChips Addressees => new MaterialChips(this.Driver, roleType: M.EmailCommunication.Addressees);
+
+        public MaterialChips CarbonCopies => new MaterialChips(this.Driver, roleType: M.EmailCommunication.CarbonCopies);
+
+        public MaterialChips BlindCopies => new MaterialChips(this.Driver, roleType: M.EmailCommunication.BlindCopies);
+
+        public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.EmailTemplate.SubjectTemplate);
+
+        public MaterialTextArea Body => new MaterialTextArea(this.Driver, roleType: M.EmailTemplate.BodyTemplate);
 
         public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledStart);
 

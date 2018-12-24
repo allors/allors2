@@ -14,11 +14,11 @@ namespace Tests.Intranet.PersonTests
         {
         }
 
-        public MaterialSelect Salutation => new MaterialSelect(this.Driver, roleType: M.Person.Salutation);
+        public MaterialSingleSelect Salutation => new MaterialSingleSelect(this.Driver, roleType: M.Person.Salutation);
 
-        public MaterialSelect Gender => new MaterialSelect(this.Driver, roleType: M.Person.Gender);
+        public MaterialSingleSelect Gender => new MaterialSingleSelect(this.Driver, roleType: M.Person.Gender);
 
-        public MaterialSelect Locale => new MaterialSelect(this.Driver, roleType: M.Person.Locale);
+        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Person.Locale);
 
         public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Self, OnDestroy } from '@angular/core';
 
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
@@ -10,10 +10,10 @@ import { Meta } from '../../../../../meta';
   selector: 'person-inline',
   templateUrl: './person-inline.component.html'
 })
-export class PersonInlineComponent implements OnInit {
+export class PersonInlineComponent implements OnInit, OnDestroy {
 
   @Output()
-  public saved: EventEmitter<string> = new EventEmitter<string>();
+  public saved: EventEmitter<Person> = new EventEmitter<Person>();
 
   @Output()
   public cancelled: EventEmitter<any> = new EventEmitter();
@@ -55,12 +55,18 @@ export class PersonInlineComponent implements OnInit {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.locales = loaded.collections.locales as Locale[];
-        this.genders = loaded.collections.genders as Enumeration[];
-        this.salutations = loaded.collections.salutations as Enumeration[];
+        this.locales = loaded.collections.Locales as Locale[];
+        this.genders = loaded.collections.GenderTypes as Enumeration[];
+        this.salutations = loaded.collections.Salutations as Enumeration[];
 
         this.person = this.allors.context.create('Person') as Person;
       }, this.errorService.handler);
+  }
+
+  public ngOnDestroy(): void {
+    if (!!this.person) {
+      this.allors.context.delete(this.person);
+    }
   }
 
   public cancel(): void {
@@ -68,16 +74,7 @@ export class PersonInlineComponent implements OnInit {
   }
 
   public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.saved.emit(this.person.id);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      this.saved.emit(this.person);
+      this.person = undefined;
   }
-
-  // TODO:  change to latest inline implementation
 }

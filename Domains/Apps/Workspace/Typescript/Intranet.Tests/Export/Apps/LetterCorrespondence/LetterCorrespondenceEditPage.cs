@@ -1,4 +1,4 @@
-namespace Tests.Intranet.FaceToFaceCommunicationTests
+namespace Tests.Intranet.LetterCorrespondenceTests
 {
     using Allors.Meta;
 
@@ -7,9 +7,9 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
     using Tests.Components.Html;
     using Tests.Components.Material;
 
-    public class FaceToFaceCommunicationEditPage : MainPage
+    public class LetterCorrespondenceEditPage : MainPage
     {
-        public FaceToFaceCommunicationEditPage(IWebDriver driver)
+        public LetterCorrespondenceEditPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -18,7 +18,13 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialChips Participants => new MaterialChips(this.Driver, roleType: M.FaceToFaceCommunication.Participants);
+        public MaterialSlideToggle IncomingLetter => new MaterialSlideToggle(this.Driver, roleType: M.LetterCorrespondence.IncomingLetter);
+
+        public MaterialSingleSelect PostalAddress => new MaterialSingleSelect(this.Driver, roleType: M.LetterCorrespondence.PostalAddress);
+
+        public MaterialChips Originators => new MaterialChips(this.Driver, roleType: M.LetterCorrespondence.Originators);
+
+        public MaterialChips Receivers => new MaterialChips(this.Driver, roleType: M.LetterCorrespondence.Receivers);
 
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
 
@@ -29,6 +35,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
         public MaterialDatetimePicker ActualStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualStart);
 
         public MaterialDatetimePicker ActualEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualEnd);
+
+        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.CommunicationEvent.Comment);
 
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

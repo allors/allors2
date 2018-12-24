@@ -1,5 +1,6 @@
-namespace Tests.Intranet.FaceToFaceCommunicationTests
+namespace Tests.Intranet.PhoneCommunicationTests
 {
+    using System;
     using System.Linq;
 
     using Allors;
@@ -12,11 +13,11 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
     using Xunit;
 
     [Collection("Test collection")]
-    public class FaceToFaceCommunicationEditTest : Test
+    public class PhoneCommunicationEditTest : Test
     {
         private readonly PersonListPage people;
 
-        public FaceToFaceCommunicationEditTest(TestFixture fixture)
+        public PhoneCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
@@ -25,10 +26,12 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            person.AddCommunicationEvent(new FaceToFaceCommunicationBuilder(this.Session)
+            person.AddCommunicationEvent(new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
-                .WithParticipant(person)
-                .WithParticipant(firstEmployee)
+                .WithIncomingCall(true)
+                .WithLeftVoiceMail(true)
+                .WithReceiver(firstEmployee)
+                .WithCaller(person)
                 .Build());
 
             this.Session.Derive();
@@ -44,43 +47,52 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First;
 
-            var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
+            var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            var page = personOverview.NewFaceToFaceCommunication();
+            var page = personOverview.NewPhoneCommunication();
 
+            page.IncomingCall.Value = false;
+            page.LeftVoiceMail.Value = true;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
+            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
             page.Subject.Value = "subject";
-            page.Participants.Add(employee.PartyName);
+            page.Callers.Add(employee.PartyName);
+            page.Receivers.Add(person.PartyName);
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
+            page.Comment.Value = "comment";
 
             page.Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new FaceToFaceCommunications(this.Session).Extent().ToArray();
+            var after = new PhoneCommunications(this.Session).Extent().ToArray();
 
             Assert.Equal(after.Length, before.Length + 1);
 
             var communicationEvent = after.Except(before).First();
 
+            Assert.False(communicationEvent.IncomingCall);
+            Assert.True(communicationEvent.LeftVoiceMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Contains(person, communicationEvent.Participants);
-            Assert.Contains(employee, communicationEvent.Participants);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
+            Assert.Single(communicationEvent.Callers);
+            Assert.Contains(employee, communicationEvent.Callers);
+            Assert.Single(communicationEvent.Receivers);
+            Assert.Contains(person, communicationEvent.Receivers);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
+            Assert.Equal("comment", communicationEvent.Comment);
         }
 
         [Fact]
@@ -93,45 +105,55 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
             var secondEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("second"));
 
-            var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
+            var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var communicationEvent = (FaceToFaceCommunication)person.CommunicationEvents.First(v => v.GetType().Name == typeof(FaceToFaceCommunication).Name);
+            var communicationEvent = (PhoneCommunication)person.CommunicationEvents.First(v => v.GetType().Name == typeof(PhoneCommunication).Name);
             var id = communicationEvent.Id;
 
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectFaceToFaceCommunication(communicationEvent);
+            var page = personOverview.SelectPhoneCommunication(communicationEvent);
 
+            page.IncomingCall.Value = false;
+            page.LeftVoiceMail.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name);
+            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
             page.Subject.Value = "new subject";
-            page.Participants.Add(secondEmployee.PartyName);
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
+            page.Callers.Remove(person.PartyName);
+            page.Callers.Add(firstEmployee.PartyName);
+            page.Receivers.Remove(firstEmployee.PartyName);
+            page.Receivers.Add(person.PartyName);
+            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
+            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
+            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 25);
+            page.Comment.Value = "new comment";
 
             page.Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new FaceToFaceCommunications(this.Session).Extent().ToArray();
+            var after = new PhoneCommunications(this.Session).Extent().ToArray();
 
             Assert.Equal(after.Length, before.Length);
 
             communicationEvent = after.First(v => v.Id.Equals(id));
 
+            Assert.False(communicationEvent.IncomingCall);
+            Assert.False(communicationEvent.LeftVoiceMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, communicationEvent.EventPurposes);
-            Assert.Contains(person, communicationEvent.Participants);
-            Assert.Contains(firstEmployee, communicationEvent.Participants);
-            Assert.Contains(secondEmployee, communicationEvent.Participants);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
+            Assert.Single(communicationEvent.Callers);
+            Assert.Contains(person, communicationEvent.Callers);
+            Assert.Single(communicationEvent.Receivers);
+            Assert.Contains(firstEmployee, communicationEvent.Receivers);
             Assert.Equal("new subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date);
+            Assert.Equal("new comment", communicationEvent.Comment);
         }
     }
 }

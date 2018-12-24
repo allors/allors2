@@ -30,20 +30,21 @@ namespace Tests.Components.Material
             set
             {
                 this.Driver.WaitForAngular();
-                var element = this.Driver.FindElement(this.ContainerSelector);
-                this.ScrollToElement(element);
+                var container = this.Driver.FindElement(this.ContainerSelector);
+                var element = this.Driver.FindElement(this.InputSelector);
+                this.ScrollToElement(container);
                 if (element.Selected)
                 {
                     if (!value)
                     {
-                        element.Click();
+                        container.Click();
                     }
                 }
                 else
                 {
                     if (value)
                     {
-                        element.Click();
+                        container.Click();
                     }
                 }
             }

@@ -227,15 +227,6 @@ namespace Allors.Repository
         Person Owner { get; set; }
 
         #region Allors
-        [Id("e85169df-772c-46cc-a0ef-2bf413aec11d")]
-        [AssociationId("684ad0be-d99a-4f67-a235-7d17d49ea224")]
-        [RoleId("1b5cc695-29d7-48b7-991f-c8271f9a00d4")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        string Note { get; set; }
-
-        #region Allors
         [Id("ecc20a6a-ef70-4a09-8a3b-c8dce88eaa27")]
         [AssociationId("abdb3a26-ae86-4500-a9d9-d9546fb6f856")]
         [RoleId("406f48d7-a0be-48c9-81f5-7b506b41e114")]
