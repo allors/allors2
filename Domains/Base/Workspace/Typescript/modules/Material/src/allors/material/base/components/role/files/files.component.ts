@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field, MediaService } from '../../../../../angular';
+import { RoleField, MediaService } from '../../../../../angular';
 import { Media } from '../../../../../domain';
 
 @Component({
@@ -9,9 +9,9 @@ import { Media } from '../../../../../domain';
   selector: 'a-mat-files',
   templateUrl: './files.component.html',
 })
-export class AllorsMaterialFilesComponent extends Field {
+export class AllorsMaterialFilesComponent extends RoleField {
   @Output()
-  changed: EventEmitter<Field> = new EventEmitter<Field>();
+  changed: EventEmitter<RoleField> = new EventEmitter<RoleField>();
 
   @Input() public accept = 'image/*';
 

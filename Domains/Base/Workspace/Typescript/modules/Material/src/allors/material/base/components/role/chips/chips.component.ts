@@ -5,7 +5,7 @@ import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith }
 
 import { ISessionObject } from '../../../../../framework';
 
-import { Field } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
 import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
@@ -13,7 +13,7 @@ import { MatAutocompleteTrigger } from '@angular/material';
   selector: 'a-mat-chips',
   templateUrl: './chips.component.html',
 })
-export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDestroy {
+export class AllorsMaterialChipsComponent extends RoleField implements OnInit, OnDestroy {
 
   @Input() public display = 'display';
 

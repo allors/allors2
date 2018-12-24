@@ -1,12 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { IncoTermType, SalesInvoice, SalesTerm } from '../../../../../domain';
-import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';

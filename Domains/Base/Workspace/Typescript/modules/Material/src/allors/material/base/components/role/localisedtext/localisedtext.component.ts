@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field, humanize } from '../../../../../angular';
+import { RoleField, humanize } from '../../../../../angular';
 import { Locale, LocalisedText } from '../../../../../domain';
 
 @Component({
@@ -9,7 +9,7 @@ import { Locale, LocalisedText } from '../../../../../domain';
   selector: 'a-mat-localised-text',
   templateUrl: './localisedtext.component.html',
 })
-export class AllorsMaterialLocalisedTextComponent extends Field {
+export class AllorsMaterialLocalisedTextComponent extends RoleField {
 
   @Input()
   public locale: Locale;

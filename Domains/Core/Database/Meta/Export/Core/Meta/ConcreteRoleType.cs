@@ -23,6 +23,8 @@ namespace Allors.Meta
 {
     public sealed partial class ConcreteRoleType : IConcreteRoleType
     {
+        public static readonly ConcreteRoleType[] EmptyArray = new ConcreteRoleType[0];
+
         public ConcreteRoleType(Class @class, RoleType roleType)
         {
             this.Class = @class;

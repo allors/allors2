@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field, MediaService } from '../../../../../angular';
+import { RoleField, MediaService } from '../../../../../angular';
 import { Media } from '../../../../../domain';
 import { ISession, ISessionObject } from '../../../../../framework';
 
@@ -10,9 +10,9 @@ import { ISession, ISessionObject } from '../../../../../framework';
   selector: 'a-mat-file',
   templateUrl: './file.component.html',
 })
-export class AllorsMaterialFileComponent extends Field {
+export class AllorsMaterialFileComponent extends RoleField {
   @Output()
-  changed: EventEmitter<Field> = new EventEmitter<Field>();
+  changed: EventEmitter<RoleField> = new EventEmitter<RoleField>();
 
   @Input()
   accept = 'image/*';

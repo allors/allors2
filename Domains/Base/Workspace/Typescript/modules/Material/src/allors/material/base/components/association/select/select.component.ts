@@ -3,21 +3,18 @@ import { NgForm } from '@angular/forms';
 
 import { ISessionObject } from '../../../../../framework';
 
-import { RoleField } from '../../../../../angular';
+import { RoleField, AssociationField } from '../../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'a-mat-select',
+  selector: 'a-mat-association-select',
   templateUrl: './select.component.html',
 })
-export class AllorsMaterialSelectComponent extends RoleField {
+export class AllorsMaterialAssociationSelectComponent extends AssociationField {
   @Input()
   public display = 'display';
 
-  @Input()
-  public options: ISessionObject[];
-
-  @Output()
+   @Output()
   public selected: EventEmitter<ISessionObject> = new EventEmitter();
 
   constructor(@Optional() parentForm: NgForm) {

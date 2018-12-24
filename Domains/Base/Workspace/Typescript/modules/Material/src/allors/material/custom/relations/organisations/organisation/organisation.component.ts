@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -18,7 +18,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   title: string;
 
-  field: Field;
+  field: RoleField;
 
   m: Meta;
   people: Person[];
@@ -125,7 +125,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     window.history.back();
   }
 
-  public ownerSelected(field: Field): void {
+  public ownerSelected(field: RoleField): void {
     this.field = field;
   }
 }

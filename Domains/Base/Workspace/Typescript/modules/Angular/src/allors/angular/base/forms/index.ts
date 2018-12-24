@@ -1,1 +1,2 @@
-export { Field } from './Field';
+export { AssociationField } from './AssociationField';
+export { RoleField } from './RoleField';

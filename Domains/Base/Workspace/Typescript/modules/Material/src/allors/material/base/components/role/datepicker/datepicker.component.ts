@@ -1,7 +1,7 @@
 import { Component, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -9,7 +9,7 @@ import { Field } from '../../../../../angular';
   styleUrls: ['./datepicker.component.scss'],
   templateUrl: './datepicker.component.html',
 })
-export class AllorsMaterialDatepickerComponent extends Field {
+export class AllorsMaterialDatepickerComponent extends RoleField {
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
