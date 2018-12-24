@@ -1,7 +1,7 @@
 import { Component, Input, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field, humanize } from '../../../../../angular';
+import { RoleField, humanize } from '../../../../../angular';
 
 export interface RadioGroupOption {
   label?: string;
@@ -13,7 +13,7 @@ export interface RadioGroupOption {
   selector: 'a-mat-radiogroup',
   templateUrl: './radiogroup.component.html',
 })
-export class AllorsMaterialRadioGroupComponent extends Field {
+export class AllorsMaterialRadioGroupComponent extends RoleField {
   @Input()
   public options: RadioGroupOption[];
 

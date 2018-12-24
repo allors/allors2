@@ -283,8 +283,7 @@ namespace Allors.Meta
             get
             {
                 this.MetaPopulation.Derive();
-                var x = this.Supertypes.Where(m => m.Workspace);
-                return x;
+                return this.Supertypes.Where(m => m.Workspace);
             }
         }
 

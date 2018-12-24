@@ -8,6 +8,7 @@ import {
 } from '@angular/material';
 
 import {
+  AllorsMaterialAssociationSelectModule,
   AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialDatetimepickerModule, AllorsMaterialSelectModule, AllorsMaterialInputModule,
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule,
   AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule
@@ -36,6 +37,7 @@ export { FormComponent } from './form.component';
     MatMenuModule,
     MatToolbarModule,
 
+    AllorsMaterialAssociationSelectModule,
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialCheckboxModule,
     AllorsMaterialChipsModule,

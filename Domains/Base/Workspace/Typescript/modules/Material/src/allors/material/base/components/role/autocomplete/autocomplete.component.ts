@@ -3,7 +3,7 @@ import { FormControl, NgForm } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 
-import { Field } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
 
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
@@ -13,7 +13,7 @@ import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete }
   selector: 'a-mat-autocomplete',
   templateUrl: './autocomplete.component.html',
 })
-export class AllorsMaterialAutocompleteComponent extends Field implements OnInit, DoCheck {
+export class AllorsMaterialAutocompleteComponent extends RoleField implements OnInit, DoCheck {
   @Input() display = 'display';
 
   @Input() debounceTime = 400;

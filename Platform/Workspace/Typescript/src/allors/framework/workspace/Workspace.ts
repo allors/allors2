@@ -55,6 +55,12 @@ export class Workspace implements IWorkspace {
                             .forEach((roleTypeName) => {
                                 const roleType = objectType.roleTypeByName[roleTypeName];
 
+
+                                if(!roleType){
+                                    console.warn('oops');
+                                }
+
+
                                 Object.defineProperty(prototype, 'CanRead' + roleTypeName, {
                                     get(this: SessionObject) {
                                         return this.canRead(roleTypeName);

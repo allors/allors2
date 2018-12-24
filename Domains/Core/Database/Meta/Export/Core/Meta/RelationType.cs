@@ -346,5 +346,15 @@ namespace Allors.Meta
 
             this.RoleType?.Validate(validationLog);
         }
+
+        public ConcreteRoleType[] ConcreteRoleTypes
+        {
+            get
+            {
+                return this.AssociationType.ObjectType.IsInterface ? 
+                           this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() : 
+                           ConcreteRoleType.EmptyArray;
+            }
+        }
     }
 }

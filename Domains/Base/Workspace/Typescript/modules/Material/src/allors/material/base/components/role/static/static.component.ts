@@ -1,14 +1,14 @@
 import { Component , Input, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-static',
   templateUrl: './static.component.html',
 })
-export class AllorsMaterialStaticComponent extends Field {
+export class AllorsMaterialStaticComponent extends RoleField {
   @Input()
   public display: string;
 

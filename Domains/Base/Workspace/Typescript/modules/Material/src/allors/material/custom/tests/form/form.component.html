@@ -46,6 +46,11 @@
           <a-mat-textarea class="col-md" [object]="data" [roleType]="m.Data.TextArea"></a-mat-textarea>
         </div>
 
+
+        <div class="row">
+          <a-mat-association-select class="col-md" [object]="data" [associationType]="m.Data.OrganisationsWhereOneData" display="displayName"></a-mat-association-select>
+        </div>
+
       </mat-card-content>
     </mat-card>
   </div>

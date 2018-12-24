@@ -666,5 +666,23 @@ namespace Allors.Meta
                 return this.Classes.Where(m => m.Workspace);
             }
         }
+
+        public IEnumerable<RelationType> WorkspaceRelationTypes
+        {
+            get
+            {
+                this.Derive();
+                return this.RelationTypes.Where(m => m.Workspace);
+            }
+        }
+
+        public IEnumerable<MethodType> WorkspaceMethodTypes
+        {
+            get
+            {
+                this.Derive();
+                return this.MethodTypes.Where(m => m.Workspace);
+            }
+        }
     }
 }

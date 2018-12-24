@@ -1,12 +1,20 @@
 import { PropertyType } from './PropertyType';
+import { RelationType } from './RelationType';
 import { MetaPopulation } from './MetaPopulation';
 import { ObjectType } from './ObjectType';
 
 export class AssociationType implements PropertyType {
-  public id: string;
-  public name: string;
-  public objectType: ObjectType;
+  metaPopulation: MetaPopulation;
 
-  constructor(public metaPopulation: MetaPopulation) {
+  id: string;
+  objectType: ObjectType;
+  name: string;
+  singular: string;
+  isOne: boolean;
+
+  constructor(public relationType: RelationType) {
+    this.metaPopulation = relationType.metaPopulation;
   }
+
+  get isMany(): boolean { return !this.isOne; }
 }
