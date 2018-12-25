@@ -43,7 +43,6 @@ namespace Allors.Repository
         public Case Case { get; set; }
         public Priority Priority { get; set; }
         public Person Owner { get; set; }
-        public string Note { get; set; }
         public DateTime ActualStart { get; set; }
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
@@ -70,6 +69,16 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public bool IncomingCall { get; set; }
+
+        #region Allors
+        [Id("1CEE575B-0954-4A05-A337-24D025E0A156")]
+        [AssociationId("9EB873B9-DBD4-4658-BA67-997DAB857471")]
+        [RoleId("E6F82CC0-AB60-4945-93EB-07B47FD73F4A")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public TelecommunicationsNumber PhoneNumber { get; set; }
 
         #region Allors
         [Id("F6BBFADC-A5F9-4F23-B39E-3A43949B667D")]

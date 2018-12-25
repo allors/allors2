@@ -21,6 +21,7 @@ namespace Tests.Intranet.PhoneCommunicationTests
         public MaterialChips Receivers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Receivers);
 
         public MaterialChips Callers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Callers);
+        public MaterialSingleSelect PhoneNumber => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.PhoneNumber);
 
         public MaterialSlideToggle IncomingCall => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.IncomingCall);
 

@@ -4,7 +4,7 @@ import { PanelService, MetaService, RefreshService, Action, ActionTarget, Naviga
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
-import { ObjectService, CreateData } from '../../../../../base/services/object';
+import { ObjectService, CreateData, EditData } from '../../../../../base/services/object';
 import { ISessionObject } from '../../../../../../framework';
 
 interface Row extends TableRow {
@@ -39,6 +39,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
     };
   }
 
+
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
@@ -48,7 +49,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
     public errorService: ErrorService,
     public deleteService: DeleteService,
     public editService: EditService
-    ) {
+  ) {
 
     this.m = this.metaService.m;
   }

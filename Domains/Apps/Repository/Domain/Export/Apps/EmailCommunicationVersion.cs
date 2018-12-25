@@ -44,7 +44,6 @@ namespace Allors.Repository
         public Case Case { get; set; }
         public Priority Priority { get; set; }
         public Person Owner { get; set; }
-        public string Note { get; set; }
         public DateTime ActualStart { get; set; }
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }

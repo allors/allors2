@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { Component, Optional, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RoleField } from '../../../../../angular';
@@ -10,7 +10,14 @@ import { RoleField } from '../../../../../angular';
 })
 export class AllorsMaterialSlideToggleComponent extends RoleField {
 
+  @Output()
+  public changed: EventEmitter<any> = new EventEmitter();
+
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
+  }
+
+  public change(): void {
+    this.changed.emit();
   }
 }

@@ -60,8 +60,6 @@ namespace Allors.Repository
 
         public Person Owner { get; set; }
 
-        public string Note { get; set; }
-
         public DateTime ActualStart { get; set; }
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }

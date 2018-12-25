@@ -59,8 +59,6 @@ namespace Allors.Repository
 
         public Person Owner { get; set; }
 
-        public string Note { get; set; }
-
         public DateTime ActualStart { get; set; }
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
@@ -102,6 +100,16 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public bool IncomingCall { get; set; }
+
+        #region Allors
+        [Id("0001D33E-C20F-4674-8EB2-B5DCCAA7E556")]
+        [AssociationId("8CB849EA-F0B6-4837-B0D8-75B8AA53C639")]
+        [RoleId("EAFB1350-4A2F-450B-82C5-8D3AA12194E0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public TelecommunicationsNumber PhoneNumber { get; set; }
 
         #region Allors
         [Id("5e3c675b-b329-47a4-9d53-b0e95837a23b")]
