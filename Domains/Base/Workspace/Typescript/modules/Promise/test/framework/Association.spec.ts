@@ -55,10 +55,20 @@ describe('Association',
                     const c2C = c2s.find((v) => v.Name === 'c2C');
                     const c2D = c2s.find((v) => v.Name === 'c2D');
 
+                    // One to One
                     assert.isNull(c2A.C1WhereC1C2One2One);
                     assert.equal(c2B.C1WhereC1C2One2One, c1B);
                     assert.equal(c2C.C1WhereC1C2One2One, c1C);
                     assert.equal(c2D.C1WhereC1C2One2One, c1D);
+
+                    // Many to One
+                    assert.isEmpty(c2A.C1sWhereC1C2Many2One);
+                    assert.equal(c2B.C1sWhereC1C2Many2One.length, 1);
+                    assert.include(c2B.C1sWhereC1C2Many2One, c1B);
+                    assert.equal(c2C.C1sWhereC1C2Many2One.length, 2);
+                    assert.include(c2C.C1sWhereC1C2Many2One, c1C);
+                    assert.include(c2C.C1sWhereC1C2Many2One, c1D);
+                    assert.isEmpty(c2D.C1sWhereC1C2Many2One);
                 });
             });
     });

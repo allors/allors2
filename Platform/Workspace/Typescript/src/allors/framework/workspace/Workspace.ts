@@ -21,7 +21,9 @@ export class Workspace implements IWorkspace {
 
     public prototypeByName: { [name: string]: any };
 
-    private workspaceObjectById: { [id: string]: WorkspaceObject; } = {};
+    private workspaceObjectById: { [id: string]: WorkspaceObject } = {};
+
+    workspaceObjectByIdByClassId: { [id: string]: { [id: string]: WorkspaceObject } } = {};
 
     constructor(public metaPopulation: MetaPopulation) {
 
@@ -159,6 +161,8 @@ export class Workspace implements IWorkspace {
                     const objectData = syncResponse.objects[v];
                     const workspaceObject = new WorkspaceObject(this, syncResponse, objectData);
                     this.workspaceObjectById[workspaceObject.id] = workspaceObject;
+
+                    this.addByObjectTypeId(workspaceObject);
                 });
         }
     }
@@ -170,5 +174,15 @@ export class Workspace implements IWorkspace {
         }
 
         return workspaceObject;
+    }
+
+    private addByObjectTypeId(workspaceObject: WorkspaceObject){
+        let workspaceObjectById = this.workspaceObjectByIdByClassId[workspaceObject.objectType.id];
+        if (!workspaceObjectById) {
+            workspaceObjectById = {};
+            this.workspaceObjectByIdByClassId[workspaceObject.objectType.id] = workspaceObjectById;
+        }
+
+        workspaceObjectById[workspaceObject.id] = workspaceObject;
     }
 }
