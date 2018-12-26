@@ -9,7 +9,7 @@ import { MethodType } from './MethodType';
 export class MetaPopulation {
   readonly metaObjectById: { [id: string]: MetaObject; } = {};
 
-  readonly objectTypeByName: { [name: string]: ObjectType } = {}
+  readonly objectTypeByName: { [name: string]: ObjectType } = {};
 
   readonly units: ObjectType[] = [];
   readonly composites: ObjectType[] = [];
@@ -76,7 +76,7 @@ export class MetaPopulation {
 
     const dataObjectTypes = [].concat(data.interfaces).concat(data.classes);
 
-    // Implemented interfaces 
+    // Implemented interfaces
     dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
       const metaObjectType = this.metaObjectById[dataObjectType.id] as ObjectType;
       metaObjectType.interfaces = dataObjectType.interfaces.map((v) => this.objectTypeByName[v]);
@@ -90,7 +90,7 @@ export class MetaPopulation {
       const dataAssociationType = dataRelationType.associationType;
       const associationType = relationType.associationType;
       associationType.id = dataAssociationType.id;
-      associationType.objectType = this.metaObjectById[dataAssociationType.objectTypeId] as ObjectType;;
+      associationType.objectType = this.metaObjectById[dataAssociationType.objectTypeId] as ObjectType;
       associationType.name = dataAssociationType.name;
       associationType.singular = dataAssociationType.singular;
       associationType.isOne = dataAssociationType.isOne;

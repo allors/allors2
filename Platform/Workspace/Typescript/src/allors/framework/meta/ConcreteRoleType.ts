@@ -16,7 +16,7 @@ export class ConcreteRoleType implements RoleType {
     }
 
     public get id(): string { return this.roleType.id; }
-    
+
     public get objectType(): ObjectType { return this.roleType.objectType; }
 
     public get name(): string { return this.roleType.name; }

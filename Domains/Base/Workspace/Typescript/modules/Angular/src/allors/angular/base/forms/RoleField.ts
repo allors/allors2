@@ -42,7 +42,7 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   private id = 0;
 
   constructor(private parentForm: NgForm) {
-    super()
+    super();
     // TODO: wrap around
     this.id = ++Field.counter;
   }

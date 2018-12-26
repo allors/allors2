@@ -123,7 +123,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   }
 
   print() {
-    //TODO:
+    // TODO:
   }
 
   send() {

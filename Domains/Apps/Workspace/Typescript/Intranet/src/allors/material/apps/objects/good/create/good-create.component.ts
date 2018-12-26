@@ -89,7 +89,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

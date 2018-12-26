@@ -44,7 +44,7 @@ domain.extend((workspace) => {
                 return this.UserName;
             }
 
-            return "N/A";
+            return 'N/A';
         },
     });
 
