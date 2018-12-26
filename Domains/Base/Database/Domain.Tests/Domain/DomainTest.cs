@@ -38,8 +38,6 @@ namespace Tests
 
     public class DomainTest : IDisposable
     {
-        public const string ApplicationName = "Domain.Tests";
-
         public DomainTest(bool populate = true)
         {
             this.Setup(populate);

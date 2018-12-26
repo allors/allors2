@@ -26,7 +26,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
   public productCharacteristic: SerialisedItemCharacteristicType;
 
   public singleton: Singleton;
-  public uoms: UnitOfMeasure[];
+  public uoms: IUnitOfMeasure[];
   public timeFrequencies: TimeFrequency[];
   public allUoms: IUnitOfMeasure[];
 

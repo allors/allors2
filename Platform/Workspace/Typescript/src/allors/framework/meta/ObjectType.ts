@@ -74,7 +74,7 @@ export class ObjectType implements MetaObject {
         .map((name) => this.roleTypeByName[name])
         .forEach((roleType) => {
           const relationType = roleType.relationType;
-          if(relationType.associationType.objectType.isInterface){
+          if (relationType.associationType.objectType.isInterface) {
             this.roleTypeByName[roleType.name] = relationType.concreteRoleTypeByClassName[this.name];
           }
         });

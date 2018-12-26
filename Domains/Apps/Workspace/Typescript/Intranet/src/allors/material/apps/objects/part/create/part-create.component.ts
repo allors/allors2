@@ -98,7 +98,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

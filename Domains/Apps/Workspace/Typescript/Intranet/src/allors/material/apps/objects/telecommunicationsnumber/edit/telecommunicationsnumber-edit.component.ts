@@ -132,7 +132,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
         if (add) {
           this.party = loaded.objects.Party as Party;
           // TODO: Should be lookup on UniqueId
-          const phone: ContactMechanismType = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone');
+          const phone = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone') as ContactMechanismType;
           this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
           this.contactMechanism.ContactMechanismType = phone;
           this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;

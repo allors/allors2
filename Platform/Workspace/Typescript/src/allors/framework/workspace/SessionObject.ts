@@ -5,7 +5,7 @@ import { PushRequestObject } from './../protocol/push/PushRequestObject';
 import { PushRequestRole } from './../protocol/push/PushRequestRole';
 
 import { Method } from './Method';
-import { ISession } from './Session';
+import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 
 export interface ISessionObject {
@@ -29,6 +29,8 @@ export interface ISessionObject {
     add(roleTypeName: string, value: any);
     remove(roleTypeName: string, value: any);
 
+    getAssociation(associationTypeName: string): any;
+
     save(): PushRequestObject;
     saveNew(): PushRequestNewObject;
     reset();
@@ -40,7 +42,7 @@ export interface INewSessionObject extends ISessionObject {
 
 export class SessionObject implements INewSessionObject {
 
-    public session: ISession;
+    public session: Session;
     public workspaceObject: IWorkspaceObject;
     public objectType: ObjectType;
 
@@ -210,6 +212,20 @@ export class SessionObject implements INewSessionObject {
 
             this.session.hasChanges = true;
         }
+    }
+
+    public getAssociation(associationTypeName: string): any {
+        this.assertExists();
+
+        const associationType = this.objectType.associationTypeByName[associationTypeName];
+
+        const associations = this.session.getAssociation(this, associationType);
+
+        if (associationType.isOne) {
+            return associations.length > 0 ? associations[0] : null;
+        }
+
+        return associations;
     }
 
     public save(): PushRequestObject {
