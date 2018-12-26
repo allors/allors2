@@ -29,6 +29,8 @@ export interface ISessionObject {
     add(roleTypeName: string, value: any);
     remove(roleTypeName: string, value: any);
 
+    getAssociation(associationTypeName: string): any;
+
     save(): PushRequestObject;
     saveNew(): PushRequestNewObject;
     reset();
@@ -210,6 +212,10 @@ export class SessionObject implements INewSessionObject {
 
             this.session.hasChanges = true;
         }
+    }
+
+    public getAssociation(associationTypeName: string): any {
+        return null;
     }
 
     public save(): PushRequestObject {

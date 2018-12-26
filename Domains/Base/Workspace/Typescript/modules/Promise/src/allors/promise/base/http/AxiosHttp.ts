@@ -40,12 +40,13 @@ export class AxiosHttp implements Http {
         });
     }
 
-    public get(url: string): Promise<HttpResponse> {
+    public get(url: string, params?: any): Promise<HttpResponse> {
 
         return new Promise((resolve, reject) => {
 
             const config: AxiosRequestConfig = {
                 headers: { Authorization: `Bearer ${this.token}` },
+                params
             };
 
             this.axios.get(url, config)

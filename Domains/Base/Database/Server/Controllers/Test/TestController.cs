@@ -29,7 +29,7 @@ namespace Allors.Server.Controllers
         }
 
         [HttpGet]
-        public IActionResult Setup()
+        public IActionResult Setup(string population)
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
 
@@ -42,11 +42,14 @@ namespace Allors.Server.Controllers
                 new Setup(session, null).Apply();
                 session.Derive();
                 session.Commit();
+           
+                new TestPopulation(session, population).Apply();
+                session.Derive();
+                session.Commit();
             }
 
             return this.Ok("Setup");
         }
-
 
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
