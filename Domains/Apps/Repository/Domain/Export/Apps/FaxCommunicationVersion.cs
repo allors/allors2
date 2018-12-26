@@ -17,7 +17,10 @@ namespace Allors.Repository
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
         public DateTime ScheduledStart { get; set; }
-        public Party[] ToParties { get; set; }
+
+        public Party FromParty { get; set; }
+
+        public Party ToParty { get; set; }
         public ContactMechanism[] ContactMechanisms { get; set; }
         public Party[] InvolvedParties { get; set; }
         public DateTime InitialScheduledStart { get; set; }
@@ -37,7 +40,6 @@ namespace Allors.Repository
         public WorkEffort[] WorkEfforts { get; set; }
         public string Description { get; set; }
         public DateTime InitialScheduledEnd { get; set; }
-        public Party[] FromParties { get; set; }
         public string Subject { get; set; }
         public Media[] Documents { get; set; }
         public Case Case { get; set; }
@@ -54,26 +56,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("6E0B9344-5FF7-4B12-8974-92397AFF2543")]
-        [AssociationId("593B4954-AEE5-41B4-B541-BDB3C361D39F")]
-        [RoleId("7368D5AC-BEBA-4E97-97AE-25F039F754FC")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Party Originator { get; set; }
-
-        #region Allors
-        [Id("00F53390-FD2C-42E9-B495-64FA56339617")]
-        [AssociationId("793B25BF-F734-45D5-A724-A23103BF3E15")]
-        [RoleId("FBCBF494-83AA-467C-A8CD-AB76E0F08223")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Party Receiver { get; set; }
-
-        #region Allors
         [Id("23DDDD16-BD4F-4CAD-9B45-1B34D17A4D97")]
         [AssociationId("181FF5B8-DFA5-4EC1-87BB-B2AEAD195273")]
         [RoleId("9A130A18-09E4-484A-8687-77AF1684C607")]
@@ -81,7 +63,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public TelecommunicationsNumber OutgoingFaxNumber { get; set; }
+        public TelecommunicationsNumber FaxNumber { get; set; }
 
         #region inherited methods
 

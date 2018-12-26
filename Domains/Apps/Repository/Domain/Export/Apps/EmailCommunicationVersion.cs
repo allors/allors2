@@ -17,7 +17,11 @@ namespace Allors.Repository
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
         public DateTime ScheduledStart { get; set; }
-        public Party[] ToParties { get; set; }
+
+        public Party FromParty { get; set; }
+
+        public Party ToParty { get; set; }
+
         public ContactMechanism[] ContactMechanisms { get; set; }
         public Party[] InvolvedParties { get; set; }
         public DateTime InitialScheduledStart { get; set; }
@@ -38,7 +42,6 @@ namespace Allors.Repository
         public WorkEffort[] WorkEfforts { get; set; }
         public string Description { get; set; }
         public DateTime InitialScheduledEnd { get; set; }
-        public Party[] FromParties { get; set; }
         public string Subject { get; set; }
         public Media[] Documents { get; set; }
         public Case Case { get; set; }
@@ -62,7 +65,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public EmailAddress Originator { get; set; }
+        public EmailAddress FromEmail { get; set; }
 
         #region Allors
         [Id("DE61E1FA-401E-4C45-B92C-908D7F6693F9")]
@@ -70,30 +73,10 @@ namespace Allors.Repository
         [RoleId("60228ABA-E68B-4ECE-9759-226197A5D696")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public EmailAddress[] Addressees { get; set; }
-
-        #region Allors
-        [Id("644BD5F8-AB23-44BB-90B8-098C9F0223BA")]
-        [AssociationId("69D92237-1A7B-4AD4-80A3-55A7F20077A8")]
-        [RoleId("7BE43008-2BCA-478C-8234-7606D90293ED")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public EmailAddress[] CarbonCopies { get; set; }
-
-        #region Allors
-        [Id("A668BBB8-30F7-4997-B778-74590E46FE59")]
-        [AssociationId("BA872A44-57A6-4746-B686-9E175C39E78A")]
-        [RoleId("3A6DC9CC-306B-4FBC-997E-C44BD41E7F61")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public EmailAddress[] BlindCopies { get; set; }
+        public EmailAddress ToEmail { get; set; }
 
         #region Allors
         [Id("44414FC2-28DA-43E2-85DF-B70FF0E26D0C")]
@@ -104,15 +87,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public EmailTemplate EmailTemplate { get; set; }
-
-        #region Allors
-        [Id("9D21C03F-E810-4296-8CEE-47EDAFB39441")]
-        [AssociationId("9BED13F5-973D-4ED8-B57C-E1D367ABC1C0")]
-        [RoleId("08B1C365-EA8D-4320-B9AF-6E4DD20D2E19")]
-        #endregion
-        [Workspace]
-        [Required]
-        public bool IncomingMail { get; set; }
 
         #region inherited methods
 

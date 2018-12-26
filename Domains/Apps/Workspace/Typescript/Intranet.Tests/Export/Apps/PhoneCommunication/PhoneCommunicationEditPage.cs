@@ -18,12 +18,11 @@ namespace Tests.Intranet.PhoneCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialChips Receivers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Receivers);
+        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.FromParty);
 
-        public MaterialChips Callers => new MaterialChips(this.Driver, roleType: M.PhoneCommunication.Callers);
+        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.ToParty);
+
         public MaterialSingleSelect PhoneNumber => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.PhoneNumber);
-
-        public MaterialSlideToggle IncomingCall => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.IncomingCall);
 
         public MaterialSlideToggle LeftVoiceMail => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.LeftVoiceMail);
 

@@ -32,8 +32,8 @@ namespace Allors.Domain
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
                 .WithSubject("subject")
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -56,8 +56,8 @@ namespace Allors.Domain
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(owner)
                 .WithSubject("subject")
-                .WithParticipant(participant1)
-                .WithParticipant(participant2)
+                .WithFromParty(participant1)
+                .WithToParty(participant2)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -67,12 +67,6 @@ namespace Allors.Domain
             Assert.Contains(participant1, communication.InvolvedParties);
             Assert.Contains(participant2, communication.InvolvedParties);
             Assert.Contains(owner, communication.InvolvedParties);
-
-            communication.AddParticipant(owner);
-
-            this.Session.Derive();
-            
-            Assert.Equal(3, communication.InvolvedParties.Count);
         }
 
         [Fact]
@@ -88,8 +82,8 @@ namespace Allors.Domain
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(owner)
                 .WithSubject("subject")
-                .WithParticipant(participant1)
-                .WithParticipant(participant2)
+                .WithFromParty(participant1)
+                .WithToParty(participant2)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -115,8 +109,8 @@ namespace Allors.Domain
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(owner)
                 .WithSubject("subject")
-                .WithParticipant(participant1)
-                .WithParticipant(participant2)
+                .WithFromParty(participant1)
+                .WithToParty(participant2)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -139,8 +133,8 @@ namespace Allors.Domain
 
             new FaceToFaceCommunicationBuilder(this.Session)
                 .WithSubject("subject")
-                .WithParticipant(participant1)
-                .WithParticipant(participant2)
+                .WithFromParty(participant1)
+                .WithToParty(participant2)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 

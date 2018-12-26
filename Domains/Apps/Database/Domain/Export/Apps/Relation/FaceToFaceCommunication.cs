@@ -28,49 +28,5 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.Participants.Count <= 1)
-            {
-                this.Delete();
-            }
-
-            this.FromParties = this.Participants;
-            this.ToParties = this.Participants;
-            this.AppsOnDeriveInvolvedParties(derivation);
-        }
-
-        public void AppsOnDeriveInvolvedParties(IDerivation derivation)
-        {
-            this.InvolvedParties = this.Participants;
-
-            if (this.ExistOwner && !this.InvolvedParties.Contains(this.Owner))
-            {
-                this.AddInvolvedParty(this.Owner);
-            }
-
-            foreach (Party party in this.PartiesWhereCommunicationEvent)
-            {
-                this.AddInvolvedParty(party);
-            }
-
-            foreach (Party party in this.InvolvedParties)
-            {
-                if (party is Person person)
-                {
-                    foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
-                    {
-                        if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
-                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
-                        {
-                            this.AddInvolvedParty(organisationContactRelationship.Organisation);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

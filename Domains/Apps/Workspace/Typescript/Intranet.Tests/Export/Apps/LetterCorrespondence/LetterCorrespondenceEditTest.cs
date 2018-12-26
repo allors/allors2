@@ -17,6 +17,8 @@ namespace Tests.Intranet.LetterCorrespondenceTests
     {
         private readonly PersonListPage people;
 
+        private readonly LetterCorrespondence editCommunicationEvent;
+
         public LetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)
         {
@@ -40,12 +42,14 @@ namespace Tests.Intranet.LetterCorrespondenceTests
 
             employee.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(employeeAddress).Build());
 
-            person.AddCommunicationEvent(new LetterCorrespondenceBuilder(this.Session)
+            this.editCommunicationEvent = new LetterCorrespondenceBuilder(this.Session)
                 .WithSubject("dummy")
-                .WithOriginator(employee)
-                .WithReceiver(person)
+                .WithFromParty(employee)
+                .WithToParty(person)
                 .WithPostalAddress(address)
-                .Build());
+                .Build();
+
+            person.AddCommunicationEvent(this.editCommunicationEvent);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -59,22 +63,21 @@ namespace Tests.Intranet.LetterCorrespondenceTests
         {
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First;
+            var postalAddress = (PostalAddress)employee.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
-            var postalAddress = (PostalAddress)person.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
 
             var personOverview = this.people.Select(person);
             var page = personOverview.NewLetterCorrespondence();
 
-            page.IncomingLetter.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.Originators.Add(employee.PartyName);
-            page.Receivers.Add(person.PartyName);
-            page.PostalAddress.Value = "Haverwerf 15 1111 city Belgium";
+            page.FromParty.Value = employee.PartyName;
+            page.ToParty.Value = person.PartyName;
+            page.PostalAddress.Value = "home sweet home 0000 suncity Belgium";
             page.Subject.Value = "subject";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
@@ -93,14 +96,11 @@ namespace Tests.Intranet.LetterCorrespondenceTests
 
             var communicationEvent = after.Except(before).First();
 
-            Assert.False(communicationEvent.IncomingLetter);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
             Assert.Equal(postalAddress, communicationEvent.PostalAddress);
-            Assert.Single(communicationEvent.Originators);
-            Assert.Contains(employee, communicationEvent.Originators);
-            Assert.Single(communicationEvent.Receivers);
-            Assert.Contains(person, communicationEvent.Receivers);
+            Assert.Equal(employee, communicationEvent.FromParty);
+            Assert.Equal(person, communicationEvent.ToParty);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
@@ -121,23 +121,17 @@ namespace Tests.Intranet.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var postalAddress = (PostalAddress)firstEmployee.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
-
-            var communicationEvent = (LetterCorrespondence)person.CommunicationEvents.First(v => v.GetType().Name == typeof(LetterCorrespondence).Name);
-            var id = communicationEvent.Id;
+            var postalAddress = (PostalAddress)person.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
 
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectLetterCorrespondence(communicationEvent);
+            var page = personOverview.SelectLetterCorrespondence(this.editCommunicationEvent);
 
-            page.IncomingLetter.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).InProgress.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.Originators.Remove(firstEmployee.PartyName);
-            page.Originators.Add(secondEmployee.PartyName);
-            page.Receivers.Remove(person.PartyName);
-            page.Receivers.Add(firstEmployee.PartyName);
-            page.PostalAddress.Value = "home sweet home 0000 suncity Belgium";
+            page.FromParty.Value = person.PartyName;
+            page.ToParty.Value = firstEmployee.PartyName;
+            page.PostalAddress.Value = "Haverwerf 15 1111 city Belgium";
             page.Subject.Value = "new subject";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
@@ -154,22 +148,17 @@ namespace Tests.Intranet.LetterCorrespondenceTests
 
             Assert.Equal(after.Length, before.Length);
 
-            communicationEvent = after.First(v => v.Id.Equals(id));
-
-            Assert.False(communicationEvent.IncomingLetter);
-            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Single(communicationEvent.Originators);
-            Assert.Contains(secondEmployee, communicationEvent.Originators);
-            Assert.Single(communicationEvent.Receivers);
-            Assert.Contains(firstEmployee, communicationEvent.Receivers);
-            Assert.Equal(postalAddress, communicationEvent.PostalAddress);
-            Assert.Equal("new subject", communicationEvent.Subject);
+            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, this.editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, this.editCommunicationEvent.EventPurposes);
+            Assert.Equal(person, this.editCommunicationEvent.FromParty);
+            Assert.Equal(firstEmployee, this.editCommunicationEvent.ToParty);
+            Assert.Equal(postalAddress, this.editCommunicationEvent.PostalAddress);
+            Assert.Equal("new subject", this.editCommunicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
-            Assert.Equal("new comment", communicationEvent.Comment);
+            Assert.Equal("new comment", this.editCommunicationEvent.Comment);
         }
     }
 }

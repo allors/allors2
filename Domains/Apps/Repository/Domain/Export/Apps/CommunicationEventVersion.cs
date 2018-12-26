@@ -96,15 +96,26 @@ namespace Allors.Repository
         DateTime ScheduledStart { get; set; }
 
         #region Allors
+        [Id("2759C5DA-45E4-4715-83C7-B68A51E213DB")]
+        [AssociationId("45A51D1E-43A7-466A-A234-D8718D0BE719")]
+        [RoleId("EA779517-7E3A-4C72-A635-BAFBAA422594")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        Party FromParty { get; set; }
+
+        #region Allors
         [Id("81B2EC68-0FF0-49D9-813B-E32BBC3F8872")]
         [AssociationId("56D1C928-6FFD-4A0A-ACED-6A7A761C1C1E")]
         [RoleId("2DC14B24-C307-44AD-A2CE-20922FA76ECE")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
         [Workspace]
-        Party[] ToParties { get; set; }
+        Party ToParty { get; set; }
 
         #region Allors
         [Id("0273F21F-8794-47FD-A5D9-34912D54C281")]
@@ -187,17 +198,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime InitialScheduledEnd { get; set; }
-
-        #region Allors
-        [Id("2759C5DA-45E4-4715-83C7-B68A51E213DB")]
-        [AssociationId("45A51D1E-43A7-466A-A234-D8718D0BE719")]
-        [RoleId("EA779517-7E3A-4C72-A635-BAFBAA422594")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        Party[] FromParties { get; set; }
 
         #region Allors
         [Id("22D2407E-86FE-46FB-9C59-E92306330027")]

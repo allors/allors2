@@ -21,9 +21,10 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  addCaller = false;
-  addReceiver = false;
-  addPhoneNumber = false;
+  addFromParty = false;
+  addToParty = false;
+  addFromPhoneNumber = false;
+  addToPhoneNumber = false;
 
   communicationEvent: PhoneCommunication;
   party: Party;
@@ -31,8 +32,8 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
   organisation: Organisation;
   purposes: CommunicationEventPurpose[];
   contacts: Party[] = [];
-  phonenumbers: ContactMechanism[] = [];
-  employees: Person[] = [];
+  fromPhonenumbers: ContactMechanism[] = [];
+  toPhonenumbers: ContactMechanism[] = [];
   title: string;
 
   private subscription: Subscription;
@@ -66,6 +67,17 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
             pull.PhoneCommunication({
               object: this.data.id,
               include: {
+                FromParty: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
+                },
+                ToParty: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
+                },
+                PhoneNumber: x,
                 EventPurposes: x,
                 CommunicationEventState: x
               }
@@ -90,25 +102,39 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          pulls = [
-            ...pulls,
-            pull.Organisation({
-              object: this.data.associationId,
-              include: {
-                CurrentPartyContactMechanisms: {
-                  ContactMechanism: x
+          if (isCreate) {
+            pulls = [
+              ...pulls,
+              pull.Organisation({
+                object: this.data.associationId,
+                include: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
                 }
-              }
-            }),
-            pull.Person({
-              object: this.data.associationId,
-              include: {
-                CurrentPartyContactMechanisms: {
-                  ContactMechanism: x
+              }),
+              pull.Person({
+                object: this.data.associationId,
+                include: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
                 }
-              }
-            }),
-          ];
+              }),
+            ];
+          }
+
+          if (!isCreate) {
+            pulls = [
+              ...pulls,
+              pull.CommunicationEvent({
+                object: this.data.id,
+                fetch: {
+                  PartiesWhereCommunicationEvent: x
+                }
+              }),
+            ];
+          }
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
@@ -123,15 +149,12 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
+        this.parties = loaded.collections.Parties as Party[];
 
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.employees = internalOrganisation.ActiveEmployees;
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
-
-        this.party = this.organisation || this.person;
-        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
 
         this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
 
@@ -143,15 +166,23 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
           this.contacts.push(this.person);
         }
 
+        if (!!this.parties) {
+          this.contacts.push(...this.parties);
+        }
+
         if (isCreate) {
           this.title = 'Add Phone call';
           this.communicationEvent = this.allors.context.create('PhoneCommunication') as PhoneCommunication;
-          this.communicationEvent.IncomingCall = false;
+
+          this.party = this.organisation || this.person;
 
           this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
 
           this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
+
+          this.updateFromParty(this.communicationEvent.FromParty);
+          this.updateToParty(this.communicationEvent.ToParty);
 
           if (this.communicationEvent.CanWriteActualEnd) {
             this.title = 'Edit Phone call';
@@ -169,78 +200,104 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public phoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
+  public fromPhoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
 
-    if (!!this.organisation) {
-      this.organisation.AddPartyContactMechanism(partyContactMechanism);
+    if (!!this.communicationEvent.FromParty) {
+      this.communicationEvent.FromParty.AddPartyContactMechanism(partyContactMechanism);
     }
 
     const phonenumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-    this.communicationEvent.AddContactMechanism(phonenumber);
 
-    this.phonenumbers.push(phonenumber);
+    this.fromPhonenumbers.push(phonenumber);
+    this.communicationEvent.PhoneNumber = phonenumber;
   }
 
-  public callerAdded(caller: Person): void {
+  public toPhoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
 
-    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    relationShip.Contact = caller;
-    relationShip.Organisation = this.organisation;
+    if (!!this.communicationEvent.ToParty) {
+      this.communicationEvent.ToParty.AddPartyContactMechanism(partyContactMechanism);
+    }
 
-    this.communicationEvent.AddCaller(caller);
+    const phonenumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+
+    this.toPhonenumbers.push(phonenumber);
+    this.communicationEvent.PhoneNumber = phonenumber;
   }
 
-  public receiverAdded(receiver: Person): void {
+  public partyAdded(caller: Person): void {
 
-    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    relationShip.Contact = receiver;
-    relationShip.Organisation = this.organisation;
-
-    this.communicationEvent.AddReceiver(receiver);
+    if (this.organisation) {
+      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      relationShip.Contact = caller;
+      relationShip.Organisation = this.organisation;
+    }
   }
 
-//   public directionSelected() {
-//     if (this.communicationEvent.IncomingCall && this.communicationEvent.Callers.length === 1) {
-//       this.updateParty(this.communicationEvent.Callers[0]);
-//     }
+  public fromPartySelected(party: Party) {
+    if (party) {
+      this.updateFromParty(party);
+    }
+  }
 
-//     if (!this.communicationEvent.IncomingCall && this.communicationEvent.Receivers.length === 1) {
-//       this.updateParty(this.communicationEvent.Receivers[0]);
-//     }
-// }
+  private updateFromParty(party: Party): void {
+    const { pull, tree, x } = this.metaService;
 
-//   public partySelected(party: Party) {
-//     if (party) {
-//       this.updateParty(party);
-//     }
-//   }
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          PartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                ContactMechanismType: x
+              }
+            }
+          }
+        },
+      })
+    ];
 
-//   private updateParty(party: Party): void {
-//     const { pull, tree, x } = this.metaService;
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
 
-//     const pulls = [
-//       pull.Party({
-//         object: party.id,
-//         fetch: {
-//           PartyContactMechanisms: {
-//             include: {
-//               ContactMechanism: {
-//                 ContactMechanismType: x
-//               }
-//             }
-//           }
-//         },
-//       })
-//     ];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        this.fromPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
+      }, this.errorService.handler);
+  }
 
-//     this.allors.context
-//       .load('Pull', new PullRequest({ pulls }))
-//       .subscribe((loaded) => {
+  public toPartySelected(party: Party) {
+    if (party) {
+      this.updateToParty(party);
+    }
+  }
 
-//         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
-//         this.phonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
-//       }, this.errorService.handler);
-//   }
+  private updateToParty(party: Party): void {
+    const { pull, tree, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          PartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                ContactMechanismType: x
+              }
+            }
+          }
+        },
+      })
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        this.toPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
+      }, this.errorService.handler);
+  }
 
   public save(): void {
 

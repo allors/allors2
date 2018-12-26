@@ -18,7 +18,9 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialChips Participants => new MaterialChips(this.Driver, roleType: M.FaceToFaceCommunication.Participants);
+        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.FaceToFaceCommunication.FromParty);
+
+        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.FaceToFaceCommunication.ToParty);
 
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
 

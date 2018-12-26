@@ -17,6 +17,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
+import { EmailAddressInlineModule } from '../../emailaddress/inline/emailaddress-inline.module';
 
 import { EmailCommunicationEditComponent } from './emailcommunication-edit.component';
 export { EmailCommunicationEditComponent } from './emailcommunication-edit.component';
@@ -57,6 +58,7 @@ export { EmailCommunicationEditComponent } from './emailcommunication-edit.compo
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    EmailAddressInlineModule,
     PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,

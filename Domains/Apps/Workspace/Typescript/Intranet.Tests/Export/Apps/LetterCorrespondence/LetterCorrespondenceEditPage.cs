@@ -18,13 +18,11 @@ namespace Tests.Intranet.LetterCorrespondenceTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSlideToggle IncomingLetter => new MaterialSlideToggle(this.Driver, roleType: M.LetterCorrespondence.IncomingLetter);
-
         public MaterialSingleSelect PostalAddress => new MaterialSingleSelect(this.Driver, roleType: M.LetterCorrespondence.PostalAddress);
 
-        public MaterialChips Originators => new MaterialChips(this.Driver, roleType: M.LetterCorrespondence.Originators);
+        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.LetterCorrespondence.FromParty);
 
-        public MaterialChips Receivers => new MaterialChips(this.Driver, roleType: M.LetterCorrespondence.Receivers);
+        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.LetterCorrespondence.ToParty);
 
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
 

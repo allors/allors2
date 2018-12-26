@@ -36,8 +36,8 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var builder = new PhoneCommunicationBuilder(this.Session);
-            builder.WithReceiver(receiver);
-            builder.WithCaller(caller);
+            builder.WithToParty(receiver);
+            builder.WithFromParty(caller);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -58,8 +58,8 @@ namespace Allors.Domain
             var communication = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithCaller(new PersonBuilder(this.Session).WithLastName("caller").Build())
-                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("caller").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("receiver").Build())
                 .Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -81,8 +81,8 @@ namespace Allors.Domain
             var communication = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
-                .WithCaller(caller)
-                .WithReceiver(receiver)
+                .WithFromParty(caller)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();
@@ -106,8 +106,8 @@ namespace Allors.Domain
             new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
-                .WithCaller(originator)
-                .WithReceiver(receiver)
+                .WithFromParty(originator)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();

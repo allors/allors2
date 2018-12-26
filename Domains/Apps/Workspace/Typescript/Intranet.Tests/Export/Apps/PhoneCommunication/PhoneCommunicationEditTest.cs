@@ -30,10 +30,9 @@ namespace Tests.Intranet.PhoneCommunicationTests
 
             person.AddCommunicationEvent(new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
-                .WithIncomingCall(true)
                 .WithLeftVoiceMail(true)
-                .WithReceiver(firstEmployee)
-                .WithCaller(person)
+                .WithFromParty(person)
+                .WithToParty(firstEmployee)
                 .WithPhoneNumber(person.GeneralPhoneNumber)
                 .Build());
 
@@ -66,13 +65,12 @@ namespace Tests.Intranet.PhoneCommunicationTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPhoneCommunication();
 
-            page.IncomingCall.Value = false;
             page.LeftVoiceMail.Value = true;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
             page.Subject.Value = "subject";
-            page.Callers.Add(employee.PartyName);
-            page.Receivers.Add(person.PartyName);
+            page.FromParty.Value = person.PartyName;
+            page.ToParty.Value = employee.PartyName;
             page.PhoneNumber.Value = "+1 123 456";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
@@ -91,14 +89,11 @@ namespace Tests.Intranet.PhoneCommunicationTests
 
             var communicationEvent = after.Except(before).First();
 
-            Assert.False(communicationEvent.IncomingCall);
             Assert.True(communicationEvent.LeftVoiceMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Single(communicationEvent.Callers);
-            Assert.Contains(employee, communicationEvent.Callers);
-            Assert.Single(communicationEvent.Receivers);
-            Assert.Contains(person, communicationEvent.Receivers);
+            Assert.Equal(person, communicationEvent.FromParty);
+            Assert.Equal(employee, communicationEvent.ToParty);
             Assert.Equal(person.GeneralPhoneNumber, communicationEvent.PhoneNumber);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
@@ -126,16 +121,13 @@ namespace Tests.Intranet.PhoneCommunicationTests
 
             var page = personOverview.SelectPhoneCommunication(communicationEvent);
 
-            page.IncomingCall.Value = false;
             page.LeftVoiceMail.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
             page.PhoneNumber.Value = "+1 111 222";
             page.Subject.Value = "new subject";
-            page.Callers.Remove(person.PartyName);
-            page.Callers.Add(firstEmployee.PartyName);
-            page.Receivers.Remove(firstEmployee.PartyName);
-            page.Receivers.Add(person.PartyName);
+            page.FromParty.Value = firstEmployee.PartyName;
+            page.ToParty.Value = person.PartyName;
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
@@ -153,14 +145,11 @@ namespace Tests.Intranet.PhoneCommunicationTests
 
             communicationEvent = after.First(v => v.Id.Equals(id));
 
-            Assert.False(communicationEvent.IncomingCall);
             Assert.False(communicationEvent.LeftVoiceMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Single(communicationEvent.Callers);
-            Assert.Contains(person, communicationEvent.Callers);
-            Assert.Single(communicationEvent.Receivers);
-            Assert.Contains(firstEmployee, communicationEvent.Receivers);
+            Assert.Equal(firstEmployee, communicationEvent.FromParty);
+            Assert.Equal(person, communicationEvent.ToParty);
             Assert.Equal(this.anotherPhoneNumber.ContactMechanism, communicationEvent.PhoneNumber);
             Assert.Equal("new subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);

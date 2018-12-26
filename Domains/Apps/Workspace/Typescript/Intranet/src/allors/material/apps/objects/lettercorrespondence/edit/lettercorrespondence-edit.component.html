@@ -10,26 +10,24 @@
           [options]="eventStates" display="Name"></a-mat-select>
         <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
           [options]="purposes" display="Name"></a-mat-select>
-        <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-mat-slidetoggle>
       </div>
 
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators"
-              [options]="contacts" display="displayName" label="Sender"></a-mat-chips>
-            <button mat-mini-fab color="accent" [disabled]="!communicationEvent.IncomingLetter || person"
-              type="button" (click)="addSender = !addSender">
-              <mat-icon *ngIf="!addSender">add</mat-icon>
-              <mat-icon *ngIf="addSender">close</mat-icon>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty"
+              [options]="contacts" display="displayName" label="Sender" (selected)="fromPartySelected($event)"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="person" type="button" [disabled]="person" (click)="addFromParty = !addFromParty">
+              <mat-icon *ngIf="!addFromParty">add</mat-icon>
+              <mat-icon *ngIf="addFromParty">close</mat-icon>
             </button>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="communicationEvent.IncomingLetter && addSender">
+        <div class="col-md-12" *ngIf="addFromParty">
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addSender = false" (saved)="senderAdded($event); addSender = false">
+              <person-inline (cancelled)="addFromParty = false" (saved)="partyAdded($event); addFromParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>
@@ -37,40 +35,63 @@
 
         <div class="col-md">
           <div class="row">
-            <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers"
-              [options]="contacts" display="displayName" label="Receiver"></a-mat-chips>
-            <button mat-mini-fab color="accent" [disabled]="communicationEvent.IncomingLetter || person"
-              type="button" (click)="addReceiver = !addReceiver">
-              <mat-icon *ngIf="!addReceiver">add</mat-icon>
-              <mat-icon *ngIf="addReceiver">close</mat-icon>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty" [options]="contacts"
+              display="displayName" label="Receiver" (selected)="toPartySelected($event)"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="person" type="button" (click)="addToParty = !addToParty">
+              <mat-icon *ngIf="!addToParty">add</mat-icon>
+              <mat-icon *ngIf="addToParty">close</mat-icon>
             </button>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="!communicationEvent.IncomingLetter && addReceiver">
+        <div class="col-md-12" *ngIf="addToParty">
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addReceiver = false" (saved)="receiverAdded($event); addReceiver = false">
+              <person-inline (cancelled)="addToParty = false" (saved)="partyAdded($event); addToParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>
         </div>
+      </div>
 
-        <div class="col-md-12">
+      <div class="row">
+        <div class="col-md">
           <div class="row">
             <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress"
-              [options]="postalAddresses" display="displayName" label="Postal Address" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addAddress = !addAddress">
-              <mat-icon *ngIf="!addAddress">add</mat-icon>
-              <mat-icon *ngIf="addAddress">close</mat-icon>
+              [options]="fromPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="fromPostalAddress"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" (click)="addFromAddress = !addFromAddress">
+              <mat-icon *ngIf="!addFromAddress">add</mat-icon>
+              <mat-icon *ngIf="addFromAddress">close</mat-icon>
             </button>
           </div>
         </div>
-        <div class="col-md-12" *ngIf="addAddress">
+
+        <div class="col-md-12" *ngIf="addFromAddress">
           <mat-card>
-            <mat-card-header>Add a new address</mat-card-header>
+            <mat-card-header>Add a new postal address</mat-card-header>
             <mat-card-content>
-              <party-contactmechanism-postaladdress (cancelled)="addAddress = false" (saved)="addressAdded($event); addAddress = false">
+              <party-contactmechanism-postaladdress (cancelled)="addFromAddress = false" (saved)="fromAddressAdded($event); addFromAddress = false">
+              </party-contactmechanism-postaladdress>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress"
+              [options]="toPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="toPostalAddress"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" (click)="addToAddress = !addToAddress">
+              <mat-icon *ngIf="!addToAddress">add</mat-icon>
+              <mat-icon *ngIf="addToAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="addToAddress">
+          <mat-card>
+            <mat-card-header>Add a new postal address</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-postaladdress (cancelled)="addToAddress = false" (saved)="toAddressAdded($event); addToAddress = false">
               </party-contactmechanism-postaladdress>
             </mat-card-content>
           </mat-card>
@@ -78,7 +99,11 @@
       </div>
 
       <div class="row">
-        <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject" ></a-mat-input>
+        <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress" display="displayName"></a-mat-static>
       </div>
 
       <div class="row">

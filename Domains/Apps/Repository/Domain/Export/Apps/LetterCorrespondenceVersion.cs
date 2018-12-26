@@ -17,7 +17,10 @@ namespace Allors.Repository
         public SecurityToken OwnerSecurityToken { get; set; }
         public AccessControl OwnerAccessControl { get; set; }
         public DateTime ScheduledStart { get; set; }
-        public Party[] ToParties { get; set; }
+
+        public Party FromParty { get; set; }
+
+        public Party ToParty { get; set; }
         public ContactMechanism[] ContactMechanisms { get; set; }
         public Party[] InvolvedParties { get; set; }
         public DateTime InitialScheduledStart { get; set; }
@@ -37,7 +40,6 @@ namespace Allors.Repository
         public WorkEffort[] WorkEfforts { get; set; }
         public string Description { get; set; }
         public DateTime InitialScheduledEnd { get; set; }
-        public Party[] FromParties { get; set; }
         public string Subject { get; set; }
         public Media[] Documents { get; set; }
         public Case Case { get; set; }
@@ -63,35 +65,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress PostalAddress { get; set; }
-
-        #region Allors
-        [Id("AD7AE076-7849-43ED-857B-DA3DA959CD8D")]
-        [AssociationId("35A98C84-9AD8-4E47-A906-4254C092AD1F")]
-        [RoleId("1683B25F-4988-408A-8B9D-1B98ACED0891")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public Party[] Originators { get; set; }
-
-        #region Allors
-        [Id("98B54F39-032C-476A-910C-AE48D7F1ACC5")]
-        [AssociationId("BB8F93C5-683E-4315-A442-6245519A7D70")]
-        [RoleId("2035BEF1-4F44-4E14-9267-7ECD228C4B2A")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public Party[] Receivers { get; set; }
-
-        #region Allors
-        [Id("7488ECF0-D220-4CDF-86E4-EF768BA17B7F")]
-        [AssociationId("3E69607E-1EEB-415D-8491-D60191D141C2")]
-        [RoleId("A80748A2-B93B-45C4-BBF3-4BE618F90C34")]
-        #endregion
-        [Required]
-        [Workspace]
-        public bool IncomingLetter { get; set; }
 
         #region inherited methods
 

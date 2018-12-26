@@ -20,17 +20,20 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  addFromParty = false;
+  addToParty = false;
+
   party: Party;
   person: Person;
   organisation: Organisation;
   purposes: CommunicationEventPurpose[];
   contacts: Party[] = [];
   communicationEvent: FaceToFaceCommunication;
-  addParticipant = false;
   eventStates: CommunicationEventState[];
   title: string;
 
   private subscription: Subscription;
+  parties: Party[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -58,6 +61,16 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
             pull.FaceToFaceCommunication({
               object: this.data.id,
               include: {
+                FromParty: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
+                },
+                ToParty: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x
+                  }
+                },
                 EventPurposes: x,
                 CommunicationEventState: x
               }
@@ -115,6 +128,18 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
             ];
           }
 
+          if (!isCreate) {
+            pulls = [
+              ...pulls,
+              pull.CommunicationEvent({
+                object: this.data.id,
+                fetch: {
+                  PartiesWhereCommunicationEvent: x,
+                }
+              }),
+            ];
+          }
+
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
@@ -128,12 +153,11 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
+        this.parties = loaded.collections.Parties as Party[];
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
-
-        this.party = this.organisation || this.person;
 
         this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
 
@@ -145,13 +169,15 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           this.contacts.push(this.person);
         }
 
+        if (!!this.parties) {
+          this.contacts.push(...this.parties);
+        }
+
         if (isCreate) {
           this.title = 'Add Meeting';
           this.communicationEvent = this.allors.context.create('FaceToFaceCommunication') as FaceToFaceCommunication;
 
-          if (!!this.person) {
-            this.communicationEvent.AddParticipant(this.person);
-          }
+          this.party = this.organisation || this.person;
 
           this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
@@ -172,9 +198,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public participantAdded(person: Person): void {
-
-    this.communicationEvent.AddParticipant(person);
+  public partyAdded(person: Person): void {
 
     if (!!this.organisation) {
       const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;

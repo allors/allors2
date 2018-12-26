@@ -33,8 +33,8 @@ namespace Allors.Domain
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
@@ -49,8 +49,8 @@ namespace Allors.Domain
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(-2))
                 .WithActualEnd(DateTime.UtcNow.AddHours(-1))
@@ -66,8 +66,8 @@ namespace Allors.Domain
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(+1))
                 .WithActualEnd(DateTime.UtcNow.AddHours(+2))
@@ -83,8 +83,8 @@ namespace Allors.Domain
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();

@@ -32,8 +32,8 @@ namespace Allors.Domain
             var communication = new FaxCommunicationBuilder(this.Session)
                 .WithSubject("subject")
                 .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
-                .WithOriginator(new PersonBuilder(this.Session).WithLastName("originator").Build())
-                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").Build())
+                .WithFromParty(new PersonBuilder(this.Session).WithLastName("originator").Build())
+                .WithToParty(new PersonBuilder(this.Session).WithLastName("receiver").Build())
                 .Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -55,8 +55,8 @@ namespace Allors.Domain
             var communication = new FaxCommunicationBuilder(this.Session)
                 .WithSubject("subject")
                 .WithOwner(owner)
-                .WithOriginator(originator)
-                .WithReceiver(receiver)
+                .WithFromParty(originator)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();
@@ -80,8 +80,8 @@ namespace Allors.Domain
             new FaxCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
-                .WithOriginator(originator)
-                .WithReceiver(receiver)
+                .WithFromParty(originator)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();

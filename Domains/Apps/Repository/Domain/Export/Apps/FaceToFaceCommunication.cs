@@ -27,7 +27,9 @@ namespace Allors.Repository
         public AccessControl OwnerAccessControl { get; set; }
         public DateTime ScheduledStart { get; set; }
 
-        public Party[] ToParties { get; set; }
+        public Party FromParty { get; set; }
+
+        public Party ToParty { get; set; }
 
         public ContactMechanism[] ContactMechanisms { get; set; }
 
@@ -46,8 +48,6 @@ namespace Allors.Repository
         public string Description { get; set; }
 
         public DateTime InitialScheduledEnd { get; set; }
-
-        public Party[] FromParties { get; set; }
 
         public string Subject { get; set; }
 
@@ -83,16 +83,6 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("52b8614b-799e-4aea-a012-ea8dbc23f8dd")]
-        [AssociationId("ac424847-d426-4614-99a2-37c70841c454")]
-        [RoleId("bcf4a8df-8b57-4b3c-a6e5-f9b56c71a13b")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public Party[] Participants { get; set; }
 
         #region Allors
         [Id("95ae979f-d549-4ea1-87f0-46aa55e4b14a")]

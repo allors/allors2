@@ -18,15 +18,13 @@ namespace Tests.Intranet.EmailCommunicationTests
 
         public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSlideToggle IncomingMail => new MaterialSlideToggle(this.Driver, roleType: M.EmailCommunication.IncomingMail);
+        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.FromParty);
 
-        public MaterialSingleSelect Originator => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.Originator);
+        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.ToParty);
 
-        public MaterialChips Addressees => new MaterialChips(this.Driver, roleType: M.EmailCommunication.Addressees);
+        public MaterialSingleSelect FromEmail => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.FromEmail);
 
-        public MaterialChips CarbonCopies => new MaterialChips(this.Driver, roleType: M.EmailCommunication.CarbonCopies);
-
-        public MaterialChips BlindCopies => new MaterialChips(this.Driver, roleType: M.EmailCommunication.BlindCopies);
+        public MaterialSingleSelect ToEmail => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.ToEmail);
 
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.EmailTemplate.SubjectTemplate);
 

@@ -38,8 +38,8 @@ namespace Allors.Domain
                 .WithOwner(new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName))
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
-                .WithOriginator(originatorEmail)
-                .WithAddressee(addresseeEmail)
+                .WithFromEmail(originatorEmail)
+                .WithToEmail(addresseeEmail)
                 .Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -63,14 +63,6 @@ namespace Allors.Domain
             var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
             var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).Build();
 
-            var carbonCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("carbonCopee@allors.com").Build();
-            var carbonCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(carbonCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var carbonCopee = new PersonBuilder(this.Session).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).Build();
-
-            var blindCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("blindCopee@allors.com").Build();
-            var blindCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(blindCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var blindCopee = new PersonBuilder(this.Session).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).Build();
-
             this.Session.Derive();
             this.Session.Commit();
 
@@ -78,20 +70,16 @@ namespace Allors.Domain
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOwner(owner)
-                .WithOriginator(originatorEmail)
-                .WithAddressee(addresseeEmail)
-                .WithCarbonCopy(carbonCopeeEmail)
-                .WithBlindCopy(blindCopeeEmail)
+                .WithFromEmail(originatorEmail)
+                .WithToEmail(addresseeEmail)
                 .Build();
 
             this.Session.Derive();
 
-            Assert.Equal(5, communication.InvolvedParties.Count);
+            Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(originator, communication.InvolvedParties);
             Assert.Contains(addressee, communication.InvolvedParties);
-            Assert.Contains(carbonCopee, communication.InvolvedParties);
-            Assert.Contains(blindCopee, communication.InvolvedParties);
         }
 
         [Fact]
@@ -113,8 +101,8 @@ namespace Allors.Domain
             var communication = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
-                .WithOriginator(originatorEmail)
-                .WithAddressee(addresseeEmail)
+                .WithFromEmail(originatorEmail)
+                .WithToEmail(addresseeEmail)
                 .Build();
 
             this.Session.Derive();

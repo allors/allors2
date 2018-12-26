@@ -92,6 +92,7 @@ namespace Allors.Domain
                 @this.InitialScheduledEnd = @this.ScheduledEnd;
             }
 
+            @this.DeriveInvolvedParties();
             @this.DeriveOwnerSecurity();
         }
 
@@ -134,6 +135,56 @@ namespace Allors.Domain
             {
                 @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
                     .WithAccessControl(@this.OwnerAccessControl).Build();
+            }
+        }
+
+        private static void DeriveInvolvedParties(this CommunicationEvent @this)
+        {
+            if (@this.GetType().Name.Equals(typeof(EmailCommunication).Name))
+            {
+                var mail = (EmailCommunication)@this;
+
+                if (mail.ExistFromEmail)
+                {
+                    mail.FromParty = mail.FromEmail.PartyWherePersonalEmailAddress;
+                }
+
+                if (mail.ExistToEmail)
+                {
+                    mail.ToParty = mail.ToEmail.PartyWherePersonalEmailAddress;
+                }
+            }
+
+            @this.RemoveInvolvedParties();
+
+            if (@this.ExistFromParty)
+            {
+                @this.AddInvolvedParty(@this.FromParty);
+            }
+
+            if (@this.ExistToParty)
+            {
+                @this.AddInvolvedParty(@this.ToParty);
+            }
+
+            if (@this.ExistOwner && !@this.InvolvedParties.Contains(@this.Owner))
+            {
+                @this.AddInvolvedParty(@this.Owner);
+            }
+
+            foreach (Party party in @this.InvolvedParties)
+            {
+                if (party is Person person)
+                {
+                    foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
+                    {
+                        if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
+                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
+                        {
+                            @this.AddInvolvedParty(organisationContactRelationship.Organisation);
+                        }
+                    }
+                }
             }
         }
     }

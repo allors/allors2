@@ -4,6 +4,7 @@ namespace Tests.Intranet.EmailCommunicationTests
 
     using Allors;
     using Allors.Domain;
+    using Allors.Meta;
 
     using Tests.Components;
     using Tests.Intranet.PersonTests;
@@ -15,15 +16,11 @@ namespace Tests.Intranet.EmailCommunicationTests
     {
         private readonly PersonListPage people;
 
-        public EmailAddress originatorEmailAddress { get; set; }
+        public EmailAddress employeeEmailAddress { get; set; }
 
-        public EmailAddress addressee1EmailAddress { get; set; }
+        public EmailAddress personEmailAddress { get; set; }
 
-        public EmailAddress addressee2EmailAddress { get; set; }
-
-        public EmailAddress addressee3EmailAddress { get; set; }
-
-        public EmailAddress addressee4EmailAddress { get; set; }
+        private readonly EmailCommunication editCommunicationEvent;
 
         public EmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)
@@ -31,18 +28,20 @@ namespace Tests.Intranet.EmailCommunicationTests
             var people = new People(this.Session).Extent();
             var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            this.originatorEmailAddress = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
-            this.addressee1EmailAddress = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee1@xxx.com").Build();
-            this.addressee2EmailAddress = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee2@xxx.com").Build();
-            this.addressee3EmailAddress = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee3@xxx.com").Build();
-            this.addressee4EmailAddress = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee4@xxx.com").Build();
+            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            person.AddCommunicationEvent(new EmailCommunicationBuilder(this.Session)
+            this.employeeEmailAddress = firstEmployee.PersonalEmailAddress;
+            this.personEmailAddress = person.PersonalEmailAddress;
+
+            this.editCommunicationEvent = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
-                .WithOriginator(this.originatorEmailAddress)
-                .WithAddressee(this.addressee1EmailAddress)
+                .WithFromEmail(this.employeeEmailAddress)
+                .WithToEmail(this.personEmailAddress)
                 .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
-                .Build());
+                .Build();
+
+            person.AddCommunicationEvent(this.editCommunicationEvent);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -59,17 +58,18 @@ namespace Tests.Intranet.EmailCommunicationTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
+            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+
             var personOverview = this.people.Select(person);
             var page = personOverview.NewEmailCommunication();
 
-            page.IncomingMail.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.Originator.Value = this.originatorEmailAddress.ElectronicAddressString;
-            page.Addressees.Add(this.addressee1EmailAddress.ElectronicAddressString);
-            page.Addressees.Add(this.addressee2EmailAddress.ElectronicAddressString);
-            page.CarbonCopies.Add(this.addressee3EmailAddress.ElectronicAddressString);
-            page.BlindCopies.Add(this.addressee4EmailAddress.ElectronicAddressString);
+            page.FromParty.Value = employee.PartyName;
+            page.FromEmail.Value = this.employeeEmailAddress.ElectronicAddressString;
+            page.ToParty.Value = person.PartyName;
+            page.ToEmail.Value = this.personEmailAddress.ElectronicAddressString;
             page.Subject.Value = "subject";
             page.Body.Value = "body";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
@@ -88,17 +88,12 @@ namespace Tests.Intranet.EmailCommunicationTests
 
             var communicationEvent = after.Except(before).First();
 
-            Assert.False(communicationEvent.IncomingMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Equal(this.originatorEmailAddress, communicationEvent.Originator);
-            Assert.Equal(2, communicationEvent.Addressees.Count);
-            Assert.Contains(this.addressee1EmailAddress, communicationEvent.Addressees);
-            Assert.Contains(this.addressee2EmailAddress, communicationEvent.Addressees);
-            Assert.Single(communicationEvent.CarbonCopies);
-            Assert.Contains(this.addressee3EmailAddress, communicationEvent.CarbonCopies);
-            Assert.Single(communicationEvent.BlindCopies);
-            Assert.Contains(this.addressee4EmailAddress, communicationEvent.BlindCopies);
+            Assert.Equal(employee, communicationEvent.FromParty);
+            Assert.Equal(this.employeeEmailAddress, communicationEvent.FromEmail);
+            Assert.Equal(person, communicationEvent.ToParty);
+            Assert.Equal(this.personEmailAddress, communicationEvent.ToEmail);
             Assert.Equal("subject", communicationEvent.EmailTemplate.SubjectTemplate);
             Assert.Equal("body", communicationEvent.EmailTemplate.BodyTemplate);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
@@ -113,21 +108,21 @@ namespace Tests.Intranet.EmailCommunicationTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var before = new EmailCommunications(this.Session).Extent().ToArray();
+            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            var communicationEvent = (EmailCommunication)person.CommunicationEvents.First(v => v.GetType().Name == typeof(EmailCommunication).Name);
-            var id = communicationEvent.Id;
+            var before = new EmailCommunications(this.Session).Extent().ToArray();
 
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectEmailCommunication(communicationEvent);
+            var page = personOverview.SelectEmailCommunication(this.editCommunicationEvent);
 
-            page.IncomingMail.Value = true;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
-            page.Originator.Value = this.addressee1EmailAddress.ElectronicAddressString;
-            page.Addressees.Remove(this.addressee1EmailAddress.ElectronicAddressString);
-            page.Addressees.Add(this.originatorEmailAddress.ElectronicAddressString);
+            page.FromParty.Value = person.PartyName;
+            page.FromEmail.Value = this.personEmailAddress.ElectronicAddressString;
+            page.ToParty.Value = employee.PartyName;
+            page.ToEmail.Value = this.employeeEmailAddress.ElectronicAddressString;
             page.Subject.Value = "new subject";
             page.Body.Value = "new body";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
@@ -144,17 +139,14 @@ namespace Tests.Intranet.EmailCommunicationTests
 
             Assert.Equal(after.Length, before.Length);
 
-            communicationEvent = after.First(v => v.Id.Equals(id));
-
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Equal(this.addressee1EmailAddress, communicationEvent.Originator);
-            Assert.Single(communicationEvent.Addressees);
-            Assert.Contains(this.originatorEmailAddress, communicationEvent.Addressees);
-            Assert.Empty(communicationEvent.CarbonCopies);
-            Assert.Empty(communicationEvent.BlindCopies);
-            Assert.Equal("new subject", communicationEvent.EmailTemplate.SubjectTemplate);
-            Assert.Equal("new body", communicationEvent.EmailTemplate.BodyTemplate);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, this.editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, this.editCommunicationEvent.EventPurposes);
+            Assert.Equal(person, this.editCommunicationEvent.FromParty);
+            Assert.Equal(this.personEmailAddress, this.editCommunicationEvent.FromEmail);
+            Assert.Equal(employee, this.editCommunicationEvent.ToParty);
+            Assert.Equal(this.employeeEmailAddress, this.editCommunicationEvent.ToEmail);
+            Assert.Equal("new subject", this.editCommunicationEvent.EmailTemplate.SubjectTemplate);
+            Assert.Equal("new body", this.editCommunicationEvent.EmailTemplate.BodyTemplate);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);

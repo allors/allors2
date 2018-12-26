@@ -10,26 +10,25 @@
           [options]="eventStates" display="Name"></a-mat-select>
         <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
           [options]="purposes" display="Name"></a-mat-select>
-        <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slidetoggle>
       </div>
 
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-chips class="col" *ngIf="communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts" display="PartyName"></a-mat-chips>
-            <a-mat-chips class="col" *ngIf="!communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="employees" display="PartyName"></a-mat-chips>
-            <button mat-mini-fab color="accent" type="button" (click)="addCaller = !addCaller">
-              <mat-icon *ngIf="!addCaller">add</mat-icon>
-              <mat-icon *ngIf="addCaller">close</mat-icon>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty"
+              [options]="contacts" display="PartyName" (selected)="fromPartySelected($event)"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" [disabled]="person" (click)="addFromParty = !addFromParty">
+              <mat-icon *ngIf="!addFromParty">add</mat-icon>
+              <mat-icon *ngIf="addFromParty">close</mat-icon>
             </button>
           </div>
         </div>
 
-        <div class="col-md-12 pb-3" *ngIf="addCaller">
+        <div class="col-md-12 pb-3" *ngIf="addFromParty">
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addCaller = false" (saved)="callerAdded($event); addCaller = false">
+              <person-inline (cancelled)="addFromParty = false" (saved)="partyAdded($event); addFromParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>
@@ -37,21 +36,65 @@
 
         <div class="col-md">
           <div class="row">
-            <a-mat-chips class="col" *ngIf="communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="employees" display="PartyName"></a-mat-chips>
-            <a-mat-chips class="col" *ngIf="!communicationEvent.IncomingCall" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts" display="PartyName"></a-mat-chips>
-            <button mat-mini-fab color="accent" type="button" (click)="addReceiver = !addReceiver">
-              <mat-icon *ngIf="!addReceiver">add</mat-icon>
-              <mat-icon *ngIf="addReceiver">close</mat-icon>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty"
+              [options]="contacts" display="PartyName" (selected)="toPartySelected($event)"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" [disabled]="person" (click)="addToParty = !addToParty">
+              <mat-icon *ngIf="!addToParty">add</mat-icon>
+              <mat-icon *ngIf="addToParty">close</mat-icon>
             </button>
           </div>
         </div>
 
-        <div class="col-md-12" *ngIf="addReceiver">
+        <div class="col-md-12" *ngIf="addToParty">
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addReceiver = false" (saved)="receiverAdded($event); addReceiver = false">
+              <person-inline (cancelled)="addToParty = false" (saved)="partyAdded($event); addToParty = false">
               </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.PhoneNumber"
+              [options]="fromPhonenumbers" display="displayName" label="Phone number" attr.data-allors-name="fromPhoneNumber"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" (click)="addFromPhoneNumber = !addFromPhoneNumber">
+              <mat-icon *ngIf="!addFromPhoneNumber">add</mat-icon>
+              <mat-icon *ngIf="addFromPhoneNumber">close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="addFromPhoneNumber">
+          <mat-card>
+            <mat-card-header>Add a new phone number</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-telecommunicationsnumber (cancelled)="addFromPhoneNumber = false" (saved)="fromPhoneNumberAdded($event); addFromPhoneNumber = false">
+              </party-contactmechanism-telecommunicationsnumber>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.PhoneNumber"
+              [options]="toPhonenumbers" display="displayName" label="Phone number" attr.data-allors-name="toPhoneNumber"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" (click)="addToPhoneNumber = !addToPhoneNumber">
+              <mat-icon *ngIf="!addToPhoneNumber">add</mat-icon>
+              <mat-icon *ngIf="addToPhoneNumber">close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12" *ngIf="addToPhoneNumber">
+          <mat-card>
+            <mat-card-header>Add a new phone number</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-telecommunicationsnumber (cancelled)="addToPhoneNumber = false" (saved)="toPhoneNumberAdded($event); addToPhoneNumber = false">
+              </party-contactmechanism-telecommunicationsnumber>
             </mat-card-content>
           </mat-card>
         </div>
@@ -67,25 +110,7 @@
       </div>
 
       <div class="row">
-        <div class="col">
-          <div class="row">
-            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.PhoneNumber" [options]="phonenumbers" display="displayName" label="Phone number" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addPhoneNumber = !addPhoneNumber">
-              <mat-icon *ngIf="!addPhoneNumber">add</mat-icon>
-              <mat-icon *ngIf="addPhoneNumber">close</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="col-md-12" *ngIf="addPhoneNumber">
-          <mat-card>
-            <mat-card-header>Add a new phone number</mat-card-header>
-            <mat-card-content>
-              <party-contactmechanism-telecommunicationsnumber (cancelled)="addPhoneNumber = false" (saved)="phoneNumberAdded($event); addPhoneNumber = false">
-              </party-contactmechanism-telecommunicationsnumber>
-            </mat-card-content>
-          </mat-card>
-        </div>
+        <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.PhoneCommunication.PhoneNumber" display="displayName"></a-mat-static>
       </div>
 
       <div class="row">

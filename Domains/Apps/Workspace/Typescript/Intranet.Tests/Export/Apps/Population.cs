@@ -108,9 +108,9 @@ namespace Tests.Intranet
                 useProductNumberCounter: false,
                 usePartNumberCounter: false);
 
-            this.SetupUser(allors, "employee1@allors.com", "first", "allors employee", "letmein");
-            this.SetupUser(allors, "employee2@allors.com", "second", "allors employee", "letmein");
-            this.SetupUser(dipu, "employee1@allors.com", "first", "dipu employee", "letmein");
+            this.SetupUser(allors, "firstemployee@allors.com", "first", "allors employee", "letmein");
+            this.SetupUser(allors, "firstemployee@allors.com", "second", "allors employee", "letmein");
+            this.SetupUser(dipu, "firstemployee@allors.com", "first", "dipu employee", "letmein");
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -326,8 +326,8 @@ namespace Tests.Intranet
                     .WithDescription($"Meeting {i}")
                     .WithSubject($"meeting {i}")
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                    .WithParticipant(contact1)
-                    .WithParticipant(contact2)
+                    .WithFromParty(contact1)
+                    .WithToParty(contact2)
                     .WithOwner(administrator)
                     .WithActualStart(DateTime.UtcNow)
                     .Build();
@@ -335,8 +335,8 @@ namespace Tests.Intranet
                 new EmailCommunicationBuilder(this.Session)
                     .WithDescription($"Email {i}")
                     .WithSubject($"email {i}")
-                    .WithOriginator(email2)
-                    .WithAddressee(email2)
+                    .WithFromEmail(email2)
+                    .WithToEmail(email2)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
                     .WithActualStart(DateTime.UtcNow)
@@ -345,8 +345,8 @@ namespace Tests.Intranet
                 new LetterCorrespondenceBuilder(this.Session)
                     .WithDescription($"Letter {i}")
                     .WithSubject($"letter {i}")
-                    .WithOriginator(administrator)
-                    .WithReceiver(contact1)
+                    .WithFromParty(administrator)
+                    .WithToParty(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
                     .WithActualStart(DateTime.UtcNow)
@@ -355,8 +355,8 @@ namespace Tests.Intranet
                 new PhoneCommunicationBuilder(this.Session)
                     .WithDescription($"Phone {i}")
                     .WithSubject($"phone {i}")
-                    .WithCaller(administrator)
-                    .WithReceiver(contact1)
+                    .WithFromParty(administrator)
+                    .WithToParty(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
                     .WithActualStart(DateTime.UtcNow)

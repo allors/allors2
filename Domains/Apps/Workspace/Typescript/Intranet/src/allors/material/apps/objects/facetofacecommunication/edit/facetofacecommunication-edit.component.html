@@ -19,22 +19,41 @@
       </div>
 
       <div class="row">
-        <div class="col-12">
+        <div class="col-md">
           <div class="row">
-            <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants"
-              [options]="contacts" display="displayName"></a-mat-chips>
-            <button mat-mini-fab color="accent" type="button" (click)="addParticipant = !addParticipant">
-              <mat-icon *ngIf="!addParticipant">add</mat-icon>
-              <mat-icon *ngIf="addParticipant">close</mat-icon>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty"
+              [options]="contacts" display="displayName" label="Sender"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="person" type="button" (click)="addFromParty = !addFromParty">
+              <mat-icon *ngIf="!addFromParty">add</mat-icon>
+              <mat-icon *ngIf="addFromParty">close</mat-icon>
             </button>
           </div>
         </div>
-
-        <div class="col-12" *ngIf="addParticipant">
+        <div class="col-md-12" *ngIf="addFromParty">
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addParticipant = false" (saved)="participantAdded($event); addParticipant = false">
+              <person-inline (cancelled)="addFromParty = false" (saved)="partyAdded($event); addFromParty = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty" [options]="contacts"
+              display="displayName" label="Receiver"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="person" type="button" [disabled]="person"  (click)="addToParty = !addToParty">
+              <mat-icon *ngIf="!addToParty">add</mat-icon>
+              <mat-icon *ngIf="addToParty">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="addToParty">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addToParty = false" (saved)="partyAdded($event); addToParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>

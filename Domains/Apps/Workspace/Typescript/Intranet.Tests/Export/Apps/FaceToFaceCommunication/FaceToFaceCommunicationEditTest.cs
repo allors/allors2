@@ -27,8 +27,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
             person.AddCommunicationEvent(new FaceToFaceCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
-                .WithParticipant(person)
-                .WithParticipant(firstEmployee)
+                .WithFromParty(person)
+                .WithToParty(firstEmployee)
                 .Build());
 
             this.Session.Derive();
@@ -55,7 +55,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
             page.Subject.Value = "subject";
-            page.Participants.Add(employee.PartyName);
+            page.FromParty.Value = employee.PartyName;
+            page.ToParty.Value = person.PartyName;
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
@@ -74,8 +75,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Contains(person, communicationEvent.Participants);
-            Assert.Contains(employee, communicationEvent.Participants);
+            Assert.Equal(employee, communicationEvent.FromParty);
+            Assert.Equal(person, communicationEvent.ToParty);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
@@ -105,7 +106,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name);
             page.Subject.Value = "new subject";
-            page.Participants.Add(secondEmployee.PartyName);
+            page.FromParty.Value = secondEmployee.PartyName;
+            page.ToParty.Value = person.PartyName;
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
@@ -124,9 +126,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, communicationEvent.EventPurposes);
-            Assert.Contains(person, communicationEvent.Participants);
-            Assert.Contains(firstEmployee, communicationEvent.Participants);
-            Assert.Contains(secondEmployee, communicationEvent.Participants);
+            Assert.Equal(secondEmployee, communicationEvent.FromParty);
+            Assert.Equal(person, communicationEvent.ToParty);
             Assert.Equal("new subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);

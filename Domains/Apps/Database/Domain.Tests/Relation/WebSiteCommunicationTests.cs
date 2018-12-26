@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             var person = new PersonBuilder(this.Session).WithLastName("person").Build();
 
-            var builder = new WebSiteCommunicationBuilder(this.Session).WithOriginator(person).WithReceiver(person);
+            var builder = new WebSiteCommunicationBuilder(this.Session).WithFromParty(person).WithToParty(person);
             var communication = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -60,8 +60,8 @@ namespace Allors.Domain
             var communication = new WebSiteCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
-                .WithOriginator(originator)
-                .WithReceiver(receiver)
+                .WithFromParty(originator)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();
@@ -85,8 +85,8 @@ namespace Allors.Domain
             new WebSiteCommunicationBuilder(this.Session)
                 .WithSubject("Hello world!")
                 .WithOwner(owner)
-                .WithOriginator(originator)
-                .WithReceiver(receiver)
+                .WithFromParty(originator)
+                .WithToParty(receiver)
                 .Build();
 
             this.Session.Derive();
