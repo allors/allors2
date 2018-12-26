@@ -42,7 +42,7 @@ export class Session implements ISession {
 
   private sessionObjectByIdByClassId: { [id: string]: { [id: string]: ISessionObject } } = {};
 
-  constructor(public workspace: Workspace) {
+  constructor(public workspace: IWorkspace) {
     this.hasChanges = false;
   }
 
@@ -249,7 +249,7 @@ export class Session implements ISession {
     const associationIds = associations.map((v => v.id));
 
     associationClasses.forEach((associationClass) => {
-      const workspaceObjectById = this.workspace.workspaceObjectByIdByClassId[associationClass.id];
+      const workspaceObjectById = (this.workspace as Workspace).workspaceObjectByIdByClassId[associationClass.id];
       if (workspaceObjectById) {
         Object
           .keys(workspaceObjectById)
