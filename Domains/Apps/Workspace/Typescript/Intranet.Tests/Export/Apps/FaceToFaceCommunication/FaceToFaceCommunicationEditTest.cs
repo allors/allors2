@@ -29,6 +29,7 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
                 .WithSubject("dummy")
                 .WithFromParty(person)
                 .WithToParty(firstEmployee)
+                .WithLocation("old location")
                 .Build());
 
             this.Session.Derive();
@@ -54,6 +55,7 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
+            page.Location.Value = "location";
             page.Subject.Value = "subject";
             page.FromParty.Value = employee.PartyName;
             page.ToParty.Value = person.PartyName;
@@ -77,6 +79,7 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
             Assert.Equal(employee, communicationEvent.FromParty);
             Assert.Equal(person, communicationEvent.ToParty);
+            Assert.Equal("location", communicationEvent.Location);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
@@ -105,6 +108,7 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name);
+            page.Location.Value = "new location";
             page.Subject.Value = "new subject";
             page.FromParty.Value = secondEmployee.PartyName;
             page.ToParty.Value = person.PartyName;
@@ -128,6 +132,7 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
             Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, communicationEvent.EventPurposes);
             Assert.Equal(secondEmployee, communicationEvent.FromParty);
             Assert.Equal(person, communicationEvent.ToParty);
+            Assert.Equal("new location", communicationEvent.Location);
             Assert.Equal("new subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);

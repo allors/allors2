@@ -22,6 +22,8 @@ namespace Tests.Intranet.FaceToFaceCommunicationTests
 
         public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.FaceToFaceCommunication.ToParty);
 
+        public MaterialInput Location => new MaterialInput(this.Driver, roleType: M.FaceToFaceCommunication.Location);
+
         public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
 
         public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledStart);

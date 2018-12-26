@@ -8,6 +8,7 @@ namespace Tests.Intranet
     using Tests.Components;
     using Tests.Components.Html;
     using Tests.Intranet.CatalogueTests;
+    using Tests.Intranet.OrganisationTests;
     using Tests.Intranet.PersonTests;
     using Tests.Intranet.ProductCategoryTest;
     using Tests.Intranet.SerialisedItemCharacteristicTest;
@@ -85,6 +86,12 @@ namespace Tests.Intranet
         {
             this.Navigate(this.ContactsGroup, this.People);
             return new PersonListPage(this.Driver);
+        }
+
+        public OrganisationListPage NavigateToOrganisationList()
+        {
+            this.Navigate(this.ContactsGroup, this.Organisations);
+            return new OrganisationListPage(this.Driver);
         }
 
         public RequestForQuoteListPage NavigateToRequestForQuoteList()
