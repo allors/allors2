@@ -1,32 +1,41 @@
 <mat-dialog-content>
     <form [formGroup]="formGroup">
         <mat-vertical-stepper #stepper [linear]="true">
+
             <mat-step>
                 <ng-template matStepLabel>
                     <span *ngIf="!selectedPredicate">Filter</span>
-                    <span *ngIf="!!selectedPredicate"><strong>{{selectedPredicate.parameter}}</strong></span>
+                    <span *ngIf="!!selectedPredicate"><strong>{{definition.predicate.parameter}}</strong></span>
                 </ng-template>
                 <mat-form-field>
-                    <mat-select placeholder="Field" formControlName="predicate" required (selectionChange)="stepper.next()">
-                        <mat-option *ngFor="let predicate of filterService.filterFieldPredicates" [value]="predicate">
-                            {{predicate.parameter}}
+                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="stepper.next()">
+                        <mat-option *ngFor="let definition of filterService.filterFieldDefinitions" [value]="definition">
+                            {{definition.predicate.parameter}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-step>
+
             <mat-step>
                 <ng-template matStepLabel>
-                        <span *ngIf="!selectedPredicate">Value</span>
-                        <span *ngIf="!!selectedPredicate"><strong>TODO</strong></span>
+                    <span *ngIf="!selectedPredicate">Value</span>
+                    <span *ngIf="!!selectedPredicate"><strong>TODO</strong></span>
                 </ng-template>
-                <mat-form-field>
+
+                <mat-form-field *ngIf="!definition.search">
                     <input matInput placeholder="Value" formControlName="value" required>
                 </mat-form-field>
+
+                <div *ngIf="definition.search">
+                    SEARCH
+                </div>
+
                 <div>
                     <button mat-button mat-dialog-close>Cancel</button>
                     <button mat-button color="primary" (click)="apply()">Apply</button>
                 </div>
             </mat-step>
+
         </mat-vertical-stepper>
     </form>
 </mat-dialog-content>

@@ -58,7 +58,10 @@ namespace Allors.Data
             var and = compositePredicate.AddAnd();
             foreach (var predicate in this.Operands)
             {
-                predicate.Build(session, arguments, and);
+                if (!predicate.ShouldTreeShake(arguments))
+                {
+                    predicate.Build(session, arguments, and);
+                }
             }
         }
 

@@ -51,11 +51,14 @@ namespace Allors.Data
             };
         }
 
-
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             var not = compositePredicate.AddNot();
-            this.Operand?.Build(session, arguments, not);
+
+            if (this.Operand != null && !this.Operand.ShouldTreeShake(arguments))
+            {
+                this.Operand?.Build(session, arguments, not);
+            }
         }
     }
 }

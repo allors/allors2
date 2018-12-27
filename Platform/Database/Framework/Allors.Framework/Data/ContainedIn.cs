@@ -62,7 +62,7 @@ namespace Allors.Data
             {
                 if (arguments == null || !arguments.ContainsKey(this.Parameter))
                 {
-                    return false;
+                    return true;
                 }
             }
 
@@ -88,16 +88,7 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            object argument = null;
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
-                {
-                    return;
-                }
-            }
-
-            var objects = this.Parameter != null ? session.GetObjects(argument) : this.Objects;
+            var objects = this.Parameter != null ? session.GetObjects(arguments[this.Parameter]) : this.Objects;
 
             if (this.PropertyType is IRoleType roleType)
             {

@@ -1,7 +1,7 @@
-import { Like, ParametrizedPredicate } from 'src/allors/framework';
+import { FilterFieldDefinition } from './filterFieldDefinition';
 
 export class FilterField {
-  predicate: ParametrizedPredicate;
+  definition: FilterFieldDefinition;
   value: any;
   value2?: any;
 

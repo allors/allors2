@@ -21,18 +21,15 @@
 namespace Allors.Data
 {
     using System.Collections.Generic;
-    using System.Linq;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Contains : IPropertyPredicate
     {
         public Contains(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public IPropertyType PropertyType { get; set; }
-
-        public IExtent Extent { get; set; }
 
         public IObject Object { get; set; }
 
@@ -44,7 +41,6 @@ namespace Allors.Data
                        {
                            Kind = PredicateKind.Contains,
                            PropertyType = this.PropertyType?.Id,
-                           Extent = this.Extent?.Save(),
                            Object = this.Object?.Id.ToString(),
                            Parameter = this.Parameter
                        };
@@ -52,52 +48,17 @@ namespace Allors.Data
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
         {
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
-                {
-                    return false;
-                }
-            }
-
-            if (this.Extent != null)
-            {
-                return this.Extent.HasMissingArguments(arguments);
-            }
-
-            return false;
+            return ((IPredicate)this).HasMissingArguments(arguments);
         }
 
         bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
         {
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
-                {
-                    return false;
-                }
-            }
-
-            if (this.Extent != null)
-            {
-                return this.Extent.HasMissingArguments(arguments);
-            }
-
-            return false;
+            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            object argument = null;
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
-                {
-                    return;
-                }
-            }
-
-            IObject containedObject = this.Parameter != null ? session.GetObject(argument) : this.Object;
+            var containedObject = this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object;
 
             if (this.PropertyType is IRoleType roleType)
             {

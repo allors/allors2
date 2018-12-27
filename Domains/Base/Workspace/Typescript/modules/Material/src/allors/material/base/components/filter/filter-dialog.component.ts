@@ -3,8 +3,8 @@ import { Component, Inject, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AllorsFilterService } from '../../../../angular/base/filter';
-import { FilterField } from 'src/allors/angular/base/filter/FilterField';
-import { ParametrizedPredicate } from 'src/allors/framework';
+import { FilterField } from '../../../../../allors/angular/base/filter/FilterField';
+import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/filterFieldDefinition';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -27,18 +27,18 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      predicate: ['', Validators.required],
+      definition: ['', Validators.required],
       value: ['', Validators.required]
     });
   }
 
-  get selectedPredicate(): ParametrizedPredicate {
-    return this.formGroup.get('predicate').value;
+  get definition(): FilterFieldDefinition {
+    return this.formGroup.get('definition').value;
   }
 
   apply() {
     this.filterService.addFilterField(new FilterField({
-      predicate: this.formGroup.get('predicate').value,
+      definition: this.definition,
       value: this.formGroup.get('value').value
     }));
 

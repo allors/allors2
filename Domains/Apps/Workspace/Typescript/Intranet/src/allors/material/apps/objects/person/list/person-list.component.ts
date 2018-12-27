@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
 import { Person } from '../../../../../domain';
@@ -78,20 +78,25 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
-      // new ContainedIn({
-      //   propertyType: m.Party.GeneralCorrespondence,
-      //   extent: new Filter({
-      //       objectType: m.PostalAddress,
-      //       predicate: new ContainedIn({
-      //         propertyType: m.PostalAddress.Country,
-      //         parameter: 'addresses'
-      //       })
-      //   })
-      // })
+      new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
+      new ContainedIn({
+        propertyType: m.Party.GeneralCorrespondence,
+        extent: new Filter({
+            objectType: m.PostalAddress,
+            predicate: new ContainedIn({
+              propertyType: m.PostalAddress.Country,
+              parameter: 'country'
+            })
+        })
+      })
     ]);
 
-    this.filterService.init(predicate);
+    const countrySearch = new SearchFactory({
+      objectType: m.Country,
+      roleTypes: [m.Country.Name],
+    });
+
+    this.filterService.init(predicate, { country: countrySearch });
 
     const sorter = new Sorter(
       {

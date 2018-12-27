@@ -52,10 +52,10 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate()
-                       {
-                           Kind = PredicateKind.Or,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray()
-                       };
+            {
+                Kind = PredicateKind.Or,
+                Operands = this.Operands.Select(v => v.Save()).ToArray()
+            };
         }
 
 
@@ -64,7 +64,10 @@ namespace Allors.Data
             var or = compositePredicate.AddOr();
             foreach (var predicate in this.Operands)
             {
-                predicate.Build(session, arguments, or);
+                if (!predicate.ShouldTreeShake(arguments))
+                {
+                    predicate.Build(session, arguments, or);
+                }
             }
         }
     }

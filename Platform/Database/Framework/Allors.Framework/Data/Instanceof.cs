@@ -37,7 +37,7 @@ namespace Allors.Data
         public IComposite ObjectType { get; set; }
 
         public IPropertyType PropertyType { get; set; }
-        
+
         public Predicate Save()
         {
             return new Predicate
@@ -55,21 +55,12 @@ namespace Allors.Data
 
         bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
         {
-            return this.Parameter != null && arguments != null && !arguments.ContainsKey(this.Parameter);
+            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            object argument = null;
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
-                {
-                    return;
-                }
-            }
-
-            var composite = argument != null ? (IComposite)session.GetMetaObject(argument) : this.ObjectType;
+            var composite = this.Parameter != null ? (IComposite)session.GetMetaObject(arguments[this.Parameter]) : this.ObjectType;
 
             if (this.PropertyType != null)
             {

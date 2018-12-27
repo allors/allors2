@@ -52,21 +52,12 @@ namespace Allors.Data
 
         bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
         {
-            return this.Parameter != null && arguments != null && !arguments.ContainsKey(this.Parameter);
+            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            object argument = null;
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
-                {
-                    return;
-                }
-            }
-
-            var propertyType = argument != null ? (IPropertyType)session.GetMetaObject(argument) : this.PropertyType;
+            var propertyType = this.Parameter != null ? (IPropertyType)session.GetMetaObject(arguments[this.Parameter]) : this.PropertyType;
 
             if (propertyType is IRoleType roleType)
             {

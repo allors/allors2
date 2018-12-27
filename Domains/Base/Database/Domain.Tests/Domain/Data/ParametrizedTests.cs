@@ -211,5 +211,71 @@ namespace Tests
             Assert.Equal(extent.ToArray(), queryExtent.ToArray());
         }
 
+        [Fact]
+        public void AndNestedContainedInWithoutArguments()
+        {
+            var filter = new Filter(M.Organisation.ObjectType)
+            {
+                Predicate = new And
+                {
+                    Operands = new IPredicate[]
+                    {
+                        new ContainedIn
+                        {
+                            PropertyType = M.Organisation.Employees,
+                            Extent = new Filter(M.Person.ObjectType)
+                            {
+                                Predicate = new ContainedIn
+                                {
+                                    PropertyType = M.Person.Gender,
+                                    Parameter = "gender"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            var arguments = new Dictionary<string, object>();
+            var queryExtent = filter.Build(this.Session, arguments);
+
+            var extent = this.Session.Extent(M.Organisation.ObjectType);
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+        }
+
+        [Fact]
+        public void AndNestedContainsWithoutArguments()
+        {
+            var filter = new Filter(M.Organisation.ObjectType)
+                             {
+                                 Predicate = new And
+                                                 {
+                                                     Operands = new IPredicate[]
+                                                                    {
+                                                                        new ContainedIn
+                                                                            {
+                                                                                PropertyType = M.Organisation.Employees,
+                                                                                Extent = new Filter(M.Person.ObjectType)
+                                                                                             {
+                                                                                                 Predicate = new Contains
+                                                                                                                 {
+                                                                                                                     PropertyType = M.Person.Gender,
+                                                                                                                     Parameter = "gender"
+                                                                                                                 }
+                                                                                             }
+                                                                            }
+                                                                    }
+                                                 }
+                             };
+
+            var arguments = new Dictionary<string, object>();
+            var queryExtent = filter.Build(this.Session, arguments);
+
+            var extent = this.Session.Extent(M.Organisation.ObjectType);
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+        }
+
     }
 }
