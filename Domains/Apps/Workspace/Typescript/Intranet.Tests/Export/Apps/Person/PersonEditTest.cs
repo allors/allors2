@@ -22,14 +22,12 @@ namespace Tests.Intranet.PersonTests
         }
 
         [Fact]
-        public void Add()
+        public void Create()
         {
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
             var page = new PersonEditPage(this.Driver);
-
-            var acme0 = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
 
             page.Salutation.Value = new Salutations(this.Session).Mr.Name;
             page.FirstName.Value = "Jos";
@@ -50,13 +48,13 @@ namespace Tests.Intranet.PersonTests
 
             var person = after.Except(before).First();
 
-            Assert.Equal(new Salutations(this.Session).Mr.Name, person.Salutation.Name);
+            Assert.Equal(new Salutations(this.Session).Mr, person.Salutation);
             Assert.Equal("Jos", person.FirstName);
             Assert.Equal("de", person.MiddleName);
             Assert.Equal("Smos", person.LastName);
             Assert.Equal("CEO", person.Function);
-            Assert.Equal(new GenderTypes(this.Session).Male.Name, person.Gender.Name);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First.Name, person.Locale.Name);
+            Assert.Equal(new GenderTypes(this.Session).Male, person.Gender);
+            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, person.Locale);
         }
 
         [Fact]
@@ -90,13 +88,13 @@ namespace Tests.Intranet.PersonTests
 
             person = after.First(v => v.Id.Equals(id));
 
-            Assert.Equal(new Salutations(this.Session).Mr.Name, person.Salutation.Name);
+            Assert.Equal(new Salutations(this.Session).Mr, person.Salutation);
             Assert.Equal("Jos", person.FirstName);
             Assert.Equal("de", person.MiddleName);
             Assert.Equal("Smos", person.LastName);
             Assert.Equal("CEO", person.Function);
-            Assert.Equal(new GenderTypes(this.Session).Male.Name, person.Gender.Name);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First.Name, person.Locale.Name);
+            Assert.Equal(new GenderTypes(this.Session).Male, person.Gender);
+            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, person.Locale);
             Assert.Equal("unpleasant person", person.Comment);
         }
     }

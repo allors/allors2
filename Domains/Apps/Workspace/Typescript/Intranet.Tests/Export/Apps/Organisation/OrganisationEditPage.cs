@@ -14,21 +14,23 @@ namespace Tests.Intranet.OrganisationTests
         {
         }
 
-        public MaterialSingleSelect Salutation => new MaterialSingleSelect(this.Driver, roleType: M.Person.Salutation);
+        public MaterialInput Name => new MaterialInput(this.Driver, roleType: M.Organisation.Name);
 
-        public MaterialSingleSelect Gender => new MaterialSingleSelect(this.Driver, roleType: M.Person.Gender);
+        public MaterialInput TaxNumber => new MaterialInput(this.Driver, roleType: M.Organisation.TaxNumber);
 
-        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Person.Locale);
+        public MaterialSingleSelect LegalForm => new MaterialSingleSelect(this.Driver, roleType: M.Organisation.LegalForm);
 
-        public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
+        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Organisation.Locale);
 
-        public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
+        public MaterialMultipleSelect IndustryClassifications => new MaterialMultipleSelect(this.Driver, roleType: M.Organisation.IndustryClassifications);
 
-        public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
+        public MaterialMultipleSelect CustomClassifications => new MaterialMultipleSelect(this.Driver, roleType: M.Organisation.CustomClassifications);
 
-        public MaterialInput Function => new MaterialInput(this.Driver, roleType: M.Person.Function);
+        public MaterialSlideToggle IsManufacturer => new MaterialSlideToggle(this.Driver, roleType: M.Organisation.IsManufacturer);
 
-        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
+        public MaterialSlideToggle IsInternalOrganisation => new MaterialSlideToggle(this.Driver, roleType: M.Organisation.IsInternalOrganisation);
+
+        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Organisation.Comment);
 
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

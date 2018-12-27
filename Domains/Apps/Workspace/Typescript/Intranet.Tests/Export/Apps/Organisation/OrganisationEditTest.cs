@@ -2,6 +2,7 @@ namespace Tests.Intranet.OrganisationTests
 {
     using System.Linq;
 
+    using Allors;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -12,92 +13,109 @@ namespace Tests.Intranet.OrganisationTests
     [Collection("Test collection")]
     public class OrganisationEditTest : Test
     {
-        private readonly OrganisationListPage people;
+        private readonly OrganisationListPage organisations;
+
+        private readonly IndustryClassification industryClassification;
+
+        private readonly CustomOrganisationClassification customOrganisationClassification;
+
+        private readonly LegalForm legalForm;
 
         public OrganisationEditTest(TestFixture fixture)
             : base(fixture)
         {
+            this.customOrganisationClassification = new CustomOrganisationClassificationBuilder(this.Session).WithName("Gold").Build();
+            this.industryClassification = new IndustryClassificationBuilder(this.Session).WithName("Retail").Build();
+            this.legalForm = new LegalForms(this.Session).FindBy(M.LegalForm.Description, "BE - BVBA / SPRL");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
-        public void Add()
+        public void Create()
         {
-            this.people.AddNew.Click();
-            var before = new People(this.Session).Extent().ToArray();
+            this.organisations.AddNew.Click();
+            var before = new Organisations(this.Session).Extent().ToArray();
 
             var page = new OrganisationEditPage(this.Driver);
 
-            var acme0 = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
-
-            page.Salutation.Value = new Salutations(this.Session).Mr.Name;
-            page.FirstName.Value = "Jos";
-            page.MiddleName.Value = "de";
-            page.LastName.Value = "Smos";
-            page.Function.Value = "CEO";
-            page.Gender.Value = new GenderTypes(this.Session).Male.Name;
+            page.Name.Value = "new organisation";
+            page.TaxNumber.Value = "BE 123 456 789 01";
+            page.LegalForm.Value = this.legalForm.Description;
             page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
+            page.IndustryClassifications.Toggle(this.industryClassification.Name);
+            page.CustomClassifications.Toggle(this.customOrganisationClassification.Name);
+            page.IsManufacturer.Value = true;
+            page.IsInternalOrganisation.Value = true;
+            page.Comment.Value = "comment";
 
             page.Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new People(this.Session).Extent().ToArray();
+            var after = new Organisations(this.Session).Extent().ToArray();
 
             Assert.Equal(after.Length, before.Length + 1);
 
-            var person = after.Except(before).First();
+            var organisation = after.Except(before).First();
 
-            Assert.Equal(new Salutations(this.Session).Mr.Name, person.Salutation.Name);
-            Assert.Equal("Jos", person.FirstName);
-            Assert.Equal("de", person.MiddleName);
-            Assert.Equal("Smos", person.LastName);
-            Assert.Equal("CEO", person.Function);
-            Assert.Equal(new GenderTypes(this.Session).Male.Name, person.Gender.Name);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First.Name, person.Locale.Name);
+            Assert.Equal("new organisation", organisation.Name);
+            Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
+            Assert.Equal(this.legalForm, organisation.LegalForm);
+            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
+            Assert.Contains(this.industryClassification, organisation.IndustryClassifications);
+            Assert.Contains(this.customOrganisationClassification, organisation.CustomClassifications);
+            Assert.True(organisation.IsManufacturer);
+            Assert.True(organisation.IsInternalOrganisation);
+            Assert.Equal("comment", organisation.Comment);
         }
 
         [Fact]
         public void Edit()
         {
-            //var before = new People(this.Session).Extent().ToArray();
+            var before = new Organisations(this.Session).Extent().ToArray();
 
-            //var person = before.First(v => v.PartyName.Equals("John0 Doe0"));
-            //var id = person.Id;
+            var organisation = before.First(v => v.PartyName.Equals("Acme0"));
+            var id = organisation.Id;
 
-            //var personOverview = this.people.Select(person);
-            //var page = personOverview.Edit();
+            var organisationOverviewPage = this.organisations.Select(organisation);
+            var page = organisationOverviewPage.Edit();
 
-            //page.Salutation.Value = new Salutations(this.Session).Mr.Name;
-            //page.FirstName.Value = "Jos";
-            //page.MiddleName.Value = "de";
-            //page.LastName.Value = "Smos";
-            //page.Function.Value = "CEO";
-            //page.Gender.Value = new GenderTypes(this.Session).Male.Name;
-            //page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
-            //page.Comment.Value = "unpleasant person";
+            page.Name.Value = "new organisation";
+            page.TaxNumber.Value = "BE 123 456 789 01";
+            page.LegalForm.Value = this.legalForm.Description;
+            page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
+            page.IndustryClassifications.Toggle(this.industryClassification.Name);
+            page.CustomClassifications.Toggle(this.customOrganisationClassification.Name);
+            page.IsManufacturer.Value = true;
+            page.IsInternalOrganisation.Value = true;
+            page.Comment.Value = "comment";
 
-            //page.Save.Click();
+            page.Save.Click();
 
-            //this.Driver.WaitForAngular();
-            //this.Session.Rollback();
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
 
-            //var after = new People(this.Session).Extent().ToArray();
+            var after = new Organisations(this.Session).Extent().ToArray();
 
-            //Assert.Equal(after.Length, before.Length);
+            Assert.Equal(after.Length, before.Length);
 
-            //person = after.First(v => v.Id.Equals(id));
+            organisation = after.First(v => v.Id.Equals(id));
 
-            //Assert.Equal(new Salutations(this.Session).Mr.Name, person.Salutation.Name);
-            //Assert.Equal("Jos", person.FirstName);
-            //Assert.Equal("de", person.MiddleName);
-            //Assert.Equal("Smos", person.LastName);
-            //Assert.Equal("CEO", person.Function);
-            //Assert.Equal(new GenderTypes(this.Session).Male.Name, person.Gender.Name);
-            //Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First.Name, person.Locale.Name);
-            //Assert.Equal("unpleasant person", person.Comment);
+            Assert.Equal("new organisation", organisation.Name);
+            Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
+            Assert.Equal(this.legalForm, organisation.LegalForm);
+            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
+            Assert.Contains(this.industryClassification, organisation.IndustryClassifications);
+            Assert.Contains(this.customOrganisationClassification, organisation.CustomClassifications);
+            Assert.True(organisation.IsManufacturer);
+            Assert.True(organisation.IsInternalOrganisation);
+            Assert.Equal("comment", organisation.Comment);
         }
     }
 }

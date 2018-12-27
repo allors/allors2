@@ -60,7 +60,7 @@ namespace Tests.Intranet.LetterCorrespondenceTests
         }
 
         [Fact]
-        public void Add()
+        public void Create()
         {
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First;

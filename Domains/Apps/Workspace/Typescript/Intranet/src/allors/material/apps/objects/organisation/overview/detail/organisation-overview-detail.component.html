@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed && organisation" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed && organisation" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
@@ -24,34 +24,41 @@
         <div class="row">
           <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
           <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
-
         </div>
 
         <div class="row">
-          <mat-form-field class="col-md">
-            <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
-              <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications" display="Name" label="Classification"></a-mat-select>
-          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name" label="Industry"></a-mat-select>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.LegalForm" [options]="legalForms"
+            display="Description"></a-mat-select>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales"
+            display="Name"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+            [options]="industries" display="Name" label="Industries" multiple="true"></a-mat-select>
+            <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.CustomClassifications"
+            [options]="classifications" display="Name" label="Classifications" multiple="true"></a-mat-select>
         </div>
 
         <div class="row">
           <a-mat-slidetoggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slidetoggle>
-          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
-          <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
-          <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
+          <a-mat-slidetoggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsInternalOrganisation"></a-mat-slidetoggle>
         </div>
 
+        <div class="row">
+          <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
+        </div>
       </div>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
       <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
     </mat-card-actions>
   </mat-card>
 
 </form>
-

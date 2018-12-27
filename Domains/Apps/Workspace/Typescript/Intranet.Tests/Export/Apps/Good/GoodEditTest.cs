@@ -23,7 +23,7 @@ namespace Tests.Intranet.GoodTests
         }
 
         [Fact]
-        public void Add()
+        public void Create()
         {
             this.goods.AddNew.Click();
             var before = new Goods(this.Session).Extent().ToArray();

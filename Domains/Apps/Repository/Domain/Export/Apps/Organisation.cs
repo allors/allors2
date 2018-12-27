@@ -367,7 +367,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public OrganisationClassification[] OrganisationClassifications { get; set; }
+        public CustomOrganisationClassification[] CustomClassifications { get; set; }
 
         #region inherited methods
 

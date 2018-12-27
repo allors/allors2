@@ -12,7 +12,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ObjectData } from 'src/allors/material/base/services/object';
+import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './person-create.component.html',
@@ -22,8 +22,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  add: boolean;
-  edit: boolean;
+  public title = 'Add Person';
 
   internalOrganisation: InternalOrganisation;
   person: Person;
@@ -52,7 +51,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<PersonCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
@@ -78,8 +77,6 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-          const organisationId = this.data && this.data.organisationId;
-
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
@@ -98,7 +95,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
               sort: new Sort(m.OrganisationContactKind.Description),
             }),
             pull.Organisation({
-              object: organisationId,
+              object: this.data.associationId,
             }),
             pull.Organisation({
               sort: new Sort(m.Organisation.PartyName)

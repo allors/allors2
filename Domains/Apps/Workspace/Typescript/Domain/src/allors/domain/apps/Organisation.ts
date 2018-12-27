@@ -24,7 +24,7 @@ domain.extend((workspace) => {
         },
         displayClassification: {
             get(this: Organisation): string {
-                return this.OrganisationClassifications.map(w => w.Name).join(', ');
+                return this.CustomClassifications.map(w => w.Name).join(', ');
             },
         },
         displayAddress: {

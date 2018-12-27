@@ -5,16 +5,15 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
+import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ObjectData } from 'src/allors/material/base/services/object';
+import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -23,6 +22,8 @@ import { ObjectData } from 'src/allors/material/base/services/object';
 export class OrganisationCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
+
+  public title = 'Add Organisation';
 
   public organisation: Organisation;
 
@@ -46,10 +47,11 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
+  legalForms: LegalForm[];
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
     public location: Location,
@@ -75,16 +77,17 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            this.fetcher.locales,
             pull.Organisation({ object: id }),
             pull.OrganisationRole(),
-            pull.Locale({
-              sort: new Sort(m.Locale.Name)
-            }),
             pull.CustomOrganisationClassification({
               sort: new Sort(m.CustomOrganisationClassification.Name)
             }),
             pull.IndustryClassification({
               sort: new Sort(m.IndustryClassification.Name)
+            }),
+            pull.LegalForm({
+              sort: new Sort(m.LegalForm.Description)
             })
           ];
 
@@ -141,6 +144,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
+        this.legalForms = loaded.collections.LegalForms as LegalForm[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8B5E0CEE-4C98-42F1-8F18-3638FBA943A0');
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8C6D629B-1E27-4520-AA8C-E8ADF93A5095');

@@ -51,7 +51,7 @@ namespace Tests.Intranet.EmailCommunicationTests
         }
 
         [Fact]
-        public void Add()
+        public void Create()
         {
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
