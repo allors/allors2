@@ -15,7 +15,6 @@ import { ObjectService } from '../../../../../material/base/services/object';
 interface Row extends TableRow {
   object: Organisation;
   name: string;
-  classification: string;
   street: string;
   locality: string;
   country: string;
@@ -61,7 +60,6 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'classification', sort: true },
         { name: 'street', sort: true },
         { name: 'locality', sort: true },
         { name: 'country', sort: true },
@@ -103,7 +101,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, []),
-        switchMap(([refresh, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.Organisation({
@@ -128,13 +126,12 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const people = loaded.collections.Organisations as Organisation[];
+        const organisations = loaded.collections.Organisations as Organisation[];
         this.table.total = loaded.values.Organisations_total;
-        this.table.data = people.map((v) => {
+        this.table.data = organisations.map((v) => {
           return {
             object: v,
             name: v.displayName,
-            classification: v.displayClassification,
             street: v.displayAddress,
             locality: v.displayAddress2,
             country: v.displayAddress3,

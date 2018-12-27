@@ -7,14 +7,15 @@ namespace Tests.Intranet.EmailCommunicationTests
     using Allors.Meta;
 
     using Tests.Components;
+    using Tests.Intranet.OrganisationTests;
     using Tests.Intranet.PersonTests;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class EmailCommunicationEditTest : Test
+    public class PersonEmailCommunicationEditTest : Test
     {
-        private readonly PersonListPage people;
+        private PersonListPage people;
 
         public EmailAddress employeeEmailAddress { get; set; }
 
@@ -22,7 +23,7 @@ namespace Tests.Intranet.EmailCommunicationTests
 
         private readonly EmailCommunication editCommunicationEvent;
 
-        public EmailCommunicationEditTest(TestFixture fixture)
+        public PersonEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
@@ -41,8 +42,6 @@ namespace Tests.Intranet.EmailCommunicationTests
                 .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
                 .Build();
 
-            person.AddCommunicationEvent(this.editCommunicationEvent);
-
             this.Session.Derive();
             this.Session.Commit();
 
@@ -51,8 +50,9 @@ namespace Tests.Intranet.EmailCommunicationTests
         }
 
         [Fact]
-        public void AddToPerson()
+        public void Add()
         {
+
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();

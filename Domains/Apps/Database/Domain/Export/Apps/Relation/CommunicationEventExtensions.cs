@@ -20,6 +20,7 @@ using Resources;
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
 
     public static partial class CommunicationEventExtensions
     {
@@ -140,6 +141,8 @@ namespace Allors.Domain
 
         private static void DeriveInvolvedParties(this CommunicationEvent @this)
         {
+            var partiesToRemove = @this.PartiesWhereCommunicationEvent.ToList();
+
             if (@this.GetType().Name.Equals(typeof(EmailCommunication).Name))
             {
                 var mail = (EmailCommunication)@this;
@@ -160,16 +163,31 @@ namespace Allors.Domain
             if (@this.ExistFromParty)
             {
                 @this.AddInvolvedParty(@this.FromParty);
+                @this.FromParty.AddCommunicationEvent(@this);
+                if (partiesToRemove.Contains(@this.FromParty))
+                {
+                    partiesToRemove.Remove(@this.FromParty);
+                }
             }
 
             if (@this.ExistToParty)
             {
                 @this.AddInvolvedParty(@this.ToParty);
+                @this.ToParty.AddCommunicationEvent(@this);
+                if (partiesToRemove.Contains(@this.ToParty))
+                {
+                    partiesToRemove.Remove(@this.ToParty);
+                }
             }
 
-            if (@this.ExistOwner && !@this.InvolvedParties.Contains(@this.Owner))
+            if (@this.ExistOwner)
             {
                 @this.AddInvolvedParty(@this.Owner);
+                @this.Owner.AddCommunicationEvent(@this);
+                if (partiesToRemove.Contains(@this.Owner))
+                {
+                    partiesToRemove.Remove(@this.Owner);
+                }
             }
 
             foreach (Party party in @this.InvolvedParties)
@@ -181,10 +199,21 @@ namespace Allors.Domain
                         if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
                             (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
                         {
-                            @this.AddInvolvedParty(organisationContactRelationship.Organisation);
+                            var organisation = organisationContactRelationship.Organisation;
+                            @this.AddInvolvedParty(organisation);
+                            organisation.AddCommunicationEvent(@this);
+                            if (partiesToRemove.Contains(organisation))
+                            {
+                                partiesToRemove.Remove(organisation);
+                            }
                         }
                     }
                 }
+            }
+
+            foreach (Party party in partiesToRemove)
+            {
+                party.RemoveCommunicationEvent(@this);
             }
         }
     }

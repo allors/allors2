@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
-import { PullRequest, Pull } from '../../../../../framework';
+import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
@@ -18,6 +18,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   title = 'Organisation';
 
   organisation: Organisation;
+
   subscription: Subscription;
 
   constructor(
@@ -44,9 +45,11 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.id = navRoute.id();
           this.panelManager.objectType = m.Organisation;
+          this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
+
+          this.panelManager.on();
 
           const pulls = [
             pull.Organisation({

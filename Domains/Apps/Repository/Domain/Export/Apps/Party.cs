@@ -438,6 +438,7 @@ namespace Allors.Repository
         [RoleId("CA30D198-DBD5-47CD-AB1F-72149A20097D")]
         [Indexed]
         #endregion
+        [Derived]
         [Workspace]
         [Multiplicity(Multiplicity.ManyToMany)]
         CommunicationEvent[] CommunicationEvents { get; set; }

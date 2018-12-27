@@ -159,6 +159,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
         this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
 
         if (!!this.organisation) {
+          this.contacts = this.contacts.concat(this.organisation);
           this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
         }
 
@@ -168,6 +169,9 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
         if (!!this.parties) {
           this.contacts.push(...this.parties);
+          this.parties.forEach((party) => {
+            this.contacts.push(...party.CurrentContacts);
+          });
         }
 
         if (isCreate) {
@@ -175,8 +179,6 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
           this.communicationEvent = this.allors.context.create('PhoneCommunication') as PhoneCommunication;
 
           this.party = this.organisation || this.person;
-
-          this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
 
           this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;

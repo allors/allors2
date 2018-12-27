@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Person } from '../../../../../domain';
-import { PullRequest, Pull } from '../../../../../framework';
+import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({

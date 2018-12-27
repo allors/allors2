@@ -11,6 +11,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
+import { PartyContactMechanismEmailAddressInlineComponent } from '../../emailaddress/inline/emailaddress-inline.module';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',
@@ -134,7 +135,11 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
               pull.CommunicationEvent({
                 object: this.data.id,
                 fetch: {
-                  PartiesWhereCommunicationEvent: x,
+                  PartiesWhereCommunicationEvent: {
+                    include: {
+                      CurrentContacts: x
+                    }
+                  }
                 }
               }),
             ];
@@ -171,6 +176,9 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
         if (!!this.parties) {
           this.contacts.push(...this.parties);
+          this.parties.forEach((party) => {
+            this.contacts.push(...party.CurrentContacts);
+          });
         }
 
         if (isCreate) {
@@ -178,8 +186,6 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
           this.communicationEvent = this.allors.context.create('FaceToFaceCommunication') as FaceToFaceCommunication;
 
           this.party = this.organisation || this.person;
-
-          this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
           this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
 

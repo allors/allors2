@@ -183,6 +183,9 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
         if (!!this.parties) {
           this.contacts.push(...this.parties);
+          this.parties.forEach((party) => {
+            this.contacts.push(...party.CurrentContacts);
+          });
         }
 
         if (isCreate) {
@@ -193,7 +196,6 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
           this.party = this.organisation || this.person;
 
-          this.party.AddCommunicationEvent(this.communicationEvent);
         } else {
           this.communicationEvent = loaded.objects.EmailCommunication as EmailCommunication;
 

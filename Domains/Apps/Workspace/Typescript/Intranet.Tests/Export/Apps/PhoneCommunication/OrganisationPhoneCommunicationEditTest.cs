@@ -1,6 +1,5 @@
 namespace Tests.Intranet.PhoneCommunicationTests
 {
-    using System;
     using System.Linq;
 
     using Allors;
@@ -8,68 +7,71 @@ namespace Tests.Intranet.PhoneCommunicationTests
     using Allors.Meta;
 
     using Tests.Components;
-    using Tests.Intranet.PersonTests;
+    using Tests.Intranet.OrganisationTests;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class PhoneCommunicationEditTest : Test
+    public class OrganisationPhoneCommunicationEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly OrganisationListPage organisations;
 
-        private readonly PartyContactMechanism anotherPhoneNumber;
+        private readonly PartyContactMechanism organisationPhoneNumber;
 
-        public PhoneCommunicationEditTest(TestFixture fixture)
+        private readonly PhoneCommunication editCommunicationEvent;
+
+        public OrganisationPhoneCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("Jane0 Doe0"));
+            var people = new Organisations(this.Session).Extent();
+            var organisation = people.First(v => v.PartyName.Equals("Acme0"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            person.AddCommunicationEvent(new PhoneCommunicationBuilder(this.Session)
+            this.editCommunicationEvent = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
                 .WithLeftVoiceMail(true)
-                .WithFromParty(person)
-                .WithToParty(firstEmployee)
-                .WithPhoneNumber(person.GeneralPhoneNumber)
-                .Build());
+                .WithFromParty(firstEmployee)
+                .WithToParty(organisation.CurrentContacts.First)
+                .WithPhoneNumber(organisation.GeneralPhoneNumber)
+                .Build();
 
-            this.anotherPhoneNumber = new PartyContactMechanismBuilder(this.Session)
+            this.organisationPhoneNumber = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("111").WithContactNumber("222").Build())
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).SalesOffice)
                 .WithUseAsDefault(false)
                 .Build();
 
-            person.AddPartyContactMechanism(anotherPhoneNumber);
+            organisation.AddPartyContactMechanism(this.organisationPhoneNumber);
 
             this.Session.Derive();
             this.Session.Commit();
 
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
-        public void AddToPerson()
+        public void Add()
         {
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First;
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
+            var extent = new Organisations(this.Session).Extent();
+            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
 
-            var personOverview = this.people.Select(person);
-            var page = personOverview.NewPhoneCommunication();
+            var organisationOverviewPage = this.organisations.Select(organisation);
+            var page = organisationOverviewPage.NewPhoneCommunication();
 
             page.LeftVoiceMail.Value = true;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
             page.Subject.Value = "subject";
-            page.FromParty.Value = person.PartyName;
+            page.FromParty.Value = contact.PartyName;
             page.ToParty.Value = employee.PartyName;
             page.PhoneNumber.Value = "+1 123 456";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
@@ -92,9 +94,9 @@ namespace Tests.Intranet.PhoneCommunicationTests
             Assert.True(communicationEvent.LeftVoiceMail);
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Equal(person, communicationEvent.FromParty);
+            Assert.Equal(contact, communicationEvent.FromParty);
             Assert.Equal(employee, communicationEvent.ToParty);
-            Assert.Equal(person.GeneralPhoneNumber, communicationEvent.PhoneNumber);
+            Assert.Equal(contact.GeneralPhoneNumber, communicationEvent.PhoneNumber);
             Assert.Equal("subject", communicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
@@ -106,28 +108,25 @@ namespace Tests.Intranet.PhoneCommunicationTests
         [Fact]
         public void Edit()
         {
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
+            var extent = new Organisations(this.Session).Extent();
+            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var communicationEvent = (PhoneCommunication)person.CommunicationEvents.First(v => v.GetType().Name == typeof(PhoneCommunication).Name);
-            var id = communicationEvent.Id;
+            var personOverview = this.organisations.Select(organisation);
 
-            var personOverview = this.people.Select(person);
-
-            var page = personOverview.SelectPhoneCommunication(communicationEvent);
+            var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
 
             page.LeftVoiceMail.Value = false;
             page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
             page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
+            page.FromParty.Value = organisation.PartyName;
+            page.ToParty.Value = firstEmployee.PartyName;
             page.PhoneNumber.Value = "+1 111 222";
             page.Subject.Value = "new subject";
-            page.FromParty.Value = firstEmployee.PartyName;
-            page.ToParty.Value = person.PartyName;
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
@@ -140,23 +139,20 @@ namespace Tests.Intranet.PhoneCommunicationTests
             this.Session.Rollback();
 
             var after = new PhoneCommunications(this.Session).Extent().ToArray();
-
             Assert.Equal(after.Length, before.Length);
 
-            communicationEvent = after.First(v => v.Id.Equals(id));
-
-            Assert.False(communicationEvent.LeftVoiceMail);
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Equal(firstEmployee, communicationEvent.FromParty);
-            Assert.Equal(person, communicationEvent.ToParty);
-            Assert.Equal(this.anotherPhoneNumber.ContactMechanism, communicationEvent.PhoneNumber);
-            Assert.Equal("new subject", communicationEvent.Subject);
+            Assert.False(this.editCommunicationEvent.LeftVoiceMail);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, this.editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, this.editCommunicationEvent.EventPurposes);
+            Assert.Equal(organisation, this.editCommunicationEvent.FromParty);
+            Assert.Equal(firstEmployee, this.editCommunicationEvent.ToParty);
+            Assert.Equal(this.organisationPhoneNumber.ContactMechanism, this.editCommunicationEvent.PhoneNumber);
+            Assert.Equal("new subject", this.editCommunicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date);
-            Assert.Equal("new comment", communicationEvent.Comment);
+            Assert.Equal("new comment", this.editCommunicationEvent.Comment);
         }
     }
 }

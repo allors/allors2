@@ -91,7 +91,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
           name: pullName,
           object: id,
           fetch: {
-            CommunicationEventsWhereInvolvedParty: {
+            CommunicationEvents: {
               include: {
                 InvolvedParties: x,
                 CommunicationEventState: x,
@@ -104,17 +104,20 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
 
     this.panel.onPulled = (loaded) => {
       this.objects = loaded.collections[pullName] as CommunicationEvent[];
-      this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
-      this.table.data = this.objects.map((v) => {
-        return {
-          object: v,
-          type: v.objectType.name,
-          description: v.Description,
-          involved: v.InvolvedParties.map(w => w.displayName).join(', '),
-          status: v.CommunicationEventState.Name,
-          purpose: v.EventPurposes.map(w => w.Name).join(', '),
-        } as Row;
-      });
+
+      if (this.objects) {
+        this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+        this.table.data = this.objects.map((v) => {
+          return {
+            object: v,
+            type: v.objectType.name,
+            description: v.Description,
+            involved: v.InvolvedParties.map(w => w.displayName).join(', '),
+            status: v.CommunicationEventState.Name,
+            purpose: v.EventPurposes.map(w => w.Name).join(', '),
+          } as Row;
+        });
+      }
     };
   }
 }
