@@ -26,13 +26,13 @@ namespace Tests
     using System.Collections.Generic;
 
     using Allors.Data;
+    using Allors.Domain;
     using Allors.Meta;
 
     using Xunit;
 
     public class ParametrizedTests : DomainTest
     {
-
         [Fact]
         public void EqualsWithArguments()
         {
@@ -104,7 +104,6 @@ namespace Tests
             Assert.Equal(extent.ToArray(), queryExtent.ToArray());
         }
 
-
         [Fact]
         public void AndWithoutArguments()
         {
@@ -152,6 +151,65 @@ namespace Tests
             }
         }
 
+
+        [Fact]
+        public void NestedWithArguments()
+        {
+            var filter = new Filter(M.Organisation.ObjectType)
+            {
+                Predicate = new ContainedIn
+                {
+                    PropertyType = M.Organisation.Employees,
+                    Extent = new Filter(M.Person.ObjectType)
+                    {
+                        Predicate = new Equals
+                        {
+                            PropertyType = M.Person.Gender,
+                            Parameter = "gender"
+                        }
+                    }
+                }
+            };
+
+            var male = new Genders(this.Session).Male;
+
+            var arguments = new Dictionary<string, object> { { "gender", male } };
+            var queryExtent = filter.Build(this.Session, arguments);
+
+            var employees = this.Session.Extent(M.Person.ObjectType);
+            employees.Filter.AddEquals(M.Person.Gender, male);
+            var extent = this.Session.Extent(M.Organisation.ObjectType);
+            extent.Filter.AddContainedIn(M.Organisation.Employees, employees);
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+        }
+
+        [Fact]
+        public void NestedWithoutArguments()
+        {
+            var filter = new Filter(M.Organisation.ObjectType)
+            {
+                Predicate = new ContainedIn
+                {
+                    PropertyType = M.Organisation.Employees,
+                    Extent = new Filter(M.Person.ObjectType)
+                    {
+                        Predicate = new Equals
+                        {
+                            PropertyType = M.Person.Gender,
+                            Parameter = "gender"
+                        }
+                    }
+                }
+            };
+
+            var arguments = new Dictionary<string, object>();
+            var queryExtent = filter.Build(this.Session, arguments);
+
+            var extent = this.Session.Extent(M.Organisation.ObjectType);
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+        }
 
     }
 }

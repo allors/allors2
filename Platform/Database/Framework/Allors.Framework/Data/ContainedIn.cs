@@ -38,6 +38,42 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        {
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                {
+                    return false;
+                }
+            }
+
+            if (this.Extent != null)
+            {
+                return this.Extent.HasMissingArguments(arguments);
+            }
+
+            return false;
+        }
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                {
+                    return false;
+                }
+            }
+
+            if (this.Extent != null)
+            {
+                return this.Extent.HasMissingArguments(arguments);
+            }
+
+            return false;
+        }
+
         public Predicate Save()
         {
             return new Predicate

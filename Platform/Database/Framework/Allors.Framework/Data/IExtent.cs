@@ -33,5 +33,7 @@ namespace Allors.Data
         Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null);
 
         Protocol.Extent Save();
+
+        bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
     }
 }

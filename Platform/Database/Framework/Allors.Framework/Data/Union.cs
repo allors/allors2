@@ -39,6 +39,11 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.Any(v => v.HasMissingArguments(arguments));
+        }
+
         public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
             var extent = session.Union(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));

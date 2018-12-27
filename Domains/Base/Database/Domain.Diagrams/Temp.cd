@@ -1,32 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Interface Name="Allors.Domain.Organisation">
-    <Position X="4.5" Y="1.5" Width="2.25" />
+    <Position X="0.75" Y="1.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AARBEQCAAAAggAAAIAACwAQACAAABBAAAEAAAAQAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="OneData" />
-      <Property Name="ManyDatas" />
+      <Property Name="Employees" />
+      <Property Name="Owner" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Data">
-    <Position X="9" Y="1.5" Width="2.5" />
+  <Interface Name="Allors.Domain.Person">
+    <Position X="5.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQEAAEAAAAAAABAAQAAAAAQAAAAEAAQBAAAAAAECBQA=</HashCode>
+      <HashCode>QARBAEACAEAAAKCAMEAQAAQAACAAAAAAAAAACAQAAAg=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="AutocompleteFilter" />
-      <Property Name="AutocompleteOptions" />
-      <Property Name="Chips" />
+      <Property Name="Gender" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Person" Collapsed="true">
-    <Position X="13.5" Y="1.5" Width="1.5" />
+  <Interface Name="Allors.Domain.Gender" Collapsed="true">
+    <Position X="9" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QARBAEACAEAAAKCAMEAQAAQAACAAAAAAAAAACAQAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

@@ -38,9 +38,11 @@ namespace Allors
 
         private void CustomOnPostSetup()
         {
-            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@doe.org").WithNormalizedUserName("JOHN@DOE.ORG").Build();
-            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@doe.org").WithNormalizedUserName("JANE@DOE.ORG").Build();
-            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@doe.org").WithNormalizedUserName("JENNY@DOE.ORG").Build();
+            var genders = new Genders(this.session);
+
+            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@doe.org").WithNormalizedUserName("JOHN@DOE.ORG").WithGender(genders.Male).Build();
+            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@doe.org").WithNormalizedUserName("JANE@DOE.ORG").WithGender(genders.Female).Build();
+            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@doe.org").WithNormalizedUserName("JENNY@DOE.ORG").WithGender(genders.Other).Build();
 
             john.SetPassword("john");
             jane.SetPassword("jane");

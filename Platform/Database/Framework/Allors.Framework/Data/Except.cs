@@ -49,6 +49,11 @@ namespace Allors.Data
                        };
         }
 
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.Any(v => v.HasMissingArguments(arguments));
+        }
+
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
             var extent = session.Except(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));

@@ -49,8 +49,6 @@ export class AllorsMaterialFilterComponent {
         'top': `${top}px`,
         'left': `${left}px`
       }
-    })
-      .afterClosed()
-      .subscribe();
+    });
   }
 }

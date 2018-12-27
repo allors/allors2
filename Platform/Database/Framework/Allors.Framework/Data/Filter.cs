@@ -39,10 +39,20 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Predicate != null && this.Predicate.HasMissingArguments(arguments);
+        }
+
         public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
             var extent = session.Extent(this.ObjectType);
-            this.Predicate?.Build(session, arguments, extent.Filter);
+
+            if (this.Predicate != null && !this.Predicate.ShouldTreeShake(arguments))
+            {
+                this.Predicate?.Build(session, arguments, extent.Filter);
+            }
+
             if (this.Sorting != null)
             {
                 foreach (var sort in this.Sorting)

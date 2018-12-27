@@ -50,6 +50,41 @@ namespace Allors.Data
                        };
         }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        {
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                {
+                    return false;
+                }
+            }
+
+            if (this.Extent != null)
+            {
+                return this.Extent.HasMissingArguments(arguments);
+            }
+
+            return false;
+        }
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                {
+                    return false;
+                }
+            }
+
+            if (this.Extent != null)
+            {
+                return this.Extent.HasMissingArguments(arguments);
+            }
+
+            return false;
+        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

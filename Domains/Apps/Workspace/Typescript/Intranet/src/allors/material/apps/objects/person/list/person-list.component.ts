@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like } from '../../../../../framework';
+import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
@@ -80,15 +80,12 @@ export class PersonListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
       // new ContainedIn({
-      //   propertyType: m.Person.GeneralCorrespondence,
+      //   propertyType: m.Party.GeneralCorrespondence,
       //   extent: new Filter({
       //       objectType: m.PostalAddress,
       //       predicate: new ContainedIn({
       //         propertyType: m.PostalAddress.Country,
-      //         extent: new Filter({
-      //           objectType: m.Country,
-      //           predicate: new Like({roleType: m.Country.Name, parameter: 'countryName'})
-      //         })
+      //         parameter: 'addresses'
       //       })
       //   })
       // })

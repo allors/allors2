@@ -34,13 +34,23 @@ namespace Allors.Data
 
         public IPredicate[] Operands { get; set; }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.All(v => v.ShouldTreeShake(arguments));
+        }
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.All(v => v.HasMissingArguments(arguments));
+        }
+
         public Predicate Save()
         {
             return new Predicate()
-                       {
-                           Kind = PredicateKind.And,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray()
-                       };
+            {
+                Kind = PredicateKind.And,
+                Operands = this.Operands.Select(v => v.Save()).ToArray()
+            };
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

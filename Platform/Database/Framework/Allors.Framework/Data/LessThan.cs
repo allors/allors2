@@ -49,6 +49,16 @@ namespace Allors.Data
                        };
         }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        {
+            return ((IPredicate)this).HasMissingArguments(arguments);
+        }
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Parameter != null && arguments != null && !arguments.ContainsKey(this.Parameter);
+        }
+
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             object argument = null;

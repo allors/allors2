@@ -29,5 +29,9 @@ namespace Allors.Data
         Predicate Save();
 
         void Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate);
+
+        bool ShouldTreeShake(IReadOnlyDictionary<string, object> arguments);
+
+        bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
     }
 }

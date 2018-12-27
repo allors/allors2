@@ -34,6 +34,16 @@ namespace Allors.Data
 
         public IPredicate[] Operands { get; set; }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.All(v => v.ShouldTreeShake(arguments));
+        }
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        {
+            return this.Operands.All(v => v.HasMissingArguments(arguments));
+        }
+
         void IPredicateContainer.AddPredicate(IPredicate predicate)
         {
             this.Operands = this.Operands.Append(predicate).ToArray();

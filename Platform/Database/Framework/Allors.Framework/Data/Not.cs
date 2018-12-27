@@ -33,6 +33,10 @@ namespace Allors.Data
 
         public IPredicate Operand { get; set; }
 
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operand == null || this.Operand.ShouldTreeShake(arguments);
+
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operand != null && this.Operand.HasMissingArguments(arguments);
+
         void IPredicateContainer.AddPredicate(IPredicate predicate)
         {
             this.Operand = predicate;
