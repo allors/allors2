@@ -1,11 +1,10 @@
 import { Component, Self, OnInit } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, ActionTarget, NavigationService, ErrorService } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, NavigationService, ErrorService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
-import { ObjectService, CreateData, EditData } from '../../../../../base/services/object';
-import { ISessionObject } from '../../../../../../framework';
+import { ObjectService, CreateData } from '../../../../../base/services/object';
 
 interface Row extends TableRow {
   object: CommunicationEvent;
@@ -38,7 +37,6 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
       associationObjectType: this.panel.manager.objectType,
     };
   }
-
 
   constructor(
     @Self() public panel: PanelService,

@@ -51,4 +51,4 @@ export { TelecommunicationsNumberEditComponent } from './telecommunicationsnumbe
     RouterModule,
   ],
 })
-export class TelecommunicationsNumberModule { }
+export class TelecommunicationsNumberEditModule { }

@@ -1,103 +1,48 @@
 <div *ngIf="panel.isCollapsed" (click)="panel.toggle()">
-    <div class="container mb-3">
-        <div class="row rounded" style="background-color: white;">
-            <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
-                <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
-            </div>
-            <div class="col-9 col-md-10 p-3">
-                <h4>{{panel.title}}</h4>
-                <div>{{contactMechanisms?.length}} total contact mechanisms</div>
-            </div>
-        </div>
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{contactMechanisms?.length}} total contact mechanisms</div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div *ngIf="panel.isExpanded && person" class="mat-elevation-z2" style="background: white">
+<div *ngIf="panel.isExpanded && !!table" class="mat-elevation-z2" style="background: white">
 
-    <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
-        <div class="row pt-3">
-            <div class="col pl-3">
-                <h4>Contact Info</h4>
-            </div>
-            <div class="pr-3">
-                <mat-icon>expand_less</mat-icon>
-            </div>
-        </div>
+  <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
+    <div class="row pt-3">
+      <div class="col pl-3">
+        <h4>Contact Info</h4>
+      </div>
+      <div class="pr-3">
+        <mat-icon>expand_less</mat-icon>
+      </div>
     </div>
+  </div>
 
-    <div class="container-fluid">
-        <div class="row mt-2">
-            <div class="col">
-            </div>
-            <div>
-                <mat-button-toggle-group appearance="legacy" [(ngModel)]="contactMechanismsCollection">
-                    <mat-button-toggle value="Current">Current</mat-button-toggle>
-                    <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
-                    <mat-button-toggle value="All">All</mat-button-toggle>
-                </mat-button-toggle-group>
-            </div>
-        </div>
+  <div class="container-fluid">
+    <div class="row mt-2">
+      <div class="col">
+      </div>
+      <div>
+        <mat-button-toggle-group appearance="legacy" [(ngModel)]="contactMechanismsCollection" (valueChange)="refreshTable()">
+          <mat-button-toggle value="Current">Current</mat-button-toggle>
+          <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
+          <mat-button-toggle value="All">All</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
     </div>
+  </div>
 
+  <a-mat-factory-fab [objectType]="metaService.m.ContactMechanism" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
-    <div class="container">
+  <div>
+    <a-mat-table [table]="table"></a-mat-table>
+  </div>
 
-        <ul *ngIf="contactMechanisms?.length == 0">
-            <li>no info to display</li>
-        </ul>
-
-        <mat-list>
-            <mat-list-item *ngFor="let partyContactMechanism of this.contactMechanisms; let last=last"
-                [attr.data-allors-id]="partyContactMechanism.id" (click)="edit(partyContactMechanism)">
-
-                <h3 mat-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
-                <h3 mat-line> {{partyContactMechanism.Contact}}</h3>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.EmailAddress">{{
-                    partyContactMechanism.ContactMechanism.ElectronicAddressString}} </div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.WebAddress">{{
-                    partyContactMechanism.ContactMechanism.ElectronicAddressString}}</div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.TelecommunicationsNumber">{{
-                    partyContactMechanism.ContactMechanism.CountryCode}} {{
-                    partyContactMechanism.ContactMechanism.AreaCode}} {{
-                    partyContactMechanism.ContactMechanism.ContactNumber}}</div>
-                <div mat-line *ngIf="partyContactMechanism.ContactMechanism.objectType === metaService.m.PostalAddress">{{
-                    partyContactMechanism.ContactMechanism.Address1}} {{
-                    partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
-                    {{partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{
-                    partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}</div>
-                <p mat-line *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{
-                    contactPurpose.Name }} </p>
-
-                <p mat-line> last modified: {{ partyContactMechanism.LastModifiedDate | date : 'shortDate' }} </p>
-
-                <div (click)="$event.stopPropagation()">
-                    <button mat-icon-button [mat-menu-trigger-for]="menuEditContact">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menuEditContact="matMenu">
-                        <a (click)="edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
-                        <button mat-menu-item (click)="remove(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
-                        <button mat-menu-item (click)="activate(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
-                        <button mat-menu-item (click)="delete.execute(partyContactMechanism.ContactMechanism)"
-                            [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
-                    </mat-menu>
-                </div>
-
-                <mat-divider *ngIf="!last" mat-inset></mat-divider>
-            </mat-list-item>
-
-        </mat-list>
-    </div>
-
-    <div class="container">
-
-        <button mat-button [matMenuTriggerFor]="menuAddContact">Add new</button>
-        <mat-menu #menuAddContact="matMenu">
-            <button mat-menu-item (click)="add(metaService.m.WebAddress.objectType)">Web</button>
-            <button mat-menu-item (click)="add(metaService.m.EmailAddress.objectType)">Email</button>
-            <button mat-menu-item (click)="add(metaService.m.PostalAddress.objectType)">Postal</button>
-            <button mat-menu-item (click)="add(metaService.m.TelecommunicationsNumber.objectType)">Telecom</button>
-        </mat-menu>
-
-    </div>
 </div>

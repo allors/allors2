@@ -66,9 +66,9 @@ const modules = [
 
   EditSerialisedItem.SerialisedItemModule,
 
-  EditWebAddress.EditWebAddressModule,
+  EditWebAddress.WebAddressEditModule,
 
-  EmailAddressEdit.EmailAddressdModule,
+  EmailAddressEdit.EmailAddressdEditModule,
 
   IncoTermEdit.IncoTermEditModule,
 
@@ -85,7 +85,7 @@ const modules = [
   PersonList.PersonListModule,
   PersonOverview.PersonOverviewModule,
 
-  PostalAddressEdit.PostalAddressModule,
+  PostalAddressEdit.PostalAddressEditModule,
 
   PurchaseInvoiceList.PurchaseInvoiceListModule,
   PurchaseInvoiceOverview.PurchaseInvoiceOverviewModule,
@@ -97,7 +97,7 @@ const modules = [
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
 
-  TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
+  TelecommunicationsNumberEdit.TelecommunicationsNumberEditModule,
 
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,

@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material';
 import { ids } from '../allors/meta/generated';
 
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
+import { EmailAddressEditComponent, EmailAddressdEditModule } from '../allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { GoodCreateComponent, GoodCreateModule } from '../allors/material/apps/objects/good/create/good-create.module';
 import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
@@ -14,6 +15,7 @@ import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationEditComponent, PhoneCommunicationEditModule } from '../allors/material/apps/objects/phonecommunication/edit/phonecommunication-edit.module';
+import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/material/apps/objects/postaladdress/edit/postaladdress-edit.module';
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
@@ -22,6 +24,8 @@ import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
+import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
+import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
@@ -34,6 +38,7 @@ import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors
 
 export const create = {
   [ids.Catalogue]: CatalogueEditComponent,
+  [ids.EmailAddress]: EmailAddressEditComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Good]: GoodCreateComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
@@ -45,6 +50,7 @@ export const create = {
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
+  [ids.PostalAddress]: PostalAddressEditComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.ProductQuote]: ProductQuoteCreateComponent,
   [ids.ProductType]: ProductTypeEditComponent,
@@ -65,14 +71,17 @@ export const create = {
   [ids.PurchaseInvoice]: PurchaseInvoiceCreateComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
+  [ids.WebAddress]: WebAddressEditComponent,
   [ids.Part]: PartCreateComponent,
 };
 
 export const edit = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
+  [ids.EmailAddress]: EmailAddressEditComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
@@ -80,6 +89,7 @@ export const edit = {
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
+  [ids.PostalAddress]: PostalAddressEditComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
@@ -93,8 +103,10 @@ export const edit = {
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
+  [ids.WebAddress]: WebAddressEditComponent,
 };
 
 @NgModule({
@@ -103,6 +115,7 @@ export const edit = {
     MatDialogModule,
 
     CatalogueEditModule,
+    EmailAddressdEditModule,
     EmailCommunicationEditModule,
     FaceToFaceCommunicationEditModule,
     GoodCreateModule,
@@ -112,6 +125,7 @@ export const edit = {
     PartCreateModule,
     PersonCreateModule,
     PhoneCommunicationEditModule,
+    PostalAddressEditModule,
     ProductCategoryEditModule,
     ProductQuoteCreateModule,
     ProductTypeEditModule,
@@ -126,10 +140,13 @@ export const edit = {
     SalesOrderItemEditModule,
     SalesTermEditModule,
     SerialisedItemCharacteristicEditModule,
+    TelecommunicationsNumberEditModule,
+    WebAddressEditModule,
     WorkTaskCreateModule,
   ],
   entryComponents: [
     CatalogueEditComponent,
+    EmailAddressEditComponent,
     EmailCommunicationEditComponent,
     FaceToFaceCommunicationEditComponent,
     GoodCreateComponent,
@@ -139,6 +156,7 @@ export const edit = {
     PersonCreateComponent,
     PartCreateComponent,
     PhoneCommunicationEditComponent,
+    PostalAddressEditComponent,
     ProductCategoryEditComponent,
     ProductQuoteCreateComponent,
     ProductTypeEditComponent,
@@ -153,6 +171,8 @@ export const edit = {
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
     SerialisedItemCharacteristicEditComponent,
+    TelecommunicationsNumberEditComponent,
+    WebAddressEditComponent,
     WorkTaskCreateComponent,
   ],
   providers: [

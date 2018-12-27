@@ -13,15 +13,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { EditWebAddressComponent } from './webaddress-edit.component';
-export { EditWebAddressComponent } from './webaddress-edit.component';
+import { WebAddressEditComponent } from './webaddress-edit.component';
+export { WebAddressEditComponent } from './webaddress-edit.component';
 
 @NgModule({
   declarations: [
-    EditWebAddressComponent,
+    WebAddressEditComponent,
   ],
   exports: [
-    EditWebAddressComponent,
+    WebAddressEditComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -51,4 +51,4 @@ export { EditWebAddressComponent } from './webaddress-edit.component';
     RouterModule,
   ],
 })
-export class EditWebAddressModule {}
+export class WebAddressEditModule {}

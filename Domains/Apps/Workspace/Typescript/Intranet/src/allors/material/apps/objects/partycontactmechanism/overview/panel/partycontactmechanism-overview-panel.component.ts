@@ -1,9 +1,17 @@
-import { Component, Self } from '@angular/core';
-import { ContextService, PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
-import { PartyContactMechanism, Person } from '../../../../../../domain';
+import { Component, Self, OnInit } from '@angular/core';
+import { PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PartyContactMechanism, Person, PostalAddress, ContactMechanism } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { ObjectType, ISessionObject } from '../../../../../../framework';
-import { DeleteService } from '../../../../..';
+import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
+import * as moment from 'moment';
+import { PostalAddressEditModule } from '../../../postaladdress/edit/postaladdress-edit.module';
+
+interface Row extends TableRow {
+  object: PartyContactMechanism;
+  purpose: string;
+  contact: string;
+  lastModifiedDate: string;
+}
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,12 +19,22 @@ import { DeleteService } from '../../../../..';
   templateUrl: './partycontactmechanism-overview-panel.component.html',
   providers: [PanelService]
 })
-export class PartyContactMechanismOverviewPanelComponent {
+export class PartyContactMechanismOverviewPanelComponent implements OnInit {
+
   m: Meta;
 
-  person: Person;
+  objects: PartyContactMechanism[];
+  table: Table<Row>;
 
   delete: Action;
+  edit: Action;
+
+  get createData(): CreateData {
+    return {
+      associationId: this.panel.manager.id,
+      associationObjectType: this.panel.manager.objectType,
+    };
+  }
 
   contactMechanismsCollection = 'Current';
   currentContactMechanisms: PartyContactMechanism[];
@@ -27,62 +45,133 @@ export class PartyContactMechanismOverviewPanelComponent {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigation: NavigationService,
+    public navigationService: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
+    public editService: EditService
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.manager.context);
+  }
 
-    panel.name = 'partycontactmechanism';
-    panel.title = 'Contact Mechanisms';
-    panel.icon = 'contacts';
-    panel.expandable = true;
+  ngOnInit() {
 
-    const personPullName = `${panel.name}_${this.m.Person.name}`;
+    this.panel.name = 'partycontactmechanism';
+    this.panel.title = 'Contact Mechanisms';
+    this.panel.icon = 'contacts';
+    this.panel.expandable = true;
 
-    panel.onPull = (pulls) => {
-      const { m, pull, tree, x } = this.metaService;
+    this.delete = this.deleteService.delete(this.panel.manager.context);
+    this.edit = this.editService.edit();
 
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'purpose' },
+        { name: 'contact' },
+        { name: 'last modified' },
+      ],
+      actions: [
+        this.edit,
+        this.delete,
+      ],
+      defaultAction: this.edit,
+    });
+
+    const pullName = `${this.panel.name}_${this.m.PartyContactMechanism.name}`;
+    const active = `${this.panel.name}_${this.m.PartyContactMechanism.name}_active`;
+    const inactive = `${this.panel.name}_${this.m.PartyContactMechanism.name}_inactive`;
+
+    this.panel.onPull = (pulls) => {
+
+      const { pull, tree, x } = this.metaService;
       const id = this.panel.manager.id;
 
-      const partyContactMechanismTree = tree.PartyContactMechanism({
-        ContactPurposes: x,
-        ContactMechanism: {
-          PostalAddress_PostalBoundary: {
-            Country: x,
-          }
-        },
-      });
 
       pulls.push(
         pull.Person({
-          name: personPullName,
+          name: pullName,
           object: id,
-          include: {
-            Locale: x,
-            LastModifiedBy: x,
-            Salutation: x,
-            PartyContactMechanisms: partyContactMechanismTree,
-            CurrentPartyContactMechanisms: partyContactMechanismTree,
-            InactivePartyContactMechanisms: partyContactMechanismTree,
-            GeneralCorrespondence: {
-              PostalBoundary: {
-                Country: x,
+          fetch: {
+            PartyContactMechanisms: {
+              include: {
+                ContactPurposes: x,
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
               }
             }
           }
-        }));
+        }),
+        pull.Person({
+          name: active,
+          object: id,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactPurposes: x,
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }
+          }
+        }),
+        pull.Person({
+          name: inactive,
+          object: id,
+          fetch: {
+            InactivePartyContactMechanisms: {
+              include: {
+                ContactPurposes: x,
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }
+          }
+        })
+      );
     };
 
-    panel.onPulled = (loaded) => {
-      this.person = loaded.objects[personPullName] as Person;
+    this.panel.onPulled = (loaded) => {
+      this.objects = loaded.collections[pullName] as PartyContactMechanism[];
 
-      this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
-      this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
+      this.currentContactMechanisms = loaded.collections[active] as PartyContactMechanism[];
+      this.inactiveContactMechanisms = loaded.collections[inactive] as PartyContactMechanism[];
       this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
+
+      if (this.objects) {
+        this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+        this.refreshTable();
+      }
     };
+  }
+
+  public refreshTable() {
+    this.table.data = this.contactMechanisms.map((v) => {
+      return {
+        object: v,
+        purpose: v.ContactPurposes.map(w => w.Name).join(', '),
+        contact: this.displayName(v.ContactMechanism),
+        lastModifiedDate: moment(v.LastModifiedDate).fromNow()
+      } as Row;
+    });
+  }
+
+  private displayName(contactMechanism: ContactMechanism): string {
+    if (contactMechanism.objectType.name === this.metaService.m.PostalAddress.name) {
+      const postalAddress = contactMechanism as PostalAddress;
+      return postalAddress.displayName;
+    }
+
+    return '';
   }
 
   get contactMechanisms(): any {
@@ -96,37 +185,5 @@ export class PartyContactMechanismOverviewPanelComponent {
       default:
         return this.allContactMechanisms;
     }
-  }
-
-  add(objectType: ObjectType) {
-    // TODO:
-  }
-
-  edit(object: ISessionObject) {
-    // TODO:
-  }
-
-  remove(partyContactMechanism: PartyContactMechanism): void {
-
-    partyContactMechanism.ThroughDate = new Date();
-    this.panel.manager.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.panel.manager.context.reset();
-        this.refreshService.refresh();
-      },
-        this.errorService.handle);
-  }
-
-  activate(partyContactMechanism: PartyContactMechanism): void {
-
-    partyContactMechanism.ThroughDate = undefined;
-    this.panel.manager.context
-      .save()
-      .subscribe(() => {
-        this.panel.manager.context.reset();
-        this.refreshService.refresh();
-      },
-        this.errorService.handle);
   }
 }

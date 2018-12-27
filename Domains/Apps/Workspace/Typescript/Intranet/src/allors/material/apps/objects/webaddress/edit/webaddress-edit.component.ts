@@ -14,7 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
   templateUrl: './webaddress-edit.html',
   providers: [ContextService]
 })
-export class EditWebAddressComponent implements OnInit, OnDestroy {
+export class WebAddressEditComponent implements OnInit, OnDestroy {
 
   public title = 'Web Address';
 

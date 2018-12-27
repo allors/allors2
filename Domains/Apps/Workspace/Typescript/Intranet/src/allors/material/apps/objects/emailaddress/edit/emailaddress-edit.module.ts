@@ -52,4 +52,4 @@ export { EmailAddressEditComponent } from './emailaddress-edit.component';
     RouterModule,
   ],
 })
-export class EmailAddressdModule { }
+export class EmailAddressdEditModule { }
