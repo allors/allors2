@@ -1,1 +1,1 @@
-Allors
+Allors Platform and Apps.
