@@ -42,7 +42,11 @@ export class Step {
 
         if (keys.find(v => v === includeKey)) {
           const treeLiteral = literal[includeKey];
-          this.include = new Tree(this.propertyType.objectType, treeLiteral);
+          if (treeLiteral instanceof Tree) {
+            this.include = treeLiteral;
+          } else {
+            this.include = new Tree(this.propertyType.objectType, treeLiteral);
+          }
         }
 
         const nextStepName = keys.find(v => v !== includeKey);
