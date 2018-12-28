@@ -1463,14 +1463,14 @@ namespace Allors.Domain
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
             Assert.NotNull(invoice.PrintDocument);
-            var result = invoice.PrintDocument;
+            //var result = invoice.PrintDocument;
 
-            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
-            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+            //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
+            //var stream = new System.IO.MemoryStream(result.MediaContent.Data);
 
-            stream.CopyTo(outputFile);
-            stream.Close();
+            //stream.CopyTo(outputFile);
+            //stream.Close();
         }
     }
 }
