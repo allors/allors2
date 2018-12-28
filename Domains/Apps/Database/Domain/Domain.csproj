@@ -14,6 +14,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Export\Apps\Print\WorkTask\Customer\**" />
+    <Compile Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
+    <Compile Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
+    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\Customer\**" />
+    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
+    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
+    <None Remove="Export\Apps\Print\WorkTask\Customer\**" />
+    <None Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
+    <None Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Templates\allors.png" />
     <None Remove="Templates\ProductQuote.odt" />
     <None Remove="Templates\SalesInvoice.odt" />
@@ -38,6 +50,10 @@
     <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Export\Apps\Print\WorkTask\" />
   </ItemGroup>
 
 </Project>

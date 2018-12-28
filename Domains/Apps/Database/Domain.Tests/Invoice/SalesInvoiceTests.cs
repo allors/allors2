@@ -1453,41 +1453,24 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenDeriving_ThenPrintDocumentRendered()
         {
             // Arrange
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
-                                        .WithLocality("Mechelen")
-                                        .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                                        .Build())
-
-                .Build();
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithShipToCustomer(shipToCustomer)
-                .WithBillToCustomer(billToCustomer)
-                .WithBillToContactMechanism(contactMechanism)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.ShipToCustomer).Build();
-
-            this.Session.Derive();
+            var demo = new Demo(this.Session, null);
+            demo.Execute();
 
             // Act
             this.Session.Derive(true);
 
             // Assert
+            var invoice = new SalesInvoices(this.Session).Extent().First;
+
             Assert.NotNull(invoice.PrintDocument);
-            //var result = invoice.PrintDocument;
+            var result = invoice.PrintDocument;
 
-            //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
-            //var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
+            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
 
-            //stream.CopyTo(outputFile);
-            //stream.Close();
+            stream.CopyTo(outputFile);
+            stream.Close();
         }
     }
 }

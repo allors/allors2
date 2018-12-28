@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TelecommunicationsNumber.cs" company="Allors bvba">
+// <copyright file="SalesInvoice.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,21 +13,24 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Allors.Domain
+
+namespace Allors.Domain.Print
 {
-    public partial class TelecommunicationsNumber
+    class SalesInvoiceItemPrint
     {
-        public bool IsPostalAddress => false;
+        public string Product;
+        public string Description;
+        public decimal Quantity;
+        public decimal Price;
+        public decimal Amount;
 
-        public void AppsOnDerive(ObjectOnDerive method)
+        public SalesInvoiceItemPrint(SalesInvoiceItem invoiceItem)
         {
-            if (this.ExistCountryCode && this.CountryCode.StartsWith("+"))
-            {
-                this.CountryCode = this.CountryCode.Substring(1);
-            }
-
-            this.Description =
-                $"{(this.ExistCountryCode ? ("+"+this.CountryCode) : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
+            this.Product = invoiceItem.Product?.Id.ToString();
+            this.Description = invoiceItem.Description;
+            this.Quantity = invoiceItem.Quantity;
+            this.Price = invoiceItem.ActualUnitPrice ?? 0.0m;
+            this.Amount = this.Quantity * this.Price;
         }
     }
 }

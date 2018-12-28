@@ -20,12 +20,10 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Domain.Print;
     using Allors.Meta;
-    using Allors.Services;
 
-    using Microsoft.Extensions.DependencyInjection;
     using Resources;
-    using Sandwych.Reporting;
 
     public partial class SalesInvoice
     {
@@ -276,7 +274,7 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
-            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, new SalesInvoiceSandwychPrintModel(this).Model);
+            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, new SalesInvoicePrint(this).Model);
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
@@ -926,86 +924,6 @@ namespace Allors.Domain
             }
 
             return true;
-        }
-    }
-
-    class SalesInvoiceSandwychPrintModel
-    {
-        private class SalesInvoicePrintModel
-        {
-            public string Number;
-            public ImageBlob Barcode;
-
-            public SalesInvoicePrintModel(SalesInvoice salesInvoice)
-            {
-                this.Number = salesInvoice.InvoiceNumber;
-
-                if (salesInvoice.ExistInvoiceNumber)
-                {
-                    var session = salesInvoice.Strategy.Session;
-                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                    var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 320, 80);
-                    this.Barcode = new ImageBlob("png", barcode);
-                }
-            }
-        }
-
-        private class BillFromPrintModel
-        {
-            public string Number;
-            public string Name;
-            public string Address1;
-            public string Address2;
-            public string Address3;
-            public string City;
-            public string State;
-            public string PostalCode;
-            public string Telephone;
-
-            public BillFromPrintModel(InternalOrganisation billFrom)
-            {
-                this.Number = billFrom.Id.ToString();
-                this.Name = billFrom.PartyName;
-                this.Telephone = billFrom.OrderInquiriesPhone?.ToString();
-
-                if (billFrom.OrderAddress is PostalAddress orderAddress)
-                {
-                    this.Address1 = orderAddress.Address1;
-                    this.Address2 = orderAddress.Address2;
-                    this.Address3 = orderAddress.Address3;
-
-                    if (orderAddress.ExistCity)
-                    {
-                        this.City = orderAddress.City.Name;
-                        this.State = orderAddress.City.State?.Name;
-                    }
-
-                    this.PostalCode = orderAddress.PostalCode?.Code;
-                }
-            }
-        }
-
-        public Dictionary<string, object> Model { get; }
-
-        public SalesInvoiceSandwychPrintModel(SalesInvoice salesInvoice)
-        {
-            this.Model = new Dictionary<string, object> { { "invoice", new SalesInvoicePrintModel(salesInvoice) } };
-            
-            // Logo
-            var singleton = salesInvoice.Strategy.Session.GetSingleton();
-            ImageBlob logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
-
-            if (salesInvoice.ExistBilledFrom && salesInvoice.BilledFrom.ExistLogoImage)
-            {
-                logo = new ImageBlob("png", salesInvoice.BilledFrom.LogoImage.MediaContent.Data);
-            }
-            this.Model.Add("logo", logo);
-
-            // Billed From
-            if (salesInvoice.ExistBilledFrom)
-            {
-                this.Model.Add("billFrom", new BillFromPrintModel(salesInvoice.BilledFrom));
-            }
         }
     }
 }
