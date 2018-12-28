@@ -94,7 +94,7 @@ namespace Allors.Data
             {
                 if (objects != null)
                 {
-                    compositePredicate.AddContainedIn(roleType, this.Objects);
+                    compositePredicate.AddContainedIn(roleType, objects);
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace Allors.Data
                 var associationType = (IAssociationType)this.PropertyType;
                 if (objects != null)
                 {
-                    compositePredicate.AddContainedIn(associationType, this.Objects);
+                    compositePredicate.AddContainedIn(associationType, objects);
                 }
                 else
                 {

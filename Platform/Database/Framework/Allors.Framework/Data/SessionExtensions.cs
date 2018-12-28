@@ -27,16 +27,21 @@ namespace Allors.Data
 
     public static class SessionExtensions
     {
+        private static readonly IObject[] EmptyArray = { };
+
         internal static IMetaObject GetMetaObject(this ISession @this, object value)
         {
             switch (value)
             {
                 case IComposite metaObject:
                     return metaObject;
+
                 case Guid idAsGuid:
                     return @this.Database.MetaPopulation.Find(idAsGuid);
+
                 case string idAsString:
                     return @this.Database.MetaPopulation.Find(new Guid(idAsString));
+
                 default:
                     throw new ArgumentException();
             }
@@ -48,10 +53,13 @@ namespace Allors.Data
             {
                 case IObject @object:
                     return @object;
+
                 case long idAsLong:
                     return @this.Instantiate(idAsLong);
+
                 case string idAsString:
                     return @this.Instantiate(idAsString);
+
                 default:
                     throw new ArgumentException();
             }
@@ -63,10 +71,24 @@ namespace Allors.Data
             {
                 case IObject[] objects:
                     return objects;
+
                 case long[] idAsLongs:
-                    return idAsLongs.Select(@this.Instantiate).ToArray();
+                    return idAsLongs.Select(@this.Instantiate).Where(v => v != null).ToArray();
+
                 case string[] idAsStrings:
-                    return idAsStrings.Select(@this.Instantiate).ToArray();
+                    return idAsStrings.Select(@this.Instantiate).Where(v => v != null).ToArray();
+
+                case IObject @object:
+                    return new[] { @object };
+
+                case long idAsLong:
+                    var objectFromLong = @this.Instantiate(idAsLong);
+                    return objectFromLong != null ? new[] { objectFromLong } : EmptyArray;
+
+                case string idAsString:
+                    var objectFromString = @this.Instantiate(idAsString);
+                    return objectFromString != null ? new[] { objectFromString } : EmptyArray;
+
                 default:
                     throw new ArgumentException();
             }

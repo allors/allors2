@@ -5,6 +5,7 @@ import { MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, Mat
 
 import { AllorsFocusModule } from '../../../../angular';
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
+import { AllorsMaterialFilterSearchComponent } from './filter-search.component';
 
 import { AllorsMaterialFilterComponent } from './filter.component';
 export { AllorsMaterialFilterComponent } from './filter.component';
@@ -12,11 +13,11 @@ export { AllorsMaterialFilterComponent } from './filter.component';
 @NgModule({
   declarations: [
     AllorsMaterialFilterComponent,
-    AllorsMaterialFilterDialogComponent
+    AllorsMaterialFilterDialogComponent,
+    AllorsMaterialFilterSearchComponent,
   ],
   exports: [
     AllorsMaterialFilterComponent,
-    AllorsMaterialFilterDialogComponent
   ],
   entryComponents: [
     AllorsMaterialFilterDialogComponent

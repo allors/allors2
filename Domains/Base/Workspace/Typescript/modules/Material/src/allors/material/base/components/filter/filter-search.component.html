@@ -1,15 +1,3 @@
-<!-- <mat-form-field class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <input aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [matAutocomplete]="autocomplete">
-  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
-
-  <button mat-button *ngIf="model" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
-      <mat-icon>close</mat-icon>
-  </button>
-
-  <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-allors-option-display]="option[display]">
-      {{option[this.display]}}
-    </mat-option>
-  </mat-autocomplete>
-
-</mat-form-field> -->
+<mat-form-field [formGroup]="parent">
+  <input matInput placeholder="Value" formControlName="value" required>
+</mat-form-field>
