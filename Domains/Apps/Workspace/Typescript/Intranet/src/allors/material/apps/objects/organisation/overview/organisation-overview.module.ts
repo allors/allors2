@@ -13,6 +13,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/overview/panel/contactmechanism-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -35,6 +36,7 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     OrganisationOverviewDetailModule,
 
     CommunicationEventOverviewPanelModule,
+    ContactMechanismOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-
+import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
@@ -25,6 +25,7 @@ export { PostalAddressEditComponent } from './postaladdress-edit.component';
     PostalAddressEditComponent,
   ],
   imports: [
+    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFooterModule,
     AllorsMaterialInputModule,

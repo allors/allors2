@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
@@ -11,7 +10,6 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
-import { PartyContactMechanismEmailAddressInlineComponent } from '../../emailaddress/inline/emailaddress-inline.module';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',

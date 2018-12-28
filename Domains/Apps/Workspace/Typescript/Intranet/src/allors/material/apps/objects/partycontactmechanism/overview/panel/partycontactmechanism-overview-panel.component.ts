@@ -1,13 +1,12 @@
 import { Component, Self, OnInit } from '@angular/core';
-import { PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
-import { PartyContactMechanism, Person, PostalAddress, ContactMechanism } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PartyContactMechanism, ContactMechanism } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
+import { DeleteService, TableRow, Table, CreateData, EditService, EditData } from '../../../../..';
 import * as moment from 'moment';
-import { PostalAddressEditModule } from '../../../postaladdress/edit/postaladdress-edit.module';
 
 interface Row extends TableRow {
-  object: PartyContactMechanism;
+  object: ContactMechanism;
   purpose: string;
   contact: string;
   lastModifiedDate: string;
@@ -37,9 +36,9 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
   }
 
   contactMechanismsCollection = 'Current';
-  currentContactMechanisms: PartyContactMechanism[];
-  inactiveContactMechanisms: PartyContactMechanism[];
-  allContactMechanisms: PartyContactMechanism[];
+  currentPartyContactMechanisms: PartyContactMechanism[];
+  inactivePartyContactMechanisms: PartyContactMechanism[];
+  allPartyContactMechanisms: PartyContactMechanism[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -84,12 +83,11 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
 
     this.panel.onPull = (pulls) => {
 
-      const { pull, tree, x } = this.metaService;
+      const { pull, x } = this.metaService;
       const id = this.panel.manager.id;
 
-
       pulls.push(
-        pull.Person({
+        pull.Party({
           name: pullName,
           object: id,
           fetch: {
@@ -105,7 +103,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
             }
           }
         }),
-        pull.Person({
+        pull.Party({
           name: active,
           object: id,
           fetch: {
@@ -121,7 +119,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
             }
           }
         }),
-        pull.Person({
+        pull.Party({
           name: inactive,
           object: id,
           fetch: {
@@ -143,9 +141,9 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
     this.panel.onPulled = (loaded) => {
       this.objects = loaded.collections[pullName] as PartyContactMechanism[];
 
-      this.currentContactMechanisms = loaded.collections[active] as PartyContactMechanism[];
-      this.inactiveContactMechanisms = loaded.collections[inactive] as PartyContactMechanism[];
-      this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
+      this.currentPartyContactMechanisms = loaded.collections[active] as PartyContactMechanism[];
+      this.inactivePartyContactMechanisms = loaded.collections[inactive] as PartyContactMechanism[];
+      this.allPartyContactMechanisms = this.currentPartyContactMechanisms.concat(this.inactivePartyContactMechanisms);
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
@@ -155,35 +153,26 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
   }
 
   public refreshTable() {
-    this.table.data = this.contactMechanisms.map((v) => {
+    this.table.data = this.partyContactMechanisms.map((v) => {
       return {
-        object: v,
+        object: v.ContactMechanism,
         purpose: v.ContactPurposes.map(w => w.Name).join(', '),
-        contact: this.displayName(v.ContactMechanism),
+        contact: v.ContactMechanism.displayName,
         lastModifiedDate: moment(v.LastModifiedDate).fromNow()
       } as Row;
     });
   }
 
-  private displayName(contactMechanism: ContactMechanism): string {
-    if (contactMechanism.objectType.name === this.metaService.m.PostalAddress.name) {
-      const postalAddress = contactMechanism as PostalAddress;
-      return postalAddress.displayName;
-    }
-
-    return '';
-  }
-
-  get contactMechanisms(): any {
+  get partyContactMechanisms(): any {
 
     switch (this.contactMechanismsCollection) {
       case 'Current':
-        return this.currentContactMechanisms;
+        return this.currentPartyContactMechanisms;
       case 'Inactive':
-        return this.inactiveContactMechanisms;
+        return this.inactivePartyContactMechanisms;
       case 'All':
       default:
-        return this.allContactMechanisms;
+        return this.allPartyContactMechanisms;
     }
   }
 }

@@ -12,6 +12,7 @@ namespace Tests.Intranet.PersonTests
     using Tests.Intranet.FaceToFaceCommunicationTests;
     using Tests.Intranet.LetterCorrespondenceTests;
     using Tests.Intranet.PhoneCommunicationTests;
+    using Tests.Intranet.PostalAddressTests;
 
     public class PersonOverviewPage : MainPage
     {
@@ -24,6 +25,8 @@ namespace Tests.Intranet.PersonTests
 
         public Element CommunicationEventPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='communicationevent']"));
 
+        public Element PartyContactMechanismPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='partycontactmechanism']"));
+
         public MaterialTable Table => new MaterialTable(this.Driver);
 
         public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
@@ -35,6 +38,8 @@ namespace Tests.Intranet.PersonTests
         public Button BtnLetterCorrespondence => new Button(this.Driver, By.CssSelector("button[data-allors-class='LetterCorrespondence']"));
 
         public Button BtnPhoneCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='PhoneCommunication']"));
+
+        public Button BtnPostalAddress => new Button(this.Driver, By.CssSelector("button[data-allors-class='PostalAddress']"));
 
         public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
@@ -110,6 +115,17 @@ namespace Tests.Intranet.PersonTests
             return new LetterCorrespondenceEditPage(this.Driver);
         }
 
+        public PostalAddressEditPage SelectPostalAddress(PartyContactMechanism partyContactMechanism)
+        {
+            this.PartyContactMechanismPanel.Click();
+
+            var row = this.Table.FindRow(partyContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            return new PostalAddressEditPage(this.Driver);
+        }
+
         public PhoneCommunicationEditPage NewPhoneCommunication()
         {
             this.CommunicationEventPanel.Click();
@@ -130,6 +146,17 @@ namespace Tests.Intranet.PersonTests
             cell.Click();
 
             return new PhoneCommunicationEditPage(this.Driver);
+        }
+
+        public PostalAddressEditPage NewPostalAddress()
+        {
+            this.PartyContactMechanismPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnPostalAddress.Click();
+
+            return new PostalAddressEditPage(this.Driver);
         }
     }
 }
