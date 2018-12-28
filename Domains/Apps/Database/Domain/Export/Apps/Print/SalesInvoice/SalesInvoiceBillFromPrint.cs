@@ -53,6 +53,7 @@ namespace Allors.Domain.Print
                 this.Address2 = generalAddress.Address2;
                 this.Address3 = generalAddress.Address3;
 
+
                 if (generalAddress.ExistCity)
                 {
                     this.City = generalAddress.City.Name;

@@ -26,9 +26,7 @@ namespace Allors.Domain.Print
     class SalesInvoicePrint
     {
         public string Description;
-
         public string Number;
-
         public ImageBlob Barcode;
 
         public Dictionary<string, object> Model { get; }

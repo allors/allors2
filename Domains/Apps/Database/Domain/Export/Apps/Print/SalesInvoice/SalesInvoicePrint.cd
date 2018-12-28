@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Domain.Print.SalesInvoicePrint">
+    <Position X="1.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEgAAAAAEAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\SalesInvoice\SalesInvoicePrint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.Print.SalesInvoiceBillFromPrint">
+    <Position X="4" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AWAAAAAAACAAgAAJIEAEAAQAAAIAAAAIAIAABAAAgAE=</HashCode>
+      <FileName>Export\Apps\Print\SalesInvoice\SalesInvoiceBillFromPrint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.Print.SalesInvoiceItemPrint">
+    <Position X="6.75" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAgAAAAAAAAAACAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\SalesInvoice\SalesInvoiceItemPrint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
