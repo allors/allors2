@@ -73,7 +73,7 @@ export class AllorsFilterService {
 
   init(predicate: Predicate, searches: { [parameter: string]: SearchFactory } = null) {
     const predicates = getParameterizedPredicates(predicate);
-    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, search: searches[v.parameter] }));
+    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, search: searches && searches[v.parameter] }));
   }
 
   arguments(filterFields: FilterField[]): any {

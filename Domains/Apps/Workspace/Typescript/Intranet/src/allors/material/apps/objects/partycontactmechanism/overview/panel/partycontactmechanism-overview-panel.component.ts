@@ -83,8 +83,17 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
 
     this.panel.onPull = (pulls) => {
 
-      const { pull, x } = this.metaService;
+      const { pull, x, tree } = this.metaService;
       const id = this.panel.manager.id;
+
+      const partyContactMechanismTree = tree.PartyContactMechanism({
+        ContactPurposes: x,
+        ContactMechanism: {
+          PostalAddress_PostalBoundary: {
+            Country: x,
+          }
+        }
+      });
 
       pulls.push(
         pull.Party({
@@ -92,14 +101,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
           object: id,
           fetch: {
             PartyContactMechanisms: {
-              include: {
-                ContactPurposes: x,
-                ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
-                }
-              }
+              include: partyContactMechanismTree
             }
           }
         }),
@@ -108,14 +110,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
           object: id,
           fetch: {
             CurrentPartyContactMechanisms: {
-              include: {
-                ContactPurposes: x,
-                ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
-                }
-              }
+              include: partyContactMechanismTree
             }
           }
         }),
@@ -124,14 +119,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
           object: id,
           fetch: {
             InactivePartyContactMechanisms: {
-              include: {
-                ContactPurposes: x,
-                ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
-                }
-              }
+              include: partyContactMechanismTree
             }
           }
         })
