@@ -43,10 +43,5 @@ namespace Allors.Domain
                 derivation.AddDependency(partyContactMechanism, this);
             }
         }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            this.Description = this.ElectronicAddressString;
-        }
     }
 }

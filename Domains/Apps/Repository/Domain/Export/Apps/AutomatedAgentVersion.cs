@@ -39,13 +39,7 @@ namespace Allors.Repository
 
         public ContactMechanism HomeAddress { get; set; }
 
-        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
-
         public ContactMechanism SalesOffice { get; set; }
-
-        public Person[] InactiveContacts { get; set; }
-
-        public PartyContactMechanism[] InactivePartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber OrderInquiriesFax { get; set; }
 
@@ -66,8 +60,6 @@ namespace Allors.Repository
         public PartyClassification[] PartyClassifications { get; set; }
 
         public BankAccount[] BankAccounts { get; set; }
-
-        public Person[] CurrentContacts { get; set; }
 
         public ContactMechanism BillingAddress { get; set; }
 
@@ -95,11 +87,7 @@ namespace Allors.Repository
 
         public PostalAddress ShippingAddress { get; set; }
 
-        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
-
         public TelecommunicationsNumber GeneralFaxNumber { get; set; }
-
-        public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
 

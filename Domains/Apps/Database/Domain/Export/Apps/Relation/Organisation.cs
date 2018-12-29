@@ -116,8 +116,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
-            this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriverContactUserGroup(derivation);
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
@@ -247,20 +245,6 @@ namespace Allors.Domain
                     (organisationContactRelationship.ExistThroughDate && organisationContactRelationship.ThroughDate < DateTime.UtcNow))
                 {
                     this.AddInactiveOrganisationContactRelationship(organisationContactRelationship);
-                }
-            }
-        }
-
-        public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveInactivePartyContactMechanisms();
-
-            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.FromDate > DateTime.UtcNow ||
-                    (partyContactMechanism.ExistThroughDate && partyContactMechanism.ThroughDate < DateTime.UtcNow))
-                {
-                    this.AddInactivePartyContactMechanism(partyContactMechanism);
                 }
             }
         }

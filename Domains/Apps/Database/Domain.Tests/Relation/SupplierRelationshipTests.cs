@@ -27,7 +27,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-
     public class SupplierRelationshipTests : DomainTest
     {
         private Person contact;
@@ -52,7 +51,7 @@ namespace Allors.Domain
 
             this.supplierRelationship = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
             this.Session.Derive();
@@ -168,7 +167,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSupplierContactRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInContactsUserGroup()
+        public void GivenSupplierRelationship_WhenRelationshipPeriodIsNotValid_ThenContactIsNotInContactsUserGroup()
         {
             this.InstantiateObjects(this.Session);
 
@@ -199,7 +198,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSupplierContactRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromContactsUserGroup()
+        public void GivenSupplierRelationship_WhenContactForOrganisationEnds_ThenContactIsRemovedfromContactsUserGroup()
         {
             this.InstantiateObjects(this.Session);
 

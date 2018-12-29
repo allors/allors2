@@ -18,11 +18,7 @@ namespace Allors.Repository
 
         public ContactMechanism HomeAddress { get; set; }
 
-        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
-
         public ContactMechanism SalesOffice { get; set; }
-
-        public Person[] InactiveContacts { get; set; }
 
         public PartyContactMechanism[] InactivePartyContactMechanisms { get; set; }
 
@@ -31,6 +27,12 @@ namespace Allors.Repository
         public Person[] CurrentSalesReps { get; set; }
 
         public PartyContactMechanism[] PartyContactMechanisms { get; set; }
+
+        public PartyRelationship[] InactivePartyRelationships { get; set; }
+
+        public Person[] CurrentContacts { get; set; }
+
+        public Person[] InactiveContacts { get; set; }
 
         public TelecommunicationsNumber ShippingInquiriesFax { get; set; }
 
@@ -45,8 +47,6 @@ namespace Allors.Repository
         public PartyClassification[] PartyClassifications { get; set; }
 
         public BankAccount[] BankAccounts { get; set; }
-
-        public Person[] CurrentContacts { get; set; }
 
         public ContactMechanism BillingAddress { get; set; }
 
@@ -74,11 +74,11 @@ namespace Allors.Repository
 
         public PostalAddress ShippingAddress { get; set; }
 
-        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
-
         public TelecommunicationsNumber GeneralFaxNumber { get; set; }
 
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
+
+        public PartyRelationship[] CurrentPartyRelationships { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
 
@@ -333,6 +333,28 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Function { get; set; }
+
+        #region Allors
+        [Id("38469571-E9E6-473D-BE7B-FA9DB3B67AA0")]
+        [AssociationId("8DDDF680-2208-4827-81AA-C5290E2C9DE0")]
+        [RoleId("6B19DAD5-974C-471D-AB73-D8CDE375EFE2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
+
+        #region Allors
+        [Id("C6AC83CB-08BF-46FE-8BC0-D777DFD18BB0")]
+        [AssociationId("18E943B5-83BE-4FFD-AD81-6EB8BAAA9162")]
+        [RoleId("EA13ED09-1E82-4A57-A95C-31E38F9EE20F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
 
         #region inherited methods
         public void Delete(){}

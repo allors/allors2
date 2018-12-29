@@ -1,60 +1,56 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, NavigationService, ContextService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
-import { Enumeration, PartyContactMechanism, TelecommunicationsNumber, Party, ContactMechanismType } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Enumeration, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
+import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './telecommunicationsnumber-edit.html',
+  templateUrl: './telecommunicationsnumber-edit.component.html',
   providers: [ContextService]
 })
 export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Telecommunications Number';
+  readonly m: Meta;
 
-  public m: Meta;
-
-  public party: Party;
-  public partyContactMechanism: PartyContactMechanism;
-  public contactMechanism: TelecommunicationsNumber;
-  public contactMechanismPurposes: Enumeration[];
-  public contactMechanismTypes: Enumeration[];
+  contactMechanism: TelecommunicationsNumber;
+  contactMechanismTypes: Enumeration[];
+  title: string;
 
   private subscription: Subscription;
 
+
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<TelecommunicationsNumberEditComponent>,
     public metaService: MetaService,
-    public navigation: NavigationService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService) {
+    private stateService: StateService) {
 
     this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
-    this.subscription = this.route.url
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap((url: any) => {
+        switchMap(([]) => {
 
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const partyId = navRoute.queryParam(m.Party);
+          const isCreate = (this.data as EditData).id === undefined;
 
-          let pulls = [
-            pull.ContactMechanismPurpose({
-              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: new Sort(m.ContactMechanismPurpose.Name)
+          const pulls = [
+            pull.ContactMechanism({
+              object: this.data.id,
             }),
             pull.ContactMechanismType({
               predicate: new Equals({ propertyType: m.ContactMechanismType.IsActive, value: true }),
@@ -62,97 +58,34 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
             })
           ];
 
-          const add = !id;
-
-          if (add) {
-            pulls = [
-              ...pulls,
-              pull.Party({
-                object: partyId,
-                include: {
-                  PartyContactMechanisms: {
-                    ContactPurposes: x,
-                    ContactMechanism: {
-                      ContactMechanismType: x,
-                    },
-                  }
-                }
-              }
-              )
-            ];
-
-          } else {
-            pulls = [
-              ...pulls,
-              pull.EmailAddress({
-                object: id,
-                fetch: {
-                  PartyContactMechanismsWhereContactMechanism: {
-                    PartyWherePartyContactMechanism: {
-                      include: {
-                        PartyContactMechanisms: {
-                          ContactPurposes: x,
-                          ContactMechanism: {
-                            ContactMechanismType: x,
-                          },
-                        }
-                      }
-                    }
-                  }
-                }
-              }),
-              pull.EmailAddress({
-                object: id,
-                fetch: {
-                  PartyContactMechanismsWhereContactMechanism: {
-                    include: {
-                      ContactMechanism: {
-                        ContactMechanismType: x,
-                      }
-                    }
-                  }
-                }
-              }),
-            ];
-
-          }
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, add }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, add }) => {
+      .subscribe(({ loaded, isCreate }) => {
 
-        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.allors.context.reset();
+
         this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
 
-        if (add) {
-          this.party = loaded.objects.Party as Party;
-          // TODO: Should be lookup on UniqueId
-          const phone = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone') as ContactMechanismType;
-          this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
-          this.contactMechanism.ContactMechanismType = phone;
-          this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
-          this.partyContactMechanism.ContactMechanism = this.contactMechanism;
-          this.partyContactMechanism.UseAsDefault = true;
-          this.party.AddPartyContactMechanism(this.partyContactMechanism);
+        if (isCreate) {
+          this.title = 'Add Phone Number';
 
+          this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         } else {
-          this.party = loaded.collections.Parties && (loaded.collections.Parties as Party[])[0];
-          const partyContactMechanisms = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
-          this.partyContactMechanism = partyContactMechanisms && partyContactMechanisms[0];
-          this.contactMechanism = this.partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-          this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+          this.contactMechanism = loaded.objects.ContactMechanism as TelecommunicationsNumber;
+
+          if (this.contactMechanism.CanWriteAreaCode) {
+            this.title = 'Edit Phone Number';
+          } else {
+            this.title = 'View Phone Number';
+          }
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigation.back();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -163,13 +96,16 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
   public save(): void {
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.navigation.back();
+    this.allors.context.save()
+      .subscribe(() => {
+        const data: ObjectData = {
+          id: this.contactMechanism.id,
+          objectType: this.contactMechanism.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-}
+  }}

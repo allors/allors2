@@ -17,7 +17,7 @@ namespace Tests.Intranet.PostalAddressTests
     {
         private readonly PersonListPage people;
 
-        private readonly PartyContactMechanism editPartyContactMechanism;
+        private readonly PostalAddress editContactMechanism;
 
         public PostalAddressEditTest(TestFixture fixture)
             : base(fixture)
@@ -25,7 +25,7 @@ namespace Tests.Intranet.PostalAddressTests
             var people = new People(this.Session).Extent();
             var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var postalAddress = new PostalAddressBuilder(this.Session)
+            this.editContactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
                     .WithLocality("city")
@@ -34,8 +34,8 @@ namespace Tests.Intranet.PostalAddressTests
                     .Build())
                 .Build();
 
-            this.editPartyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(postalAddress).Build();
-            person.AddPartyContactMechanism(this.editPartyContactMechanism);
+            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.editContactMechanism).Build();
+            person.AddPartyContactMechanism(partyContactMechanism);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -57,18 +57,12 @@ namespace Tests.Intranet.PostalAddressTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPostalAddress();
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 28);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
             page.Address1.Value = "addressline 1";
             page.Address2.Value = "addressline 2";
             page.Address3.Value = "addressline 3";
             page.Locality.Value = "city";
             page.PostalCode.Value = "postalcode";
             page.Country.Value = country.Name;
-            page.UseAsDefault.Value = true;
-            page.NonSolicitationIndicator.Value = true;
             page.Description.Value = "description";
 
             page.Save.Click();
@@ -83,11 +77,6 @@ namespace Tests.Intranet.PostalAddressTests
             var contactMechanism = after.Except(before).First();
             var partyContactMechanism = contactMechanism.PartyContactMechanismsWhereContactMechanism.First;
 
-            //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 28).Date, partyContactMechanism.FromDate.ToUniversalTime().Date);
-            //Assert.Equal(DateTimeFactory.CreateDate(DateTime.Now).AddYears(1).Date, partyContactMechanism.ThroughDate.Value.ToUniversalTime().Date);
-            Assert.Equal(2, partyContactMechanism.ContactPurposes.Count);
-            Assert.Contains(new ContactMechanismPurposes(this.Session).BillingAddress, partyContactMechanism.ContactPurposes);
-            Assert.Contains(new ContactMechanismPurposes(this.Session).HeadQuarters, partyContactMechanism.ContactPurposes);
             Assert.Equal("addressline 1", contactMechanism.Address1);
             Assert.Equal("addressline 2", contactMechanism.Address2);
             Assert.Equal("addressline 3", contactMechanism.Address3);
@@ -95,8 +84,6 @@ namespace Tests.Intranet.PostalAddressTests
             Assert.Equal("city", contactMechanism.PostalBoundary.Locality);
             Assert.Equal("postalcode", contactMechanism.PostalBoundary.PostalCode);
             Assert.Equal(country, contactMechanism.PostalBoundary.Country);
-            Assert.True(partyContactMechanism.UseAsDefault);
-            Assert.True(partyContactMechanism.NonSolicitationIndicator);
             Assert.Equal("description", contactMechanism.Description);
         }
 
@@ -110,25 +97,16 @@ namespace Tests.Intranet.PostalAddressTests
 
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 
-            var postalAddress = (PostalAddress)person.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
-
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectPostalAddress(this.editPartyContactMechanism);
-            var contactMechanism = (PostalAddress)this.editPartyContactMechanism.ContactMechanism;
+            var page = personOverview.SelectPostalAddress(this.editContactMechanism);
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 28);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
             page.Address1.Value = "addressline 1";
             page.Address2.Value = "addressline 2";
             page.Address3.Value = "addressline 3";
             page.Locality.Value = "city";
             page.PostalCode.Value = "postalcode";
             page.Country.Value = country.Name;
-            page.UseAsDefault.Value = true;
-            page.NonSolicitationIndicator.Value = true;
             page.Description.Value = "description";
 
             page.Save.Click();
@@ -140,22 +118,14 @@ namespace Tests.Intranet.PostalAddressTests
 
             Assert.Equal(after.Length, before.Length);
 
-
-            //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 28).Date, this.editPartyContactMechanism.FromDate.ToUniversalTime().Date);
-            //Assert.Equal(DateTimeFactory.CreateDate(DateTime.Now).AddYears(1).Date, this.editPartyContactMechanism.ThroughDate.Value.ToUniversalTime().Date);
-            Assert.Equal(2, this.editPartyContactMechanism.ContactPurposes.Count);
-            Assert.Contains(new ContactMechanismPurposes(this.Session).BillingAddress, this.editPartyContactMechanism.ContactPurposes);
-            Assert.Contains(new ContactMechanismPurposes(this.Session).HeadQuarters, this.editPartyContactMechanism.ContactPurposes);
-            Assert.Equal("addressline 1", contactMechanism.Address1);
-            Assert.Equal("addressline 2", contactMechanism.Address2);
-            Assert.Equal("addressline 3", contactMechanism.Address3);
-            Assert.Equal("addressline 1", contactMechanism.Address1);
-            Assert.Equal("city", contactMechanism.PostalBoundary.Locality);
-            Assert.Equal("postalcode", contactMechanism.PostalBoundary.PostalCode);
-            Assert.Equal(country, contactMechanism.PostalBoundary.Country);
-            Assert.True(this.editPartyContactMechanism.UseAsDefault);
-            Assert.True(this.editPartyContactMechanism.NonSolicitationIndicator);
-            Assert.Equal("description", contactMechanism.Description);
+            Assert.Equal("addressline 1", this.editContactMechanism.Address1);
+            Assert.Equal("addressline 2", this.editContactMechanism.Address2);
+            Assert.Equal("addressline 3", this.editContactMechanism.Address3);
+            Assert.Equal("addressline 1", this.editContactMechanism.Address1);
+            Assert.Equal("city", this.editContactMechanism.PostalBoundary.Locality);
+            Assert.Equal("postalcode", this.editContactMechanism.PostalBoundary.PostalCode);
+            Assert.Equal(country, this.editContactMechanism.PostalBoundary.Country);
+            Assert.Equal("description", this.editContactMechanism.Description);
         }
     }
 }

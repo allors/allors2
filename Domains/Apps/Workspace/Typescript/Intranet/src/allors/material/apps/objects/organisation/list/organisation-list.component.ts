@@ -82,7 +82,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
     ]);
 
-    this.filterService.init(predicate);
+    // this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {

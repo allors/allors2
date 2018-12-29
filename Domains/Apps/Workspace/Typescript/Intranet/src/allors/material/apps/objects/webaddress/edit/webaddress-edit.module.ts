@@ -7,8 +7,8 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
@@ -51,4 +51,4 @@ export { WebAddressEditComponent } from './webaddress-edit.component';
     RouterModule,
   ],
 })
-export class WebAddressEditModule {}
+export class WebAddressEditModule { }

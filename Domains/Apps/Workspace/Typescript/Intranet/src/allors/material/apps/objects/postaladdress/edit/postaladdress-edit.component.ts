@@ -4,13 +4,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Party, PartyContactMechanism, PostalAddress, Enumeration, PostalBoundary, Country, ContactMechanism } from '../../../../../domain';
+import { PostalAddress, Enumeration, PostalBoundary, Country } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
-import * as moment from 'moment';
 
 @Component({
   templateUrl: './postaladdress-edit.component.html',
@@ -20,11 +19,8 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  party: Party;
-  partyContactMechanism: PartyContactMechanism;
   contactMechanism: PostalAddress;
   postalBoundary: PostalBoundary;
-  contactMechanismPurposes: Enumeration[];
   countries: Country[];
   title: string;
 
@@ -52,7 +48,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
           const isCreate = (this.data as EditData).id === undefined;
 
-          let pulls = [
+          const pulls = [
             pull.ContactMechanism({
               object: this.data.id,
               include: {
@@ -61,35 +57,10 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
                 }
               },
             }),
-            pull.ContactMechanismPurpose({
-              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: new Sort(m.ContactMechanismPurpose.Name)
-            }),
             pull.Country({
               sort: new Sort(m.Country.Name)
             })
           ];
-
-          if (isCreate) {
-            pulls = [
-              ...pulls,
-              pull.Party({
-                object: this.data.associationId,
-              })
-            ];
-          }
-
-          // if (!isCreate) {
-          //   pulls = [
-          //     ...pulls,
-          //     pull.ContactMechanism({
-          //       object: this.data.id,
-          //       fetch: {
-          //         part
-          //       }
-          //     }),
-          //   ];
-          // }
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
@@ -102,8 +73,6 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.party = loaded.objects.Party as Party;
-        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
         this.countries = loaded.collections.Countries as Country[];
 
         if (isCreate) {
@@ -113,13 +82,6 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
           this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
           this.contactMechanism.PostalBoundary = this.postalBoundary;
-
-          this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
-          this.partyContactMechanism.FromDate = moment().toDate();
-          this.partyContactMechanism.ContactMechanism = this.contactMechanism;
-          this.partyContactMechanism.UseAsDefault = true;
-
-          this.party.AddPartyContactMechanism(this.partyContactMechanism);
         } else {
           this.contactMechanism = loaded.objects.ContactMechanism as PostalAddress;
 
@@ -143,8 +105,8 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe(() => {
         const data: ObjectData = {
-          id: this.partyContactMechanism.id,
-          objectType: this.partyContactMechanism.objectType,
+          id: this.contactMechanism.id,
+          objectType: this.contactMechanism.objectType,
         };
 
         this.dialogRef.close(data);

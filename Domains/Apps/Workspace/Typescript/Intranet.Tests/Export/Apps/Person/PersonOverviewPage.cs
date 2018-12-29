@@ -8,11 +8,14 @@ namespace Tests.Intranet.PersonTests
 
     using Tests.Components.Html;
     using Tests.Components.Material;
+    using Tests.Intranet.PartyRelationshipTests;
+    using Tests.Intranet.ElectronicAddressTests;
     using Tests.Intranet.EmailCommunicationTests;
     using Tests.Intranet.FaceToFaceCommunicationTests;
     using Tests.Intranet.LetterCorrespondenceTests;
     using Tests.Intranet.PhoneCommunicationTests;
     using Tests.Intranet.PostalAddressTests;
+    using Tests.Intranet.TelecommunicationsNumberTests;
 
     public class PersonOverviewPage : MainPage
     {
@@ -25,7 +28,9 @@ namespace Tests.Intranet.PersonTests
 
         public Element CommunicationEventPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='communicationevent']"));
 
-        public Element PartyContactMechanismPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='partycontactmechanism']"));
+        public Element ContactMechanismPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='contactmechanism']"));
+
+        public Element PartyRelationshipPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='partyrelationship']"));
 
         public MaterialTable Table => new MaterialTable(this.Driver);
 
@@ -40,6 +45,18 @@ namespace Tests.Intranet.PersonTests
         public Button BtnPhoneCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='PhoneCommunication']"));
 
         public Button BtnPostalAddress => new Button(this.Driver, By.CssSelector("button[data-allors-class='PostalAddress']"));
+
+        public Button BtnTelecommunicationsNumber => new Button(this.Driver, By.CssSelector("button[data-allors-class='TelecommunicationsNumber']"));
+
+        public Button BtnEmailAddress => new Button(this.Driver, By.CssSelector("button[data-allors-class='EmailAddress']"));
+
+        public Button BtnWebAddress => new Button(this.Driver, By.CssSelector("button[data-allors-class='WebAddress']"));
+
+        public Button BtnCustomerRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='CustomerRelationship']"));
+
+        public Button BtnEmployment => new Button(this.Driver, By.CssSelector("button[data-allors-class='Employment']"));
+
+        public Button BtnSupplierRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='SupplierRelationship']"));
 
         public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
@@ -115,17 +132,6 @@ namespace Tests.Intranet.PersonTests
             return new LetterCorrespondenceEditPage(this.Driver);
         }
 
-        public PostalAddressEditPage SelectPostalAddress(PartyContactMechanism partyContactMechanism)
-        {
-            this.PartyContactMechanismPanel.Click();
-
-            var row = this.Table.FindRow(partyContactMechanism);
-            var cell = row.FindCell("contact");
-            cell.Click();
-
-            return new PostalAddressEditPage(this.Driver);
-        }
-
         public PhoneCommunicationEditPage NewPhoneCommunication()
         {
             this.CommunicationEventPanel.Click();
@@ -150,13 +156,123 @@ namespace Tests.Intranet.PersonTests
 
         public PostalAddressEditPage NewPostalAddress()
         {
-            this.PartyContactMechanismPanel.Click();
+            this.ContactMechanismPanel.Click();
 
             this.AddNew.Click();
 
             this.BtnPostalAddress.Click();
 
             return new PostalAddressEditPage(this.Driver);
+        }
+
+        public PostalAddressEditPage SelectPostalAddress(ContactMechanism ContactMechanism)
+        {
+            this.ContactMechanismPanel.Click();
+
+            var row = this.Table.FindRow(ContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            return new PostalAddressEditPage(this.Driver);
+        }
+
+        public TelecommunicationsNumberEditPage NewTelecommunicationsNumber()
+        {
+            this.ContactMechanismPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnTelecommunicationsNumber.Click();
+
+            return new TelecommunicationsNumberEditPage(this.Driver);
+        }
+
+        public TelecommunicationsNumberEditPage SelectTelecommunicationsNumber(ContactMechanism ContactMechanism)
+        {
+            this.ContactMechanismPanel.Click();
+
+            var row = this.Table.FindRow(ContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            return new TelecommunicationsNumberEditPage(this.Driver);
+        }
+
+        public ElectronicAddressEditPage NewEmailAddress()
+        {
+            this.ContactMechanismPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnEmailAddress.Click();
+
+            return new ElectronicAddressEditPage(this.Driver);
+        }
+
+        public ElectronicAddressEditPage SelectElectronicAddress(ContactMechanism contactMechanism)
+        {
+            this.ContactMechanismPanel.Click();
+
+            var row = this.Table.FindRow(contactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            return new ElectronicAddressEditPage(this.Driver);
+        }
+
+        public ElectronicAddressEditPage NewWebAddress()
+        {
+            this.ContactMechanismPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnWebAddress.Click();
+
+            return new ElectronicAddressEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewCustomerRelationship()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnCustomerRelationship.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewEmployment()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnEmployment.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewSupplierRelationship()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnSupplierRelationship.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage SelectPartyRelationship(PartyRelationship partyRelationship)
+        {
+            this.PartyRelationshipPanel.Click();
+
+            var row = this.Table.FindRow(partyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
         }
     }
 }

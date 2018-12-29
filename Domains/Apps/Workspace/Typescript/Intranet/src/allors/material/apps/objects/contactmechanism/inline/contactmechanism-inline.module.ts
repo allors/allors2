@@ -6,8 +6,6 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
@@ -33,8 +31,6 @@ import { InlineWebAddressModule } from '../../webaddress/inline/webaddress-inlin
   imports: [
     AllorsMaterialAutoCompleteModule,
 
-    AllorsMaterialChipsModule,
-    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,

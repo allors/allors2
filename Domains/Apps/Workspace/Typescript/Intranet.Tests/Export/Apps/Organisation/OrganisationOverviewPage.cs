@@ -11,6 +11,7 @@ namespace Tests.Intranet.OrganisationTests
     using Tests.Intranet.EmailCommunicationTests;
     using Tests.Intranet.FaceToFaceCommunicationTests;
     using Tests.Intranet.LetterCorrespondenceTests;
+    using Tests.Intranet.PartyRelationshipTests;
     using Tests.Intranet.PhoneCommunicationTests;
 
     public class OrganisationOverviewPage : MainPage
@@ -24,6 +25,8 @@ namespace Tests.Intranet.OrganisationTests
 
         public Element CommunicationEventPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='communicationevent']"));
 
+        public Element PartyRelationshipPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='partyrelationship']"));
+
         public MaterialTable Table => new MaterialTable(this.Driver);
 
         public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
@@ -35,6 +38,12 @@ namespace Tests.Intranet.OrganisationTests
         public Button BtnLetterCorrespondence => new Button(this.Driver, By.CssSelector("button[data-allors-class='LetterCorrespondence']"));
 
         public Button BtnPhoneCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='PhoneCommunication']"));
+
+        public Button BtnCustomerRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='CustomerRelationship']"));
+
+        public Button BtnEmployment => new Button(this.Driver, By.CssSelector("button[data-allors-class='Employment']"));
+
+        public Button BtnSupplierRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='SupplierRelationship']"));
 
         public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
@@ -130,6 +139,50 @@ namespace Tests.Intranet.OrganisationTests
             cell.Click();
 
             return new PhoneCommunicationEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewCustomerRelationship()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnCustomerRelationship.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewEmployment()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnEmployment.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewSupplierRelationship()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnSupplierRelationship.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage SelectPartyRelationship(PartyRelationship partyRelationship)
+        {
+            this.PartyRelationshipPanel.Click();
+
+            var row = this.Table.FindRow(partyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
         }
     }
 }

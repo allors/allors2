@@ -92,11 +92,8 @@ namespace Allors.Domain
 
             this.PartyName = this.DerivePartyName();
 
-            this.AppsOnDeriveCurrentContacts(derivation);
-            this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.SyncTimeSheet();
 
@@ -109,16 +106,6 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
-        }
-
-        public void AppsOnDeriveCurrentContacts(IDerivation derivation)
-        {
-            this.RemoveCurrentContacts();
-        }
-
-        public void AppsOnDeriveInactiveContacts(IDerivation derivation)
-        {
-            this.RemoveInactiveContacts();
         }
 
         public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)

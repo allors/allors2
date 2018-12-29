@@ -1,20 +1,10 @@
-<form *ngIf="partyContactMechanism" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="contactMechanism" #form="ngForm" (submit)="save()" novalidate>
   <h1></h1>
 
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
     <div class="container-fluid">
-
-      <div class="row">
-        <a-mat-datepicker class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.FromDate"></a-mat-datepicker>
-        <a-mat-datepicker class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ThroughDate"></a-mat-datepicker>
-      </div>
-
-      <div class="row">
-        <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
-          [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
-      </div>
 
       <div class="row">
         <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
@@ -35,13 +25,6 @@
           label="Postal code"></a-mat-input>
         <a-mat-select class="col-md" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country"
           [options]="countries" display="Name"></a-mat-select>
-      </div>
-
-      <div class="row">
-        <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
-          label="Use as default"></a-mat-slidetoggle>
-        <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
-          label="Non Solicitation"></a-mat-slidetoggle>
       </div>
 
       <div class="row">

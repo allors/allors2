@@ -1,0 +1,45 @@
+<form *ngIf="partyRelationship" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="partyRelationship" [roleType]="m.PartyRelationship.FromDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="partyRelationship" [roleType]="m.PartyRelationship.ThroughDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="partyRelationship" [roleType]="m.Employment.Employee"
+              [options]="people" display="PartyName"></a-mat-select>
+            <button mat-mini-fab color="accent" type="button" (click)="addFromParty = !addFromParty">
+              <mat-icon *ngIf="!addFromParty">add</mat-icon>
+              <mat-icon *ngIf="addFromParty">close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12 pb-3" *ngIf="addFromParty">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addFromParty = false" (saved)="addFromParty = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

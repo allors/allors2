@@ -1,0 +1,31 @@
+<form *ngIf="contactMechanism" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType"
+          [options]="contactMechanismTypes" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="contactMechanism" [roleType]="m.ContactMechanism.Description"></a-mat-textarea>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

@@ -114,11 +114,7 @@ namespace Allors.Repository
 
         public ContactMechanism HomeAddress { get; set; }
 
-        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
-
         public ContactMechanism SalesOffice { get; set; }
-
-        public Person[] InactiveContacts { get; set; }
 
         public PartyContactMechanism[] InactivePartyContactMechanisms { get; set; }
 
@@ -127,6 +123,12 @@ namespace Allors.Repository
         public Person[] CurrentSalesReps { get; set; }
 
         public PartyContactMechanism[] PartyContactMechanisms { get; set; }
+
+        public PartyRelationship[] InactivePartyRelationships { get; set; }
+
+        public Person[] CurrentContacts { get; set; }
+
+        public Person[] InactiveContacts { get; set; }
 
         public TelecommunicationsNumber ShippingInquiriesFax { get; set; }
 
@@ -141,8 +143,6 @@ namespace Allors.Repository
         public PartyClassification[] PartyClassifications { get; set; }
 
         public BankAccount[] BankAccounts { get; set; }
-
-        public Person[] CurrentContacts { get; set; }
 
         public ContactMechanism BillingAddress { get; set; }
 
@@ -170,11 +170,11 @@ namespace Allors.Repository
 
         public PostalAddress ShippingAddress { get; set; }
 
-        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
-
         public TelecommunicationsNumber GeneralFaxNumber { get; set; }
 
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
+
+        public PartyRelationship[] CurrentPartyRelationships { get; set; }
 
         public TelecommunicationsNumber GeneralPhoneNumber { get; set; }
 
@@ -368,6 +368,28 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public CustomOrganisationClassification[] CustomClassifications { get; set; }
+
+        #region Allors
+        [Id("c79070fc-2c7d-440b-80ce-f86796c59a14")]
+        [AssociationId("8bb86356-0b10-4e77-bbbb-d4d33230c3a9")]
+        [RoleId("8c72ca39-b408-4623-8a90-54c3b3630e6b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
+
+        #region Allors
+        [Id("1bf7b758-2b58-4f82-a6a1-a8d5991d3d9d")]
+        [AssociationId("240a4c51-86f3-47c7-a28d-7c8fd7b5d68e")]
+        [RoleId("08655bdf-9abb-404d-a4d4-739896199bc3")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
 
         #region inherited methods
 

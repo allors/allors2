@@ -25,9 +25,6 @@ namespace Allors.Domain
             {
                 this.CountryCode = this.CountryCode.Substring(1);
             }
-
-            this.Description =
-                $"{(this.ExistCountryCode ? ("+"+this.CountryCode) : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
         }
     }
 }

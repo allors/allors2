@@ -14,12 +14,6 @@ namespace Tests.Intranet.PostalAddressTests
         {
         }
 
-        public MaterialDatePicker FromDate => new MaterialDatePicker(this.Driver, roleType: M.PartyContactMechanism.FromDate);
-
-        public MaterialDatePicker ThroughDate => new MaterialDatePicker(this.Driver, roleType: M.PartyContactMechanism.ThroughDate);
-
-        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
-
         public MaterialInput Address1 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address1);
 
         public MaterialInput Address2 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address2);
@@ -31,10 +25,6 @@ namespace Tests.Intranet.PostalAddressTests
         public MaterialInput PostalCode => new MaterialInput(this.Driver, roleType: M.PostalBoundary.PostalCode);
 
         public MaterialSingleSelect Country => new MaterialSingleSelect(this.Driver, roleType: M.PostalBoundary.Country);
-
-        public MaterialSlideToggle UseAsDefault => new MaterialSlideToggle(this.Driver, roleType: M.PartyContactMechanism.UseAsDefault);
-
-        public MaterialSlideToggle NonSolicitationIndicator => new MaterialSlideToggle(this.Driver, roleType: M.PartyContactMechanism.NonSolicitationIndicator);
 
         public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);
 

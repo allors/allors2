@@ -43,13 +43,7 @@ namespace Allors.Domain
                 this.Organisation.ContactsUserGroup.RemoveMember(this.Contact);
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    if (this.Organisation.AppsIsActiveCustomer(this.FromDate) ||
-                        this.Organisation.AppsIsActiveSupplier(this.FromDate) ||
-                        this.Organisation.AppsIsActiveProfessionalServicesProvider(this.FromDate) ||
-                        this.Organisation.AppsIsActiveSubContractor(this.FromDate))
-                    {
-                        this.Organisation.ContactsUserGroup.AddMember(this.Contact);
-                    }
+                    this.Organisation.ContactsUserGroup.AddMember(this.Contact);
                 }
             }
         }

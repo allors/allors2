@@ -49,8 +49,8 @@ namespace Allors.Domain
                 this.InternalOrganisation = internalOrganisations.First();
             }
 
-            this.AppsOnDeriveMembership(derivation);
             this.AppsOnDeriveInternalOrganisationSupplier(derivation);
+            this.AppsOnDeriveMembership(derivation);
 
             this.Parties = new Party[] { this.Supplier, this.InternalOrganisation };
         }

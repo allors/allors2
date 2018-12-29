@@ -15,7 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
 {
@@ -139,20 +138,6 @@ namespace Allors.Domain
             }
 
             return null;
-        }
-
-        public static void AppsOnDeriveCurrentPartyContactMechanisms(this Party party, IDerivation derivation)
-        {
-            party.RemoveCurrentPartyContactMechanisms();
-
-            foreach (PartyContactMechanism partyContactMechanism in party.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
-                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
-                {
-                    party.AddCurrentPartyContactMechanism(partyContactMechanism);
-                }
-            }
         }
 
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
@@ -293,6 +278,10 @@ namespace Allors.Domain
                 }
             }
 
+            @this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
+            @this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
+            @this.AppsOnDeriveCurrentPartyRelationships(derivation);
+            @this.AppsOnDeriveInactivePartyRelationships(derivation);
             @this.AppsOnDeriveCurrentSalesReps(derivation);
             @this.AppsOnDeriveActiveCustomer(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
@@ -305,6 +294,62 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             @this.AppsOnDerivePartyFinancialRelationships(derivation);
+        }
+
+        public static void AppsOnDeriveInactivePartyContactMechanisms(this Party @this, IDerivation derivation)
+        {
+            @this.RemoveInactivePartyContactMechanisms();
+
+            foreach (PartyContactMechanism partyContactMechanism in @this.PartyContactMechanisms)
+            {
+                if (partyContactMechanism.FromDate > DateTime.UtcNow ||
+                    (partyContactMechanism.ExistThroughDate && partyContactMechanism.ThroughDate < DateTime.UtcNow))
+                {
+                    @this.AddInactivePartyContactMechanism(partyContactMechanism);
+                }
+            }
+        }
+
+        public static void AppsOnDeriveCurrentPartyContactMechanisms(this Party party, IDerivation derivation)
+        {
+            party.RemoveCurrentPartyContactMechanisms();
+
+            foreach (PartyContactMechanism partyContactMechanism in party.PartyContactMechanisms)
+            {
+                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                {
+                    party.AddCurrentPartyContactMechanism(partyContactMechanism);
+                }
+            }
+        }
+
+        public static void AppsOnDeriveInactivePartyRelationships(this Party @this, IDerivation derivation)
+        {
+            @this.RemoveInactivePartyRelationships();
+
+            foreach (PartyRelationship partyRelationship in @this.PartyRelationshipsWhereParty)
+            {
+                if (partyRelationship.FromDate > DateTime.UtcNow ||
+                    (partyRelationship.ExistThroughDate && partyRelationship.ThroughDate < DateTime.UtcNow))
+                {
+                    @this.AddInactivePartyRelationship(partyRelationship);
+                }
+            }
+        }
+
+        public static void AppsOnDeriveCurrentPartyRelationships(this Party party, IDerivation derivation)
+        {
+            party.RemoveCurrentPartyRelationships();
+
+            foreach (PartyRelationship partyRelationship in party.PartyRelationshipsWhereParty)
+            {
+                if (partyRelationship.FromDate <= DateTime.UtcNow &&
+                    (!partyRelationship.ExistThroughDate || partyRelationship.ThroughDate >= DateTime.UtcNow))
+                {
+                    party.AddCurrentPartyRelationship(partyRelationship);
+                }
+            }
         }
 
         public static void AppsOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)

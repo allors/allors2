@@ -6,7 +6,7 @@ import { DeleteService, TableRow, Table, CreateData, EditService, EditData } fro
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: ContactMechanism;
+  object: PartyContactMechanism;
   purpose: string;
   contact: string;
   lastModifiedDate: string;
@@ -56,7 +56,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
   ngOnInit() {
 
     this.panel.name = 'partycontactmechanism';
-    this.panel.title = 'Contact Mechanisms';
+    this.panel.title = 'Party ContactMechanisms';
     this.panel.icon = 'contacts';
     this.panel.expandable = true;
 
@@ -155,7 +155,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
   public refreshTable() {
     this.table.data = this.partyContactMechanisms.map((v) => {
       return {
-        object: v.ContactMechanism,
+        object: v,
         purpose: v.ContactPurposes.map(w => w.Name).join(', '),
         contact: v.ContactMechanism.displayName,
         lastModifiedDate: moment(v.LastModifiedDate).fromNow()

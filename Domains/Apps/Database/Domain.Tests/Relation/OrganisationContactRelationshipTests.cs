@@ -24,7 +24,6 @@ namespace Allors.Domain
     using System;
     using Meta;
     using Xunit;
-
     
     public class OrganisationContactRelationshipTests : DomainTest
     {
@@ -38,7 +37,7 @@ namespace Allors.Domain
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(this.contact)
                 .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
             this.Session.Derive();

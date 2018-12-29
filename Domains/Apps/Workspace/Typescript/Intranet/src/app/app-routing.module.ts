@@ -29,11 +29,6 @@ import * as CommunicationEventList from 'src/allors/material/apps/objects/commun
 
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
 
-import * as EmailAddressEdit from 'src/allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
-import * as PostalAddressEdit from 'src/allors/material/apps/objects/postaladdress/edit/postaladdress-edit.module';
-import * as TelecommunicationsNumberEdit from 'src/allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
-import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
-
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
@@ -66,10 +61,6 @@ const modules = [
 
   EditSerialisedItem.SerialisedItemModule,
 
-  EditWebAddress.WebAddressEditModule,
-
-  EmailAddressEdit.EmailAddressdEditModule,
-
   IncoTermEdit.IncoTermEditModule,
 
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
@@ -85,8 +76,6 @@ const modules = [
   PersonList.PersonListModule,
   PersonOverview.PersonOverviewModule,
 
-  PostalAddressEdit.PostalAddressEditModule,
-
   PurchaseInvoiceList.PurchaseInvoiceListModule,
   PurchaseInvoiceOverview.PurchaseInvoiceOverviewModule,
   PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditModule,
@@ -96,8 +85,6 @@ const modules = [
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
-
-  TelecommunicationsNumberEdit.TelecommunicationsNumberEditModule,
 
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
@@ -197,15 +184,6 @@ export const routes: Routes = [
 
       // { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
       // { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
-
-      // { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
-      // { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: EmailAddressEdit.EmailAddressEditComponent },
-      // { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
-      // { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: PostalAddressEdit.PostalAddressEditComponent },
-      // { path: 'telecommunicationsnumber', data: addData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
-      // { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
-      // { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
-      // { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
 
       // { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       // { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
