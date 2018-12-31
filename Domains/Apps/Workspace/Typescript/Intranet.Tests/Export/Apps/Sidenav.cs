@@ -8,6 +8,7 @@ namespace Tests.Intranet
     using Tests.Components;
     using Tests.Components.Html;
     using Tests.Intranet.CatalogueTests;
+    using Tests.Intranet.CommunicationEventTests;
     using Tests.Intranet.OrganisationTests;
     using Tests.Intranet.PersonTests;
     using Tests.Intranet.ProductCategoryTest;
@@ -80,6 +81,12 @@ namespace Tests.Intranet
             this.Home.Click();
 
             return new DashboardPage(this.Driver);
+        }
+
+        public CommunicationEventListPage NavigateToCommunicationEventList()
+        {
+            this.Navigate(this.ContactsGroup, this.CommunicationEvents);
+            return new CommunicationEventListPage(this.Driver);
         }
 
         public PersonListPage NavigateToPersonList()

@@ -66,10 +66,10 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        navigateService.edit(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: navigateService.edit(),
     });
   }
 
@@ -81,7 +81,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.CommunicationEvent.Subject, parameter: 'subject' }),
     ]);
 
-    this.filterService.init(predicate);
+    // this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
