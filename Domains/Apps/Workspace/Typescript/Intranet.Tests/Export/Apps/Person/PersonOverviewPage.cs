@@ -58,6 +58,8 @@ namespace Tests.Intranet.PersonTests
 
         public Button BtnSupplierRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='SupplierRelationship']"));
 
+        public Button BtnOrganisationContactRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='OrganisationContactRelationship']"));
+
         public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
 
         public PersonEditPage Edit()
@@ -260,6 +262,17 @@ namespace Tests.Intranet.PersonTests
             this.AddNew.Click();
 
             this.BtnSupplierRelationship.Click();
+
+            return new PartyRelationshipEditPage(this.Driver);
+        }
+
+        public PartyRelationshipEditPage NewOrganisationContactRelationship()
+        {
+            this.PartyRelationshipPanel.Click();
+
+            this.AddNew.Click();
+
+            this.BtnOrganisationContactRelationship.Click();
 
             return new PartyRelationshipEditPage(this.Driver);
         }

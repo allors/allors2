@@ -86,9 +86,12 @@ export class PersonOverviewSummaryComponent {
       if (organisationContactRelationships.length > 0) {
         const organisationContactRelationship = organisationContactRelationships[0];
         this.organisation = organisationContactRelationship.Organisation as Organisation;
-        this.contactKindsText = organisationContactRelationship.ContactKinds
-          .map((v: OrganisationContactKind) => v.Description)
-          .reduce((acc: string, cur: string) => acc + ', ' + cur);
+
+        if (organisationContactRelationship.ContactKinds.length > 0) {
+          this.contactKindsText = organisationContactRelationship.ContactKinds
+            .map((v: OrganisationContactKind) => v.Description)
+            .reduce((acc: string, cur: string) => acc + ', ' + cur);
+        }
       }
     };
   }

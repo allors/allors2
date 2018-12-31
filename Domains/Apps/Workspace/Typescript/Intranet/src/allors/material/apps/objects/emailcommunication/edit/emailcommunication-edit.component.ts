@@ -241,18 +241,27 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
     this.communicationEvent.FromEmail = emailAddress;
   }
 
-  public partyAdded(caller: Person): void {
+  public fromPartyAdded(fromParty: Person): void {
+    this.addContactRelationship(fromParty);
+    this.communicationEvent.FromParty = fromParty;
+  }
 
-    if (this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-      relationShip.Contact = caller;
-      relationShip.Organisation = this.organisation;
-    }
+  public toPartyAdded(toParty: Person): void {
+    this.addContactRelationship(toParty);
+    this.communicationEvent.ToParty = toParty;
   }
 
   public fromPartySelected(party: Party) {
     if (party) {
       this.updateFromParty(party);
+    }
+  }
+
+  private addContactRelationship(party: Person): void {
+    if (this.organisation) {
+      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      relationShip.Contact = party;
+      relationShip.Organisation = this.organisation;
     }
   }
 
