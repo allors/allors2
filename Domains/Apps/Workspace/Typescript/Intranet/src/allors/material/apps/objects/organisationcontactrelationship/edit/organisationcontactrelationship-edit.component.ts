@@ -4,46 +4,44 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Employment, Party, Organisation, Person, InternalOrganisation } from '../../../../../domain';
-import { PullRequest, Equals } from '../../../../../framework';
+import { Party, Organisation, Person, OrganisationContactRelationship, OrganisationContactKind } from '../../../../../domain';
+import { PullRequest, Equals, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
-import { Fetcher } from '../../Fetcher';
 
 @Component({
-  templateUrl: './employment-edit.component.html',
+  templateUrl: './organisationcontactrelationship-edit.component.html',
   providers: [ContextService]
 })
-export class EmploymentEditComponent implements OnInit, OnDestroy {
+export class OrganisationContactRelationshipEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  partyRelationship: Employment;
+  partyRelationship: OrganisationContactRelationship;
+  title: string;
+  addContact = false;
+
+  private subscription: Subscription;
   people: Person[];
   party: Party;
   person: Person;
   organisation: Organisation;
-  internalOrganisation: Organisation;
-  internalOrganisations: Organisation[];
-  title: string;
-  addEmployee = false;
-
-  private subscription: Subscription;
-  private fetcher: Fetcher;
+  organisations: Organisation[];
+  contactKinds: OrganisationContactKind[];
+  generalContact: OrganisationContactKind;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<EmploymentEditComponent>,
+    public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
@@ -57,19 +55,23 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            this.fetcher.internalOrganisation,
-            pull.Employment({
+            pull.OrganisationContactRelationship({
               object: this.data.id,
               include: {
-                Employee: x,
-                Employer: x,
+                Organisation: x,
+                Contact: x,
                 Parties: x
               }
             }),
             pull.Party({
               object: this.data.associationId,
             }),
+            pull.Organisation({
+            }),
             pull.Person({
+            }),
+            pull.OrganisationContactKind({
+              sort: new Sort(this.m.OrganisationContactKind.Description)
             }),
           ];
 
@@ -85,45 +87,45 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.people = loaded.collections.People as Person[];
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.organisations = loaded.collections.Organisations as Organisation[];
+
+        this.contactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
+        this.generalContact = this.contactKinds.find(v => v.UniqueId.toUpperCase() === 'EEBE4D65-C452-49C9-A583-C0FFEC385E98');
 
         if (isCreate) {
-          this.title = 'Add Employment';
+          this.title = 'Add Organisation Contact';
 
-          this.partyRelationship = this.allors.context.create('Employment') as Employment;
+          this.partyRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
           this.partyRelationship.FromDate = new Date();
-          this.partyRelationship.Employer = this.internalOrganisation;
+          this.partyRelationship.AddContactKind(this.generalContact);
 
           this.party = loaded.objects.Party as Party;
 
           if (this.party.objectType.name === m.Person.name) {
             this.person = this.party as Person;
-            this.partyRelationship.Employee = this.person;
+            this.partyRelationship.Contact = this.person;
           }
 
           if (this.party.objectType.name === m.Organisation.name) {
             this.organisation = this.party as Organisation;
-
-            if (!this.organisation.IsInternalOrganisation) {
-              this.dialogRef.close();
-            }
+            this.partyRelationship.Organisation = this.organisation;
           }
         } else {
-          this.partyRelationship = loaded.objects.Employment as Employment;
-          this.person = this.partyRelationship.Employee;
-          this.organisation = this.partyRelationship.Employer as Organisation;
+          this.partyRelationship = loaded.objects.OrganisationContactRelationship as OrganisationContactRelationship;
+          this.person = this.partyRelationship.Contact;
+          this.organisation = this.partyRelationship.Organisation as Organisation;
 
           if (this.partyRelationship.CanWriteFromDate) {
-            this.title = 'Edit Employment';
+            this.title = 'Edit Organisation Contact';
           } else {
-            this.title = 'View Employment';
+            this.title = 'View Organisation Contact';
           }
         }
       }, this.errorService.handler);
   }
 
-  public employeeAdded(employee: Person): void {
-    this.partyRelationship.Employee = employee;
+  public contactAdded(contact: Person): void {
+    this.partyRelationship.Contact = contact;
   }
 
   public ngOnDestroy(): void {

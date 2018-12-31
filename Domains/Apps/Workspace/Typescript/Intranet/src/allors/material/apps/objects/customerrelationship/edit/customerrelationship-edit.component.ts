@@ -21,12 +21,12 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
   readonly m: Meta;
 
   partyRelationship: CustomerRelationship;
+  internalOrganisation: Organisation;
+  party: Party;
   title: string;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
-  internalOrganisation: Organisation;
-  party: Party;
 
   constructor(
     @Self() private allors: ContextService,

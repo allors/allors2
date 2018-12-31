@@ -14,6 +14,7 @@ import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from 
 import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
 import { LetterCorrespondenceEditComponent, LetterCorrespondenceEditModule } from '../allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence-edit.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
+import { OrganisationContactRelationshipEditComponent, OrganisationContactRelationshipEditModule } from '../allors/material/apps/objects/organisationcontactrelationship/edit/organisationcontactrelationship-edit.module';
 import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } from '../allors/material/apps/objects/partycontactmechanism/edit/partycontactmechanism-edit.module';
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
@@ -27,7 +28,7 @@ import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
-import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierraltionship/edit/supplierrelationship-edit.module';
+import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
@@ -56,6 +57,7 @@ export const create = {
   [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.Organisation]: OrganisationCreateComponent,
+  [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
   [ids.Part]: PartCreateComponent,
   [ids.PartNumber]: IGoodIdentificationEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
@@ -99,6 +101,7 @@ export const edit = {
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
   [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
+  [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
   [ids.PostalAddress]: PostalAddressEditComponent,
@@ -135,6 +138,7 @@ export const edit = {
     IGoodIdentificationEditModule,
     LetterCorrespondenceEditModule,
     OrganisationCreateModule,
+    OrganisationContactRelationshipEditModule,
     PartCreateModule,
     PartyContactmechanismEditModule,
     PersonCreateModule,
@@ -170,6 +174,7 @@ export const edit = {
     IGoodIdentificationEditComponent,
     LetterCorrespondenceEditComponent,
     OrganisationCreateComponent,
+    OrganisationContactRelationshipEditComponent,
     PersonCreateComponent,
     PartCreateComponent,
     PartyContactmechanismEditComponent,
