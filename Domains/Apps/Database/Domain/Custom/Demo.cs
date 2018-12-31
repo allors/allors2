@@ -594,12 +594,26 @@ line2")
         {
             var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
 
+            var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
+
+            var postalAddress = new PostalAddressBuilder(this.Session)
+                .WithAddress1($"{firstName} address")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Mechelen").WithPostalCode("2800").WithCountry(be).Build())
+                .Build();
+
+            var generalCorrespondence = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(postalAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                .WithUseAsDefault(true)
+                .Build();
+
             var person = new PersonBuilder(this.Session)
                 .WithUserName(email)
                 .WithFirstName(firstName)
                 .WithLastName(lastName)
                 .WithUserEmail(userEmail.ElectronicAddressString)
                 .WithUserEmailConfirmed(true)
+                .WithPartyContactMechanism(generalCorrespondence)
                 .Build();
 
             person.AddPartyContactMechanism(
