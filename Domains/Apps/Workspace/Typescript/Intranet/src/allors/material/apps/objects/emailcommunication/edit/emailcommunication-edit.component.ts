@@ -244,11 +244,13 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
   public fromPartyAdded(fromParty: Person): void {
     this.addContactRelationship(fromParty);
     this.communicationEvent.FromParty = fromParty;
+    this.contacts.push(fromParty);
   }
 
   public toPartyAdded(toParty: Person): void {
     this.addContactRelationship(toParty);
     this.communicationEvent.ToParty = toParty;
+    this.contacts.push(toParty);
   }
 
   public fromPartySelected(party: Party) {

@@ -19,7 +19,7 @@ domain.extend((workspace) => {
     Object.defineProperties(obj, {
         displayName: {
             get(this: Organisation): string {
-                return this.PartyName || this.Name || 'N/A';
+                return this.Name || 'N/A';
             },
         },
         displayClassification: {

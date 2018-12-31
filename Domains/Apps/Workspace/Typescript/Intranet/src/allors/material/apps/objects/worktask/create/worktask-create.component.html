@@ -11,7 +11,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(allors)"
-          (onChange)="customerSelected($event)" display="PartyName"></a-mat-autocomplete>
+          (onChange)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
       </div>
 
       <div class="row">

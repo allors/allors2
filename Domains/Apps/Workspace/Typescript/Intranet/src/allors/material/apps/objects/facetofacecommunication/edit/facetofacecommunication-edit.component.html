@@ -33,7 +33,7 @@
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addFromParty = false" (saved)="partyAdded($event); addFromParty = false">
+              <person-inline (cancelled)="addFromParty = false" (saved)="fromPartyAdded($event); addFromParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>
@@ -53,7 +53,7 @@
           <mat-card>
             <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
-              <person-inline (cancelled)="addToParty = false" (saved)="partyAdded($event); addToParty = false">
+              <person-inline (cancelled)="addToParty = false" (saved)="toPartyAdded($event); addToParty = false">
               </person-inline>
             </mat-card-content>
           </mat-card>

@@ -124,6 +124,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
 
   public employeeAdded(employee: Person): void {
     this.partyRelationship.Employee = employee;
+    this.people.push(employee);
   }
 
   public ngOnDestroy(): void {

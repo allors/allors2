@@ -20,7 +20,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-select *ngIf="!organisation" class="col" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Organisation"
-              [options]="organisations" display="PartyName"></a-mat-select>
+              [options]="organisations" display="displayName"></a-mat-select>
             <a-mat-static *ngIf="organisation" class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Organisation"
               display="displayName"></a-mat-static>
           </div>
@@ -31,7 +31,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-select *ngIf="!person" class="col" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
-              [options]="people" display="PartyName"></a-mat-select>
+              [options]="people" display="displayName"></a-mat-select>
             <a-mat-static *ngIf="person" class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
               display="displayName"></a-mat-static>
             <button *ngIf="!person" mat-mini-fab color="accent" type="button" (click)="addContact = !addContact">

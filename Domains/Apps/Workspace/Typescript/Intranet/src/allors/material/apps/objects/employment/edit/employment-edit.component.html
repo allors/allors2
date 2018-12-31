@@ -19,7 +19,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-select *ngIf="!person" class="col" [object]="partyRelationship" [roleType]="m.Employment.Employee"
-              [options]="people" display="PartyName"></a-mat-select>
+              [options]="people" display="displayName"></a-mat-select>
             <a-mat-static *ngIf="person" class="col-md" [object]="partyRelationship" [roleType]="m.Employment.Employee"
               display="displayName"></a-mat-static>
             <button *ngIf="!person" mat-mini-fab color="accent" type="button" (click)="addEmployee = !addEmployee">

@@ -202,13 +202,16 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public partyAdded(person: Person): void {
+  public fromPartyAdded(fromParty: Person): void {
+    this.addContactRelationship(fromParty);
+    this.communicationEvent.FromParty = fromParty;
+    this.contacts.push(fromParty);
+  }
 
-    if (!!this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-      relationShip.Contact = person;
-      relationShip.Organisation = this.organisation;
-    }
+  public toPartyAdded(toParty: Person): void {
+    this.addContactRelationship(toParty);
+    this.communicationEvent.ToParty = toParty;
+    this.contacts.push(toParty);
   }
 
   public save(): void {
@@ -225,5 +228,13 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  private addContactRelationship(party: Person): void {
+    if (this.organisation) {
+      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      relationShip.Contact = party;
+      relationShip.Organisation = this.organisation;
+    }
   }
 }
