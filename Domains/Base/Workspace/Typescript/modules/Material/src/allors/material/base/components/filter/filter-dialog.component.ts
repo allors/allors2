@@ -17,6 +17,8 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   formGroup: FormGroup;
 
+  filterFieldDefinition: FilterFieldDefinition;
+
   constructor(
     public dialogRef: MatDialogRef<AllorsMaterialFilterDialogComponent>,
     private formBuilder: FormBuilder,
@@ -32,14 +34,16 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
     });
   }
 
-  get definition(): FilterFieldDefinition {
-    return this.formGroup.get('definition').value;
-  }
-
   apply() {
+
+    const definition = this.formGroup.get('definition').value as FilterFieldDefinition;
+    const options = definition && definition.options;
+    const value = this.formGroup.get('value').value;
+
     this.filterService.addFilterField(new FilterField({
-      definition: this.definition,
-      value: this.formGroup.get('value').value
+      definition,
+      value: value.id ? value.id : value,
+      display: options.display ? options.display(value) : value,
     }));
 
     this.dialogRef.close();

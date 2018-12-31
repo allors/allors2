@@ -5,7 +5,9 @@ import { FilterFieldDefinition } from './filterFieldDefinition';
 import { Predicate, And, Or, Not, ContainedIn, Filter } from '../../../framework';
 import { FilterField } from './FilterField';
 import { ParametrizedPredicate } from '../../../framework/database/data/ParametrizedPredicate';
-import { SearchFactory } from '../data';
+
+import { FilterOptions } from './FilterOptions';
+import { Options } from 'selenium-webdriver/safari';
 
 function getParameterizedPredicates(predicate: Predicate, results: ParametrizedPredicate[] = []): ParametrizedPredicate[] {
 
@@ -71,9 +73,9 @@ export class AllorsFilterService {
     this.filterFieldsSubject.next(this.filterFields.filter((v) => v !== filterField));
   }
 
-  init(predicate: Predicate, searches: { [parameter: string]: SearchFactory } = null) {
+  init(predicate: Predicate, options: { [parameter: string]: Partial<FilterOptions> } = null) {
     const predicates = getParameterizedPredicates(predicate);
-    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, search: searches && searches[v.parameter] }));
+    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, options: new FilterOptions(options[v.parameter]) }));
   }
 
   arguments(filterFields: FilterField[]): any {

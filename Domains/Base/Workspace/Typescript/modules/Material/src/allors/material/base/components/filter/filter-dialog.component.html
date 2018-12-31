@@ -4,11 +4,10 @@
 
             <mat-step>
                 <ng-template matStepLabel>
-                    <span *ngIf="!selectedPredicate">Filter</span>
-                    <span *ngIf="!!selectedPredicate"><strong>{{definition.predicate.parameter}}</strong></span>
+                    Field
                 </ng-template>
                 <mat-form-field>
-                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="stepper.next()">
+                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="filterFieldDefinition = $event.value; stepper.next()">
                         <mat-option *ngFor="let definition of filterService.filterFieldDefinitions" [value]="definition">
                             {{definition.predicate.parameter}}
                         </mat-option>
@@ -18,15 +17,14 @@
 
             <mat-step>
                 <ng-template matStepLabel>
-                    <span *ngIf="!selectedPredicate">Value</span>
-                    <span *ngIf="!!selectedPredicate"><strong>TODO</strong></span>
+                    Filter
                 </ng-template>
 
-                <mat-form-field *ngIf="!definition.search">
+                <mat-form-field *ngIf="filterFieldDefinition && !filterFieldDefinition.options.search">
                     <input matInput placeholder="Value" formControlName="value" required>
                 </mat-form-field>
 
-                <div *ngIf="definition.search">
+                <div *ngIf="filterFieldDefinition && filterFieldDefinition.options.search">
                     <a-mat-filter-search [parent]="formGroup"></a-mat-filter-search>
                 </div>
 

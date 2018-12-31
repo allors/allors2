@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../fram
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
-import { Person } from '../../../../../domain';
+import { Person, Country } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -59,7 +59,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name', sort: true},
+        { name: 'name', sort: true },
         { name: 'email', sort: true },
         { name: 'phone', sort: true },
         'lastModifiedDate'
@@ -82,11 +82,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
       new ContainedIn({
         propertyType: m.Party.GeneralCorrespondence,
         extent: new Filter({
-            objectType: m.PostalAddress,
-            predicate: new ContainedIn({
-              propertyType: m.PostalAddress.Country,
-              parameter: 'country'
-            })
+          objectType: m.PostalAddress,
+          predicate: new ContainedIn({
+            propertyType: m.PostalAddress.Country,
+            parameter: 'country'
+          })
         })
       })
     ]);
@@ -96,7 +96,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
       roleTypes: [m.Country.Name],
     });
 
-    this.filterService.init(predicate, { country: countrySearch });
+    this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v.Name } });
 
     const sorter = new Sorter(
       {

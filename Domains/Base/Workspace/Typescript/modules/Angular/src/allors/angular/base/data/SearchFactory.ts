@@ -4,13 +4,7 @@ import { map } from 'rxjs/operators';
 import { And, Exists, ISessionObject, Like, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
 import { Loaded, Context, ContextService } from '../framework';
 
-export interface SearchOptions {
-  objectType: ObjectType;
-  roleTypes: RoleType[];
-  existRoletypes?: RoleType[];
-  notExistRoletypes?: RoleType[];
-  post?: (and: And) => void;
-}
+import { SearchOptions } from './SearchOptions';
 
 export class SearchFactory {
   constructor(private options: SearchOptions) { }

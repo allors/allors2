@@ -1,9 +1,9 @@
 import { ParametrizedPredicate } from '../../../../allors/framework';
-import { SearchFactory } from '../data';
+import { FilterOptions } from './FilterOptions';
 
 export class FilterFieldDefinition {
   predicate: ParametrizedPredicate;
-  search: SearchFactory;
+  options: FilterOptions;
 
   constructor(fields?: Partial<FilterFieldDefinition>) {
     Object.assign(this, fields);
