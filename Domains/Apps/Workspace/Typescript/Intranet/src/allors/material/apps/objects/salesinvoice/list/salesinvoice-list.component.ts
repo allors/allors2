@@ -1,24 +1,22 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
+import * as moment from 'moment';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action } from '../../../../../angular';
 import { SalesInvoice } from '../../../../../domain';
 import { And, Like, PullRequest, Sort } from '../../../../../framework';
-import { PrintService, Sorter } from '../../../../../material';
+import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, StateService } from '../../../../../material';
 
-interface Row {
-  salesInvoice: SalesInvoice;
+interface Row extends TableRow {
+  object: SalesInvoice;
   number: string;
   billedTo: string;
   reference: string;
   description: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -27,18 +25,12 @@ interface Row {
 })
 export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
-  public searchForm: FormGroup; public advancedSearch: boolean;
-
   public title = 'Sales Invoices';
 
-  public displayedColumns = ['select', 'number', 'billedTo', 'reference', 'description', 'lastModifiedDate', 'menu'];
-  public selection = new SelectionModel<Row>(true, []);
+  table: Table<Row>;
 
-  public total: number;
-  public dataSource = new MatTableDataSource<Row>();
+  delete: Action;
 
-  private sort$: BehaviorSubject<Sort>;
-  private pager$: BehaviorSubject<PageEvent>;
   private subscription: Subscription;
 
   constructor(
@@ -46,16 +38,38 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public printService: PrintService,
+    public overviewService: OverviewService,
+    public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
+    private stateService: StateService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+    this.delete = deleteService.delete(allors.context);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'number' },
+        { name: 'billedTo' },
+        { name: 'reference' },
+        { name: 'description' },
+        'lastModifiedDate'
+      ],
+      actions: [
+        overviewService.overview(),
+        this.printService.print(),
+        this.delete
+      ],
+      defaultAction: overviewService.overview(),
+    });
   }
 
   public ngOnInit(): void {
@@ -75,7 +89,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -106,17 +120,16 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.total = loaded.values.People_total;
         const salesInvoices = loaded.collections.SalesInvoices as SalesInvoice[];
-
-        this.dataSource.data = salesInvoices.map((v) => {
+        this.table.total = loaded.values.SalesOrders_total;
+        this.table.data = salesInvoices.map((v) => {
           return {
-            salesInvoice: v,
+            object: v,
             number: v.InvoiceNumber,
             billedTo: v.BillToCustomer.displayName,
             reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
-            lastModifiedDate: v.LastModifiedDate,
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       }, this.errorService.handler);
@@ -126,33 +139,5 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public get hasSelection() {
-    return !this.selection.isEmpty();
-  }
-
-  public get selectedPeople() {
-    return this.selection.selected.map(v => v.salesInvoice);
-  }
-
-  public isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public sort(event: Sort): void {
-    this.sort$.next(event);
-  }
-
-  public page(event: PageEvent): void {
-    this.pager$.next(event);
   }
 }

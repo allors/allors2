@@ -1,47 +1,36 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
-import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
-import { SelectionModel } from '@angular/cdk/collections';
+import { PageEvent, MatSnackBar } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
+import * as moment from 'moment';
 
-import { AllorsFilterService, ErrorService, ContextService, MediaService, MetaService, RefreshService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, MediaService, MetaService, RefreshService, Action } from '../../../../../angular';
 import { PurchaseInvoice } from '../../../../../domain';
 import { And, Like, PullRequest, Sort } from '../../../../../framework';
-import { OverviewService, AllorsMaterialDialogService, Sorter } from '../../../../../material';
+import { OverviewService, AllorsMaterialDialogService, Sorter, TableRow, Table, DeleteService, PrintService, StateService } from '../../../../../material';
 
-
-interface Row {
-  purchaseInvoice: PurchaseInvoice;
+interface Row extends TableRow {
+  object: PurchaseInvoice;
   number: string;
   billedFrom: string;
   billedTo: string;
   reference: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
 }
-
 @Component({
   templateUrl: './purchaseinvoice-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
 export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
 
-  public searchForm: FormGroup; public advancedSearch: boolean;
-
   public title = 'Purchase Invoices';
 
-  public displayedColumns = ['select', 'number', 'billedFrom', 'billedTo', 'reference', 'lastModifiedDate', 'menu'];
-  public selection = new SelectionModel<Row>(true, []);
+  table: Table<Row>;
 
-  public total: number;
-  public dataSource = new MatTableDataSource<Row>();
-
-  private sort$: BehaviorSubject<Sort>;
-  private refresh$: BehaviorSubject<Date>;
-  private pager$: BehaviorSubject<PageEvent>;
+  delete: Action;
 
   private subscription: Subscription;
 
@@ -50,19 +39,38 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    public printService: PrintService,
+    public deleteService: DeleteService,
     public overviewService: OverviewService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     private location: Location,
+    private stateService: StateService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+    this.delete = deleteService.delete(allors.context);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'number' },
+        { name: 'billedFrom' },
+        { name: 'billedTo' },
+        { name: 'reference' },
+        'lastModifiedDate'
+      ],
+      actions: [
+        overviewService.overview(),
+        this.printService.print(),
+        this.delete
+      ],
+      defaultAction: overviewService.overview(),
+    });
   }
 
   public ngOnInit(): void {
@@ -82,7 +90,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -113,17 +121,16 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.total = loaded.values.People_total;
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
-
-        this.dataSource.data = purchaseInvoices.map((v) => {
+        this.table.total = loaded.values.SalesOrders_total;
+        this.table.data = purchaseInvoices.map((v) => {
           return {
-            purchaseInvoice: v,
+            object: v,
             number: v.InvoiceNumber,
             billedFrom: v.BilledFrom.displayName,
             billedTo: v.BilledTo.displayName,
             reference: `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
-            lastModifiedDate: v.LastModifiedDate,
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       }, this.errorService.handler);
@@ -133,41 +140,5 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public get hasSelection() {
-    return !this.selection.isEmpty();
-  }
-
-  public get selectedPeople() {
-    return this.selection.selected.map(v => v.purchaseInvoice);
-  }
-
-  public isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public goBack(): void {
-    this.location.back();
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public sort(event: Sort): void {
-    this.sort$.next(event);
-  }
-
-  public page(event: PageEvent): void {
-    this.pager$.next(event);
   }
 }

@@ -1,4 +1,5 @@
 import { ObjectType } from '../../framework/meta/ObjectType';
+import { humanize } from '../../angular/base/humanize';
 
 const icon = Symbol('icon');
 const displayName = Symbol('displayName');
@@ -12,8 +13,6 @@ declare module '../../framework/meta/ObjectType' {
     }
 }
 
-const x = ObjectType;
-
 Object.defineProperty(ObjectType.prototype, 'icon', {
     get(this: ObjectType): string {
         return this[icon];
@@ -26,7 +25,7 @@ Object.defineProperty(ObjectType.prototype, 'icon', {
 
 Object.defineProperty(ObjectType.prototype, 'displayName', {
     get(this: ObjectType): string {
-        return this[displayName] || this.name;
+        return this[displayName] || humanize(this.name);
     },
 
     set(this: ObjectType, value: string): void {
