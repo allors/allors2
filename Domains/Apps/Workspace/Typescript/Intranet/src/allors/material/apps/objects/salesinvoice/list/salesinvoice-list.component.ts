@@ -1,18 +1,16 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Location } from '@angular/common';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
 import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService } from '../../../../../angular';
-import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Sorter } from '../../../../base/sorting';
+import { SalesInvoice } from '../../../../../domain';
+import { And, Like, PullRequest, Sort } from '../../../../../framework';
+import { PrintService, Sorter } from '../../../../../material';
 
 interface Row {
   salesInvoice: SalesInvoice;
@@ -47,13 +45,11 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
+    public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    private location: Location,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -96,6 +92,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                PrintDocument: x,
                 BillToCustomer: x,
                 SalesInvoiceState: x,
               },

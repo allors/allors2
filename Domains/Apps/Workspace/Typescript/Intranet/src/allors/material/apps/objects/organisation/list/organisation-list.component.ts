@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
-import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../..';
+import { TableRow, OverviewService, DeleteService, Table, Sorter } from '../../../..';
 
 import { Organisation } from '../../../../../domain';
 
@@ -42,7 +42,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -67,10 +67,10 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 

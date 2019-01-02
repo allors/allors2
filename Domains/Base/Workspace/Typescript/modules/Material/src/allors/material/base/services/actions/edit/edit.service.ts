@@ -11,12 +11,12 @@ import { EditAction } from './EditAction';
 export class EditService {
 
   constructor(
-    public objectService: ObjectService,
-    public refreshService: RefreshService,
+    private objectService: ObjectService,
+    private refreshService: RefreshService,
     ) {}
 
   edit() {
-    return new EditAction(this);
+    return new EditAction(this.objectService, this.refreshService);
   }
 
 }

@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../..';
 
 import { Quote } from '../../../../../domain';
 
@@ -32,6 +32,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   table: Table<Row>;
 
   delete: Action;
+  print: Action;
 
   private subscription: Subscription;
 
@@ -40,8 +41,9 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public deleteService: DeleteService,
+    public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -55,6 +57,8 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
       this.table.selection.clear();
     });
 
+    this.print = printService.print();
+
     this.table = new Table({
       selection: true,
       columns: [
@@ -66,10 +70,11 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
+        this.print,
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 
@@ -110,6 +115,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                PrintDocument: x,
                 Receiver: x,
                 QuoteState: x,
               },

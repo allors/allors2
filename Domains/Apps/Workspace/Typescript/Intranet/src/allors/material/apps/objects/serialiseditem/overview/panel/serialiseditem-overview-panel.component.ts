@@ -4,8 +4,7 @@ import { NavigationService, Action, PanelService, RefreshService, ErrorService, 
 import { Meta } from '../../../../../../meta';
 import { SerialisedItem, Part, Party } from '../../../../../../domain';
 import { DeleteService, TableRow, Table } from '../../../../..';
-import { ObjectService, CreateData } from '../../../../../base/services/object';
-import { NavigateService } from 'src/allors/material/base/services/actions';
+import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
 
 interface Row extends TableRow {
   object: SerialisedItem;
@@ -43,7 +42,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
     public objectService: ObjectService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
   ) {
@@ -69,10 +68,10 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
         { name: 'ownership' },
       ],
       actions: [
-        this.navigateService.overview(),
+        this.overviewService.overview(),
         this.delete,
       ],
-      defaultAction: this.navigateService.overview(),
+      defaultAction: this.overviewService.overview(),
     });
 
     const pullName = `${this.panel.name}_${this.m.SerialisedItem.name}`;

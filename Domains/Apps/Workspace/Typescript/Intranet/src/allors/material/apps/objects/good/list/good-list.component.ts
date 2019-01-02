@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Good, ProductCategory } from '../../../../../domain';
 
@@ -41,7 +41,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -63,10 +63,10 @@ export class GoodListComponent implements OnInit, OnDestroy {
         { name: 'qoh' },
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 

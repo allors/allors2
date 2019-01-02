@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService, EditService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
 
@@ -38,7 +38,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public editService: EditService,
     public deleteService: DeleteService,
     public navigation: NavigationService,

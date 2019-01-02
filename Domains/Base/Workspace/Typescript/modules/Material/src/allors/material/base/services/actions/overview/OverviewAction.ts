@@ -1,16 +1,14 @@
 import { Subject } from 'rxjs';
 
-import { ActionTarget, Action } from '../../../../../angular';
-
-import { NavigateService } from './navigate.service';
+import { ActionTarget, Action, NavigationService } from '../../../../../angular';
 
 function objectTypeName(target: ActionTarget) {
   return Array.isArray(target) ? (target.length > 0) && target[0].objectType.name : target.objectType.name;
 }
 
-export class NavigateOverviewAction implements Action {
+export class OverviewAction implements Action {
 
-  constructor(private navigateService: NavigateService) {
+  constructor(private navigationService: NavigationService) {
   }
 
   result = new Subject<boolean>();
@@ -24,10 +22,10 @@ export class NavigateOverviewAction implements Action {
   execute = (target: ActionTarget) => {
     if (Array.isArray(target)) {
       if (target.length > 0) {
-        this.navigateService.navigationService.overview(target[0]);
+        this.navigationService.overview(target[0]);
       }
     } else {
-      this.navigateService.navigationService.overview(target);
+      this.navigationService.overview(target);
     }
 
     this.result.next(true);

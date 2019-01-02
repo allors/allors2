@@ -9,14 +9,14 @@ import { DeleteAction } from './DeleteAction';
 export class DeleteService {
 
   constructor(
-    public refreshService: RefreshService,
-    public errorService: ErrorService,
-    public dialogService: AllorsMaterialDialogService,
-    public snackBar: MatSnackBar
+    private refreshService: RefreshService,
+    private errorService: ErrorService,
+    private dialogService: AllorsMaterialDialogService,
+    private snackBar: MatSnackBar
   ) { }
 
   delete(context: Context): Action {
-    return new DeleteAction(this, context);
+    return new DeleteAction(this.refreshService, this.errorService, this.dialogService, this.snackBar, context);
   }
 
 }

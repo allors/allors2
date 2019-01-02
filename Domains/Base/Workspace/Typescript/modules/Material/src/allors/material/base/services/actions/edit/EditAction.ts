@@ -1,9 +1,10 @@
 import { Subject } from 'rxjs';
 
-import { Action, ActionTarget } from '../../../../../angular';
+import { Action, ActionTarget, RefreshService } from '../../../../../angular';
 
 import { EditService } from './edit.service';
 import { ISessionObject } from '../../../../../framework';
+import { ObjectService } from '../../object';
 
 export class EditAction implements Action {
 
@@ -11,17 +12,20 @@ export class EditAction implements Action {
   name = () => 'Edit';
   description = () => 'Edit';
 
-  constructor(private editService: EditService) {
+  constructor(
+    private objectService: ObjectService,
+    private refreshService: RefreshService
+  ) {
   }
 
   disabled(target: ActionTarget) {
-    return !this.editService.objectService.hasEditControl(target as ISessionObject);
+    return !this.objectService.hasEditControl(target as ISessionObject);
   }
 
   execute(target: ActionTarget) {
-    this.editService.objectService.edit(target as ISessionObject)
+    this.objectService.edit(target as ISessionObject)
       .subscribe((v) => {
-        this.editService.refreshService.refresh();
+        this.refreshService.refresh();
         this.result.next(true);
       });
   }

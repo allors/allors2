@@ -75,7 +75,7 @@ export class AllorsFilterService {
 
   init(predicate: Predicate, options: { [parameter: string]: Partial<FilterOptions> } = null) {
     const predicates = getParameterizedPredicates(predicate);
-    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, options: new FilterOptions(options[v.parameter]) }));
+    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({ predicate: v, options: new FilterOptions(options && options[v.parameter]) }));
   }
 
   arguments(filterFields: FilterField[]): any {

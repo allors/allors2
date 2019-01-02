@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-import { NavigateService } from './navigate.service';
-export { NavigateService } from './navigate.service';
+import { OverviewService } from './overview.service';
+export { OverviewService } from './overview.service';
 
 @NgModule({
   declarations: [
@@ -11,14 +11,14 @@ export { NavigateService } from './navigate.service';
   imports: [
   ],
   providers: [
-    NavigateService
+    OverviewService
   ]
 })
 export class NavigateModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: NavigateModule,
-      providers: [ NavigateService ]
+      providers: [ OverviewService ]
     };
   }
 }

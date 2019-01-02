@@ -6,13 +6,9 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
-
 import { WorkEffort } from '../../../../../domain';
-
-import { ObjectService } from '../../../../base/services/object';
-
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
   object: WorkEffort;
@@ -44,8 +40,9 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public deleteService: DeleteService,
+    public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -61,18 +58,19 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number', sort: true},
-        { name: 'name', sort: true},
-        { name: 'type', sort: false},
+        { name: 'number', sort: true },
+        { name: 'name', sort: true },
+        { name: 'type', sort: false },
         { name: 'state', sort: true },
         { name: 'description', sort: true },
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
+        this.printService.print(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 
@@ -115,6 +113,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                PrintDocument: x,
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
               },

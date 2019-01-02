@@ -8,12 +8,11 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService } from '../../../../../angular';
-import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Sorter } from '../../../../base/sorting';
-import { NavigateService } from 'src/allors/material/base/services/actions';
+import { AllorsFilterService, ErrorService, ContextService, MediaService, MetaService, RefreshService } from '../../../../../angular';
+import { PurchaseInvoice } from '../../../../../domain';
+import { And, Like, PullRequest, Sort } from '../../../../../framework';
+import { OverviewService, AllorsMaterialDialogService, Sorter } from '../../../../../material';
+
 
 interface Row {
   purchaseInvoice: PurchaseInvoice;
@@ -51,7 +50,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigation: NavigateService,
+    public overviewService: OverviewService,
     public mediaService: MediaService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar,

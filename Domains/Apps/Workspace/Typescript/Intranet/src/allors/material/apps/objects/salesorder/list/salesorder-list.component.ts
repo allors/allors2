@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../..';
 
 import { SalesOrder } from '../../../../../domain';
 
@@ -39,7 +39,8 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
+    public printService: PrintService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -64,10 +65,11 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
+        this.printService.print(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 
@@ -108,6 +110,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                PrintDocument: x,
                 ShipToCustomer: x,
                 SalesOrderState: x,
               },

@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Person, Country } from '../../../../../domain';
 
@@ -42,7 +42,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -65,10 +65,10 @@ export class PersonListComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.overview(),
+        overviewService.overview(),
         this.delete
       ],
-      defaultAction: navigateService.overview(),
+      defaultAction: overviewService.overview(),
     });
   }
 

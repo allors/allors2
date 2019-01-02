@@ -20,15 +20,6 @@ export const menu: MenuItem[] = [
     ]
   },
   {
-    title: 'Sales',
-    icon: 'business',
-    children: [
-      { id: ids.RequestForQuote },
-      { id: ids.ProductQuote },
-      { id: ids.SalesOrder },
-    ]
-  },
-  {
     title: 'Products',
     icon: 'business',
     children: [
@@ -38,6 +29,15 @@ export const menu: MenuItem[] = [
       { id: ids.ProductCategory },
       { id: ids.SerialisedItemCharacteristic, title: 'Characteristics' },
       { id: ids.ProductType },
+    ]
+  },
+  {
+    title: 'Sales',
+    icon: 'business',
+    children: [
+      { id: ids.RequestForQuote },
+      { id: ids.ProductQuote },
+      { id: ids.SalesOrder },
     ]
   },
   {

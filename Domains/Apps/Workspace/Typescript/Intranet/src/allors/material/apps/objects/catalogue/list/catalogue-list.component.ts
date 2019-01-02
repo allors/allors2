@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, EditService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService, StateService } from '../../../..';
 
 import { Catalogue } from '../../../../../domain';
 
@@ -36,7 +36,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public editService: EditService,
     public deleteService: DeleteService,
     public navigation: NavigationService,

@@ -85,6 +85,7 @@
               </button>
               <mat-menu #menu="matMenu">
                 <a (click)="navigation.overview(row.salesInvoice)" mat-menu-item>Details</a>
+                <a (click)="printService.print().execute(row.salesInvoice)" mat-menu-item>Print</a>
               </mat-menu>
             </td>
           </ng-container>

@@ -2,15 +2,15 @@ import { Component, OnDestroy, Input, Output, EventEmitter, OnInit, Self } from 
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
+import { TableRow, Table, OverviewService } from '../../../../../material';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
+
 import { StateService } from '../../../services/state';
-import { switchMap, map } from 'rxjs/operators';
-import { TableRow, Table } from 'src/allors/material/base/components/table';
-import { NavigateService } from 'src/allors/material/base/services/actions';
 
 interface Row extends TableRow {
   object: InventoryItem;
@@ -50,7 +50,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     public metaService: MetaService,
-    public navigateService: NavigateService,
+    public overviewService: OverviewService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
