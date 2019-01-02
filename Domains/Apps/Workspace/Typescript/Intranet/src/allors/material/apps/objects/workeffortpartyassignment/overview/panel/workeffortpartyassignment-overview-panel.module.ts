@@ -11,6 +11,8 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../../base/component
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
+import { AllorsMaterialTableModule } from '../../../../../base/components/table';
+import { AllorsMaterialFactoryFabModule } from '../../../../../base/components/factoryfab/factoryfab.module';
 
 import { WorkEffortPartyAssignmentOverviewPanelComponent } from './workeffortpartyassignment-overview-panel.component';
 export { WorkEffortPartyAssignmentOverviewPanelComponent } from './workeffortpartyassignment-overview-panel.component';
@@ -23,12 +25,14 @@ export { WorkEffortPartyAssignmentOverviewPanelComponent } from './workeffortpar
     WorkEffortPartyAssignmentOverviewPanelComponent,
   ],
   imports: [
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
+    AllorsMaterialTableModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,

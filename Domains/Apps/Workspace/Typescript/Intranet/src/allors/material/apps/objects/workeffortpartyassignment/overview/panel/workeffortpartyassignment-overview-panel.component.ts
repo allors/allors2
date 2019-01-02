@@ -1,8 +1,18 @@
-import { Component, Self } from '@angular/core';
-import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
-import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../../domain';
+import { Component, Self, OnInit } from '@angular/core';
+import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService } from '../../../../..';
+import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
+import * as moment from 'moment';
+
+interface Row extends TableRow {
+  object: WorkEffortPartyAssignment;
+  number: string;
+  name: string;
+  status: string;
+  from: string;
+  through: string;
+}
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,13 +20,22 @@ import { DeleteService } from '../../../../..';
   templateUrl: './workeffortpartyassignment-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortPartyAssignmentOverviewPanelComponent {
+export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  workEffortPartyAssignments: WorkEffortPartyAssignment[];
+  objects: WorkEffortPartyAssignment[] = [];
 
   delete: Action;
+  edit: Action;
+  table: Table<TableRow>;
+
+  get createData(): CreateData {
+    return {
+      associationId: this.panel.manager.id,
+      associationObjectType: this.panel.manager.objectType,
+    };
+  }
 
   constructor(
     @Self() public panel: PanelService,
@@ -25,26 +44,49 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent {
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
+    public editService: EditService,
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.manager.context);
+  }
 
-    panel.name = 'workeffortpartyassignment';
-    panel.title = 'Work Efforts';
-    panel.icon = 'work';
-    panel.expandable = true;
+  ngOnInit() {
 
-    const workEffortPartyAssignmentPullName = `${panel.name}_${this.m.WorkEffortPartyAssignment.name}`;
+    this.delete = this.deleteService.delete(this.panel.manager.context);
+    this.edit = this.editService.edit();
 
-    panel.onPull = (pulls) => {
-      const { pull,  x } = this.metaService;
+    this.panel.name = 'workeffortpartyassignment';
+    this.panel.title = 'Work Efforts';
+    this.panel.icon = 'work';
+    this.panel.expandable = true;
+
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'number' },
+        { name: 'name' },
+        { name: 'status' },
+        { name: 'from' },
+        { name: 'through' },
+      ],
+      actions: [
+        this.edit,
+        this.delete,
+      ],
+      defaultAction: this.edit,
+    });
+
+    const personPullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_person`;
+    const organisationPullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_organisation`;
+
+    this.panel.onPull = (pulls) => {
+      const { pull, x } = this.metaService;
 
       const id = this.panel.manager.id;
 
       pulls.push(
         pull.Person({
-          name: workEffortPartyAssignmentPullName,
+          name: personPullName,
           object: id,
           fetch: {
             WorkEffortPartyAssignmentsWhereParty: {
@@ -56,13 +98,46 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent {
               }
             }
           }
+        }),
+        pull.Organisation({
+          name: organisationPullName,
+          object: id,
+          fetch: {
+            CurrentOrganisationContactRelationships: {
+              Contact: {
+                WorkEffortPartyAssignmentsWhereParty: {
+                  include: {
+                    Assignment: {
+                      WorkEffortState: x,
+                      Priority: x,
+                    }
+                  }
+                }
+              }
+            }
+          }
         })
       );
     };
 
-    panel.onPulled = (loaded) => {
-      this.workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
+    this.panel.onPulled = (loaded) => {
+      const x = loaded.collections[organisationPullName] as WorkEffortPartyAssignment[];
+      const collection = loaded.collections[personPullName] || loaded.collections[organisationPullName] as WorkEffortPartyAssignment[];
+      this.objects = collection as WorkEffortPartyAssignment[];
+
+      if (this.objects) {
+        this.table.total = loaded.values[`${personPullName}_total`] || this.objects.length;
+        this.table.data = this.objects.map((v) => {
+          return {
+            object: v,
+            number: v.Assignment.WorkEffortNumber,
+            name: v.Assignment.Name,
+            status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
+            from: moment(v.FromDate).format('L'),
+            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+          } as Row;
+        });
+      }
     };
   }
-
 }

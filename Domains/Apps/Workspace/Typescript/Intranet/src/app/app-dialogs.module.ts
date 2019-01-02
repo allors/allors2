@@ -32,6 +32,7 @@ import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
+import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
@@ -86,6 +87,7 @@ export const create = {
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
 
@@ -123,6 +125,7 @@ export const edit = {
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
 @NgModule({
@@ -164,6 +167,7 @@ export const edit = {
     SupplierRelationshipEditModule,
     TelecommunicationsNumberEditModule,
     WebAddressEditModule,
+    WorkEffortPartyAssignmentEditModule,
     WorkTaskCreateModule,
   ],
   entryComponents: [
@@ -201,6 +205,7 @@ export const edit = {
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberEditComponent,
     WebAddressEditComponent,
+    WorkEffortPartyAssignmentEditComponent,
     WorkTaskCreateComponent,
   ],
   providers: [
@@ -216,5 +221,4 @@ export class AppDialogModule {
       throw new Error('Use FactoryModule from AppModule');
     }
   }
-
 }

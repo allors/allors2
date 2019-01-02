@@ -2,7 +2,7 @@ import { Component, Self, OnInit } from '@angular/core';
 
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
-import { SerialisedItem, Part, Party } from '../../../../../../domain';
+import { SerialisedItem } from '../../../../../../domain';
 import { DeleteService, TableRow, Table } from '../../../../..';
 import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
 

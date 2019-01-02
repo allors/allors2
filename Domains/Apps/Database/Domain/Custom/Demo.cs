@@ -486,7 +486,6 @@ line2")
                     .Build();
             }
 
-
             for (int i = 0; i < 4; i++)
             {
                 var supplierPostalAddress = new PostalAddressBuilder(this.Session)
@@ -553,14 +552,25 @@ line2")
 
             var acme0 = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
 
-            var sold = new SerialisedItemBuilder(this.Session)
+            var item = new SerialisedItemBuilder(this.Session)
                 .WithSerialNumber("112")
                 .WithSerialisedItemState(new SerialisedItemStates(this.Session).Sold)
                 .WithAvailableForSale(false)
                 .WithOwnedBy(acme0)
                 .Build();
 
-            finishedGood2.AddSerialisedItem(sold);
+            finishedGood2.AddSerialisedItem(item);
+
+            var worktask = new WorkTaskBuilder(this.Session)
+                .WithTakenBy(allors)
+                .WithCustomer(new People(this.Session).FindBy(M.Person.FirstName, "John0"))
+                .WithName("maintenance")
+                .Build();
+
+            new WorkEffortFixedAssetAssignmentBuilder(this.Session)
+                .WithFixedAsset(item)
+                .WithAssignment(worktask)
+                .Build();
 
             this.Session.Derive();
         }
