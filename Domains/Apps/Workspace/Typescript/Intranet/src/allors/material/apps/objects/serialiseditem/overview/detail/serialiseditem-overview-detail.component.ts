@@ -100,6 +100,11 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
               object: id,
               include: {
                 SerialisedItemState: x,
+                SerialisedItemCharacteristics: {
+                  SerialisedItemCharacteristicType: {
+                    UnitOfMeasure: x
+                  }
+                },
                 Ownership: x,
                 OwnedBy: x,
                 RentedBy: x,
@@ -110,10 +115,14 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
             pull.SerialisedItem({
               object: id,
               fetch: {
-                PartWhereSerialisedItem: x
+                PartWhereSerialisedItem: {
+                  include: { SerialisedItems: x }
+                }
               }
             }),
-            pull.Part(),
+            pull.Part({
+              include: { SerialisedItems: x}
+            }),
             pull.SerialisedItemState({
               predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedItemState.Name),
@@ -130,7 +139,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.serialisedItem = loaded.objects.Person as SerialisedItem;
+        this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as Enumeration[];
@@ -165,6 +174,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
   public update(): void {
     const { context } = this.allors;
+
+    this.onSave();
 
     context
       .save()

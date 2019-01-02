@@ -40,22 +40,22 @@
 
             <div class="row">
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
-              <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState" [options]="serialisedItemStates"
-                display="Name"></a-mat-select>
+              <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState"
+                [options]="serialisedItemStates" display="Name"></a-mat-select>
             </div>
 
             <div class="row">
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
                 display="Name"></a-mat-select>
-              <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy" [filter]="stateService.organisationsFilter.create(allors.context)"
-                display="Name"></a-mat-autocomplete>
+              <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy"
+                [filter]="stateService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" [options]="activeSuppliers"
                 display="Name"></a-mat-select>
-              <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy" [filter]="stateService.organisationsFilter.create(allors.context)"
-                display="Name"></a-mat-autocomplete>
+              <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy"
+                [filter]="stateService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">
@@ -108,7 +108,8 @@
 
             <div class="row">
               <mat-form-field class="col-md">
-                <input matInput [(ngModel)]="serialisedItem.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
+                <input matInput [(ngModel)]="serialisedItem.yearsToGo" name="yearsToGo" placeholder="Years to go"
+                  readonly>
               </mat-form-field>
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.DepreciationYears"></a-mat-input>
             </div>
@@ -162,7 +163,8 @@
 
             <div class="row">
               <mat-form-field class="col">
-                <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value" readonly>
+                <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value"
+                  readonly>
               </mat-form-field>
             </div>
 
@@ -173,8 +175,8 @@
 
             <div class="row">
               <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value"
-                  readonly>
+                <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
+                  placeholder="Gross Book Value" readonly>
               </mat-form-field>
               <mat-form-field class="col">
                 <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa"
@@ -223,12 +225,12 @@
 
       </mat-tab-group>
     </mat-card-content>
-  </mat-card>
+    <mat-card-actions>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+      <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
+    </mat-card-actions>
 
-  <div mat-dialog-actions>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
-    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
-    <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
-</div>
+  </mat-card>
 
 </form>
