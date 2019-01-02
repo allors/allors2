@@ -25,7 +25,7 @@ interface Row extends TableRow {
 })
 export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
-  public title = 'Sales Orders';
+  public title = 'Sales Invoices';
 
   table: Table<Row>;
 

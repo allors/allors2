@@ -4,16 +4,11 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatTableModule, MatSortModule, MatDialogModule, MatPaginatorModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialFilterModule } from '../../../../base/components/filter';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
-import { AllorsMaterialFactoryFabModule } from '../../../../base/components/factoryfab/factoryfab.module';
+import {
+  AllorsMaterialHeaderModule, AllorsMaterialFileModule, AllorsMaterialFilterModule, AllorsMaterialInputModule, AllorsMaterialSelectModule,
+  AllorsMaterialSideNavToggleModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
+  AllorsMaterialFactoryFabModule, AllorsMaterialTableModule
+} from '../../../../../material';
 
 import { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
 export { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
@@ -35,6 +30,7 @@ export { PurchaseInvoiceListComponent } from './purchaseinvoice-list.component';
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
+    AllorsMaterialTableModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,
