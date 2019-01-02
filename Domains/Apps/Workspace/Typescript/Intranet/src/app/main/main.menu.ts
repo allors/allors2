@@ -38,14 +38,14 @@ export const menu: MenuItem[] = [
       { id: ids.RequestForQuote },
       { id: ids.ProductQuote },
       { id: ids.SalesOrder },
+      { id: ids.SalesInvoice },
     ]
   },
   {
-    title: 'Accounting',
+    title: 'Purchasing',
     icon: 'business',
     children: [
       { id: ids.PurchaseInvoice },
-      { id: ids.SalesInvoice },
     ]
   },
   {
