@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, Person } from '../../../../../../domain';
+import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
+import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, SerialisedItemState, Ownership, Part } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -21,13 +21,17 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
   readonly m: Meta;
 
-  person: Person;
+  serialisedItem: SerialisedItem;
 
   internalOrganisation: InternalOrganisation;
   locales: Locale[];
-  genders: Enumeration[];
-  salutations: Enumeration[];
+  serialisedItemStates: Enumeration[];
+  ownerships: Enumeration[];
+  parts: Part[];
+  activeSuppliers: Organisation[];
+  part: Part;
 
+  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
@@ -37,35 +41,32 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public location: Location,
+    public stateService: StateService,
     private errorService: ErrorService,
-    private stateService: StateService) {
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
     panel.name = 'detail';
-    panel.title = 'Personal Data';
-    panel.icon = 'person';
+    panel.title = 'Serialised Asset data';
+    panel.icon = 'business';
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.Person.name}`;
+    const pullName = `${this.panel.name}_${this.m.SerialisedItem.name}`;
 
     panel.onPull = (pulls) => {
 
-      this.person = undefined;
+      this.serialisedItem = undefined;
 
       if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
         pulls.push(
-          pull.Person({
+          pull.SerialisedItem({
             name: pullName,
             object: id,
-            include: {
-              GeneralEmail: x,
-              PersonalEmailAddress: x,
-            }
           })
         );
       }
@@ -73,7 +74,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.person = loaded.objects[pullName] as Person;
+        this.serialisedItem = loaded.objects[pullName] as SerialisedItem;
       }
     };
   }
@@ -88,37 +89,38 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         }),
         switchMap(() => {
 
-          this.person = undefined;
+          this.serialisedItem = undefined;
 
           const { m, pull, x } = this.metaService;
           const fetcher = new Fetcher(this.stateService, this.metaService.pull);
           const id = this.panel.manager.id;
 
           const pulls = [
-            fetcher.internalOrganisation,
-            fetcher.locales,
-            pull.GenderType({
-              predicate: new Equals({ propertyType: m.GenderType.IsActive, value: true }),
-              sort: new Sort(m.GenderType.Name),
-            }),
-            pull.Salutation({
-              predicate: new Equals({ propertyType: m.Salutation.IsActive, value: true }),
-              sort: new Sort(m.Salutation.Name),
-            }),
-            pull.Person({
-              object: id,
-              fetch: {
-                OrganisationContactRelationshipsWhereContact: x
-              }
-            }),
-            pull.Person({
+            pull.SerialisedItem({
               object: id,
               include: {
-                Gender: x,
-                Salutation: x,
-                Locale: x,
-                Picture: x,
+                SerialisedItemState: x,
+                Ownership: x,
+                OwnedBy: x,
+                RentedBy: x,
               }
+            }),
+            fetcher.internalOrganisation,
+            fetcher.locales,
+            pull.SerialisedItem({
+              object: id,
+              fetch: {
+                PartWhereSerialisedItem: x
+              }
+            }),
+            pull.Part(),
+            pull.SerialisedItemState({
+              predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
+              sort: new Sort(m.SerialisedItemState.Name),
+            }),
+            pull.Ownership({
+              predicate: new Equals({ propertyType: m.Ownership.IsActive, value: true }),
+              sort: new Sort(m.Ownership.Name),
             }),
           ];
 
@@ -128,11 +130,16 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.person = loaded.objects.Person as Person;
+        this.serialisedItem = loaded.objects.Person as SerialisedItem;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
-        this.genders = loaded.collections.GenderTypes as Enumeration[];
-        this.salutations = loaded.collections.Salutations as Enumeration[];
+        this.serialisedItemStates = loaded.collections.SerialisedItemStates as Enumeration[];
+        this.ownerships = loaded.collections.Ownerships as Enumeration[];
+        this.part = loaded.objects.Part as Part;
+        this.parts = loaded.collections.Parts as Part[];
+
+        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
+        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       }, this.errorService.handler);
 
   }
@@ -145,6 +152,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
   public save(): void {
 
+    this.onSave();
+
     this.allors.context.save()
       .subscribe(() => {
         this.location.back();
@@ -152,5 +161,27 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  private onSave() {
+    this.part.AddSerialisedItem(this.serialisedItem);
   }
 }
