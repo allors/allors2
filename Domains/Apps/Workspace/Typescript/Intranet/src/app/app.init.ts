@@ -24,6 +24,8 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SalesOrder.list = '/sales/salesorders';
   m.SalesOrder.overview = '/sales/salesorder/:id';
 
+  m.SerialisedItem.overview = '/products/serialisedItem/:id';
+
   m.Good.list = '/products/goods';
   m.Good.overview = '/products/good/:id';
   m.Part.list = '/products/parts';

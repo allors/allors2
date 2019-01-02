@@ -28,6 +28,7 @@ import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
+import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/apps/objects/serialiseditem/create/serialiseditem-create.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
@@ -77,6 +78,7 @@ export const create = {
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
+  [ids.SerialisedItem]: SerialisedItemCreateComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -157,6 +159,7 @@ export const edit = {
     SalesOrderCreateModule,
     SalesOrderItemEditModule,
     SalesTermEditModule,
+    SerialisedItemCreateModule,
     SerialisedItemCharacteristicEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberEditModule,
@@ -193,6 +196,7 @@ export const edit = {
     SalesOrderCreateComponent,
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
+    SerialisedItemCreateComponent,
     SerialisedItemCharacteristicEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberEditComponent,

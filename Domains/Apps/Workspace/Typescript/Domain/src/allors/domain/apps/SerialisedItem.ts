@@ -3,6 +3,7 @@ import { SerialisedItem } from '../generated/SerialisedItem.g';
 
 declare module '../generated/SerialisedItem.g' {
   interface SerialisedItem {
+    displayName;
     age;
     yearsToGo;
     goingConcern;
@@ -15,6 +16,13 @@ declare module '../generated/SerialisedItem.g' {
 domain.extend((workspace) => {
 
   const obj: SerialisedItem = workspace.prototypeByName['SerialisedItem'];
+
+  Object.defineProperty(obj, 'displayName', {
+    get(this: SerialisedItem) {
+
+      return this.ItemNumber + ' ' + this.Name;
+    },
+  });
 
   Object.defineProperty(obj, 'age', {
     get(this: SerialisedItem) {

@@ -1,0 +1,45 @@
+  <mat-card *ngIf="serialisedItem">
+
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{serialisedItem.displayName}}</mat-card-title>
+    <mat-card-subtitle>
+
+      <div *ngIf="serialisedItem.SerialisedItemState.Name !== 'N/A'">
+        {{serialisedItem.SerialisedItemState.Name}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <div *ngIf="serialisedItem.OwnedBy" (click)="navigation.overview(serialisedItem.OwnedBy)" style="cursor: pointer;">
+
+      <div >
+        <span style="color: grey">
+          Owned by:
+        </span>
+          {{serialisedItem.OwnedBy.displayName}}
+      </div>
+
+    </div>
+
+    <div *ngIf="serialisedItem.RentedBy" (click)="navigation.overview(serialisedItem.RentedBy)" style="cursor: pointer;">
+
+      <div>
+        <span style="color: grey">
+          Rented by:
+        </span>
+          {{serialisedItem.RentedBy.displayName}}
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

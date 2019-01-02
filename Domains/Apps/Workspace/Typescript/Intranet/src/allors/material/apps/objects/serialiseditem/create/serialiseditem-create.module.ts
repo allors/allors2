@@ -9,7 +9,7 @@ import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/ro
 import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialFilesModule } from '../../../..//base/components/role/files';
+import { AllorsMaterialFilesModule } from '../../../../base/components/role/files';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/role/localisedtext';
@@ -22,15 +22,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 import { BrandInlineModule } from '../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../model/inline/model-inline.module';
 
-import { EditSerialisedItemComponent } from './serialiseditem.component';
-export { EditSerialisedItemComponent } from './serialiseditem.component';
+import { SerialisedItemCreateComponent } from './serialiseditem-create.component';
+export { SerialisedItemCreateComponent } from './serialiseditem-create.component';
 
 @NgModule({
   declarations: [
-    EditSerialisedItemComponent,
+    SerialisedItemCreateComponent,
   ],
   exports: [
-    EditSerialisedItemComponent,
+    SerialisedItemCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -69,4 +69,4 @@ export { EditSerialisedItemComponent } from './serialiseditem.component';
     RouterModule,
   ],
 })
-export class SerialisedItemModule { }
+export class SerialisedItemCreateModule { }

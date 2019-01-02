@@ -1,0 +1,28 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a *ngIf="owner?.objectType === m.Organisation" (click)="navigationService.list(m.Organisation)">Organisations</a> / {{owner?.displayName}}
+        <a *ngIf="owner?.objectType === m.Person" (click)="navigationService.list(m.Person)">People</a> / {{owner?.displayName}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview2 container">
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <serialiseditem-overview-summary></serialiseditem-overview-summary>
+      </div>
+
+      <div class="col-md-8">
+
+        <serialiseditem-overview-detail></serialiseditem-overview-detail>
+
+        <!-- <workeffortpartyassignment-overview-panel></workeffortpartyassignment-overview-panel> -->
+
+      </div>
+    </div>
+  </div>
+</div>

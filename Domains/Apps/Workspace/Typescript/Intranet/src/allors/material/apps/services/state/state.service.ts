@@ -10,4 +10,5 @@ export abstract class StateService {
     public goodsFilter: SearchFactory;
     public customersFilter: SearchFactory;
     public organisationsFilter: SearchFactory;
+    public partiesFilter: SearchFactory;
 }

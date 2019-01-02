@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
+import { Sorter, TableRow, Table, NavigateService, DeleteService, EditService } from '../../../..';
 
 import { CommunicationEvent } from '../../../../../domain';
 
@@ -33,6 +33,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
   table: Table<Row>;
 
   delete: Action;
+  edit: Action;
 
   private subscription: Subscription;
 
@@ -41,8 +42,8 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
     public deleteService: DeleteService,
+    public editService: EditService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -51,6 +52,8 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);
+    this.edit = editService.edit();
+
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -66,10 +69,10 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
         'lastModifiedDate'
       ],
       actions: [
-        navigateService.edit(),
+        this.edit,
         this.delete
       ],
-      defaultAction: navigateService.edit(),
+      defaultAction: this.edit,
     });
   }
 

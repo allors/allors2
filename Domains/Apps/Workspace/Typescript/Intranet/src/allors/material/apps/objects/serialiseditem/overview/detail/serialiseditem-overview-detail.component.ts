@@ -13,11 +13,11 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'person-overview-detail',
-  templateUrl: './person-overview-detail.component.html',
+  selector: 'serialiseditem-overview-detail',
+  templateUrl: './serialiseditem-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
+export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 

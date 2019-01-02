@@ -1,0 +1,67 @@
+<form *ngIf="serialisedItem" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let part of parts" [value]="part"> {{ part.Name }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Name"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState"
+          [options]="serialisedItemStates" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
+          display="Name"></a-mat-select>
+        <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy" [filter]="stateService.partiesFilter.create(allors.context)"
+          display="displayName"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" [options]="activeSuppliers"
+          display="Name"></a-mat-select>
+        <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy" [filter]="stateService.partiesFilter.create(allors.context)"
+          display="displayName"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LastServiceDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.NextServiceDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-slidetoggle class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
+      </div>
+
+      <a-mat-file class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrimaryPhoto" accept="image/*"></a-mat-file>
+
+      <div class="row pt-3">
+        <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Keywords"></a-mat-textarea>
+        <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.InternalComment"></a-mat-textarea>
+        <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Comment"></a-mat-textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

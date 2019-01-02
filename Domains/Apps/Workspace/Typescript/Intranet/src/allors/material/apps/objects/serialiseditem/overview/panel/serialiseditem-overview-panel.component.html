@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
       <div class="row rounded" style="background-color: white;">
           <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightskyblue">
@@ -6,18 +6,18 @@
           </div>
           <div class="col-9 col-md-10 p-3">
               <h4>{{panel.title}}</h4>
-              <div>{{serialisedItems?.length}} total serialised items</div>
+              <div>{{objects?.length}} total serialised assets</div>
           </div>
       </div>
   </div>
 </div>
 
-<div *ngIf="panel.isExpanded && serialisedItems" class="mat-elevation-z2" style="background: white">
+<div *ngIf="panel.isExpanded && !!table" class="mat-elevation-z2" style="background: white">
 
   <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
     <div class="row pt-3">
       <div class="col pl-3">
-        <h4>Serialised Items</h4>
+        <h4>Serialised Assets</h4>
       </div>
       <div class="pr-3">
         <mat-icon>expand_less</mat-icon>
@@ -25,39 +25,10 @@
     </div>
   </div>
 
-  <div class="container">
+  <a-mat-factory-fab [objectType]="metaService.m.SerialisedItem" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
-    <ul *ngIf="serialisedItems?.length === 0">
-      <li>no items to display</li>
-    </ul>
-
-    <mat-list>
-      <mat-list-item *ngFor="let item of serialisedItems; let last=last" [attr.data-allors-id]="item.id">
-
-        <h3 *ngIf="part" mat-line (click)="navigation.edit(item, part)">{{item.ItemNumber}}, serialnumber:
-          {{item.SerialNumber}}</h3>
-        <h3 *ngIf="owner" mat-line (click)="navigation.edit(item, owner)">{{item.ItemNumber}}, serialnumber:
-          {{item.SerialNumber}}</h3>
-        <h4 mat-line>status: {{item.SerialisedItemState.Name}}, owner: {{item.OwnedBy?.displayName}}</h4>
-
-        <span>
-          <button mat-icon-button [mat-menu-trigger-for]="menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <a *ngIf="part?.CanWriteSerialisedItems" (click)="navigation.edit(item, part)" mat-menu-item>Edit</a>
-            <a *ngIf="owner && item.CanWriteOwnedBy" (click)="navigation.edit(item, owner)" mat-menu-item>Edit</a>
-            <button mat-menu-item [disabled]="!item.CanExecuteDelete" (click)="delete.execute(item)">Delete</button>
-          </mat-menu>
-        </span>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </mat-list-item>
-    </mat-list>
-  </div>
-
-  <div class="container">
-    <button *ngIf="part?.CanWriteSerialisedItems" mat-button (click)="navigation.add(m.SerialisedItem, part)">Add new</button>
-    <button *ngIf="owner" mat-button (click)="navigation.add(m.SerialisedItem, owner)">Add new</button>
+  <div>
+      <a-mat-table [table]="table"></a-mat-table>
   </div>
 
 </div>

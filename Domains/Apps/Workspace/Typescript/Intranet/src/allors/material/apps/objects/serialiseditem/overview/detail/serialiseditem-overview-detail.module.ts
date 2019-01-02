@@ -5,34 +5,34 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
+import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
-import { AllorsMaterialTableModule } from '../../../../../base/components/table';
-import { AllorsMaterialFactoryFabModule } from '../../../../../base/components/factoryfab/factoryfab.module';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
-import { SerialisedItemOverviewPanelComponent } from './serialiseditem-overview-panel.component';
-export { SerialisedItemOverviewPanelComponent } from './serialiseditem-overview-panel.component';
+import { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
+export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
 
 @NgModule({
   declarations: [
-    SerialisedItemOverviewPanelComponent,
+    SerialisedItemOverviewDetailComponent,
   ],
   exports: [
-    SerialisedItemOverviewPanelComponent,
+    SerialisedItemOverviewDetailComponent,
   ],
   imports: [
-    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
+    AllorsMaterialHeaderModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
-    AllorsMaterialTableModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,
@@ -53,4 +53,4 @@ export { SerialisedItemOverviewPanelComponent } from './serialiseditem-overview-
     RouterModule,
   ],
 })
-export class SerialisedItemOverviewPanelModule { }
+export class SerialisedItemOverviewDetailModule { }

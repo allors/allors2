@@ -27,8 +27,6 @@ import * as OrganisationOverview from 'src/allors/material/apps/objects/organisa
 
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
 
-import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
-
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
@@ -44,6 +42,7 @@ import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
+import * as SerialisedItemOverview from 'src/allors/material/apps/objects/serialiseditem/overview/serialiseditem-overview.module';
 import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
 import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/good-overview.module';
 import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
@@ -58,8 +57,6 @@ import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/ove
 const modules = [
 
   CommunicationEventList.CommunicationEventListModule,
-
-  EditSerialisedItem.SerialisedItemModule,
 
   IncoTermEdit.IncoTermEditModule,
 
@@ -85,6 +82,7 @@ const modules = [
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
+  SerialisedItemOverview.SerialisedItemOverviewModule,
 
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
@@ -154,6 +152,7 @@ export const routes: Routes = [
           { path: 'part/:id', component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'productcategories', component: CategoriesOverview.ProductCategoriesOverviewComponent },
+          { path: 'serialisedItem/:id', component: SerialisedItemOverview.SerialisedItemOverviewComponent},
           { path: 'serialiseditemcharacteristics', component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
           { path: 'producttypes', component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
