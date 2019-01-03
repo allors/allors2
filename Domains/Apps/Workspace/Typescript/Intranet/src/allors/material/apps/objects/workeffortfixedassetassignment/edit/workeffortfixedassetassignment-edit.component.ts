@@ -4,36 +4,33 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Organisation } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './workeffortpartyassignment-edit.component.html',
+  templateUrl: './workeffortfixedassetassignment-edit.component.html',
   providers: [ContextService]
 })
-export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy {
+export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  workEffortPartyAssignment: WorkEffortPartyAssignment;
-  people: Person[];
+  workEffortFixedAssetAssignment: WorkEffortFixedAssetAssignment;
   workEfforts: WorkEffort[];
-  person: Person;
-  party: Party;
-  contacts: Person[] = [];
+  serialisedItem: SerialisedItem;
+  assetAssignmentStatuses: Enumeration[];
   title: string;
 
   private subscription: Subscription;
-  organisation: Organisation;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<WorkEffortPartyAssignmentEditComponent>,
+    public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
@@ -53,29 +50,24 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.WorkEffortPartyAssignment({
+            pull.WorkEffortFixedAssetAssignment({
               object: this.data.id,
               include: {
                 Assignment: x,
-                Party: x
-              }
-            }),
-            pull.Party({
-              object: this.data.associationId
-            }),
-            pull.Organisation({
-              object: this.data.associationId,
-              include: {
-                CurrentOrganisationContactRelationships: {
-                  Contact: x
-                }
+                FixedAsset: x,
+                AssetAssignmentStatus: x
               }
             }),
             pull.WorkEffort({
               sort: new Sort(m.WorkEffort.Name)
             }),
-            pull.Person({
-              sort: new Sort(m.Person.PartyName)
+            pull.SerialisedItem({
+              object: this.data.associationId,
+              sort: new Sort(m.SerialisedItem.Name)
+            }),
+            pull.AssetAssignmentStatus({
+              predicate: new Equals({ propertyType: m.AssetAssignmentStatus.IsActive, value: true }),
+              sort: new Sort(m.AssetAssignmentStatus.Name)
             }),
           ];
 
@@ -91,34 +83,22 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
         this.allors.context.reset();
 
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
-        this.people = loaded.collections.People as Person[];
-        this.party = loaded.objects.Party as Party;
-        this.organisation = loaded.objects.Organisation as Organisation;
+        this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
+        this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
         if (isCreate) {
-          this.title = 'Add Work Effort Party Assignment';
+          this.title = 'Add Work Effort Asset Assignment';
 
-          this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
-
-          if (this.organisation) {
-            this.organisation.CurrentOrganisationContactRelationships.forEach((relationship) => {
-              this.contacts.push(relationship.Contact);
-            });
-          }
-
-          if (this.party.objectType.name === m.Person.name) {
-            this.person = this.party as Person;
-            this.workEffortPartyAssignment.Party = this.person;
-          }
+          this.workEffortFixedAssetAssignment = this.allors.context.create('WorkEffortFixedAssetAssignment') as WorkEffortFixedAssetAssignment;
+          this.workEffortFixedAssetAssignment.FixedAsset = this.serialisedItem;
 
         } else {
-          this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
-          this.person = this.workEffortPartyAssignment.Party as Person;
+          this.workEffortFixedAssetAssignment = loaded.objects.WorkEffortFixedAssetAssignment as WorkEffortFixedAssetAssignment;
 
-          if (this.workEffortPartyAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Party Assignment';
+          if (this.workEffortFixedAssetAssignment.CanWriteFromDate) {
+            this.title = 'Edit Work Effort Asset Assignment';
           } else {
-            this.title = 'View Work Effort Party Assignment';
+            this.title = 'View Work Effort Asset Assignment';
           }
         }
       }, this.errorService.handler);
@@ -135,8 +115,8 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
     this.allors.context.save()
       .subscribe(() => {
         const data: ObjectData = {
-          id: this.workEffortPartyAssignment.id,
-          objectType: this.workEffortPartyAssignment.objectType,
+          id: this.workEffortFixedAssetAssignment.id,
+          objectType: this.workEffortFixedAssetAssignment.objectType,
         };
 
         this.dialogRef.close(data);

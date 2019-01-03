@@ -1,12 +1,12 @@
 import { Component, Self, OnInit } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
-import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
+import { WorkEffortFixedAssetAssignment } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: WorkEffortPartyAssignment;
+  object: WorkEffortFixedAssetAssignment;
   number: string;
   name: string;
   status: string;
@@ -16,15 +16,15 @@ interface Row extends TableRow {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'workeffortpartyassignment-overview-panel',
-  templateUrl: './workeffortpartyassignment-overview-panel.component.html',
+  selector: 'workeffortfixedassetassignment-overview-panel',
+  templateUrl: './workeffortfixedassetassignment-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
+export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: WorkEffortPartyAssignment[] = [];
+  objects: WorkEffortFixedAssetAssignment[] = [];
 
   delete: Action;
   edit: Action;
@@ -55,7 +55,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
-    this.panel.name = 'workeffortpartyassignment';
+    this.panel.name = 'workeffortfixedassetassignment';
     this.panel.title = 'Work Efforts';
     this.panel.icon = 'work';
     this.panel.expandable = true;
@@ -76,7 +76,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
       defaultAction: this.edit,
     });
 
-    const pullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}`;
+    const pullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}`;
 
     this.panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -84,11 +84,11 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Person({
+        pull.SerialisedItem({
           name: pullName,
           object: id,
           fetch: {
-            WorkEffortPartyAssignmentsWhereParty: {
+            WorkEffortFixedAssetAssignmentsWhereFixedAsset: {
               include: {
                 Assignment: {
                   WorkEffortState: x,
@@ -102,7 +102,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as WorkEffortPartyAssignment[];
+      this.objects = loaded.collections[pullName] as WorkEffortFixedAssetAssignment[];
 
       if (this.objects) {
         this.table.total = this.objects.length;

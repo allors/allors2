@@ -15,9 +15,7 @@
       </div>
 
       <div class="row">
-        <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
-          [options]="contacts" display="displayName"></a-mat-select>
-        <a-mat-static *ngIf="person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
+        <a-mat-static class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
           display="displayName"></a-mat-static>
       </div>
 

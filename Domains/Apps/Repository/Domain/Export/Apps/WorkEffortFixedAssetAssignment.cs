@@ -31,8 +31,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public AssetAssignmentStatus AssetAssignmentStatus { get; set; }
+
         #region Allors
         [Id("2d7dd4b3-a0bd-45aa-9d1a-a0ffa4a98061")]
         [AssociationId("6d66eb02-1eea-4b2e-8712-be6e1dde98be")]
@@ -41,8 +42,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public WorkEffort Assignment { get; set; }
+
         #region Allors
         [Id("a2816fd1-babb-480c-8e29-0f7192aaff71")]
         [AssociationId("c02a3dc0-c977-4893-b7e1-691cfe0c1b03")]
@@ -50,7 +52,9 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal AllocatedCost { get; set; }
+
         #region Allors
         [Id("e90cb555-e6d9-4d7d-8d98-6f9c28c4bc14")]
         [AssociationId("739ac865-7c8c-45e3-b240-349e4092a56b")]
@@ -59,9 +63,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public FixedAsset FixedAsset { get; set; }
-
 
         #region inherited methods
 
@@ -79,6 +82,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

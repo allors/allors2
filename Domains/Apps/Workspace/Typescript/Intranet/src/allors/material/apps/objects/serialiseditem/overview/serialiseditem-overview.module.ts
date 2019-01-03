@@ -19,7 +19,7 @@ import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/over
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
-import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
 
 import { SerialisedItemOverviewSummaryModule } from './summary/serialiseditem-overview-summary.module';
 import { SerialisedItemOverviewDetailModule } from './detail/serialiseditem-overview-detail.module';
@@ -43,7 +43,7 @@ export { SerialisedItemOverviewComponent } from './serialiseditem-overview.compo
     PartyContactMechanismOverviewPanelModule,
     PartyRelationshipOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
-    WorkEffortPartyAssignmentOverviewPanelModule,
+    WorkEffortFixedAssetAssignmentOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

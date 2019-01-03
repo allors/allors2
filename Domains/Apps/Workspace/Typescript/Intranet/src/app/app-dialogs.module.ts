@@ -32,6 +32,7 @@ import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
+import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
@@ -87,6 +88,7 @@ export const create = {
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
@@ -125,6 +127,7 @@ export const edit = {
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
@@ -167,6 +170,7 @@ export const edit = {
     SupplierRelationshipEditModule,
     TelecommunicationsNumberEditModule,
     WebAddressEditModule,
+    WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
     WorkTaskCreateModule,
   ],
@@ -205,6 +209,7 @@ export const edit = {
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberEditComponent,
     WebAddressEditComponent,
+    WorkEffortFixedAssetAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,
     WorkTaskCreateComponent,
   ],
