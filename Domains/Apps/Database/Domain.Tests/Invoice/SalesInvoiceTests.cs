@@ -1448,29 +1448,5 @@ namespace Allors.Domain
             Assert.Equal(new SalesInvoiceItemStates(this.Session).WrittenOff, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
             Assert.Equal(new SalesInvoiceItemStates(this.Session).WrittenOff, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
         }
-
-        [Fact]
-        public void GivenSalesInvoice_WhenDeriving_ThenPrintDocumentRendered()
-        {
-            // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-
-            // Act
-            this.Session.Derive(true);
-
-            // Assert
-            var invoice = new SalesInvoices(this.Session).Extent().First;
-
-            Assert.NotNull(invoice.PrintDocument);
-            var result = invoice.PrintDocument;
-
-            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
-            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
-
-            stream.CopyTo(outputFile);
-            stream.Close();
-        }
     }
 }

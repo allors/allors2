@@ -14,24 +14,24 @@
       <Property Name="InvoiceItems" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Allors.Domain.Print.BilledFromModel">
+  <Class Name="Allors.Domain.SalesInvoicePrint.BilledFromModel">
     <Position X="10" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AWAAAAAAACAAgAAJIEAEAAQAAAIAAAAIAIAABAAAgAE=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\BillFromModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Allors.Domain.Print.InvoiceItemModel">
+  <Class Name="Allors.Domain.SalesInvoicePrint.InvoiceItemModel">
     <Position X="7.25" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAQAgAAAAAAAAAACAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\InvoiceItemModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Allors.Domain.Print.InvoiceModel">
-    <Position X="5.25" Y="1" Width="1.5" />
+  <Class Name="Allors.Domain.SalesInvoicePrint.InvoiceModel">
+    <Position X="4.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAABAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAEgAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\InvoiceModel.cs</FileName>
     </TypeIdentifier>
   </Class>
