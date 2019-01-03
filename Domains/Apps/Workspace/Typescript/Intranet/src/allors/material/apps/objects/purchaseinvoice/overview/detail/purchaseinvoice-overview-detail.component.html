@@ -24,10 +24,10 @@
               <a-mat-static class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
               <a-mat-static class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder"></a-mat-static>
             </div>
-    
+
             <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
-    
+              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (changed)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
+
               <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFromContactPerson" [options]="billedFromContacts" display="displayName" label="Billed from Contact Person" class="col-md"></a-mat-select>
@@ -47,12 +47,12 @@
                 </mat-card>
               </div>
             </div>
-    
+
             <div class="row">
               <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes" display="Name"></a-mat-select>
-              <a-mat-autocomplete class="col-md" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to End Customer"></a-mat-autocomplete>
+              <a-mat-autocomplete class="col-md" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (changed)="billToCustomerSelected($event)" label="Bill to End Customer"></a-mat-autocomplete>
             </div>
-    
+
             <div class="row">
               <div class="col-md">
                 <div class="row">
@@ -72,7 +72,7 @@
                   </mat-card-content>
                 </mat-card>
               </div>
-    
+
               <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactPerson" [options]="billToContacts" display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
@@ -92,10 +92,10 @@
                 </mat-card>
               </div>
             </div>
-    
-    
+
+
             <div class="row">
-              <a-mat-autocomplete class="col-md" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
+              <a-mat-autocomplete class="col-md" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" [filter]="stateService.organisationsFilter.create(allors)" display="Name" (changed)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
               <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses" display="displayName" class="col-md"></a-mat-select>
@@ -115,7 +115,7 @@
                 </mat-card>
               </div>
             </div>
-    
+
             <div class="row">
               <div class="col-md">
                 <div class="row">
@@ -136,18 +136,18 @@
                 </mat-card>
               </div>
             </div>
-    
-    
+
+
             <div class="row">
               <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
               <a-mat-static class="col-md" [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
             </div>
-    
+
             <div class="row">
               <a-mat-textarea class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-textarea>
               <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
             </div>
-    
+
             <div class="row">
               <a-mat-static class="col-md" *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment"></a-mat-static>
               <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment"></a-mat-textarea>

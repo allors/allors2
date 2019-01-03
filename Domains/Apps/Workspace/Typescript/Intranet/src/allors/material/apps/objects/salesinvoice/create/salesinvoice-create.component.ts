@@ -134,8 +134,8 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
                 this.allors.context.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-                this.currencies = loaded.collections.currencies as Currency[];
-                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+                this.currencies = loaded.collections.Currencies as Currency[];
+                this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
                 const fetches = [
                   this.fetcher.internalOrganisation,
@@ -553,9 +553,9 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
           this.updateBillToCustomer(this.invoice.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToContacts = loaded.collections.currentContacts as Person[];
+        this.shipToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -602,9 +602,9 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
           this.updateShipToCustomer(this.invoice.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToContacts = loaded.collections.currentContacts as Person[];
+        this.billToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -650,9 +650,9 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+        this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -695,9 +695,9 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
           this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+        this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 }

@@ -76,9 +76,9 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.salesTerm = loaded.objects.SalesTerm as SalesTerm;
+        this.orderTermTypes = loaded.collections.OrderTermTypes as OrderTermType[];
 
         if (!this.salesTerm) {
           this.title = 'Add Sales Invoice Order Term';

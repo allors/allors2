@@ -149,7 +149,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+        this.inventoryItems = loaded.collections.InventoryItem as InventoryItem[];
         if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
           this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
         }

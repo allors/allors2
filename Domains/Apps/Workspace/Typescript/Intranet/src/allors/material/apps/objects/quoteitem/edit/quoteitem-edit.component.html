@@ -11,7 +11,7 @@
 
       <div class="row">
         <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"
-          [filter]="stateService.goodsFilter.create(allors.context)" (onChange)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
+          [filter]="stateService.goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
       </div>
 
       <div class="row">

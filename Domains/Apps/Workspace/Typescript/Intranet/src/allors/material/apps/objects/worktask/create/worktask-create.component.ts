@@ -127,12 +127,11 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
-        const partyContactMechanisms: PartyContactMechanism[] = loaded
-          .collections.partyContactMechanisms as PartyContactMechanism[];
-        this.contactMechanisms = partyContactMechanisms.map(
-          (v: PartyContactMechanism) => v.ContactMechanism,
-        );
-        this.contacts = loaded.collections.currentContacts as Person[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms
+          .map((v: PartyContactMechanism) => v.ContactMechanism);
+
+        this.contacts = loaded.collections.CurrentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.handle(error);

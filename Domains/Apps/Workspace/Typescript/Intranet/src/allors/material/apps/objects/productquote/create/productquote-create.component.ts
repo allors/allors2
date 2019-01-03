@@ -83,7 +83,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
             .pipe(
               switchMap((loaded) => {
                 this.allors.context.reset();
-                this.currencies = loaded.collections.currencies as Currency[];
+                this.currencies = loaded.collections.Currencies as Currency[];
 
                 const pulls2 = [
                   this.fetcher.internalOrganisation,
@@ -95,8 +95,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        this.quote = loaded.objects.productQuote as ProductQuote;
-        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
+        this.quote = loaded.objects.ProductQuote as ProductQuote;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = internalOrganisation;
@@ -213,9 +213,9 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
           this.previousReceiver = this.quote.Receiver;
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contacts = loaded.collections.currentContacts as Person[];
+        this.contacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
 
   }

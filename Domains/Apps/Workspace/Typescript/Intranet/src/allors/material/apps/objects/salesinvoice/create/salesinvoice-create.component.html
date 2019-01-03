@@ -13,7 +13,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer"
-          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (onChange)="billToCustomerSelected($event)"
+          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="billToCustomerSelected($event)"
           label="Bill to"></a-mat-autocomplete>
         <div class="col-md">
           <div class="row">
@@ -67,7 +67,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer"
-          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (onChange)="shipToCustomerSelected($event)"
+          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="shipToCustomerSelected($event)"
           label="Ship to organisation"></a-mat-autocomplete>
       </div>
 
@@ -118,7 +118,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
-          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (onChange)="billToEndCustomerSelected($event)"
+          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="billToEndCustomerSelected($event)"
           label="Bill to end customer"></a-mat-autocomplete>
       </div>
 
@@ -169,7 +169,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer"
-          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
+          [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="shipToEndCustomerSelected($event)"
           label="Ship to end customer"></a-mat-autocomplete>
       </div>
 

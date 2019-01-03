@@ -94,8 +94,8 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.subTitle = 'edit work task';
-        this.workTask = loaded.objects.worktask as WorkTask;
-        const communicationEvent: CommunicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
+        this.workTask = loaded.objects.Worktask as WorkTask;
+        const communicationEvent: CommunicationEvent = loaded.objects.CommunicationEvent as CommunicationEvent;
 
         if (!this.workTask) {
           this.subTitle = 'add a new work task';
@@ -103,10 +103,10 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
           communicationEvent.AddWorkEffort(this.workTask);
         }
 
-        this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
-        this.priorities = loaded.collections.priorities as Priority[];
-        this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
-        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
+        this.workEffortStates = loaded.collections.WorkEffortStates as WorkEffortState[];
+        this.priorities = loaded.collections.Priorities as Priority[];
+        this.workEffortPurposes = loaded.collections.WorkEffortPurposes as WorkEffortPurpose[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.employees = internalOrganisation.ActiveEmployees;
       }, this.errorService.handler);
   }

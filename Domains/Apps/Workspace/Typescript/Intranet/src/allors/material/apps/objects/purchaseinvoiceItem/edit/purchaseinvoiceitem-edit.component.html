@@ -18,7 +18,7 @@
 
       <div class="row" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
         <a-mat-autocomplete class="col-md" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType"
-          [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)"
+          [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Product" [options]="goods" display="Name" (changed)="goodSelected($event)"
           [filter]="stateService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
         <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType"
           [options]="invoiceItemTypes" display="Name"></a-mat-select>

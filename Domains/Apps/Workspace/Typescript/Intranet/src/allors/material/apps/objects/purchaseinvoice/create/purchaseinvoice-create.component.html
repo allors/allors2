@@ -13,7 +13,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(allors.context)"
-          display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
+          display="Name" (changed)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
 
         <div class="col-md">
           <div class="row">
@@ -42,7 +42,7 @@
         <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes"
           display="Name"></a-mat-select>
         <a-mat-autocomplete class="col-md" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer"
-          [filter]="stateService.organisationsFilter.create(allors)" display="Name" (onChange)="billToCustomerSelected($event)"
+          [filter]="stateService.organisationsFilter.create(allors)" display="Name" (changed)="billToCustomerSelected($event)"
           label="Bill to End Customer"></a-mat-autocomplete>
       </div>
 
@@ -94,7 +94,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
-          [filter]="stateService.organisationsFilter.create(allors.context)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
+          [filter]="stateService.organisationsFilter.create(allors.context)" display="Name" (changed)="shipToEndCustomerSelected($event)"
           label="Ship to end customer"></a-mat-autocomplete>
         <div class="col-md">
           <div class="row">

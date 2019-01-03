@@ -138,10 +138,10 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.goods = loaded.collections.goods as Good[];
-        this.order = loaded.objects.order as SalesOrder;
-        this.invoice = loaded.objects.invoice as SalesInvoice;
-        this.repeatingInvoices = loaded.collections.repeatingInvoices as RepeatingSalesInvoice[];
+        this.goods = loaded.collections.Goods as Good[];
+        this.order = loaded.objects.Order as SalesOrder;
+        this.invoice = loaded.objects.Invoice as SalesInvoice;
+        this.repeatingInvoices = loaded.collections.RepeatingInvoices as RepeatingSalesInvoice[];
         if (this.repeatingInvoices.length > 0) {
           this.repeatingInvoice = this.repeatingInvoices[0];
         } else {

@@ -33,7 +33,7 @@
 
         <div class="row">
           <a-mat-autocomplete class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(allors)"
-            (onChange)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
+            (changed)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
         </div>
 
         <div class="row">
