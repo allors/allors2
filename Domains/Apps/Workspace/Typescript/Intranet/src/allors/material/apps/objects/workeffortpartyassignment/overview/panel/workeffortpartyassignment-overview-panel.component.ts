@@ -76,8 +76,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
       defaultAction: this.edit,
     });
 
-    const personPullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_person`;
-    const organisationPullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_organisation`;
+    const pullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_person`;
 
     this.panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -86,7 +85,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
 
       pulls.push(
         pull.Person({
-          name: personPullName,
+          name: pullName,
           object: id,
           fetch: {
             WorkEffortPartyAssignmentsWhereParty: {
@@ -99,34 +98,14 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
             }
           }
         }),
-        pull.Organisation({
-          name: organisationPullName,
-          object: id,
-          fetch: {
-            CurrentOrganisationContactRelationships: {
-              Contact: {
-                WorkEffortPartyAssignmentsWhereParty: {
-                  include: {
-                    Assignment: {
-                      WorkEffortState: x,
-                      Priority: x,
-                    }
-                  }
-                }
-              }
-            }
-          }
-        })
       );
     };
 
     this.panel.onPulled = (loaded) => {
-      const x = loaded.collections[organisationPullName] as WorkEffortPartyAssignment[];
-      const collection = loaded.collections[personPullName] || loaded.collections[organisationPullName] as WorkEffortPartyAssignment[];
-      this.objects = collection as WorkEffortPartyAssignment[];
+      this.objects = loaded.collections[pullName] as WorkEffortPartyAssignment[];
 
       if (this.objects) {
-        this.table.total = loaded.values[`${personPullName}_total`] || this.objects.length;
+        this.table.total = this.objects.length;
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
