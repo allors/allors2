@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesInvoice.cs" company="Allors bvba">
+// <copyright file="InvoiceItemModel.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -16,7 +16,7 @@
 
 namespace Allors.Domain.Print
 {
-    class SalesInvoiceItemPrint
+    public class InvoiceItemModel
     {
         public string Product;
         public string Description;
@@ -24,7 +24,7 @@ namespace Allors.Domain.Print
         public decimal Price;
         public decimal Amount;
 
-        public SalesInvoiceItemPrint(SalesInvoiceItem invoiceItem)
+        public InvoiceItemModel(SalesInvoiceItem invoiceItem)
         {
             this.Product = invoiceItem.Product?.Id.ToString();
             this.Description = invoiceItem.Description;

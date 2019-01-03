@@ -28,7 +28,7 @@ namespace Allors.Domain
 
     public partial class Template
     {
-        public byte[] Render(Dictionary<string, object> model)
+        public byte[] Render(IReadOnlyDictionary<string, object> model)
         {
             if (this.TemplateType.IsOdtTemplate)
             {

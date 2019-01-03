@@ -16,11 +16,28 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
+    using System.Reflection;
 
     public static partial class PrintableExtensions
     {
-        public static void RenderPrintDocument(this Printable @this, Template template, Dictionary<string, object> model)
+        public static void RenderPrintDocument(this Printable @this, Template template, object model)
+        {
+            if (model is IReadOnlyDictionary<string, object> alreadyDictionary)
+            {
+                RenderPrintDocument(@this, template, alreadyDictionary);
+            }
+            else
+            {
+                var dictionary = model.GetType()
+                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                            .ToDictionary(propInfo => propInfo.Name, propInfo => propInfo.GetValue(model, null));
+
+                RenderPrintDocument(@this, template, dictionary);
+            }
+        }
+
+        public static void RenderPrintDocument(this Printable @this, Template template, IReadOnlyDictionary<string, object> model)
         {
             var document = template?.Render(model);
 
