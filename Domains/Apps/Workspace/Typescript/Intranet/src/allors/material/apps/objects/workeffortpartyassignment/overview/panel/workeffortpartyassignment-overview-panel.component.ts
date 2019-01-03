@@ -10,6 +10,7 @@ interface Row extends TableRow {
   number: string;
   name: string;
   status: string;
+  party: string;
   from: string;
   through: string;
 }
@@ -56,7 +57,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortpartyassignment';
-    this.panel.title = 'Work Efforts';
+    this.panel.title = 'Work Effort Party Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
@@ -66,6 +67,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
         { name: 'number' },
         { name: 'name' },
         { name: 'status' },
+        { name: 'party' },
         { name: 'from' },
         { name: 'through' },
       ],
@@ -76,7 +78,8 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
       defaultAction: this.edit,
     });
 
-    const pullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}`;
+    const partypullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_party`;
+    const workeffortpullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_workeffort`;
 
     this.panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -85,11 +88,27 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
 
       pulls.push(
         pull.Person({
-          name: pullName,
+          name: partypullName,
           object: id,
           fetch: {
             WorkEffortPartyAssignmentsWhereParty: {
               include: {
+                Party: x,
+                Assignment: {
+                  WorkEffortState: x,
+                  Priority: x,
+                }
+              }
+            }
+          }
+        }),
+        pull.WorkEffort({
+          name: workeffortpullName,
+          object: id,
+          fetch: {
+            WorkEffortPartyAssignmentsWhereAssignment: {
+              include: {
+                Party: x,
                 Assignment: {
                   WorkEffortState: x,
                   Priority: x,
@@ -102,7 +121,18 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as WorkEffortPartyAssignment[];
+      const fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
+      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
+
+      if (fromParty !== undefined && fromParty.length > 0) {
+        this.objects = fromParty;
+      }
+
+      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
+        this.objects = fromWorkEffort;
+      }
+
+      this.objects = fromParty || fromWorkEffort;
 
       if (this.objects) {
         this.table.total = this.objects.length;
@@ -111,6 +141,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
             object: v,
             number: v.Assignment.WorkEffortNumber,
             name: v.Assignment.Name,
+            party: v.Party.displayName,
             status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
             from: moment(v.FromDate).format('L'),
             through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',

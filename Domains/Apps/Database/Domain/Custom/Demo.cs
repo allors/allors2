@@ -563,7 +563,7 @@ line2")
 
             var worktask = new WorkTaskBuilder(this.Session)
                 .WithTakenBy(allors)
-                .WithCustomer(new People(this.Session).FindBy(M.Person.FirstName, "John0"))
+                .WithCustomer(new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0"))
                 .WithName("maintenance")
                 .Build();
 

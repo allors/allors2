@@ -67,7 +67,7 @@ export class RequestForQuoteOverviewSummaryComponent {
 
     panel.onPulled = (loaded) => {
       this.requestForQuote = loaded.objects[requestForQuotePullName] as RequestForQuote;
-      this.quote = loaded.objects.quote as Quote;
+      this.quote = loaded.objects.Quote as Quote;
     };
   }
 }

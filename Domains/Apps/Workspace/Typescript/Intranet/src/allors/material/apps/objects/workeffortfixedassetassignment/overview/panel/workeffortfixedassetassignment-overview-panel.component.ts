@@ -10,6 +10,7 @@ interface Row extends TableRow {
   number: string;
   name: string;
   status: string;
+  asset: string;
   from: string;
   through: string;
 }
@@ -56,7 +57,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortfixedassetassignment';
-    this.panel.title = 'Work Efforts';
+    this.panel.title = 'Work Effort Fixed Asset Assignments';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
@@ -66,6 +67,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
         { name: 'number' },
         { name: 'name' },
         { name: 'status' },
+        { name: 'asset' },
         { name: 'from' },
         { name: 'through' },
       ],
@@ -76,7 +78,8 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
       defaultAction: this.edit,
     });
 
-    const pullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}`;
+    const serialisedItempullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_serialisedItem`;
+    const workeffortpullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_workeffort`;
 
     this.panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -85,11 +88,27 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
 
       pulls.push(
         pull.SerialisedItem({
-          name: pullName,
+          name: serialisedItempullName,
           object: id,
           fetch: {
             WorkEffortFixedAssetAssignmentsWhereFixedAsset: {
               include: {
+                FixedAsset: x,
+                Assignment: {
+                  WorkEffortState: x,
+                  Priority: x,
+                }
+              }
+            }
+          }
+        }),
+        pull.WorkEffort({
+          name: workeffortpullName,
+          object: id,
+          fetch: {
+            WorkEffortFixedAssetAssignmentsWhereAssignment: {
+              include: {
+                FixedAsset: x,
                 Assignment: {
                   WorkEffortState: x,
                   Priority: x,
@@ -102,7 +121,16 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as WorkEffortFixedAssetAssignment[];
+      const fromSerialiseditem = loaded.collections[serialisedItempullName] as WorkEffortFixedAssetAssignment[];
+      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortFixedAssetAssignment[];
+
+      if (fromSerialiseditem !== undefined && fromSerialiseditem.length > 0) {
+        this.objects = fromSerialiseditem;
+      }
+
+      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
+        this.objects = fromWorkEffort;
+      }
 
       if (this.objects) {
         this.table.total = this.objects.length;
@@ -112,6 +140,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
             number: v.Assignment.WorkEffortNumber,
             name: v.Assignment.Name,
             status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
+            asset: v.FixedAsset.Name,
             from: moment(v.FromDate).format('L'),
             through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
           } as Row;

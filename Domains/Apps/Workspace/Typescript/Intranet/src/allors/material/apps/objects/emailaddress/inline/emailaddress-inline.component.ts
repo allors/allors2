@@ -49,7 +49,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
 
     this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
-        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
 
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.emailAddress = this.allors.context.create('EmailAddress') as EmailAddress;

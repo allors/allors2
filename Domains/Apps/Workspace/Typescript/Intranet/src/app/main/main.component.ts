@@ -109,8 +109,8 @@ export class MainComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded: Loaded) => {
         this.allors.context.reset();
-        this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
-        this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
+        this.internalOriganisations = loaded.collections.InternalOrganisations as Organisation[];
+        this.selectedInternalOrganisation = loaded.objects.InternalOrganisation as Organisation;
       });
   }
 

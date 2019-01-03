@@ -76,9 +76,9 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.order = loaded.objects.salesOrder as SalesOrder;
-        this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
+        this.order = loaded.objects.SalesOrder as SalesOrder;
+        this.salesTerm = loaded.objects.SalesTerm as SalesTerm;
+        this.incoTermTypes = loaded.collections.IncoTermTypes as IncoTermType[];
 
         if (!this.salesTerm) {
           this.title = 'Add Order Incoterm';

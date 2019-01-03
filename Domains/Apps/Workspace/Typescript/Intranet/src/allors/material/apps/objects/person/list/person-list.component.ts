@@ -13,7 +13,6 @@ import { Person, Country } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
-
 interface Row extends TableRow {
   object: Person;
   name: string;

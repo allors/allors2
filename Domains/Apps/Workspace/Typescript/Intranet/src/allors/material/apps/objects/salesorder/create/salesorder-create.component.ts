@@ -131,7 +131,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        const internalOrganisation = loaded.objects.internalOrganisation as Organisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = internalOrganisation;
@@ -142,9 +142,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.stores = loaded.collections.stores as Store[];
-        this.currencies = loaded.collections.currencies as Currency[];
-        this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+        this.stores = loaded.collections.Stores as Store[];
+        this.currencies = loaded.collections.Currencies as Currency[];
+        this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
         if (this.order.ShipToCustomer) {
           this.updateShipToCustomer(this.order.ShipToCustomer);
@@ -633,9 +633,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
           this.updateBillToCustomer(this.order.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToContacts = loaded.collections.currentContacts as Person[];
+        this.shipToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -685,9 +685,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
           this.updateShipToCustomer(this.order.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToContacts = loaded.collections.currentContacts as Person[];
+        this.billToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -737,9 +737,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
           this.updateShipToEndCustomer(this.order.ShipToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+        this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -787,9 +787,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
           this.updateBillToEndCustomer(this.order.BillToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+        this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 }

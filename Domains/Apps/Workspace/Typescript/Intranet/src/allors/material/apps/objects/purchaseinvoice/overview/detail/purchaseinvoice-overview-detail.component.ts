@@ -265,7 +265,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.previousBilledFrom = this.invoice.BilledFrom;
         }
 
-        this.billedFromContacts = loaded.collections.currentContacts as Person[];
+        this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -320,9 +320,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToContacts = loaded.collections.currentContacts as Person[];
+        this.billToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
@@ -368,9 +368,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.updateBillToCustomer(this.invoice.BillToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+        this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 

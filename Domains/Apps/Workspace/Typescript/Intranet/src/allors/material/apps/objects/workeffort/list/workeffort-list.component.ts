@@ -16,6 +16,7 @@ interface Row extends TableRow {
   name: string;
   type: string;
   state: string;
+  customer: string;
   description: string;
   lastModifiedDate: string;
 }
@@ -62,6 +63,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
         { name: 'name', sort: true },
         { name: 'type', sort: false },
         { name: 'state', sort: true },
+        { name: 'customer', sort: true },
         { name: 'description', sort: true },
         'lastModifiedDate'
       ],
@@ -91,6 +93,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
         number: [m.WorkEffort.WorkEffortNumber],
         name: [m.WorkEffort.Name],
         state: [m.WorkEffortState.Name],
+        customer: [m.Party.PartyName],
         description: [m.WorkEffort.Description],
         lastModifiedDate: m.Person.LastModifiedDate,
       }
@@ -113,6 +116,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                Customer: x,
                 PrintDocument: x,
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
@@ -135,6 +139,8 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
             number: v.WorkEffortNumber,
             name: v.Name,
             type: v.objectType.name,
+            state: v.WorkEffortState ? v.WorkEffortState.Name : '',
+            customer: v.Customer.displayName,
             description: v.Description,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

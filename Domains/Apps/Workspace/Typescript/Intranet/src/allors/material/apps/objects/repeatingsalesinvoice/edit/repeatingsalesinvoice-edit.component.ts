@@ -79,10 +79,10 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.repeatinginvoice = loaded.objects.repeatingInvoice as RepeatingSalesInvoice;
-        this.frequencies = loaded.collections.frequencies as TimeFrequency[];
-        this.daysOfWeek = loaded.collections.daysOfWeek as DayOfWeek[];
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.repeatinginvoice = loaded.objects.RepeatingInvoice as RepeatingSalesInvoice;
+        this.frequencies = loaded.collections.Frequencies as TimeFrequency[];
+        this.daysOfWeek = loaded.collections.DaysOfWeek as DayOfWeek[];
 
         if (!this.repeatinginvoice) {
           this.title = 'Add Repeating Invoice';

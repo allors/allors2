@@ -251,9 +251,9 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
           this.previousReceiver = this.productQuote.Receiver;
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contacts = loaded.collections.currentContacts as Person[];
+        this.contacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
 
   }

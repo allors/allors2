@@ -21,6 +21,9 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
 
   workEffortFixedAssetAssignment: WorkEffortFixedAssetAssignment;
   workEfforts: WorkEffort[];
+  workEffort: WorkEffort;
+  assignment: WorkEffort;
+  serialisedItems: SerialisedItem[];
   serialisedItem: SerialisedItem;
   assetAssignmentStatuses: Enumeration[];
   title: string;
@@ -59,10 +62,16 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
               }
             }),
             pull.WorkEffort({
-              sort: new Sort(m.WorkEffort.Name)
+              object: this.data.associationId
             }),
             pull.SerialisedItem({
               object: this.data.associationId,
+              sort: new Sort(m.SerialisedItem.Name)
+            }),
+            pull.WorkEffort({
+              sort: new Sort(m.WorkEffort.Name)
+            }),
+            pull.SerialisedItem({
               sort: new Sort(m.SerialisedItem.Name)
             }),
             pull.AssetAssignmentStatus({
@@ -82,23 +91,33 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
 
         this.allors.context.reset();
 
+        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
         if (isCreate) {
-          this.title = 'Add Work Effort Asset Assignment';
+          this.title = 'Add Work Effort Assignment';
 
           this.workEffortFixedAssetAssignment = this.allors.context.create('WorkEffortFixedAssetAssignment') as WorkEffortFixedAssetAssignment;
-          this.workEffortFixedAssetAssignment.FixedAsset = this.serialisedItem;
+
+          if (this.serialisedItem !== undefined) {
+            this.workEffortFixedAssetAssignment.FixedAsset = this.serialisedItem;
+          }
+
+          if (this.workEffort !== undefined && this.workEffort.objectType.name === m.WorkTask.name) {
+            this.assignment = this.workEffort as WorkEffort;
+            this.workEffortFixedAssetAssignment.Assignment = this.assignment;
+          }
 
         } else {
           this.workEffortFixedAssetAssignment = loaded.objects.WorkEffortFixedAssetAssignment as WorkEffortFixedAssetAssignment;
 
           if (this.workEffortFixedAssetAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Asset Assignment';
+            this.title = 'Edit Work Effort Assignment';
           } else {
-            this.title = 'View Work Effort Asset Assignment';
+            this.title = 'View Work Effort Assignment';
           }
         }
       }, this.errorService.handler);

@@ -20,6 +20,7 @@ import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmech
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+import { WorkTaskOverviewPanelModule } from '../../worktask/overview/panel/worktask-overview-panel.module';
 
 import { PersonOverviewSummaryModule } from './summary/person-overview-summary.module';
 import { PersonOverviewDetailModule } from './detail/person-overview-detail.module';
@@ -44,6 +45,7 @@ export { PersonOverviewComponent } from './person-overview.component';
     PartyRelationshipOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
+    WorkTaskOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

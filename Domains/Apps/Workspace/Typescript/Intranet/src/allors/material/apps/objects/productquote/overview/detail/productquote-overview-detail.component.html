@@ -23,7 +23,7 @@
         <div class="row" *ngIf="!productQuoteisNew">
           <a-mat-static class="col-md" [object]="productQuote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
           <a-mat-static class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
-          <a-mat-autocomplete class="col-md" *ngIf="showOrganisations" [object]="productQuote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(allors.context)" display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" *ngIf="showOrganisations" [object]="productQuote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
         </div>
 
         <div class="row">

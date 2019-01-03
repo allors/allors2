@@ -66,9 +66,9 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.salesTerm = loaded.objects.SalesTerm as SalesTerm;
+        this.invoiceTermTypes = loaded.collections.InvoiceTermTypes as InvoiceTermType[];
 
         if (!this.salesTerm) {
           this.title = 'Add Sales Invoice Term';

@@ -497,7 +497,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateBillToCustomer(this.order.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
@@ -549,7 +549,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateShipToCustomer(this.order.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
@@ -601,7 +601,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateShipToEndCustomer(this.order.ShipToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
@@ -651,7 +651,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateBillToEndCustomer(this.order.BillToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);

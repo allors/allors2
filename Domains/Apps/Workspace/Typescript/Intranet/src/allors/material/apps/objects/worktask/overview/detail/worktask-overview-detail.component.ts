@@ -56,6 +56,9 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     const pullName = `${this.panel.name}_${this.m.WorkTask.name}`;
 
     panel.onPull = (pulls) => {
+
+      this.workTask = undefined;
+
       if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
@@ -85,17 +88,12 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(
-      this.route.url,
-      this.route.queryParams,
-      this.refreshService.refresh$,
-      this.stateService.internalOrganisationId$,
-    )
+    this.subscription = this.panel.manager.on$
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, , , internalOrganisationId]) => {
+        switchMap(() => {
 
           this.workTask = undefined;
 
@@ -117,7 +115,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
                 CreatedBy: x,
               }
             }),
-              pull.Locale({
+            pull.Locale({
               sort: new Sort(m.Locale.Name)
             }),
             pull.WorkEffortState({
@@ -146,6 +144,8 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
         this.workEffortStates = loaded.collections.WorkEffortStates as WorkEffortState[];
         this.priorities = loaded.collections.Priorities as Priority[];
         this.workEffortPurposes = loaded.collections.WorkEffortPurposes as WorkEffortPurpose[];
+
+        this.updateCustomer(this.workTask.Customer);
 
       }, this.errorService.handler);
   }
@@ -215,12 +215,12 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
-        const partyContactMechanisms: PartyContactMechanism[] = loaded
-          .collections.partyContactMechanisms as PartyContactMechanism[];
-        this.contactMechanisms = partyContactMechanisms.map(
-          (v: PartyContactMechanism) => v.ContactMechanism,
-        );
-        this.contacts = loaded.collections.currentContacts as Person[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+
+        this.contactMechanisms = partyContactMechanisms
+          .map((v: PartyContactMechanism) => v.ContactMechanism);
+
+        this.contacts = loaded.collections.CurrentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.handle(error);
