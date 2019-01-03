@@ -274,7 +274,8 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
-            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, new SalesInvoicePrint(this).Model);
+            var printModel = new SalesInvoicePrint.Model(this); 
+            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, printModel);
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
