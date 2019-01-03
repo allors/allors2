@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.Print
+namespace Allors.Domain.SalesInvoicePrint
 {
     public class InvoiceItemModel
     {

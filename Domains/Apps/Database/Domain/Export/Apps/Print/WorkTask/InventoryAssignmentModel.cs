@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InvoiceModel.cs" company="Allors bvba">
+// <copyright file="WorkTaskModel.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,32 +14,35 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.WorkTaskPrint
 {
-    using System.Xml.Serialization;
+    using System;
+    using System.Linq;
+
     using Allors.Services;
 
     using Microsoft.Extensions.DependencyInjection;
 
     using Sandwych.Reporting;
 
-    public class InvoiceModel
+    public class InventoryAssignmentModel
     {
-        public InvoiceModel(SalesInvoice salesInvoice)
+        public InventoryAssignmentModel(WorkEffortInventoryAssignment assignment)
         {
-            this.Description = salesInvoice.Description;
-            this.Number = salesInvoice.InvoiceNumber;
-            if (salesInvoice.ExistInvoiceNumber)
+            if (assignment != null)
             {
-                var session = salesInvoice.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(salesInvoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
-                this.Barcode = new ImageBlob("png", barcode);
+                this.PartId = assignment.Part?.PartIdentification;
+                this.PartName = assignment.Part?.Name;
+                this.Quantity = assignment.Quantity;
+                this.UnitOfMeasure = assignment.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
+                                     assignment.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
+                                     "EA";
             }
         }
 
-        public string Description { get; }
-        public string Number { get; }
-        public ImageBlob Barcode { get; }
+        public string PartId { get; }
+        public string PartName { get; }
+        public int Quantity { get; }
+        public string UnitOfMeasure { get; }
     }
 }

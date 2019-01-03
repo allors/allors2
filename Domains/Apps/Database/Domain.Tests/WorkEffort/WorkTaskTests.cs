@@ -271,14 +271,15 @@ namespace Allors.Domain
 
             // Assert
             Assert.NotNull(workOrder.PrintDocument);
-            //var result = workOrder.PrintDocument;
 
-            //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "workTask.odt"));
-            //var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+            var result = workOrder.PrintDocument;
 
-            //stream.CopyTo(outputFile);
-            //stream.Close();
+            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "workTask.odt"));
+            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+
+            stream.CopyTo(outputFile);
+            stream.Close();
         }
 
         private Part CreatePart(string id) =>

@@ -52,8 +52,4 @@
     <ProjectReference Include="..\Resources\Resources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Export\Apps\Print\WorkTask\" />
-  </ItemGroup>
-
 </Project>

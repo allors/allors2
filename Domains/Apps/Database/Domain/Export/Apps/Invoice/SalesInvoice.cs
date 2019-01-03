@@ -20,7 +20,6 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Domain.Print;
     using Allors.Meta;
 
     using Resources;

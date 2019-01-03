@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.WorkTaskPrint
 {
     using System.Linq;
 
@@ -22,30 +22,32 @@ namespace Allors.Domain.SalesInvoicePrint
 
     public class Model
     {
-        public Model(SalesInvoice salesInvoice)
+        public Model(WorkTask workTask)
         {
-            this.Invoice = new InvoiceModel(salesInvoice);
-
-            if (salesInvoice.ExistBilledFrom && salesInvoice.BilledFrom.ExistLogoImage)
+            if (workTask.TakenBy?.LogoImage != null)
             {
-                this.Logo = new ImageBlob("png", salesInvoice.BilledFrom.LogoImage.MediaContent.Data);
+                this.Logo = new ImageBlob("png", workTask.TakenBy.LogoImage.MediaContent.Data);
             }
             else
             {
-                var singleton = salesInvoice.Strategy.Session.GetSingleton();
+                var singleton = workTask.Strategy.Session.GetSingleton();
                 this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
             }
 
-            this.BilledFrom = new BilledFromModel((Organisation)salesInvoice.BilledFrom);
-            this.InvoiceItems = salesInvoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
+            this.WorkTask = new WorkTaskModel(workTask);
+            this.Customer = new CustomerModel(workTask.Customer);
+            this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
+            this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Select(v => new InventoryAssignmentModel(v)).ToArray();
         }
-
-        public InvoiceModel Invoice { get; }
 
         public ImageBlob Logo { get; }
 
-        public BilledFromModel BilledFrom { get; }
+        public WorkTaskModel WorkTask { get; }
 
-        public InvoiceItemModel[] InvoiceItems { get; }
+        public CustomerModel Customer { get; }
+
+        public TimeEntryModel[] TimeEntries { get; }
+
+        public InventoryAssignmentModel[] InventoryAssignments { get; }
     }
 }
