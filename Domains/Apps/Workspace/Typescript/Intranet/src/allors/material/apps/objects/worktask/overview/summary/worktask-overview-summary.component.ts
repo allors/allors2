@@ -36,6 +36,7 @@ export class WorkTaskOverviewSummaryComponent {
           name: workTaskPullName,
           object: id,
           include: {
+            Customer: x,
             WorkEffortState: x,
             LastModifiedBy: x,
           }

@@ -18,6 +18,7 @@ import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmech
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+import { WorkTaskOverviewPanelModule } from '../../worktask/overview/panel/worktask-overview-panel.module';
 
 import { OrganisationOverviewSummaryModule } from './summary/organisation-overview-summary.module';
 import { OrganisationOverviewDetailModule } from './detail/organisation-overview-detail.module';
@@ -42,6 +43,7 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     PartyRelationshipOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
+    WorkTaskOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,

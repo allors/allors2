@@ -41,5 +41,5 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SalesInvoice.overview = '/accounting/salesinvoice/:id';
 
   m.WorkEffort.list = '/workefforts/workefforts';
-  m.WorkEffort.overview = '/accounting/workeffort/:id';
+  m.WorkTask.overview = '/workefforts/worktask/:id';
 }

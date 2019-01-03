@@ -20,12 +20,16 @@
       </div>
 
       <div class="row">
-        <a-mat-static class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset"
-          display="displayName"></a-mat-static>
+        <a-mat-static *ngIf="serialisedItem" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset"
+          display="displayName" label="Asset"></a-mat-static>
+          <a-mat-select *ngIf="!serialisedItem" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset"
+          [options]="serialisedItems" display="displayName" label="Asset"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Assignment"
+        <a-mat-static *ngIf="assignment" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Assignment"
+          display="Name" label="Work Effort"></a-mat-static>
+        <a-mat-select *ngIf="!assignment" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Assignment"
           [options]="workEfforts" label="Work Effort" display="Name"></a-mat-select>
       </div>
 

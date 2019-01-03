@@ -15,12 +15,16 @@
       </div>
 
       <div class="row">
-        <a-mat-static class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
+        <a-mat-static *ngIf="person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
           display="displayName"></a-mat-static>
+          <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
+          [options]="people" display="displayName"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
+        <a-mat-static *ngIf="assignment" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
+          display="Name" label="Work Effort"></a-mat-static>
+        <a-mat-select *ngIf="!assignment" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
           [options]="workEfforts" label="Work Effort" display="Name"></a-mat-select>
       </div>
 

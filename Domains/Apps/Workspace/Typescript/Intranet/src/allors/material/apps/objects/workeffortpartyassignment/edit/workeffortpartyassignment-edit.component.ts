@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Organisation } from '../../../../../domain';
+import { WorkEffortPartyAssignment, Person, WorkEffort, Party } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -24,11 +24,12 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
   workEfforts: WorkEffort[];
   person: Person;
   party: Party;
+  workEffort: WorkEffort;
+  assignment: WorkEffort;
   contacts: Person[] = [];
   title: string;
 
   private subscription: Subscription;
-  organisation: Organisation;
 
   constructor(
     @Self() private allors: ContextService,
@@ -63,13 +64,8 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
             pull.Party({
               object: this.data.associationId
             }),
-            pull.Organisation({
-              object: this.data.associationId,
-              include: {
-                CurrentOrganisationContactRelationships: {
-                  Contact: x
-                }
-              }
+            pull.WorkEffort({
+              object: this.data.associationId
             }),
             pull.WorkEffort({
               sort: new Sort(m.WorkEffort.Name)
@@ -93,32 +89,32 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.people = loaded.collections.People as Person[];
         this.party = loaded.objects.Party as Party;
-        this.organisation = loaded.objects.Organisation as Organisation;
+        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
         if (isCreate) {
-          this.title = 'Add Work Effort Party Assignment';
+          this.title = 'Add Work Effort Assignment';
 
           this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
 
-          if (this.organisation) {
-            this.organisation.CurrentOrganisationContactRelationships.forEach((relationship) => {
-              this.contacts.push(relationship.Contact);
-            });
-          }
-
-          if (this.party.objectType.name === m.Person.name) {
+          if (this.party !== undefined && this.party.objectType.name === m.Person.name) {
             this.person = this.party as Person;
             this.workEffortPartyAssignment.Party = this.person;
+          }
+
+          if (this.workEffort !== undefined && this.workEffort.objectType.name === m.WorkTask.name) {
+            this.assignment = this.workEffort as WorkEffort;
+            this.workEffortPartyAssignment.Assignment = this.assignment;
           }
 
         } else {
           this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
           this.person = this.workEffortPartyAssignment.Party as Person;
+          this.assignment = this.workEffortPartyAssignment.Assignment;
 
           if (this.workEffortPartyAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Party Assignment';
+            this.title = 'Edit Work Effort Assignment';
           } else {
-            this.title = 'View Work Effort Party Assignment';
+            this.title = 'View Work Effort Assignment';
           }
         }
       }, this.errorService.handler);

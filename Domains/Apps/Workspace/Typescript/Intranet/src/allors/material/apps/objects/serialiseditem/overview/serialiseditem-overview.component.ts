@@ -17,7 +17,7 @@ import { StateService } from '../../../services/state';
 export class SerialisedItemOverviewComponent implements AfterViewInit, OnDestroy {
 
   readonly m: Meta;
-  title = 'Object';
+  title = 'Asset';
 
   serialisedItem: SerialisedItem;
 
