@@ -4,34 +4,35 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { PostalAddress, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-import { switchMap, map } from 'rxjs/operators';
-import { EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { switchMap } from 'rxjs/operators';
+import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './postaladdress-edit.component.html',
+  templateUrl: './postaladdress-create.component.html',
   providers: [ContextService]
 })
-export class PostalAddressEditComponent implements OnInit, OnDestroy {
+export class PostalAddressCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
   contactMechanism: PostalAddress;
   postalBoundary: PostalBoundary;
   countries: Country[];
+  party: Party;
+  contactMechanismPurposes: Enumeration[];
+  partyContactMechanism: PartyContactMechanism;
   title: string;
 
   private subscription: Subscription;
-  party: Party;
-  partyContactMechanism: PartyContactMechanism;
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: EditData,
-    public dialogRef: MatDialogRef<PostalAddressEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<PostalAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
@@ -42,23 +43,22 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([]) => {
 
           const pulls = [
-            pull.ContactMechanism({
-              object: this.data.id,
-              include: {
-                PostalAddress_PostalBoundary: {
-                  Country: x
-                }
-              },
+            pull.Party({
+              object: this.data.associationId,
             }),
             pull.Country({
               sort: new Sort(m.Country.Name)
+            }),
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismPurpose.Name)
             })
           ];
 
@@ -71,13 +71,21 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.countries = loaded.collections.Countries as Country[];
-        this.contactMechanism = loaded.objects.ContactMechanism as PostalAddress;
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.party = loaded.objects.Party as Party;
 
-        if (this.contactMechanism.CanWriteAddress1) {
-          this.title = 'Edit Postal Address';
-        } else {
-          this.title = 'View Postal Address';
-        }
+        this.title = 'Add Postal Address';
+
+        this.contactMechanism = this.allors.context.create('PostalAddress') as PostalAddress;
+
+        this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
+        this.contactMechanism.PostalBoundary = this.postalBoundary;
+
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism.UseAsDefault = true;
+        this.partyContactMechanism.ContactMechanism = this.contactMechanism;
+
+        this.party.AddPartyContactMechanism(this.partyContactMechanism);
       }, this.errorService.handler);
   }
 

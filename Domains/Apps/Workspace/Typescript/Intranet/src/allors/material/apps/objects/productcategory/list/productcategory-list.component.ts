@@ -14,6 +14,7 @@ interface Row extends TableRow {
   object: ProductCategory;
   name: string;
   description: string;
+  scope: string;
 }
 
 @Component({
@@ -60,8 +61,9 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'description' }
+        { name: 'name', sort: true },
+        { name: 'description', sort: true },
+        { name: 'scope', sort: true }
       ],
       actions: [
         this.edit,
@@ -75,7 +77,7 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.Catalogue.InternalOrganisation });
+    const internalOrganisationPredicate = new Equals({ propertyType: m.ProductCategory.InternalOrganisation });
     const predicate = new And([
       // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       internalOrganisationPredicate
@@ -87,22 +89,24 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
       {
         name: m.Catalogue.Name,
         description: m.Catalogue.Description,
+        scope: m.CatScope.Name,
       }
     );
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          internalOrganisationPredicate.value = internalOrganisationId;
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.ProductCategory({
@@ -112,6 +116,7 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
                 CategoryImage: x,
                 LocalisedNames: x,
                 LocalisedDescriptions: x,
+                CatScope: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -123,13 +128,15 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const requests = loaded.collections.ProductCategories as ProductCategory[];
+
+        const objects = loaded.collections.ProductCategories as ProductCategory[];
         this.table.total = loaded.values.ProductCategories_total;
-        this.table.data = requests.map((v) => {
+        this.table.data = objects.map((v) => {
           return {
             object: v,
             name: `${v.Name}`,
             description: `${v.Description || ''}`,
+            scope: v.CatScope.Name
           } as Row;
         });
       }, this.errorService.handler);

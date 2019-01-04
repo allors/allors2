@@ -169,5 +169,54 @@ namespace Allors.Domain
 
             Assert.NotNull(subContractor.TimeSheetWhereWorker);
         }
+
+        [Fact]
+        public void GivenPerson_WhenInContactRelationship_ThenCurrentOrganisationContactMechanismsIsDerived()
+        {
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
+            var organisation1 = new OrganisationBuilder(this.Session).WithName("organisation1").Build();
+            var organisation2 = new OrganisationBuilder(this.Session).WithName("organisation2").Build();
+
+            // Even when relationship is inactive CurrentOrganisationContactMechanisms is maintained
+            new OrganisationContactRelationshipBuilder(this.Session)
+                .WithContact(contact)
+                .WithOrganisation(organisation1)
+                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
+                .Build();
+
+            var contactMechanism1 = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("111").WithContactNumber("222").Build();
+            var partyContactMechanism1 = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(contactMechanism1).Build();
+            organisation1.AddPartyContactMechanism(partyContactMechanism1);
+
+            this.Session.Derive();
+
+            Assert.Single(contact.CurrentOrganisationContactMechanisms);
+            Assert.Contains(contactMechanism1, contact.CurrentOrganisationContactMechanisms);
+
+            partyContactMechanism1.ThroughDate = partyContactMechanism1.FromDate;
+
+            this.Session.Derive();
+
+            Assert.Empty(contact.CurrentOrganisationContactMechanisms);
+
+            partyContactMechanism1.RemoveThroughDate();
+
+            new OrganisationContactRelationshipBuilder(this.Session)
+                .WithContact(contact)
+                .WithOrganisation(organisation2)
+                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
+                .Build();
+
+            var contactMechanism2 = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("222").WithContactNumber("333").Build();
+            var partyContactMechanism2 = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(contactMechanism2).Build();
+            organisation2.AddPartyContactMechanism(partyContactMechanism2);
+
+            this.Session.Derive();
+
+            Assert.Equal(2, contact.CurrentOrganisationContactMechanisms.Count);
+            Assert.Contains(contactMechanism1, contact.CurrentOrganisationContactMechanisms);
+            Assert.Contains(contactMechanism2, contact.CurrentOrganisationContactMechanisms);
+        }
     }
 }

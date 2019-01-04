@@ -1,4 +1,4 @@
-<form *ngIf="partyContactMechanism" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="contactMechanism" #form="ngForm" (submit)="save()" novalidate>
   <h1></h1>
 
   <h3 mat-dialog-title>{{title}}</h3>
@@ -7,18 +7,16 @@
     <div class="container-fluid">
 
       <div class="row">
-        <a-mat-datepicker class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.FromDate"></a-mat-datepicker>
-        <a-mat-datepicker class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ThroughDate"></a-mat-datepicker>
-      </div>
-
-      <div class="row">
         <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
           [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactMechanism"
-          [options]="contactMechanisms" display="displayName"></a-mat-select>
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.ElectronicAddress.ElectronicAddressString"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="contactMechanism" [roleType]="m.ContactMechanism.Description"></a-mat-textarea>
       </div>
 
       <div class="row">

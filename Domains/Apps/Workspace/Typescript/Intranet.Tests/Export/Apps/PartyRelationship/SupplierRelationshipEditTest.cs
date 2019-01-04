@@ -24,7 +24,6 @@ namespace Tests.Intranet.PartyRelationshipTests
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
-
             // Delete all existing for the new one to be in the first page of the list.
             foreach (PartyRelationship partyRelationship in allors.PartyRelationshipsWhereParty)
             {

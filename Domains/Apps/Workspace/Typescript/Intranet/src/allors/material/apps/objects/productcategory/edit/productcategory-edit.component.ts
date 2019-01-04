@@ -51,16 +51,16 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const create = (this.data as EditData).id === undefined;
-          const { id, objectType, associationRoleType } = this.data;
+          const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
             pull.ProductCategory(
               {
-                object: id,
+                object: this.data.id,
                 include: {
+                  Children: x,
                   LocalisedNames: {
                     Locale: x,
                   },
@@ -78,11 +78,11 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, create }) => {
+      .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
 
@@ -92,12 +92,16 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
         this.catScopes = loaded.collections.CatScopes as CatScope[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
-        if (create) {
+        if (isCreate) {
           this.title = 'Add Category';
           this.category = this.allors.context.create('ProductCategory') as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
         } else {
-          this.title = 'Edit Category';
+          if (this.category.CanWriteCatScope) {
+            this.title = 'Edit Category';
+          } else {
+            this.title = 'View Category';
+          }
         }
 
       }, this.errorService.handler);

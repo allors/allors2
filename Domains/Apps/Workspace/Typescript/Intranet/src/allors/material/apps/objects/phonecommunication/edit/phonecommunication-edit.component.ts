@@ -156,10 +156,17 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
 
-        this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        this.contacts = [];
+
+        if (internalOrganisation.ActiveEmployees !== undefined) {
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        }
 
         if (!!this.organisation) {
           this.contacts = this.contacts.concat(this.organisation);
+        }
+
+        if (!!this.organisation && this.organisation.CurrentContacts !== undefined) {
           this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
         }
 

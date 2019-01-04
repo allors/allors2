@@ -13,7 +13,6 @@ import { ProductType } from '../../../../../domain';
 interface Row extends TableRow {
   object: ProductType;
   name: string;
-  characteristic: string;
 }
 
 @Component({
@@ -60,8 +59,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'characteristic' }
+        { name: 'name', sort: true },
       ],
       actions: [
         this.edit,
@@ -83,12 +81,11 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
-        name: m.Catalogue.Name,
-        description: m.Catalogue.Description,
+        name: m.ProductType.Name,
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -98,7 +95,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.ProductType({
@@ -117,13 +114,13 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const requests = loaded.collections.ProductTypes as ProductType[];
+
+        const objects = loaded.collections.ProductTypes as ProductType[];
         this.table.total = loaded.values.ProductTypes_total;
-        this.table.data = requests.map((v) => {
+        this.table.data = objects.map((v) => {
           return {
             object: v,
-            name: `${v.Name}`,
-            characteristic: `${v.SerialisedItemCharacteristicTypes && v.SerialisedItemCharacteristicTypes.map((w) => w.Name)}`,
+            name: `${v.Name}`
           } as Row;
         });
       }, this.errorService.handler);

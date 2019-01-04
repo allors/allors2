@@ -356,6 +356,17 @@ namespace Allors.Repository
         [Workspace]
         public OrganisationContactRelationship[] InactiveOrganisationContactRelationships { get; set; }
 
+        #region Allors
+        [Id("042A0F63-EB65-41CD-A32A-A14E99EFE4FB")]
+        [AssociationId("5F9AEB37-F54A-4617-A03F-2DD6F4667ACF")]
+        [RoleId("B5E1433D-8401-48FC-8334-645F30C9B2E0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public ContactMechanism[] CurrentOrganisationContactMechanisms{ get; set; }
+
         #region inherited methods
         public void Delete(){}
         #endregion

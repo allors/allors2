@@ -14,6 +14,7 @@ interface Row extends TableRow {
   object: Catalogue;
   name: string;
   description: string;
+  scope: string;
 }
 
 @Component({
@@ -60,8 +61,9 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'description' }
+        { name: 'name', sort: true },
+        { name: 'description', sort: true },
+        { name: 'scope', sort: true }
       ],
       actions: [
         this.edit,
@@ -87,22 +89,24 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       {
         name: m.Catalogue.Name,
         description: m.Catalogue.Description,
+        scope: m.CatScope.Name,
       }
     );
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          internalOrganisationPredicate.value = internalOrganisationId;
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.Catalogue({
@@ -111,6 +115,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
               include: {
                 CatalogueImage: x,
                 ProductCategories: x,
+                CatScope: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -122,13 +127,15 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const requests = loaded.collections.Catalogues as Catalogue[];
+
+        const objects = loaded.collections.Catalogues as Catalogue[];
         this.table.total = loaded.values.Catalogues_total;
-        this.table.data = requests.map((v) => {
+        this.table.data = objects.map((v) => {
           return {
             object: v,
             name: `${v.Name}`,
             description: `${v.Description || ''}`,
+            scope: v.CatScope.Name
           } as Row;
         });
       }, this.errorService.handler);

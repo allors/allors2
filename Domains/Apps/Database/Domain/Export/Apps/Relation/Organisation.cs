@@ -116,7 +116,7 @@ namespace Allors.Domain
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
             this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriverContactUserGroup(derivation);
+            this.AppsOnDeriveContactUserGroup(derivation);
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
@@ -127,6 +127,8 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
+
+            this.Sync();
         }
 
         public List<string> Roles => new List<string>() { "Internal organisation" };
@@ -249,7 +251,7 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriverContactUserGroup(IDerivation derivation)
+        public void AppsOnDeriveContactUserGroup(IDerivation derivation)
         {
             if (!this.ExistContactsUserGroup)
             {
@@ -279,6 +281,14 @@ namespace Allors.Domain
                 {
                     organisationContactRelationship.Contact.Delete();
                 }
+            }
+        }
+
+        public void Sync()
+        {
+            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
+            {
+                organisationContactRelationship.Contact.Sync(this.PartyContactMechanisms.ToArray());
             }
         }
     }

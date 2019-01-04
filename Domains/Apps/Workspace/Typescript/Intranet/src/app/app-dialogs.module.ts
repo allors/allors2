@@ -6,6 +6,7 @@ import { ids } from '../allors/meta/generated';
 
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 import { CustomerRelationshipEditComponent, CustomerRelationshipEditModule } from '../allors/material/apps/objects/customerrelationship/edit/customerrelationship-edit.module';
+import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors/material/apps/objects/emailaddress/create/emailaddress-create.module';
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/apps/objects/employment/edit/employment-edit.module';
@@ -19,36 +20,39 @@ import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } f
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationEditComponent, PhoneCommunicationEditModule } from '../allors/material/apps/objects/phonecommunication/edit/phonecommunication-edit.module';
+import { PostalAddressCreateComponent, PostalAddressCreateModule } from '../allors/material/apps/objects/postaladdress/create/postaladdress-create.module';
 import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/material/apps/objects/postaladdress/edit/postaladdress-edit.module';
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
+import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
+import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
-import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
+import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
+import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
+import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
+import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/apps/objects/serialiseditem/create/serialiseditem-create.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
+import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
+import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
-import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
-import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
-import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
-import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
-import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 
 export const create = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
-  [ids.EmailAddress]: EmailAddressEditComponent,
+  [ids.EmailAddress]: EmailAddressCreateComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
@@ -66,7 +70,7 @@ export const create = {
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
-  [ids.PostalAddress]: PostalAddressEditComponent,
+  [ids.PostalAddress]: PostalAddressCreateComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.ProductNumber]: IGoodIdentificationEditComponent,
   [ids.ProductQuote]: ProductQuoteCreateComponent,
@@ -84,10 +88,10 @@ export const create = {
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
-  [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
+  [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
-  [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WebAddress]: WebAddressCreateComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
@@ -138,6 +142,7 @@ export const edit = {
 
     CatalogueEditModule,
     CustomerRelationshipEditModule,
+    EmailAddressCreateModule,
     EmailAddressEditModule,
     EmailCommunicationEditModule,
     EmploymentEditModule,
@@ -151,6 +156,7 @@ export const edit = {
     PartyContactmechanismEditModule,
     PersonCreateModule,
     PhoneCommunicationEditModule,
+    PostalAddressCreateModule,
     PostalAddressEditModule,
     ProductCategoryEditModule,
     ProductQuoteCreateModule,
@@ -168,7 +174,9 @@ export const edit = {
     SerialisedItemCreateModule,
     SerialisedItemCharacteristicEditModule,
     SupplierRelationshipEditModule,
+    TelecommunicationsNumberCreateModule,
     TelecommunicationsNumberEditModule,
+    WebAddressCreateModule,
     WebAddressEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
@@ -177,6 +185,7 @@ export const edit = {
   entryComponents: [
     CatalogueEditComponent,
     CustomerRelationshipEditComponent,
+    EmailAddressCreateComponent,
     EmailAddressEditComponent,
     EmailCommunicationEditComponent,
     EmploymentEditComponent,
@@ -190,6 +199,7 @@ export const edit = {
     PartCreateComponent,
     PartyContactmechanismEditComponent,
     PhoneCommunicationEditComponent,
+    PostalAddressCreateComponent,
     PostalAddressEditComponent,
     ProductCategoryEditComponent,
     ProductQuoteCreateComponent,
@@ -207,7 +217,9 @@ export const edit = {
     SerialisedItemCreateComponent,
     SerialisedItemCharacteristicEditComponent,
     SupplierRelationshipEditComponent,
+    TelecommunicationsNumberCreateComponent,
     TelecommunicationsNumberEditComponent,
+    WebAddressCreateComponent,
     WebAddressEditComponent,
     WorkEffortFixedAssetAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,

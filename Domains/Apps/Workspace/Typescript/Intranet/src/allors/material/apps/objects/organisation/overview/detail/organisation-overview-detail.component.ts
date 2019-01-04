@@ -78,13 +78,12 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Expanded
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = this.panel.manager.on$
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([]) => {
-
+        switchMap(() => {
           this.organisation = undefined;
 
           const { m, pull } = this.metaService;

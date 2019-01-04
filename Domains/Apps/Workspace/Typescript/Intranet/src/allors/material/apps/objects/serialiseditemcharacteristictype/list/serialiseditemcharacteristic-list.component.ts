@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
@@ -14,8 +13,8 @@ import { SerialisedItemCharacteristicType } from '../../../../../domain';
 interface Row extends TableRow {
   object: SerialisedItemCharacteristicType;
   name: string;
-  active: boolean;
   uom: string;
+  active: boolean;
 }
 
 @Component({
@@ -62,8 +61,9 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'description' }
+        { name: 'name', sort: true },
+        { name: 'uom', sort: true },
+        { name: 'active', sort: true }
       ],
       actions: [
         this.edit,
@@ -78,7 +78,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'name' }),
+      new Like({ roleType: m.SerialisedItemCharacteristicType.Name, parameter: 'name' }),
     ]);
 
     this.filterService.init(predicate);
@@ -86,11 +86,12 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     const sorter = new Sorter(
       {
         name: m.SerialisedItemCharacteristicType.Name,
-        description: m.Catalogue.Description,
+        uom: m.UnitOfMeasure.Name,
+        active: m.SerialisedItemCharacteristicType.IsActive
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -100,7 +101,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.SerialisedItemCharacteristicType({
@@ -119,14 +120,15 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const requests = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
+
+        const objects = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
         this.table.total = loaded.values.SerialisedItemCharacteristicTypes_total;
-        this.table.data = requests.map((v) => {
+        this.table.data = objects.map((v) => {
           return {
             object: v,
             name: `${v.Name}`,
-            active: v.IsActive,
             uom: `${v.UnitOfMeasure && v.UnitOfMeasure.Name}`,
+            active: v.IsActive,
           } as Row;
         });
       }, this.errorService.handler);
