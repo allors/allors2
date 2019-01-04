@@ -3,45 +3,62 @@
   <Class Name="Allors.Domain.SalesInvoicePrint.Model">
     <Position X="2" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAICAAAAAAAAAAAAAAAAAAAgAAAAIAAAAQA=</HashCode>
+      <HashCode>AAAAAQAAAEICAAAAAAAAAAAAAAAAAAAgAAAAIAAAAQA=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\Model.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="BillTo" />
       <Property Name="ShipTo" />
+      <Property Name="BilledFrom" />
+      <Property Name="Invoice" />
+      <Property Name="SalesTerms" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="InvoiceItems" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Allors.Domain.SalesInvoicePrint.ShipToModel">
-    <Position X="7" Y="4.75" Width="1.5" />
+    <Position X="7" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIIAAAAAQAAAIAAAACAAAABAAAAAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAIKAAAAAQAAAIAAAACAAAABAAAAAE=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\ShipToModel.cs</FileName>
       <NewMemberFileName>Export\Apps\Print\SalesInvoice\BillToModel.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Domain.SalesInvoicePrint.InvoiceItemModel">
-    <Position X="6.75" Y="1" Width="1.75" />
+    <Position X="9.75" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAACEAQAhAAAAAAAAAACAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\InvoiceItemModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Domain.SalesInvoicePrint.SalesTermModel">
-    <Position X="4.75" Y="1" Width="1.5" />
+    <Position X="7" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\SalesTermModel.cs</FileName>
       <NewMemberFileName>Export\Apps\Print\SalesInvoice\InvoiceModel.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Domain.SalesInvoicePrint.BillToModel">
-    <Position X="5.25" Y="4.75" Width="1.5" />
+    <Position X="5.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIIAAAAAQAAAIAAAACAAAABAAAAAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAIKAAAAAQAAAIAAAACAAAABAAAAAE=</HashCode>
       <FileName>Export\Apps\Print\SalesInvoice\BillToModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.SalesInvoicePrint.BilledFromModel">
+    <Position X="4.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAAAAAAACAAgAAIIAAAAAQAAAIAAAAKAIAABAAAgAE=</HashCode>
+      <FileName>Export\Apps\Print\SalesInvoice\BilledFromModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.SalesInvoicePrint.InvoiceModel">
+    <Position X="2.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAEgADACAEAAAIAAIAAAAAABQAAAAAAAEAI=</HashCode>
+      <FileName>Export\Apps\Print\SalesInvoice\InvoiceModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

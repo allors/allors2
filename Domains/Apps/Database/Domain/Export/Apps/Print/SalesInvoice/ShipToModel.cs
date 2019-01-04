@@ -29,6 +29,8 @@ namespace Allors.Domain.SalesInvoicePrint
                 this.TaxId = shipToOrganisation?.TaxNumber;
             }
 
+            this.Contact = salesInvoice.ShipToContactPerson?.PartyName;
+
             var shipToAddress = salesInvoice.ShipToAddress ??
                                 salesInvoice.ShipToCustomer?.ShippingAddress ??
                                 salesInvoice.ShipToCustomer?.GeneralCorrespondence ??
@@ -89,5 +91,7 @@ namespace Allors.Domain.SalesInvoicePrint
         public string PostalCode { get; }
 
         public string TaxId { get; }
+
+        public string Contact { get; }
     }
 }

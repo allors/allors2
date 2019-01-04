@@ -30,7 +30,7 @@ namespace Allors
 
             var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
             var us = new Countries(this.Session).FindBy(M.Country.IsoCode, "US");
-            
+
             var email2 = new EmailAddressBuilder(this.Session)
                 .WithElectronicAddressString("recipient@acme.com")
                 .Build();
@@ -410,7 +410,7 @@ namespace Allors
                     .Build();
 
                 productQuote.AddQuoteItem(quoteItem);
-                               
+
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
@@ -478,8 +478,10 @@ line2")
                     .WithBilledFrom(allors)
                     .WithInvoiceNumber("1")
                     .WithBillToCustomer(acme)
+                    .WithBillToContactPerson(contact1)
                     .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
                     .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
+                    .WithShipToContactPerson(contact2)
                     .WithSalesInvoiceItem(salesInvoiceItem1)
                     .WithSalesInvoiceItem(salesInvoiceItem2)
                     .WithSalesInvoiceItem(salesInvoiceItem3)
@@ -489,6 +491,18 @@ line2")
                     .WithSalesTerm(incoTerm)
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
                     .Build();
+
+                for (var j = 0; j < 30; j++)
+                {
+                    var salesInvoiceItem = new SalesInvoiceItemBuilder(this.Session)
+                        .WithDescription("Extra Charge")
+                        .WithActualUnitPrice(100 + j)
+                        .WithQuantity(j)
+                        .WithInvoiceItemType(new InvoiceItemTypes(this.Session).MiscCharge)
+                        .Build();
+
+                    salesInvoice.AddSalesInvoiceItem(salesInvoiceItem);
+                }
             }
 
             for (int i = 0; i < 4; i++)

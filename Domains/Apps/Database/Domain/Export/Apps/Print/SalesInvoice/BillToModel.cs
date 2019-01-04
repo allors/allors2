@@ -28,6 +28,8 @@ namespace Allors.Domain.SalesInvoicePrint
                 this.TaxId = billToOrganisation?.TaxNumber;
             }
 
+            this.Contact = salesInvoice.BillToContactPerson?.PartyName;
+
             if (salesInvoice.BillToContactMechanism is PostalAddress postalAddress)
             {
                 this.Address = postalAddress.Address1;
@@ -87,5 +89,7 @@ namespace Allors.Domain.SalesInvoicePrint
         public string PostalCode { get; }
 
         public string TaxId { get; }
+
+        public string Contact { get; }
     }
 }
