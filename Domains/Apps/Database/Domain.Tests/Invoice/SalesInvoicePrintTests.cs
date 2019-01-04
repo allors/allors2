@@ -27,7 +27,7 @@ namespace Allors.Domain
 
     using Xunit;
 
-    public class SalesInvoicePrintModelTests : DomainTest
+    public class SalesInvoicePrintTests : DomainTest
     {
         [Fact]
         public void GivenSalesInvoice_WhenCreatingPrintModel_ThenPrintModelIsNotNull()

@@ -17,7 +17,6 @@
 namespace Allors.Domain.SalesInvoicePrint
 {
     using System.Linq;
-
     using Sandwych.Reporting;
 
     public class Model
@@ -37,7 +36,13 @@ namespace Allors.Domain.SalesInvoicePrint
             }
 
             this.BilledFrom = new BilledFromModel((Organisation)salesInvoice.BilledFrom);
+            this.BillTo = new BillToModel(salesInvoice);
+            this.ShipTo = new ShipToModel(salesInvoice);
+
             this.InvoiceItems = salesInvoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
+
+            var paymentTerm = new InvoiceTermTypes(salesInvoice.Strategy.Session).PaymentNetDays;
+            this.SalesTerms = salesInvoice.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
         }
 
         public InvoiceModel Invoice { get; }
@@ -46,6 +51,12 @@ namespace Allors.Domain.SalesInvoicePrint
 
         public BilledFromModel BilledFrom { get; }
 
+        public BillToModel BillTo { get; }
+
+        public ShipToModel ShipTo { get; }
+
         public InvoiceItemModel[] InvoiceItems { get; }
+
+        public SalesTermModel[] SalesTerms { get; }
     }
 }

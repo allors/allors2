@@ -103,7 +103,6 @@ namespace Allors.Domain
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithPartNumberPrefix(partNumberPrefix)
-                .WithInternetAddress(webSite)
                 .WithUseProductNumberCounter(useProductNumberCounter)
                 .WithUsePartNumberCounter(usePartNumberCounter)
                 .Build();
@@ -127,6 +126,11 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
+                .Build());
+            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                .WithUseAsDefault(true)
+                .WithContactMechanism(webSite)
+                .WithContactPurpose(new ContactMechanismPurposes(session).InternetAddress)
                 .Build());
 
             TelecommunicationsNumber phoneNumber1 = null;

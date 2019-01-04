@@ -18,19 +18,27 @@ namespace Allors.Domain.SalesInvoicePrint
 {
     public class InvoiceItemModel
     {
-        public string Product;
-        public string Description;
-        public decimal Quantity;
-        public decimal Price;
-        public decimal Amount;
-
-        public InvoiceItemModel(SalesInvoiceItem invoiceItem)
+        public InvoiceItemModel(SalesInvoiceItem item)
         {
-            this.Product = invoiceItem.Product?.Id.ToString();
-            this.Description = invoiceItem.Description;
-            this.Quantity = invoiceItem.Quantity;
-            this.Price = invoiceItem.ActualUnitPrice ?? 0.0m;
-            this.Amount = this.Quantity * this.Price;
+            this.Reference = item.InvoiceItemType?.Name;
+            this.Product = item.Product?.Name;
+            this.Description = item.Description;
+            this.Details = item.Details;
+            this.Quantity = item.Quantity;
+            // TODO: Where does the currency come from?
+            var currency = "€";
+            this.Price = item.CalculatedUnitPrice.ToString("0.00") + " " + currency;
+            this.Amount = item.TotalExVat.ToString("0.00") + " " + currency;
+            this.Comment = item.Comment;
         }
+
+        public string Reference { get; }
+        public string Product { get; }
+        public string Description { get; }
+        public string Details { get; }
+        public decimal Quantity { get; }
+        public string Price { get; }
+        public string Amount { get; }
+        public string Comment { get; }
     }
 }

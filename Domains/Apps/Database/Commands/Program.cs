@@ -49,11 +49,19 @@ namespace Commands
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
 
-            var app = new CommandLineApplication<Commands>();
-            app.Conventions
-                .UseDefaultConventions()
-                .UseConstructorInjection(services.BuildServiceProvider());
-            app.Execute(args);
+            var serviceProvider = services.BuildServiceProvider();
+
+            try
+            {
+                var app = new CommandLineApplication<Commands>();
+                app.Conventions.UseDefaultConventions().UseConstructorInjection(serviceProvider);
+                app.Execute(args);
+            }
+            catch (Exception e)
+            {
+                var logger = serviceProvider.GetService<ILogger<Program>>();
+                logger.LogCritical(e, "Uncaught exception");
+            }
         }
     }
 }

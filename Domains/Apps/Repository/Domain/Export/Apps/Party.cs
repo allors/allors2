@@ -355,6 +355,7 @@ namespace Allors.Repository
         [RoleId("bf8f9ba5-7a88-4ad4-b154-09b5efae9912")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
         [Indexed]
         [Workspace]
         ElectronicAddress InternetAddress { get; set; }

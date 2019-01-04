@@ -42,6 +42,7 @@ namespace Commands
         typeof(Upgrade),
         typeof(Populate),
         typeof(Schedule),
+        typeof(Print),
         typeof(Custom))]
     public class Commands
     {

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Custom.cs" company="Allors bvba">
+// <copyright file="Print.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -31,14 +31,14 @@ namespace Commands
 
     using Microsoft.Extensions.Logging;
 
-    [Command(Description = "Execute custom code")]
-    public class Custom
+    [Command(Description = "Print")]
+    public class Print
     {
         private readonly IDatabaseService databaseService;
 
         private readonly ILogger<Custom> logger;
 
-        public Custom(IDatabaseService databaseService, ILogger<Custom> logger)
+        public Print(IDatabaseService databaseService, ILogger<Custom> logger)
         {
             this.databaseService = databaseService;
             this.logger = logger;

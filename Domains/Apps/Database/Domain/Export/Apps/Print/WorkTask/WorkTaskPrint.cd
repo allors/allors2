@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Domain.WorkTaskPrint.TimeEntryModel">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAFAAAgQAAAAAAAgBAAAAECAQAAAAAAAgABAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\TimeEntryModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.WorkTaskPrint.WorkTaskModel">
+    <Position X="4" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAAIAAAAAQEABAAABEAgAAAAAAAAAAABIAAAAAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\WorkTaskModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.WorkTaskPrint.Model">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQAACAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\Model.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Customer" />
+      <Property Name="InventoryAssignments" />
+      <Property Name="WorkTask" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="TimeEntries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Domain.WorkTaskPrint.InventoryAssignmentModel">
+    <Position X="3.25" Y="6.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\InventoryAssignmentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.WorkTaskPrint.CustomerModel">
+    <Position X="6.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AQIAGgAAEAAAAAAAAEAAAAQgBAAAAAAAAAAABIAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\CustomerModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

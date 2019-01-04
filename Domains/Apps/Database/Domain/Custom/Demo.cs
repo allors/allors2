@@ -30,7 +30,7 @@ namespace Allors
 
             var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
             var us = new Countries(this.Session).FindBy(M.Country.IsoCode, "US");
-
+            
             var email2 = new EmailAddressBuilder(this.Session)
                 .WithElectronicAddressString("recipient@acme.com")
                 .Build();
@@ -290,6 +290,7 @@ namespace Allors
                     .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                     .WithPartyContactMechanism(acmeBillingAddress)
                     .WithPartyContactMechanism(acmeInquiries)
+                    .WithTaxNumber($"{1000 + i}-{1000 + i}-{1000 + i}")
                     .Build();
 
                 var contact1Email = new PartyContactMechanismBuilder(this.Session)
@@ -470,6 +471,9 @@ line2")
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
 
+                var exw = new IncoTermTypes(this.Session).Exw;
+                var incoTerm = new IncoTermBuilder(this.Session).WithTermType(exw).WithTermValue("XW").Build();
+
                 var salesInvoice = new SalesInvoiceBuilder(this.Session)
                     .WithBilledFrom(allors)
                     .WithInvoiceNumber("1")
@@ -482,6 +486,7 @@ line2")
                     .WithCustomerReference("a reference number")
                     .WithDescription("Sale of 1 used Aircraft Towbar")
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                    .WithSalesTerm(incoTerm)
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
                     .Build();
             }

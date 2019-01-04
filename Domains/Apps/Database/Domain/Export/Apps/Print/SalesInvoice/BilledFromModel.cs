@@ -24,19 +24,26 @@ namespace Allors.Domain.SalesInvoicePrint
         {
             if (billedFrom != null)
             {
-                this.Number = billedFrom.Id.ToString();
                 this.Name = billedFrom.PartyName;
-                this.Telephone = billedFrom.OrderInquiriesPhone?.Description ?? billedFrom?.GeneralPhoneNumber?.Description;
-                this.Email = billedFrom.GeneralEmail?.Description;
+                this.Email = billedFrom.GeneralEmail?.ElectronicAddressString;
                 this.Website = billedFrom.InternetAddress?.ElectronicAddressString;
-
                 this.TaxId = billedFrom.TaxNumber;
+
+                var phone = billedFrom.BillingInquiriesPhone ?? billedFrom.GeneralPhoneNumber;
+                this.Telephone = $"{phone.CountryCode} {phone.AreaCode} {phone.ContactNumber}";
 
                 if (billedFrom.GeneralCorrespondence is PostalAddress generalAddress)
                 {
-                    this.Address1 = generalAddress.Address1;
-                    this.Address2 = generalAddress.Address2;
-                    this.Address3 = generalAddress.Address3;
+                    this.Address = generalAddress.Address1;
+                    if (!string.IsNullOrWhiteSpace(generalAddress.Address2))
+                    {
+                        this.Address = $"\n{generalAddress.Address2}";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(generalAddress.Address3))
+                    {
+                        this.Address = $"\n{generalAddress.Address3}";
+                    }
 
                     if (generalAddress.ExistCity)
                     {
@@ -76,12 +83,8 @@ namespace Allors.Domain.SalesInvoicePrint
             }
         }
 
-
-        public string Number { get; }
         public string Name { get; }
-        public string Address1 { get; }
-        public string Address2 { get; }
-        public string Address3 { get; }
+        public string Address { get; }
         public string City { get; }
         public string State { get; }
         public string Country { get; }

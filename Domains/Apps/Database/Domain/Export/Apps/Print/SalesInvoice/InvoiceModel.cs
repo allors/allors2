@@ -16,11 +16,8 @@
 
 namespace Allors.Domain.SalesInvoicePrint
 {
-    using System.Xml.Serialization;
     using Allors.Services;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Sandwych.Reporting;
 
     public class InvoiceModel
@@ -36,10 +33,35 @@ namespace Allors.Domain.SalesInvoicePrint
                 var barcode = barcodeService.Generate(salesInvoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
                 this.Barcode = new ImageBlob("png", barcode);
             }
+
+            this.Date = salesInvoice.InvoiceDate.ToString("yyyy-MM-dd");
+            this.DueDate = salesInvoice.DueDate?.ToString("yyyy-MM-dd");
+            this.CustomerReference = salesInvoice.CustomerReference;
+
+            // TODO: Where does the currency come from?
+            var currency = "€";
+            this.SubTotal = salesInvoice.TotalBasePrice.ToString("0.00") + " " + currency;
+            this.Deposit = salesInvoice.AmountPaid.ToString("0.00") + " " + currency;
+            this.TotalExVat = salesInvoice.TotalExVat.ToString("0.00") + " " + currency;
+            this.VatCharge = salesInvoice.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.TotalVat = salesInvoice.TotalVat.ToString("0.00") + " " + currency;
+            this.TotalIncVat = salesInvoice.TotalIncVat.ToString("0.00") + " " + currency;
+
+            this.PaymentNetDays = salesInvoice.PaymentNetDays;
         }
 
         public string Description { get; }
         public string Number { get; }
         public ImageBlob Barcode { get; }
+        public string Date { get; }
+        public string DueDate { get; }
+        public string CustomerReference { get; }
+        public string SubTotal { get; }
+        public string Deposit { get; }
+        public string TotalExVat { get; }
+        public string VatCharge { get; }
+        public string TotalVat { get; }
+        public string TotalIncVat { get; }
+        public int PaymentNetDays { get; }
     }
 }

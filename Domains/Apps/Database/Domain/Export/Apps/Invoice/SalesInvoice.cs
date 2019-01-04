@@ -59,7 +59,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.ExistBillToCustomer && this.BillToCustomer.PaymentNetDays() != null)
+                if (this.BillToCustomer?.PaymentNetDays().HasValue == true)
                 {
                     return this.BillToCustomer.PaymentNetDays().Value;
                 }
