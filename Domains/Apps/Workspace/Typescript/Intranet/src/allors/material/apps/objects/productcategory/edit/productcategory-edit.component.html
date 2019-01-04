@@ -16,7 +16,14 @@
 
         <div class="row">
           <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
-          <a-mat-textarea class="col-md-12" [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-textarea>
+        </div>
+
+        <div class="row">
+          <a-mat-static class="col-md" [object]="category" [roleType]="m.ProductCategory.Children" display="Name"></a-mat-static>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md" [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-textarea>
         </div>
 
         <div class="row">
@@ -39,10 +46,10 @@
 
       </div>
     </div>
-    
+
     <div mat-dialog-actions>
       <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
       <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
     </div>
-  
+
   </form>

@@ -61,6 +61,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
               {
                 object: id,
                 include: {
+                  Children: x,
                   LocalisedNames: {
                     Locale: x,
                   },

@@ -98,17 +98,18 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          internalOrganisationPredicate.value = internalOrganisationId;
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.Quote({
