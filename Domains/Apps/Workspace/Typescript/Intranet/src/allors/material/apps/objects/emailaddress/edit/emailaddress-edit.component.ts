@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './emailaddress-edit.component.html',
@@ -28,7 +28,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: EditData,
     public dialogRef: MatDialogRef<EmailAddressEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -52,12 +52,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
             pull.ContactMechanism({
               object: this.data.id,
             }),
-            pull.ContactMechanismType({
-              predicate: new Equals({ propertyType: m.ContactMechanismType.IsActive, value: true }),
-              sort: new Sort(this.m.ContactMechanismType.Name)
-            })
           ];
-
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
@@ -69,21 +64,12 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
+        this.contactMechanism = loaded.objects.ContactMechanism as ElectronicAddress;
 
-        this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
-
-        if (isCreate) {
-          this.title = 'Add Email Address';
-
-          this.contactMechanism = this.allors.context.create('EmailAddress') as ElectronicAddress;
+        if (this.contactMechanism.CanWriteElectronicAddressString) {
+          this.title = 'Edit Email Address';
         } else {
-          this.contactMechanism = loaded.objects.ContactMechanism as ElectronicAddress;
-
-          if (this.contactMechanism.CanWriteElectronicAddressString) {
-            this.title = 'Edit Email Address';
-          } else {
-            this.title = 'View Email Address';
-          }
+          this.title = 'View Email Address';
         }
       }, this.errorService.handler);
   }
@@ -108,4 +94,5 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }}
+  }
+}

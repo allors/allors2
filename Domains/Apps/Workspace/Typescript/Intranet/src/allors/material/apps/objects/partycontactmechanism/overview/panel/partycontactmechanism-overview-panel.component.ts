@@ -38,7 +38,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
   contactMechanismsCollection = 'Current';
   currentPartyContactMechanisms: PartyContactMechanism[];
   inactivePartyContactMechanisms: PartyContactMechanism[];
-  allPartyContactMechanisms: PartyContactMechanism[];
+  allPartyContactMechanisms: PartyContactMechanism[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -131,7 +131,16 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
 
       this.currentPartyContactMechanisms = loaded.collections[active] as PartyContactMechanism[];
       this.inactivePartyContactMechanisms = loaded.collections[inactive] as PartyContactMechanism[];
-      this.allPartyContactMechanisms = this.currentPartyContactMechanisms.concat(this.inactivePartyContactMechanisms);
+
+      this.allPartyContactMechanisms = [];
+
+      if (this.currentPartyContactMechanisms !== undefined) {
+        this.allPartyContactMechanisms = this.allPartyContactMechanisms.concat(this.currentPartyContactMechanisms);
+      }
+
+      if (this.inactivePartyContactMechanisms !== undefined) {
+        this.allPartyContactMechanisms = this.allPartyContactMechanisms.concat(this.inactivePartyContactMechanisms);
+      }
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;

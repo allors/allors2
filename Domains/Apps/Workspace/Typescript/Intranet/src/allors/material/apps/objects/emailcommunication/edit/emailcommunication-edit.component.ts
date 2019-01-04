@@ -171,9 +171,13 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
 
-        this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        this.contacts = [];
 
-        if (!!this.organisation) {
+        if (!!internalOrganisation && internalOrganisation.ActiveEmployees !== undefined) {
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        }
+
+        if (!!this.organisation && this.organisation.CurrentContacts !== undefined) {
           this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
         }
 

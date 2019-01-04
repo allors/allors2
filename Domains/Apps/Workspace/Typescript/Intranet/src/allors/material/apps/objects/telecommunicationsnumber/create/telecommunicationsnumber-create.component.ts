@@ -4,32 +4,35 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Enumeration, TelecommunicationsNumber, ElectronicAddress } from '../../../../../domain';
+import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './webaddress-edit.component.html',
+  templateUrl: './telecommunicationsnumber-create.component.html',
   providers: [ContextService]
 })
-export class WebAddressEditComponent implements OnInit, OnDestroy {
+export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  contactMechanism: ElectronicAddress;
+  contactMechanism: TelecommunicationsNumber;
   contactMechanismTypes: Enumeration[];
+  contactMechanismPurposes: Enumeration[];
   title: string;
 
   private subscription: Subscription;
+  party: Party;
+  partyContactMechanism: PartyContactMechanism;
 
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: EditData,
-    public dialogRef: MatDialogRef<WebAddressEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<TelecommunicationsNumberCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
@@ -46,12 +49,18 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
-
           const pulls = [
-            pull.ContactMechanism({
-              object: this.data.id,
+            pull.Party({
+              object: this.data.associationId,
             }),
+            pull.ContactMechanismType({
+              predicate: new Equals({ propertyType: m.ContactMechanismType.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismType.Name)
+            }),
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismPurpose.Name)
+            })
           ];
 
           return this.allors.context
@@ -63,14 +72,18 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.party = loaded.objects.Party as Party;
 
-        this.contactMechanism = loaded.objects.ContactMechanism as ElectronicAddress;
+        this.title = 'Add Phone Number';
 
-        if (this.contactMechanism.CanWriteElectronicAddressString) {
-          this.title = 'Edit Web Address';
-        } else {
-          this.title = 'View Web Address';
-        }
+        this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism.UseAsDefault = true;
+        this.partyContactMechanism.ContactMechanism = this.contactMechanism;
+
+        this.party.AddPartyContactMechanism(this.partyContactMechanism);
       }, this.errorService.handler);
   }
 

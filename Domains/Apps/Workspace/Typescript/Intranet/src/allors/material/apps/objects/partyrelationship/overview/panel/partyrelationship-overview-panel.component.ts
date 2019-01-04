@@ -39,7 +39,7 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
   collection = 'Current';
   currentPartyRelationships: PartyRelationship[];
   inactivePartyRelationships: PartyRelationship[];
-  allPartyRelationships: PartyRelationship[];
+  allPartyRelationships: PartyRelationship[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -130,7 +130,16 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
 
       this.currentPartyRelationships = loaded.collections[active] as PartyRelationship[];
       this.inactivePartyRelationships = loaded.collections[inactive] as PartyRelationship[];
-      this.allPartyRelationships = this.currentPartyRelationships.concat(this.inactivePartyRelationships);
+
+      this.allPartyRelationships = [];
+
+      if (this.currentPartyRelationships !== undefined) {
+        this.allPartyRelationships = this.allPartyRelationships.concat(this.currentPartyRelationships);
+      }
+
+      if (this.inactivePartyRelationships !== undefined) {
+        this.allPartyRelationships = this.allPartyRelationships.concat(this.inactivePartyRelationships);
+      }
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;

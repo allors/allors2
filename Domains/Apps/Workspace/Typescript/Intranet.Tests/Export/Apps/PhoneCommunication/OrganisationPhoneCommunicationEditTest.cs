@@ -73,7 +73,7 @@ namespace Tests.Intranet.PhoneCommunicationTests
             page.Subject.Value = "subject";
             page.FromParty.Value = contact.PartyName;
             page.ToParty.Value = employee.PartyName;
-            page.PhoneNumber.Value = "1 123 456";
+            page.PhoneNumber.Value = "+1 123 456";
             page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
             page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);

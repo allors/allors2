@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './telecommunicationsnumber-edit.component.html',
@@ -28,7 +28,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: EditData,
     public dialogRef: MatDialogRef<TelecommunicationsNumberEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -46,8 +46,6 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
-
           const pulls = [
             pull.ContactMechanism({
               object: this.data.id,
@@ -58,32 +56,21 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
             })
           ];
 
-
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
-      .subscribe(({ loaded, isCreate }) => {
+      .subscribe((loaded) => {
 
         this.allors.context.reset();
 
         this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
+        this.contactMechanism = loaded.objects.ContactMechanism as TelecommunicationsNumber;
 
-        if (isCreate) {
-          this.title = 'Add Phone Number';
-
-          this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+        if (this.contactMechanism.CanWriteAreaCode) {
+          this.title = 'Edit Phone Number';
         } else {
-          this.contactMechanism = loaded.objects.ContactMechanism as TelecommunicationsNumber;
-
-          if (this.contactMechanism.CanWriteAreaCode) {
-            this.title = 'Edit Phone Number';
-          } else {
-            this.title = 'View Phone Number';
-          }
+          this.title = 'View Phone Number';
         }
       }, this.errorService.handler);
   }
@@ -108,4 +95,5 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }}
+  }
+}

@@ -7,6 +7,11 @@
     <div class="container-fluid">
 
       <div class="row">
+        <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes"
+          [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
+      </div>
+
+      <div class="row">
         <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
       </div>
 
@@ -29,6 +34,13 @@
 
       <div class="row">
         <a-mat-textarea class="col-md" [object]="contactMechanism" [roleType]="m.ContactMechanism.Description"></a-mat-textarea>
+      </div>
+
+      <div class="row">
+        <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault"
+          label="Use as default"></a-mat-slidetoggle>
+        <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
+          label="Non Solicitation"></a-mat-slidetoggle>
       </div>
 
     </div>

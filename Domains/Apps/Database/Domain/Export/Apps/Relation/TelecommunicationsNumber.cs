@@ -18,13 +18,5 @@ namespace Allors.Domain
     public partial class TelecommunicationsNumber
     {
         public bool IsPostalAddress => false;
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            if (this.ExistCountryCode && this.CountryCode.StartsWith("+"))
-            {
-                this.CountryCode = this.CountryCode.Substring(1);
-            }
-        }
     }
 }

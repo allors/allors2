@@ -116,7 +116,16 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
       this.panel.onPulled = (loaded) => {
         const ownedSerialisedItems = loaded.collections[ownedSerialisedItemsName] as SerialisedItem[];
         const rentedSerialisedItems = loaded.collections[rentedSerialisedItemsName] as SerialisedItem[];
-        this.objects = ownedSerialisedItems.concat(rentedSerialisedItems);
+
+        this.objects = [];
+
+        if (ownedSerialisedItems !== undefined) {
+          this.objects = this.objects.concat(ownedSerialisedItems);
+        }
+
+        if (rentedSerialisedItems !== undefined) {
+          this.objects = this.objects.concat(rentedSerialisedItems);
+        }
 
         if (this.objects) {
           this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;

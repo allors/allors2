@@ -4,12 +4,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism } from '../../../../../domain';
+import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism, Organisation, OrganisationContactRelationship, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   templateUrl: './partycontactmechanism-edit.component.html',
@@ -21,9 +22,13 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
 
   partyContactMechanism: PartyContactMechanism;
   contactMechanismPurposes: Enumeration[];
+  contactMechanisms: ContactMechanism[] = [];
+  organisationContactMechanisms: ContactMechanism[];
+  ownContactMechanisms: ContactMechanism[] = [];
   title: string;
 
   private subscription: Subscription;
+  party: Party;
 
   constructor(
     @Self() private allors: ContextService,
@@ -58,13 +63,36 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
                 }
               },
             }),
-            // pull.Person({
-            //   object: this.data.id,
-            //   fetch: {
-            //     CurrentOrganisationContactRelationships: {
-            //     }
-            //   }
-            // }),
+            pull.Party({
+              object: this.data.associationId,
+            }),
+            pull.Person({
+              object: this.data.associationId,
+              fetch: {
+                CurrentOrganisationContactMechanisms: {
+                  include: {
+                    PostalAddress_PostalBoundary: {
+                      Country: x
+                    }
+                  }
+                }
+              }
+            }),
+            pull.Party({
+              object: this.data.associationId,
+              name: 'test',
+              fetch: {
+                PartyContactMechanisms: {
+                  include: {
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x
+                      }
+                    }
+                  }
+                }
+              }
+            }),
             pull.ContactMechanismPurpose({
               predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
               sort: new Sort(this.m.ContactMechanismPurpose.Name)
@@ -82,12 +110,32 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
+        this.contactMechanisms = [];
+        this.ownContactMechanisms = [];
+
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.organisationContactMechanisms = loaded.collections.CurrentOrganisationContactMechanisms as ContactMechanism[];
+
+        const partyContactMechanisms = loaded.collections.test as PartyContactMechanism[];
+        partyContactMechanisms.forEach(v => this.ownContactMechanisms.push(v.ContactMechanism));
+
+        if (this.organisationContactMechanisms !== undefined) {
+          this.contactMechanisms = this.contactMechanisms.concat(this.organisationContactMechanisms);
+        }
+
+        if (this.ownContactMechanisms !== undefined) {
+          this.contactMechanisms = this.contactMechanisms.concat(this.ownContactMechanisms);
+        }
 
         if (isCreate) {
           this.title = 'Add Party ContactMechanism';
 
           this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+          this.partyContactMechanism.FromDate = new Date();
+          this.partyContactMechanism.UseAsDefault = true;
+
+          this.party = loaded.objects.Party as Party;
+          this.party.AddPartyContactMechanism(this.partyContactMechanism);
         } else {
           this.partyContactMechanism = loaded.objects.PartyContactMechanism as PartyContactMechanism;
 

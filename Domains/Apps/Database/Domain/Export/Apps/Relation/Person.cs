@@ -237,5 +237,19 @@ namespace Allors.Domain
                 this.OwnerSecurityToken.Delete();
             }
         }
+
+        public void Sync(PartyContactMechanism[] organisationContactMechanisms)
+        {
+            foreach (PartyContactMechanism partyContactMechanism in organisationContactMechanisms)
+            {
+                this.RemoveCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
+
+                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
+                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.AddCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
+                }
+            }
+        }
     }
 }
