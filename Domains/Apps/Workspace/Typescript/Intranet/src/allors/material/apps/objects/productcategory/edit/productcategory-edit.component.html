@@ -3,53 +3,55 @@
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
-    <div mat-dialog-content>
 
-        <div class="row">
-          <a-mat-file class="col-md-12" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
-          <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-static class="col-md" [object]="category" [roleType]="m.ProductCategory.Children" display="Name"></a-mat-static>
-        </div>
-
-        <div class="row">
-          <a-mat-textarea class="col-md" [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-textarea>
-        </div>
-
-        <div class="row">
-          <mat-expansion-panel class="col" *ngIf="locales">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Translations
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <div *ngFor="let locale of locales; let i = index">
-              <mat-divider *ngIf="i > 0"></mat-divider>
-              <div class="row">
-                <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locale]="locale"></a-mat-localised-text>
-                <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
-              </div>
-            </div>
-          </mat-expansion-panel>
-        </div>
-
-      </div>
+    <div class="row">
+      <a-mat-file class="col-md-12" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
     </div>
 
-    <div mat-dialog-actions>
-      <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    <div class="row">
+      <a-mat-input class="col-md" [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
+      <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes"
+        display="Name" label="Scope"></a-mat-select>
     </div>
 
-  </form>
+    <div class="row">
+      <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories"
+        display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-static class="col-md" [object]="category" [roleType]="m.ProductCategory.Children" display="Name"></a-mat-static>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea class="col-md" [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-textarea>
+    </div>
+
+    <div class="row">
+      <mat-expansion-panel class="col" *ngIf="locales">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Translations
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div *ngFor="let locale of locales; let i = index">
+          <mat-divider *ngIf="i > 0"></mat-divider>
+          <div class="row">
+            <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedNames"
+              [locale]="locale"></a-mat-localised-text>
+            <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions"
+              [locale]="locale"></a-mat-localised-text>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

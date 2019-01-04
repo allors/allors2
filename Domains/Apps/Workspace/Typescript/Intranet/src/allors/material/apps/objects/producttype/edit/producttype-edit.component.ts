@@ -16,7 +16,7 @@ import { StateService } from '../../../services/state';
 })
 export class ProductTypeEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Edit Product Type';
+  public title: string;
   public subTitle: string;
 
   public m: Meta;
@@ -43,16 +43,15 @@ export class ProductTypeEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
 
-          const create = (this.data as EditData).id === undefined;
-          const { id, objectType, associationRoleType } = this.data;
+          const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
             pull.ProductType({
-              object: id,
+              object: this.data.id,
               include: {
                 SerialisedItemCharacteristicTypes: x,
               }
@@ -65,21 +64,28 @@ export class ProductTypeEditComponent implements OnInit, OnDestroy {
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, create }) => {
+      .subscribe(({ loaded, isCreate }) => {
 
-        if (create) {
+        this.allors.context.reset();
+
+        this.characteristics = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
+
+        if (isCreate) {
           this.title = 'Add Product Type';
           this.productType = this.allors.context.create('ProductType') as ProductType;
         } else {
-          this.title = 'Edit Product Type';
           this.productType = loaded.objects.ProductType as ProductType;
-        }
 
-        this.characteristics = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
+          if (this.productType.CanWriteName) {
+            this.title = 'Edit Product Type';
+          } else {
+            this.title = 'View Product Type';
+          }
+        }
       }, this.errorService.handler);
   }
 
