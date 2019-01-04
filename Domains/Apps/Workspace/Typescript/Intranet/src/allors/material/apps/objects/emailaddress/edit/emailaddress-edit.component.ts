@@ -55,13 +55,10 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
-      .subscribe(({ loaded, isCreate }) => {
+      .subscribe((loaded) => {
 
         this.allors.context.reset();
         this.contactMechanism = loaded.objects.ContactMechanism as ElectronicAddress;
