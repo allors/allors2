@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed && part" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed && part" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
@@ -56,7 +56,7 @@
             <div class="col-md">
               <div class="row">
                 <mat-form-field class="col">
-                  <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                  <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false" (ngModelChange)="setDirty()">
                     <mat-option>None</mat-option>
                     <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
                   </mat-select>
@@ -79,7 +79,7 @@
 
           <div class="row">
             <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
-              display="Name"></a-mat-select>
+              display="Name" (selected)="update()"></a-mat-select>
             <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
               display="Name"></a-mat-select>
           </div>
@@ -93,7 +93,7 @@
 
           <div class="row">
             <mat-form-field class="col-md">
-              <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+              <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true" (ngModelChange)="setDirty()">
                 <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -203,7 +203,7 @@
           </div>
         </mat-tab>
       </mat-tab-group>
-      
+
     </mat-card-content>
 
     <mat-card-actions>

@@ -119,7 +119,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
-        [Required]
         [Workspace]
         public IGoodIdentification[] GoodIdentifications { get; set; }
 

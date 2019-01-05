@@ -21,7 +21,8 @@ export class EmailAddressCreateComponent implements OnInit, OnDestroy {
 
   contactMechanism: ElectronicAddress;
   contactMechanismTypes: Enumeration[];
-  title: string;
+
+  public title = 'Add Email Address';
 
   private subscription: Subscription;
   partyContactMechanism: PartyContactMechanism;
@@ -63,8 +64,6 @@ export class EmailAddressCreateComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.party = loaded.objects.Party as Party;
-
-        this.title = 'Add Email Address';
 
         this.contactMechanism = this.allors.context.create('EmailAddress') as ElectronicAddress;
 

@@ -19,13 +19,14 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  public title = 'Add Postal Address';
+
   contactMechanism: PostalAddress;
   postalBoundary: PostalBoundary;
   countries: Country[];
   party: Party;
   contactMechanismPurposes: Enumeration[];
   partyContactMechanism: PartyContactMechanism;
-  title: string;
 
   private subscription: Subscription;
 
@@ -73,8 +74,6 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
         this.countries = loaded.collections.Countries as Country[];
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
         this.party = loaded.objects.Party as Party;
-
-        this.title = 'Add Postal Address';
 
         this.contactMechanism = this.allors.context.create('PostalAddress') as PostalAddress;
 

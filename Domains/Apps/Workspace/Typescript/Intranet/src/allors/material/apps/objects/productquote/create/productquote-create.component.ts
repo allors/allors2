@@ -23,8 +23,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
-  public title: string;
-  public subTitle: string;
+  public title = 'Add Quote';
+
   public quote: ProductQuote;
   public request: RequestForQuote;
   public currencies: Currency[];
@@ -102,7 +102,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         this.quote.Issuer = internalOrganisation;
         this.quote.IssueDate = new Date();
         this.quote.ValidFromDate = new Date();
-        this.title = 'Add Quote';
 
       }, this.errorService.handler);
   }

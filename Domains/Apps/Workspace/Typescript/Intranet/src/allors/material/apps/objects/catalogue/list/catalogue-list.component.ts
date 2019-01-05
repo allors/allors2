@@ -44,8 +44,8 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     public mediaService: MediaService,
     private errorService: ErrorService,
     private stateService: StateService,
-    titleService: Title,
-  ) {
+    titleService: Title) {
+
     titleService.setTitle(this.title);
 
     this.edit = editService.edit();

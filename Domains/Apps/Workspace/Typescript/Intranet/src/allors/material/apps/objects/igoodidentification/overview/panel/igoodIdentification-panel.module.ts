@@ -6,15 +6,15 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialFileModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../..';
 
-import { IGoodIdentificationsPanel } from './igoodIdentification-panel.component';
-export { IGoodIdentificationsPanel } from './igoodIdentification-panel.component';
+import { IGoodIdentificationsPanelComponent } from './igoodIdentification-panel.component';
+export { IGoodIdentificationsPanelComponent as IGoodIdentificationsPanel } from './igoodIdentification-panel.component';
 
 @NgModule({
   declarations: [
-    IGoodIdentificationsPanel,
+    IGoodIdentificationsPanelComponent,
   ],
   exports: [
-    IGoodIdentificationsPanel,
+    IGoodIdentificationsPanelComponent,
   ],
   imports: [
     CommonModule,

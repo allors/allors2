@@ -20,6 +20,7 @@ import { SalesTermEditComponent } from '../../salesterm/edit/salesterm-edit.modu
 export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
+
   public title = 'Edit Purchase Invoice';
 
   public invoice: PurchaseInvoice;

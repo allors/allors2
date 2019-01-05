@@ -21,7 +21,7 @@ import { BrandInlineModule } from '../../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../../model/inline/model-inline.module';
 
 import { PartOverviewDetailComponent } from './part-overview-detail.component';
-export { PartOverviewDetailComponent as GoodOverviewDetailComponent } from './part-overview-detail.component';
+export { PartOverviewDetailComponent } from './part-overview-detail.component';
 
 @NgModule({
   declarations: [

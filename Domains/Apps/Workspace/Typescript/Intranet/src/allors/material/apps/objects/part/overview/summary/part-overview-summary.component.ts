@@ -65,6 +65,7 @@ export class PartOverviewSummaryComponent {
             ProductType: x,
             InventoryItemKind: x,
             ManufacturedBy: x,
+            SuppliedBy: x,
             SerialisedItems: {
               PrimaryPhoto: x,
               SerialisedItemState: x,

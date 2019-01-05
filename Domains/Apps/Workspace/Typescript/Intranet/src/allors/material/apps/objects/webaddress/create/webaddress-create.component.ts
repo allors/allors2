@@ -19,8 +19,9 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  public title = 'Add Web Address';
+
   contactMechanism: ElectronicAddress;
-  title: string;
 
   private subscription: Subscription;
   party: Party;
@@ -60,8 +61,6 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.allors.context.reset();
-
-        this.title = 'Add Web Address';
 
         this.party = loaded.objects.Party as Party;
 

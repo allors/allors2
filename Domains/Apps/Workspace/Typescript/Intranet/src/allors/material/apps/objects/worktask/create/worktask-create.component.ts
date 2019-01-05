@@ -22,6 +22,8 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
+  public title = 'Add Work Task';
+
   add: boolean;
   edit: boolean;
 

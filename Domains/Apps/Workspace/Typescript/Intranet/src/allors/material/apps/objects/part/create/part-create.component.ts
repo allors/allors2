@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 
-import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../domain';
-import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../framework';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService, Saved } from '../../../../../angular';
+import { Facility, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, VendorProduct, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent } from '../../../../../domain';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
+import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { StateService } from '../../../../';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './part-create.component.html',
@@ -18,13 +18,11 @@ import { CreateData } from 'src/allors/material/base/services/object';
 })
 export class PartCreateComponent implements OnInit, OnDestroy {
 
-  m: Meta;
+  readonly m: Meta;
 
-  add: boolean;
-  edit: boolean;
+  public title = 'Add Part';
 
   part: Part;
-  subTitle: string;
   facility: Facility;
   locales: Locale[];
   inventoryItemKinds: InventoryItemKind[];
@@ -46,24 +44,23 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   partNumber: PartNumber;
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
-  currentSellingPrice: PriceComponent;
 
   private subscription: Subscription;
+  private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
+  internalOrganisation: Organisation;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<PartCreateComponent>,
     public metaService: MetaService,
-    public navigationService: NavigationService,
     private refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private stateService: StateService) {
+    public stateService: StateService,
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
-
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -105,37 +102,39 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = internalOrganisation.DefaultFacility;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.facility = this.internalOrganisation.DefaultFacility;
 
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.facilities = loaded.collections.Facilities as Facility[];
-        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
-        this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
+        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
+        const piece = this.unitsOfMeasure.find((v) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
+
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId.toUpperCase() === '5735191A-CDC4-4563-96EF-DDDC7B969CA6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
         this.part = this.allors.context.create('Part') as Part;
+        this.part.InternalOrganisation = this.internalOrganisation;
+        this.part.DefaultFacility = this.internalOrganisation.DefaultFacility;
+        this.part.UnitOfMeasure = piece;
 
-        this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
-        this.partNumber.GoodIdentificationType = partNumberType;
+        if (!this.internalOrganisation.UsePartNumberCounter) {
+          this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
+          this.partNumber.GoodIdentificationType = partNumberType;
 
-        this.part.AddGoodIdentification(this.partNumber);
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
+          this.part.AddGoodIdentification(this.partNumber);
+        }
+      }, this.errorService.handler);
   }
 
   public brandAdded(brand: Brand): void {
@@ -167,8 +166,8 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+      .subscribe(() => {
+        this.models = this.selectedBrand.Models ? this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)) : [];
       }, this.errorService.handler);
   }
 
@@ -177,13 +176,20 @@ export class PartCreateComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
   public save(): void {
+
     this.onSave();
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
-        this.navigationService.back();
+      .subscribe(() => {
+        const data: ObjectData = {
+          id: this.part.id,
+          objectType: this.part.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -191,19 +197,15 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
+    const { context } = this.allors;
 
-    const isNew = this.part.isNew;
     this.onSave();
 
-    this.allors.context
+    context
       .save()
-      .subscribe(() => {
+      .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        if (isNew) {
-          this.navigationService.overview(this.part);
-        } else {
-          this.refreshService.refresh();
-        }
+        this.refresh();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -253,6 +255,10 @@ export class PartCreateComponent implements OnInit, OnDestroy {
         });
       }
     }
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   private newSupplierOffering(supplier: Organisation): SupplierOffering {

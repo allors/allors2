@@ -21,6 +21,8 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
   m: Meta;
   good: Good;
 
+  public title = 'Add Good';
+
   add: boolean;
   edit: boolean;
 

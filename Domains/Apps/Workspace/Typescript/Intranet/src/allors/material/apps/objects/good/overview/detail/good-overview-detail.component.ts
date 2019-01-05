@@ -186,7 +186,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        this.navigationService.back();
+        this.location.back();
       },
         (error: Error) => {
           this.errorService.handle(error);

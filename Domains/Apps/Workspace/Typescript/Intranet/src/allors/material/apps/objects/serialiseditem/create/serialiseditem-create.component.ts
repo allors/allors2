@@ -21,7 +21,8 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
   readonly m: Meta;
   serialisedItem: SerialisedItem;
 
-  title: string;
+  public title = 'Add Serialised Asset';
+
   facility: Facility;
   locales: Locale[];
   suppliers: Organisation[];

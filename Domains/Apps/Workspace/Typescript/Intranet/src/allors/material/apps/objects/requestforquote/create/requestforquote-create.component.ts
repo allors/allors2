@@ -23,6 +23,8 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
+  public title = 'Add Request for Quote';
+
   public request: RequestForQuote;
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];

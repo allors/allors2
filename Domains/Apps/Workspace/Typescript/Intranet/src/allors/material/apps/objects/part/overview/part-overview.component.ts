@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -13,7 +13,7 @@ import { StateService } from '../../../services/state';
   templateUrl: './part-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class PartOverviewComponent implements OnInit, OnDestroy {
+export class PartOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Part';
 
@@ -36,7 +36,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -45,15 +45,15 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
           const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Person;
+          this.panelManager.objectType = m.Part;
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 
-          const id = this.panelManager.id;
+          this.panelManager.on();
 
           const pulls = [
             pull.Part({
-              object: id,
+              object: this.panelManager.id,
             }),
           ];
 

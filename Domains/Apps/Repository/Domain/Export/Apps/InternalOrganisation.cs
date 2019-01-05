@@ -578,6 +578,7 @@ namespace Allors.Repository
         [RoleId("ED07DC4D-B415-4FBD-AA26-9C1AB16E6A01")]
         [Required]
         #endregion
+        [Workspace]
         bool UseProductNumberCounter { get; set; }
 
         #region Allors
@@ -586,6 +587,7 @@ namespace Allors.Repository
         [RoleId("F23B3F70-A8A8-443B-8357-348B608A74E0")]
         [Required]
         #endregion
+        [Workspace]
         bool UsePartNumberCounter { get; set; }
 
         /// <summary>

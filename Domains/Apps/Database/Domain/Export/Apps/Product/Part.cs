@@ -67,9 +67,9 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.ExistDefaultFacility)
+            if (this.ExistInternalOrganisation && !this.ExistDefaultFacility)
             {
-                this.DefaultFacility = this.InternalOrganisation.FacilitiesWhereOwner.First;
+                this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
             }
 
             this.DeriveName();

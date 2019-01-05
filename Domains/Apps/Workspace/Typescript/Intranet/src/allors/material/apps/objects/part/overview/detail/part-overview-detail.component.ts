@@ -1,15 +1,15 @@
-import { Component, OnDestroy, OnInit, Self, SkipSelf } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Location } from '@angular/common';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { InternalOrganisation, Locale, Organisation, Good, Facility, ProductCategory, ProductType, Brand, Model, VendorProduct, Ownership, VatRate, Part, GoodIdentificationType, ProductNumber, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering } from '../../../../../../domain';
+import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, VendorProduct, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -47,7 +47,9 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   currentSellingPrice: PriceComponent;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
+  private refresh$: BehaviorSubject<Date>;
+  internalOrganisation: Organisation;
+  settings: Settings;
 
   constructor(
     @Self() public allors: ContextService,
@@ -57,61 +59,63 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
     public navigationService: NavigationService,
     public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private stateService: StateService) {
+    private stateService: StateService,
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
+    this.refresh$ = new BehaviorSubject(new Date());
 
     panel.name = 'detail';
     panel.title = 'Part Details';
-    panel.icon = 'person';
+    panel.icon = 'business';
     panel.expandable = true;
 
-    // Minimized
+    // Collapsed
     const pullName = `${this.panel.name}_${this.m.Part.name}`;
 
     panel.onPull = (pulls) => {
-      const { pull, x } = this.metaService;
 
-      const id = this.panel.manager.id;
+      this.part = undefined;
+      if (this.panel.isCollapsed) {
+        const { pull } = this.metaService;
+        const id = this.panel.manager.id;
 
-      pulls.push(
-        pull.Part({
-          name: pullName,
-          object: id,
-        }),
-      );
+        pulls.push(
+          pull.Part({
+            name: pullName,
+            object: id,
+          }),
+        );
+      }
     };
 
     panel.onPulled = (loaded) => {
-      this.part = loaded.objects[pullName] as Part;
+      if (this.panel.isCollapsed) {
+        this.part = loaded.objects[pullName] as Part;
+      }
     };
   }
 
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(
-      this.route.url,
-      this.route.queryParams,
-      this.refreshService.refresh$,
-      this.stateService.internalOrganisationId$,
-    )
+    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, , , internalOrganisationId]) => {
+        switchMap(([, , internalOrganisationId]) => {
 
           this.part = undefined;
 
           const { m, pull, x } = this.metaService;
           const id = this.panel.manager.id;
+          const fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
           const pulls = [
-            this.fetcher.locales,
-            this.fetcher.internalOrganisation,
+            fetcher.locales,
+            fetcher.internalOrganisation,
+            fetcher.Settings,
             pull.Part({
               object: id,
               include: {
@@ -120,9 +124,12 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
                 Documents: x,
                 ElectronicDocuments: x,
                 ManufacturedBy: x,
+                SuppliedBy: x,
                 SerialisedItemCharacteristics: {
+                  LocalisedValues: x,
                   SerialisedItemCharacteristicType: {
-                    UnitOfMeasure: x
+                    UnitOfMeasure: x,
+                    LocalisedNames: x
                   }
                 },
                 Brand: {
@@ -177,8 +184,8 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = internalOrganisation.DefaultFacility;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.facility = this.internalOrganisation.DefaultFacility;
 
         this.part = loaded.objects.Part as Part;
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
@@ -188,8 +195,9 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
         this.facilities = loaded.collections.Facilities as Facility[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.settings = loaded.objects.Settings as Settings;
 
-        this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
@@ -218,15 +226,8 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  public save(): void {
-
-    this.allors.context.save()
-      .subscribe(() => {
-        this.navigationService.back();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+  public setDirty(): void {
+    this.allors.context.session.hasChanges = true;
   }
 
   public brandAdded(brand: Brand): void {
@@ -234,12 +235,16 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
     this.selectedBrand = brand;
     this.models = [];
     this.selectedModel = undefined;
+    this.allors.context.session.hasChanges = true;
+    this.setDirty();
   }
 
   public modelAdded(model: Model): void {
     this.selectedBrand.AddModel(model);
     this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
     this.selectedModel = model;
+    this.allors.context.session.hasChanges = true;
+    this.setDirty();
   }
 
   public brandSelected(brand: Brand): void {
@@ -258,10 +263,96 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
+      .subscribe(() => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       }, this.errorService.handler);
   }
 
+  public save(): void {
 
+    this.onSave();
+
+    this.allors.context.save()
+      .subscribe(() => {
+        this.location.back();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    this.onSave();
+
+    context
+      .save()
+      .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  private onSave() {
+
+    this.part.Brand = this.selectedBrand;
+    this.part.Model = this.selectedModel;
+
+    if (this.suppliers !== undefined) {
+      const suppliersToDelete = this.suppliers.filter(v => v);
+
+      if (this.selectedSuppliers !== undefined) {
+        this.selectedSuppliers.forEach((supplier: Organisation) => {
+          const index = suppliersToDelete.indexOf(supplier);
+          if (index > -1) {
+            suppliersToDelete.splice(index, 1);
+          }
+
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering === undefined) {
+            this.supplierOfferings.push(this.newSupplierOffering(supplier));
+          } else {
+            supplierOffering.ThroughDate = null;
+          }
+        });
+      }
+
+      if (suppliersToDelete !== undefined) {
+        suppliersToDelete.forEach((supplier: Organisation) => {
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering !== undefined) {
+            supplierOffering.ThroughDate = new Date();
+          }
+        });
+      }
+    }
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  private newSupplierOffering(supplier: Organisation): SupplierOffering {
+
+    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
+    supplierOffering.Supplier = supplier;
+    supplierOffering.Part = this.part;
+    supplierOffering.UnitOfMeasure = this.part.UnitOfMeasure;
+    supplierOffering.Currency = this.settings.PreferredCurrency;
+    return supplierOffering;
+  }
 }

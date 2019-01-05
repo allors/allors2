@@ -79,12 +79,12 @@ export class IGoodIdentificationEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, create, objectType, associationRoleType }) => {
         this.allors.context.reset();
 
-        this.container = loaded.objects.Good || loaded.objects.SalesOrder;
+        this.container = loaded.objects.Good || loaded.objects.Part;
         this.object = loaded.objects.IGoodIdentification as IGoodIdentification;
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
 
         if (create) {
-          this.title = 'Add IGood Identification';
+          this.title = 'Add Identification';
           this.object = this.allors.context.create(objectType) as IGoodIdentification;
           this.container.add(associationRoleType.name, this.object);
         }

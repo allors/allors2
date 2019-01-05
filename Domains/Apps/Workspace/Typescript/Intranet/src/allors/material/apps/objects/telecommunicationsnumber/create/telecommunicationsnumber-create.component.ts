@@ -19,10 +19,11 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
 
   readonly m: Meta;
 
+  public title = 'Add Phone number';
+
   contactMechanism: TelecommunicationsNumber;
   contactMechanismTypes: Enumeration[];
   contactMechanismPurposes: Enumeration[];
-  title: string;
 
   private subscription: Subscription;
   party: Party;
@@ -74,8 +75,6 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
         this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
         this.party = loaded.objects.Party as Party;
-
-        this.title = 'Add Phone Number';
 
         this.contactMechanism = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
 
