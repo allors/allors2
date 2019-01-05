@@ -30,7 +30,10 @@ namespace Allors.Domain.SalesInvoicePrint
                 this.TaxId = billedFrom.TaxNumber;
 
                 var phone = billedFrom.BillingInquiriesPhone ?? billedFrom.GeneralPhoneNumber;
-                this.Telephone = $"{phone.CountryCode} {phone.AreaCode} {phone.ContactNumber}";
+                if (phone != null)
+                {
+                    this.Telephone = $"{phone.CountryCode} {phone.AreaCode} {phone.ContactNumber}";
+                }
 
                 if (billedFrom.GeneralCorrespondence is PostalAddress generalAddress)
                 {
