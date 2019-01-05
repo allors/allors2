@@ -14,15 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.SalesOrderPrint
 {
     public class BillToModel
     {
-        public BillToModel(SalesInvoice invoice)
+        public BillToModel(SalesOrder order)
         {
-            var customer = invoice.BillToEndCustomer ?? invoice.BillToCustomer;
-            var contactPerson = invoice.BillToEndCustomerContactPerson ?? invoice.BillToContactPerson;
-            var contactMechanisam = invoice.BillToEndCustomerContactMechanism ?? invoice.BillToContactMechanism;
+            var customer = order.BillToEndCustomer ?? order.BillToCustomer;
+            var contactPerson = order.BillToEndCustomerContactPerson ?? order.BillToContactPerson;
+            var contactMechanisam = order.BillToEndCustomerContactMechanism ?? order.BillToContactMechanism;
             
             var billTo = customer;
             var billToOrganisation = billTo as Organisation;

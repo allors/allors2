@@ -14,48 +14,48 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.SalesOrderPrint
 {
     using System.Linq;
     using Sandwych.Reporting;
 
     public class Model
     {
-        public Model(SalesInvoice invoice)
+        public Model(SalesOrder order)
         {
-            this.Invoice = new InvoiceModel(invoice);
+            this.Order = new OrderModel(order);
 
-            if (invoice.ExistBilledFrom && invoice.BilledFrom.ExistLogoImage)
+            if (order.TakenBy?.ExistLogoImage == true)
             {
-                this.Logo = new ImageBlob("png", invoice.BilledFrom.LogoImage.MediaContent.Data);
+                this.Logo = new ImageBlob("png", order.TakenBy.LogoImage.MediaContent.Data);
             }
             else
             {
-                var singleton = invoice.Strategy.Session.GetSingleton();
+                var singleton = order.Strategy.Session.GetSingleton();
                 this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
             }
 
-            this.BilledFrom = new BilledFromModel((Organisation)invoice.BilledFrom);
-            this.BillTo = new BillToModel(invoice);
-            this.ShipTo = new ShipToModel(invoice);
+            this.TakenBy = new TakenByModel((Organisation)order.TakenBy);
+            this.BillTo = new BillToModel(order);
+            this.ShipTo = new ShipToModel(order);
 
-            this.InvoiceItems = invoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
+            this.OrderItems = order.SalesOrderItems.Select(v => new OrderItemModel(v)).ToArray();
 
-            var paymentTerm = new InvoiceTermTypes(invoice.Strategy.Session).PaymentNetDays;
-            this.SalesTerms = invoice.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
+            var paymentTerm = new InvoiceTermTypes(order.Strategy.Session).PaymentNetDays;
+            this.SalesTerms = order.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
         }
 
-        public InvoiceModel Invoice { get; }
+        public OrderModel Order { get; }
 
         public ImageBlob Logo { get; }
 
-        public BilledFromModel BilledFrom { get; }
+        public TakenByModel TakenBy { get; }
 
         public BillToModel BillTo { get; }
 
         public ShipToModel ShipTo { get; }
 
-        public InvoiceItemModel[] InvoiceItems { get; }
+        public OrderItemModel[] OrderItems { get; }
 
         public SalesTermModel[] SalesTerms { get; }
     }

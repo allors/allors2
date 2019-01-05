@@ -291,12 +291,9 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            var model = new Dictionary<string, object>
-                            {
-                                {"salesOrder", this},
-                                {"value", "a value"}
-                            };
-            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model);
+
+            var printModel = new SalesOrderPrint.Model(this);
+            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, printModel);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

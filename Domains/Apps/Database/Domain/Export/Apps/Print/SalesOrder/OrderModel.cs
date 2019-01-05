@@ -14,40 +14,39 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.SalesOrderPrint
 {
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Sandwych.Reporting;
 
-    public class InvoiceModel
+    public class OrderModel
     {
-        public InvoiceModel(SalesInvoice invoice)
+        public OrderModel(SalesOrder order)
         {
-            this.Description = invoice.Description;
-            this.Number = invoice.InvoiceNumber;
-            if (invoice.ExistInvoiceNumber)
+            this.Description = order.Description;
+            this.Number = order.OrderNumber;
+            if (order.ExistOrderNumber)
             {
-                var session = invoice.Strategy.Session;
+                var session = order.Strategy.Session;
                 var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(invoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                var barcode = barcodeService.Generate(order.OrderNumber, BarcodeType.CODE_128, 320, 80);
                 this.Barcode = new ImageBlob("png", barcode);
             }
 
-            this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
-            this.DueDate = invoice.DueDate?.ToString("yyyy-MM-dd");
-            this.CustomerReference = invoice.CustomerReference;
+            this.Date = order.OrderDate.ToString("yyyy-MM-dd");
+            this.DueDate = order.DueDate?.ToString("yyyy-MM-dd");
+            this.CustomerReference = order.CustomerReference;
 
             // TODO: Where does the currency come from?
             var currency = "€";
-            this.SubTotal = invoice.TotalBasePrice.ToString("0.00") + " " + currency;
-            this.Deposit = invoice.AmountPaid.ToString("0.00") + " " + currency;
-            this.TotalExVat = invoice.TotalExVat.ToString("0.00") + " " + currency;
-            this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = invoice.TotalVat.ToString("0.00") + " " + currency;
-            this.TotalIncVat = invoice.TotalIncVat.ToString("0.00") + " " + currency;
+            this.SubTotal = order.TotalBasePrice.ToString("0.00") + " " + currency;
+            this.TotalExVat = order.TotalExVat.ToString("0.00") + " " + currency;
+            this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.TotalVat = order.TotalVat.ToString("0.00") + " " + currency;
+            this.TotalIncVat = order.TotalIncVat.ToString("0.00") + " " + currency;
 
-            this.PaymentNetDays = invoice.PaymentNetDays;
+            this.PaymentNetDays = order.PaymentNetDays;
         }
 
         public string Description { get; }
@@ -57,7 +56,6 @@ namespace Allors.Domain.SalesInvoicePrint
         public string DueDate { get; }
         public string CustomerReference { get; }
         public string SubTotal { get; }
-        public string Deposit { get; }
         public string TotalExVat { get; }
         public string VatCharge { get; }
         public string TotalVat { get; }

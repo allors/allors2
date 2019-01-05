@@ -14,13 +14,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesInvoicePrint
+namespace Allors.Domain.SalesOrderPrint
 {
     public class ShipToModel
     {
-        public ShipToModel(SalesInvoice invoice)
+        public ShipToModel(SalesOrder order)
         {
-            var shipTo = invoice.ShipToCustomer ?? invoice.BillToCustomer;
+            var shipTo = order.ShipToCustomer ?? order.BillToCustomer;
             var shipToOrganisation = shipTo as Organisation;
 
             if (shipTo != null)
@@ -29,14 +29,14 @@ namespace Allors.Domain.SalesInvoicePrint
                 this.TaxId = shipToOrganisation?.TaxNumber;
             }
 
-            this.Contact = invoice.ShipToContactPerson?.PartyName;
+            this.Contact = order.ShipToContactPerson?.PartyName;
 
-            var shipToAddress = invoice.ShipToAddress ??
-                                invoice.ShipToCustomer?.ShippingAddress ??
-                                invoice.ShipToCustomer?.GeneralCorrespondence ??
-                                invoice.BillToContactMechanism as PostalAddress ??
-                                invoice.BillToCustomer?.ShippingAddress ??
-                                invoice.BillToCustomer?.GeneralCorrespondence;
+            var shipToAddress = order.ShipToAddress ??
+                                order.ShipToCustomer?.ShippingAddress ??
+                                order.ShipToCustomer?.GeneralCorrespondence ??
+                                order.BillToContactMechanism as PostalAddress ??
+                                order.BillToCustomer?.ShippingAddress ??
+                                order.BillToCustomer?.GeneralCorrespondence;
 
             if (shipToAddress != null)
             {

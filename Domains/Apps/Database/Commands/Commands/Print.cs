@@ -55,7 +55,7 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
-                var templateFilePath = "domain/templates/SalesInvoice.odt";
+                var templateFilePath = "domain/templates/SalesOrder.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
                 var prefix = string.Empty;
                 while (!templateFileInfo.Exists)
@@ -64,8 +64,8 @@ namespace Commands
                     templateFileInfo = new FileInfo(prefix + templateFilePath);
                 }
 
-                var invoice = new SalesInvoices(session).Extent().First;
-                var template = invoice.BilledFrom.SalesInvoiceTemplate;
+                var order = new SalesOrders(session).Extent().First;
+                var template = order.TakenBy.SalesOrderTemplate;
 
                 using (var memoryStream = new MemoryStream())
                 using (var fileStream = new FileStream(templateFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -76,15 +76,15 @@ namespace Commands
 
                 session.Derive();
 
-                var printModel = new Allors.Domain.SalesInvoicePrint.Model(invoice);
-                invoice.RenderPrintDocument(template, printModel);
+                var printModel = new Allors.Domain.SalesOrderPrint.Model(order);
+                order.RenderPrintDocument(template, printModel);
 
                 session.Derive();
 
-                var result = invoice.PrintDocument;
+                var result = order.PrintDocument;
 
                 var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                var outputFile = File.Create(Path.Combine(desktopDir, "salesInvoice.odt"));
+                var outputFile = File.Create(Path.Combine(desktopDir, "salesOrder.odt"));
                 using (var stream = new MemoryStream(result.MediaContent.Data))
                 {
                     stream.CopyTo(outputFile);
