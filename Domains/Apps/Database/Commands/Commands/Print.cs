@@ -55,7 +55,7 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
-                var templateFilePath = "domain/templates/SalesOrder.odt";
+                var templateFilePath = "domain/templates/ProductQuote.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
                 var prefix = string.Empty;
                 while (!templateFileInfo.Exists)
@@ -64,8 +64,8 @@ namespace Commands
                     templateFileInfo = new FileInfo(prefix + templateFilePath);
                 }
 
-                var order = new SalesOrders(session).Extent().First;
-                var template = order.TakenBy.SalesOrderTemplate;
+                var quote = new ProductQuotes(session).Extent().First;
+                var template = quote.Issuer.ProductQuoteTemplate;
 
                 using (var memoryStream = new MemoryStream())
                 using (var fileStream = new FileStream(templateFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -76,15 +76,15 @@ namespace Commands
 
                 session.Derive();
 
-                var printModel = new Allors.Domain.SalesOrderPrint.Model(order);
-                order.RenderPrintDocument(template, printModel);
+                var printModel = new Allors.Domain.ProductQuotePrint.Model(quote);
+                quote.RenderPrintDocument(template, printModel);
 
                 session.Derive();
 
-                var result = order.PrintDocument;
+                var result = quote.PrintDocument;
 
                 var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                var outputFile = File.Create(Path.Combine(desktopDir, "salesOrder.odt"));
+                var outputFile = File.Create(Path.Combine(desktopDir, "productQuote.odt"));
                 using (var stream = new MemoryStream(result.MediaContent.Data))
                 {
                     stream.CopyTo(outputFile);

@@ -19,9 +19,6 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     public partial class ProductQuote
     {
@@ -36,8 +33,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var model = new Dictionary<string, object> { { "productQuote", this } };
-            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, model);
+            var printModel = new Allors.Domain.ProductQuotePrint.Model(this);
+            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel);
         }
 
         private SalesOrder OrderThis()

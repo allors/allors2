@@ -406,7 +406,7 @@ namespace Allors
                 var quoteItem = new QuoteItemBuilder(this.Session)
                     .WithSerialisedItem(serialisedItem)
                     .WithComment($"Comment {i}")
-                    .WithQuantity(i)
+                    .WithQuantity(i + 1)
                     .Build();
 
                 productQuote.AddQuoteItem(quoteItem);
