@@ -203,6 +203,22 @@ namespace Allors.Repository
         public decimal TransportCost { get; set; }
 
         #region Allors
+        [Id("1A2285C0-9DE8-4BC4-B5F8-225C357A149C")]
+        [AssociationId("94EF2F74-D2E2-42A0-B7C8-7BCD931C1567")]
+        [RoleId("D7300671-1F91-437E-A8A8-730609FD9A16")]
+        #endregion
+        [Workspace]
+        public decimal ExpectedRentalPriceFullService { get; set; }
+
+        #region Allors
+        [Id("FEC7C97D-1505-48F0-838D-9FFD8B9BB033")]
+        [AssociationId("CA75ECD2-F7E1-42CE-9E94-EC5176622AF3")]
+        [RoleId("D90F9123-FCD9-46D0-B9FE-CEAA1D7934C2")]
+        #endregion
+        [Workspace]
+        public decimal ExpectedRentalPriceDryLease { get; set; }
+
+        #region Allors
         [Id("A616AE10-EA83-4878-BCBA-377396B4357A")]
         [AssociationId("AA15AAF5-26E7-48F8-B15F-B5B11AF516F5")]
         [RoleId("0E159138-B2D2-429F-8DE5-ACCC5BB02C32")]
