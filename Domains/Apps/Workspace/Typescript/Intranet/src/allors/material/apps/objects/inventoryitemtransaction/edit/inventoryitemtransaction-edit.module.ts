@@ -10,7 +10,7 @@ import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/ro
 import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialFilesModule } from '../../../..//base/components/role/files';
+import { AllorsMaterialFilesModule } from '../../../../base/components/role/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/role/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';

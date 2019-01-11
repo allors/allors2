@@ -1,46 +1,38 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
-import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/role/datetimepicker';
+
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
+import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/role/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { AllorsMaterialTableModule } from '../../../..';
-
-import { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.component';
-export { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.component';
+import { SerialisedInventoryItemEditComponent } from './serialisedinventoryitem-edit.component';
+export { SerialisedInventoryItemEditComponent } from './serialisedinventoryitem-edit.component';
 
 @NgModule({
   declarations: [
-    SerialisedInventoryComponent,
+    SerialisedInventoryItemEditComponent,
   ],
   exports: [
-    SerialisedInventoryComponent,
+    SerialisedInventoryItemEditComponent,
   ],
   imports: [
-    AllorsMaterialChipsModule,
-    AllorsMaterialDatepickerModule,
-    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
-    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
+    AllorsMaterialLocalisedTextModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    AllorsMaterialTableModule,
     CommonModule,
 
     FormsModule,
@@ -52,9 +44,9 @@ export { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.co
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatExpansionModule,
     MatRadioModule,
     MatSelectModule,
-    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
@@ -62,4 +54,4 @@ export { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.co
     RouterModule,
   ],
 })
-export class SerialisedInventoryEmbedModule { }
+export class SerialisedInventoryItemEditModule { }

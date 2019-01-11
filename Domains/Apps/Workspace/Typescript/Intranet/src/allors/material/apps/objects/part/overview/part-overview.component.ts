@@ -20,6 +20,7 @@ export class PartOverviewComponent implements AfterViewInit, OnDestroy {
   part: Part;
 
   subscription: Subscription;
+  serialised: boolean;
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -54,6 +55,9 @@ export class PartOverviewComponent implements AfterViewInit, OnDestroy {
           const pulls = [
             pull.Part({
               object: this.panelManager.id,
+              include: {
+                InventoryItemKind: x
+              }
             }),
           ];
 
@@ -69,6 +73,8 @@ export class PartOverviewComponent implements AfterViewInit, OnDestroy {
         this.panelManager.onPulled(loaded);
 
         this.part = loaded.objects.Part as Part;
+        this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+
       }, this.errorService.handler);
   }
 

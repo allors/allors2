@@ -23,5 +23,7 @@ namespace Allors.Domain
     public abstract partial class DelegatedAccessControlledObjectDelegateAccess
     {
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public Permission[] DeniedPermissions { get; set; }
     }
 }

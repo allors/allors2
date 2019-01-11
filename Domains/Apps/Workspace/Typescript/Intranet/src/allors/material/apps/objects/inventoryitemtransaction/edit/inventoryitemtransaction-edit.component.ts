@@ -1,17 +1,16 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-
-import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
-import { InternalOrganisation, InventoryItemTransaction, InventoryItem, Part, InventoryTransactionReason, Facility, Lot } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
+import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
+import { switchMap, map } from 'rxjs/operators';
+
+import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 import { Fetcher } from '../../Fetcher';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './inventoryitemtransaction-edit.component.html',
@@ -21,10 +20,8 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
   readonly m: Meta;
 
-  readonly title = 'InventoryItem Transaction';
-
-  internalOrganisation: InternalOrganisation;
   inventoryItem: InventoryItem;
+  internalOrganisation: InternalOrganisation;
   inventoryItemTransaction: InventoryItemTransaction;
   part: Part;
   inventoryTransactionReasons: InventoryTransactionReason[];
@@ -34,41 +31,33 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   lots: Lot[];
   serialised: boolean;
 
-  add: boolean;
-  edit: boolean;
-
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   private readonly fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: ContextService,
+    @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<InventoryItemTransactionEditComponent>,
     public metaService: MetaService,
-    public navigationService: NavigationService,
-    public location: Location,
-    private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private titleService: Title,
-    private stateService: StateService) {
+    public refreshService: RefreshService,
+    public stateService: StateService,
+    private errorService: ErrorService) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
-    this.titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
 
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const inventoryItemId = navRoute.queryParam(m.InventoryItem);
-          const partId = navRoute.queryParam(m.Part);
+          const create = (this.data as EditData).id === undefined;
 
           let pulls = [
             this.fetcher.internalOrganisation,
@@ -78,50 +67,41 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
           ];
 
           // InventoryItemTransactions are always added, never edited
-          if (inventoryItemId) {
+          if (create && this.data.associationId) {
             pulls = [
               ...pulls,
               pull.InventoryItem({
-                object: inventoryItemId,
+                object: this.data.associationId,
                 include: {
                   Facility: x,
                   UnitOfMeasure: x,
-                  Lot: x
+                  Lot: x,
+                  Part: {
+                    InventoryItemKind: x
+                  }
                 }
               })
             ];
           }
 
-          if (partId) {
-            pulls = [
-              ...pulls,
-              pull.Part({
-                object: partId,
-              })
-            ];
-          }
-
-          const add = !id;
-
           return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, add }))
+              map((loaded) => ({ loaded, create }))
             );
         })
       )
-      .subscribe(({ loaded, add }) => {
+      .subscribe(({ loaded, create }) => {
+
         this.allors.context.reset();
 
         this.inventoryTransactionReasons = loaded.collections.InventoryTransactionReasons as InventoryTransactionReason[];
         this.facilities = loaded.collections.Facilities as Facility[];
-        this.lots  = loaded.collections.Lots as Lot[];
+        this.lots = loaded.collections.Lots as Lot[];
 
         this.inventoryItem = loaded.objects.InventoryItem as InventoryItem;
-        this.part = loaded.objects.Part as Part;
-        this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+        this.serialised = this.inventoryItem.Part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
-        if (add) {
-          this.add = !(this.edit = false);
+        if (create) {
 
           this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;
 
@@ -129,17 +109,13 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
             this.inventoryItemTransaction.Facility = this.inventoryItem.Facility;
             this.inventoryItemTransaction.UnitOfMeasure = this.inventoryItem.UnitOfMeasure;
             this.inventoryItemTransaction.Lot = this.inventoryItem.Lot;
-            this.inventoryItemTransaction.TransactionDate =  new Date();
+            this.inventoryItemTransaction.TransactionDate = new Date();
           }
 
           if (this.part) {
             this.inventoryItemTransaction.Part = this.part;
           }
-
-        } else {
-          this.edit = !(this.add = false);
         }
-
       }, this.errorService.handler);
   }
 
@@ -150,9 +126,15 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   }
 
   public save(): void {
+
     this.allors.context.save()
-      .subscribe(() => {
-        this.location.back();
+      .subscribe((saved: Saved) => {
+        const data: ObjectData = {
+          id: this.inventoryItem.id,
+          objectType: this.inventoryItem.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);

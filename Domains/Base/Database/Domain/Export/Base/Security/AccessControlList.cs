@@ -118,41 +118,42 @@ namespace Allors.Domain
                 SecurityToken[] securityTokens;
                 if (this.@object is DelegatedAccessControlledObject)
                 {
-                    securityTokens = ((DelegatedAccessControlledObject)this.@object).DelegateAccess().SecurityTokens;
+                    var delegatedAccess = ((DelegatedAccessControlledObject)this.@object).DelegateAccess();
+                    securityTokens = delegatedAccess.SecurityTokens;
+                    var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
+
+                    if (delegatedAccessDeniedPermissions != null)
+                    {
+                        this.deniedPermissions = this.deniedPermissions.Union(delegatedAccessDeniedPermissions).ToArray();
+                    }
                 }
                 else
                 {
                     securityTokens = this.@object.SecurityTokens;
-                    if (securityTokens.Length == 0)
-                    {
-                        var singleton = this.session.GetSingleton();
-                        securityTokens = this.@object.Strategy.IsNewInSession ?
-                                             new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
-                                             new[] { singleton.DefaultSecurityToken };
-                    }
                 }
 
-                if (securityTokens != null)
+                if (securityTokens == null || securityTokens.Length == 0)
                 {
-                    var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
-                    foreach (var cache in caches)
-                    {
-                        var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;
+                    var singleton = this.session.GetSingleton();
+                    securityTokens = this.@object.Strategy.IsNewInSession ?
+                                         new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
+                                         new[] { singleton.DefaultSecurityToken };
+                }
 
-                        if (operationsByOperandTypeIdByClassId.TryGetValue(this.classId, out var operationsByClassId))
+                var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
+                foreach (var cache in caches)
+                {
+                    var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;
+
+                    if (operationsByOperandTypeIdByClassId.TryGetValue(this.classId, out var operationsByClassId))
+                    {
+                        if (this.operationsByOperandTypeIds == null)
                         {
-                            if (this.operationsByOperandTypeIds == null)
-                            {
-                                this.operationsByOperandTypeIds = new List<Dictionary<Guid, Operations>>();
-                            }
-
-                            this.operationsByOperandTypeIds.Add(operationsByClassId);
+                            this.operationsByOperandTypeIds = new List<Dictionary<Guid, Operations>>();
                         }
+
+                        this.operationsByOperandTypeIds.Add(operationsByClassId);
                     }
-                }
-                else
-                {
-                    // TODO (after pulling security to core): throw exception 
                 }
 
                 this.lazyLoaded = true;

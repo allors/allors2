@@ -30,22 +30,22 @@ namespace Allors.Domain
     {
         public byte[] Render(IReadOnlyDictionary<string, object> model)
         {
-            if (this.TemplateType.IsOdtTemplate)
-            {
-                var context = new TemplateContext(model);
+            //if (this.TemplateType.IsOdtTemplate)
+            //{
+            //    var context = new TemplateContext(model);
 
-                using (var stream = new MemoryStream(this.Media.MediaContent.Data))
-                {
-                    var odt = OdfDocument.LoadFrom(stream);
-                    var template = new OdtTemplate(odt);
-                    var result = template.Render(context);
-                    using (var outputStream = new MemoryStream())
-                    {
-                        result.Save(outputStream);
-                        return outputStream.ToArray();
-                    }
-                }
-            }
+            //    using (var stream = new MemoryStream(this.Media.MediaContent.Data))
+            //    {
+            //        var odt = OdfDocument.LoadFrom(stream);
+            //        var template = new OdtTemplate(odt);
+            //        var result = template.Render(context);
+            //        using (var outputStream = new MemoryStream())
+            //        {
+            //            result.Save(outputStream);
+            //            return outputStream.ToArray();
+            //        }
+            //    }
+            //}
 
             return null;
         }

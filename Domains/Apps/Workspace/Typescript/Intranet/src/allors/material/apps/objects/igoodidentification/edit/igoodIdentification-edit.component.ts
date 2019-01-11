@@ -9,6 +9,7 @@ import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
 import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
+
 @Component({
   templateUrl: './igoodidentification-edit.component.html',
   providers: [ContextService]

@@ -15,6 +15,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
+import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 
 import { PartOverviewSummaryModule } from './summary/part-overview-summary.module';
@@ -35,6 +36,7 @@ export { PartOverviewComponent } from './part-overview.component';
     PartOverviewDetailModule,
 
     IGoodIdentificationPanelModule,
+    SerialisedInventoryItemOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
 
     AllorsMaterialFileModule,

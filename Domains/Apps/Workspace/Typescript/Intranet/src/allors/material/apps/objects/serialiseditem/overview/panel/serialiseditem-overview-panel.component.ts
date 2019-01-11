@@ -74,7 +74,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
       defaultAction: this.overviewService.overview(),
     });
 
-    const pullName = `${this.panel.name}_${this.m.SerialisedItem.name}`;
+    const partSerialisedItemsName = `${this.panel.name}_${this.m.SerialisedItem.name}`;
     const ownedSerialisedItemsName = `${this.panel.name}_${this.m.SerialisedItem.name}_OwnedSerialisedItemsName`;
     const rentedSerialisedItemsName = `${this.panel.name}_${this.m.SerialisedItem.name}_RentedSerialisedItems`;
 
@@ -83,9 +83,17 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Party({
-          name: pullName,
+        pull.Part({
+          name: partSerialisedItemsName,
           object: id,
+          fetch: {
+            SerialisedItems: {
+              include: {
+                SerialisedItemState: x,
+                Ownership: x
+              }
+            }
+          }
         }),
         pull.Party({
           object: id,
@@ -114,6 +122,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
       );
 
       this.panel.onPulled = (loaded) => {
+        const partSerialisedItems = loaded.collections[partSerialisedItemsName] as SerialisedItem[];
         const ownedSerialisedItems = loaded.collections[ownedSerialisedItemsName] as SerialisedItem[];
         const rentedSerialisedItems = loaded.collections[rentedSerialisedItemsName] as SerialisedItem[];
 
@@ -127,8 +136,12 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
           this.objects = this.objects.concat(rentedSerialisedItems);
         }
 
+        if (partSerialisedItems !== undefined) {
+          this.objects = this.objects.concat(partSerialisedItems);
+        }
+
         if (this.objects) {
-          this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+          this.table.total = this.objects.length;
           this.table.data = this.objects.map((v) => {
             return {
               object: v,

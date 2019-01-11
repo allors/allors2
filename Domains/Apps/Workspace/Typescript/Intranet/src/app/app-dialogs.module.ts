@@ -11,6 +11,7 @@ import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/mat
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/apps/objects/employment/edit/employment-edit.module';
 import { GoodCreateComponent, GoodCreateModule } from '../allors/material/apps/objects/good/create/good-create.module';
+import { InventoryItemTransactionEditComponent, InventoryItemTransactionEditModule } from '../allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
 import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
 import { LetterCorrespondenceEditComponent, LetterCorrespondenceEditModule } from '../allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence-edit.module';
@@ -35,6 +36,7 @@ import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../al
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
+import { SerialisedInventoryItemEditComponent, SerialisedInventoryItemEditModule } from '../allors/material/apps/objects/serialisedinventoryitem/edit/serialisedinventoryitem-edit.module';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/apps/objects/serialiseditem/create/serialiseditem-create.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
@@ -58,6 +60,7 @@ export const create = {
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.Good]: GoodCreateComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
+  [ids.InventoryItemTransaction]: InventoryItemTransactionEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
@@ -85,6 +88,7 @@ export const create = {
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItem]: SerialisedItemCreateComponent,
+  [ids.SerialisedInventoryItem]: SerialisedInventoryItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -106,6 +110,7 @@ export const edit = {
   [ids.Employment]: EmploymentEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
+  [ids.InventoryItemTransaction]: InventoryItemTransactionEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
@@ -124,6 +129,7 @@ export const edit = {
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
+  [ids.SerialisedInventoryItem]: SerialisedInventoryItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -149,6 +155,7 @@ export const edit = {
     FaceToFaceCommunicationEditModule,
     GoodCreateModule,
     IGoodIdentificationEditModule,
+    InventoryItemTransactionEditModule,
     LetterCorrespondenceEditModule,
     OrganisationCreateModule,
     OrganisationContactRelationshipEditModule,
@@ -172,6 +179,7 @@ export const edit = {
     SalesOrderItemEditModule,
     SalesTermEditModule,
     SerialisedItemCreateModule,
+    SerialisedInventoryItemEditModule,
     SerialisedItemCharacteristicEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
@@ -192,6 +200,7 @@ export const edit = {
     FaceToFaceCommunicationEditComponent,
     GoodCreateComponent,
     IGoodIdentificationEditComponent,
+    InventoryItemTransactionEditComponent,
     LetterCorrespondenceEditComponent,
     OrganisationCreateComponent,
     OrganisationContactRelationshipEditComponent,
@@ -215,6 +224,7 @@ export const edit = {
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
     SerialisedItemCreateComponent,
+    SerialisedInventoryItemEditComponent,
     SerialisedItemCharacteristicEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,
