@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
-import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState } from '../../../../../domain';
+import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -31,15 +31,16 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   facilities: Facility[];
   lots: Lot[];
   serialised: boolean;
-
-  private subscription: Subscription;
-  private readonly refresh$: BehaviorSubject<Date>;
-  private readonly fetcher: Fetcher;
   serialisedInventoryItem: SerialisedInventoryItem;
   serialisedItem: SerialisedItem;
   part: Part;
   nonSerialisedInventoryItemState: NonSerialisedInventoryItemState[];
   serialisedInventoryItemState: SerialisedInventoryItemState[];
+
+  private subscription: Subscription;
+  private readonly refresh$: BehaviorSubject<Date>;
+  private readonly fetcher: Fetcher;
+  nonSerialisedInventoryItem: NonSerialisedInventoryItem;
 
   constructor(
     @Self() private allors: ContextService,
@@ -116,6 +117,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         this.inventoryItem = loaded.objects.InventoryItem as InventoryItem;
         if (this.inventoryItem) {
           this.serialisedInventoryItem = loaded.objects.InventoryItem as SerialisedInventoryItem;
+          this.nonSerialisedInventoryItem = loaded.objects.InventoryItem as NonSerialisedInventoryItem;
           this.part = this.inventoryItem.Part;
           this.selectedFacility = this.inventoryItem.Facility;
           this.serialised = this.inventoryItem.Part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
@@ -133,6 +135,8 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
           if (this.serialised) {
             this.inventoryItemTransaction.SerialisedItem = this.serialisedInventoryItem.SerialisedItem;
             this.inventoryItemTransaction.SerialisedInventoryItemState = this.serialisedInventoryItem.SerialisedInventoryItemState;
+          } else {
+            this.inventoryItemTransaction.NonSerialisedInventoryItemState = this.nonSerialisedInventoryItem.NonSerialisedInventoryItemState;
           }
         }
 

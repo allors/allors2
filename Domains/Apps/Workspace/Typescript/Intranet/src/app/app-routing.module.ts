@@ -28,7 +28,6 @@ import * as OrganisationOverview from 'src/allors/material/apps/objects/organisa
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
 
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
-import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
 import * as EditBaseprice from 'src/allors/material/apps/objects/baseprice/edit/baseprice.module';
 import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
@@ -61,7 +60,6 @@ const modules = [
   IncoTermEdit.IncoTermEditModule,
 
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
-  NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditModule,
 
   InvoiceTermEdit.InvoiceTermEditModule,
 
@@ -177,12 +175,6 @@ export const routes: Routes = [
           { path: 'worktask/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
-
-      // { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
-      // { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },
-
-      // { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
-      // { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
 
       // { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       // { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
