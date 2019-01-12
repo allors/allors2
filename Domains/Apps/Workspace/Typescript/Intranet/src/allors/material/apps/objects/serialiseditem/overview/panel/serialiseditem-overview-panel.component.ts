@@ -1,6 +1,6 @@
 import { Component, Self, OnInit } from '@angular/core';
 
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { SerialisedItem } from '../../../../../../domain';
 import { DeleteService, TableRow, Table } from '../../../../..';
@@ -39,7 +39,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
-    public objectService: ObjectService,
+    public factoryService: ObjectService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
@@ -68,6 +68,20 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
         { name: 'ownership' },
       ],
       actions: [
+        {
+          name: () => 'Change Inventory',
+          description: () => '',
+          disabled: () => false,
+          execute: (target: ActionTarget) => {
+            if (!Array.isArray(target)) {
+              this.factoryService.create(this.m.InventoryItemTransaction, {
+                associationId: target.id,
+                associationObjectType: target.objectType,
+              });
+            }
+          },
+          result: null
+        },
         this.overviewService.overview(),
         this.delete,
       ],

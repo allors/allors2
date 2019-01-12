@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { ContextService, ErrorService, MetaService } from '../../../../../angular';
-import { Facility, FacilityType } from '../../../../../domain';
+import { Facility, FacilityType, Organisation } from '../../../../../domain';
 import { Meta } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
 import { Fetcher } from '../../Fetcher';
@@ -24,6 +24,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
   private readonly fetcher: Fetcher;
   facilities: Facility[];
+  internalOrganisation: Organisation;
 
   constructor(private allors: ContextService,
     private errorService: ErrorService,
@@ -39,6 +40,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
     const { pull, x } = this.metaService;
 
     const pulls = [
+      this.fetcher.internalOrganisation,
       this.fetcher.facilities,
       pull.FacilityType({
         sort: new Sort(this.m.FacilityType.Name)
@@ -47,10 +49,12 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
     this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facilityTypes = loaded.collections.FacilityTypes as FacilityType[];
         this.facilities = loaded.collections.Facilities as Facility[];
 
         this.facility = this.allors.context.create('Facility') as Facility;
+        this.facility.Owner = this.internalOrganisation;
       }, this.errorService.handler);
   }
 

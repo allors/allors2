@@ -36,7 +36,6 @@ import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../al
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
-import { SerialisedInventoryItemEditComponent, SerialisedInventoryItemEditModule } from '../allors/material/apps/objects/serialisedinventoryitem/edit/serialisedinventoryitem-edit.module';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/apps/objects/serialiseditem/create/serialiseditem-create.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
@@ -88,7 +87,6 @@ export const create = {
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItem]: SerialisedItemCreateComponent,
-  [ids.SerialisedInventoryItem]: SerialisedInventoryItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -129,7 +127,6 @@ export const edit = {
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
-  [ids.SerialisedInventoryItem]: SerialisedInventoryItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -179,7 +176,6 @@ export const edit = {
     SalesOrderItemEditModule,
     SalesTermEditModule,
     SerialisedItemCreateModule,
-    SerialisedInventoryItemEditModule,
     SerialisedItemCharacteristicEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
@@ -224,7 +220,6 @@ export const edit = {
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
     SerialisedItemCreateComponent,
-    SerialisedInventoryItemEditComponent,
     SerialisedItemCharacteristicEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,

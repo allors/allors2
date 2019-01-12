@@ -28,10 +28,10 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public int QuantityOnHand
-            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
+            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
 
         public int AvailableToPromise
-            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
+            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
@@ -53,6 +53,27 @@ namespace Allors.Domain
             if (!this.ExistName && this.ExistPart && this.Part.ExistName)
             {
                 this.Name = this.Part.Name;
+            }
+
+            this.AppsOnDeriveQuantity(derivation);
+        }
+
+        public void AppsOnDeriveQuantity(IDerivation derivation)
+        {
+            this.Quantity = 0;
+
+            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
+            {
+                var reason = inventoryTransaction.Reason;
+
+                if (reason.IncreasesQuantityOnHand == true)
+                {
+                    this.Quantity += inventoryTransaction.Quantity;
+                }
+                else if (reason.IncreasesQuantityOnHand == false)
+                {
+                    this.Quantity -= inventoryTransaction.Quantity;
+                }
             }
         }
 

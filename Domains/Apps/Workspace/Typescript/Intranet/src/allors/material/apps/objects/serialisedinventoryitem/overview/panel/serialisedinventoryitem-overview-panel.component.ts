@@ -3,6 +3,7 @@ import { Component, Self, OnInit } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { InventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
+import { Equals, GreaterThan } from '../../../../../../framework';
 import { DeleteService, EditService, TableRow, Table, Sorter } from '../../../../..';
 import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
 
@@ -26,7 +27,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
   table: Table<Row>;
 
   edit: Action;
-  receiveInventory: Action;
+  changeInventory: Action;
 
   objects: SerialisedInventoryItem[];
 
@@ -62,6 +63,20 @@ export class SerialisedInventoryItemComponent implements OnInit {
     this.panel.expandable = true;
 
     this.edit = this.editService.edit();
+    this.changeInventory = {
+      name: () => 'Change Inventory',
+      description: () => '',
+      disabled: () => false,
+      execute: (target: ActionTarget) => {
+        if (!Array.isArray(target)) {
+          this.factoryService.create(this.m.InventoryItemTransaction, {
+            associationId: target.id,
+            associationObjectType: target.objectType,
+          });
+        }
+      },
+      result: null
+    };
 
     this.table = new Table({
       selection: false,
@@ -70,20 +85,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
         { name: 'item', sort: true },
         { name: 'status', sort: true },
       ],
-      actions: [
-        {
-          name: () => 'ReceiveInventory',
-          description: () => '',
-          disabled: () => false,
-          execute: (target: ActionTarget) => {
-            if (!Array.isArray(target)) {
-              this.factoryService.create(this.m.InventoryItemTransaction, this.createData);
-            }
-          },
-          result: null
-        }
-      ],
-      defaultAction: this.edit,
+      defaultAction: this.changeInventory,
     });
 
     const sorter = new Sorter(
@@ -117,6 +119,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
       this.panel.onPulled = (loaded) => {
 
         this.objects = loaded.collections.InventoryItems as SerialisedInventoryItem[];
+        this.objects = this.objects.filter(v => v.Quantity > 0);
 
         if (this.objects) {
           this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
@@ -124,8 +127,9 @@ export class SerialisedInventoryItemComponent implements OnInit {
             return {
               object: v,
               facility: v.Facility.Name,
-              item: v.SerialisedItem.Name,
-              status: v.InventoryItemState ? v.InventoryItemState.Name : ''
+              item: v.SerialisedItem.displayName,
+              status: 'TODO'
+//              status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });
         }

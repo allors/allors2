@@ -44,9 +44,14 @@ namespace Allors.Domain
                 this.Facility = this.Part.DefaultFacility;
             }
 
+            if (!this.ExistPart)
+            {
+                this.Part = this.SerialisedItem?.PartWhereSerialisedItem;
+            }
+
             if (!this.ExistUnitOfMeasure)
             {
-                this.UnitOfMeasure = this.Part.UnitOfMeasure;
+                this.UnitOfMeasure = this.Part?.UnitOfMeasure;
             }
 
             if (this.Part.InventoryItemKind.IsSerialized)
@@ -65,6 +70,24 @@ namespace Allors.Domain
                 if (!this.ExistSerialisedItem)
                 {
                     var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
+                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
+                }
+
+                if (this.Reason.IncreasesQuantityOnHand == true && this.Quantity <= 0)
+                {
+                    var message = "Invalid transaction";
+                    derivation.Validation.AddError(this, this.Meta.Reason, message);
+                }
+
+                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity > 0)
+                {
+                    var message = "Invalid transaction";
+                    derivation.Validation.AddError(this, this.Meta.Reason, message);
+                }
+
+                if (this.Quantity == 1 && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1))
+                {
+                    var message = "Serialized item already in inventory";
                     derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
                 }
             }
@@ -139,8 +162,7 @@ namespace Allors.Domain
                     }
                     else if (item is SerialisedInventoryItem serialItem)
                     {
-                        if (serialItem.SerialisedInventoryItemState.Equals(this.SerialisedInventoryItemState)
-                            && serialItem.SerialisedItem.Equals(this.SerialisedItem))
+                        if (serialItem.SerialisedItem.Equals(this.SerialisedItem))
                         {
                             this.InventoryItem = item;
                             matched = true;
@@ -149,19 +171,37 @@ namespace Allors.Domain
                     }
                 }
             }
-            
-            if (!matched)
+
+            if (matched)
             {
-                this.SyncInventoryItem();
+                if (this.InventoryItem is SerialisedInventoryItem serialItem)
+                {
+                    serialItem.SerialisedInventoryItemState = this.SerialisedInventoryItemState;
+                }
+
+                if (this.InventoryItem is NonSerialisedInventoryItem nonSerialItem)
+                {
+                    nonSerialItem.NonSerialisedInventoryItemState = this.NonSerialisedInventoryItemState;
+                }
+            }
+            else
+            {
+                this.SyncInventoryItem(derivation);
             }
         }
 
-        private void SyncInventoryItem()
+        private void SyncInventoryItem(IDerivation derivation)
         {
             var facility = this.Facility ?? this.Part.DefaultFacility;
             var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
 
-            if (this.Part.InventoryItemKind.IsSerialized)
+            if (this.Part.InventoryItemKind.IsSerialized && this.Quantity <= 0)
+            {
+                var message = "Invalid transaction";
+                derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
+            }
+
+            if (this.Part.InventoryItemKind.IsSerialized && this.Quantity > 0)
             {
                 var builder = new SerialisedInventoryItemBuilder(this.strategy.Session)
                     .WithFacility(facility)

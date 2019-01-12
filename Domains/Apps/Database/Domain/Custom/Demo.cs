@@ -190,7 +190,13 @@ namespace Allors
             var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
             finishedGood2.AddSerialisedItem(serialisedItem);
 
-            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.DefaultFacility).Build();
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithSerialisedItem(serialisedItem)
+                .WithQuantity(1)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session).Available)
+                .WithFacility(allors.DefaultFacility)
+                .Build();
 
             var finishedGood3 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(allors)
