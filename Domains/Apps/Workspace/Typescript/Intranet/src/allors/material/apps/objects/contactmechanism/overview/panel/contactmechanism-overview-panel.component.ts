@@ -61,7 +61,7 @@ export class ContactMechanismOverviewPanelComponent implements OnInit {
       selection: true,
       columns: [
         { name: 'contact' },
-        { name: 'last modified' },
+        { name: 'lastModifiedDate' },
       ],
       actions: [
         this.edit,

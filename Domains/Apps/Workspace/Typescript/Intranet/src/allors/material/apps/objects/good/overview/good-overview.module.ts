@@ -14,6 +14,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
+import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
 import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
 
 import { GoodOverviewSummaryModule } from './summary/good-overview-summary.module';
@@ -34,6 +35,7 @@ export { GoodOverviewComponent } from './good-overview.component';
     GoodOverviewDetailModule,
 
     IGoodIdentificationPanelModule,
+    PriceComponentOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

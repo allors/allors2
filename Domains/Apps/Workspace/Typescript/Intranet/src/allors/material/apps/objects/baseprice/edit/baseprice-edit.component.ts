@@ -1,47 +1,45 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation, Organisation } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
+import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',
   providers: [ContextService]
 })
-export class EditBasepriceComponent implements OnInit, OnDestroy {
+export class BasepriceEditComponent implements OnInit, OnDestroy {
 
-  title = 'Default price';
-
-  add: boolean;
-  edit: boolean;
-
-  m: Meta;
+  readonly m: Meta;
 
   good: Good;
   part: Part;
   priceComponent: PriceComponent;
+  internalOrganisation: InternalOrganisation;
   item: Good | Part;
+  title: string;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private fetcher: Fetcher;
-  internalOrganisation: InternalOrganisation;
 
   constructor(
-    @Self() public allors: ContextService,
+    @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<BasepriceEditComponent>,
     public metaService: MetaService,
-    public navigationService: NavigationService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private stateService: StateService,
-  ) {
+    private stateService: StateService) {
+
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
@@ -51,44 +49,33 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, , internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const goodId = navRoute.queryParam(m.Good);
-          const partId = navRoute.queryParam(m.Part);
+          const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
             this.fetcher.internalOrganisation,
           ];
 
-          if (!!goodId) {
+          if (isCreate) {
             pulls = [
               ...pulls,
               pull.Good({
-                object: goodId,
-              })
-            ];
-          }
-
-          if (!!partId) {
-            pulls = [
-              ...pulls,
+                object: this.data.associationId,
+              }),
               pull.Part({
-                object: partId,
+                object: this.data.associationId,
               }),
             ];
           }
 
-          const add = !id;
-
-          if (!add) {
+          if (!isCreate) {
             pulls = [
               ...pulls,
               pull.PriceComponent({
-                object: id,
+                object: this.data.id,
                 include: {
                   Currency: x,
                 }
@@ -99,11 +86,11 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, add }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, add }) => {
+      .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
 
@@ -111,10 +98,11 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
         this.good = loaded.objects.Good as Good;
         this.part = loaded.objects.Part as Part;
 
-        if (add) {
-          this.add = !(this.edit = false);
+        if (isCreate) {
+          this.title = 'Add base price';
 
           this.priceComponent = this.allors.context.create('BasePrice') as PriceComponent;
+          this.priceComponent.FromDate = new Date();
           this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.good) {
@@ -126,16 +114,16 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
           }
 
         } else {
-          this.edit = !(this.add = false);
 
           this.priceComponent = loaded.objects.PriceComponent as PriceComponent;
+
+          if (this.priceComponent.CanWritePrice) {
+            this.title = 'Edit base price';
+          } else {
+            this.title = 'View base price';
+          }
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -146,21 +134,17 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors.context
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
-        this.goBack();
+        const data: ObjectData = {
+          id: this.priceComponent.id,
+          objectType: this.priceComponent.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

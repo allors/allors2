@@ -103,6 +103,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
 
       pulls.push(
         pull.Part({
+          name: pullName,
           object: id,
           fetch: {
             InventoryItemsWherePart: {
@@ -118,7 +119,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
 
       this.panel.onPulled = (loaded) => {
 
-        this.objects = loaded.collections.InventoryItems as SerialisedInventoryItem[];
+        this.objects = loaded.collections[pullName] as SerialisedInventoryItem[];
         this.objects = this.objects.filter(v => v.Quantity > 0);
 
         if (this.objects) {

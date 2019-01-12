@@ -29,7 +29,6 @@ import * as CommunicationEventList from 'src/allors/material/apps/objects/commun
 
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 
-import * as EditBaseprice from 'src/allors/material/apps/objects/baseprice/edit/baseprice.module';
 import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
 import * as RequestsForQuoteList from 'src/allors/material/apps/objects/requestforquote/list/requestforquote-list.module';
@@ -82,7 +81,6 @@ const modules = [
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
 
-  EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
   RequestsForQuoteList.RequestForQuoteListModule,

@@ -68,7 +68,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
       columns: [
         { name: 'purpose' },
         { name: 'contact' },
-        { name: 'last modified' },
+        { name: 'lastModifiedDate' },
       ],
       actions: [
         this.edit,

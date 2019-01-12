@@ -4,6 +4,7 @@ import { MatDialogModule } from '@angular/material';
 
 import { ids } from '../allors/meta/generated';
 
+import { BasepriceEditComponent, BasepriceEditModule } from '../allors/material/apps/objects/baseprice/edit/baseprice-edit.module';
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 import { CustomerRelationshipEditComponent, CustomerRelationshipEditModule } from '../allors/material/apps/objects/customerrelationship/edit/customerrelationship-edit.module';
 import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors/material/apps/objects/emailaddress/create/emailaddress-create.module';
@@ -50,6 +51,7 @@ import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/materia
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
 
 export const create = {
+  [ids.BasePrice]: BasepriceEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
@@ -100,6 +102,7 @@ export const create = {
 };
 
 export const edit = {
+  [ids.BasePrice]: BasepriceEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.EanIdentification]: IGoodIdentificationEditComponent,
@@ -143,6 +146,7 @@ export const edit = {
     CommonModule,
     MatDialogModule,
 
+    BasepriceEditModule,
     CatalogueEditModule,
     CustomerRelationshipEditModule,
     EmailAddressCreateModule,
@@ -187,6 +191,7 @@ export const edit = {
     WorkTaskCreateModule,
   ],
   entryComponents: [
+    BasepriceEditComponent,
     CatalogueEditComponent,
     CustomerRelationshipEditComponent,
     EmailAddressCreateComponent,

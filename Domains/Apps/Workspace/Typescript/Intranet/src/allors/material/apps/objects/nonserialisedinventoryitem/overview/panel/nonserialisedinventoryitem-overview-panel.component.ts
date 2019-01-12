@@ -106,13 +106,14 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
       }
     );
 
-    const pullName = `${this.panel.name}_${this.m.SerialisedInventoryItem.name}`;
+    const pullName = `${this.panel.name}_${this.m.NonSerialisedInventoryItem.name}`;
 
     this.panel.onPull = (pulls) => {
       const id = this.panel.manager.id;
 
       pulls.push(
         pull.Part({
+          name: pullName,
           object: id,
           fetch: {
             InventoryItemsWherePart: {
@@ -128,7 +129,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
 
       this.panel.onPulled = (loaded) => {
 
-        this.objects = loaded.collections.InventoryItems as NonSerialisedInventoryItem[];
+        this.objects = loaded.collections[pullName] as NonSerialisedInventoryItem[];
         this.objects = this.objects.filter(v => v.QuantityOnHand > 0 || v.QuantityCommittedOut > 0 || v.QuantityExpectedIn > 0 || v.AvailableToPromise > 0);
 
         if (this.objects) {

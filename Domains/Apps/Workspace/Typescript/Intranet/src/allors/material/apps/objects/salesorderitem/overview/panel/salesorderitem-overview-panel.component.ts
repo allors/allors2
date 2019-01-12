@@ -64,6 +64,7 @@ export class SalesOrderItemOverviewPanelComponent {
       columns: [
         { name: 'item' },
         { name: 'quantity' },
+        'lastModifiedDate'
       ],
       actions: [
         this.edit,

@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonToggleModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
 
+
+import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
+import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
+import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/role/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
@@ -12,18 +17,22 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { PriceComponentsComponent } from './pricecomponent-embed.component';
-export { PriceComponentsComponent } from './pricecomponent-embed.component';
+import { BasepriceEditComponent } from './baseprice-edit.component';
+export { BasepriceEditComponent } from './baseprice-edit.component';
 
 @NgModule({
   declarations: [
-    PriceComponentsComponent,
+    BasepriceEditComponent,
   ],
   exports: [
-    PriceComponentsComponent,
+    BasepriceEditComponent,
   ],
   imports: [
+    AllorsMaterialChipsModule,
+    AllorsMaterialDatepickerModule,
+    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -31,9 +40,9 @@ export { PriceComponentsComponent } from './pricecomponent-embed.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+
     FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,
@@ -43,12 +52,12 @@ export { PriceComponentsComponent } from './pricecomponent-embed.component';
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    MatButtonToggleModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class PriceComponentEmbedModule { }
+export class BasepriceEditModule { }

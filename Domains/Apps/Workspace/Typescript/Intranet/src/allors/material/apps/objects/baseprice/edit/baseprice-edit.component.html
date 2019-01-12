@@ -1,39 +1,27 @@
-<div class="a-main">
+<form *ngIf="priceComponent" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
 
-  <div class="a-breadcrumb container-fluid mat-elevation-z4">
-    <div class="row">
-      <div class="col">
-        <a *ngIf="good" (click)="navigationService.list(m.Good)">Products</a>
-        <a *ngIf="part" (click)="navigationService.list(m.Part)">Parts</a>
-        <span *ngIf="add"> / Add default price </span>
-        <span *ngIf="edit && good"> / <a (click)="navigationService.overview(good)">{{good?.Name}}</a> / Edit default price</span>
-        <span *ngIf="edit && part"> / <a (click)="navigationService.overview(part)">{{part?.Name}}</a> / Edit default price</span>
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.FromDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.ThroughDate"></a-mat-datepicker>
       </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Price"></a-mat-input>
+        <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Description"></a-mat-input>
+      </div>
+
     </div>
   </div>
 
-  <form *ngIf="priceComponent" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
 
-    <mat-card>
-      <mat-card-content class="container-fluid">
-
-        <div class="row">
-          <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.FromDate"></a-mat-datepicker>
-          <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.ThroughDate"></a-mat-datepicker>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Price"></a-mat-input>
-          <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Description"></a-mat-input>
-        </div>
-
-      </mat-card-content>
-    </mat-card>
-
-    <a-mat-footer>
-      <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
-    </a-mat-footer>
-
-  </form>
-</div>
+</form>
