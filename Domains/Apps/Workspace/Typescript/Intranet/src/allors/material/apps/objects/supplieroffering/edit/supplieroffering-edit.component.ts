@@ -1,36 +1,28 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
-import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
+import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
+import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+
 
 @Component({
   templateUrl: './supplieroffering-edit.component.html',
   providers: [ContextService]
 })
-export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
+export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
-  title = 'Supplier offering';
-
-  add: boolean;
-  edit: boolean;
-
-  m: Meta;
+  readonly m: Meta;
 
   supplierOffering: SupplierOffering;
   part: Part;
-
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
-  private fetcher: Fetcher;
   ratingTypes: RatingType[];
   preferences: Ordinal[];
   activeSuppliers: Organisation[];
@@ -38,31 +30,32 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   currencies: Currency[];
   settings: Settings;
 
+  private subscription: Subscription;
+  private fetcher: Fetcher;
+  title: string;
+
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
-    public navigation: NavigationService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private stateService: StateService,
-  ) {
+    private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x, m } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, , internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const partId = navRoute.queryParam(m.Part);
+          const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
             this.fetcher.internalOrganisation,
@@ -73,22 +66,20 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
           ];
 
-          if (!!partId) {
+          if (isCreate) {
             pulls = [
               ...pulls,
               pull.Part({
-                object: partId,
+                object: this.data.associationId,
               }),
             ];
           }
 
-          const add = !id;
-
-          if (!add) {
+          if (!isCreate) {
             pulls = [
               ...pulls,
               pull.SupplierOffering({
-                object: id,
+                object: this.data.id,
                 include: {
                   Rating: x,
                   Preference: x,
@@ -103,11 +94,11 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, add }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, add }) => {
+      .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
 
@@ -123,25 +114,25 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
-        if (add) {
-          this.add = !(this.edit = false);
+        if (isCreate) {
+          this.title = 'Add supplier offering';
 
           this.supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
           this.supplierOffering.Part = this.part;
           this.supplierOffering.Currency = this.settings.PreferredCurrency;
 
         } else {
-          this.edit = !(this.add = false);
 
           this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
+
+          if (this.supplierOffering.CanWritePrice) {
+            this.title = 'Edit supplier offering';
+          } else {
+            this.title = 'View supplier offering';
+          }
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
-  }
+      }, this.errorService.handler);
+    }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -151,21 +142,17 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors.context
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
-        this.goBack();
+        const data: ObjectData = {
+          id: this.supplierOffering.id,
+          objectType: this.supplierOffering.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

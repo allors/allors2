@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -27,7 +27,6 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
   item: Good | Part;
   title: string;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private fetcher: Fetcher;
 
@@ -41,13 +40,12 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

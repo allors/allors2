@@ -39,6 +39,7 @@ import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/apps/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/apps/objects/serialiseditem/create/serialiseditem-create.module';
+import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../allors/material/apps/objects/supplieroffering/edit/supplieroffering-edit.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
@@ -91,6 +92,7 @@ export const create = {
   [ids.SerialisedItem]: SerialisedItemCreateComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
@@ -132,6 +134,7 @@ export const edit = {
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
@@ -181,6 +184,7 @@ export const edit = {
     SalesTermEditModule,
     SerialisedItemCreateModule,
     SerialisedItemCharacteristicEditModule,
+    SupplierOfferingEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
     TelecommunicationsNumberEditModule,
@@ -226,6 +230,7 @@ export const edit = {
     SalesTermEditComponent,
     SerialisedItemCreateComponent,
     SerialisedItemCharacteristicEditComponent,
+    SupplierOfferingEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,
     TelecommunicationsNumberEditComponent,

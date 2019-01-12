@@ -29,7 +29,7 @@ import * as CommunicationEventList from 'src/allors/material/apps/objects/commun
 
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 
-import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
+import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering-edit.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
 import * as RequestsForQuoteList from 'src/allors/material/apps/objects/requestforquote/list/requestforquote-list.module';
 import * as RequestForQuoteOverview from 'src/allors/material/apps/objects/requestforquote/overview/requestforquote-overview.module';
@@ -81,7 +81,6 @@ const modules = [
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
 
-  EditSupplierOffering.SupplierOfferingModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
   RequestsForQuoteList.RequestForQuoteListModule,
   RequestForQuoteOverview.RequestForQuoteOverviewModule,
@@ -173,12 +172,6 @@ export const routes: Routes = [
           { path: 'worktask/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
-
-      // { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
-      // { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
-
-      // { path: 'supplieroffering', data: addData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
-      // { path: 'supplieroffering/:id', data: editData({ id: ids.SupplierOffering }), component: EditSupplierOffering.EditSupplierOfferingComponent },
 
       // {
       //   path: 'communicationevent',

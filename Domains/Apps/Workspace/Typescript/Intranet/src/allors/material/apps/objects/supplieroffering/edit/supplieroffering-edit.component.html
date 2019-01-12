@@ -1,60 +1,50 @@
-<div class="a-main">
+<form *ngIf="supplierOffering" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
 
-  <div class="a-breadcrumb container-fluid mat-elevation-z4">
-    <div class="row">
-      <div class="col">
-        <a *ngIf="part" (click)="navigation.list(m.Part)">Parts</a>
-        <span *ngIf="add"> / Add supplier offering</span>
-        <span *ngIf="edit && part"> / <a (click)="navigation.overview(part)">{{part?.Name}}</a> / Edit supplier offering</span>
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.Supplier" [options]="activeSuppliers" display="displayName"></a-mat-select>
       </div>
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.FromDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.ThroughDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Rating" [options]="ratingTypes" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Preference" [options]="preferences" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductName" ></a-mat-input>
+        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductId"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.StandardLeadTime" label="Lead time days"></a-mat-input>
+        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.MinimalOrderQuantity"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Price"></a-mat-input>
+        <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Currency" [options]="currencies" display="Name"></a-mat-select>
+      </div>
+
     </div>
   </div>
 
-  <form *ngIf="supplierOffering" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
 
-    <mat-card>
-      <mat-card-content class="container-fluid">
-
-        <div class="row">
-          <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.Supplier" [options]="activeSuppliers" display="displayName"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-datepicker class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.FromDate"></a-mat-datepicker>
-          <a-mat-datepicker class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.ThroughDate"></a-mat-datepicker>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Rating" [options]="ratingTypes" display="Name"></a-mat-select>
-          <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Preference" [options]="preferences" display="Name"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductName" ></a-mat-input>
-          <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductId"></a-mat-input>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.StandardLeadTime" label="Lead time days"></a-mat-input>
-          <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.MinimalOrderQuantity"></a-mat-input>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Price"></a-mat-input>
-          <a-mat-select class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Currency" [options]="currencies" display="Name"></a-mat-select>
-        </div>
-
-      </mat-card-content>
-    </mat-card>
-
-    <a-mat-footer>
-      <button mat-raised-button (click)="navigation.back()" type="button">CANCEL</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
-    </a-mat-footer>
-
-  </form>
-</div>
+</form>

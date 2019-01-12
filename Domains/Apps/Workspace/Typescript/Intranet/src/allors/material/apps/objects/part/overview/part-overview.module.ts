@@ -19,6 +19,7 @@ import { NonSerialisedInventoryItemOverviewPanelModule } from '../../nonserialis
 import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
 import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { SupplierOfferingOverviewPanelModule } from '../../supplieroffering/overview/panel/supplieroffering-overview-panel.module';
 
 import { PartOverviewSummaryModule } from './summary/part-overview-summary.module';
 import { PartOverviewDetailModule } from './detail/part-overview-detail.module';
@@ -42,6 +43,7 @@ export { PartOverviewComponent } from './part-overview.component';
     PriceComponentOverviewPanelModule,
     SerialisedInventoryItemOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
+    SupplierOfferingOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

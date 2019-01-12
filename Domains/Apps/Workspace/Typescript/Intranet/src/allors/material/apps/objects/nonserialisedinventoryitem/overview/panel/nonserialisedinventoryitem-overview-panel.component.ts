@@ -85,10 +85,10 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
     this.table = new Table({
       selection: false,
       columns: [
-        { name: 'facility', sort: true },
-        { name: 'part', sort: true },
-        { name: 'uom', sort: true },
-        { name: 'status', sort: true },
+        { name: 'facility' },
+        { name: 'part' },
+        { name: 'uom' },
+        { name: 'status' },
         'qoh',
         'atp',
         'committedOut',
@@ -96,15 +96,6 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
       ],
       defaultAction: this.changeInventory,
     });
-
-    const sorter = new Sorter(
-      {
-        facility: [m.Facility.Name],
-        part: [m.Part.Name],
-        uom: [m.UnitOfMeasure.Name],
-        status: [m.NonSerialisedInventoryItemState.Name],
-      }
-    );
 
     const pullName = `${this.panel.name}_${this.m.NonSerialisedInventoryItem.name}`;
 

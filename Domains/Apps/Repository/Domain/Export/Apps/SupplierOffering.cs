@@ -52,6 +52,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal Price { get; set; }
+
         #region Allors
         [Id("aa7af527-e616-4d01-86b4-e116c3087a37")]
         [AssociationId("54e165e0-61ac-46cb-bf92-7aa5d62493d0")]

@@ -17,15 +17,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { EditSupplierOfferingComponent } from './supplieroffering-edit.component';
-export { EditSupplierOfferingComponent } from './supplieroffering-edit.component';
+import { SupplierOfferingEditComponent } from './supplieroffering-edit.component';
+export { SupplierOfferingEditComponent } from './supplieroffering-edit.component';
 
 @NgModule({
   declarations: [
-    EditSupplierOfferingComponent,
+    SupplierOfferingEditComponent,
   ],
   exports: [
-    EditSupplierOfferingComponent,
+    SupplierOfferingEditComponent,
   ],
   imports: [
     AllorsMaterialChipsModule,
@@ -60,4 +60,4 @@ export { EditSupplierOfferingComponent } from './supplieroffering-edit.component
     RouterModule,
   ],
 })
-export class SupplierOfferingModule { }
+export class SupplierOfferingEditModule { }
