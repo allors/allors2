@@ -3,8 +3,8 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService, Saved } from '../../../../../angular';
-import { Facility, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, VendorProduct, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, VendorProduct, GoodIdentificationType, PartNumber, UnitOfMeasure } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -203,7 +203,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
     context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refresh();
       },

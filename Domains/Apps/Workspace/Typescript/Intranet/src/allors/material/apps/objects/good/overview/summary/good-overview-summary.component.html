@@ -1,11 +1,11 @@
 <mat-card *ngIf="good">
 
-  <mat-card-header>
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
     <div mat-card-avatar>
-      <mat-icon style="font-size: 36px">person</mat-icon>
+      <mat-icon style="font-size: 36px">business</mat-icon>
     </div>
     <mat-card-title>{{good.Name}}</mat-card-title>
-    
+
     <mat-card-subtitle>
       <div>{{good.Description}}</div>
       <div>{{good.Part?.Brand?.Name}}</div>

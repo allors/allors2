@@ -31,6 +31,8 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
 
+        public User LastModifiedBy { get; set; }
+
         public decimal TotalDiscountAsPercentage { get; set; }
 
         public DiscountAdjustment DiscountAdjustment { get; set; }

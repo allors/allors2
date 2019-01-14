@@ -44,6 +44,14 @@ namespace Allors.Repository
         public BudgetState LastBudgetState { get; set; }
 
         public BudgetState BudgetState { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
         #endregion
 
         #region Versioning

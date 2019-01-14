@@ -107,6 +107,17 @@ export class PriceComponentOverviewPanelComponent implements OnInit {
             }
           }
         }),
+        pull.Product({
+          name: pullName,
+          object: id,
+          fetch: {
+            PriceComponentsWhereProduct: {
+              include: {
+                Currency: x
+              }
+            }
+          }
+        }),
       );
     };
 

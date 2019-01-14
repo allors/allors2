@@ -15,6 +15,8 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
 
+        public User LastModifiedBy { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

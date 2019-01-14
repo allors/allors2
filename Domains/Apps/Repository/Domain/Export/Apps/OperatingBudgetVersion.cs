@@ -19,6 +19,8 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
 
+        public User LastModifiedBy { get; set; }
+
         public BudgetState BudgetState { get; set; }
 
         public DateTime FromDate { get; set; }

@@ -21,6 +21,14 @@ namespace Allors.Repository
         public ObjectState[] LastObjectStates { get; set; }
 
         public ObjectState[] ObjectStates { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
         #endregion
 
         #region ObjectStates

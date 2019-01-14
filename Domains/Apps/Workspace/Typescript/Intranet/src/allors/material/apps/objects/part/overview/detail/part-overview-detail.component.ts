@@ -45,11 +45,11 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
   currentSellingPrice: PriceComponent;
+  internalOrganisation: Organisation;
+  settings: Settings;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
-  internalOrganisation: Organisation;
-  settings: Settings;
 
   constructor(
     @Self() public allors: ContextService,

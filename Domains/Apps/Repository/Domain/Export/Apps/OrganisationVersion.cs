@@ -26,8 +26,6 @@ namespace Allors.Repository
 
         public DateTime CreationDate { get; set; }
 
-        public DateTime LastModifiedDate { get; set; }
-
         public string PartyName { get; set; }
 
         public PostalAddress GeneralCorrespondence { get; set; }

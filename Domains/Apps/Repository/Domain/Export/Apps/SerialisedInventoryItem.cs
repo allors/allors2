@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4a70cbb3-6e23-4118-a07d-d611de9297de")]
     #endregion
-    public partial class SerialisedInventoryItem : InventoryItem, Versioned
+    public partial class SerialisedInventoryItem : InventoryItem
     {
         #region inherited properties
 
@@ -32,6 +32,14 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
         
         public Facility Facility { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

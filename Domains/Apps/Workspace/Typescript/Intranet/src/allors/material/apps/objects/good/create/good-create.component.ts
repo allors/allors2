@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
+import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
@@ -18,39 +18,29 @@ import { CreateData, ObjectData } from 'src/allors/material/base/services/object
 })
 export class GoodCreateComponent implements OnInit, OnDestroy {
 
-  m: Meta;
+  readonly m: Meta;
   good: Good;
 
   public title = 'Add Good';
 
-  add: boolean;
-  edit: boolean;
-
-  subTitle: string;
   facility: Facility;
   locales: Locale[];
   categories: ProductCategory[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
-  brands: Brand[];
-  selectedBrand: Brand;
-  models: Model[];
-  selectedModel: Model;
   vendorProduct: VendorProduct;
   vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
-  addBrand = false;
-  addModel = false;
   parts: Part[];
   goodIdentificationTypes: GoodIdentificationType[];
   productNumber: ProductNumber;
   selectedCategories: ProductCategory[] = [];
+  settings: Settings;
+  goodNumberType: GoodIdentificationType;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
-  settings: Settings;
-  goodNumberType: GoodIdentificationType;
 
   constructor(
     @Self() private allors: ContextService,
@@ -73,7 +63,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const pulls = [
             this.fetcher.locales,
@@ -124,22 +114,13 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
         this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
         this.vendorProduct.Product = this.good;
         this.vendorProduct.InternalOrganisation = internalOrganisation;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
-  }
+      }, this.errorService.handler);
+    }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refreshService.refresh();
   }
 
   public save(): void {
@@ -160,21 +141,5 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public update(): void {
-
-    this.allors.context.save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.goBack();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

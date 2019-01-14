@@ -1,5 +1,7 @@
 namespace Allors.Repository
 {
+    using System;
+
     using Attributes;
 
     #region Allors
@@ -94,6 +96,14 @@ namespace Allors.Repository
         public PriceComponent[] CurrentPriceComponents { get; set; }
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion
 

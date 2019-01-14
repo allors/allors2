@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
-import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship, Good } from '../../../../../../domain';
+import { Good } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
 @Component({
@@ -27,7 +27,7 @@ export class GoodOverviewSummaryComponent {
     const pullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, tree, x } = this.metaService;
+      const { pull, x } = this.metaService;
 
       const id = this.panel.manager.id;
 

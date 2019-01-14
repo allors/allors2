@@ -28,30 +28,12 @@ namespace Allors.Repository
         User CreatedBy { get; set; }
 
         #region Allors
-        [Id("545C3AE5-56EE-449C-8FDB-D8F321C72C16")]
-        [AssociationId("854BD05D-A726-41E1-9E48-D38EC969BBB7")]
-        [RoleId("3C22C9AB-AD24-4D2E-8BE9-F41C85AC6586")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        User LastModifiedBy { get; set; }
-
-        #region Allors
         [Id("2BAD0A81-70F0-44DF-8539-280A34206DF6")]
         [AssociationId("7271180A-C29E-4483-84BB-E96E303C33FF")]
         [RoleId("0003AED3-6CB2-4796-A0E0-B73A016CEE72")]
         #endregion
         [Workspace]
         DateTime CreationDate { get; set; }
-
-        #region Allors
-        [Id("DABBBD97-E832-4FB1-BA59-4F6988022ACE")]
-        [AssociationId("573A1AEB-4768-4ABC-A4A5-E654CA58FB1D")]
-        [RoleId("442EF695-F7D8-49F4-9BF4-308B1ED296BF")]
-        #endregion
-        [Workspace]
-        DateTime LastModifiedDate { get; set; }
 
         #region Allors
         [Id("5079430B-3610-4906-8F58-B34D6DCD1832")]

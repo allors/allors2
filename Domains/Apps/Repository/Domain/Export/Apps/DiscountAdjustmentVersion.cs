@@ -17,6 +17,8 @@ namespace Allors.Repository
         public Guid DerivationId { get; set; }
         public DateTime DerivationTimeStamp { get; set; }
 
+        public User LastModifiedBy { get; set; }
+
         public decimal Amount { get; set; }
         public VatRate VatRate { get; set; }
         public decimal Percentage { get; set; }

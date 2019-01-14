@@ -23,6 +23,14 @@ namespace Allors.Repository
 
         public Media PrintDocument { get; set; }
 
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         #endregion
 
         #region ObjectStates
@@ -90,15 +98,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public CustomerShipment CustomerShipmentCorrection { get; set; }
-
-        #region Allors
-        [Id("1176ffe1-efff-4c02-b4df-5bba9052f6da")]
-        [AssociationId("dcb3602c-f60e-4798-b32d-2a69f9e1056b")]
-        [RoleId("920c6a7e-b8b8-4155-9209-4c8ed24a023a")]
-        #endregion
-        [Required]
-        [Workspace]
-        public DateTime CreationDate { get; set; }
 
         #region Allors
         [Id("3bb68c85-4e2b-42b8-b5fb-18a66c58c283")]

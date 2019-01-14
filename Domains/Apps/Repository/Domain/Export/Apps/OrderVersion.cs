@@ -30,16 +30,6 @@ namespace Allors.Repository
         User CreatedBy { get; set; }
 
         #region Allors
-        [Id("C559F387-0520-4410-80A6-58FADC3A3F0F")]
-        [AssociationId("516E4840-FC89-462A-8FB0-317C9BC8D43D")]
-        [RoleId("E6DD62E0-9107-4BA4-A669-C5750AEB77A4")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        User LastModifiedBy { get; set; }
-
-        #region Allors
         [Id("95FAE69F-0298-425A-AB74-7D553056624A")]
         [AssociationId("161AB23A-9B8A-4CDE-A6DC-F139F5E85D08")]
         [RoleId("0BD0FE07-F983-474C-9A60-B6D048513854")]

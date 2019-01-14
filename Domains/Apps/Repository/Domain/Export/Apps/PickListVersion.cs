@@ -19,6 +19,8 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
 
+        public User LastModifiedBy { get; set; }
+
         #endregion
 
         #region Allors

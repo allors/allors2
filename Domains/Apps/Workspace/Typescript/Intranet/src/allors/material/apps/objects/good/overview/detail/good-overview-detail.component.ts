@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, SkipSelf } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
@@ -44,6 +44,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private fetcher: Fetcher;
+  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     @Self() public allors: ContextService,
@@ -57,6 +58,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.m = this.metaService.m;
+    this.refresh$ = new BehaviorSubject(new Date());
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
@@ -64,55 +66,55 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
     panel.icon = 'person';
     panel.expandable = true;
 
-    // Minimized
+    // Collapsed
     const pullName = `${this.panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
-      const { pull, x } = this.metaService;
 
-      const id = this.panel.manager.id;
+      this.good = undefined;
 
-      pulls.push(
-        pull.Good({
-          name: pullName,
-          object: id,
-          include: {
-            GoodIdentifications: {
-              GoodIdentificationType: x
-            },
-            Part: {
-              Brand: x,
-              Model: x
+      if (this.panel.isCollapsed) {
+        const { pull, x } = this.metaService;
+        const id = this.panel.manager.id;
+
+        pulls.push(
+          pull.Good({
+            name: pullName,
+            object: id,
+            include: {
+              GoodIdentifications: {
+                GoodIdentificationType: x
+              },
+              Part: {
+                Brand: x,
+                Model: x
+              }
             }
-          }
-        }),
-      );
+          }),
+        );
+      }
     };
 
     panel.onPulled = (loaded) => {
-      this.good = loaded.objects[pullName] as Good;
+      if (this.panel.isCollapsed) {
+        this.good = loaded.objects[pullName] as Good;
+      }
     };
   }
 
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(
-      this.route.url,
-      this.route.queryParams,
-      this.refreshService.refresh$,
-      this.stateService.internalOrganisationId$,
-    )
+    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, , , internalOrganisationId]) => {
+        switchMap(([, , internalOrganisationId]) => {
 
           this.good = undefined;
 
           const { m, pull, x } = this.metaService;
-          const fetcher = new Fetcher(this.stateService, this.metaService.pull);
           const id = this.panel.manager.id;
 
           const pulls = [

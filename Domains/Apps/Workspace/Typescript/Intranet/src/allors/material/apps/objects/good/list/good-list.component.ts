@@ -5,9 +5,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
 import { Good, ProductCategory } from '../../../../../domain';
 
@@ -46,6 +46,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
+    private stateService: StateService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -58,8 +59,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name', sort: true},
-        { name: 'categories'},
+        { name: 'name', sort: true },
+        { name: 'categories' },
         { name: 'qoh' },
       ],
       actions: [
@@ -74,9 +75,18 @@ export class GoodListComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
+    const internalOrganisationPredicate = new Equals({ propertyType: m.VendorProduct.InternalOrganisation });
+
     const predicate = new And([
       new Like({ roleType: m.Good.Name, parameter: 'name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
+      new ContainedIn({
+        propertyType: m.Good.VendorProductsWhereProduct,
+        extent: new Filter({
+          objectType: m.VendorProduct,
+          predicate: internalOrganisationPredicate
+        })
+      })
     ]);
 
     this.filterService.init(predicate);
@@ -87,17 +97,20 @@ export class GoodListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.Good({
