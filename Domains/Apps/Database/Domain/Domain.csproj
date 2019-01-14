@@ -42,12 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaltReport2" Version="3.0.1-beta-37" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
+    <ProjectReference Include="..\..\..\Base\Document\Allors.Document\Allors.Document.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
   </ItemGroup>

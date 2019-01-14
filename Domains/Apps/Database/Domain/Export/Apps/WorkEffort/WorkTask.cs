@@ -15,13 +15,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System;
-    using System.Linq;
     using System.Collections.Generic;
-    
+    using System.Linq;
     using Allors.Meta;
     using Allors.Services;
-    using Sandwych.Reporting;
+
     using Microsoft.Extensions.DependencyInjection;
 
     public partial class WorkTask
@@ -48,8 +46,27 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+
+            var singleton = this.Strategy.Session.GetSingleton();
+            var logo = this.TakenBy?.ExistLogoImage == true ?
+                           this.TakenBy.LogoImage.MediaContent.Data :
+                           singleton.LogoImage.MediaContent.Data;
+
+            var images = new Dictionary<string, byte[]>
+                             {
+                                 { "Logo", logo },
+                             };
+            
+            if (this.ExistWorkEffortNumber)
+            {
+                var session = this.Strategy.Session;
+                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                var barcode = barcodeService.Generate(this.WorkEffortNumber, BarcodeType.CODE_128, 320, 80);
+                images["Barcode"] = barcode;
+            }
+            
             var model = new WorkTaskPrint.Model(this);
-            this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model);
+            this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model, images);
         }
 
         //public void AppsDelete(DeletableDelete method)

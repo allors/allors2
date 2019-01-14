@@ -17,24 +17,13 @@
 namespace Allors.Domain.ProductQuotePrint
 {
     using System.Linq;
-    using Sandwych.Reporting;
 
     public class Model
     {
         public Model(ProductQuote quote)
         {
             this.Quote = new QuoteModel(quote);
-
-            if (quote.Issuer?.ExistLogoImage == true)
-            {
-                this.Logo = new ImageBlob("png", quote.Issuer.LogoImage.MediaContent.Data);
-            }
-            else
-            {
-                var singleton = quote.Strategy.Session.GetSingleton();
-                this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
-            }
-
+            
             this.Request = new RequestModel(quote.Request);
             this.Issuer = new IssuerModel((Organisation)quote.Issuer);
             this.BillTo = new BillToModel(quote);
@@ -47,8 +36,6 @@ namespace Allors.Domain.ProductQuotePrint
         public QuoteModel Quote { get; }
 
         public RequestModel Request { get; }
-
-        public ImageBlob Logo { get; }
 
         public IssuerModel Issuer { get; }
 

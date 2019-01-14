@@ -16,15 +16,6 @@
 
 namespace Allors.Domain.WorkTaskPrint
 {
-    using System;
-    using System.Linq;
-
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Sandwych.Reporting;
-
     public class InventoryAssignmentModel
     {
         public InventoryAssignmentModel(WorkEffortInventoryAssignment assignment)

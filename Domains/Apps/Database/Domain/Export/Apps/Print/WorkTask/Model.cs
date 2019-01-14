@@ -18,30 +18,15 @@ namespace Allors.Domain.WorkTaskPrint
 {
     using System.Linq;
 
-    using Sandwych.Reporting;
-
     public class Model
     {
         public Model(WorkTask workTask)
         {
-            if (workTask.TakenBy?.LogoImage != null)
-            {
-                this.Logo = new ImageBlob("png", workTask.TakenBy.LogoImage.MediaContent.Data);
-            }
-            else
-            {
-                var singleton = workTask.Strategy.Session.GetSingleton();
-                this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
-            }
-
             this.WorkTask = new WorkTaskModel(workTask);
             this.Customer = new CustomerModel(workTask.Customer);
             this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
             this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Select(v => new InventoryAssignmentModel(v)).ToArray();
         }
-
-        public ImageBlob Logo { get; }
-
         public WorkTaskModel WorkTask { get; }
 
         public CustomerModel Customer { get; }

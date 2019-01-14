@@ -19,6 +19,9 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class ProductQuote
     {
@@ -33,8 +36,26 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var printModel = new Allors.Domain.ProductQuotePrint.Model(this);
-            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel);
+            var singleton = this.Strategy.Session.GetSingleton();
+            var logo = this.Issuer?.ExistLogoImage == true ?
+                           this.Issuer.LogoImage.MediaContent.Data :
+                           singleton.LogoImage.MediaContent.Data;
+
+            var images = new Dictionary<string, byte[]>
+                             {
+                                 { "Logo", logo },
+                             };
+
+            if (this.ExistQuoteNumber)
+            {
+                var session = this.Strategy.Session;
+                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                var barcode = barcodeService.Generate(this.QuoteNumber, BarcodeType.CODE_128, 320, 80);
+                images.Add("Barcode", barcode);
+            }
+            
+            var printModel = new ProductQuotePrint.Model(this);
+            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel, images);
         }
 
         private SalesOrder OrderThis()

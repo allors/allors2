@@ -16,24 +16,12 @@
 
 namespace Allors.Domain.ProductQuotePrint
 {
-    using Allors.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using Sandwych.Reporting;
-
     public class QuoteModel
     {
         public QuoteModel(Quote quote)
         {
             this.Description = quote.Description;
             this.Number = quote.QuoteNumber;
-            if (quote.ExistQuoteNumber)
-            {
-                var session = quote.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(quote.QuoteNumber, BarcodeType.CODE_128, 320, 80);
-                this.Barcode = new ImageBlob("png", barcode);
-            }
-
             this.IssueDate = quote.IssueDate.ToString("yyyy-MM-dd");
             this.ValidFromDate = (quote.ValidFromDate ?? quote.IssueDate).ToString("yyyy-MM-dd");
             this.ValidThroughDate = quote.ValidThroughDate?.ToString("yyyy-MM-dd");
@@ -45,7 +33,6 @@ namespace Allors.Domain.ProductQuotePrint
 
         public string Description { get; }
         public string Number { get; }
-        public ImageBlob Barcode { get; }
         public string IssueDate { get; }
         public string ValidFromDate { get; }
         public string ValidThroughDate { get; }

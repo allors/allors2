@@ -16,31 +16,23 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
 
     public static partial class PrintableExtensions
     {
-        public static void RenderPrintDocument(this Printable @this, Template template, object model)
+        public static void RenderPrintDocument(this Printable @this, Template template, object model, IDictionary<string, byte[]> images)
         {
-            if (model is IReadOnlyDictionary<string, object> alreadyDictionary)
-            {
-                RenderPrintDocument(@this, template, alreadyDictionary);
-            }
-            else
-            {
-                var dictionary = model.GetType()
-                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                            .ToDictionary(propInfo => propInfo.Name, propInfo => propInfo.GetValue(model, null));
-
-                RenderPrintDocument(@this, template, dictionary);
-            }
+            var document = template?.Render(model, images);
+            @this.UpdatePrintDocument(document);
         }
 
-        public static void RenderPrintDocument(this Printable @this, Template template, IReadOnlyDictionary<string, object> model)
+        public static void RenderPrintDocument(this Printable @this, Template template, IDictionary<string, object> model, IDictionary<string, byte[]> images)
         {
-            var document = template?.Render(model);
+            var document = template?.Render(model, images);
+            @this.UpdatePrintDocument(document);
+        }
 
+        private static void UpdatePrintDocument(this Printable @this, byte[] document)
+        {
             if (document != null)
             {
                 if (@this.ExistPrintDocument)
@@ -56,12 +48,6 @@ namespace Allors.Domain
             {
                 @this.PrintDocument?.Delete();
             }
-
-
-            //if (document != null)
-            //{
-            //    File.WriteAllBytes($@"\temp\{@this.Strategy.Class.Name}_{@this.Strategy.ObjectId}.odt", document);
-            //}
         }
     }
 }

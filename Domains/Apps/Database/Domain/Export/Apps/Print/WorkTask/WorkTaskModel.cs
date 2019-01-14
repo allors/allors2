@@ -19,12 +19,6 @@ namespace Allors.Domain.WorkTaskPrint
     using System;
     using System.Linq;
 
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Sandwych.Reporting;
-
     public class WorkTaskModel
     {
         public WorkTaskModel(WorkTask workTask)
@@ -58,18 +52,9 @@ namespace Allors.Domain.WorkTaskPrint
                     }
                 }
             }
-
-            if (workTask.ExistWorkEffortNumber)
-            {
-                var session = workTask.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(workTask.WorkEffortNumber, BarcodeType.CODE_128, 320, 80);
-                this.Barcode = new ImageBlob("png", barcode);
-            }
         }
 
         public string Number { get; }
-        public ImageBlob Barcode { get; }
         public string Purpose { get; }
         public string Date { get; }
         public string PurchaseOrder { get; }
