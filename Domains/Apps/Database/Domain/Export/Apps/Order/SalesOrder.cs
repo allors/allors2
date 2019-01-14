@@ -20,8 +20,11 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Domain.NonLogging;
+    using Allors.Services;
 
     using Meta;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Resources;
 
@@ -291,19 +294,36 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
+            var singleton = this.Strategy.Session.GetSingleton();
+            var logo = this.TakenBy?.ExistLogoImage == true ?
+                this.TakenBy.LogoImage.MediaContent.Data :
+                singleton.LogoImage.MediaContent.Data;
 
-            var printModel = new SalesOrderPrint.Model(this);
-            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, printModel);
+            var images = new Dictionary<string, byte[]>
+                             {
+                                 { "Logo", logo },
+                             };
+            
+            if (this.ExistOrderNumber)
+            {
+                var session = this.Strategy.Session;
+                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                var barcode = barcodeService.Generate(this.OrderNumber, BarcodeType.CODE_128, 320, 80);
+                images.Add("Barcode", barcode);
+            }
+            
+            var model = new SalesOrderPrint.Model(this);
+            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model, images);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            if (!CanShip)
+            if (!this.CanShip)
             {
                 this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
             }
 
-            if (!CanInvoice)
+            if (!this.CanInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }

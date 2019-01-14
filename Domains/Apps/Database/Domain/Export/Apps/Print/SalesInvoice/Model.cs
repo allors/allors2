@@ -17,24 +17,12 @@
 namespace Allors.Domain.SalesInvoicePrint
 {
     using System.Linq;
-    using Sandwych.Reporting;
 
     public class Model
     {
         public Model(SalesInvoice invoice)
         {
             this.Invoice = new InvoiceModel(invoice);
-
-            if (invoice.ExistBilledFrom && invoice.BilledFrom.ExistLogoImage)
-            {
-                this.Logo = new ImageBlob("png", invoice.BilledFrom.LogoImage.MediaContent.Data);
-            }
-            else
-            {
-                var singleton = invoice.Strategy.Session.GetSingleton();
-                this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
-            }
-
             this.BilledFrom = new BilledFromModel((Organisation)invoice.BilledFrom);
             this.BillTo = new BillToModel(invoice);
             this.ShipTo = new ShipToModel(invoice);
@@ -46,8 +34,6 @@ namespace Allors.Domain.SalesInvoicePrint
         }
 
         public InvoiceModel Invoice { get; }
-
-        public ImageBlob Logo { get; }
 
         public BilledFromModel BilledFrom { get; }
 

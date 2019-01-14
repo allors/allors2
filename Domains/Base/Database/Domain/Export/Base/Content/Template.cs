@@ -21,33 +21,23 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
 
-    using Sandwych.Reporting;
-    using Sandwych.Reporting.OpenDocument;
+    using Allors.Document.OpenDocument;
 
     public partial class Template
     {
-        public byte[] Render(IReadOnlyDictionary<string, object> model)
+        public byte[] Render(object model, IDictionary<string, byte[]> images = null)
         {
-            //if (this.TemplateType.IsOdtTemplate)
-            //{
-            //    var context = new TemplateContext(model);
+            var properties = model.GetType().GetProperties();
+            var dictionary = properties.ToDictionary(property => property.Name, property => property.GetValue(model));
+            return this.Render(dictionary, images);
+        }
 
-            //    using (var stream = new MemoryStream(this.Media.MediaContent.Data))
-            //    {
-            //        var odt = OdfDocument.LoadFrom(stream);
-            //        var template = new OdtTemplate(odt);
-            //        var result = template.Render(context);
-            //        using (var outputStream = new MemoryStream())
-            //        {
-            //            result.Save(outputStream);
-            //            return outputStream.ToArray();
-            //        }
-            //    }
-            //}
-
-            return null;
+        public byte[] Render(IDictionary<string, object> model, IDictionary<string, byte[]> images = null)
+        {
+            var template = new OpenDocumentTemplate(this.Media.MediaContent.Data);
+            return template.Render(model, images);
         }
     }
 }

@@ -21,6 +21,9 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Resources;
 
@@ -273,8 +276,26 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
+            var singleton = this.Strategy.Session.GetSingleton();
+            var logo = this.BilledFrom?.ExistLogoImage == true ?
+                           this.BilledFrom.LogoImage.MediaContent.Data :
+                           singleton.LogoImage.MediaContent.Data;
+
+            var images = new Dictionary<string, byte[]>
+                             {
+                                 { "Logo", logo },
+                             };
+
+            if (this.ExistInvoiceNumber)
+            {
+                var session = this.Strategy.Session;
+                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                images.Add("Barcode", barcode);
+            }
+
             var printModel = new SalesInvoicePrint.Model(this); 
-            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, printModel);
+            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, printModel, images);
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)

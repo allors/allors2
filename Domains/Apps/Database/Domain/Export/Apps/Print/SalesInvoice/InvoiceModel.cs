@@ -16,24 +16,12 @@
 
 namespace Allors.Domain.SalesInvoicePrint
 {
-    using Allors.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using Sandwych.Reporting;
-
     public class InvoiceModel
     {
         public InvoiceModel(SalesInvoice invoice)
         {
             this.Description = invoice.Description;
             this.Number = invoice.InvoiceNumber;
-            if (invoice.ExistInvoiceNumber)
-            {
-                var session = invoice.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(invoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
-                this.Barcode = new ImageBlob("png", barcode);
-            }
-
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
             this.DueDate = invoice.DueDate?.ToString("yyyy-MM-dd");
             this.CustomerReference = invoice.CustomerReference;
@@ -52,7 +40,6 @@ namespace Allors.Domain.SalesInvoicePrint
 
         public string Description { get; }
         public string Number { get; }
-        public ImageBlob Barcode { get; }
         public string Date { get; }
         public string DueDate { get; }
         public string CustomerReference { get; }

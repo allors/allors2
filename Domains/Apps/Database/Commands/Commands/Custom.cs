@@ -21,6 +21,7 @@
 namespace Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using Allors;
@@ -29,6 +30,7 @@ namespace Commands
 
     using McMaster.Extensions.CommandLineUtils;
 
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
     [Command(Description = "Execute custom code")]
@@ -76,8 +78,20 @@ namespace Commands
 
                 session.Derive();
 
+                var images = new Dictionary<string, byte[]>
+                                 {
+                                     { "Logo", session.GetSingleton().LogoImage.MediaContent.Data },
+                                 };
+
+                if (invoice.ExistInvoiceNumber)
+                {
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(invoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
                 var printModel = new Allors.Domain.SalesInvoicePrint.Model(invoice);
-                invoice.RenderPrintDocument(template, printModel);
+                invoice.RenderPrintDocument(template, printModel, images);
 
                 session.Derive();
 

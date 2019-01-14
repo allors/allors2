@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InvoiceModel.cs" company="Allors bvba">
+// <copyright file="OrdeModel.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -16,24 +16,12 @@
 
 namespace Allors.Domain.SalesOrderPrint
 {
-    using Allors.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using Sandwych.Reporting;
-
     public class OrderModel
     {
         public OrderModel(SalesOrder order)
         {
             this.Description = order.Description;
             this.Number = order.OrderNumber;
-            if (order.ExistOrderNumber)
-            {
-                var session = order.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(order.OrderNumber, BarcodeType.CODE_128, 320, 80);
-                this.Barcode = new ImageBlob("png", barcode);
-            }
-
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
             this.DueDate = order.DueDate?.ToString("yyyy-MM-dd");
             this.CustomerReference = order.CustomerReference;
@@ -51,7 +39,6 @@ namespace Allors.Domain.SalesOrderPrint
 
         public string Description { get; }
         public string Number { get; }
-        public ImageBlob Barcode { get; }
         public string Date { get; }
         public string DueDate { get; }
         public string CustomerReference { get; }

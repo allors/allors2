@@ -36,6 +36,7 @@ namespace Allors.Domain
                 this.RequestItemState = new RequestItemStates(this.Strategy.Session).Submitted;
             }
         }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

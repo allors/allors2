@@ -17,24 +17,13 @@
 namespace Allors.Domain.SalesOrderPrint
 {
     using System.Linq;
-    using Sandwych.Reporting;
 
     public class Model
     {
         public Model(SalesOrder order)
         {
             this.Order = new OrderModel(order);
-
-            if (order.TakenBy?.ExistLogoImage == true)
-            {
-                this.Logo = new ImageBlob("png", order.TakenBy.LogoImage.MediaContent.Data);
-            }
-            else
-            {
-                var singleton = order.Strategy.Session.GetSingleton();
-                this.Logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
-            }
-
+            
             this.TakenBy = new TakenByModel((Organisation)order.TakenBy);
             this.BillTo = new BillToModel(order);
             this.ShipTo = new ShipToModel(order);
@@ -46,8 +35,6 @@ namespace Allors.Domain.SalesOrderPrint
         }
 
         public OrderModel Order { get; }
-
-        public ImageBlob Logo { get; }
 
         public TakenByModel TakenBy { get; }
 
