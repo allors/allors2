@@ -25,22 +25,18 @@ namespace Allors.Document.OpenDocument
         private const string MainTemplateName = "main";
 
         private readonly IDictionary<string, object> model;
-        private readonly string stringTemplate;
-        private readonly char leftDelimiter;
-        private readonly char rightDelimiter;
+        private readonly TemplateGroup templateGroup;
         private readonly IDictionary<string, byte[]> fileByFileName;
 
         private readonly Image[] images;
 
         private byte[] manifestFile;
 
-        public OpenDocumentRendering(IDictionary<string, object> model, byte[] manifestFile, IDictionary<string, byte[]> imageByName, string stringTemplate, char leftDelimiter, char rightDelimiter, Dictionary<string, byte[]> fileByFileName)
+        public OpenDocumentRendering(IDictionary<string, object> model, byte[] manifestFile, IDictionary<string, byte[]> imageByName, TemplateGroup templateGroup, Dictionary<string, byte[]> fileByFileName)
         {
             this.model = model;
             this.manifestFile = manifestFile;
-            this.stringTemplate = stringTemplate;
-            this.leftDelimiter = leftDelimiter;
-            this.rightDelimiter = rightDelimiter;
+            this.templateGroup = templateGroup;
             this.fileByFileName = fileByFileName;
 
             this.images = imageByName?.Select(v => new Image { Name = v.Key, Contents = v.Value }).ToArray() ?? new Image[0];
@@ -50,23 +46,8 @@ namespace Allors.Document.OpenDocument
         {
             var errorBuffer = new ErrorBuffer();
 
-            var argumentNames = this.model.Keys.ToArray();
-            var group = "main(" + string.Join(",", argumentNames) + ")" + this.stringTemplate;
-            var templateGroup = new TemplateGroupString("main", group, this.leftDelimiter, this.rightDelimiter)
-            {
-                ErrorManager = new ErrorManager(errorBuffer)
-            };
-
-            // TODO: register renderers on templateGroup
-            //templateGroup.RegisterRenderer(typeof(String), new StringRenderer(this));
+            var template = this.templateGroup.GetInstanceOf(MainTemplateName);
             
-            var template = templateGroup.GetInstanceOf(MainTemplateName);
-
-            if (errorBuffer.Errors.Count > 0)
-            {
-                throw new TemplateException(errorBuffer.Errors);
-            }
-
             foreach (var kvp in this.model)
             {
                 template.Add(kvp.Key, kvp.Value);

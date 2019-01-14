@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     public partial class Medias
     {
-        protected override void BaseSecure(Domain.Security config)
+        protected override void BaseSecure(Security config)
         {
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 

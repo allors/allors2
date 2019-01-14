@@ -19,13 +19,9 @@ namespace Allors.Document
         public readonly ReadOnlyCollection<TemplateMessage> TemplateMessages;
 
         internal TemplateException(ReadOnlyCollection<TemplateMessage> errorBufferErrors)
+            : base(string.Join("\n", string.Join("\n", errorBufferErrors)))
         {
             this.TemplateMessages = errorBufferErrors;
-        }
-
-        public override string ToString()
-        {
-            return string.Join("\n", this.TemplateMessages);
         }
     }
 }

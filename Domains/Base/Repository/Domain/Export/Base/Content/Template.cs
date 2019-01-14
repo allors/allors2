@@ -1,3 +1,4 @@
+
 //------------------------------------------------------------------------------------------------- 
 // <copyright file="Template.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
@@ -59,6 +60,15 @@ namespace Allors.Repository
         [Required]
         public Media Media { get; set; }
         
+        #region Allors
+        [Id("3BC9EEAE-717F-4030-88ED-68057B14ACEC")]
+        [AssociationId("8B04F22C-48EC-469F-BBD0-1136AF8325A3")]
+        [RoleId("786036A9-D4F7-449E-BC23-85D512CC53D3")]
+        [Indexed]
+        #endregion
+        [Required]
+        public string Arguments { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

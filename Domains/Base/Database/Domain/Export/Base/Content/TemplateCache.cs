@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemplateType.cs" company="Allors bvba">
+// <copyright file="AccessControlCache.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,18 @@
 
 namespace Allors.Domain
 {
-    public partial class TemplateType
+    using System;
+
+    public class TemplateCache
     {
-        public bool IsOpenDocumentTemplate => this.UniqueId.Equals(TemplateTypes.OpenDocumentTypeId);
+        internal TemplateCache(Template template, object subject)
+        {
+            this.Revision = template.Media.Revision.Value;
+            this.Subject = subject;
+        }
+
+        public Guid Revision { get; }
+
+        public object Subject { get; }
     }
 }

@@ -32,22 +32,22 @@ namespace Allors.Domain
         {
             if (!@this.ExistProductQuoteTemplate)
             {
-                @this.ProductQuoteTemplate = @this.CreateOpenDocumentTemplate(@this.GetResourceBytes("Templates.ProductQuote.odt"));
+                @this.ProductQuoteTemplate = @this.CreateOpenDocumentTemplate<ProductQuotePrint.Model>(@this.GetResourceBytes("Templates.ProductQuote.odt"));
             }
 
             if (!@this.ExistSalesOrderTemplate)
             {
-                @this.SalesOrderTemplate = @this.CreateOpenDocumentTemplate(@this.GetResourceBytes("Templates.SalesOrder.odt"));
+                @this.SalesOrderTemplate = @this.CreateOpenDocumentTemplate<SalesOrderPrint.Model>(@this.GetResourceBytes("Templates.SalesOrder.odt"));
             }
 
             if (!@this.ExistSalesInvoiceTemplate)
             {
-                @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate(@this.GetResourceBytes("Templates.SalesInvoice.odt"));
+                @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate<SalesInvoicePrint.Model>(@this.GetResourceBytes("Templates.SalesInvoice.odt"));
             }
 
             if (!@this.ExistWorkTaskTemplate)
             {
-                @this.WorkTaskTemplate = @this.CreateOpenDocumentTemplate(@this.GetResourceBytes("Templates.WorkTask.odt"));
+                @this.WorkTaskTemplate = @this.CreateOpenDocumentTemplate<WorkTaskPrint.Model>(@this.GetResourceBytes("Templates.WorkTask.odt"));
             }
         }
 
@@ -264,11 +264,11 @@ namespace Allors.Domain
             return int.Parse(candidate);
         }
 
-        private static Template CreateOpenDocumentTemplate(this InternalOrganisation @this, byte[] content)
+        private static Template CreateOpenDocumentTemplate<T>(this InternalOrganisation @this, byte[] content)
         {
             var media = new MediaBuilder(@this.Strategy.Session).WithInData(content).Build();
             var templateType = new TemplateTypes(@this.Strategy.Session).OpenDocumentType;
-            var template = new TemplateBuilder(@this.Strategy.Session).WithMedia(media).WithTemplateType(templateType).Build();
+            var template = new TemplateBuilder(@this.Strategy.Session).WithMedia(media).WithTemplateType(templateType).WithArguments<T>().Build();
             return template;
         }
 
