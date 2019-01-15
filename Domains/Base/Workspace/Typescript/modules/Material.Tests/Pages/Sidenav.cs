@@ -20,11 +20,11 @@ namespace Tests.Material
 
         public Anchor Home => new Anchor(this.Driver, this.ByHref("/"));
 
-        public Element RelationsGroup => this.Group("Relations");
+        public Element ContactsGroup => this.Group("Contacts");
 
-        public Anchor People => this.Link("/relations/people");
+        public Anchor People => this.Link("/contacts/people");
         
-        public Anchor Organisations => this.Link("/relations/organisations");
+        public Anchor Organisations => this.Link("/contacts/organisations");
 
         public Element TestsGroup => this.Group("Tests");
 
@@ -43,13 +43,13 @@ namespace Tests.Material
 
         public PersonListPage NavigateToPersonList()
         {
-            this.Navigate(this.RelationsGroup, this.People);
+            this.Navigate(this.ContactsGroup, this.People);
             return new PersonListPage(this.Driver);
         }
 
         public OrganisationListPage NavigateToOrganisations()
         {
-            this.Navigate(this.RelationsGroup, this.Organisations);
+            this.Navigate(this.ContactsGroup, this.Organisations);
             return new OrganisationListPage(this.Driver);
         }
 
