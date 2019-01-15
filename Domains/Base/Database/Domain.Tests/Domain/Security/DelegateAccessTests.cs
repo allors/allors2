@@ -28,7 +28,7 @@ namespace Tests
     public class DelegateAccessTests : DomainTest
     {
         [Fact]
-        public void ReturnTokens()
+        public void DelegateAccessReturnsTokens()
         {
             var administrator = new People(this.Session).FindBy(M.Person.UserName, "Administrator");
             var accessClass = new AccessClassBuilder(this.Session).Build();
@@ -44,19 +44,20 @@ namespace Tests
         }
         
         [Fact]
-        public void ReturnNoTokens()
+        public void DelegateAccessReturnsNoTokens()
         {
             var administrator = new People(this.Session).FindBy(M.Person.UserName, "Administrator");
             var accessClass = new AccessClassBuilder(this.Session).WithBlock(true).Build();
 
+            // Use default security from Singleton
             var acl = new AccessControlList(accessClass, administrator);
             Assert.False(acl.CanRead(M.AccessClass.Property));
-            Assert.False(acl.CanWrite(M.AccessClass.Property));
+            Assert.True(acl.CanWrite(M.AccessClass.Property));
 
             this.Session.Commit();
 
             Assert.False(acl.CanRead(M.AccessClass.Property));
-            Assert.False(acl.CanWrite(M.AccessClass.Property));
+            Assert.True(acl.CanWrite(M.AccessClass.Property));
 
             this.Session.Commit();
         }

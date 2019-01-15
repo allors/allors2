@@ -22,7 +22,6 @@ namespace Allors.Domain
 {
     public partial class AccessClass
     {
-     
         public void CustomDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
             if (this.Block)
