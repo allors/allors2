@@ -10,7 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData, CreateData } from '../../../../../../allors/material/base/services/object';
 
 @Component({
   templateUrl: './serialiseditem-create.component.html',

@@ -4,16 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { InternalOrganisation, Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ObjectData } from 'src/allors/material/base/services/object';
+import { ObjectData, CreateData } from '../../../../../../allors/material/base/services/object';
 
 @Component({
   templateUrl: './requestforquote-create.component.html',
@@ -41,17 +40,14 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<RequestForQuoteCreateComponent>,
     public metaService: MetaService,
-    public location: Location,
+    private refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -59,11 +55,9 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([]) => {
-
-          const id: string = this.route.snapshot.paramMap.get('id');
+        switchMap(([ ]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -75,6 +69,8 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
+
+        this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
@@ -97,7 +93,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.request.id,
           objectType: this.request.objectType,

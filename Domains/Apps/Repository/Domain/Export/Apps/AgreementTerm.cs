@@ -22,6 +22,7 @@ namespace Allors.Repository
         [RoleId("7e1163db-78d1-4c63-b10a-d1315ccb223c")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         TermType TermType { get; set; }

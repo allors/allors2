@@ -21,7 +21,7 @@
                 <mat-icon>delete</mat-icon>
               </button>
 
-              <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/parts']">
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/parts']">
                 <mat-icon>save_alt</mat-icon>
               </button>
 

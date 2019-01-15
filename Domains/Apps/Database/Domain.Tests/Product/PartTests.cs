@@ -21,31 +21,14 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
+
     using Meta;
     using Xunit;
 
     
     public class PartTests : DomainTest
     {
-        [Fact]
-        public void GivenPart_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var builder = new PartBuilder(this.Session);
-            var finishedGood = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithGoodIdentification(
-                new PartNumberBuilder(this.Session).WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build());
-
-            builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
         [Fact]
         public void GivenPart_WhenBuild_ThenPostBuildRelationsMustExist()
         {

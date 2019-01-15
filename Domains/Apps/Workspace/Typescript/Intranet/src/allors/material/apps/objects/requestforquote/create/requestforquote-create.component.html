@@ -1,13 +1,9 @@
 <form *ngIf="request" class="a-edit" #form="ngForm" (submit)="save()">
 
-  <h3 mat-dialog-title>Add a new Request for Quote</h3>
-  
+  <h3 mat-dialog-title>{{title}}</h3>
+
   <div mat-dialog-content>
     <div class="container-fluid">
-
-      <div class="row" *ngIf="!request.isNew">
-        <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
-      </div>
 
       <div class="row">
         <div class="col-md">
@@ -77,7 +73,7 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
   </div>
 
 </form>

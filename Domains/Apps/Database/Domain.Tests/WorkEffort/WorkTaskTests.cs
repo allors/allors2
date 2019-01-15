@@ -334,6 +334,7 @@ namespace Allors.Domain
                 .Build())
             .WithSalesTerm(new OrderTermBuilder(this.Session)
                 .WithDescription("Net 30")
+                .WithTermType(new InvoiceTermTypes(this.Session).PaymentNetDays)
                 .Build())
             .Build();
 

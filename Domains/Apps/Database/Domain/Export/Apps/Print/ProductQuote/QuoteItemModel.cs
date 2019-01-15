@@ -23,8 +23,8 @@ namespace Allors.Domain.ProductQuotePrint
             var product = item.Product;
             var serialisedItem = item.SerialisedItem;
           
-            this.Product = serialisedItem.Name ?? product?.Name;
-            this.Description = serialisedItem.Description ?? product?.Description;
+            this.Product = serialisedItem?.Name ?? product?.Name;
+            this.Description = serialisedItem?.Description ?? product?.Description;
             this.Details = item.Details;
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
