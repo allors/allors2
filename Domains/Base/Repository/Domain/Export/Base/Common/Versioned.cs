@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("39F9CB84-B321-424A-864C-0B128ACAA965")]
     #endregion
-    public partial interface Versioned : Auditable
+    public partial interface Versioned : Object
     {
     }
 }
