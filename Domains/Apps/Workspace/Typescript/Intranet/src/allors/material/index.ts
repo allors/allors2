@@ -42,4 +42,5 @@ export * from './base/sorting';
 export * from './apps/objects/internalorganisation/state/internalorganisation-select.module';
 
 // Apps Services
+export * from './apps/services/actions';
 export * from './apps/services/state';

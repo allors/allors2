@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../../../material';
 
 import { Quote } from '../../../../../domain';
 

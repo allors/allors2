@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material';
-import { AllorsMaterialDialogModule } from '../../../components/dialog';
 
 import { PrintService } from './print.service';
+import { AllorsMaterialDialogModule } from '../../../../base/components/dialog';
 export { PrintService } from './print.service';
 
 @NgModule({

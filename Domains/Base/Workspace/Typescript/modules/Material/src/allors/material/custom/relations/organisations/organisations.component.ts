@@ -8,7 +8,7 @@ import { PullRequest, And, Like } from '../../../../framework';
 import { ContextService, NavigationService, AllorsFilterService, ErrorService, RefreshService, Action, MetaService } from '../../../../angular';
 import { Table, TableRow, Sorter } from '../../../../material';
 
-import { NavigateService, DeleteService } from '../../../../material';
+import { DeleteService, OverviewService } from '../../../../material';
 
 interface Row extends TableRow {
   object: Organisation;
@@ -26,6 +26,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
 
   table: Table<Row>;
 
+  overview: Action;
   delete: Action;
 
   private subscription: Subscription;
@@ -35,14 +36,15 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public navigateService: NavigateService,
     public deleteService: DeleteService,
+    public overviewService: OverviewService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private titleService: Title) {
 
     this.titleService.setTitle(this.title);
 
+    this.overview = overviewService.overview();
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
@@ -55,7 +57,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
         'owner'
       ],
       actions: [
-        navigateService.overview(),
+        this.overview,
         this.delete
       ],
     });
