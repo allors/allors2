@@ -21,6 +21,10 @@ export class PanelManagerService {
   on$: Observable<Date>;
   private onSubject$: BehaviorSubject<Date>;
 
+  get panelContainerClass() {
+    return this.expanded ? 'expanded-panel-container' : 'collapsed-panel-container';
+  }
+
   constructor(
     databaseService: DatabaseService,
     workspaceService: WorkspaceService,

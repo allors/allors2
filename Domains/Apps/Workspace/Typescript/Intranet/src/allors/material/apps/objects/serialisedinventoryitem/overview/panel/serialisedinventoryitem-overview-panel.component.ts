@@ -1,4 +1,4 @@
-import { Component, Self, OnInit } from '@angular/core';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
@@ -21,6 +21,10 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SerialisedInventoryItemComponent implements OnInit {
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
 
   m: Meta;
 
@@ -130,7 +134,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
               facility: v.Facility.Name,
               item: v.SerialisedItem.displayName,
               status: 'TODO'
-//              status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
+              //              status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });
         }

@@ -9,10 +9,9 @@ export interface MenuItem {
 }
 
 export const menu: MenuItem[] = [
-  { title: 'Home', link: '/' },
+  { title: 'Home', icon: 'home', link: '/' },
   {
-    title: 'Contacts',
-    icon: 'person',
+    title: 'Contacts', icon: 'group',
     children: [
       { id: ids.Person },
       { id: ids.Organisation },
@@ -20,8 +19,7 @@ export const menu: MenuItem[] = [
     ]
   },
   {
-    title: 'Products',
-    icon: 'business',
+    title: 'Products', icon: 'label',
     children: [
       { id: ids.Good },
       { id: ids.Part },
@@ -32,8 +30,7 @@ export const menu: MenuItem[] = [
     ]
   },
   {
-    title: 'Sales',
-    icon: 'business',
+    title: 'Sales', icon: 'credit_card',
     children: [
       { id: ids.RequestForQuote },
       { id: ids.ProductQuote },
@@ -42,15 +39,13 @@ export const menu: MenuItem[] = [
     ]
   },
   {
-    title: 'Purchasing',
-    icon: 'business',
+    title: 'Purchasing', icon: 'local_shipping',
     children: [
       { id: ids.PurchaseInvoice },
     ]
   },
   {
-    title: 'WorkEfforts',
-    icon: 'business',
+    title: 'WorkEfforts', icon: 'schedule',
     children: [
       { id: ids.WorkEffort },
     ]

@@ -1,4 +1,4 @@
-import { Component, Self, OnInit } from '@angular/core';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
 import { PartyContactMechanism, ContactMechanism } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
@@ -19,6 +19,10 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class PartyContactMechanismOverviewPanelComponent implements OnInit {
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
 
   m: Meta;
 

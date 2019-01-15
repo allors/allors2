@@ -1,4 +1,4 @@
-import { Component, Self, OnInit } from '@angular/core';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
 import { PanelService, MetaService, RefreshService, Action, NavigationService, ErrorService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
@@ -22,6 +22,10 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class CommunicationEventOverviewPanelComponent implements OnInit {
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
 
   m: Meta;
 

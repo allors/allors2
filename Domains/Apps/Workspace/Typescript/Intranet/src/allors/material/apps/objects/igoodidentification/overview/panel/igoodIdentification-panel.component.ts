@@ -1,4 +1,4 @@
-import { Component, Self, Input, OnInit } from '@angular/core';
+import { Component, Self, Input, OnInit, HostBinding } from '@angular/core';
 
 import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
 import { IGoodIdentification } from '../../../../../../domain';
@@ -22,6 +22,10 @@ interface Row extends TableRow {
 })
 export class IGoodIdentificationsPanelComponent implements OnInit {
   @Input() roleType: RoleType;
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
 
   m: Meta;
 

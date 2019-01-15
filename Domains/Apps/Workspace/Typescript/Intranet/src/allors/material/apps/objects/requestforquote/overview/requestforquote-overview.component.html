@@ -8,20 +8,20 @@
     </div>
   </div>
 
-  <div class="a-overview2 container">
+  <div class="a-overview container">
 
-    <div class="row">
+    <div class="a-content row">
 
       <div class="col-md-4 mb-3">
         <requestforquote-overview-summary></requestforquote-overview-summary>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
         <requestforquote-overview-detail></requestforquote-overview-detail>
 
         <requestitem-overview-panel></requestitem-overview-panel>
       </div>
-      
+
     </div>
   </div>
 </div>

@@ -54,64 +54,52 @@ mat-sidenav-content > div {
             display: flex;
             flex-direction: column;
             align-items: stretch;
-          }
-        }
-      }
 
-      > .a-overview2 {
-        flex-grow: 1;
-        padding-top: 2rem;
-      }
-
-
-      > .a-overview {
-        flex-grow: 1;
-        overflow: auto;
-        > div {
-          > div {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-
-            mat-card {
-              flex-grow: 1;
-              display: flex;
-              flex-direction: column;
-              align-items: stretch;
-              margin-bottom: 1rem;
-              > div {
-                flex: 0 0 auto;
-                margin-bottom: 0.3rem;
-                mat-icon {
-                  vertical-align: text-bottom;
-                  margin-right: 0.5rem;
-                }
-                mat-button-toggle-group {
-                  mat-button-toggle {
-                    margin: -0.3rem;
-                  }
-                }
-              }
-              > mat-card-content {
-                flex-grow: 1;
-                overflow: auto;
-                > div {
-                  padding-top: 1rem;
-                }
-                > mat-list {
-                  padding-top: 0;
-                  max-height: 40rem;
-                }
-              }
-              > mat-card-actions {
-                flex: 0 0 auto;
-              }
+            a-mat-table {
+              flex: 1 1 0;
             }
           }
         }
       }
+
+      > .a-overview {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 2rem;
+
+        > .a-content {
+          flex-grow: 1;
+
+          .expanded-panel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+
+            .expanded-panel {
+              background-color: blue;
+              flex: 1 1 0;
+              display: flex;
+              flex-direction: column;
+              align-items: stretch;
+  
+              > div {
+                flex: 1 1 0;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+
+                a-mat-table {
+                  flex: 1 1 0;
+                }
+              }
+ 
+            }
+          }
+
+         }
+       }
 
       > .a-edit {
         flex-grow: 1;
@@ -148,6 +136,7 @@ mat-sidenav-content > div {
 .a-search {
   border-top: 1px solid #e0e0e0;
 }
+
 table {
   width: 100%;
 }

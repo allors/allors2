@@ -1,4 +1,4 @@
-import { Component, Self, OnInit } from '@angular/core';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
 import { WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
@@ -21,6 +21,10 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class WorkTaskOverviewPanelComponent implements OnInit {
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
 
   m: Meta;
 

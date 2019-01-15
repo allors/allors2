@@ -8,16 +8,16 @@
     </div>
   </div>
 
-  <div class="a-overview2 container">
+  <div class="a-overview container">
 
-    <div class="row">
+    <div class="a-content row">
 
       <div class="col-md-4 mb-3">
         <person-overview-summary></person-overview-summary>
       </div>
 
-      <div class="col-md-8">
-
+      <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
+        
         <person-overview-detail></person-overview-detail>
 
         <communicationevent-overview-panel></communicationevent-overview-panel>
