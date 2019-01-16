@@ -15,6 +15,8 @@ export abstract class BaseTable {
   selection: SelectionModel<TableRow>;
   actions: Action[];
   defaultAction: Action;
+  pageSize: number;
+  pageSizeOptions: number[];
 
   sort$: BehaviorSubject<Sort>;
   pager$: BehaviorSubject<PageEvent>;

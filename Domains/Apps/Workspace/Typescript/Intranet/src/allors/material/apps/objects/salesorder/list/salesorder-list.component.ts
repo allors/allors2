@@ -70,6 +70,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
         this.delete
       ],
       defaultAction: overviewService.overview(),
+      pageSize: 50,
     });
   }
 

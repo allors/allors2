@@ -1,3 +1,6 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
 mat-sidenav-content > div {
   height: 100vh;
   min-height: 100vh;
@@ -68,36 +71,36 @@ mat-sidenav-content > div {
         flex-direction: column;
         align-items: stretch;
         padding-top: 2rem;
+        
+        @include media-breakpoint-up(md) 
+        {
+          > .a-content {
+            flex-grow: 1;
 
-        > .a-content {
-          flex-grow: 1;
-
-          .expanded-panel-container {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-
-            .expanded-panel {
-              background-color: blue;
-              flex: 1 1 0;
+            .expanded-panel-container {
               display: flex;
               flex-direction: column;
               align-items: stretch;
-  
-              > div {
-                flex: 1 1 0;
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
 
-                a-mat-table {
-                  flex: 1 1 0;
+              .expanded-panel {
+                flex: 1 1 0;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: stretch;
+      
+                  > div {
+                    flex: 1 1 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
+
+                    a-mat-table {
+                      flex: 1 1 0;
+                    }
+                  }
                 }
               }
- 
             }
-          }
-
          }
        }
 

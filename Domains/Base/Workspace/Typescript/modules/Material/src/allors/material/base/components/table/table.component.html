@@ -36,4 +36,4 @@
   </table>
 </div>
 
-<mat-paginator [length]="table?.total" [pageSize]="50" [pageSizeOptions]="[50, 100, 500]" (page)="table.page($event)"></mat-paginator>
+<mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions" (page)="table.page($event)"></mat-paginator>

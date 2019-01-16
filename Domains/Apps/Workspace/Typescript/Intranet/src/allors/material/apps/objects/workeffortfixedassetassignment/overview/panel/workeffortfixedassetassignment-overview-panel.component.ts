@@ -79,7 +79,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit,
+      defaultAction: this.edit
     });
 
     const serialisedItempullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_serialisedItem`;

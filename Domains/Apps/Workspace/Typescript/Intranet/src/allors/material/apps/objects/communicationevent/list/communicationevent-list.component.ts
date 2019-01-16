@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table,  DeleteService, EditService } from '../../../..';
+import { Sorter, TableRow, Table, DeleteService, EditService } from '../../../..';
 
 import { CommunicationEvent } from '../../../../../domain';
 
@@ -73,6 +73,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
         this.delete
       ],
       defaultAction: this.edit,
+      pageSize: 50,
     });
   }
 
@@ -94,7 +95,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     );
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
-    .pipe(
+      .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
             refresh,

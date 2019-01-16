@@ -79,7 +79,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit,
+      defaultAction: this.edit
     });
 
     const partypullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_party`;

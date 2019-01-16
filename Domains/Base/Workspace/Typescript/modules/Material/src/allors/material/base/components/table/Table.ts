@@ -39,6 +39,17 @@ export class Table<Row extends TableRow> extends BaseTable {
           sort.direction = initialSort.direction;
         }
       }
+
+      this.pageSize = config.pageSize;
+      this.pageSizeOptions = config.pageSizeOptions;
+
+      if (!this.pageSize && !!this.pageSizeOptions && this.pageSizeOptions.length > 0) {
+        this.pageSize = this.pageSizeOptions[0];
+      }
+
+      if (!!this.pageSize && !this.pageSizeOptions) {
+        this.pageSizeOptions = [this.pageSize, this.pageSize * 2, this.pageSize * 5];
+      }
     }
 
     this.dataSource = new MatTableDataSource();

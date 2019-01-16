@@ -1,4 +1,4 @@
-import { Component, Self } from '@angular/core';
+import { Component, Self, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
 import { RequestItem as SalesOrderItem, SalesInvoiceItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
@@ -21,6 +21,11 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SalesInvoiceItemOverviewPanelComponent {
+
+  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+    return this.panel.isExpanded;
+  }
+
   m: Meta;
 
   salesInvoiceItems: SalesInvoiceItem[];
@@ -74,7 +79,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit,
+      defaultAction: this.edit
     });
 
     const pullName = `${panel.name}_${this.m.SalesInvoiceItem.name}`;

@@ -65,7 +65,8 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
         this.edit,
         this.delete
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      pageSize: 50,
     });
   }
 

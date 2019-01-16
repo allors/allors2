@@ -81,7 +81,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit,
+      defaultAction: this.edit
     });
 
     const pullName = `${this.panel.name}_${this.m.IGoodIdentification.name}`;

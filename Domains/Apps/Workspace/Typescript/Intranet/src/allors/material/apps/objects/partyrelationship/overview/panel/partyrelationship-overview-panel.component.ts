@@ -80,7 +80,7 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit,
+      defaultAction: this.edit
     });
 
     const pullName = `${this.panel.name}_${this.m.PartyRelationship.name}`;
