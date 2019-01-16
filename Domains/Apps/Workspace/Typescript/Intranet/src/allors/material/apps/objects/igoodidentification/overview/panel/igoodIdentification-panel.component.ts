@@ -71,17 +71,19 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'type' },
-        { name: 'identification' },
+        { name: 'type', sort },
+        { name: 'identification', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${this.panel.name}_${this.m.IGoodIdentification.name}`;

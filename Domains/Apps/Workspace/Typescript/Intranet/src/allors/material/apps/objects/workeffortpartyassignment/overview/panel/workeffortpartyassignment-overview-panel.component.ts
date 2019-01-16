@@ -65,21 +65,23 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
-        { name: 'name' },
-        { name: 'status' },
-        { name: 'party' },
-        { name: 'from' },
-        { name: 'through' },
+        { name: 'number', sort },
+        { name: 'name', sort },
+        { name: 'status', sort },
+        { name: 'party', sort },
+        { name: 'from', sort },
+        { name: 'through', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const partypullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_party`;

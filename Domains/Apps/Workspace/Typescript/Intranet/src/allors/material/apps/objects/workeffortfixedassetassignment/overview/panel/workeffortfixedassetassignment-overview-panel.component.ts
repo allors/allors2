@@ -65,21 +65,23 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
-        { name: 'name' },
-        { name: 'status' },
-        { name: 'asset' },
-        { name: 'from' },
-        { name: 'through' },
+        { name: 'number', sort },
+        { name: 'name', sort },
+        { name: 'status', sort },
+        { name: 'asset', sort },
+        { name: 'from', sort },
+        { name: 'through', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const serialisedItempullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_serialisedItem`;

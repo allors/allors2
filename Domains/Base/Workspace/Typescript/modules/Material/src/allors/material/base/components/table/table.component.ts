@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, OnInit } from '@angular/core';
 
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { TableRow } from './TableRow';
+import { MatSort } from '@angular/material';
+import { Table } from './Table';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,12 +12,19 @@ import { TableRow } from './TableRow';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class AllorsMaterialTableComponent {
+export class AllorsMaterialTableComponent implements OnInit {
+
   @Input()
   public table: BaseTable;
 
+  @ViewChild(MatSort) matSort: MatSort;
+
+  ngOnInit(): void {
+    this.table.Init(this.matSort);
+  }
+
   cellStyle(row: TableRow, column: Column): string {
-    return  this.action(row, column) ? 'pointer' : undefined;
+    return this.action(row, column) ? 'pointer' : undefined;
   }
 
   onCellClick(row: TableRow, column: Column) {

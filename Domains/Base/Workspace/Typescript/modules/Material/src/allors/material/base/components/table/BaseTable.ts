@@ -9,7 +9,6 @@ import { TableRow } from './TableRow';
 import { ISessionObject } from 'src/allors/framework';
 
 export abstract class BaseTable {
-
   columns: Column[];
   dataSource: MatTableDataSource<TableRow>;
   selection: SelectionModel<TableRow>;
@@ -57,6 +56,8 @@ export abstract class BaseTable {
   get selected(): ISessionObject[] {
     return this.selection.selected.map((v => v.object));
   }
+
+  abstract Init(matSort: any);
 
   masterToggle() {
     this.allSelected ?

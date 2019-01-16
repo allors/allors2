@@ -69,17 +69,19 @@ export class SalesTermOverviewPanelComponent {
 
     this.delete = deleteService.delete(panel.manager.context);
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name' },
-        { name: 'value' },
+        { name: 'name', sort },
+        { name: 'value', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;

@@ -66,20 +66,22 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'supplier' },
-        { name: 'price' },
-        { name: 'uom' },
-        { name: 'from' },
-        { name: 'through' },
+        { name: 'supplier', sort },
+        { name: 'price', sort },
+        { name: 'uom', sort },
+        { name: 'from', sort },
+        { name: 'through', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${this.panel.name}_${this.m.SupplierOffering.name}`;

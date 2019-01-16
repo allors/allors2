@@ -5,7 +5,6 @@ import { Action } from '../../../../angular';
 import { Column } from './Column';
 
 export interface TableConfig {
-
     columns?: (Partial<Column> | string)[];
 
     selection?: boolean;
@@ -14,7 +13,9 @@ export interface TableConfig {
 
     defaultAction?: Action;
 
-    sort?: Partial<Sort>;
+    autoSort?: boolean;
+
+    initialSort?: Partial<Sort> | string;
 
     pageSize?: number;
 

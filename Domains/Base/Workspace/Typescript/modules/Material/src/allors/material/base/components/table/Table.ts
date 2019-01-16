@@ -1,4 +1,4 @@
-import { MatTableDataSource, Sort, PageEvent } from '@angular/material';
+import { MatTableDataSource, Sort, PageEvent, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs';
 
@@ -12,10 +12,12 @@ export class Table<Row extends TableRow> extends BaseTable {
   dataSource: MatTableDataSource<Row>;
   selection: SelectionModel<Row>;
 
+  private autoSort = false;
+
   constructor(config?: TableConfig) {
     super();
 
-    let sort: Sort;
+    let sort: Sort = null;
 
     if (config) {
 
@@ -26,17 +28,17 @@ export class Table<Row extends TableRow> extends BaseTable {
         this.selection = new SelectionModel<Row>(true, []);
       }
 
-      const column = this.columns && this.columns.find(v => v.sort);
-      sort = column && { active: column.name, direction: 'asc' };
-
-      const initialSort = config.sort;
-      if (sort && initialSort) {
-        if (initialSort.active) {
-          sort.active = initialSort.active;
-        }
-
-        if (initialSort.direction) {
-          sort.direction = initialSort.direction;
+      if (config.initialSort) {
+        if (typeof config.initialSort === 'string') {
+          sort = {
+            active: config.initialSort,
+            direction: 'asc'
+          };
+        } else {
+          sort = {
+            active: config.initialSort.active,
+            direction: config.initialSort.direction || 'asc'
+          };
         }
       }
 
@@ -50,6 +52,8 @@ export class Table<Row extends TableRow> extends BaseTable {
       if (!!this.pageSize && !this.pageSizeOptions) {
         this.pageSizeOptions = [this.pageSize, this.pageSize * 2, this.pageSize * 5];
       }
+
+      this.autoSort = config.autoSort;
     }
 
     this.dataSource = new MatTableDataSource();
@@ -65,5 +69,11 @@ export class Table<Row extends TableRow> extends BaseTable {
 
   set data(value: Row[]) {
     this.dataSource.data = value;
+  }
+
+  Init(sort: MatSort) {
+    if (this.autoSort) {
+      this.dataSource.sort = sort;
+    }
   }
 }

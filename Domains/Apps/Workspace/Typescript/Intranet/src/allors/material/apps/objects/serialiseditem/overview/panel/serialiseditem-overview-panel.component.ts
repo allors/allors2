@@ -63,13 +63,14 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
-        { name: 'name' },
-        { name: 'status' },
-        { name: 'ownership' },
+        { name: 'number', sort },
+        { name: 'name', sort },
+        { name: 'status', sort },
+        { name: 'ownership', sort },
       ],
       actions: [
         {
@@ -90,6 +91,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.overviewService.overview(),
+      autoSort: true
     });
 
     const partSerialisedItemsName = `${this.panel.name}_${this.m.SerialisedItem.name}`;

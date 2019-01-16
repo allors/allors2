@@ -68,20 +68,22 @@ export class PriceComponentOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
         { name: 'type' },
-        { name: 'price', sort: true },
-        { name: 'from', sort: true },
-        { name: 'through', sort: true },
-        { name: 'lastModifiedDate', sort: true },
+        { name: 'price', sort },
+        { name: 'from', sort },
+        { name: 'through', sort },
+        { name: 'lastModifiedDate' },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const sorter = new Sorter(

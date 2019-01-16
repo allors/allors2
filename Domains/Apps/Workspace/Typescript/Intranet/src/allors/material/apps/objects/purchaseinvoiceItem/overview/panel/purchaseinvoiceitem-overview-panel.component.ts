@@ -69,17 +69,19 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
 
     this.delete = deleteService.delete(panel.manager.context);
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'item' },
-        { name: 'quantity' },
+        { name: 'item', sort },
+        { name: 'quantity', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${panel.name}_${this.m.PurchaseInvoiceItem.name}`;

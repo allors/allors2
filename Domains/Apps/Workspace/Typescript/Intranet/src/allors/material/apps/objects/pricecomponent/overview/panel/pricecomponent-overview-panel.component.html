@@ -25,22 +25,16 @@
     </div>
   </div>
 
-  <div class="container-fluid">
-    <div class="row mt-2">
-      <div class="col">
-      </div>
-      <div>
-        <mat-button-toggle-group appearance="legacy" [(ngModel)]="priceComponentsCollection" (valueChange)="refreshTable()">
-          <mat-button-toggle value="Current">Current</mat-button-toggle>
-          <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
-          <mat-button-toggle value="All">All</mat-button-toggle>
-        </mat-button-toggle-group>
-      </div>
-    </div>
-  </div>
-
   <a-mat-factory-fab [objectType]="metaService.m.PriceComponent" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
   <a-mat-table [table]="table"></a-mat-table>
+
+  <div>
+    <mat-button-toggle-group appearance="legacy" [(ngModel)]="priceComponentsCollection" (valueChange)="refreshTable()">
+      <mat-button-toggle value="Current">Current</mat-button-toggle>
+      <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
+      <mat-button-toggle value="All">All</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
 </div>

@@ -72,18 +72,20 @@ export class QuoteItemOverviewPanelComponent {
 
     this.delete = deleteService.delete(panel.manager.context);
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'item' },
-        { name: 'quantity' },
-        'lastModifiedDate'
+        { name: 'item', sort },
+        { name: 'quantity', sort},
+        { name: 'lastModifiedDate', sort},
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${panel.name}_${this.m.QuoteItem.name}`;

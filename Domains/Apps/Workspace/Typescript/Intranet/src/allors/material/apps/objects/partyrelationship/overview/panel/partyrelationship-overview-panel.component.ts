@@ -68,19 +68,21 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'type' },
-        { name: 'parties' },
-        { name: 'from' },
-        { name: 'through' },
+        { name: 'type', sort },
+        { name: 'parties', sort },
+        { name: 'from', sort },
+        { name: 'through', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${this.panel.name}_${this.m.PartyRelationship.name}`;

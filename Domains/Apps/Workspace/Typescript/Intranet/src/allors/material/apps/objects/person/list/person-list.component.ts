@@ -69,6 +69,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'name'
     });
   }
 

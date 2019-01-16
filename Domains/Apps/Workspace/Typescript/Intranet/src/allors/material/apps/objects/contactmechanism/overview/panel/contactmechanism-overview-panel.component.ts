@@ -61,17 +61,19 @@ export class ContactMechanismOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'contact' },
-        { name: 'lastModifiedDate' },
+        { name: 'contact', sort },
+        { name: 'lastModifiedDate', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${this.panel.name}_${this.m.PartyContactMechanism.name}`;

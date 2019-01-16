@@ -61,20 +61,22 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
-        { name: 'name' },
-        { name: 'status' },
-        { name: 'customer' },
-        'lastModifiedDate'
+        { name: 'number', sort },
+        { name: 'name', sort },
+        { name: 'status', sort },
+        { name: 'customer', sort },
+        { name: 'lastModifiedDate', sort },
       ],
       actions: [
         this.overviewService.overview(),
         this.delete,
       ],
       defaultAction: this.overviewService.overview(),
+      autoSort: true
     });
 
     const customerPullName = `${this.panel.name}_${this.m.WorkEffort.name}_customer`;

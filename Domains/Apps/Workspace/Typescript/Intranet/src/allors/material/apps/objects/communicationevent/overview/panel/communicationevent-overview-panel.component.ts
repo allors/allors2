@@ -66,20 +66,22 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
     this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'type' },
-        { name: 'description' },
-        { name: 'involved' },
-        { name: 'status' },
-        { name: 'purpose' },
+        { name: 'type', sort },
+        { name: 'description', sort },
+        { name: 'involved', sort },
+        { name: 'status', sort },
+        { name: 'purpose', sort },
       ],
       actions: [
         this.edit,
         this.delete,
       ],
-      defaultAction: this.edit
+      defaultAction: this.edit,
+      autoSort: true
     });
 
     const pullName = `${this.panel.name}_${this.m.CommunicationEvent.name}`;

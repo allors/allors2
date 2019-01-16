@@ -1,6 +1,5 @@
 <div>
-  <table mat-table matSort [matSortActive]="table.sortValue?.active" [matSortDirection]="table.sortValue?.direction"
-    (matSortChange)="table.sort($event)" [dataSource]="table.dataSource">
+  <table mat-table matSort [dataSource]="table.dataSource" [matSortActive]="table.sortValue?.active" [matSortDirection]="table.sortValue?.direction" (matSortChange)="table.sort($event)">
 
     <ng-container *ngIf="table.selection" matColumnDef="select" sticky>
       <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()" style="width: 4rem">
