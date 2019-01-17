@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -13,7 +13,7 @@ import { StateService } from '../../../services/state';
   templateUrl: './requestforquote-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class RequestForQuoteOverviewComponent implements OnInit, OnDestroy {
+export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Request For Quote';
 
@@ -37,11 +37,11 @@ export class RequestForQuoteOverviewComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const { m, pull, x } = this.metaService;
 
@@ -49,6 +49,8 @@ export class RequestForQuoteOverviewComponent implements OnInit, OnDestroy {
           this.panelManager.id = navRoute.id();
           this.panelManager.objectType = m.RequestForQuote;
           this.panelManager.expanded = navRoute.panel();
+
+          this.panelManager.on();
 
           const pulls = [
             pull.RequestForQuote(

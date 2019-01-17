@@ -16,6 +16,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 
+import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 
@@ -31,6 +32,7 @@ export { RequestForQuoteCreateComponent } from './requestforquote-create.compone
     RequestForQuoteCreateComponent,
   ],
   imports: [
+    PartyInlineModule,
     PersonInlineModule,
     ContactMechanismInlineModule,
 

@@ -1,18 +1,15 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, RequestForQuote, Currency, ContactMechanism, Person, Party, Quote, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
+import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
+import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
-import { load } from '@angular/core/src/render3';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -22,31 +19,33 @@ import { load } from '@angular/core/src/render3';
 })
 export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public requestForQuote: RequestForQuote;
+  public request: RequestForQuote;
   public quote: Quote;
   public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
-  public contacts: Person[];
+  public contactMechanisms: ContactMechanism[] = [];
+  public contacts: Person[] = [];
   public scope: ContextService;
 
   public addContactPerson = false;
   public addContactMechanism = false;
+  public addOriginator = false;
+  private previousOriginator: Party;
 
   private fetcher: Fetcher;
   private subscription: Subscription;
+  private refresh$: BehaviorSubject<Date>;
+  internalOrganisation: Organisation;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
@@ -56,14 +55,13 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     panel.icon = 'business';
     panel.expandable = true;
 
-    // Normal
+    // Collapsed
     const requestForQuotePullName = `${panel.name}_${this.m.RequestForQuote.name}`;
     const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
-        const id = this.panel.manager.id;
 
         pulls.push(
           pull.RequestForQuote(
@@ -102,7 +100,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.requestForQuote = loaded.objects[requestForQuotePullName] as RequestForQuote;
+        this.request = loaded.objects[requestForQuotePullName] as RequestForQuote;
         this.quote = loaded.objects.Quote as Quote;
       }
     };
@@ -111,14 +109,14 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = this.panel.manager.on$
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([urlSegments, date, , internalOrganisationId]) => {
+        switchMap(() => {
 
-          this.requestForQuote = undefined;
+          this.request = undefined;
 
           const { m, pull, x } = this.metaService;
           const id = this.panel.manager.id;
@@ -151,9 +149,14 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.requestForQuote = loaded.objects.RequestForQuote as RequestForQuote;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.request = loaded.objects.RequestForQuote as RequestForQuote;
         this.currencies = loaded.collections.Currencies as Currency[];
 
+        if (this.request.Originator) {
+          this.previousOriginator = this.request.Originator;
+          this.updateOriginator(this.request.Originator);
+        }
       }, this.errorService.handler);
   }
 
@@ -163,16 +166,25 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     }
   }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
   public save(): void {
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.panel.toggle();
+    this.allors.context.save()
+      .subscribe(() => {
+        this.location.back();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public originatorSelected(party: Party) {
+    if (party) {
+      this.updateOriginator(party);
+    }
   }
 
   public partyContactMechanismCancelled() {
@@ -183,25 +195,81 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.requestForQuote.Originator.AddPartyContactMechanism(partyContactMechanism);
-    this.requestForQuote.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
+    this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.request.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public personCancelled(): void {
     this.addContactPerson = false;
   }
 
-  public personAdded(id: string): void {
+  public personAdded(person: Person): void {
 
     this.addContactPerson = false;
 
-    const contact: Person = this.allors.context.get(id) as Person;
-
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.requestForQuote.Originator as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Organisation = this.request.Originator as Organisation;
+    organisationContactRelationship.Contact = person;
 
-    this.contacts.push(contact);
-    this.requestForQuote.ContactPerson = contact;
+    this.contacts.push(person);
+    this.request.ContactPerson = person;
+  }
+
+  public originatorCancelled(): void {
+    this.addOriginator = false;
+  }
+
+  public originatorAdded(party: Party): void {
+
+    this.addOriginator = false;
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.request.Originator = party;
+  }
+
+  private updateOriginator(party: Party) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x
+                }
+              }
+            }
+          }
+        },
+      }),
+      pull.Party({
+        object: party.id,
+        fetch: {
+          CurrentContacts: x
+        }
+      })
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        if (this.request.Originator !== this.previousOriginator) {
+          this.request.FullfillContactMechanism = null;
+          this.request.ContactPerson = null;
+          this.previousOriginator = this.request.Originator;
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.CurrentContacts as Person[];
+      }, this.errorService.handler);
   }
 }

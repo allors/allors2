@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -40,7 +40,7 @@ export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const { m, pull } = this.metaService;
 

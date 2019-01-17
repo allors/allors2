@@ -6,14 +6,8 @@
     </div>
     <mat-card-title>{{requestForQuote.RequestNumber}}</mat-card-title>
     <mat-card-subtitle>
-       <div>
-        {{requestForQuote.RequestState?.Name}}
-      </div>
-
-      <div *ngIf="requestForQuote.ContactPerson">
-        {{requestForQuote.ContactPerson.displayName}}
-      </div>
-
+       <div>{{requestForQuote.RequestState?.Name}}</div>
+       <div>{{requestForQuote.Description}}</div>
     </mat-card-subtitle>
 
     <mat-card-subtitle>
@@ -21,4 +15,25 @@
     </mat-card-subtitle>
 
   </mat-card-header>
+  <mat-card-content>
+
+    <div *ngIf="requestForQuote.Originator" (click)="navigation.overview(requestForQuote.Originator)" style="cursor: pointer;">
+      <div style="color: grey">
+        Requested by
+      </div>
+      <div>
+        {{requestForQuote.Originator?.displayName}}
+      </div>
+    </div>
+
+    <div *ngIf="requestForQuote.ContactPerson" (click)="navigation.overview(requestForQuote.ContactPerson)" style="cursor: pointer;">
+      <div style="color: grey">
+        ContactPerson
+      </div>
+      <div>
+        {{requestForQuote.ContactPerson?.displayName}}
+      </div>
+    </div>
+
+  </mat-card-content>
 </mat-card>

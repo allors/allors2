@@ -4,12 +4,12 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure, Request } from '../../../../../domain';
-import { PullRequest, Sort, Equals, Pull } from '../../../../../framework';
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestItem, SerialisedInventoryItem, UnitOfMeasure, Request, Part, SerialisedItem } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
@@ -19,15 +19,16 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
-  public title: string;
+  title: string;
 
-  public request: Request;
-  public requestItem: RequestItem;
-  public goods: Good[];
-  public inventoryItems: InventoryItem[];
-  public serialisedInventoryItem: SerialisedInventoryItem;
-  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public unitsOfMeasure: UnitOfMeasure[];
+  request: Request;
+  requestItem: RequestItem;
+  goods: Good[];
+  unitsOfMeasure: UnitOfMeasure[];
+  part: Part;
+  serialisedItem: SerialisedItem;
+  serialisedItems: SerialisedItem[] = [];
+  private previousProduct;
 
   private subscription: Subscription;
 
@@ -98,15 +99,21 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           this.request.AddRequestItem(this.requestItem);
         } else {
           this.title = 'Edit Request Item';
-          this.refreshInventory(this.requestItem.Product);
+          this.previousProduct = this.requestItem.Product;
+          this.serialisedItem = this.requestItem.SerialisedItem;
+          this.refreshSerialisedItems(this.requestItem.Product);
         }
       }, this.errorService.handler);
   }
 
-  public goodSelected(object: any): void {
-    if (object) {
-      this.refreshInventory(object as Product);
+  public goodSelected(good: Product): void {
+    if (good) {
+      this.refreshSerialisedItems(good);
     }
+  }
+
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
   }
 
   public ngOnDestroy(): void {
@@ -119,7 +126,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.requestItem.id,
           objectType: this.requestItem.objectType,
@@ -132,30 +139,35 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  private refreshInventory(product: Product): void {
+  private refreshSerialisedItems(good: Product): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Good({
-        object: product,
-        // TODO:
-        // fetch: {
-        //   InventoryItemsWhereGood
-        // }
+        object: good.id,
+        fetch: {
+          Part: {
+            include: {
+              SerialisedItems: x
+            }
+          }
+        }
       })
     ];
 
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.inventoryItems = loaded.collections.InventoryItem as InventoryItem[];
-        if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-          this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+        this.part = loaded.objects.Part as Part;
+        this.serialisedItems = this.part.SerialisedItems;
+
+        if (this.requestItem.Product !== this.previousProduct) {
+          this.requestItem.SerialisedItem = null;
+          this.serialisedItem = null;
+          this.previousProduct = this.requestItem.Product;
         }
-        if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-          this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-        }
+
       }, this.errorService.handler);
   }
 }

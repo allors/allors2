@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../../base/components/role/autocomplete';
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
@@ -18,6 +19,7 @@ import { PartyContactMechanismOverviewPanelModule } from '../../../partycontactm
 import { SerialisedItemOverviewPanelModule } from '../../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
+import { PartyInlineModule } from '../../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../../contactmechanism/inline/contactmechanism-inline.module';
 
@@ -32,6 +34,7 @@ export { RequestForQuoteOverviewDetailComponent } from './requestforquote-overvi
     RequestForQuoteOverviewDetailComponent,
   ],
   imports: [
+    PartyInlineModule,
     PersonInlineModule,
     ContactMechanismInlineModule,
 
@@ -40,6 +43,7 @@ export { RequestForQuoteOverviewDetailComponent } from './requestforquote-overvi
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
 
+    AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,

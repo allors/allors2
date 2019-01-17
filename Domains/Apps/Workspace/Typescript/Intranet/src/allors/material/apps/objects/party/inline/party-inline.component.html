@@ -1,0 +1,16 @@
+<div class="row">
+  <mat-tab-group class="col" dynamicHeight="true">
+    <mat-tab label="Person">
+      <div class="pt-3">
+        <person-inline (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </person-inline>
+      </div>
+    </mat-tab>
+    <mat-tab label="Organisation">
+      <div class="pt-3">
+        <organisation-inline (cancelled)="cancelled.emit($event)" (saved)="saved.emit($event)">
+        </organisation-inline>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

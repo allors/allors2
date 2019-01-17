@@ -43,7 +43,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
 
     this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
-        this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.webAddress = this.allors.context.create('WebAddress') as WebAddress;
         this.partyContactMechanism.ContactMechanism = this.webAddress;

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';

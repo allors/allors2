@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
+import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -26,26 +26,29 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
   public request: RequestForQuote;
   public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
-  public contacts: Person[];
+  public contactMechanisms: ContactMechanism[] = [];
+  public contacts: Person[] = [];
   public scope: ContextService;
 
   public addContactPerson = false;
   public addContactMechanism = false;
+  public addOriginator = false;
+  private previousOriginator: Party;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   private fetcher: Fetcher;
+  internalOrganisation: Organisation;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<RequestForQuoteCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
     private errorService: ErrorService,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
@@ -72,12 +75,12 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.currencies = loaded.collections.Currencies as Currency[];
 
         this.request = this.allors.context.create('RequestForQuote') as RequestForQuote;
-        this.request.Recipient = internalOrganisation;
+        this.request.Recipient = this.internalOrganisation;
         this.request.RequestDate = new Date();
 
       }, this.errorService.handler);
@@ -105,6 +108,27 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         });
   }
 
+  public originatorSelected(party: Party) {
+    if (party) {
+      this.updateOriginator(party);
+    }
+  }
+
+  public originatorCancelled(): void {
+    this.addOriginator = false;
+  }
+
+  public originatorAdded(party: Party): void {
+
+    this.addOriginator = false;
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.request.Originator = party;
+  }
+
   public partyContactMechanismCancelled() {
     this.addContactMechanism = false;
   }
@@ -121,18 +145,58 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     this.addContactPerson = false;
   }
 
-  public personAdded(id: string): void {
+  public personAdded(person: Person): void {
 
     this.addContactPerson = false;
 
-    const contact: Person = this.allors.context.get(id) as Person;
-
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.request.Originator as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.contacts.push(contact);
-    this.request.ContactPerson = contact;
+    this.contacts.push(person);
+    this.request.ContactPerson = person;
   }
 
+  private updateOriginator(party: Party) {
+
+    const { pull, tree, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x
+                }
+              }
+            }
+          }
+        },
+      }),
+      pull.Party({
+        object: party.id,
+        fetch: {
+          CurrentContacts: x
+        }
+      })
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        if (this.request.Originator !== this.previousOriginator) {
+          this.request.FullfillContactMechanism = null;
+          this.request.ContactPerson = null;
+          this.previousOriginator = this.request.Originator;
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.CurrentContacts as Person[];
+      }, this.errorService.handler);
+  }
 }

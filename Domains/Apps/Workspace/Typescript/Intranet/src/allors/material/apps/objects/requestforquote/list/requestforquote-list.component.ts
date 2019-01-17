@@ -58,12 +58,12 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
+        { name: 'number', sort: true },
         { name: 'originator' },
         { name: 'state' },
-        { name: 'description' },
-        { name: 'responseRequired' },
-        'lastModifiedDate'
+        { name: 'description', sort: true },
+        { name: 'responseRequired', sort: true },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -88,6 +88,9 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
+        number: m.Request.RequestNumber,
+        description: m.Request.Description,
+        responseRequired: m.Request.RequiredResponseDate,
         lastModifiedDate: m.Request.LastModifiedDate,
       }
     );

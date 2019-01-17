@@ -8,8 +8,33 @@
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" label="Reply to" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactMechanism = !addContactMechanism">
+            <a-mat-autocomplete class="col-md" [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(allors.context)"
+            display="Name" (changed)="originatorSelected($event)" label="From"></a-mat-autocomplete>
+              <button mat-mini-fab color="accent" [disabled]="!request.CanWriteRequestItems"
+              type="button" (click)="addOriginator = !addOriginator">
+              <mat-icon *ngIf="!addOriginator">add</mat-icon>
+              <mat-icon *ngIf="addOriginator">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <mat-card *ngIf="addOriginator">
+            <mat-card-header>Add a new customer</mat-card-header>
+            <mat-card-content>
+              <party-party (saved)="originatorAdded($event)" (cancelled)="originatorCancelled()">
+              </party-party>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
+              display="displayName" label="Reply to" class="col-md"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button"
+              (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
@@ -29,8 +54,10 @@
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-select [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
+            <a-mat-select [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"
+              class="col-md"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button"
+              (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
@@ -51,7 +78,8 @@
         <a-mat-static class="col-md" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
         <div class="col-md">
           <div class="row">
-            <a-mat-static class="col-md" *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
+            <a-mat-static class="col-md" *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
+              label="Country code"></a-mat-static>
             <a-mat-static class="col-md" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
           </div>
         </div>

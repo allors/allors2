@@ -44,14 +44,40 @@ namespace Allors.Domain
 
         public static void DeriveInitialObjectState(this Request @this)
         {
+            var session = @this.Strategy.Session;
             if (!@this.ExistRequestState && !@this.ExistOriginator)
             {
-                @this.RequestState = new RequestStates(@this.Strategy.Session).Anonymous;
+                @this.RequestState = new RequestStates(session).Anonymous;
             }
 
             if (!@this.ExistRequestState && @this.ExistOriginator)
             {
-                @this.RequestState = new RequestStates(@this.Strategy.Session).Submitted;
+                @this.RequestState = new RequestStates(session).Submitted;
+            }
+
+            if (@this.ExistRequestState && @this.RequestState.Equals(new RequestStates(session).Anonymous) && @this.ExistOriginator)
+            {
+                @this.RequestState = new RequestStates(session).Submitted;
+
+                if (@this.ExistEmailAddress 
+                    && @this.Originator.PartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(EmailAddress).Name).FirstOrDefault(v => ((EmailAddress)v.ContactMechanism).ElectronicAddressString.Equals(@this.EmailAddress)) == null)
+                {
+                    @this.Originator.AddPartyContactMechanism(
+                        new PartyContactMechanismBuilder(session)
+                        .WithContactMechanism(new EmailAddressBuilder(session).WithElectronicAddressString(@this.EmailAddress).Build())
+                        .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
+                        .Build());
+                }
+
+                if (@this.ExistTelephoneNumber 
+                    && @this.Originator.PartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(TelecommunicationsNumber).Name).FirstOrDefault(v => ((TelecommunicationsNumber)v.ContactMechanism).ContactNumber.Equals(@this.TelephoneNumber)) == null)
+                {
+                    @this.Originator.AddPartyContactMechanism(
+                        new PartyContactMechanismBuilder(session)
+                            .WithContactMechanism(new TelecommunicationsNumberBuilder(session).WithContactNumber(@this.TelephoneNumber).WithCountryCode(@this.TelephoneCountryCode).Build())
+                            .WithContactPurpose(new ContactMechanismPurposes(session).GeneralPhoneNumber)
+                            .Build());
+                }
             }
         }
 

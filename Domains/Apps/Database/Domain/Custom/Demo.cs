@@ -405,8 +405,9 @@ namespace Allors
 
                 var requestItem = new RequestItemBuilder(this.Session)
                     .WithSerialisedItem(serialisedItem)
+                    .WithProduct(serialisedItem.PartWhereSerialisedItem.GoodsWherePart.FirstOrDefault())
                     .WithComment($"Comment {i}")
-                    .WithQuantity(i)
+                    .WithQuantity(1)
                     .Build();
 
                 requestForQuote.AddRequestItem(requestItem);
@@ -419,8 +420,9 @@ namespace Allors
 
                 var quoteItem = new QuoteItemBuilder(this.Session)
                     .WithSerialisedItem(serialisedItem)
+                    .WithProduct(serialisedItem.PartWhereSerialisedItem.GoodsWherePart.FirstOrDefault())
                     .WithComment($"Comment {i}")
-                    .WithQuantity(i + 1)
+                    .WithQuantity(1)
                     .Build();
 
                 productQuote.AddQuoteItem(quoteItem);
