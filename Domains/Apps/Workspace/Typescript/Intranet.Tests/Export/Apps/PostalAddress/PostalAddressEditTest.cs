@@ -57,6 +57,7 @@ namespace Tests.Intranet.PostalAddressTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPostalAddress();
 
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
             page.Address1.Value = "addressline 1";
             page.Address2.Value = "addressline 2";
             page.Address3.Value = "addressline 3";

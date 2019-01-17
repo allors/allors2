@@ -50,6 +50,7 @@ namespace Tests.Intranet.ElectronicAddressTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewWebAddress();
 
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
             page.ElectronicAddressString.Value = "wwww.allors.com";
             page.Description.Value = "description";
 

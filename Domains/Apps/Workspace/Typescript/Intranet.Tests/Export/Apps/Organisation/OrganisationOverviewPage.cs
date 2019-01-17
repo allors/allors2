@@ -47,7 +47,7 @@ namespace Tests.Intranet.OrganisationTests
 
         public Button BtnOrganisationContactRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='OrganisationContactRelationship']"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor List => new Anchor(this.Driver, By.LinkText("Organisations"));
 
         public OrganisationEditPage Edit()
         {

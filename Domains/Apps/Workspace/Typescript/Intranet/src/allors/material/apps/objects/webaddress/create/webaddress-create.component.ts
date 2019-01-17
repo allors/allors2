@@ -26,6 +26,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   party: Party;
   partyContactMechanism: PartyContactMechanism;
+  contactMechanismPurposes: Enumeration[];
 
 
   constructor(
@@ -52,6 +53,10 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
             pull.Party({
               object: this.data.associationId,
             }),
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismPurpose.Name)
+            })
           ];
 
           return this.allors.context
@@ -63,6 +68,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.party = loaded.objects.Party as Party;
+        this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
 
         this.contactMechanism = this.allors.context.create('WebAddress') as ElectronicAddress;
 

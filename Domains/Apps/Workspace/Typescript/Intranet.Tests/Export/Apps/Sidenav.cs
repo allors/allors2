@@ -42,6 +42,8 @@ namespace Tests.Intranet
 
         public Anchor CommunicationEvents => this.Link(M.CommunicationEvent.ObjectType);
 
+        public Element PurchasingGroup => this.Group("Purchasing");
+
         public Element SalesGroup => this.Group("Sales");
 
         public Anchor RequestsForQuote => this.Link(M.RequestForQuote.ObjectType);
@@ -151,13 +153,13 @@ namespace Tests.Intranet
 
         public PurchaseInvoiceListPage NavigateToPurchaseInvoiceList()
         {
-            this.Navigate(this.AccountingGroup, this.PurchaseInvoices);
+            this.Navigate(this.PurchasingGroup, this.PurchaseInvoices);
             return new PurchaseInvoiceListPage(this.Driver);
         }
 
         public SalesInvoiceListPage NavigateToSalesInvoiceList()
         {
-            this.Navigate(this.AccountingGroup, this.SalesInvoices);
+            this.Navigate(this.SalesGroup, this.SalesInvoices);
             return new SalesInvoiceListPage(this.Driver);
         }
 

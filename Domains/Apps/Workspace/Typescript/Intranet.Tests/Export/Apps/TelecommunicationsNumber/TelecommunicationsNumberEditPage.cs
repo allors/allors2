@@ -14,6 +14,8 @@ namespace Tests.Intranet.TelecommunicationsNumberTests
         {
         }
 
+        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+
         public MaterialInput CountryCode => new MaterialInput(this.Driver, roleType: M.TelecommunicationsNumber.CountryCode);
 
         public MaterialInput AreaCode => new MaterialInput(this.Driver, roleType: M.TelecommunicationsNumber.AreaCode);

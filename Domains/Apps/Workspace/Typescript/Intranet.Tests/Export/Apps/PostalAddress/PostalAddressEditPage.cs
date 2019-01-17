@@ -14,6 +14,8 @@ namespace Tests.Intranet.PostalAddressTests
         {
         }
 
+        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+
         public MaterialInput Address1 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address1);
 
         public MaterialInput Address2 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address2);

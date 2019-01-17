@@ -14,6 +14,8 @@ namespace Tests.Intranet.ElectronicAddressTests
         {
         }
 
+        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+
         public MaterialInput ElectronicAddressString => new MaterialInput(this.Driver, roleType: M.ElectronicAddress.ElectronicAddressString);
 
         public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);

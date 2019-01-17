@@ -52,6 +52,7 @@ namespace Tests.Intranet.TelecommunicationsNumberTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewTelecommunicationsNumber();
 
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
             page.CountryCode.Value = "111";
             page.AreaCode.Value = "222";
             page.ContactNumber.Value = "333";
