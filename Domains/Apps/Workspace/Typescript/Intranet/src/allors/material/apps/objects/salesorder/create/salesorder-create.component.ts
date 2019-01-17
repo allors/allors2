@@ -98,7 +98,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     public stateService: StateService) {
 
     this.m = this.metaService.m;
-
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -294,7 +293,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const submitFn: () => void = () => {
       this.allors.context.invoke(this.order.Approve)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -330,7 +329,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const cancelFn: () => void = () => {
       this.allors.context.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -366,7 +365,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const rejectFn: () => void = () => {
       this.allors.context.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -402,7 +401,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const holdFn: () => void = () => {
       this.allors.context.invoke(this.order.Hold)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -438,7 +437,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const continueFn: () => void = () => {
       this.allors.context.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -474,7 +473,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const confirmFn: () => void = () => {
       this.allors.context.invoke(this.order.Confirm)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -510,7 +509,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     const finishFn: () => void = () => {
       this.allors.context.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -579,10 +578,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   public shipToEndCustomerSelected(party: Party) {
     this.updateShipToEndCustomer(party);
-  }
-
-  public refresh(): void {
-    this.refreshService.refresh();
   }
 
   public goBack(): void {

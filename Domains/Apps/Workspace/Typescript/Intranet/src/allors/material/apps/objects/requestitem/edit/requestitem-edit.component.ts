@@ -160,7 +160,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.part = loaded.objects.Part as Part;
-        this.serialisedItems = this.part.SerialisedItems;
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true );
 
         if (this.requestItem.Product !== this.previousProduct) {
           this.requestItem.SerialisedItem = null;

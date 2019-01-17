@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -53,7 +53,6 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private fetcher: Fetcher;
 
@@ -93,13 +92,12 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
+    public refreshService: RefreshService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
-
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -107,7 +105,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -329,7 +327,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     const sendFn: () => void = () => {
       this.allors.context.invoke(this.invoice.Send)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -365,7 +363,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     const cancelFn: () => void = () => {
       this.allors.context.invoke(this.invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -401,7 +399,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     const writeOffFn: () => void = () => {
       this.allors.context.invoke(this.invoice.WriteOff)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -437,7 +435,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     const reopenFn: () => void = () => {
       this.allors.context.invoke(this.invoice.Reopen)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -508,10 +506,6 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     if (party) {
       this.updateShipToEndCustomer(party);
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   private updateShipToCustomer(party: Party): void {

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InvoiceTermType, SalesOrder, SalesTerm } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -25,7 +25,6 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
   public salesTerm: SalesTerm;
   public invoiceTermTypes: InvoiceTermType[];
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
@@ -34,18 +33,18 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
+    public refreshService: RefreshService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$)
       .pipe(
         switchMap(([urlSegments, date]) => {
 
@@ -102,10 +101,6 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public goBack(): void {

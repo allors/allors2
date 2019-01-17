@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -34,7 +34,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
   public addContactPerson = false;
   public addContactMechanism = false;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private previousReceiver: Party;
   private fetcher: Fetcher;
@@ -52,13 +51,12 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
+    public refreshService: RefreshService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -66,7 +64,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
@@ -163,10 +161,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     if (party) {
       this.update(party);
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public goBack(): void {

@@ -207,16 +207,12 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         if (isNew) {
           this.router.navigate(['/salesOrder/' + this.order.id + '/item/' + this.orderItem.id]);
         } else {
-          this.refresh();
+          this.refreshService.refresh();
         }
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refreshService.refresh();
   }
 
   public goBack(): void {
@@ -227,7 +223,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
      const cancelFn: () => void = () => {
       this.allors.context.invoke(this.orderItem.Cancel)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
           (error: Error) => {
@@ -263,7 +259,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     const rejectFn: () => void = () => {
       this.allors.context.invoke(this.orderItem.Reject)
         .subscribe((invoked: Invoked) => {
-          this.refresh();
+          this.refreshService.refresh();
           this.snackBar.open('Successfully reejcted.', 'close', { duration: 5000 });
         },
           (error: Error) => {

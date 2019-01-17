@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask, Organisation } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -33,22 +33,19 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   public workEffortPartyAssignments: WorkEffortPartyAssignment[];
   public assignees: Person[] = [];
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
-    private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    public refreshService: RefreshService,
     private stateService: StateService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.m = this.metaService.m;
   }
 
@@ -56,7 +53,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -132,10 +129,6 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public goBack(): void {

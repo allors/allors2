@@ -49,7 +49,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   settings: Settings;
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
 
   constructor(
     @Self() public allors: ContextService,
@@ -63,7 +62,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject(new Date());
 
     panel.name = 'detail';
     panel.title = 'Part Details';
@@ -99,7 +97,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
@@ -290,7 +288,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refresh();
+        this.refreshService.refresh();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -340,10 +338,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
         });
       }
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   private newSupplierOffering(supplier: Organisation): SupplierOffering {

@@ -25,7 +25,7 @@ interface Row extends TableRow {
   templateUrl: './productquote-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
+export class ProductQuoteListComponent implements OnInit, OnDestroy {
 
   public title = 'Quotes';
 
@@ -62,12 +62,12 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
-        { name: 'originator' },
+        { name: 'number', sort: true },
+        { name: 'receiver' },
         { name: 'state' },
-        { name: 'description' },
-        { name: 'responseRequired' },
-        'lastModifiedDate'
+        { name: 'description', sort: true },
+        { name: 'responseRequired', sort: true },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -93,6 +93,9 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
+        number: m.Quote.QuoteNumber,
+        description: m.Quote.Description,
+        responseRequired: m.Quote.RequiredResponseDate,
         lastModifiedDate: m.Quote.LastModifiedDate,
       }
     );

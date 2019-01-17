@@ -39,7 +39,6 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
   parts: Part[];
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
@@ -110,10 +109,6 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public save(): void {

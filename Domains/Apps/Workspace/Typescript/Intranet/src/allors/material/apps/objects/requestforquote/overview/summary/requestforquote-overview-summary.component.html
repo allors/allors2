@@ -13,10 +13,9 @@
     <mat-card-subtitle>
       <div>last modified: {{ requestForQuote.LastModifiedDate | date}} by {{ requestForQuote.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
-
   </mat-card-header>
-  <mat-card-content>
 
+  <mat-card-content>
     <div *ngIf="requestForQuote.Originator" (click)="navigation.overview(requestForQuote.Originator)" style="cursor: pointer;">
       <div style="color: grey">
         Requested by
@@ -35,5 +34,23 @@
       </div>
     </div>
 
+    <div *ngIf="quote" (click)="navigation.overview(quote)" style="cursor: pointer;">
+      <div style="color: grey">
+        Quote
+      </div>
+      <div>
+        {{quote.QuoteNumber}}
+      </div>
+    </div>
   </mat-card-content>
+
+
+  <mat-card-actions>
+    <button *ngIf="requestForQuote.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+    <button *ngIf="requestForQuote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+    <button *ngIf="requestForQuote.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+    <button *ngIf="requestForQuote.CanExecuteHold" mat-button type="button" (click)="hold()">Hold</button>
+    <button *ngIf="requestForQuote.CanExecuteCreateQuote" mat-button type="button" (click)="createQuote()">Create Quote</button>
+  </mat-card-actions>
+
 </mat-card>

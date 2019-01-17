@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule} from '../../../..';
 
-import { ProductQuotesOverviewComponent } from './productquote-list.component';
-export { ProductQuotesOverviewComponent } from './productquote-list.component';
+import { ProductQuoteListComponent } from './productquote-list.component';
+export { ProductQuoteListComponent as ProductQuotesOverviewComponent } from './productquote-list.component';
 
 @NgModule({
   declarations: [
-    ProductQuotesOverviewComponent,
+    ProductQuoteListComponent,
   ],
   exports: [
-    ProductQuotesOverviewComponent,
+    ProductQuoteListComponent,
   ],
   imports: [
     CommonModule,

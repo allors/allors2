@@ -46,7 +46,6 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   unitsOfMeasure: UnitOfMeasure[];
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
   internalOrganisation: Organisation;
 
@@ -205,7 +204,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refresh();
+        this.refreshService.refresh();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -255,10 +254,6 @@ export class PartCreateComponent implements OnInit, OnDestroy {
         });
       }
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   private newSupplierOffering(supplier: Organisation): SupplierOffering {

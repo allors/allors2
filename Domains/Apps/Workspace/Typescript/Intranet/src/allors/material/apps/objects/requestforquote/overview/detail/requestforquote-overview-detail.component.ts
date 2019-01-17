@@ -35,7 +35,6 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
 
   private fetcher: Fetcher;
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
   internalOrganisation: Organisation;
 
   constructor(
@@ -164,10 +163,6 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public save(): void {
