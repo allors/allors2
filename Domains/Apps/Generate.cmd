@@ -7,8 +7,8 @@ rmdir /s /q .\Database\Domain\Generated >nul 2>&1
 rmdir /s /q .\Database\Diagrams\Generated >nul 2>&1
 rmdir /s /q .\Workspace\Typescript\Domain\src\allors\meta\generated >nul 2>&1
 rmdir /s /q .\Workspace\Typescript\Domain\src\allors\domain\generated >nul 2>&1
-rmdir /s /q .\Workspace\Typescript\Angular\src\allors\meta\generated >nul 2>&1
-rmdir /s /q .\Workspace\Typescript\Angular\src\allors\domain\generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Intranet\src\allors\meta\generated >nul 2>&1
+rmdir /s /q .\Workspace\Typescript\Intranet\src\allors\domain\generated >nul 2>&1
 
 @echo ==========
 @echo Repository
