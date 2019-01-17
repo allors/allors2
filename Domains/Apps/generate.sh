@@ -4,8 +4,8 @@ rm -rf Database/Meta/Generated
 rm -rf Database/Domain/Generated
 rm -rf Workspace/Typescript/Domain/src/allors/meta/generated
 rm -rf Workspace/Typescript/Domain/src/allors/domain/generated
-rm -rf Workspace/Typescript/Angular/src/allors/meta/generated
-rm -rf Workspace/Typescript/Angular/src/allors/domain/generated
+rm -rf Workspace/Typescript/Intranet/src/allors/meta/generated
+rm -rf Workspace/Typescript/Intranet/src/allors/domain/generated
 
 dotnet restore ../../platform/Repository/Repository.sln
 dotnet msbuild ../../platform/Repository/Repository.sln

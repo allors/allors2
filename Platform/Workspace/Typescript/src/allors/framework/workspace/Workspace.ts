@@ -72,7 +72,7 @@ export class Workspace implements IWorkspace {
                                 } else {
                                     Object.defineProperty(prototype, 'CanWrite' + roleTypeName, {
                                         get(this: SessionObject) {
-                                            return this.canRead(roleTypeName);
+                                            return this.canWrite(roleTypeName);
                                         },
                                     });
 
