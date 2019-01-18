@@ -20,4 +20,6 @@ export interface TableConfig {
     pageSize?: number;
 
     pageSizeOptions?: number[];
+
+    autoFilter?: boolean;
 }

@@ -91,7 +91,8 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.overviewService.overview(),
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const partSerialisedItemsName = `${this.panel.name}_${this.m.SerialisedItem.name}`;

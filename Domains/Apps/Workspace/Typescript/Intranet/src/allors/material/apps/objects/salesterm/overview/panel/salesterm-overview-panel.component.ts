@@ -76,7 +76,8 @@ export class SalesTermOverviewPanelComponent {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;

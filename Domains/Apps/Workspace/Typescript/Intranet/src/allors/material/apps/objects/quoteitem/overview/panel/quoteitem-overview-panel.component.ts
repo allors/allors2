@@ -81,7 +81,8 @@ export class QuoteItemOverviewPanelComponent {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const pullName = `${panel.name}_${this.m.QuoteItem.name}`;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatTableModule, MatCheckboxModule, MatMenuModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatTableModule, MatCheckboxModule, MatMenuModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatSortModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialTableComponent } from './table.component';
 export { AllorsMaterialTableComponent } from './table.component';
@@ -20,6 +20,7 @@ export { AllorsMaterialTableComponent } from './table.component';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
+    MatInputModule,
     MatMenuModule,
     MatPaginatorModule,
     MatSortModule,

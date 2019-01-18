@@ -83,7 +83,8 @@ export class PriceComponentOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const sorter = new Sorter(
