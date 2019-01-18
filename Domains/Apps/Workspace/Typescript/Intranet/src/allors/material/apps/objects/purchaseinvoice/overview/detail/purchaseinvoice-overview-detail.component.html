@@ -41,7 +41,7 @@
                 <mat-card>
                   <mat-card-header>Add a new person</mat-card-header>
                   <mat-card-content>
-                    <person-inline (cancelled)="billedFromContactPersonCancelled($event); addBilledFromContactPerson = false" (saved)="billedFromContactPersonAdded($event); addBilledFromContactPerson = false">
+                    <person-inline (cancelled)="addBilledFromContactPerson = false" (saved)="billedFromContactPersonAdded($event); addBilledFromContactPerson = false">
                     </person-inline>
                   </mat-card-content>
                 </mat-card>
@@ -67,7 +67,7 @@
                 <mat-card>
                   <mat-card-header>Add a new contact mechanism</mat-card-header>
                   <mat-card-content>
-                    <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()" label="Bill to End Customer ContactMechanism">
+                    <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="addBillToContactMechanism = false" label="Bill to End Customer ContactMechanism">
                     </party-contactmechanism>
                   </mat-card-content>
                 </mat-card>
@@ -86,7 +86,7 @@
                 <mat-card>
                   <mat-card-header>Add a new person</mat-card-header>
                   <mat-card-content>
-                    <person-inline (cancelled)="billToContactPersonCancelled($event); addBillToContactPerson = false" (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
+                    <person-inline (cancelled)="addBillToContactPerson = false" (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
                     </person-inline>
                   </mat-card-content>
                 </mat-card>
@@ -109,7 +109,7 @@
                 <mat-card>
                   <mat-card-header>Add a new contact mechanism</mat-card-header>
                   <mat-card-content>
-                    <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
+                    <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="addShipToEndCustomerAddress = false">
                     </party-contactmechanism-postaladdress>
                   </mat-card-content>
                 </mat-card>
@@ -130,7 +130,7 @@
                 <mat-card>
                   <mat-card-header>Add a new contact mechanism</mat-card-header>
                   <mat-card-content>
-                    <person-inline (cancelled)="shipToEndCustomerContactPersonCancelled($event); addshipToEndCustomerContactPerson = false" (saved)="shipToEndCustomerContactPersonAdded($event); addshipToEndCustomerContactPerson = false">
+                    <person-inline (cancelled)="addshipToEndCustomerContactPerson = false" (saved)="shipToEndCustomerContactPersonAdded($event); addshipToEndCustomerContactPerson = false">
                     </person-inline>
                   </mat-card-content>
                 </mat-card>

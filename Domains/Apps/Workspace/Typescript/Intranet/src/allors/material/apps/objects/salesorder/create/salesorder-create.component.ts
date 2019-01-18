@@ -168,13 +168,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
-  public billToContactPersonCancelled(): void {
-    this.addBillToContactPerson = false;
-  }
-
   public billToContactPersonAdded(id: string): void {
-
-    this.addBillToContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -186,13 +180,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.order.BillToContactPerson = contact;
   }
 
-  public billToEndCustomerContactPersonCancelled(): void {
-    this.addBillToEndCustomerContactPerson = false;
-  }
-
   public billToEndCustomerContactPersonAdded(id: string): void {
-
-    this.addBillToEndCustomerContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -204,13 +192,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.order.BillToEndCustomerContactPerson = contact;
   }
 
-  public shipToContactPersonCancelled(): void {
-    this.addShipToContactPerson = false;
-  }
-
   public shipToContactPersonAdded(id: string): void {
-
-    this.addShipToContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -222,13 +204,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.order.ShipToContactPerson = contact;
   }
 
-  public shipToEndCustomerContactPersonCancelled(): void {
-    this.addShipToEndCustomerContactPerson = false;
-  }
-
   public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    this.addShipToEndCustomerContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -240,48 +216,28 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.order.ShipToEndCustomerContactPerson = contact;
   }
 
-  public billToContactMechanismCancelled() {
-    this.addBillToContactMechanism = false;
-  }
-
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addBillToContactMechanism = false;
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public billToEndCustomerContactMechanismCancelled() {
-    this.addBillToEndCustomerContactMechanism = false;
-  }
-
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addBillToEndCustomerContactMechanism = false;
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.order.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public shipToAddressCancelled(): void {
-    this.addShipToAddress = false;
-  }
-
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addShipToAddress = false;
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public shipToEndCustomerAddressCancelled() {
-    this.addShipToEndCustomerAddress = false;
-  }
-
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addShipToEndCustomerAddress = false;
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);

@@ -3,7 +3,7 @@ import { Component, Self, Input, OnInit, HostBinding } from '@angular/core';
 import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
 import { IGoodIdentification } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../../../material';
+import { DeleteService, TableRow, Table, EditService } from '../../../../../../material';
 import { ObjectService, CreateData } from '../../../../../../material/base/services/object';
 import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
 import { Step } from 'src/allors/framework/database/data/Step';
@@ -33,14 +33,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
   table: Table<Row>;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -54,6 +47,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
     public metaService: MetaService,
     public objectService: ObjectService,
     public refreshService: RefreshService,
+    public editService: EditService,
     public deleteService: DeleteService,
   ) {
 
@@ -70,6 +64,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
     this.panel.expandable = true;
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({

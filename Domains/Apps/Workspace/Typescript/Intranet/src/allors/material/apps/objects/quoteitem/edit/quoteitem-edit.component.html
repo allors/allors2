@@ -3,38 +3,42 @@
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
-    <div mat-dialog-content >
 
-      <div *ngIf="!quoteItem.isNew" class="row">
-          <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status" class="col-md"></a-mat-static>
-      </div>
+    <div *ngIf="!quoteItem.isNew" class="row">
+      <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status" class="col-md"></a-mat-static>
+    </div>
 
-      <div class="row">
-        <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"
-          [filter]="stateService.goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
-      </div>
+    <div class="row">
+      <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name"
+        [filter]="stateService.goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
+    </div>
 
-      <div class="row">
-        <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity" class="col-md"></a-mat-input>
-        <a-mat-select [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"
-          class="col-md"></a-mat-select>
-        <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice" class="col-md"></a-mat-input>
-        <!-- <a-mat-static  [object]="serialisedInventoryItem" [roleType]="metaService.m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static> -->
-        <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice" class="col-md"></a-mat-static>
-      </div>
+    <div class="row">
+      <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.SerialisedItem" [options]="serialisedItems"
+      (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+      <a-mat-static [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
+    </div>
 
-      <div class="row">
-        <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true" class="col-md"></a-mat-datepicker>
-        <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate" class="col-md"></a-mat-datepicker>
-      </div>
+    <div class="row">
+      <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.Quantity" class="col-md"></a-mat-input>
+      <a-mat-select [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"
+        class="col-md"></a-mat-select>
+      <a-mat-input [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice" class="col-md"></a-mat-input>
+      <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice" class="col-md"></a-mat-static>
+    </div>
 
-      <div class="row">
-        <a-mat-static *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment" class="col-md"></a-mat-static>
-        <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Details" class="col-md-12"></a-mat-textarea>
-        <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment" class="col-md-12"></a-mat-textarea>
-        <a-mat-static *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment" class="col-md"></a-mat-static>
-        <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" class="col-md-12"></a-mat-textarea>
-      </div>
+    <div class="row">
+      <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true" class="col-md"></a-mat-datepicker>
+      <a-mat-datepicker [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate" class="col-md"></a-mat-datepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-static *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment" class="col-md"></a-mat-static>
+      <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Details" class="col-md-12"></a-mat-textarea>
+      <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment" class="col-md-12"></a-mat-textarea>
+      <a-mat-static *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"
+        class="col-md"></a-mat-static>
+      <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" class="col-md-12"></a-mat-textarea>
     </div>
   </div>
 

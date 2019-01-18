@@ -59,5 +59,10 @@ namespace Allors.Domain
         {
             @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
         }
+
+        public static void AppsCancel(this Quote @this, QuoteCancel method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Cancelled;
+        }
     }
 }

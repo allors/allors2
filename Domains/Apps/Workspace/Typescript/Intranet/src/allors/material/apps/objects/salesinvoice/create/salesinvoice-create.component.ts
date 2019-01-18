@@ -202,13 +202,8 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
-  public billToContactPersonCancelled(): void {
-    this.addBillToContactPerson = false;
-  }
 
   public billToContactPersonAdded(id: string): void {
-
-    this.addBillToContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -220,13 +215,8 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.BillToContactPerson = contact;
   }
 
-  public billToEndCustomerContactPersonCancelled(): void {
-    this.addBillToEndCustomerContactPerson = false;
-  }
 
   public billToEndCustomerContactPersonAdded(id: string): void {
-
-    this.addBillToEndCustomerContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -238,13 +228,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.BillToEndCustomerContactPerson = contact;
   }
 
-  public shipToContactPersonCancelled(): void {
-    this.addShipToContactPerson = false;
-  }
-
   public shipToContactPersonAdded(id: string): void {
-
-    this.addShipToContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -256,13 +240,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.ShipToContactPerson = contact;
   }
 
-  public shipToEndCustomerContactPersonCancelled(): void {
-    this.addShipToEndCustomerContactPerson = false;
-  }
-
   public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    this.addShipToEndCustomerContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -274,48 +252,29 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.ShipToEndCustomerContactPerson = contact;
   }
 
-  public billToContactMechanismCancelled() {
-    this.addBillToContactMechanism = false;
-  }
-
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addBillToContactMechanism = false;
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.BillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public billToEndCustomerContactMechanismCancelled() {
-    this.addBillToEndCustomerContactMechanism = false;
-  }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addBillToEndCustomerContactMechanism = false;
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public shipToAddressCancelled() {
-    this.addShipToAddress = false;
-  }
-
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addShipToAddress = false;
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public shipToEndCustomerAddressCancelled() {
-    this.addShipToEndCustomerAddress = false;
-  }
-
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addShipToEndCustomerAddress = false;
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);

@@ -138,10 +138,6 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
-  public billedFromContactPersonCancelled(): void {
-    this.addBilledFromContactPerson = false;
-  }
-
   public billedFromContactPersonAdded(id: string): void {
 
     this.addBilledFromContactPerson = false;
@@ -156,13 +152,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.BilledFromContactPerson = contact;
   }
 
-  public billToContactPersonCancelled(): void {
-    this.addBillToContactPerson = false;
-  }
-
   public billToContactPersonAdded(id: string): void {
-
-    this.addBillToContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -174,13 +164,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.BillToCustomerContactPerson = contact;
   }
 
-  public shipToEndCustomerContactPersonCancelled(): void {
-    this.addShipToEndCustomerContactPerson = false;
-  }
-
   public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    this.addShipToEndCustomerContactPerson = false;
 
     const contact: Person = this.allors.context.get(id) as Person;
 
@@ -192,10 +176,6 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.ShipToEndCustomerContactPerson = contact;
   }
 
-  public billToContactMechanismCancelled() {
-    this.addBillToContactMechanism = false;
-  }
-
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addBillToContactMechanism = false;
 
@@ -204,12 +184,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     this.invoice.BillToCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public shipToEndCustomerAddressCancelled() {
-    this.addShipToEndCustomerAddress = false;
-  }
-
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addShipToEndCustomerAddress = false;
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);

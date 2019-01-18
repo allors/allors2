@@ -1,8 +1,8 @@
 import { Component, Self, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
-import { QuoteItem } from '../../../../../../domain';
+import { QuoteItem, ProductQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
@@ -30,19 +30,13 @@ export class QuoteItemOverviewPanelComponent {
 
   m: Meta;
 
+  quote: ProductQuote;
   quoteItems: QuoteItem[];
   table: Table<Row>;
   quoteItem: QuoteItem;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -59,6 +53,7 @@ export class QuoteItemOverviewPanelComponent {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
@@ -71,14 +66,15 @@ export class QuoteItemOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
         { name: 'item', sort },
-        { name: 'quantity', sort},
-        { name: 'lastModifiedDate', sort},
+        { name: 'quantity', sort },
+        { name: 'lastModifiedDate', sort },
       ],
       actions: [
         this.edit,
@@ -89,6 +85,7 @@ export class QuoteItemOverviewPanelComponent {
     });
 
     const pullName = `${panel.name}_${this.m.QuoteItem.name}`;
+    const quotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -107,12 +104,18 @@ export class QuoteItemOverviewPanelComponent {
               }
             }
           }
-        }));
+        }),
+        pull.Quote({
+          name: quotePullName,
+          object: id
+        }),
+      );
     };
 
     panel.onPulled = (loaded) => {
 
       this.quoteItems = loaded.collections[pullName] as QuoteItem[];
+      this.quote = loaded.objects[quotePullName] as ProductQuote;
       this.table.total = loaded.values[`${pullName}_total`] || this.quoteItems.length;
       this.table.data = this.quoteItems.map((v) => {
         return {
@@ -122,31 +125,5 @@ export class QuoteItemOverviewPanelComponent {
         } as Row;
       });
     };
-
   }
-
-  public cancel(): void {
-
-    this.panel.manager.context.invoke(this.quoteItem.Cancel)
-      .subscribe((invoked: Invoked) => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public submit(): void {
-
-    this.panel.manager.context.invoke(this.quoteItem.Submit)
-      .subscribe((invoked: Invoked) => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
 }

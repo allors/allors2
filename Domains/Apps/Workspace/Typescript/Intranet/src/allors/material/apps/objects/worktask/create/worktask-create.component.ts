@@ -143,8 +143,6 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
   public contactPersonAdded(id: string): void {
 
-    this.addContactPerson = false;
-
     const contact: Person = this.allors.context.get(id) as Person;
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
@@ -156,16 +154,12 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
   }
 
   public contactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.workTask.Customer.AddPartyContactMechanism(partyContactMechanism);
     this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public contactMechanismCancelled() {
-    this.addContactMechanism = false;
-  }
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();

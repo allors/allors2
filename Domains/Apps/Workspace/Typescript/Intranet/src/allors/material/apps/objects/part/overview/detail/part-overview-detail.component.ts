@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
@@ -56,7 +55,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public location: Location,
     private errorService: ErrorService,
     private stateService: StateService,
     private snackBar: MatSnackBar) {
@@ -272,7 +270,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        this.location.back();
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -286,7 +284,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
     context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },

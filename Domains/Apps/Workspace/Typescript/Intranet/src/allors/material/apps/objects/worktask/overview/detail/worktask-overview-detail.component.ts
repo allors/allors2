@@ -1,12 +1,10 @@
-import { Component, OnDestroy, OnInit, Self, SkipSelf } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { Subscription, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, Context } from '../../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
+import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
@@ -40,9 +38,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -158,8 +154,6 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
 
   public contactPersonAdded(id: string): void {
 
-    this.addContactPerson = false;
-
     const contact: Person = this.allors.context.get(id) as Person;
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
@@ -171,15 +165,10 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
   }
 
   public contactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.workTask.Customer.AddPartyContactMechanism(partyContactMechanism);
     this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
-  }
-
-  public contactMechanismCancelled() {
-    this.addContactMechanism = false;
   }
 
   public customerSelected(customer: Party) {
@@ -188,7 +177,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({
@@ -231,8 +220,8 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
   public save(): void {
 
     this.allors.context.save()
-      .subscribe((saved: Saved) => {
-        this.location.back();
+      .subscribe(() => {
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);

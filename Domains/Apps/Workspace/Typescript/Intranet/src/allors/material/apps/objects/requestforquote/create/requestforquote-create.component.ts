@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -20,26 +18,24 @@ import { ObjectData, CreateData } from '../../../../../../allors/material/base/s
 })
 export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public title = 'Add Request for Quote';
+  title = 'Add Request for Quote';
 
-  public request: RequestForQuote;
-  public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[] = [];
-  public contacts: Person[] = [];
-  public scope: ContextService;
-
-  public addContactPerson = false;
-  public addContactMechanism = false;
-  public addOriginator = false;
-  private previousOriginator: Party;
-
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
-
-  private fetcher: Fetcher;
+  request: RequestForQuote;
+  currencies: Currency[];
+  contactMechanisms: ContactMechanism[] = [];
+  contacts: Person[] = [];
   internalOrganisation: Organisation;
+  scope: ContextService;
+
+  addContactPerson = false;
+  addContactMechanism = false;
+  addOriginator = false;
+
+  private previousOriginator: Party;
+  private subscription: Subscription;
+  private fetcher: Fetcher;
 
   constructor(
     @Self() public allors: ContextService,
@@ -56,11 +52,11 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([ ]) => {
+        switchMap(([]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -76,7 +72,6 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-
         this.currencies = loaded.collections.Currencies as Currency[];
 
         this.request = this.allors.context.create('RequestForQuote') as RequestForQuote;
@@ -102,10 +97,15 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
           objectType: this.request.objectType,
         };
 
-        this.dialogRef.close(data);      },
+        this.dialogRef.close(data);
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  get originatorIsPerson(): boolean {
+    return !this.request.Originator || this.request.Originator.objectType.name === this.m.Person.name;
   }
 
   public originatorSelected(party: Party) {
@@ -114,13 +114,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  public originatorCancelled(): void {
-    this.addOriginator = false;
-  }
-
   public originatorAdded(party: Party): void {
-
-    this.addOriginator = false;
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
     customerRelationship.Customer = party as Party;
@@ -129,25 +123,14 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     this.request.Originator = party;
   }
 
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
-  }
-
   public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
     this.request.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public personCancelled(): void {
-    this.addContactPerson = false;
-  }
-
   public personAdded(person: Person): void {
-
-    this.addContactPerson = false;
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.request.Originator as Organisation;
@@ -159,7 +142,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
   private updateOriginator(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({

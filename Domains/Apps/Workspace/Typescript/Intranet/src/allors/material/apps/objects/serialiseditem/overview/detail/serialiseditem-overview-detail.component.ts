@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
@@ -39,7 +38,6 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public location: Location,
     public stateService: StateService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar) {
@@ -164,7 +162,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
     this.allors.context.save()
       .subscribe(() => {
-        this.location.back();
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);

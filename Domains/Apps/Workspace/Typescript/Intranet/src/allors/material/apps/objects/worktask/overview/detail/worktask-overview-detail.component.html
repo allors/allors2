@@ -52,7 +52,7 @@
             <mat-card *ngIf="workTask.Customer && addContactMechanism">
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism (saved)="contactMechanismAdded($event)" (cancelled)="contactMechanismCancelled()">
+                <party-contactmechanism (saved)="contactMechanismAdded($event); addContactMechanism = false" (cancelled)="addContactMechanism = false">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>

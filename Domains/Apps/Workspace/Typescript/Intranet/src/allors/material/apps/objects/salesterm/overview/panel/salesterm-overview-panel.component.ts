@@ -2,7 +2,7 @@ import { Component, Self, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget } from '../../../../../../angular';
 import { RequestItem as SalesOrderItem, SalesTerm, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
@@ -32,14 +32,7 @@ export class SalesTermOverviewPanelComponent {
   table: Table<Row>;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -56,6 +49,7 @@ export class SalesTermOverviewPanelComponent {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
@@ -68,6 +62,7 @@ export class SalesTermOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({
