@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
-import { TableRow, OverviewService, DeleteService, Table, Sorter } from '../../../..';
+import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
 import { Organisation } from '../../../../../domain';
 
@@ -33,6 +33,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
   table: Table<Row>;
 
   delete: Action;
+  delete2: Action;
 
   private subscription: Subscription;
 
@@ -44,6 +45,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public overviewService: OverviewService,
     public deleteService: DeleteService,
+    public methodService: MethodService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -55,6 +57,10 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
+
+    const { m } = this.metaService;
+
+    this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)'});
 
     this.table = new Table({
       selection: true,
@@ -68,7 +74,8 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
       ],
       actions: [
         overviewService.overview(),
-        this.delete
+        this.delete,
+        this.delete2,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
