@@ -1,16 +1,14 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -21,19 +19,21 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public productQuote: ProductQuote;
-  public salesOrder: SalesOrder;
-  public request: RequestForQuote;
-  public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
-  public contacts: Person[];
+  productQuote: ProductQuote;
+  salesOrder: SalesOrder;
+  request: RequestForQuote;
+  currencies: Currency[];
+  contactMechanisms: ContactMechanism[];
+  contacts: Person[];
+  internalOrganisation: Organisation;
+
+  addContactPerson = false;
+  addContactMechanism = false;
+  addReceiver = false;
+
   private previousReceiver: Party;
-
-  public addContactPerson = false;
-  public addContactMechanism = false;
-
   private fetcher: Fetcher;
   private subscription: Subscription;
 
@@ -42,17 +42,14 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
-    panel.title = 'Request For Quote Details';
+    panel.title = 'ProductQuote Details';
     panel.icon = 'business';
     panel.expandable = true;
 
@@ -63,7 +60,6 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
-        const id = this.panel.manager.id;
 
         pulls.push(
           pull.ProductQuote(
@@ -112,12 +108,12 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = this.panel.manager.on$
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([urlSegments, date, , internalOrganisationId]) => {
+        switchMap(() => {
 
           this.productQuote = undefined;
 
@@ -145,7 +141,14 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.productQuote = loaded.objects.ProductQuote as ProductQuote;
+        this.currencies = loaded.collections.Currencies as Currency[];
+
+        if (this.productQuote.Receiver) {
+          this.previousReceiver = this.productQuote.Receiver;
+          this.update(this.productQuote.Receiver);
+        }
 
       }, this.errorService.handler);
   }
@@ -168,38 +171,21 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
         });
   }
 
-  get showOrganisations(): boolean {
-    return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === 'Organisation';
+  get receiverIsPerson(): boolean {
+    return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === this.m.Person.name;
   }
 
-  get showPeople(): boolean {
-    return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === 'Person';
-  }
-
-  public personCancelled(): void {
-    this.addContactPerson = false;
-  }
-
-  public personAdded(id: string): void {
-
-    this.addContactPerson = false;
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public personAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.productQuote.Receiver as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.contacts.push(contact);
-    this.productQuote.ContactPerson = contact;
-  }
-
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
+    this.contacts.push(person);
+    this.productQuote.ContactPerson = person;
   }
 
   public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.productQuote.Receiver.AddPartyContactMechanism(partyContactMechanism);
@@ -210,6 +196,15 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     if (party) {
       this.update(party);
     }
+  }
+
+  public receiverAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.request.Originator = party;
   }
 
   private update(party: Party) {

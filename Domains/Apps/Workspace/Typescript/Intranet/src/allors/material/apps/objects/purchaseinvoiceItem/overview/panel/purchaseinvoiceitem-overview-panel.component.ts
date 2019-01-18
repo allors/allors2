@@ -1,13 +1,12 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
-import { RequestItem as SalesOrderItem, PurchaseInvoiceItem } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PurchaseInvoiceItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
-import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../../material/base/services/object';
+import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
 interface Row extends TableRow {
   object: PurchaseInvoiceItem;
   item: string;
@@ -32,14 +31,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
   table: Table<Row>;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -56,6 +48,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
@@ -68,6 +61,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({

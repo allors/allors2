@@ -1,19 +1,17 @@
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
-import { CreateData, ObjectService, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './productquote-create.component.html',
@@ -21,29 +19,24 @@ import { CreateData, ObjectService, ObjectData } from '../../../../../material/b
 })
 export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public title = 'Add Quote';
+  title = 'Add Quote';
 
-  public quote: ProductQuote;
-  public request: RequestForQuote;
-  public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
-  public contacts: Person[];
+  quote: ProductQuote;
+  request: RequestForQuote;
+  currencies: Currency[];
+  contactMechanisms: ContactMechanism[] = [];
+  contacts: Person[] = [];
 
-  public addContactPerson = false;
-  public addContactMechanism = false;
+  addContactPerson = false;
+  addContactMechanism = false;
+  addReceiver = false;
+  internalOrganisation: Organisation;
 
   private subscription: Subscription;
   private previousReceiver: Party;
   private fetcher: Fetcher;
-
-  get showOrganisations(): boolean {
-    return !this.quote.Receiver || this.quote.Receiver.objectType.name === 'Organisation';
-  }
-  get showPeople(): boolean {
-    return !this.quote.Receiver || this.quote.Receiver.objectType.name === 'Person';
-  }
 
   constructor(
     @Self() public allors: ContextService,
@@ -52,8 +45,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private errorService: ErrorService,
     public refreshService: RefreshService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -62,72 +53,67 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const pulls = [
-            pull.Currency(
-              {
-                sort: new Sort(m.Currency.Name),
-              }
-            )
+            this.fetcher.internalOrganisation,
+            pull.Currency({ sort: new Sort(m.Currency.Name) })
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                this.allors.context.reset();
-                this.currencies = loaded.collections.Currencies as Currency[];
-
-                const pulls2 = [
-                  this.fetcher.internalOrganisation,
-                ];
-
-                return this.allors.context.load('Pull', new PullRequest({ pulls: pulls2 }));
-              })
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
+
+        this.allors.context.reset();
+
         this.quote = loaded.objects.ProductQuote as ProductQuote;
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.currencies = loaded.collections.Currencies as Currency[];
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
-        this.quote.Issuer = internalOrganisation;
+        this.quote.Issuer = this.internalOrganisation;
         this.quote.IssueDate = new Date();
         this.quote.ValidFromDate = new Date();
 
       }, this.errorService.handler);
   }
 
-  public personCancelled(): void {
-    this.addContactPerson = false;
+  get receiverIsPerson(): boolean {
+    return !this.quote.Receiver || this.quote.Receiver.objectType.name === this.m.Person.name;
   }
 
-  public personAdded(id: string): void {
+  public receiverSelected(party: Party): void {
+    if (party) {
+      this.update(party);
+    }
+  }
 
-    this.addContactPerson = false;
+  public receiverAdded(party: Party): void {
 
-    const contact: Person = this.allors.context.get(id) as Person;
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.quote.Receiver = party;
+  }
+
+  public personAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.quote.Receiver as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.contacts.push(contact);
-    this.quote.ContactPerson = contact;
-  }
-
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
+    this.contacts.push(person);
+    this.quote.ContactPerson = person;
   }
 
   public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
@@ -144,7 +130,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.quote.id,
           objectType: this.quote.objectType,
@@ -157,19 +143,9 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         });
   }
 
-  public receiverSelected(party: Party): void {
-    if (party) {
-      this.update(party);
-    }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
   private update(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
@@ -35,7 +34,6 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public location: Location,
     private errorService: ErrorService,
     private stateService: StateService) {
 
@@ -146,7 +144,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        this.location.back();
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);

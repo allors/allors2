@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed && productQuote" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed && productQuote" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
@@ -20,17 +20,39 @@
 
     <mat-card-content>
       <div class="container-fluid">
-        <div class="row" *ngIf="!productQuoteisNew">
+        <div class="row">
           <a-mat-static class="col-md" [object]="productQuote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
           <a-mat-static class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
-          <a-mat-autocomplete class="col-md" *ngIf="showOrganisations" [object]="productQuote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(allors.context)" display="Name" (changed)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-autocomplete class="col-md" [object]="productQuote" [roleType]="m.Quote.Receiver" [filter]="stateService.customersFilter.create(allors.context)"
+              display="displayName" (changed)="receiverSelected($event)" label="From"></a-mat-autocomplete>
+                <button mat-mini-fab color="accent" [disabled]="!productQuote.CanWriteQuoteItems"
+                type="button" (click)="addReceiver = !addReceiver">
+                <mat-icon *ngIf="!addReceiver">add</mat-icon>
+                <mat-icon *ngIf="addReceiver">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-card *ngIf="addReceiver">
+              <mat-card-header>Add a new customer</mat-card-header>
+              <mat-card-content>
+                <party-party (saved)="receiverAdded($event); addReceiver = false" (cancelled)="addReceiver = false">
+                </party-party>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="row">
           <div class="col-12">
             <div class="row">
               <a-mat-select class="col" [object]="productQuote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
-              <button mat-mini-fab color="accent" type="button" [disabled]="!productQuote.Receiver || !productQuoteCanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
+              <button mat-mini-fab color="accent" type="button" [disabled]="!productQuote.Receiver || !productQuote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
                 <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
                 <mat-icon *ngIf="addContactMechanism">close</mat-icon>
               </button>
@@ -40,7 +62,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+                <party-contactmechanism (saved)="partyContactMechanismAdded($event); addContactMechanism = false" (cancelled)="addContactMechanism = false">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>
@@ -50,8 +72,8 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <a-mat-select class="col" [object]="productQuote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-              <button mat-mini-fab color="accent" type="button" [disabled]="!productQuote.Receiver || !productQuoteCanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
+              <a-mat-select class="col" [disabled]="receiverIsPerson" [object]="productQuote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+              <button mat-mini-fab color="accent" type="button" [disabled]="receiverIsPerson || !productQuote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
                 <mat-icon *ngIf="!addContactPerson">add</mat-icon>
                 <mat-icon *ngIf="addContactPerson">close</mat-icon>
               </button>
@@ -61,7 +83,7 @@
             <mat-card>
               <mat-card-header>Add a new contact person</mat-card-header>
               <mat-card-content>
-                <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+                <person-inline (cancelled)="addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
                 </person-inline>
               </mat-card-content>
             </mat-card>

@@ -1,10 +1,9 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
-import { RequestItem } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, Invoked } from '../../../../../../angular';
+import { RequestItem, RequestForQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table } from '../../../../..';
+import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
-import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
 import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
@@ -30,19 +29,13 @@ export class RequestItemOverviewPanelComponent {
 
   m: Meta;
 
+  request: RequestForQuote;
   requestItems: RequestItem[];
   table: Table<Row>;
   requestItem: RequestItem;
 
   delete: Action;
-
-  edit: Action = {
-    name: (target: ActionTarget) => 'Edit',
-    description: (target: ActionTarget) => 'Edit',
-    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
-    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
-    result: null
-  };
+  edit: Action;
 
   get createData(): CreateData {
     return {
@@ -60,6 +53,7 @@ export class RequestItemOverviewPanelComponent {
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
+    public editService: EditService,
     public snackBar: MatSnackBar
   ) {
 
@@ -71,6 +65,7 @@ export class RequestItemOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({
@@ -107,12 +102,18 @@ export class RequestItemOverviewPanelComponent {
               }
             }
           }
-        }));
+        }),
+        pull.Request({
+          name: 'Request',
+          object: id
+        }),
+      );
     };
 
     panel.onPulled = (loaded) => {
 
       this.requestItems = loaded.collections[pullName] as RequestItem[];
+      this.request = loaded.objects.Request as RequestForQuote;
       this.table.total = loaded.values[`${pullName}_total`] || this.requestItems.length;
       this.table.data = this.requestItems.map((v) => {
         return {
@@ -128,7 +129,7 @@ export class RequestItemOverviewPanelComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.requestItem.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },

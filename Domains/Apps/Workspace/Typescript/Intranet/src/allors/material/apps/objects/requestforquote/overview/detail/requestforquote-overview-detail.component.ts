@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
 
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
@@ -21,28 +20,27 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
 
   readonly m: Meta;
 
-  public request: RequestForQuote;
-  public quote: Quote;
-  public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[] = [];
-  public contacts: Person[] = [];
-  public scope: ContextService;
+  request: RequestForQuote;
+  quote: Quote;
+  currencies: Currency[];
+  contactMechanisms: ContactMechanism[] = [];
+  contacts: Person[] = [];
+  scope: ContextService;
+  internalOrganisation: Organisation;
 
-  public addContactPerson = false;
-  public addContactMechanism = false;
-  public addOriginator = false;
-  private previousOriginator: Party;
+  addContactPerson = false;
+  addContactMechanism = false;
+  addOriginator = false;
+  previousOriginator: Party;
 
   private fetcher: Fetcher;
   private subscription: Subscription;
-  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public location: Location,
     private errorService: ErrorService,
     public stateService: StateService) {
 
@@ -154,7 +152,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
 
         if (this.request.Originator) {
           this.previousOriginator = this.request.Originator;
-          this.updateOriginator(this.request.Originator);
+          this.update(this.request.Originator);
         }
       }, this.errorService.handler);
   }
@@ -169,38 +167,31 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
 
     this.allors.context.save()
       .subscribe(() => {
-        this.location.back();
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
   }
 
+  get originatorIsPerson(): boolean {
+    return !this.request.Originator || this.request.Originator.objectType.name === this.m.Person.name;
+  }
+
   public originatorSelected(party: Party) {
     if (party) {
-      this.updateOriginator(party);
+      this.update(party);
     }
   }
 
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
-  }
-
   public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
     this.request.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public personCancelled(): void {
-    this.addContactPerson = false;
-  }
-
   public personAdded(person: Person): void {
-
-    this.addContactPerson = false;
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.request.Originator as Organisation;
@@ -210,13 +201,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     this.request.ContactPerson = person;
   }
 
-  public originatorCancelled(): void {
-    this.addOriginator = false;
-  }
-
   public originatorAdded(party: Party): void {
-
-    this.addOriginator = false;
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
     customerRelationship.Customer = party as Party;
@@ -225,7 +210,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     this.request.Originator = party;
   }
 
-  private updateOriginator(party: Party) {
+  private update(party: Party) {
 
     const { pull, x } = this.metaService;
 

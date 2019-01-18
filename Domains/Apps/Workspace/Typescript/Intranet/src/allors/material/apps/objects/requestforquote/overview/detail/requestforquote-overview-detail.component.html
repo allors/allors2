@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed && request" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed && request" (click)="panel.toggle()"  attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
@@ -29,7 +29,7 @@
           <div class="col-md">
             <div class="row">
               <a-mat-autocomplete class="col-md" [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(allors.context)"
-              display="Name" (changed)="originatorSelected($event)" label="From"></a-mat-autocomplete>
+              display="displayName" (changed)="originatorSelected($event)" label="From"></a-mat-autocomplete>
                 <button mat-mini-fab color="accent" [disabled]="!request.CanWriteRequestItems"
                 type="button" (click)="addOriginator = !addOriginator">
                 <mat-icon *ngIf="!addOriginator">add</mat-icon>
@@ -41,7 +41,7 @@
             <mat-card *ngIf="addOriginator">
               <mat-card-header>Add a new customer</mat-card-header>
               <mat-card-content>
-                <party-party (saved)="originatorAdded($event)" (cancelled)="originatorCancelled()">
+                <party-party (saved)="originatorAdded($event); addOriginator = false" (cancelled)="addOriginator = false">
                 </party-party>
               </mat-card-content>
             </mat-card>
@@ -64,7 +64,7 @@
             <mat-card *ngIf="request.Originator && addContactMechanism">
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+                <party-contactmechanism (saved)="partyContactMechanismAdded($event); addContactMechanism = false" (cancelled)="addContactMechanism = false">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>
@@ -74,9 +74,9 @@
         <div class="row">
           <div class="col-md">
             <div class="row">
-              <a-mat-select [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts"
+              <a-mat-select [disabled]="originatorIsPerson" [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts"
                 display="displayName" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems"
+              <button mat-mini-fab color="accent" [disabled]="originatorIsPerson || !request.CanWriteRequestItems"
                 type="button" (click)="addContactPerson = !addContactPerson">
                 <mat-icon *ngIf="!addContactPerson">add</mat-icon>
                 <mat-icon *ngIf="addContactPerson">close</mat-icon>
@@ -87,7 +87,7 @@
             <mat-card *ngIf="request.Originator && addContactPerson">
               <mat-card-header>Add a new contact person</mat-card-header>
               <mat-card-content>
-                <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+                <person-inline (cancelled)="addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
                 </person-inline>
               </mat-card-content>
             </mat-card>

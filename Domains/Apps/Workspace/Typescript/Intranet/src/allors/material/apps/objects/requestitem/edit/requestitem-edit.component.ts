@@ -3,8 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestItem, SerialisedInventoryItem, UnitOfMeasure, Request, Part, SerialisedItem } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Good, Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -17,7 +17,7 @@ import { CreateData, EditData, ObjectData } from '../../../../../material/base/s
 })
 export class RequestItemEditComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
   title: string;
 
@@ -28,8 +28,8 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
-  private previousProduct;
 
+  private previousProduct;
   private subscription: Subscription;
 
   constructor(
@@ -98,10 +98,16 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
-          this.title = 'Edit Request Item';
+
+          if (this.requestItem.CanWriteQuantity) {
+            this.title = 'Edit Request Item';
+          } else {
+            this.title = 'View Request Item';
+          }
+
           this.previousProduct = this.requestItem.Product;
-          this.serialisedItem = this.requestItem.SerialisedItem;
           this.refreshSerialisedItems(this.requestItem.Product);
+          this.serialisedItem = this.requestItem.SerialisedItem;
         }
       }, this.errorService.handler);
   }
@@ -160,7 +166,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.part = loaded.objects.Part as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true );
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
         if (this.requestItem.Product !== this.previousProduct) {
           this.requestItem.SerialisedItem = null;

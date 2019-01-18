@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Organisation, RequestForQuote, ProductQuote, InventoryItem, SerialisedInventoryItem, NonSerialisedInventoryItem, Quote } from '../../../../../domain';
-import { PullRequest, Pull } from '../../../../../framework';
+import { RequestForQuote, Quote } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({

@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
+import { ErrorService, Saved, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -19,45 +18,43 @@ import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../
 })
 export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public title = 'Edit Quote Item';
-  public subTitle: string;
-  public quote: ProductQuote;
-  public quoteItem: QuoteItem;
-  public requestItem: RequestItem;
-  public inventoryItems: InventoryItem[];
-  public serialisedInventoryItem: SerialisedInventoryItem;
-  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public goods: Good[];
-  public unitsOfMeasure: UnitOfMeasure[];
+  title: string;
+  quote: ProductQuote;
+  quoteItem: QuoteItem;
+  requestItem: RequestItem;
+  inventoryItems: InventoryItem[];
+  serialisedInventoryItem: SerialisedInventoryItem;
+  nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+  goods: Good[];
+  unitsOfMeasure: UnitOfMeasure[];
+  goodsFilter: SearchFactory;
+  part: Part;
+  serialisedItem: SerialisedItem;
+  serialisedItems: SerialisedItem[] = [];
 
-  public goodsFilter: SearchFactory;
-
-  private refresh$: BehaviorSubject<Date>;
+  private previousProduct;
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
     public stateService: StateService,
-    private dialogService: AllorsMaterialDialogService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar
   ) {
     this.m = this.metaService.m;
-
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refresh$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
 
@@ -125,7 +122,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
-          this.update(this.quoteItem.Product);
+
+          if (this.quoteItem.CanWriteQuantity) {
+            this.title = 'Edit Quote Item';
+          } else {
+            this.title = 'View Quote Item';
+          }
+          this.previousProduct = this.quoteItem.Product;
+          this.serialisedItem = this.quoteItem.SerialisedItem;
+          this.refreshSerialisedItems(this.quoteItem.Product);
         }
       }, this.errorService.handler);
   }
@@ -138,14 +143,18 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public goodSelected(object: any) {
     if (object) {
-      this.update(object as Product);
+      this.refreshSerialisedItems(object as Product);
     }
+  }
+
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
   }
 
   public save(): void {
 
     this.allors.context.save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.quoteItem.id,
           objectType: this.quoteItem.objectType,
@@ -158,31 +167,35 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  private update(product: Product) {
+  private refreshSerialisedItems(good: Product): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Good(
-        {
-          object: product,
-          // TODO:
-          // fetch: {
-          //   InventoryItemsWhereGood: x
-          // }
+      pull.Good({
+        object: good.id,
+        fetch: {
+          Part: {
+            include: {
+              SerialisedItems: x
+            }
+          }
         }
-      )
+      })
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls }))
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        // this.inventoryItems = loaded.collections.InventoryItem as InventoryItem[];
-        // if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-        //   this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-        // }
-        // if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-        //   this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-        // }
+        this.part = loaded.objects.Part as Part;
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+
+        if (this.requestItem.Product !== this.previousProduct) {
+          this.requestItem.SerialisedItem = null;
+          this.serialisedItem = null;
+          this.previousProduct = this.requestItem.Product;
+        }
+
       }, this.errorService.handler);
   }
 }
