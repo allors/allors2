@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { Meta } from '../../../../../meta';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -10,12 +11,13 @@ import { AllorsFilterService, ErrorService, MediaService, ContextService, Naviga
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../..';
 
 import { SalesOrder } from '../../../../../domain';
+import { MethodService } from 'src/allors/material/base/services/actions';
 
 interface Row extends TableRow {
   object: SalesOrder;
   number: string;
   shipToCustomer: string;
-  state: string;
+  status: string;
   customerReference: string;
   lastModifiedDate: string;
 }
@@ -28,9 +30,14 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Sales Orders';
 
+  m: Meta;
+
   table: Table<Row>;
 
   delete: Action;
+  print: Action;
+  ship: Action;
+  invoice: Action;
 
   private subscription: Subscription;
 
@@ -41,6 +48,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public overviewService: OverviewService,
     public printService: PrintService,
+    public methodService: MethodService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -55,19 +63,27 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
       this.table.selection.clear();
     });
 
+    this.m = this.metaService.m;
+
+    this.print = printService.print();
+    this.ship = methodService.create(allors.context, this.m.SalesOrder.Ship, { name: 'Ship' });
+    this.invoice = methodService.create(allors.context, this.m.SalesOrder.Invoice, { name: 'Invoice' });
+
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
+        { name: 'number', sort: true },
         { name: 'shipToCustomer' },
-        { name: 'state' },
-        { name: 'customerReference' },
-        'lastModifiedDate'
+        { name: 'status' },
+        { name: 'customerReference', sort: true },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
-        this.printService.print(),
-        this.delete
+        this.print,
+        this.delete,
+        this.ship,
+        this.invoice
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -88,6 +104,8 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
+        number: m.SalesOrder.OrderNumber,
+        customerReference: m.SalesOrder.CustomerReference,
         lastModifiedDate: m.SalesOrder.LastModifiedDate,
       }
     );
@@ -133,7 +151,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
             object: v,
             number: `${v.OrderNumber}`,
             shipToCustomer: v.ShipToCustomer && v.ShipToCustomer.displayName,
-            state: `${v.SalesOrderState && v.SalesOrderState.Name}`,
+            status: `${v.SalesOrderState && v.SalesOrderState.Name}`,
             customerReference: `${v.Description || ''}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

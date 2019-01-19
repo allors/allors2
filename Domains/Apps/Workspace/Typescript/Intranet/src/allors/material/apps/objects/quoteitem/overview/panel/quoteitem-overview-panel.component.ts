@@ -135,7 +135,7 @@ export class QuoteItemOverviewPanelComponent {
         return {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
-          status: v.QuoteItemState ? v.QuoteItemState.Name : '',
+          status: `${v.QuoteItemState && v.QuoteItemState.Name}`,
           quantity: v.Quantity,
           lastModifiedDate: moment(v.LastModifiedDate).fromNow()
         } as Row;

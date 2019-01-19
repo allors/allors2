@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -13,7 +13,7 @@ import { StateService } from '../../../services/state';
   templateUrl: './salesorder-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
+export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Quote';
 
@@ -44,11 +44,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const { m, pull, x } = this.metaService;
 
@@ -56,6 +56,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
           this.panelManager.id = navRoute.id();
           this.panelManager.objectType = m.Organisation;
           this.panelManager.expanded = navRoute.panel();
+
+          this.panelManager.on();
 
           const pulls = [
             pull.SalesOrder({

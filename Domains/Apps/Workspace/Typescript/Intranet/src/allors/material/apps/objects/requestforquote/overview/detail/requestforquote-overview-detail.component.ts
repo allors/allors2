@@ -25,7 +25,6 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
   currencies: Currency[];
   contactMechanisms: ContactMechanism[] = [];
   contacts: Person[] = [];
-  scope: ContextService;
   internalOrganisation: Organisation;
 
   addContactPerson = false;

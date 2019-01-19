@@ -146,7 +146,8 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature, M.SalesOrderItem.SerialisedItem);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.SerialisedItem, M.SalesOrderItem.ProductFeature);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ReservedFromSerialisedInventoryItem, M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
@@ -322,9 +323,19 @@ namespace Allors.Domain
                 {
                     if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                     {
-                        var inventoryItems = good.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                        this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
+                        if (this.ExistSerialisedItem)
+                        {
+                            if (this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem)
+                            {
+                                this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.First(v => v.Quantity == 1); 
+                            }
+                        }
+                        else
+                        {
+                            var inventoryItems = good.Part.InventoryItemsWherePart;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                            this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
+                        }
                     }
                     else
                     {

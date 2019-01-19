@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { ProductQuoteCreateComponent } from '../../productquote/create/productquote-create.module';
-import { CreateData, ObjectService, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './salesorder-create.component.html',
@@ -20,36 +19,41 @@ import { CreateData, ObjectService, ObjectData } from '../../../../../material/b
 })
 export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public title = 'Add Sales Order';
+  title = 'Add Sales Order';
 
-  public order: SalesOrder;
-  public quote: ProductQuote;
-  public internalOrganisations: InternalOrganisation[];
-  public currencies: Currency[];
-  public billToContactMechanisms: ContactMechanism[];
-  public billToEndCustomerContactMechanisms: ContactMechanism[];
-  public shipToAddresses: ContactMechanism[];
-  public shipToEndCustomerAddresses: ContactMechanism[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
-  public billToContacts: Person[];
-  public billToEndCustomerContacts: Person[];
-  public shipToContacts: Person[];
-  public shipToEndCustomerContacts: Person[];
-  public stores: Store[];
+  order: SalesOrder;
+  quote: ProductQuote;
+  internalOrganisations: InternalOrganisation[];
+  currencies: Currency[];
+  billToContactMechanisms: ContactMechanism[] = [];
+  billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  shipToAddresses: ContactMechanism[] = [];
+  shipToEndCustomerAddresses: ContactMechanism[] = [];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  billToContacts: Person[] = [];
+  billToEndCustomerContacts: Person[] = [];
+  shipToContacts: Person[] = [];
+  shipToEndCustomerContacts: Person[] = [];
+  stores: Store[];
 
-  public addShipToAddress = false;
-  public addBillToContactPerson = false;
-  public addBillToEndCustomerContactPerson = false;
-  public addShipToContactPerson = false;
-  public addShipToEndCustomerContactPerson = false;
+  addShipToCustomer = false;
+  addShipToAddress = false;
+  addShipToContactPerson = false;
 
-  public addShipToContactMechanism: boolean;
-  public addBillToContactMechanism: boolean;
-  public addBillToEndCustomerContactMechanism: boolean;
-  public addShipToEndCustomerAddress: boolean;
+  addBillToCustomer = false;
+  addBillToContactMechanism = false;
+  addBillToContactPerson = false;
+
+  addShipToEndCustomer = false;
+  addShipToEndCustomerAddress = false;
+  addShipToEndCustomerContactPerson = false;
+
+  addBillToEndCustomer = false;
+  addBillToEndCustomerContactMechanism = false;
+  addBillToEndCustomerContactPerson = false;
 
   private subscription: Subscription;
   private previousShipToCustomer: Party;
@@ -57,44 +61,31 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
   private fetcher: Fetcher;
+  internalOrganisation: Organisation;
 
-  get showBillToOrganisations(): boolean {
-    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToPeople(): boolean {
-    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === 'Person';
+  get billToCustomerIsPerson(): boolean {
+    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showShipToOrganisations(): boolean {
-    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToPeople(): boolean {
-    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === 'Person';
+  get shipToCustomerIsPerson(): boolean {
+    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showBillToEndCustomerOrganisations(): boolean {
-    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToEndCustomerPeople(): boolean {
-    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === 'Person';
+  get billToEndCustomerIsPerson(): boolean {
+    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showShipToEndCustomerOrganisations(): boolean {
-    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToEndCustomerPeople(): boolean {
-    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === 'Person';
+  get shipToEndCustomerIsPerson(): boolean {
+    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === this.m.Person.name;
   }
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -115,7 +106,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
             pull.Store({
-              predicate: new Equals({ propertyType: m.Store.InternalOrganisation, value: internalOrganisationId }),
+              predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
             }),
@@ -130,10 +121,11 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.stores = loaded.collections.Stores as Store[];
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
-        this.order.TakenBy = internalOrganisation;
+        this.order.TakenBy = this.internalOrganisation;
 
         if (this.stores.length === 1) {
           this.order.Store = this.stores[0];
@@ -141,7 +133,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
@@ -168,52 +159,103 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
-  public billToContactPersonAdded(id: string): void {
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
-    const contact: Person = this.allors.context.get(id) as Person;
+  public save(): void {
+
+    this.allors.context
+      .save()
+      .subscribe(() => {
+        const data: ObjectData = {
+          id: this.order.id,
+          objectType: this.order.objectType,
+        };
+
+        this.dialogRef.close(data);
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public shipToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.ShipToCustomer = party;
+  }
+
+  public billToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.BillToCustomer = party;
+  }
+
+  public shipToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.ShipToEndCustomer = party;
+  }
+
+  public billToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.BillToEndCustomer = party;
+  }
+
+  public billToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToContacts.push(contact);
-    this.order.BillToContactPerson = contact;
+    this.billToContacts.push(person);
+    this.order.BillToContactPerson = person;
   }
 
-  public billToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public billToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToEndCustomerContacts.push(contact);
-    this.order.BillToEndCustomerContactPerson = contact;
+    this.billToEndCustomerContacts.push(person);
+    this.order.BillToEndCustomerContactPerson = person;
   }
 
-  public shipToContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToContacts.push(contact);
-    this.order.ShipToContactPerson = contact;
+    this.shipToContacts.push(person);
+    this.order.ShipToContactPerson = person;
   }
 
-  public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToEndCustomerContacts.push(contact);
-    this.order.ShipToEndCustomerContactPerson = contact;
+    this.shipToEndCustomerContacts.push(person);
+    this.order.ShipToEndCustomerContactPerson = person;
   }
 
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
@@ -244,280 +286,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public approve(): void {
-
-    const submitFn: () => void = () => {
-      this.allors.context.invoke(this.order.Approve)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                submitFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            submitFn();
-          }
-        });
-    } else {
-      submitFn();
-    }
-  }
-
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.order.Reject)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public reject(): void {
-
-    const rejectFn: () => void = () => {
-      this.allors.context.invoke(this.order.Reject)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                rejectFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            rejectFn();
-          }
-        });
-    } else {
-      rejectFn();
-    }
-  }
-
-  public hold(): void {
-
-    const holdFn: () => void = () => {
-      this.allors.context.invoke(this.order.Hold)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                holdFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            holdFn();
-          }
-        });
-    } else {
-      holdFn();
-    }
-  }
-
-  public continue(): void {
-
-    const continueFn: () => void = () => {
-      this.allors.context.invoke(this.order.Continue)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                continueFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            continueFn();
-          }
-        });
-    } else {
-      continueFn();
-    }
-  }
-
-  public confirm(): void {
-
-    const confirmFn: () => void = () => {
-      this.allors.context.invoke(this.order.Confirm)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                confirmFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            confirmFn();
-          }
-        });
-    } else {
-      confirmFn();
-    }
-  }
-
-  public finish(): void {
-
-    const finishFn: () => void = () => {
-      this.allors.context.invoke(this.order.Continue)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                finishFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            finishFn();
-          }
-        });
-    } else {
-      finishFn();
-    }
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        const data: ObjectData = {
-          id: this.order.id,
-          objectType: this.order.objectType,
-        };
-
-        this.dialogRef.close(data);      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
   public shipToCustomerSelected(party: Party) {
     if (party) {
       this.updateShipToCustomer(party);
@@ -536,13 +304,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     this.updateShipToEndCustomer(party);
   }
 
-  public goBack(): void {
-    window.history.back();
-  }
-
   private updateShipToCustomer(party: Party): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -592,7 +356,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -644,7 +408,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -696,7 +460,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(

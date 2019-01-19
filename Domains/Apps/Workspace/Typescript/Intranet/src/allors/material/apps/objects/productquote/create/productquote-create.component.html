@@ -10,7 +10,7 @@
           <div class="row">
             <a-mat-autocomplete class="col-md" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(allors.context)"
             display="displayName" (changed)="receiverSelected($event)" label="To"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!quote.CanWriteQuoteItems"
+              <button mat-mini-fab color="accent" [disabled]="!quote.CanWriteReceiver"
               type="button" (click)="addReceiver = !addReceiver">
               <mat-icon *ngIf="!addReceiver">add</mat-icon>
               <mat-icon *ngIf="addReceiver">close</mat-icon>
@@ -33,7 +33,7 @@
           <div class="row">
             <a-mat-select class="col" [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems"
+            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteFullfillContactMechanism"
               (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
@@ -56,7 +56,7 @@
           <div class="row">
             <a-mat-select class="col" [disabled]="receiverIsPerson" [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="receiverIsPerson || !quote.CanWriteQuoteItems"
+            <button mat-mini-fab color="accent" type="button" [disabled]="receiverIsPerson || !quote.CanWriteContactPerson"
               (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>

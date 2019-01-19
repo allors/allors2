@@ -1,16 +1,13 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -21,77 +18,70 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public order: SalesOrder;
-  public quote: ProductQuote;
-  public internalOrganisations: InternalOrganisation[];
-  public currencies: Currency[];
-  public billToContactMechanisms: ContactMechanism[];
-  public billToEndCustomerContactMechanisms: ContactMechanism[];
-  public shipToAddresses: ContactMechanism[];
-  public shipToEndCustomerAddresses: ContactMechanism[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
-  public billToContacts: Person[];
-  public billToEndCustomerContacts: Person[];
-  public shipToContacts: Person[];
-  public shipToEndCustomerContacts: Person[];
-  public stores: Store[];
+  order: SalesOrder;
+  quote: ProductQuote;
+  internalOrganisations: InternalOrganisation[];
+  currencies: Currency[];
+  billToContactMechanisms: ContactMechanism[] = [];
+  billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  shipToAddresses: ContactMechanism[] = [];
+  shipToEndCustomerAddresses: ContactMechanism[] = [];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  billToContacts: Person[] = [];
+  billToEndCustomerContacts: Person[] = [];
+  shipToContacts: Person[] = [];
+  shipToEndCustomerContacts: Person[] = [];
+  stores: Store[];
+  orderItems: SalesOrderItem[] = [];
+  goods: Good[] = [];
+  salesInvoice: SalesInvoice;
+  billingProcesses: BillingProcess[];
+  billingForOrderItems: BillingProcess;
+  selectedSerialisedInventoryState: string;
+  inventoryItemStates: SerialisedInventoryItemState[];
 
-  public addShipToAddress = false;
-  public addBillToContactPerson = false;
-  public addBillToEndCustomerContactPerson = false;
-  public addShipToContactPerson = false;
-  public addShipToEndCustomerContactPerson = false;
+  addShipToCustomer = false;
+  addShipToAddress = false;
+  addShipToContactPerson = false;
 
-  public addShipToContactMechanism: boolean;
-  public addBillToContactMechanism: boolean;
-  public addBillToEndCustomerContactMechanism: boolean;
-  public addShipToEndCustomerAddress: boolean;
+  addBillToCustomer = false;
+  addBillToContactMechanism = false;
+  addBillToContactPerson = false;
+
+  addShipToEndCustomer = false;
+  addShipToEndCustomerAddress = false;
+  addShipToEndCustomerContactPerson = false;
+
+  addBillToEndCustomer = false;
+  addBillToEndCustomerContactMechanism = false;
+  addBillToEndCustomerContactPerson = false;
 
   private previousShipToCustomer: Party;
   private previousShipToEndCustomer: Party;
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-  public orderItems: SalesOrderItem[] = [];
-  public goods: Good[] = [];
-  public salesInvoice: SalesInvoice;
-  public billingProcesses: BillingProcess[];
-  public billingForOrderItems: BillingProcess;
-  public selectedSerialisedInventoryState: string;
-  public inventoryItemStates: SerialisedInventoryItemState[];
-
   private fetcher: Fetcher;
   private subscription: Subscription;
+  internalOrganisation: Organisation;
 
-  get showBillToOrganisations(): boolean {
-    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToPeople(): boolean {
-    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === 'Person';
+  get billToCustomerIsPerson(): boolean {
+    return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showShipToOrganisations(): boolean {
-    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToPeople(): boolean {
-    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === 'Person';
+  get shipToCustomerIsPerson(): boolean {
+    return !this.order.ShipToCustomer || this.order.ShipToCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showBillToEndCustomerOrganisations(): boolean {
-    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToEndCustomerPeople(): boolean {
-    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === 'Person';
+  get billToEndCustomerIsPerson(): boolean {
+    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showShipToEndCustomerOrganisations(): boolean {
-    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === 'Organisation';
-  }
-  get showShipToEndCustomerPeople(): boolean {
-    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === 'Person';
+  get shipToEndCustomerIsPerson(): boolean {
+    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer.objectType.name === this.m.Person.name;
   }
 
   constructor(
@@ -99,21 +89,18 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
-    panel.title = 'Request For Quote Details';
+    panel.title = 'Sales Order Details';
     panel.icon = 'business';
     panel.expandable = true;
 
-    // Normal
+    // Collapsed
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
     const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
@@ -126,6 +113,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
         pulls.push(
 
+          this.fetcher.internalOrganisation,
           pull.SalesOrder({
             name: salesOrderPullName,
             object: this.panel.manager.id,
@@ -203,6 +191,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.order = loaded.objects[salesOrderPullName] as SalesOrder;
         this.orderItems = loaded.collections[salesOrderPullName] as SalesOrderItem[];
         this.salesInvoice = loaded.objects[salesInvoicePullName] as SalesInvoice;
@@ -216,13 +205,13 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    // Maximized
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    // Expanded
+    this.subscription = this.panel.manager.on$
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([urlSegments, date, , internalOrganisationId]) => {
+        switchMap(() => {
 
           this.order = undefined;
 
@@ -230,7 +219,6 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           const id = this.panel.manager.id;
 
           const pulls = [
-            this.fetcher.internalOrganisation,
             pull.SalesOrder({
               object: id,
               include: {
@@ -254,7 +242,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
             pull.Store({
-              predicate: new Equals({ propertyType: m.Store.InternalOrganisation, value: internalOrganisationId }),
+              predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: this.internalOrganisation }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
             }),
@@ -280,25 +268,24 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
         if (this.order.ShipToCustomer) {
+          this.previousShipToCustomer = this.order.ShipToCustomer;
           this.updateShipToCustomer(this.order.ShipToCustomer);
         }
 
         if (this.order.BillToCustomer) {
+          this.previousBillToCustomer = this.order.BillToCustomer;
           this.updateBillToCustomer(this.order.BillToCustomer);
         }
 
         if (this.order.BillToEndCustomer) {
+          this.previousBillToEndCustomer = this.order.BillToEndCustomer;
           this.updateBillToEndCustomer(this.order.BillToEndCustomer);
         }
 
         if (this.order.ShipToEndCustomer) {
+          this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
           this.updateShipToEndCustomer(this.order.ShipToEndCustomer);
         }
-
-        this.previousShipToCustomer = this.order.ShipToCustomer;
-        this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
-        this.previousBillToCustomer = this.order.BillToCustomer;
-        this.previousBillToEndCustomer = this.order.BillToEndCustomer;
 
       }, this.errorService.handler);
   }
@@ -313,7 +300,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.panel.toggle();
       },
         (error: Error) => {
@@ -321,52 +308,80 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         });
   }
 
-  public billToContactPersonAdded(id: string): void {
+  public shipToCustomerAdded(party: Party): void {
 
-    const contact: Person = this.allors.context.get(id) as Person;
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.ShipToCustomer = party;
+  }
+
+  public billToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.BillToCustomer = party;
+  }
+
+  public shipToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.ShipToEndCustomer = party;
+  }
+
+  public billToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.order.BillToEndCustomer = party;
+  }
+
+  public billToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToContacts.push(contact);
-    this.order.BillToContactPerson = contact;
+    this.billToContacts.push(person);
+    this.order.BillToContactPerson = person;
   }
 
-  public billToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public billToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToEndCustomerContacts.push(contact);
-    this.order.BillToEndCustomerContactPerson = contact;
+    this.billToEndCustomerContacts.push(person);
+    this.order.BillToEndCustomerContactPerson = person;
   }
 
-  public shipToContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToContacts.push(contact);
-    this.order.ShipToContactPerson = contact;
+    this.shipToContacts.push(person);
+    this.order.ShipToContactPerson = person;
   }
 
-  public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToEndCustomerContacts.push(contact);
-    this.order.ShipToEndCustomerContactPerson = contact;
+    this.shipToEndCustomerContacts.push(person);
+    this.order.ShipToEndCustomerContactPerson = person;
   }
 
   public billToCustomerSelected(party: Party) {
@@ -411,7 +426,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateShipToCustomer(party: Party): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -461,7 +476,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -513,7 +528,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -565,7 +580,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -123,14 +123,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
 
+          this.previousProduct = this.quoteItem.Product;
+          this.serialisedItem = this.quoteItem.SerialisedItem;
+          this.refreshSerialisedItems(this.quoteItem.Product);
+
           if (this.quoteItem.CanWriteQuantity) {
             this.title = 'Edit Quote Item';
           } else {
             this.title = 'View Quote Item';
           }
-          this.previousProduct = this.quoteItem.Product;
-          this.serialisedItem = this.quoteItem.SerialisedItem;
-          this.refreshSerialisedItems(this.quoteItem.Product);
         }
       }, this.errorService.handler);
   }

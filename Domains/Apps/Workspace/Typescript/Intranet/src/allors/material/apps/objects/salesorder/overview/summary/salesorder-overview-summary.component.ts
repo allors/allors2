@@ -1,9 +1,10 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService } from '../../../../../../angular';
-import { ProductQuote, Quote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../../domain';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService, Action } from '../../../../../../angular';
+import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { Sort, Equals } from 'src/allors/framework';
+import { PrintService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,25 +16,30 @@ export class SalesOrderOverviewSummaryComponent {
 
   m: Meta;
 
-  public order: SalesOrder;
-  public quote: ProductQuote;
-  public orderItems: SalesOrderItem[] = [];
-  public goods: Good[] = [];
-  public salesInvoice: SalesInvoice;
-  public billingProcesses: BillingProcess[];
-  public billingForOrderItems: BillingProcess;
-  public selectedSerialisedInventoryState: string;
-  public inventoryItemStates: SerialisedInventoryItemState[];
+  order: SalesOrder;
+  quote: ProductQuote;
+  orderItems: SalesOrderItem[] = [];
+  goods: Good[] = [];
+  salesInvoice: SalesInvoice;
+  billingProcesses: BillingProcess[];
+  billingForOrderItems: BillingProcess;
+  selectedSerialisedInventoryState: string;
+  inventoryItemStates: SerialisedInventoryItemState[];
+
+  print: Action;
 
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public navigation: NavigationService,
+    public printService: PrintService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar,
     public errorService: ErrorService) {
 
     this.m = this.metaService.m;
+
+    this.print = printService.print();
 
     panel.name = 'summary';
 
@@ -222,7 +228,7 @@ export class SalesOrderOverviewSummaryComponent {
     this.panel.manager.context.invoke(this.order.Ship)
       .subscribe((invoked: Invoked) => {
         this.panel.toggle();
-        this.snackBar.open('Customer Shipment successfully created.', 'close', { duration: 5000 });
+        this.snackBar.open('Customer shipment successfully created.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
         (error: Error) => {
@@ -230,4 +236,16 @@ export class SalesOrderOverviewSummaryComponent {
         });
   }
 
+  public invoice(): void {
+
+    this.panel.manager.context.invoke(this.order.Invoice)
+      .subscribe((invoked: Invoked) => {
+        this.panel.toggle();
+        this.snackBar.open('Sales invoice successfully created.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
 }

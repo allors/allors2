@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -18,26 +18,30 @@ import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../
 })
 export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public title: string;
-  public subTitle: string;
-  public order: SalesOrder;
-  public orderItem: SalesOrderItem;
-  public quoteItem: QuoteItem;
-  public goods: Good[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
-  public discount: number;
-  public surcharge: number;
-  public inventoryItems: InventoryItem[];
-  public serialisedInventoryItem: SerialisedInventoryItem;
-  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public serialisedItemStates: SerialisedItemState[];
-  public invoiceItemTypes: InvoiceItemType[];
-  public productItemType: InvoiceItemType;
+  title: string;
+  subTitle: string;
+  order: SalesOrder;
+  orderItem: SalesOrderItem;
+  quoteItem: QuoteItem;
+  goods: Good[];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  discount: number;
+  surcharge: number;
+  inventoryItems: InventoryItem[];
+  serialisedInventoryItem: SerialisedInventoryItem;
+  nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+  serialisedItemStates: SerialisedItemState[];
+  invoiceItemTypes: InvoiceItemType[];
+  productItemType: InvoiceItemType;
+  serialisedItem: SerialisedItem;
+  serialisedItems: SerialisedItem[] = [];
 
+  private previousProduct;
   private subscription: Subscription;
+  part: Part;
 
   constructor(
     @Self() public allors: ContextService,
@@ -47,7 +51,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private errorService: ErrorService,
     private router: Router,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService) {
@@ -93,7 +96,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
             }),
-            pull.SalesInvoiceItemState(
+            pull.SerialisedInventoryItemState(
               {
                 predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
                 sort: new Sort(m.SerialisedInventoryItemState.Name),
@@ -136,14 +139,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         } else {
           this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
 
-          if (this.orderItem.CanWriteActualUnitPrice) {
-            this.title = 'Edit Sales Order Item';
-          } else {
-            this.title = 'View Sales Order Item';
-          }
+          this.previousProduct = this.orderItem.Product;
+          this.serialisedItem = this.orderItem.SerialisedItem;
 
           if (this.orderItem.InvoiceItemType === this.productItemType) {
-            this.refreshInventory(this.orderItem.Product);
+            this.refreshSerialisedItems(this.quoteItem.Product);
           }
 
           if (this.orderItem.DiscountAdjustment) {
@@ -152,6 +152,12 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
           if (this.orderItem.SurchargeAdjustment) {
             this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
+          }
+
+          if (this.orderItem.CanWriteActualUnitPrice) {
+            this.title = 'Edit Sales Order Item';
+          } else {
+            this.title = 'View Sales Order Item';
           }
         }
       }, this.errorService.handler);
@@ -165,156 +171,73 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public goodSelected(object: any) {
     if (object) {
-      this.refreshInventory(object as Product);
+      this.refreshSerialisedItems(object as Product);
     }
+  }
+
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
   }
 
   public save(): void {
 
-    // if (this.discount !== 0) {
-    //   const discountAdjustment = scope.session.create("DiscountAdjustment") as DiscountAdjustment;
-    //   discountAdjustment.Amount = this.discount;
-    //   this.orderItem.DiscountAdjustment = discountAdjustment;
-    // }
-
-    // if (this.surcharge !== 0) {
-    //   const surchargeAdjustment = scope.session.create("SurchargeAdjustment") as SurchargeAdjustment;
-    //   surchargeAdjustment.Amount = this.surcharge;
-    //   this.orderItem.SurchargeAdjustment = surchargeAdjustment;
-    // }
-
     this.allors.context.save()
-    .subscribe(() => {
-      const data: ObjectData = {
-        id: this.orderItem.id,
-        objectType: this.orderItem.objectType,
-      };
+      .subscribe(() => {
+        const data: ObjectData = {
+          id: this.quoteItem.id,
+          objectType: this.quoteItem.objectType,
+        };
 
-      this.dialogRef.close(data);
-    },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
-  }
-
-  public update(): void {
-    const isNew = this.orderItem.isNew;
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        if (isNew) {
-          this.router.navigate(['/salesOrder/' + this.order.id + '/item/' + this.orderItem.id]);
-        } else {
-          this.refreshService.refresh();
-        }
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
   }
 
-  public goBack(): void {
-    window.history.back();
-  }
+  public update(): void {
+    const { context } = this.allors;
 
-  public cancel(): void {
-     const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.orderItem.Cancel)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
+    context
+      .save()
+      .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
         });
-    } else {
-      cancelFn();
-    }
   }
 
-  public reject(): void {
+  private refreshSerialisedItems(good: Product): void {
 
-    const rejectFn: () => void = () => {
-      this.allors.context.invoke(this.orderItem.Reject)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully reejcted.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                rejectFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            rejectFn();
-          }
-        });
-    } else {
-      rejectFn();
-    }
-  }
-
-  private refreshInventory(product: Product): void {
-
-    const { pull  } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Good({
-        object: product,
-        // TODO:
-        // fetch: {
-        //   InventoryItemsWhereGood: x,
-        // }
+        object: good.id,
+        fetch: {
+          Part: {
+            include: {
+              SerialisedItems: x
+            }
+          }
+        }
       })
     ];
 
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        // this.inventoryItems = loaded.collections.InventoryItem as InventoryItem[];
-        // if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-        //   this.orderItem.QuantityOrdered = 1;
-        //   this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-        // }
-        // if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-        //   this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-        // }
+        this.part = loaded.objects.Part as Part;
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+
+        if (this.orderItem.Product !== this.previousProduct) {
+          this.orderItem.SerialisedItem = null;
+          this.serialisedItem = null;
+          this.previousProduct = this.orderItem.Product;
+        }
+
       }, this.errorService.handler);
   }
 }

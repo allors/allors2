@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, SalesOrder, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -37,6 +36,10 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
   private subscription: Subscription;
 
+  get receiverIsPerson(): boolean {
+    return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === this.m.Person.name;
+  }
+
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
@@ -53,7 +56,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     panel.icon = 'business';
     panel.expandable = true;
 
-    // Normal
+    // Collapsed
     const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
 
@@ -107,7 +110,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    // Maximized
+    // Expanded
     this.subscription = this.panel.manager.on$
       .pipe(
         filter(() => {
@@ -163,16 +166,12 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  get receiverIsPerson(): boolean {
-    return !this.productQuote.Receiver || this.productQuote.Receiver.objectType.name === this.m.Person.name;
   }
 
   public personAdded(person: Person): void {
@@ -209,7 +208,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
   private update(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -250,6 +249,5 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
-
   }
 }

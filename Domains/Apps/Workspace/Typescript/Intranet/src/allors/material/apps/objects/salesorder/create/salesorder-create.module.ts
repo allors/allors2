@@ -17,6 +17,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
+import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
@@ -62,6 +63,7 @@ export { SalesOrderCreateComponent } from './salesorder-create.component';
     MatOptionModule,
     ContactMechanismInlineModule,
     PostalAddressInlineModule,
+    PartyInlineModule,
     PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,

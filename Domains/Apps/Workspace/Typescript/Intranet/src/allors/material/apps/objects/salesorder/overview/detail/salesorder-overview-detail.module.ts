@@ -19,6 +19,7 @@ import { PartyContactMechanismOverviewPanelModule } from '../../../partycontactm
 import { SerialisedItemOverviewPanelModule } from '../../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
+import { PartyInlineModule } from '../../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../../contactmechanism/inline/contactmechanism-inline.module';
 import { PostalAddressInlineModule } from '../../../postaladdress/inline/postaladdress-inline.module';
@@ -34,6 +35,7 @@ export { SalesOrderOverviewDetailComponent } from './salesorder-overview-detail.
     SalesOrderOverviewDetailComponent,
   ],
   imports: [
+    PartyInlineModule,
     PersonInlineModule,
     ContactMechanismInlineModule,
     PostalAddressInlineModule,

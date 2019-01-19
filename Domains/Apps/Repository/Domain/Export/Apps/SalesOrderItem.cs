@@ -290,6 +290,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
         [Workspace]
         public SerialisedInventoryItem ReservedFromSerialisedInventoryItem { get; set; }
 
