@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
   providers: [ContextService]
@@ -50,10 +50,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private router: Router,
     private snackBar: MatSnackBar,
-    public stateService: StateService,
-    private dialogService: AllorsMaterialDialogService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
   }
@@ -143,7 +141,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.serialisedItem = this.orderItem.SerialisedItem;
 
           if (this.orderItem.InvoiceItemType === this.productItemType) {
-            this.refreshSerialisedItems(this.quoteItem.Product);
+            this.refreshSerialisedItems(this.orderItem.Product);
           }
 
           if (this.orderItem.DiscountAdjustment) {
@@ -181,11 +179,13 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
+    this.onSave();
+
     this.allors.context.save()
       .subscribe(() => {
         const data: ObjectData = {
-          id: this.quoteItem.id,
-          objectType: this.quoteItem.objectType,
+          id: this.orderItem.id,
+          objectType: this.orderItem.objectType,
         };
 
         this.dialogRef.close(data);
@@ -195,18 +195,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  public update(): void {
-    const { context } = this.allors;
+  private onSave() {
 
-    context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    if (this.orderItem.InvoiceItemType !== this.productItemType) {
+      this.orderItem.QuantityOrdered = 1;
+    }
   }
 
   private refreshSerialisedItems(good: Product): void {
