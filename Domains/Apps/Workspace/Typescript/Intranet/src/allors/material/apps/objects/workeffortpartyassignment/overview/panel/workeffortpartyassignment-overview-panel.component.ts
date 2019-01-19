@@ -81,7 +81,8 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const partypullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_party`;

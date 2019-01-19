@@ -94,7 +94,8 @@ export class RequestItemOverviewPanelComponent {
         this.submit
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const pullName = `${panel.name}_${this.m.RequestItem.name}`;

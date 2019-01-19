@@ -81,7 +81,8 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const pullName = `${this.panel.name}_${this.m.SupplierOffering.name}`;

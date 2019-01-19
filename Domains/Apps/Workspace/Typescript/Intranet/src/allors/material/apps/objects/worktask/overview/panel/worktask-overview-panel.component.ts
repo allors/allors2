@@ -76,7 +76,8 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
         this.delete,
       ],
       defaultAction: this.overviewService.overview(),
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const customerPullName = `${this.panel.name}_${this.m.WorkEffort.name}_customer`;

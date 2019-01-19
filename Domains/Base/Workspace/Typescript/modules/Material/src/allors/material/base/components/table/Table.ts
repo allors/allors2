@@ -54,6 +54,7 @@ export class Table<Row extends TableRow> extends BaseTable {
       }
 
       this.autoSort = config.autoSort;
+      this.autoFilter = config.autoFilter;
     }
 
     this.dataSource = new MatTableDataSource();

@@ -22,6 +22,8 @@ export abstract class BaseTable {
 
   total: number;
 
+  autoFilter: boolean;
+
   get sortValue(): Sort {
     return this.sort$.getValue();
   }
@@ -71,5 +73,10 @@ export abstract class BaseTable {
 
   sort(event: Sort): void {
     this.sort$.next(event);
+  }
+
+  filter(event: any): void {
+    const value = event && event.target && event.target.value;
+    this.dataSource.filter = value;
   }
 }

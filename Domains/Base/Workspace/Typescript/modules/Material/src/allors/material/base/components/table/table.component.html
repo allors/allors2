@@ -1,5 +1,16 @@
 <div>
-  <table mat-table matSort [dataSource]="table.dataSource" [matSortActive]="table.sortValue?.active" [matSortDirection]="table.sortValue?.direction" (matSortChange)="table.sort($event)">
+  <div *ngIf="table.autoFilter" class="container-fluid a-search">
+    <div class="row m-3" style="border-bottom: 1px dotted lightgray">
+      <input #filterInput matInput class="col pl-3 pr-3 pb-3" placeholder="Filter" (keyup)="table.filter($event)">
+
+      <button *ngIf="table.dataSource.filter" style="margin-top: -10px" mat-button mat-icon-button aria-label="Clear Filters" (click)="table.filter(); filterInput.value = null; $event.stopPropagation();">
+          <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <table mat-table matSort [dataSource]="table.dataSource" [matSortActive]="table.sortValue?.active" [matSortDirection]="table.sortValue?.direction"
+    (matSortChange)="table.sort($event)">
 
     <ng-container *ngIf="table.selection" matColumnDef="select" sticky>
       <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()" style="width: 4rem">
@@ -15,7 +26,8 @@
 
     <ng-container *ngFor="let column of table.columns" matColumnDef="{{column.name}}">
       <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="!column.sort">{{column.label}}</th>
-      <td mat-cell *matCellDef="let element" (click)="onCellClick(element, column)" [style.cursor]="cellStyle(element, column)"> {{element[column.name]}} </td>
+      <td mat-cell *matCellDef="let element" (click)="onCellClick(element, column)" [style.cursor]="cellStyle(element, column)">
+        {{element[column.name]}} </td>
     </ng-container>
 
     <ng-container *ngIf="table.hasActions" matColumnDef="menu" stickyEnd>
@@ -35,4 +47,5 @@
   </table>
 </div>
 
-<mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions" (page)="table.page($event)"></mat-paginator>
+<mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions"
+  (page)="table.page($event)"></mat-paginator>

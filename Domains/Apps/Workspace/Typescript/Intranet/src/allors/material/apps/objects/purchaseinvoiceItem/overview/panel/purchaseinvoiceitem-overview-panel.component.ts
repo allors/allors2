@@ -75,7 +75,8 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
         this.delete,
       ],
       defaultAction: this.edit,
-      autoSort: true
+      autoSort: true,
+      autoFilter: true,
     });
 
     const pullName = `${panel.name}_${this.m.PurchaseInvoiceItem.name}`;
