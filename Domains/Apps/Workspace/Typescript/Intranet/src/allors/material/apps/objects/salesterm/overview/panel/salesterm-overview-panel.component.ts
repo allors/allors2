@@ -1,13 +1,13 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget } from '../../../../../../angular';
-import { RequestItem as SalesOrderItem, SalesTerm, SalesInvoice } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { SalesTerm, SalesInvoice, SalesOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
-import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../../material/base/services/object';
+import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
+import { RoleType, ConcreteRoleType } from 'src/allors/framework/meta/Data';
 interface Row extends TableRow {
   object: SalesTerm;
   name: string;
@@ -21,6 +21,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SalesTermOverviewPanelComponent {
+  container: any;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -38,8 +39,16 @@ export class SalesTermOverviewPanelComponent {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
-      associationRoleType: this.metaService.m.Request.RequestItems,
+      associationRoleType: this.containerRoleType,
     };
+  }
+
+  get containerRoleType(): any {
+    if (this.container.objectType.name === this.m.SalesOrder.name) {
+      return this.m.SalesOrder.SalesTerms;
+    } else {
+      return this.m.SalesInvoice.SalesTerms;
+    }
   }
 
   constructor(
@@ -80,6 +89,8 @@ export class SalesTermOverviewPanelComponent {
       autoFilter: true,
     });
 
+    const salesOrderTermsPullName = `${panel.name}_${this.m.SalesOrder.name}_terms`;
+    const salesInvoiceTermsPullName = `${panel.name}_${this.m.SalesInvoice.name}_terms`;
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
     const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
 
@@ -90,7 +101,7 @@ export class SalesTermOverviewPanelComponent {
 
       pulls.push(
         pull.SalesOrder({
-          name: salesOrderPullName,
+          name: salesOrderTermsPullName,
           object: id,
           fetch: {
             SalesTerms: {
@@ -101,7 +112,7 @@ export class SalesTermOverviewPanelComponent {
           }
         }),
         pull.SalesInvoice({
-          name: salesInvoicePullName,
+          name: salesInvoiceTermsPullName,
           object: id,
           fetch: {
             SalesTerms: {
@@ -110,15 +121,23 @@ export class SalesTermOverviewPanelComponent {
               }
             }
           }
-        })
-
+        }),
+        pull.SalesOrder({
+          name: salesOrderPullName,
+          object: id,
+        }),
+        pull.SalesInvoice({
+          name: salesInvoicePullName,
+          object: id,
+        }),
       );
     };
 
     panel.onPulled = (loaded) => {
 
-      this.objects = loaded.collections[salesOrderPullName] as SalesTerm[] || loaded.collections[salesInvoicePullName] as SalesTerm[];
-      this.table.total = loaded.values[`${salesOrderPullName}_total`] || loaded.values[`${salesInvoicePullName}_total`] || this.objects.length;
+      this.container = loaded.objects[salesOrderPullName] as SalesOrder || loaded.objects[salesInvoicePullName] as SalesInvoice;
+      this.objects = loaded.collections[salesOrderTermsPullName] as SalesTerm[] || loaded.collections[salesInvoiceTermsPullName] as SalesTerm[];
+      this.table.total = loaded.values[`${salesOrderTermsPullName}_total`] || loaded.values[`${salesInvoiceTermsPullName}_total`] || this.objects.length;
       this.table.data = this.objects.map((v) => {
         return {
           object: v,

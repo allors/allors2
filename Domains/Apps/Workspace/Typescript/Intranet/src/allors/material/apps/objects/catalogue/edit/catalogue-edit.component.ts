@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
@@ -41,7 +41,6 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
     private stateService: StateService) {
 
     this.m = this.metaService.m;

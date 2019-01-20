@@ -15,10 +15,6 @@ import * as SalesInvoiceOverview from '../allors/material/apps/objects/salesinvo
 import * as SalesInvoiceItemEdit from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import * as RepeatingSalesInvoiceEdit from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 
-import * as IncoTermEdit from '../allors/material/apps/objects/incoterm/edit/incoterm-edit.module';
-import * as InvoiceTermEdit from '../allors/material/apps/objects/invoiceterm/edit/invoiceterm-edit.module';
-import * as OrderTermEdit from '../allors/material/apps/objects/orderterm/edit/orderterm-edit.module';
-
 import * as PersonList from 'src/allors/material/apps/objects/person/list/person-list.module';
 import * as PersonOverview from 'src/allors/material/apps/objects/person/overview/person-overview.module';
 
@@ -56,13 +52,7 @@ const modules = [
 
   CommunicationEventList.CommunicationEventListModule,
 
-  IncoTermEdit.IncoTermEditModule,
-
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
-
-  InvoiceTermEdit.InvoiceTermEditModule,
-
-  OrderTermEdit.OrderTermEditModule,
 
   OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,

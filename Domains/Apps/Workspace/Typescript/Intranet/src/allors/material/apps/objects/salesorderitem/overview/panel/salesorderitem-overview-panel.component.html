@@ -1,4 +1,4 @@
-<div *ngIf="panel.isCollapsed" (click)="panel.toggle()">
+<div *ngIf="panel.isCollapsed" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
       <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
