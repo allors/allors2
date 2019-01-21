@@ -8,6 +8,16 @@ export class FilterField {
 
   display: string;
 
+  get argument() {
+    let value = (this.value2 !== undefined && this.value2 !== null) ? [this.value, this.value2] : this.value;
+
+    if (this.definition.isLike) {
+      value = value + '%';
+    }
+
+    return value;
+  }
+
   constructor(fields?: Partial<FilterField>) {
     Object.assign(this, fields);
   }

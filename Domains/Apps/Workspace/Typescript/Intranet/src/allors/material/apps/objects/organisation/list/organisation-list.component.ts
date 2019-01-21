@@ -4,11 +4,11 @@ import { combineLatest, Subscription } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory } from '../../../../../angular';
 import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
-import { Organisation } from '../../../../../domain';
+import { Organisation, Country } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -60,7 +60,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
     const { m } = this.metaService;
 
-    this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)'});
+    this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)' });
 
     this.table = new Table({
       selection: true,
@@ -88,9 +88,29 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
+      new ContainedIn({
+        propertyType: m.Party.GeneralCorrespondence,
+        extent: new Filter({
+          objectType: m.PostalAddress,
+          predicate: new ContainedIn({
+            propertyType: m.PostalAddress.Country,
+            parameter: 'country'
+          })
+        })
+      })
     ]);
 
-    // this.filterService.init(predicate);
+    const countrySearch = new SearchFactory({
+      objectType: m.Country,
+      roleTypes: [m.Country.Name],
+    });
+
+    this.filterService.init(predicate, {
+      country: {
+        search: countrySearch,
+        display: (v: Country) => v.Name
+      }
+    });
 
     const sorter = new Sorter(
       {

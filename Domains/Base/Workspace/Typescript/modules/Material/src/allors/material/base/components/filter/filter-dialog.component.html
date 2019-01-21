@@ -1,31 +1,32 @@
 <mat-dialog-content>
     <form [formGroup]="formGroup">
-        <mat-vertical-stepper #stepper [linear]="true">
+        <mat-vertical-stepper #stepper [linear]="true" (selectionChange)="stepperSelectionChange($event)">
 
-            <mat-step>
+            <mat-step [completed]="!!filterFieldDefinition">
                 <ng-template matStepLabel>
-                    Field
+                    <span *ngIf="!filterFieldDefinition">Field</span>
+                    <span *ngIf="!!filterFieldDefinition">
+                        {{filterFieldDefinition.fieldName}}</span>
                 </ng-template>
-                <mat-form-field>
-                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="filterFieldDefinition = $event.value; stepper.next()">
-                        <mat-option *ngFor="let definition of filterService.filterFieldDefinitions" [value]="definition">
-                            {{definition.predicate.parameter}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="mt-3">
+                    <button mat-flat-button color="accent" class="mr-1" *ngFor="let definition of filterService.filterFieldDefinitions"
+                        (click)="selected(definition);">{{definition.fieldName}}</button>
+                </div>
             </mat-step>
 
             <mat-step>
                 <ng-template matStepLabel>
-                    Filter
+                    <span *ngIf="!filterFieldDefinition">Criteria</span>
+                    <span *ngIf="!!filterFieldDefinition">
+                        {{filterFieldDefinition.criteria}}</span>
                 </ng-template>
 
                 <mat-form-field *ngIf="filterFieldDefinition && !filterFieldDefinition.options.search">
-                    <input matInput placeholder="Value" formControlName="value" required>
+                    <input aFocus matInput placeholder="Value" formControlName="value" required (keyup.enter)="apply()">
                 </mat-form-field>
 
                 <div *ngIf="filterFieldDefinition && filterFieldDefinition.options.search">
-                    <a-mat-filter-search [parent]="formGroup"></a-mat-filter-search>
+                    <a-mat-filter-search [parent]="formGroup" [filterFieldDefinition]="filterFieldDefinition" (apply)="apply()"></a-mat-filter-search>
                 </div>
 
                 <div>
