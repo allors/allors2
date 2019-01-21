@@ -1,16 +1,13 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, InternalOrganisation, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, SalesOrder, SalesInvoice, RepeatingSalesInvoice } from '../../../../../../domain';
+import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesOrder, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -21,70 +18,84 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  readonly m: Meta;
 
-  public order: SalesOrder;
-  public invoice: SalesInvoice;
-  public repeatingInvoices: RepeatingSalesInvoice[];
-  public repeatingInvoice: RepeatingSalesInvoice;
-  public goods: Good[] = [];
+  invoice: SalesInvoice;
+  order: SalesOrder;
+  goods: Good[] = [];
+  internalOrganisation: Organisation;
+  currencies: Currency[];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  billToContactMechanisms: ContactMechanism[] = [];
+  billToContacts: Person[] = [];
+  billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  billToEndCustomerContacts: Person[] = [];
+  shipToAddresses: ContactMechanism[] = [];
+  shipToContacts: Person[] = [];
+  shipToEndCustomerAddresses: ContactMechanism[] = [];
+  shipToEndCustomerContacts: Person[] = [];
 
-  public internalOrganisations: InternalOrganisation[];
-  public currencies: Currency[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
+  addShipToCustomer = false;
+  addShipToAddress = false;
+  addShipToContactPerson = false;
 
-  public billToContactMechanisms: ContactMechanism[];
-  public billToContacts: Person[];
-  public billToEndCustomerContactMechanisms: ContactMechanism[];
-  public billToEndCustomerContacts: Person[];
-  public shipToAddresses: ContactMechanism[];
-  public shipToContacts: Person[];
-  public shipToEndCustomerAddresses: ContactMechanism[];
-  public shipToEndCustomerContacts: Person[];
+  addBillToCustomer = false;
+  addBillToContactMechanism = false;
+  addBillToContactPerson = false;
 
-  public addBillToContactMechanism = false;
-  public addBillToContactPerson = false;
-  public addBillToEndCustomerContactMechanism = false;
-  public addBillToEndCustomerContactPerson = false;
-  public addShipToAddress = false;
-  public addShipToContactPerson = false;
-  public addShipToEndCustomerAddress = false;
-  public addShipToEndCustomerContactPerson = false;
+  addShipToEndCustomer = false;
+  addShipToEndCustomerAddress = false;
+  addShipToEndCustomerContactPerson = false;
+
+  addBillToEndCustomer = false;
+  addBillToEndCustomerContactMechanism = false;
+  addBillToEndCustomerContactPerson = false;
 
   private previousShipToCustomer: Party;
   private previousShipToEndCustomer: Party;
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-
   private fetcher: Fetcher;
   private subscription: Subscription;
+
+  get billToCustomerIsPerson(): boolean {
+    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
+  }
+
+  get shipToCustomerIsPerson(): boolean {
+    return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
+  }
+
+  get billToEndCustomerIsPerson(): boolean {
+    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === this.m.Person.name;
+  }
+
+  get shipToEndCustomerIsPerson(): boolean {
+    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === this.m.Person.name;
+  }
 
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public location: Location,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
-    panel.title = 'Purchase Invoice Details';
+    panel.title = 'Sales Invoice Details';
     panel.icon = 'business';
     panel.expandable = true;
 
     // Normal
-    const salesInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
-    const salesOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
+    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
-    const repeatingSalesInvoicePullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, x } = this.metaService;
@@ -146,14 +157,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           name: goodPullName,
           sort: new Sort(m.Good.Name),
         }),
-        pull.RepeatingSalesInvoice({
-          name: repeatingSalesInvoicePullName,
-          predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, object: id }),
-          include: {
-            Frequency: x,
-            DayOfWeek: x
-          }
-        }),
       );
     };
 
@@ -161,26 +164,20 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
       this.goods = loaded.collections.Goods as Good[];
       this.order = loaded.objects.SalesOrder as SalesOrder;
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
-      this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
-      if (this.repeatingInvoices.length > 0) {
-        this.repeatingInvoice = this.repeatingInvoices[0];
-      } else {
-        this.repeatingInvoice = undefined;
-      }
     };
   }
 
   public ngOnInit(): void {
 
-    // Maximized
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    // Expanded
+    this.subscription = this.panel.manager.on$
       .pipe(
-        filter((v) => {
+        filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([urlSegments, date, , internalOrganisationId]) => {
+        switchMap(() => {
 
-          this.order = undefined;
+          this.invoice = undefined;
 
           const { m, pull, x } = this.metaService;
           const id = this.panel.manager.id;
@@ -235,31 +232,29 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.order = loaded.objects.SalesOrder as SalesOrder;
 
         if (this.invoice.BillToCustomer) {
+          this.previousBillToCustomer = this.invoice.BillToCustomer;
           this.updateBillToCustomer(this.invoice.BillToCustomer);
         }
 
         if (this.invoice.BillToEndCustomer) {
+          this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
           this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
         if (this.invoice.ShipToCustomer) {
+          this.previousShipToCustomer = this.invoice.ShipToCustomer;
           this.updateShipToCustomer(this.invoice.ShipToCustomer);
         }
 
         if (this.invoice.ShipToEndCustomer) {
+          this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
-
-        this.previousShipToCustomer = this.invoice.ShipToCustomer;
-        this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
-        this.previousBillToCustomer = this.invoice.BillToCustomer;
-        this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       }, this.errorService.handler);
   }
 
@@ -269,52 +264,92 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  public billToContactPersonAdded(id: string): void {
+  public save(): void {
 
-    const contact: Person = this.allors.context.get(id) as Person;
+    this.allors.context
+      .save()
+      .subscribe(() => {
+        this.panel.toggle();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public shipToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.ShipToCustomer = party;
+  }
+
+  public billToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.BillToCustomer = party;
+  }
+
+  public shipToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.ShipToEndCustomer = party;
+  }
+
+  public billToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party as Party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.BillToEndCustomer = party;
+  }
+
+  public billToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToContacts.push(contact);
-    this.invoice.BillToContactPerson = contact;
+    this.billToContacts.push(person);
+    this.invoice.BillToContactPerson = person;
   }
 
-  public billToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public billToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.billToEndCustomerContacts.push(contact);
-    this.invoice.BillToEndCustomerContactPerson = contact;
+    this.billToEndCustomerContacts.push(person);
+    this.invoice.BillToEndCustomerContactPerson = person;
   }
 
-  public shipToContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToContacts.push(contact);
-    this.invoice.ShipToContactPerson = contact;
+    this.shipToContacts.push(person);
+    this.invoice.ShipToContactPerson = person;
   }
 
-  public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public shipToEndCustomerContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
+    organisationContactRelationship.Contact = person;
 
-    this.shipToEndCustomerContacts.push(contact);
-    this.invoice.ShipToEndCustomerContactPerson = contact;
+    this.shipToEndCustomerContacts.push(person);
+    this.invoice.ShipToEndCustomerContactPerson = person;
   }
 
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
@@ -345,44 +380,57 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public save(): void {
+  public billToCustomerSelected(party: Party) {
+    if (party) {
+      this.updateBillToCustomer(party);
+    }
+  }
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+  public billToEndCustomerSelected(party: Party) {
+    if (party) {
+      this.updateBillToEndCustomer(party);
+    }
+  }
+
+  public shipToCustomerSelected(party: Party) {
+    if (party) {
+      this.updateShipToCustomer(party);
+    }
+  }
+
+  public shipToEndCustomerSelected(party: Party) {
+    if (party) {
+      this.updateShipToEndCustomer(party);
+    }
   }
 
   private updateBillToCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party({
-        object: party.id,
-        fetch: {
-          CurrentPartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism(
-          {
-            ContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
               }
             }
           }
-        )
-      }),
-      pull.Party({
-        object: party.id,
-        fetch: {
-          CurrentContacts: x
         }
-      })
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -400,34 +448,38 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateShipToCustomer(this.invoice.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
   }
 
   private updateShipToCustomer(party: Party): void {
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party({
-        object: party.id,
-        fetch: {
-          PartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism({
-          ContactMechanism: {
-            PostalAddress_PostalBoundary: {
-              Country: x
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
             }
           }
-        })
-      }),
-      pull.Party({
-        fetch: {
-          CurrentContacts: x
         }
-      })
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -445,7 +497,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateBillToCustomer(this.invoice.ShipToCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
@@ -453,29 +505,31 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party({
-        object: party.id,
-        fetch: {
-          CurrentPartyContactMechanisms: x,
-        },
-        include: tree.PartyContactMechanism(
-          {
-            ContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
               }
             }
           }
-        )
-      }),
-      pull.Party({
-        fetch: {
-          CurrentContacts: x
         }
-      })
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -493,7 +547,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
@@ -501,25 +555,30 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
       pull.Party({
         object: party,
         fetch: {
-          CurrentPartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism({
-          ContactMechanism: {
-            PostalAddress_PostalBoundary: {
-              Country: x
-            }
-          }
-        })
-      }),
-      pull.Party({
-        object: party,
-        fetch: { CurrentContacts: x }
+          CurrentContacts: x,
+        }
       }),
     ];
 
@@ -538,10 +597,9 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       }, this.errorService.handler);
   }
-
 }

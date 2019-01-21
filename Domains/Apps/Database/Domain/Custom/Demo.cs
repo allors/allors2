@@ -492,7 +492,6 @@ line2")
 
                 var salesInvoice = new SalesInvoiceBuilder(this.Session)
                     .WithBilledFrom(allors)
-                    .WithInvoiceNumber("1")
                     .WithBillToCustomer(acme)
                     .WithBillToContactPerson(contact1)
                     .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)

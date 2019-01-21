@@ -128,6 +128,7 @@ export class SalesOrderItemOverviewPanelComponent {
           fetch: {
             SalesOrderItems: {
               include: {
+                SalesOrderItemState: x,
                 Product: x,
                 SerialisedItem: x,
               }

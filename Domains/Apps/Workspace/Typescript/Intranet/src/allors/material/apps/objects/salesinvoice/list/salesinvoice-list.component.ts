@@ -1,19 +1,22 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { Meta } from '../../../../../meta';
 import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action } from '../../../../../angular';
 import { SalesInvoice } from '../../../../../domain';
-import { And, Like, PullRequest, Sort } from '../../../../../framework';
+import { And, Like, PullRequest, Sort, Equals } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, StateService } from '../../../../../material';
+import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
   object: SalesInvoice;
   number: string;
   billedTo: string;
+  status: string;
   reference: string;
   description: string;
   lastModifiedDate: string;
@@ -25,11 +28,20 @@ interface Row extends TableRow {
 })
 export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
+  readonly m: Meta;
+
   public title = 'Sales Invoices';
 
   table: Table<Row>;
 
   delete: Action;
+  print: Action;
+  send: Action;
+  cancel: Action;
+  writeOff: Action;
+  copy: Action;
+  credit: Action;
+  reopen: Action;
 
   private subscription: Subscription;
 
@@ -37,6 +49,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
+    public methodService: MethodService,
     public printService: PrintService,
     public overviewService: OverviewService,
     public deleteService: DeleteService,
@@ -49,6 +62,16 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
+    this.m = this.metaService.m;
+
+    this.print = printService.print();
+    this.send = methodService.create(allors.context, this.m.SalesInvoice.Send, { name: 'Send' });
+    this.cancel = methodService.create(allors.context, this.m.SalesInvoice.CancelInvoice, { name: 'Cancel' });
+    this.writeOff = methodService.create(allors.context, this.m.SalesInvoice.WriteOff, { name: 'WriteOff' });
+    this.copy = methodService.create(allors.context, this.m.SalesInvoice.Copy, { name: 'Copy' });
+    this.credit = methodService.create(allors.context, this.m.SalesInvoice.Credit, { name: 'Credit' });
+    this.reopen = methodService.create(allors.context, this.m.SalesInvoice.Reopen, { name: 'Reopen' });
+
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
@@ -57,16 +80,22 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
+        { name: 'number', sort: true },
         { name: 'billedTo' },
-        { name: 'reference' },
-        { name: 'description' },
-        'lastModifiedDate'
+        { name: 'reference', sort: true },
+        { name: 'status' },
+        { name: 'description', sort: true },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
-        this.printService.print(),
-        this.delete
+        this.delete,
+        this.print,
+        this.cancel,
+        this.writeOff,
+        this.copy,
+        this.credit,
+        this.reopen,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -77,8 +106,10 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
+    const internalOrganisationPredicate = new Equals({ propertyType: m.SalesInvoice.BilledFrom });
     const predicate = new And([
       new Like({ roleType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
+      internalOrganisationPredicate
     ]);
 
     this.filterService.init(predicate);
@@ -86,21 +117,26 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     const sorter = new Sorter(
       {
         number: m.SalesInvoice.InvoiceNumber,
-        lastModifiedDate: m.Person.LastModifiedDate,
+        reference: m.SalesInvoice.CustomerReference,
+        description: m.SalesInvoice.Description,
+        lastModifiedDate: m.SalesInvoice.LastModifiedDate,
       }
     );
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.SalesInvoice({
@@ -128,6 +164,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
             object: v,
             number: v.InvoiceNumber,
             billedTo: v.BillToCustomer.displayName,
+            status: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

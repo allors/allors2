@@ -5,12 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { ProductQuoteCreateComponent } from '../../productquote/create/productquote-create.module';
 import { CreateData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
@@ -24,8 +23,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   title = 'Add Sales Order';
 
   order: SalesOrder;
-  quote: ProductQuote;
-  internalOrganisations: InternalOrganisation[];
   currencies: Currency[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToEndCustomerContactMechanisms: ContactMechanism[] = [];
@@ -38,6 +35,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   shipToContacts: Person[] = [];
   shipToEndCustomerContacts: Person[] = [];
   stores: Store[];
+  internalOrganisation: Organisation;
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -55,13 +53,12 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   addBillToEndCustomerContactMechanism = false;
   addBillToEndCustomerContactPerson = false;
 
-  private subscription: Subscription;
   private previousShipToCustomer: Party;
   private previousShipToEndCustomer: Party;
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
+  private subscription: Subscription;
   private fetcher: Fetcher;
-  internalOrganisation: Organisation;
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -82,7 +79,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
-    public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
+    public dialogRef: MatDialogRef<SalesOrderCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
     private errorService: ErrorService,
@@ -104,7 +101,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
             this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
-            pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
+            pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
               include: { BillingProcess: x },
@@ -134,7 +131,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
         if (this.order.ShipToCustomer) {
           this.updateShipToCustomer(this.order.ShipToCustomer);

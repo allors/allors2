@@ -42,6 +42,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
   billingForOrderItems: BillingProcess;
   selectedSerialisedInventoryState: string;
   inventoryItemStates: SerialisedInventoryItemState[];
+  internalOrganisation: Organisation;
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -66,7 +67,6 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private fetcher: Fetcher;
   private subscription: Subscription;
-  internalOrganisation: Organisation;
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -265,7 +265,6 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.internalOrganisations = loaded.collections.InternalOrganisations as InternalOrganisation[];
 
         if (this.order.ShipToCustomer) {
           this.previousShipToCustomer = this.order.ShipToCustomer;

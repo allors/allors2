@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { ProductQuote, Quote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../domain';
+import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
@@ -17,7 +17,6 @@ export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Quote';
 
-  public quote: ProductQuote;
   public order: SalesOrder;
   public orderItems: SalesOrderItem[] = [];
   public goods: Good[] = [];

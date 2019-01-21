@@ -1,16 +1,18 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
-import { RequestItem as SalesOrderItem, SalesInvoiceItem } from '../../../../../../domain';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ContextService } from '../../../../../../angular';
+import { SalesInvoiceItem, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
+import * as moment from 'moment';
 
-import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../base/services/object';
+import { CreateData, ObjectService } from '../../../../../base/services/object';
+
 interface Row extends TableRow {
   object: SalesInvoiceItem;
   item: string;
+  status: string;
   quantity: number;
 }
 
@@ -18,9 +20,10 @@ interface Row extends TableRow {
   // tslint:disable-next-line:component-selector
   selector: 'salesinvoiceitem-overview-panel',
   templateUrl: './salesinvoiceitem-overview-panel.component.html',
-  providers: [PanelService]
+  providers: [ContextService, PanelService]
 })
 export class SalesInvoiceItemOverviewPanelComponent {
+  invoice: SalesInvoice;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -38,11 +41,12 @@ export class SalesInvoiceItemOverviewPanelComponent {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
-      associationRoleType: this.metaService.m.Request.RequestItems,
+      associationRoleType: this.metaService.m.SalesInvoice.SalesInvoiceItems,
     };
   }
 
   constructor(
+    @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public objectService: ObjectService,
     public metaService: MetaService,
@@ -69,6 +73,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'status', sort },
         { name: 'quantity', sort },
       ],
       actions: [
@@ -81,6 +86,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
     });
 
     const pullName = `${panel.name}_${this.m.SalesInvoiceItem.name}`;
+    const invoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -94,25 +100,32 @@ export class SalesInvoiceItemOverviewPanelComponent {
           fetch: {
             SalesInvoiceItems: {
               include: {
+                SalesInvoiceItemState: x,
                 InvoiceItemType: x,
               }
             }
           }
-        }));
+        }),
+        pull.SalesInvoice({
+          name: invoicePullName,
+          object: id
+        }),
+      );
     };
 
     panel.onPulled = (loaded) => {
 
       this.salesInvoiceItems = loaded.collections[pullName] as SalesInvoiceItem[];
+      this.invoice = loaded.objects[invoicePullName] as SalesInvoice;
       this.table.total = loaded.values[`${pullName}_total`] || this.salesInvoiceItems.length;
       this.table.data = this.salesInvoiceItems.map((v) => {
         return {
           object: v,
-          item:  (v.InvoiceItemType && v.InvoiceItemType.Name) || '',
+          item: (v.InvoiceItemType && v.InvoiceItemType.Name) || '',
+          status: `${v.SalesInvoiceItemState && v.SalesInvoiceItemState.Name}`,
           quantity: v.Quantity,
         } as Row;
       });
     };
-
   }
 }

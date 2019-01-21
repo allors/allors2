@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -13,11 +13,10 @@ import { StateService } from '../../../services/state';
   templateUrl: './salesinvoice-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
+export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Sales Invoice';
 
-  public order: SalesOrder;
   public invoice: SalesInvoice;
   public repeatingInvoices: RepeatingSalesInvoice[];
   public repeatingInvoice: RepeatingSalesInvoice;
@@ -40,7 +39,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -54,6 +53,8 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
           this.panelManager.expanded = navRoute.panel();
 
           const { id } = this.panelManager;
+
+          this.panelManager.on();
 
           const pulls = [
             pull.SalesInvoice({
@@ -131,7 +132,6 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
         this.panelManager.onPulled(loaded);
 
         this.goods = loaded.collections.Goods as Good[];
-        this.order = loaded.objects.SalesOrder as SalesOrder;
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
         if (this.repeatingInvoices.length > 0) {

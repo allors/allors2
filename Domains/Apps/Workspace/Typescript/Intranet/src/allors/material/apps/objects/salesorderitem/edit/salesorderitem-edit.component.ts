@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Router } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
@@ -9,9 +8,9 @@ import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Produ
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
+
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
   providers: [ContextService]
@@ -21,7 +20,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   readonly m: Meta;
 
   title: string;
-  subTitle: string;
   order: SalesOrder;
   orderItem: SalesOrderItem;
   quoteItem: QuoteItem;
@@ -36,12 +34,12 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   serialisedItemStates: SerialisedItemState[];
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
+  part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
 
   private previousProduct;
   private subscription: Subscription;
-  part: Part;
 
   constructor(
     @Self() public allors: ContextService,
@@ -50,7 +48,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -167,16 +164,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goodSelected(object: any) {
-    if (object) {
-      this.refreshSerialisedItems(object as Product);
-    }
-  }
-
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-  }
-
   public save(): void {
 
     this.onSave();
@@ -193,6 +180,16 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public goodSelected(object: any) {
+    if (object) {
+      this.refreshSerialisedItems(object as Product);
+    }
+  }
+
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
   }
 
   private onSave() {

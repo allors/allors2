@@ -1,9 +1,10 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService } from '../../../../../../angular';
-import { Good, PurchaseOrder, PurchaseInvoice, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, SalesInvoiceItem } from '../../../../../../domain';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService, Action } from '../../../../../../angular';
+import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, SalesInvoiceItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { Sort, Equals } from 'src/allors/framework';
+import { PrintService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,21 +16,26 @@ export class SalesInvoiceOverviewSummaryComponent {
 
   m: Meta;
 
-  public order: SalesOrder;
-  public invoice: SalesInvoice;
-  public repeatingInvoices: RepeatingSalesInvoice[];
-  public repeatingInvoice: RepeatingSalesInvoice;
-  public goods: Good[] = [];
+  invoice: SalesInvoice;
+  order: SalesOrder;
+  repeatingInvoices: RepeatingSalesInvoice[];
+  repeatingInvoice: RepeatingSalesInvoice;
+  goods: Good[] = [];
+
+  print: Action;
 
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public navigation: NavigationService,
+    public printService: PrintService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar,
     public errorService: ErrorService) {
 
     this.m = this.metaService.m;
+
+    this.print = printService.print();
 
     panel.name = 'summary';
 
@@ -55,6 +61,7 @@ export class SalesInvoiceOverviewSummaryComponent {
             SalesTerms: {
               TermType: x,
             },
+            PrintDocument: x,
             BillToCustomer: x,
             BillToContactPerson: x,
             ShipToCustomer: x,
@@ -122,14 +129,10 @@ export class SalesInvoiceOverviewSummaryComponent {
     };
   }
 
-  print() {
-    // TODO:
-  }
-
   send() {
 
     this.panel.manager.context.invoke(this.invoice.Send)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
       },
@@ -141,7 +144,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.invoice.CancelInvoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -153,7 +156,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   public writeOff(): void {
 
     this.panel.manager.context.invoke(this.invoice.WriteOff)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
       },
@@ -165,7 +168,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   public reopen(): void {
 
     this.panel.manager.context.invoke(this.invoice.Reopen)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
       },
@@ -177,7 +180,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   public credit(): void {
 
     this.panel.manager.context.invoke(this.invoice.Credit)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
       },
@@ -189,7 +192,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   public copy(): void {
 
     this.panel.manager.context.invoke(this.invoice.Copy)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
       },
@@ -197,30 +200,5 @@ export class SalesInvoiceOverviewSummaryComponent {
           this.errorService.handle(error);
         });
   }
-
-  public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-
-    this.panel.manager.context.invoke(invoiceItem.Delete)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public deleteSalesTerm(salesTerm: SalesTerm): void {
-
-    this.panel.manager.context.invoke(salesTerm.Delete)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
 }
 

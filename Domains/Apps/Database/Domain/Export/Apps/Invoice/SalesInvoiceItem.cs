@@ -98,7 +98,8 @@ namespace Allors.Domain
 
             this.AppsOnDeriveAmountPaid(derivation);
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.SerialisedInventoryItem, M.SalesInvoiceItem.TimeEntries);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.TimeEntries);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.TimeEntries);
 
             if (this.ExistInvoiceItemType && this.Quantity == 0)
             {

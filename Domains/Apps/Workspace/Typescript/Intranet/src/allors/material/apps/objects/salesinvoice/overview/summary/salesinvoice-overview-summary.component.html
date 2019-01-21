@@ -7,13 +7,8 @@
     <mat-card-title>{{invoice.InvoiceNumber}}</mat-card-title>
 
     <mat-card-subtitle>
-      <div>
-        {{invoice.SalesInvoiceState?.Name}}
-      </div>
-      <div *ngIf="invoice.BilledFromContactPerson">
-        Billed from {{invoice.BilledFromContactPerson?.displayName}}
-      </div>
-
+      <div>{{invoice.SalesInvoiceState?.Name}}</div>
+      <div>{{invoice.ShipToAddress?.displayName}}</div>
     </mat-card-subtitle>
 
     <mat-card-subtitle>
@@ -23,6 +18,26 @@
   </mat-card-header>
 
   <mat-card-content>
+    <mat-card-content>
+      <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
+        <div style="color: grey">
+          Order
+        </div>
+        <div>
+          {{order.OrderNumber}}
+        </div>
+      </div>
+
+      <div (click)="navigation.overview(invoice.BillToCustomer)" style="cursor: pointer;">
+        <div style="color: grey">
+          Bill to
+        </div>
+        <div>
+          {{invoice.BillToCustomer?.displayName}}
+        </div>
+      </div>
+    </mat-card-content>
+
     <div class="container">
       <div class="row">
 
@@ -37,8 +52,7 @@
     <button *ngIf="invoice.CanExecuteCopy" mat-button type="button" (click)="copy()">Copy</button>
     <button *ngIf="invoice.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
     <button *ngIf="invoice.CanExecuteCredit" mat-button type="button" (click)="credit()">Credit</button>
-    <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Preview</button>
-    <button mat-button (click)="print()">Print</button>
+    <button mat-button type="button" (click)="print.execute(invoice)">Print</button>
   </mat-card-actions>
 
 </mat-card>
