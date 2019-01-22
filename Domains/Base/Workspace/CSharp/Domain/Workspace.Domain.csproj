@@ -93,6 +93,8 @@
     <Compile Include="generated\Person.g.cs" />
     <Compile Include="generated\PreparedExtent.g.cs" />
     <Compile Include="generated\PreparedFetch.g.cs" />
+    <Compile Include="generated\Printable.g.cs" />
+    <Compile Include="generated\PrintDocument.g.cs" />
     <Compile Include="generated\Role.g.cs" />
     <Compile Include="generated\S1.g.cs" />
     <Compile Include="generated\SecurityToken.g.cs" />
