@@ -158,7 +158,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
         const salesInvoices = loaded.collections.SalesInvoices as SalesInvoice[];
-        this.table.total = loaded.values.SalesOrders_total;
+        this.table.total = loaded.values.SalesInvoices_total;
         this.table.data = salesInvoices.map((v) => {
           return {
             object: v,

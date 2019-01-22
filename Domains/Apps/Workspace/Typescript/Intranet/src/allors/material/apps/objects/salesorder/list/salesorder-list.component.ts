@@ -26,7 +26,7 @@ interface Row extends TableRow {
   templateUrl: './salesorder-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
+export class SalesOrderListComponent implements OnInit, OnDestroy {
 
   public title = 'Sales Orders';
 

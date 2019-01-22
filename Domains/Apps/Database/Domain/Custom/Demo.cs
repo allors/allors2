@@ -571,7 +571,6 @@ line2")
 
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
                     .WithBilledTo(allors)
-                    .WithInvoiceNumber("1")
                     .WithBilledFrom(supplier)
                     .WithBillToCustomer(allors)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem1)

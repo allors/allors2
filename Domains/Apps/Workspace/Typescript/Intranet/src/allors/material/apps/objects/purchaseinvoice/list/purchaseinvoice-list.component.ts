@@ -1,22 +1,22 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Location } from '@angular/common';
-import { PageEvent, MatSnackBar } from '@angular/material';
 
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { Meta } from '../../../../../meta';
+import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ErrorService, ContextService, MediaService, MetaService, RefreshService, Action } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService } from '../../../../../angular';
 import { PurchaseInvoice } from '../../../../../domain';
-import { And, Like, PullRequest, Sort } from '../../../../../framework';
-import { OverviewService, AllorsMaterialDialogService, Sorter, TableRow, Table, DeleteService, PrintService, StateService } from '../../../../../material';
+import { And, Like, PullRequest, Equals } from '../../../../../framework';
+import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, StateService } from '../../../../../material';
+import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
   object: PurchaseInvoice;
   number: string;
   billedFrom: string;
-  billedTo: string;
+  status: string;
   reference: string;
   lastModifiedDate: string;
 }
@@ -26,11 +26,17 @@ interface Row extends TableRow {
 })
 export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
 
+  readonly m: Meta;
+
   public title = 'Purchase Invoices';
 
   table: Table<Row>;
 
   delete: Action;
+  approve: Action;
+  cancel: Action;
+  finish: Action;
+  createSalesInvoice: Action;
 
   private subscription: Subscription;
 
@@ -39,35 +45,46 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    public navigation: NavigationService,
+    public methodService: MethodService,
     public printService: PrintService,
     public deleteService: DeleteService,
     public overviewService: OverviewService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private location: Location,
     private stateService: StateService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
+    this.m = this.metaService.m;
+
+    this.approve = methodService.create(allors.context, this.m.PurchaseInvoice.Approve, { name: 'Approve' });
+    this.cancel = methodService.create(allors.context, this.m.PurchaseInvoice.CancelInvoice, { name: 'Cancel' });
+    this.finish = methodService.create(allors.context, this.m.PurchaseInvoice.Finish, { name: 'Finish' });
+    this.createSalesInvoice = methodService.create(allors.context, this.m.PurchaseInvoice.CreateSalesInvoice, { name: 'Create Sales Invoice' });
+
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number' },
+        { name: 'number', sort: true },
         { name: 'billedFrom' },
-        { name: 'billedTo' },
-        { name: 'reference' },
-        'lastModifiedDate'
+        { name: 'status' },
+        { name: 'reference', sort: true },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
-        this.printService.print(),
-        this.delete
+        this.delete,
+        this.approve,
+        this.cancel,
+        this.finish,
+        this.createSalesInvoice
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -78,8 +95,10 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
+    const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseInvoice.BilledTo });
     const predicate = new And([
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),
+      internalOrganisationPredicate
     ]);
 
     this.filterService.init(predicate);
@@ -87,21 +106,25 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     const sorter = new Sorter(
       {
         number: m.PurchaseInvoice.InvoiceNumber,
-        lastModifiedDate: m.Person.LastModifiedDate,
+        reference: m.PurchaseInvoice.CustomerReference,
+        lastModifiedDate: m.PurchaseInvoice.LastModifiedDate,
       }
     );
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+
+          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.PurchaseInvoice({
@@ -123,13 +146,13 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
-        this.table.total = loaded.values.SalesOrders_total;
+        this.table.total = loaded.values.PurchaseInvoices_total;
         this.table.data = purchaseInvoices.map((v) => {
           return {
             object: v,
             number: v.InvoiceNumber,
             billedFrom: v.BilledFrom.displayName,
-            billedTo: v.BilledTo.displayName,
+            status: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

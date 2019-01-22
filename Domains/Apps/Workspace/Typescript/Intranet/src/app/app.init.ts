@@ -35,10 +35,11 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SerialisedItemCharacteristic.list = '/products/serialiseditemcharacteristics';
   m.ProductType.list = '/products/producttypes';
 
-  m.PurchaseInvoice.list = '/accounting/purchaseinvoices';
-  m.PurchaseInvoice.overview = '/accounting/purchaseinvoice/:id';
-  m.SalesInvoice.list = '/accounting/salesinvoices';
-  m.SalesInvoice.overview = '/accounting/salesinvoice/:id';
+  m.SalesInvoice.list = '/sales/salesinvoices';
+  m.SalesInvoice.overview = '/sales/salesinvoice/:id';
+
+  m.PurchaseInvoice.list = '/purchasing/purchaseinvoices';
+  m.PurchaseInvoice.overview = '/purchasing/purchaseinvoice/:id';
 
   m.WorkEffort.list = '/workefforts/workefforts';
   m.WorkTask.overview = '/workefforts/worktask/:id';
