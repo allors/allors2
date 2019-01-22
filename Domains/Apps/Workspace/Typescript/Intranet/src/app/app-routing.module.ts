@@ -31,7 +31,7 @@ import * as RequestsForQuoteList from 'src/allors/material/apps/objects/requestf
 import * as RequestForQuoteOverview from 'src/allors/material/apps/objects/requestforquote/overview/requestforquote-overview.module';
 import * as ProductQuotesOverview from 'src/allors/material/apps/objects/productquote/list/productquote-list.module';
 import * as ProductQuoteOverview from 'src/allors/material/apps/objects/productquote/overview/productquote-overview.module';
-import * as SalesOrdersOverview from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
+import * as SalesOrderList from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
@@ -76,7 +76,7 @@ const modules = [
   RequestForQuoteOverview.RequestForQuoteOverviewModule,
   ProductQuotesOverview.ProductQuotesOverviewModule,
   ProductQuoteOverview.ProductQuoteOverviewModule,
-  SalesOrdersOverview.SalesOrdersOverviewModule,
+  SalesOrderList.SalesOrderListModule,
   SalesOrderOverview.SalesOrderOverviewModule,
   RequestItemEdit.RequestItemEditModule,
   QuoteItemEdit.QuoteItemEditModule,
@@ -102,7 +102,6 @@ export const routes: Routes = [
       {
         path: '', component: DashboardComponent,
       },
-      // Relations
       {
         path: 'contacts',
         children: [
@@ -114,7 +113,6 @@ export const routes: Routes = [
         ],
       },
 
-      // Orders
       {
         path: 'sales',
         children: [
@@ -122,12 +120,13 @@ export const routes: Routes = [
           { path: 'requestforquote/:id', component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
           { path: 'productquotes', component: ProductQuotesOverview.ProductQuotesOverviewComponent },
           { path: 'productquote/:id', component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesorders', component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesorders', component: SalesOrderList.SalesOrderListComponent },
           { path: 'salesorder/:id', component: SalesOrderOverview.SalesOrderOverviewComponent },
+          { path: 'salesinvoices', component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
 
-      // Catalogues
       {
         path: 'products',
         children: [
@@ -143,18 +142,14 @@ export const routes: Routes = [
         ],
       },
 
-      // Accounting
       {
-        path: 'accounting',
+        path: 'purchasing',
         children: [
           { path: 'purchaseinvoices', component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
           { path: 'purchaseinvoice/:id', component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
-          { path: 'salesinvoices', component: SalesInvoiceList.SalesInvoiceListComponent },
-          { path: 'salesinvoice/:id', component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
 
-      // WorkEfforts
       {
         path: 'workefforts',
         children: [
@@ -162,23 +157,6 @@ export const routes: Routes = [
           { path: 'worktask/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
-
-      // {
-      //   path: 'communicationevent',
-      //   children: [
-      //     { path: ':id/worktask', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
-      //     { path: ':id/worktask/:roleId', component: CommunicationEventWorkTask.CommunicationEventWorkTaskComponent },
-      //   ],
-      // },
-
-
-      // {
-      //   path: 'request',
-      //   children: [
-      //     { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
-      //     { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-      //   ],
-      // },
     ],
   },
 ];
