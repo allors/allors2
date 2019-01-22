@@ -12,6 +12,7 @@ import { CreateData, ObjectService } from '../../../../../../material/base/servi
 interface Row extends TableRow {
   object: SalesOrderItem;
   item: string;
+  type: string;
   status: string;
   ordered: number;
   shipped: number;
@@ -90,6 +91,7 @@ export class SalesOrderItemOverviewPanelComponent {
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'type', sort },
         { name: 'status', sort },
         { name: 'ordered', sort },
         { name: 'shipped', sort },
@@ -128,6 +130,7 @@ export class SalesOrderItemOverviewPanelComponent {
           fetch: {
             SalesOrderItems: {
               include: {
+                InvoiceItemType: x,
                 SalesOrderItemState: x,
                 Product: x,
                 SerialisedItem: x,
@@ -151,6 +154,7 @@ export class SalesOrderItemOverviewPanelComponent {
         return {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
           status: `${v.SalesOrderItemState && v.SalesOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
           shipped: v.QuantityShipped,

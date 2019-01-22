@@ -83,6 +83,16 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 }
               }
             }),
+            pull.SalesOrderItem({
+              object: this.data.id,
+              fetch: {
+                SalesOrderWhereSalesOrderItem: {
+                  include: {
+                    VatRegime: x
+                  }
+                }
+              }
+            }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.SerialisedItemState(),
@@ -102,7 +112,10 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           if (isCreate && this.data.associationId) {
             pulls.push(
               pull.SalesOrder({
-                object: this.data.associationId
+                object: this.data.associationId,
+                include: {
+                  VatRegime: x
+                }
               })
             );
           }
