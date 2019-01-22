@@ -90,7 +90,7 @@ namespace Commands
                     images.Add("Barcode", barcode);
                 }
 
-                var printModel = new Allors.Domain.SalesInvoicePrint.Model(invoice);
+                var printModel = new Allors.Domain.Print.SalesInvoiceModel.Model(invoice);
                 invoice.RenderPrintDocument(template, printModel, images);
 
                 session.Derive();
@@ -99,7 +99,7 @@ namespace Commands
 
                 var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 var outputFile = File.Create(Path.Combine(desktopDir, "salesInvoice.odt"));
-                using (var stream = new MemoryStream(result.MediaContent.Data))
+                using (var stream = new MemoryStream(result.Media.MediaContent.Data))
                 {
                     stream.CopyTo(outputFile);
                 }

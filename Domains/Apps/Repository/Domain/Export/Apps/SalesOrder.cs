@@ -55,7 +55,7 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public string Comment { get; set; }
 
@@ -629,9 +629,19 @@ namespace Allors.Repository
         [Workspace]
         public bool CanInvoice { get; set; }
 
+        #region Allors
+        [Id("E822B75C-3A37-480A-A469-B18A060EC560")]
+        #endregion
+        [Workspace]
+        public void Ship() { }
+        
+        #region Allors
+        [Id("794F36F3-04A0-41E9-8AE1-AD48C006CE6B")]
+        #endregion
+        [Workspace]
+        public void Invoice() { }
+
         #region inherited methods
-
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -641,8 +651,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
-
-
+        
         public void Approve() { }
 
         public void Reject() { }
@@ -655,23 +664,10 @@ namespace Allors.Repository
 
         public void Cancel() { }
 
-        public void Complete()
-        {
-        }
+        public void Complete() { }
+
+        public void Print() { }
 
         #endregion
-
-        #region Allors
-        [Id("E822B75C-3A37-480A-A469-B18A060EC560")]
-        #endregion
-        [Workspace]
-        public void Ship() { }
-
-
-        #region Allors
-        [Id("794F36F3-04A0-41E9-8AE1-AD48C006CE6B")]
-        #endregion
-        [Workspace]
-        public void Invoice() { }
     }
 }

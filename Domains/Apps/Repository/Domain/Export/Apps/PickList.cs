@@ -21,7 +21,7 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public User CreatedBy { get; set; }
 
@@ -165,7 +165,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -177,8 +176,9 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
-  
 
-      #endregion
+        public void Print() { }
+
+        #endregion
     }
 }

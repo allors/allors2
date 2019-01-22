@@ -13,8 +13,13 @@ namespace Allors.Repository
         [RoleId("B3ECE72C-D62C-4F24-805A-34D7FF21DE4F")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        Media PrintDocument { get; set; }
+        PrintDocument PrintDocument { get; set; }
+        
+        #region Allors
+        [Id("55903F87-8D6B-4D99-9E0D-C3B74064C81F")]
+        #endregion
+        void Print();
     }
 }

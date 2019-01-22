@@ -40,7 +40,7 @@ namespace Allors.Domain
             var order = new SalesOrders(this.Session).Extent().First;
 
             // Act
-            var printModel = new SalesOrderPrint.Model(order);
+            var printModel = new Print.SalesOrderModel.Model(order);
 
             // Assert
             Assert.NotNull(printModel);
@@ -65,7 +65,7 @@ namespace Allors.Domain
 
             var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesOrder.odt"));
-            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+            var stream = new System.IO.MemoryStream(result.Media.MediaContent.Data);
 
             stream.CopyTo(outputFile);
             stream.Close();

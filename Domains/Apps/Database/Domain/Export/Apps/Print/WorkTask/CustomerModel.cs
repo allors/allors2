@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.WorkTaskPrint
+namespace Allors.Domain.Print.WorkTaskModel
 {
     public class CustomerModel
     {

@@ -13,7 +13,7 @@ import {
 } from '../allors/angular';
 
 import {
-  MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule, StateService, MethodModule
+  MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule, StateService, MethodModule, PrintModule
 } from '../allors/material';
 
 import { DefaultStateService } from 'src/allors/material/apps/services/state/default.state.service';
@@ -37,6 +37,7 @@ import { ConfigService } from './app.config.service';
     AllorsRefreshModule.forRoot(),
     DialogModule.forRoot(),
     MediaModule.forRoot({ url: environment.url }),
+    PrintModule.forRoot({ url: environment.url }),
 
     // Menu/Navigation
     NavigationModule.forRoot(),

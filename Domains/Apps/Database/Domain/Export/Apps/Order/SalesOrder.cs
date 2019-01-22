@@ -293,27 +293,8 @@ namespace Allors.Domain
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
-
-            var singleton = this.Strategy.Session.GetSingleton();
-            var logo = this.TakenBy?.ExistLogoImage == true ?
-                this.TakenBy.LogoImage.MediaContent.Data :
-                singleton.LogoImage.MediaContent.Data;
-
-            var images = new Dictionary<string, byte[]>
-                             {
-                                 { "Logo", logo },
-                             };
             
-            if (this.ExistOrderNumber)
-            {
-                var session = this.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(this.OrderNumber, BarcodeType.CODE_128, 320, 80);
-                images.Add("Barcode", barcode);
-            }
-            
-            var model = new SalesOrderPrint.Model(this);
-            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model, images);
+            this.ResetPrintDocument();
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -1058,6 +1039,35 @@ namespace Allors.Domain
                 }
 
                 salesOrderItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
+            }
+        }
+
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
+            {
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.TakenBy?.ExistLogoImage == true ?
+                               this.TakenBy.LogoImage.MediaContent.Data :
+                               singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                                 {
+                                     { "Logo", logo },
+                                 };
+
+                if (this.ExistOrderNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.OrderNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var model = new Print.SalesOrderModel.Model(this);
+                this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model, images);
+
+                this.PrintDocument.Media.FileName = $"{this.OrderNumber}.odt";
             }
         }
     }

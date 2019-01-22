@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.WorkTaskPrint
+namespace Allors.Domain.Print.WorkTaskModel
 {
     using System;
     using System.Linq;

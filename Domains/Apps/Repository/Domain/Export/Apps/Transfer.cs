@@ -15,7 +15,7 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public string Comment { get; set; }
 
@@ -140,7 +140,6 @@ namespace Allors.Repository
         #endregion
 
         #region inherited methods
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -153,6 +152,7 @@ namespace Allors.Repository
 
         public void Invoice() { }
 
+        public void Print() { }
         #endregion
     }
 }

@@ -50,6 +50,8 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
+
+
                 session.Derive();
                 session.Commit();
 

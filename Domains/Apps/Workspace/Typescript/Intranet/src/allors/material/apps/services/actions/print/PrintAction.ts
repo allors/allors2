@@ -3,12 +3,14 @@ import { Subject } from 'rxjs';
 import { Printable } from '../../../../../domain';
 import { Action, ActionTarget, MediaService } from '../../../../../angular';
 
+import { PrintConfig } from './print.config';
+
 export class PrintAction implements Action {
 
-  constructor(mediaService: MediaService) {
+  constructor(config: PrintConfig) {
     this.execute = (target: ActionTarget) => {
       const printable = target as Printable;
-      const url = mediaService.url(printable.PrintDocument);
+      const url = `${config.url}Print/Download/${printable.id}`;
       window.open(url);
     };
   }
@@ -21,7 +23,7 @@ export class PrintAction implements Action {
   description = () => 'Print';
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {
-      return target.length > 0 ? !(target[0] as Printable).CanReadPrintDocument || !(target[0] as Printable).PrintDocument : true;
+      return true;
     } else {
       return !(target as Printable).CanReadPrintDocument || !(target as Printable).PrintDocument;
     }

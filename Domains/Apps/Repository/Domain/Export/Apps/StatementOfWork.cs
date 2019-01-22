@@ -44,7 +44,7 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
@@ -95,6 +95,8 @@ namespace Allors.Repository
         public void Reject() { }
 
         public void Cancel() { }
+
+        public void Print() { }
 
         #endregion
     }

@@ -31,22 +31,35 @@ namespace Allors.Domain
             @this.UpdatePrintDocument(document);
         }
 
+        public static void ResetPrintDocument(this Printable @this)
+        {
+            if (!@this.ExistPrintDocument)
+            {
+                @this.PrintDocument = new PrintDocumentBuilder(@this.Strategy.Session).Build();
+            }
+
+            @this.PrintDocument.Media?.Delete();
+        }
+
         private static void UpdatePrintDocument(this Printable @this, byte[] document)
         {
             if (document != null)
             {
-                if (@this.ExistPrintDocument)
+                if (!@this.ExistPrintDocument)
                 {
-                    @this.PrintDocument.InData = document;
+                    @this.PrintDocument = new PrintDocumentBuilder(@this.Strategy.Session).Build();
                 }
-                else
+
+                if (!@this.PrintDocument.ExistMedia)
                 {
-                    @this.PrintDocument = new MediaBuilder(@this.Strategy.Session).WithInData(document).Build();
+                    @this.PrintDocument.Media = new MediaBuilder(@this.Strategy.Session).Build();
                 }
+
+                @this.PrintDocument.Media.InData = document;
             }
             else
             {
-                @this.PrintDocument?.Delete();
+                @this.ResetPrintDocument();
             }
         }
     }

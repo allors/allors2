@@ -1,8 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material';
 
 import { PrintService } from './print.service';
-import { AllorsMaterialDialogModule } from '../../../../base/components/dialog';
+import { PrintConfig } from './print.config';
 export { PrintService } from './print.service';
 
 @NgModule({
@@ -11,18 +10,19 @@ export { PrintService } from './print.service';
   exports: [
   ],
   imports: [
-    MatSnackBarModule,
-    AllorsMaterialDialogModule,
   ],
   providers: [
     PrintService
   ]
 })
 export class PrintModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(config: PrintConfig): ModuleWithProviders {
     return {
       ngModule: PrintModule,
-      providers: [ PrintService ]
+      providers: [
+        PrintService,
+        { provide: PrintConfig, useValue: config },
+      ]
     };
   }
 }

@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.SalesOrderPrint
+namespace Allors.Domain.Print.SalesOrderModel
 {
     public class OrderItemModel
     {

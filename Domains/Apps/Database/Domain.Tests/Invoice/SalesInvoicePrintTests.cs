@@ -40,7 +40,7 @@ namespace Allors.Domain
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
             // Act
-            var printModel = new SalesInvoicePrint.Model(invoice);
+            var printModel = new Print.SalesInvoiceModel.Model(invoice);
 
             // Assert
             Assert.NotNull(printModel);
@@ -65,7 +65,7 @@ namespace Allors.Domain
 
             var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
-            var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+            var stream = new System.IO.MemoryStream(result.Media.MediaContent.Data);
 
             stream.CopyTo(outputFile);
             stream.Close();

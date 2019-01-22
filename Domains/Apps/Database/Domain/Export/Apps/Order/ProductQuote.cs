@@ -34,28 +34,7 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
-
-            var singleton = this.Strategy.Session.GetSingleton();
-            var logo = this.Issuer?.ExistLogoImage == true ?
-                           this.Issuer.LogoImage.MediaContent.Data :
-                           singleton.LogoImage.MediaContent.Data;
-
-            var images = new Dictionary<string, byte[]>
-                             {
-                                 { "Logo", logo },
-                             };
-
-            if (this.ExistQuoteNumber)
-            {
-                var session = this.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(this.QuoteNumber, BarcodeType.CODE_128, 320, 80);
-                images.Add("Barcode", barcode);
-            }
-            
-            var printModel = new ProductQuotePrint.Model(this);
-            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel, images);
+            this.ResetPrintDocument();
         }
 
         private SalesOrder OrderThis()
@@ -96,6 +75,35 @@ namespace Allors.Domain
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
             this.OrderThis();
+        }
+
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
+            {
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.Issuer?.ExistLogoImage == true ?
+                               this.Issuer.LogoImage.MediaContent.Data :
+                               singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                                 {
+                                     { "Logo", logo },
+                                 };
+
+                if (this.ExistQuoteNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.QuoteNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var printModel = new Print.ProductQuoteModel.Model(this);
+                this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel, images);
+
+                this.PrintDocument.Media.FileName = $"{this.QuoteNumber}.odt";
+            }
         }
     }
 }

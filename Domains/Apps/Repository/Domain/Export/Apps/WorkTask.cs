@@ -68,7 +68,7 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
 
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public string Comment { get; set; }
 
@@ -141,6 +141,7 @@ namespace Allors.Repository
         public void Cancel() { }
         public void Reopen() { }
         public void Delete() { }
+        public void Print() { }
 
         #endregion
     }

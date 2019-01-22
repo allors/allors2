@@ -57,7 +57,7 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
@@ -486,21 +486,6 @@ namespace Allors.Repository
         [Workspace]
         public decimal AdvancePayment{ get; set; }
 
-        #region inherited methods
-
-
-        public void OnBuild() { }
-
-        public void OnPostBuild() { }
-
-        public void OnPreDerive() { }
-
-        public void OnDerive() { }
-
-        public void OnPostDerive() { }
-
-        #endregion
-
         #region Allors
         [Id("55A60B80-2052-47E6-BD41-2AF414ABB885")]
         #endregion
@@ -542,5 +527,20 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Reopen() { }
+
+        #region inherited methods
+        public void OnBuild() { }
+
+        public void OnPostBuild() { }
+
+        public void OnPreDerive() { }
+
+        public void OnDerive() { }
+
+        public void OnPostDerive() { }
+
+        public void Print() { }
+
+        #endregion
     }
 }

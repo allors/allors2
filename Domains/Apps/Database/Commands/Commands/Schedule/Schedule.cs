@@ -20,8 +20,6 @@
 
 namespace Commands
 {
-    using global::Commands;
-
     using McMaster.Extensions.CommandLineUtils;
 
     [Command(Description = "Schedule a run")]

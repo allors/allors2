@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.ProductQuotePrint
+namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class BillToModel
     {

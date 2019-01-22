@@ -52,7 +52,7 @@ namespace Allors.Repository
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         #endregion
 
@@ -103,6 +103,7 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Print() { }
         #endregion
     }
 }

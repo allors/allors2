@@ -52,9 +52,14 @@ namespace Allors.Repository
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         #endregion
+
+        #region Allors
+        [Id("30472626-909D-4B7E-A153-B2754D6398E3")]
+        #endregion
+        public void CreateProposal() { }
 
         #region Versioning
         #region Allors
@@ -97,11 +102,7 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Print() { }
         #endregion
-
-        #region Allors
-        [Id("30472626-909D-4B7E-A153-B2754D6398E3")]
-        #endregion
-        public void CreateProposal() { }
     }
 }

@@ -32,22 +32,22 @@ namespace Allors.Domain
         {
             if (!@this.ExistProductQuoteTemplate)
             {
-                @this.ProductQuoteTemplate = @this.CreateOpenDocumentTemplate<ProductQuotePrint.Model>(@this.GetResourceBytes("Templates.ProductQuote.odt"));
+                @this.ProductQuoteTemplate = @this.CreateOpenDocumentTemplate<Print.ProductQuoteModel.Model>(@this.GetResourceBytes("Templates.ProductQuote.odt"));
             }
 
             if (!@this.ExistSalesOrderTemplate)
             {
-                @this.SalesOrderTemplate = @this.CreateOpenDocumentTemplate<SalesOrderPrint.Model>(@this.GetResourceBytes("Templates.SalesOrder.odt"));
+                @this.SalesOrderTemplate = @this.CreateOpenDocumentTemplate<Print.SalesOrderModel.Model>(@this.GetResourceBytes("Templates.SalesOrder.odt"));
             }
 
             if (!@this.ExistSalesInvoiceTemplate)
             {
-                @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate<SalesInvoicePrint.Model>(@this.GetResourceBytes("Templates.SalesInvoice.odt"));
+                @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>(@this.GetResourceBytes("Templates.SalesInvoice.odt"));
             }
 
             if (!@this.ExistWorkTaskTemplate)
             {
-                @this.WorkTaskTemplate = @this.CreateOpenDocumentTemplate<WorkTaskPrint.Model>(@this.GetResourceBytes("Templates.WorkTask.odt"));
+                @this.WorkTaskTemplate = @this.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>(@this.GetResourceBytes("Templates.WorkTask.odt"));
             }
         }
 

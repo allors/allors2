@@ -24,10 +24,8 @@ namespace Allors.Domain
 
     public partial class WorkTask
     {
-        public new string ToString() => this.WorkEffortNumber ?? this.Name;
-
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            {
+              {
                 new TransitionalConfiguration(M.WorkTask, M.WorkTask.WorkEffortState),
             };
 
@@ -46,27 +44,36 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.ResetPrintDocument();
+        }
 
-            var singleton = this.Strategy.Session.GetSingleton();
-            var logo = this.TakenBy?.ExistLogoImage == true ?
-                           this.TakenBy.LogoImage.MediaContent.Data :
-                           singleton.LogoImage.MediaContent.Data;
-
-            var images = new Dictionary<string, byte[]>
-                             {
-                                 { "Logo", logo },
-                             };
-            
-            if (this.ExistWorkEffortNumber)
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
             {
-                var session = this.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(this.WorkEffortNumber, BarcodeType.CODE_128, 320, 80);
-                images["Barcode"] = barcode;
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.TakenBy?.ExistLogoImage == true ?
+                               this.TakenBy.LogoImage.MediaContent.Data :
+                               singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                                 {
+                                     { "Logo", logo },
+                                 };
+
+                if (this.ExistWorkEffortNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.WorkEffortNumber, BarcodeType.CODE_128, 320, 80);
+                    images["Barcode"] = barcode;
+                }
+
+                var model = new Print.WorkTaskModel.Model(this);
+                this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model, images);
+
+                this.PrintDocument.Media.FileName = $"{this.WorkEffortNumber}.odt";
             }
-            
-            var model = new WorkTaskPrint.Model(this);
-            this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model, images);
         }
 
         //public void AppsDelete(DeletableDelete method)

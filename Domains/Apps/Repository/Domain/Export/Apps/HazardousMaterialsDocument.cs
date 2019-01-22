@@ -18,7 +18,7 @@ namespace Allors.Repository
 
         public string DocumentLocation { get; set; }
 
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -32,7 +32,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -43,9 +42,7 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
-
-
-
+        public void Print() { }
 
         #endregion
     }

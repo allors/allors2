@@ -276,26 +276,7 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
-            var singleton = this.Strategy.Session.GetSingleton();
-            var logo = this.BilledFrom?.ExistLogoImage == true ?
-                           this.BilledFrom.LogoImage.MediaContent.Data :
-                           singleton.LogoImage.MediaContent.Data;
-
-            var images = new Dictionary<string, byte[]>
-                             {
-                                 { "Logo", logo },
-                             };
-
-            if (this.ExistInvoiceNumber)
-            {
-                var session = this.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
-                images.Add("Barcode", barcode);
-            }
-
-            var printModel = new SalesInvoicePrint.Model(this); 
-            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, printModel, images);
+            this.ResetPrintDocument();
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
@@ -931,6 +912,35 @@ namespace Allors.Domain
                 {
                     salesTerm.Delete();
                 }
+            }
+        }
+
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
+            {
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.BilledFrom?.ExistLogoImage == true ?
+                               this.BilledFrom.LogoImage.MediaContent.Data :
+                               singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                                 {
+                                     { "Logo", logo },
+                                 };
+
+                if (this.ExistInvoiceNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var printModel = new Print.SalesInvoiceModel.Model(this);
+                this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, printModel, images);
+
+                this.PrintDocument.Media.FileName = $"{this.InvoiceNumber}.odt";
             }
         }
 

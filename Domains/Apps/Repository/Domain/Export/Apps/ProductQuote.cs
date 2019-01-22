@@ -38,7 +38,7 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public Media PrintDocument { get; set; }
+        public PrintDocument PrintDocument { get; set; }
 
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
@@ -55,6 +55,12 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         #endregion
+
+        #region Allors
+        [Id("8D92571B-AABE-45EC-A2BB-93219B3E8C12")]
+        #endregion
+        [Workspace]
+        public void Order() { }
 
         #region Versioning
         #region Allors
@@ -96,12 +102,8 @@ namespace Allors.Repository
 
         public void Cancel() { }
 
+        public void Print() { }
+        
         #endregion
-
-        #region Allors
-        [Id("8D92571B-AABE-45EC-A2BB-93219B3E8C12")]
-        #endregion
-        [Workspace]
-        public void Order() { }
     }
 }

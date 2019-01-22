@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Accounting\Customer.cd" />
+    <None Include="Content\Print.cd" />
     <None Include="General\Media.cd" />
     <None Include="General\Localised.cd" />
     <None Include="Invoice\Invoice.cd" />
