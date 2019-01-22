@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Intranet": {
+    "intranet": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Intranet",
+            "outputPath": "dist/intranet",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Intranet:build"
+            "browserTarget": "intranet:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Intranet:build:production"
+              "browserTarget": "intranet:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Intranet:build"
+            "browserTarget": "intranet:build"
           }
         },
         "test": {
@@ -108,7 +108,7 @@
           }
         }
       }
-    }
+    }   
   },
-  "defaultProject": "Intranet"
+  "defaultProject": "intranet"
 }
