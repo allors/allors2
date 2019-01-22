@@ -12,6 +12,7 @@ import { CreateData, ObjectService } from '../../../../../base/services/object';
 interface Row extends TableRow {
   object: SalesInvoiceItem;
   item: string;
+  type: string;
   status: string;
   quantity: number;
 }
@@ -73,6 +74,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'type', sort },
         { name: 'status', sort },
         { name: 'quantity', sort },
       ],
@@ -121,7 +123,8 @@ export class SalesInvoiceItemOverviewPanelComponent {
       this.table.data = this.salesInvoiceItems.map((v) => {
         return {
           object: v,
-          item: (v.InvoiceItemType && v.InvoiceItemType.Name) || '',
+          item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
           status: `${v.SalesInvoiceItemState && v.SalesInvoiceItemState.Name}`,
           quantity: v.Quantity,
         } as Row;

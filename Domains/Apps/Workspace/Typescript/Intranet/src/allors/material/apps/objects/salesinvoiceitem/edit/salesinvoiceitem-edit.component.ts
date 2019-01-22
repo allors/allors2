@@ -96,6 +96,15 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
                 new Sort(m.Good.Name),
               ],
             }),
+            pull.SalesInvoiceItem({
+              object: id,
+              fetch: {
+                SalesInvoiceWhereSalesInvoiceItem: {
+                  include: { VatRegime: x
+                  }
+                }
+              }
+            }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
             }),
@@ -111,10 +120,13 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          if (isCreate && this.data.associationId) {
+          if (this.data.associationId) {
             pulls.push(
               pull.SalesInvoice({
-                object: this.data.associationId
+                object: this.data.associationId,
+                include: {
+                  VatRegime: x
+                }
               })
             );
           }
