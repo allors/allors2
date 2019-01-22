@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="SalesInvoiceTests.cs" company="Allors bvba">
+// <copyright file="SalesInvoicePrintTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,8 +18,6 @@
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
-
-using System.Linq;
 
 namespace Allors.Domain
 {
@@ -46,9 +44,8 @@ namespace Allors.Domain
             Assert.NotNull(printModel);
         }
 
-
         [Fact]
-        public void GivenSalesInvoice_WhenDeriving_ThenPrintDocumentRendered()
+        public void GivenSalesInvoice_WhenDeriving_ThenPrintDocumentWithoutMediaCreated()
         {
             // Arrange
             var demo = new Demo(this.Session, null);
@@ -60,15 +57,36 @@ namespace Allors.Domain
             // Assert
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
-            Assert.NotNull(invoice.PrintDocument);
-            var result = invoice.PrintDocument;
+            Assert.True(invoice.ExistPrintDocument);
+            Assert.False(invoice.PrintDocument.ExistMedia);
+        }
+
+        [Fact]
+        public void GivenSalesInvoicePrintDocument_WhenPrinting_ThenMediaCreated()
+        {
+            // Arrange
+            var demo = new Demo(this.Session, null);
+            demo.Execute();
+            this.Session.Derive(true);
+            var invoice = new SalesInvoices(this.Session).Extent().First;
+
+            // Act
+            invoice.Print();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            // Assert
+            Assert.True(invoice.PrintDocument.ExistMedia);
 
             var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesInvoice.odt"));
-            var stream = new System.IO.MemoryStream(result.Media.MediaContent.Data);
+            var stream = new System.IO.MemoryStream(invoice.PrintDocument.Media.MediaContent.Data);
 
             stream.CopyTo(outputFile);
             stream.Close();
         }
+
+
     }
 }

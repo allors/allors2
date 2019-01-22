@@ -202,7 +202,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffort_WhenDeriving_ThenPrintDocumentRendered()
+        public void GivenWorkEffort_WhenDeriving_ThenPrintDocumentCreated()
         {
             // Arrange
             var frequencies = new TimeFrequencies(this.Session);
@@ -270,17 +270,93 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            Assert.NotNull(workOrder.PrintDocument);
+            Assert.True(workOrder.ExistPrintDocument);
+        }
 
-            var result = workOrder.PrintDocument;
+        [Fact]
+        public void GivenWorkEffortPrintDocument_WhenPrinting_ThenMediaCreated()
+        {
+            // Arrange
+            var frequencies = new TimeFrequencies(this.Session);
+            var purposes = new ContactMechanismPurposes(this.Session);
+
+            //// Customer Contact and Address Data
+            var customer = new OrganisationBuilder(this.Session).WithName("Customer").Build();
+            var customerContact = new PersonBuilder(this.Session).WithFirstName("Customer").WithLastName("Contact").Build();
+            var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            var customerRelation = new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+
+            var usa = new Countries(this.Session).Extent().First(c => c.IsoCode.Equals("US"));
+            var michigan = new StateBuilder(this.Session).WithName("Michigan").WithCountry(usa).Build();
+            var northville = new CityBuilder(this.Session).WithName("Northville").WithState(michigan).Build();
+            var postalCode = new PostalCodeBuilder(this.Session).WithCode("48167").Build();
+            var billingAddress = this.CreatePostalAddress("Billing Address", "123 Street", "Suite S1", northville, postalCode);
+            var shippingAddress = this.CreatePostalAddress("Shipping Address", "123 Street", "Dock D1", northville, postalCode);
+            var phone = new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("1").WithAreaCode("616").WithContactNumber("774-2000").Build();
+
+            customer.AddPartyContactMechanism(this.CreatePartyContactMechanism(purposes.BillingAddress, billingAddress));
+            customer.AddPartyContactMechanism(this.CreatePartyContactMechanism(purposes.ShippingAddress, shippingAddress));
+            customerContact.AddPartyContactMechanism(this.CreatePartyContactMechanism(purposes.GeneralPhoneNumber, phone));
+
+            //// Work Effort Data
+            var salesPerson = new PersonBuilder(this.Session).WithFirstName("Sales").WithLastName("Person").Build();
+            var salesRepRelation = new SalesRepRelationshipBuilder(this.Session).WithCustomer(customer).WithSalesRepresentative(salesPerson).Build();
+            var salesOrder = this.CreateSalesOrder(customer, organisation);
+            var workOrder = this.CreateWorkEffort(organisation, customer, customerContact, salesOrder.SalesOrderItems.First);
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+
+            var salesOrderItem = salesOrder.SalesOrderItems.First;
+            salesOrder.AddValidOrderItem(salesOrderItem);
+
+            //// Work Effort Inventory Assignmets
+            var part1 = this.CreatePart("P1");
+            var part2 = this.CreatePart("P2");
+            var part3 = this.CreatePart("P3");
+
+            this.Session.Derive(true);
+
+            var inventoryAssignment1 = this.CreateInventoryAssignment(workOrder, part1, 11);
+            var inventoryAssignment2 = this.CreateInventoryAssignment(workOrder, part2, 12);
+            var inventoryAssignment3 = this.CreateInventoryAssignment(workOrder, part3, 13);
+
+            //// Work Effort Time Entries
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var timeEntryYesterday = this.CreateTimeEntry(yesterday, laterYesterday, frequencies.Day, workOrder);
+            var timeEntryToday = this.CreateTimeEntry(today, laterToday, frequencies.Hour, workOrder);
+            var timeEntryTomorrow = this.CreateTimeEntry(tomorrow, laterTomorrow, frequencies.Minute, workOrder);
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
+
+            this.Session.Derive(true);
+
+            // Act
+            workOrder.Print();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            // Assert
+            Assert.True(workOrder.PrintDocument.ExistMedia);
 
             var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "workTask.odt"));
-            var stream = new System.IO.MemoryStream(result.Media.MediaContent.Data);
+            var stream = new System.IO.MemoryStream(workOrder.PrintDocument.Media.MediaContent.Data);
 
             stream.CopyTo(outputFile);
             stream.Close();
         }
+
 
         private Part CreatePart(string id) =>
             new PartBuilder(this.Session)

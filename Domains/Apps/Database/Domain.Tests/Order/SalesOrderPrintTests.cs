@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="SalesInvoiceTests.cs" company="Allors bvba">
+// <copyright file="SalesOrderPrintTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,8 +18,6 @@
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
-
-using System.Linq;
 
 namespace Allors.Domain
 {
@@ -48,7 +46,7 @@ namespace Allors.Domain
 
 
         [Fact]
-        public void GivenSalesOrder_WhenDeriving_ThenPrintDocumentRendered()
+        public void GivenSalesOrder_WhenDeriving_henPrintDocumentWithoutMediaCreated()
         {
             // Arrange
             var demo = new Demo(this.Session, null);
@@ -60,12 +58,31 @@ namespace Allors.Domain
             // Assert
             var order = new SalesOrders(this.Session).Extent().First;
 
-            Assert.NotNull(order.PrintDocument);
-            var result = order.PrintDocument;
+            Assert.True(order.ExistPrintDocument);
+            Assert.False(order.PrintDocument.ExistMedia);
+        }
+
+        [Fact]
+        public void GivenSalesOrderPrintDocument_WhenPrinting_ThenMediaCreated()
+        {
+            // Arrange
+            var demo = new Demo(this.Session, null);
+            demo.Execute();
+            this.Session.Derive(true);
+            var order = new SalesOrders(this.Session).Extent().First;
+
+            // Act
+            order.Print();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            // Assert
+            Assert.True(order.PrintDocument.ExistMedia);
 
             var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "salesOrder.odt"));
-            var stream = new System.IO.MemoryStream(result.Media.MediaContent.Data);
+            var stream = new System.IO.MemoryStream(order.PrintDocument.Media.MediaContent.Data);
 
             stream.CopyTo(outputFile);
             stream.Close();
