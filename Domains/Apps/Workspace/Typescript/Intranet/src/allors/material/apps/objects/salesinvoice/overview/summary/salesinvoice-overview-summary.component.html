@@ -9,38 +9,27 @@
     <mat-card-subtitle>
       <div>{{invoice.SalesInvoiceState?.Name}}</div>
       <div>{{invoice.ShipToAddress?.displayName}}</div>
-    </mat-card-subtitle>
-
-    <mat-card-subtitle>
       <div>last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>
 
   <mat-card-content>
-    <mat-card-content>
-      <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
-        <div style="color: grey">
-          Order
-        </div>
-        <div>
-          {{order.OrderNumber}}
-        </div>
+    <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
+      <div style="color: grey">
+        Order
       </div>
-
-      <div (click)="navigation.overview(invoice.BillToCustomer)" style="cursor: pointer;">
-        <div style="color: grey">
-          Bill to
-        </div>
-        <div>
-          {{invoice.BillToCustomer?.displayName}}
-        </div>
+      <div>
+        {{order.OrderNumber}}
       </div>
-    </mat-card-content>
+    </div>
 
-    <div class="container">
-      <div class="row">
-
+    <div (click)="navigation.overview(invoice.BillToCustomer)" style="cursor: pointer;">
+      <div style="color: grey">
+        Bill to
+      </div>
+      <div>
+        {{invoice.BillToCustomer?.displayName}}
       </div>
     </div>
   </mat-card-content>

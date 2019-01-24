@@ -7,52 +7,49 @@
     <mat-card-title>{{invoice.InvoiceNumber}}</mat-card-title>
 
     <mat-card-subtitle>
-      <div>
-        {{invoice.PurchaseInvoiceState?.Name}}
-      </div>
-      <div *ngIf="invoice.BilledFromContactPerson">
-        Billed from {{invoice.BilledFromContactPerson?.displayName}}
-      </div>
-      <!-- 
-            <div *ngIf="invoice.BillToCustomer" class="row">
-              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
-              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" display="displayName"
-                label="Bill to ContactMechanism"></a-mat-static>
-            </div>
-
-            <div *ngIf="invoice.ShipToEndCustomer" class="row">
-              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
-              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" display="displayName"
-                label="Ship to Address"></a-mat-static>
-            </div>
-
-            <div class="row">
-              <a-mat-static class="col" *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
-              <a-mat-static class="col" *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
-              <a-mat-static class="col" *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-static>
-              <a-mat-textarea class="col" *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment" label="Invoice Comment"
-                class="col-md-12"></a-mat-textarea>
-              <a-mat-static class="col" *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
-              <a-mat-textarea class="col" *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"
-                label="Invoice Internal Comment" class="col-md-12"></a-mat-textarea>
-            </div>
-
-            <div class="row">
-              <caption class="col"> created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</caption>
-              <caption class="col"> last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</caption>
-            </div> -->
-
-    </mat-card-subtitle>
-
-    <mat-card-subtitle>
+      <div>{{invoice.PurchaseInvoiceState?.Name}}</div>
       <div>last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>
 
+
   <mat-card-content>
-    <div class="container">
-      <div class="row">
+    <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
+      <div style="color: grey">
+        Purchase Order
+      </div>
+      <div>
+        {{order.OrderNumber}}
+      </div>
+    </div>
+
+    <div (click)="navigation.overview(invoice.BilledFrom)" style="cursor: pointer;">
+      <div style="color: grey">
+        Billed from
+      </div>
+      <div>
+        {{invoice.BilledFrom?.displayName}}
+      </div>
+    </div>
+
+    <div *ngIf="invoice.ShipToCustomer && invoice.ShipToCustomer !== invoice.BilledTo" (click)="navigation.overview(invoice.BilledFrom)"
+      style="cursor: pointer;">
+      <div style="color: grey">
+        ship to
+      </div>
+      <div>
+        {{invoice.ShipToCustomer?.displayName}}
+      </div>
+    </div>
+
+    <div *ngIf="invoice.BillToEndCustomer" (click)="navigation.overview(invoice.BilledFrom)"
+      style="cursor: pointer;">
+      <div style="color: grey">
+        Bill to End Customer
+      </div>
+      <div>
+        {{invoice.BillToEndCustomer?.displayName}}
       </div>
     </div>
   </mat-card-content>
@@ -61,6 +58,8 @@
     <button *ngIf="invoice.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
     <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
     <button *ngIf="invoice.CanExecuteFinish" mat-button type="button" (click)="finish(invoice)">Finish</button>
+    <button *ngIf="invoice.CanExecuteCreateSalesInvoice" mat-button type="button" (click)="createSalesInvoice(invoice)">Create
+      Sales invoice</button>
   </mat-card-actions>
 
 </mat-card>

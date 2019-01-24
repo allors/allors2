@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
@@ -13,13 +13,13 @@ import { StateService } from '../../../services/state';
   templateUrl: './purchaseinvoice-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class PurchasInvoiceOverviewComponent implements OnInit, OnDestroy {
+export class PurchasInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
 
   title = 'Purchase Invoice';
 
-  public order: PurchaseOrder;
-  public invoice: PurchaseInvoice;
-  public goods: Good[] = [];
+  order: PurchaseOrder;
+  invoice: PurchaseInvoice;
+  goods: Good[] = [];
 
   subscription: Subscription;
 
@@ -38,20 +38,22 @@ export class PurchasInvoiceOverviewComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
   }
 
-  public ngOnInit(): void {
+  public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation;
+          this.panelManager.objectType = m.SalesInvoice;
           this.panelManager.expanded = navRoute.panel();
 
           const { id } = this.panelManager;
+
+          this.panelManager.on();
 
           const pulls = [
             pull.PurchaseInvoice({

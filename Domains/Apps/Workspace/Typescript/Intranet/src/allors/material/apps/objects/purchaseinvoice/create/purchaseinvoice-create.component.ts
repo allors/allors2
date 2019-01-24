@@ -27,6 +27,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
   vatRegimes: VatRegime[];
   purchaseInvoiceTypes: PurchaseInvoiceType[];
   internalOrganisation: Organisation;
+  orders: PurchaseOrder[];
 
   billedFromContacts: Person[] = [];
   billedFromContactMechanisms: ContactMechanism[] = [];
@@ -60,7 +61,6 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private fetcher: Fetcher;
-  orders: PurchaseOrder[];
 
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;

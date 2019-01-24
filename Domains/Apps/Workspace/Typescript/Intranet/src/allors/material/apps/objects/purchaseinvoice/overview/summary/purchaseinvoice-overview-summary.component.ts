@@ -15,9 +15,9 @@ export class PurchasInvoiceOverviewSummaryComponent {
 
   m: Meta;
 
-  public order: PurchaseOrder;
-  public invoice: PurchaseInvoice;
-  public goods: Good[] = [];
+  order: PurchaseOrder;
+  invoice: PurchaseInvoice;
+  goods: Good[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -50,6 +50,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
             },
             BilledFrom: x,
             BilledFromContactPerson: x,
+            ShipToCustomer: x,
             BillToEndCustomer: x,
             BillToEndCustomerContactPerson: x,
             ShipToEndCustomer: x,
@@ -122,5 +123,14 @@ export class PurchasInvoiceOverviewSummaryComponent {
         this.refreshService.refresh();
       });
     }
-}
+
+    public createSalesInvoice(invoice: PurchaseInvoice): void {
+
+      this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
+        .subscribe((invoked: Invoked) => {
+          this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
+          this.refreshService.refresh();
+        });
+      }
+  }
 

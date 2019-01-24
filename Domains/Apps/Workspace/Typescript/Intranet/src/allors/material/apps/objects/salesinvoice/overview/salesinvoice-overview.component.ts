@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice } from '../../../../../domain';
+import { Good, SalesInvoice, RepeatingSalesInvoice } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
@@ -49,7 +49,7 @@ export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation;
+          this.panelManager.objectType = m.SalesInvoice;
           this.panelManager.expanded = navRoute.panel();
 
           const { id } = this.panelManager;
