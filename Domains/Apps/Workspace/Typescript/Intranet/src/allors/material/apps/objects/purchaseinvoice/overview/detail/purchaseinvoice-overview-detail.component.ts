@@ -52,10 +52,10 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
   private subscription: Subscription;
 
   get showBillToOrganisations(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Organisation';
+    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === 'Organisation';
   }
   get showBillToPeople(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Person';
+    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === 'Person';
   }
 
   get showShipToEndCustomerOrganisations(): boolean {
@@ -104,15 +104,15 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
             },
             BilledFrom: x,
             BilledFromContactPerson: x,
-            BillToCustomer: x,
-            BillToCustomerContactPerson: x,
+            BillToEndCustomer: x,
+            BillToEndCustomerContactPerson: x,
             ShipToEndCustomer: x,
             ShipToEndCustomerContactPerson: x,
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
             PurchaseOrder: x,
-            BillToCustomerContactMechanism: {
+            BillToEndCustomerContactMechanism: {
               PostalAddress_Country: {
               }
             },
@@ -166,9 +166,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
               include: {
                 BilledFrom: x,
                 BilledFromContactPerson: x,
-                BillToCustomer: x,
-                BillToCustomerContactMechanism: x,
-                BillToCustomerContactPerson: x,
+                BillToEndCustomer: x,
+                BillToEndCustomerContactMechanism: x,
+                BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
@@ -213,8 +213,8 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.updateBilledFrom(this.invoice.BilledFrom);
         }
 
-        if (this.invoice.BillToCustomer) {
-          this.updateBillToCustomer(this.invoice.BillToCustomer);
+        if (this.invoice.BillToEndCustomer) {
+          this.updateBillToCustomer(this.invoice.BillToEndCustomer);
         }
 
         if (this.invoice.ShipToEndCustomer) {
@@ -223,7 +223,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
 
         this.previousBilledFrom = this.invoice.BilledFrom;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
-        this.previousBillToCustomer = this.invoice.BillToCustomer;
+        this.previousBillToCustomer = this.invoice.BillToEndCustomer;
       }, this.errorService.handler);
   }
 
@@ -309,14 +309,14 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
-          this.invoice.BillToCustomerContactMechanism = null;
-          this.invoice.BillToCustomerContactPerson = null;
-          this.previousBillToCustomer = this.invoice.BillToCustomer;
+        if (this.invoice.BillToEndCustomer !== this.previousBillToCustomer) {
+          this.invoice.BillToEndCustomerContactMechanism = null;
+          this.invoice.BillToEndCustomerContactPerson = null;
+          this.previousBillToCustomer = this.invoice.BillToEndCustomer;
         }
 
-        if (this.invoice.BillToCustomer !== null && this.invoice.ShipToEndCustomer === null) {
-          this.invoice.ShipToEndCustomer = this.invoice.BillToCustomer;
+        if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
+          this.invoice.ShipToEndCustomer = this.invoice.BillToEndCustomer;
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
@@ -363,9 +363,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }
 
-        if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToCustomer === null) {
-          this.invoice.BillToCustomer = this.invoice.ShipToEndCustomer;
-          this.updateBillToCustomer(this.invoice.BillToCustomer);
+        if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
+          this.invoice.BillToEndCustomer = this.invoice.ShipToEndCustomer;
+          this.updateBillToCustomer(this.invoice.BillToEndCustomer);
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
@@ -391,11 +391,11 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     const contact: Person = this.allors.context.get(id) as Person;
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
+    organisationContactRelationship.Organisation = this.invoice.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
     this.billToContacts.push(contact);
-    this.invoice.BillToCustomerContactPerson = contact;
+    this.invoice.BillToEndCustomerContactPerson = contact;
   }
 
   public shipToEndCustomerContactPersonAdded(id: string): void {
@@ -413,8 +413,8 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
 

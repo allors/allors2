@@ -196,6 +196,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         public InternalOrganisation OrderedBy { get; set; }
 
         #region Allors
@@ -205,6 +206,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public PurchaseOrderItem[] PurchaseOrderItems { get; set; }
 
         #region Allors
@@ -225,6 +227,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public Party TakenViaSupplier { get; set; }
 
         #region Allors
@@ -234,6 +237,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public ContactMechanism TakenViaContactMechanism { get; set; }
 
         #region Allors
@@ -243,6 +247,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Person TakenViaContactPerson { get; set; }
 
         #region Allors
@@ -253,6 +258,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
@@ -262,6 +268,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Person BillToContactPerson { get; set; }
 
         #region Allors
@@ -271,6 +278,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Facility Facility { get; set; }
 
         #region Allors
@@ -280,6 +288,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
@@ -289,6 +298,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Person ShipToContactPerson { get; set; }
 
         #region inherited methods

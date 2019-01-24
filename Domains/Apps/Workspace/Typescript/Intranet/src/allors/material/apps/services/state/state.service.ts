@@ -9,6 +9,8 @@ export abstract class StateService {
 
     public goodsFilter: SearchFactory;
     public customersFilter: SearchFactory;
+    public suppliersFilter: SearchFactory;
+    public employeeFilter: SearchFactory;
     public organisationsFilter: SearchFactory;
     public partiesFilter: SearchFactory;
 }

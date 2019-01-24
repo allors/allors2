@@ -97,7 +97,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
   public receiverAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.quote.Receiver = party;

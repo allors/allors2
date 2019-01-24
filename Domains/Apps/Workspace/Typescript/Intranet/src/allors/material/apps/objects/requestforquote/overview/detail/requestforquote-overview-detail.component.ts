@@ -203,7 +203,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
   public originatorAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.request.Originator = party;

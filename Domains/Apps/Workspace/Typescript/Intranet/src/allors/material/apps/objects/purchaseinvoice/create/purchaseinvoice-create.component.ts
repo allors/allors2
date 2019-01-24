@@ -1,17 +1,15 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, PurchaseOrder } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
-import { SalesTermEditComponent } from '../../salesterm/edit/salesterm-edit.module';
+import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './purchaseinvoice-create.component.html',
@@ -21,74 +19,81 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
-  public title = 'Edit Purchase Invoice';
+  title = 'Add Purchase Invoice';
 
-  public invoice: PurchaseInvoice;
-  public order: PurchaseOrder;
-  public currencies: Currency[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
-  public purchaseInvoiceTypes: PurchaseInvoiceType[];
+  invoice: PurchaseInvoice;
+  currencies: Currency[];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  purchaseInvoiceTypes: PurchaseInvoiceType[];
+  internalOrganisation: Organisation;
 
-  public billedFromContacts: Person[];
-  public billToContactMechanisms: ContactMechanism[];
-  public billToContacts: Person[];
-  public shipToEndCustomerAddresses: ContactMechanism[];
-  public shipToEndCustomerContacts: Person[];
+  billedFromContacts: Person[] = [];
+  billedFromContactMechanisms: ContactMechanism[] = [];
+  billToContacts: Person[] = [];
+  shipToCustomerAddresses: ContactMechanism[] = [];
+  shipToCustomerContacts: Person[] = [];
+  billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  billToEndCustomerContacts: Person[] = [];
+  shipToEndCustomerAddresses: ContactMechanism[] = [];
+  shipToEndCustomerContacts: Person[] = [];
 
-  public addBilledFromContactPerson = false;
-  public addBillToContactMechanism = false;
-  public addBillToContactPerson = false;
-  public addShipToEndCustomerAddress = false;
-  public addShipToEndCustomerContactPerson = false;
+  addBilledFrom = false;
+  addBilledFromContactMechanism = false;
+  addBilledFromContactPerson = false;
+  addBillToContactMechanism = false;
+  addBillToContactPerson = false;
+  addShipToCustomer = false;
+  addShipToCustomerAddress = false;
+  addShipToCustomerContactPerson = false;
+  addBillToEndCustomer = false;
+  addBillToEndCustomerContactMechanism = false;
+  addBillToEndCustomerContactPerson = false;
+  addShipToEndCustomer = false;
+  addShipToEndCustomerAddress = false;
+  addShipToEndCustomerContactPerson = false;
 
   private previousBilledFrom: Party;
-  private previousBillToCustomer: Party;
+  private previousShipToCustomer: Party;
+  private previousBillToEndCustomer: Party;
   private previousShipToEndCustomer: Party;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
+  orders: PurchaseOrder[];
 
-  get showBillToOrganisations(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Organisation';
-  }
-  get showBillToPeople(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === 'Person';
+  get shipToCustomerIsPerson(): boolean {
+    return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
   }
 
-  get showShipToEndCustomerOrganisations(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === 'Organisation';
+  get billToEndCustomerIsPerson(): boolean {
+    return !this.invoice.BillToEndCustomer || this.invoice.BillToEndCustomer.objectType.name === this.m.Person.name;
   }
-  get showShipToEndCustomerPeople(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === 'Person';
+
+  get shipToEndCustomerIsPerson(): boolean {
+    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === this.m.Person.name;
   }
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData,
-    public dialogRef: MatDialogRef<SalesTermEditComponent>,
+    public dialogRef: MatDialogRef<PurchaseInvoiceCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
-
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([]) => {
-
-          const create = (this.data as EditData).id === undefined;
-          const { objectType, associationRoleType } = this.data;
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -108,24 +113,28 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
-        this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
-        this.invoice.BilledTo = internalOrganisation;
+        this.invoice.BilledTo = this.internalOrganisation;
 
         if (this.invoice.BilledFrom) {
           this.updateBilledFrom(this.invoice.BilledFrom);
         }
 
-        if (this.invoice.BillToCustomer) {
-          this.updateBillToCustomer(this.invoice.BillToCustomer);
+        if (this.invoice.ShipToCustomer) {
+          this.updateShipToCustomer(this.invoice.ShipToCustomer);
+        }
+
+        if (this.invoice.BillToEndCustomer) {
+          this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
         if (this.invoice.ShipToEndCustomer) {
@@ -133,152 +142,10 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
         }
 
         this.previousBilledFrom = this.invoice.BilledFrom;
+        this.previousShipToCustomer = this.invoice.ShipToCustomer;
+        this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
-        this.previousBillToCustomer = this.invoice.BillToCustomer;
       }, this.errorService.handler);
-  }
-
-  public billedFromContactPersonAdded(id: string): void {
-
-    this.addBilledFromContactPerson = false;
-
-    const contact: Person = this.allors.context.get(id) as Person;
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
-    organisationContactRelationship.Contact = contact;
-
-    this.billedFromContacts.push(contact);
-    this.invoice.BilledFromContactPerson = contact;
-  }
-
-  public billToContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
-
-    this.billToContacts.push(contact);
-    this.invoice.BillToCustomerContactPerson = contact;
-  }
-
-  public shipToEndCustomerContactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
-    organisationContactRelationship.Contact = contact;
-
-    this.shipToEndCustomerContacts.push(contact);
-    this.invoice.ShipToEndCustomerContactPerson = contact;
-  }
-
-  public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addBillToContactMechanism = false;
-
-    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToCustomerContactMechanism = partyContactMechanism.ContactMechanism;
-  }
-
-  public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-
-    this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
-    this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
-  }
-
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.CancelInvoice)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public approve(): void {
-
-    const approveFn: () => void = () => {
-      this.allors.context.invoke(this.invoice.Approve)
-        .subscribe((invoked: Invoked) => {
-          this.refreshService.refresh();
-          this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                approveFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            approveFn();
-          }
-        });
-    } else {
-      approveFn();
-    }
-  }
-
-  public finish(invoice: PurchaseInvoice): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to finish this invoice?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(invoice.Finish)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-              this.refreshService.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
   }
 
   public ngOnDestroy(): void {
@@ -291,7 +158,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.invoice.id,
           objectType: this.invoice.objectType,
@@ -304,19 +171,125 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
         });
   }
 
-  public goBack(): void {
-    window.history.back();
+  public billedFromAdded(organisation: Organisation): void {
+
+    const supplierRelationship = this.allors.context.create('SupplierRelationship') as SupplierRelationship;
+    supplierRelationship.Supplier = organisation;
+    supplierRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.BilledFrom = organisation;
   }
 
-  public billedFromSelected(party: Party) {
-    if (party) {
-      this.updateBilledFrom(party);
+  public shipToCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.ShipToCustomer = party;
+  }
+
+  public billToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.BillToEndCustomer = party;
+  }
+
+  public shipToEndCustomerAdded(party: Party): void {
+
+    const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
+    customerRelationship.Customer = party;
+    customerRelationship.InternalOrganisation = this.internalOrganisation;
+
+    this.invoice.ShipToEndCustomer = party;
+  }
+
+  public billedFromContactPersonAdded(person: Person): void {
+
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
+    organisationContactRelationship.Contact = person;
+
+    this.billedFromContacts.push(person);
+    this.invoice.BilledFromContactPerson = person;
+  }
+
+  public shipToCustomerContactPersonAdded(person: Person): void {
+
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
+    organisationContactRelationship.Contact = person;
+
+    this.shipToCustomerContacts.push(person);
+    this.invoice.ShipToCustomerContactPerson = person;
+  }
+
+  public billToEndCustomerContactPersonAdded(person: Person): void {
+
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
+    organisationContactRelationship.Contact = person;
+
+    this.billToEndCustomerContacts.push(person);
+    this.invoice.BillToEndCustomerContactPerson = person;
+  }
+
+  public shipToEndCustomerContactPersonAdded(person: Person): void {
+
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
+    organisationContactRelationship.Contact = person;
+
+    this.shipToEndCustomerContacts.push(person);
+    this.invoice.ShipToEndCustomerContactPerson = person;
+  }
+
+  public billedFromContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.billedFromContactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BilledFrom.AddPartyContactMechanism(partyContactMechanism);
+    this.invoice.BilledFromContactMechanism = partyContactMechanism.ContactMechanism;
+  }
+
+  public shipToCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.shipToCustomerAddresses.push(partyContactMechanism.ContactMechanism);
+    this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.invoice.ShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+  }
+
+  public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+  }
+
+  public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
+    this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+  }
+
+  public billedFromSelected(organisation: Organisation) {
+    if (organisation) {
+      this.updateBilledFrom(organisation);
     }
   }
 
-  public billToCustomerSelected(party: Party) {
+  public shipToCustomerSelected(party: Party) {
     if (party) {
-      this.updateBillToCustomer(party);
+      this.updateShipToCustomer(party);
+    }
+  }
+
+  public billToEndCustomerSelected(party: Party) {
+    if (party) {
+      this.updateBillToEndCustomer(party);
     }
   }
 
@@ -328,13 +301,37 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   private updateBilledFrom(party: Party): void {
 
-    const { pull, x } = this.metaService;
+    const { pull, x, m } = this.metaService;
 
     const pulls = [
-      pull.Party({
-        object: party.id,
-        fetch: { CurrentContacts: x }
-      })
+      pull.Organisation(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Organisation({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
+      pull.PurchaseOrder(
+        {
+          predicate: new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, object: party }),
+          sort: new Sort(m.PurchaseOrder.OrderNumber),
+        }
+      ),
     ];
 
     this.allors.context
@@ -342,38 +339,77 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         if (this.invoice.BilledFrom !== this.previousBilledFrom) {
+          this.invoice.BilledFromContactMechanism = null;
           this.invoice.BilledFromContactPerson = null;
           this.previousBilledFrom = this.invoice.BilledFrom;
         }
 
+        this.orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
-  private updateBillToCustomer(party: Party) {
+  private updateShipToCustomer(party: Party) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
+          this.invoice.ShipToEndCustomerAddress = null;
+          this.invoice.ShipToCustomerContactPerson = null;
+          this.previousShipToCustomer = this.invoice.ShipToCustomer;
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.shipToCustomerAddresses = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.shipToCustomerContacts = loaded.collections.CurrentContacts as Person[];
+      }, this.errorService.handler);
+  }
+
+  private updateBillToEndCustomer(party: Party) {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({
+        object: party,
         fetch: {
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: x
-              }
-            }
-          }
-        }
-      }),
-      pull.Party({
-        object: party.id,
-        fetch: {
-          PartyContactMechanisms: {
-            include: {
-              ContactMechanism: {
                 PostalAddress_PostalBoundary: {
-                  Country: x
+                  Country: x,
                 }
               }
             }
@@ -381,8 +417,10 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
         }
       }),
       pull.Party({
-        object: party.id,
-        fetch: { CurrentContacts: x }
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
       })
     ];
 
@@ -390,26 +428,26 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
-          this.invoice.BillToCustomerContactMechanism = null;
-          this.invoice.BillToCustomerContactPerson = null;
-          this.previousBillToCustomer = this.invoice.BillToCustomer;
+        if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
+          this.invoice.BillToEndCustomerContactMechanism = null;
+          this.invoice.BillToEndCustomerContactPerson = null;
+          this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         }
 
-        if (this.invoice.BillToCustomer !== null && this.invoice.ShipToEndCustomer === null) {
-          this.invoice.ShipToEndCustomer = this.invoice.BillToCustomer;
+        if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
+          this.invoice.ShipToEndCustomer = this.invoice.BillToEndCustomer;
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToContacts = loaded.collections.CurrentContacts as Person[];
+        this.billToEndCustomerContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({
@@ -444,9 +482,9 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
           this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }
 
-        if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToCustomer === null) {
-          this.invoice.BillToCustomer = this.invoice.ShipToEndCustomer;
-          this.updateBillToCustomer(this.invoice.BillToCustomer);
+        if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
+          this.invoice.BillToEndCustomer = this.invoice.ShipToEndCustomer;
+          this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];

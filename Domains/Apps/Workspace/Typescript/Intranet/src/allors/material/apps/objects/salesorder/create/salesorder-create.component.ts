@@ -181,7 +181,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   public shipToCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.ShipToCustomer = party;
@@ -190,7 +190,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   public billToCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.BillToCustomer = party;
@@ -199,7 +199,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   public shipToEndCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.ShipToEndCustomer = party;
@@ -208,7 +208,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   public billToEndCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.BillToEndCustomer = party;

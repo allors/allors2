@@ -572,7 +572,6 @@ line2")
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
                     .WithBilledTo(allors)
                     .WithBilledFrom(supplier)
-                    .WithBillToCustomer(allors)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem1)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem2)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem3)
@@ -580,6 +579,19 @@ line2")
                     .WithDescription("Purchase of 1 used Aircraft Towbar")
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                    .Build();
+
+                var purchaseOrderItem1 = new PurchaseOrderItemBuilder(this.Session)
+                    .WithDescription("first purchase order item")
+                    .WithPart(finishedGood)
+                    .WithQuantityOrdered(1)
+                    .Build();
+
+                var purchaseOrder = new PurchaseOrderBuilder(this.Session)
+                    .WithOrderedBy(allors)
+                    .WithTakenViaSupplier(supplier)
+                    .WithPurchaseOrderItem(purchaseOrderItem1)
+                    .WithCustomerReference("a reference number")
                     .Build();
             }
 

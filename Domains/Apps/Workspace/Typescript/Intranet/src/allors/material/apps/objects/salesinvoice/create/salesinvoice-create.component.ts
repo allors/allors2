@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -81,7 +81,6 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private errorService: ErrorService,
     public refreshService: RefreshService,
-    private snackBar: MatSnackBar,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -101,10 +100,6 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: new Sort(m.Organisation.PartyName)
-            })
           ];
 
           return this.allors.context
@@ -171,7 +166,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   public shipToCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.invoice.ShipToCustomer = party;
@@ -180,7 +175,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   public billToCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.invoice.BillToCustomer = party;
@@ -189,7 +184,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   public shipToEndCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.invoice.ShipToEndCustomer = party;
@@ -198,7 +193,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   public billToEndCustomerAdded(party: Party): void {
 
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-    customerRelationship.Customer = party as Party;
+    customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.invoice.BillToEndCustomer = party;
@@ -298,7 +293,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   }
 
   private updateShipToCustomer(party: Party): void {
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -348,7 +343,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -398,7 +393,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
@@ -448,7 +443,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { pull, tree, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(

@@ -18,6 +18,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
+import { OrganisationInlineModule } from '../../organisation/inline/organisation-inline.module';
+import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
@@ -67,6 +69,8 @@ export { PurchaseInvoiceCreateComponent } from './purchaseinvoice-create.compone
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    OrganisationInlineModule,
+    PartyInlineModule,
     PersonInlineModule,
     ContactMechanismInlineModule,
     PostalAddressInlineModule,

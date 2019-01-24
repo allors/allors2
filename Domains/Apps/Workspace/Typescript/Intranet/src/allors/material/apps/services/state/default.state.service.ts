@@ -49,6 +49,34 @@ export class DefaultStateService extends StateService {
       },
     });
 
+    this.suppliersFilter = new SearchFactory({
+      objectType: m.Organisation,
+      roleTypes: [m.Organisation.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
+          extent: new Filter({
+            objectType: m.SupplierRelationship,
+            predicate: new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation, object: this.internalOrganisationId }),
+          })
+        }));
+      },
+    });
+
+    this.employeeFilter = new SearchFactory({
+      objectType: m.Person,
+      roleTypes: [m.Person.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: m.Person.EmploymentsWhereEmployee,
+          extent: new Filter({
+            objectType: m.Employment,
+            predicate: new Equals({ propertyType: m.Employment.Employer, object: this.internalOrganisationId }),
+          })
+        }));
+      },
+    });
+
     this.organisationsFilter = new SearchFactory({
       objectType: m.Organisation,
       roleTypes: [m.Organisation.PartyName],

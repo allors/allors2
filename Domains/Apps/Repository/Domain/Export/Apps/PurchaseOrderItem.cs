@@ -164,6 +164,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityReceived { get; set; }
 
         #region Allors
@@ -174,6 +175,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Indexed]
+        [Workspace]
         public Part Part { get; set; }
         
         #region inherited methods

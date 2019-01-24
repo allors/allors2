@@ -62,15 +62,15 @@ export class PurchasInvoiceOverviewComponent implements OnInit, OnDestroy {
                 },
                 BilledFrom: x,
                 BilledFromContactPerson: x,
-                BillToCustomer: x,
-                BillToCustomerContactPerson: x,
+                BillToEndCustomer: x,
+                BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
                 PurchaseOrder: x,
-                BillToCustomerContactMechanism: {
+                BillToEndCustomerContactMechanism: {
                   PostalAddress_Country: {
                   }
                 },
