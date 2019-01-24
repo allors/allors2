@@ -24,7 +24,6 @@ interface Row extends TableRow {
   providers: [ContextService, PanelService]
 })
 export class SalesInvoiceItemOverviewPanelComponent {
-  invoice: SalesInvoice;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -33,6 +32,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
   m: Meta;
 
   salesInvoiceItems: SalesInvoiceItem[];
+  invoice: SalesInvoice;
   table: Table<Row>;
 
   delete: Action;
@@ -63,7 +63,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
 
     panel.name = 'salesinvoicetitem';
     panel.title = 'Sales Invoice Items';
-    panel.icon = 'contacts';
+    panel.icon = 'business';
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);

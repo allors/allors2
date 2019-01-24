@@ -547,19 +547,20 @@ line2")
 
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
-                    .WithProduct(good1)
+                    .WithPart(finishedGood)
                     .WithActualUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
 line2")
-                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).PartItem)
                     .Build();
 
                 var purchaseInvoiceItem2 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("second item")
                     .WithActualUnitPrice(2000)
                     .WithQuantity(2)
-                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .WithPart(finishedGood2)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).PartItem)
                     .Build();
 
                 var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(this.Session)

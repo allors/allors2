@@ -1,51 +1,48 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
+import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
+import { PullRequest, Equals, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
-import { SalesOrderItemEditComponent } from '../../salesorderitem/edit/salesorderitem-edit.module';
 
 @Component({
   templateUrl: './purchaseinvoiceitem-edit.component.html',
   providers: [ContextService]
 })
 export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
-  public m: Meta;
-  public title: string;
 
-  public invoice: PurchaseInvoice;
-  public invoiceItem: PurchaseInvoiceItem;
-  public orderItem: PurchaseOrderItem;
-  public inventoryItems: InventoryItem[];
-  public vatRates: VatRate[];
-  public vatRegimes: VatRegime[];
-  public serialisedInventoryItem: SerialisedInventoryItem;
-  public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public goods: Good[];
-  public invoiceItemTypes: InvoiceItemType[];
-  public productItemType: InvoiceItemType;
+  readonly m: Meta;
+
+  title: string;
+  invoice: PurchaseInvoice;
+  invoiceItem: PurchaseInvoiceItem;
+  orderItem: PurchaseOrderItem;
+  inventoryItems: InventoryItem[];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
+  serialisedInventoryItem: SerialisedInventoryItem;
+  nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+  parts: Part[];
+  invoiceItemTypes: InvoiceItemType[];
+  partItemType: InvoiceItemType;
+  productItemType: InvoiceItemType;
 
   private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
+    public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
     public stateService: StateService,
-    private dialogService: AllorsMaterialDialogService,
   ) {
     this.m = this.metaService.m;
   }
@@ -62,30 +59,48 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
           const { id } = this.data;
 
           const pulls = [
-            pull.PurchaseInvoice(
+            pull.PurchaseInvoiceItem({
+              object: id,
+              include:
               {
-                // TODO:
-                object: id
+                PurchaseInvoiceItemState: x,
+                VatRegime: {
+                  VatRate: x,
+                }
               }
-            ),
-            pull.PurchaseInvoiceItem(
-              {
-                object: id,
-                include: {
-                  PurchaseInvoiceItemState: x,
-                  PurchaseOrderItem: x,
-                  VatRegime: {
-                    VatRate: x
+            }),
+            pull.Part({
+              sort: [
+                new Sort(m.Part.Name),
+              ],
+            }),
+            pull.PurchaseInvoiceItem({
+              object: id,
+              fetch: {
+                PurchaseInvoiceWherePurchaseInvoiceItem: {
+                  include: {
+                    VatRegime: x
                   }
                 }
-              }),
-            pull.Good(),
+              }
+            }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
             }),
             pull.VatRate(),
             pull.VatRegime()
           ];
+
+          if (this.data.associationId) {
+            pulls.push(
+              pull.PurchaseInvoice({
+                object: this.data.associationId,
+                include: {
+                  VatRegime: x
+                }
+              })
+            );
+          }
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
@@ -99,25 +114,25 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.PurchaseInvoiceItem as PurchaseInvoiceItem;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.goods = loaded.collections.Goods as Good[];
+        this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
+        this.partItemType = this.invoiceItemTypes.find(
+          (v: InvoiceItemType) => v.UniqueId.toUpperCase() === 'FF2B943D-57C9-4311-9C56-9FF37959653B');
         this.productItemType = this.invoiceItemTypes.find(
-          (v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44CB-8354-FB887ADA42AD',
-        );
+          (v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44cb-8354-FB887ADA42AD');
 
         if (isCreate) {
-          this.title = 'Add invoice Item';
+          this.title = 'Add purchase invoice Item';
           this.invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
-          this.title = 'Edit invoice Item';
-          if (
-            this.invoiceItem.InvoiceItemType === this.productItemType
-          ) {
-            // TODO:
-            // this.goodSelected(this.invoiceItem.Product);
+
+          if (this.invoiceItem.CanWriteQuantity) {
+            this.title = 'Edit purchase invoice Item';
+          } else {
+            this.title = 'View purchase invoice Item';
           }
         }
       }, this.errorService.handler);
@@ -129,42 +144,12 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goodSelected(product: Product): void {
-    const { pull } = this.metaService;
-
-    this.invoiceItem.InvoiceItemType = this.productItemType;
-
-    const pulls = [
-      pull.Product({
-        object: product.id,
-        // TODO:
-        // fetch: {   }
-      })
-    ];
-
-    this.allors.context.load('Pull', new PullRequest({ pulls }))
-      .subscribe(
-        (loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-            this.serialisedInventoryItem = this
-              .inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-            this.nonSerialisedInventoryItem = this
-              .inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
-        (error: Error) => {
-          this.errorService.handle(error);
-        },
-      );
-  }
-
   public save(): void {
 
+    this.onSave();
+
     this.allors.context.save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: ObjectData = {
           id: this.invoiceItem.id,
           objectType: this.invoiceItem.objectType,
@@ -177,18 +162,11 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  public update(): void {
+  private onSave() {
 
-    const isNew = this.invoiceItem.isNew;
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    if (this.invoiceItem.InvoiceItemType !== this.partItemType &&
+       this.invoiceItem.InvoiceItemType !== this.partItemType) {
+      this.invoiceItem.Quantity = 1;
+    }
   }
 }

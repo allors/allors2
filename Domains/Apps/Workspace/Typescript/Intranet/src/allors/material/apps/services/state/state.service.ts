@@ -8,6 +8,7 @@ export abstract class StateService {
     public internalOrganisationId$: Observable<string>;
 
     public goodsFilter: SearchFactory;
+    public partsFilter: SearchFactory;
     public customersFilter: SearchFactory;
     public suppliersFilter: SearchFactory;
     public employeeFilter: SearchFactory;

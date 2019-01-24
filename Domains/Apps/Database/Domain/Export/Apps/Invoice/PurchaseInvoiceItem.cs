@@ -30,6 +30,19 @@ namespace Allors.Domain
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistPurchaseInvoiceItemState)
+            {
+                this.PurchaseInvoiceItemState= new PurchaseInvoiceItemStates(this.Strategy.Session).Received;
+            }
+
+            if (this.ExistPart && !this.ExistInvoiceItemType)
+            {
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
+            }
+        }
+
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

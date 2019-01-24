@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SearchFactory, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
 import { And, ContainedIn, Equals, PullRequest, Sort, Filter } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -100,7 +100,8 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
               object: id,
               fetch: {
                 SalesInvoiceWhereSalesInvoiceItem: {
-                  include: { VatRegime: x
+                  include: {
+                    VatRegime: x
                   }
                 }
               }
@@ -155,7 +156,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
         );
 
         if (isCreate) {
-          this.title = 'Add invoice Item';
+          this.title = 'Add sales invoice Item';
           this.invoiceItem = this.allors.context.create('SalesInvoiceItem') as SalesInvoiceItem;
           this.invoice.AddSalesInvoiceItem(this.invoiceItem);
         } else {

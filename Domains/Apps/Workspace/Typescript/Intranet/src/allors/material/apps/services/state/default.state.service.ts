@@ -21,6 +21,7 @@ export class DefaultStateService extends StateService {
     this.internalOrganisationId$ = this.internalOrganisationIdSubject;
 
     const m = this.workspaceService.metaPopulation as Meta;
+
     this.goodsFilter = new SearchFactory({
       objectType: m.Good,
       roleTypes: [m.Good.Name],
@@ -32,6 +33,16 @@ export class DefaultStateService extends StateService {
             predicate: new Equals({ propertyType: m.VendorProduct.InternalOrganisation, object: this.internalOrganisationId }),
           })
         }));
+      },
+    });
+
+    this.partsFilter = new SearchFactory({
+      objectType: m.Part,
+      roleTypes: [m.Part.Name],
+      post: (predicate: And) => {
+        predicate.operands.push(
+          new Equals({ propertyType: m.Part.InternalOrganisation, object: this.internalOrganisationId })
+        );
       },
     });
 
