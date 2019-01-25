@@ -30,10 +30,16 @@ namespace Allors.Domain
 
         public PermissionCache(ISession session)
         {
+            var xxx = new Permissions(session).Extent()
+                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
+                    w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x => x.ToArray()));
+
+
+
             this.PermissionIdByOperationByOperandTypeIdByClassId = new Permissions(session).Extent()
                 .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
                     w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x =>
-                        x.GroupBy(v => v.Operation).ToDictionary(v => v.Key, y => y.First().Id)));
+                        x.ToDictionary(v => v.Operation, y => y.Id)));
         }
     }
 }

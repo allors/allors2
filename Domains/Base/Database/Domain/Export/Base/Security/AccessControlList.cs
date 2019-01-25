@@ -97,9 +97,13 @@ namespace Allors.Domain
                 }
             }
 
-            var permissionId = this.PermissionIdByOperationByOperandTypeId[operandType.Id][operation];
+            var permissionIdByOperation = this.PermissionIdByOperationByOperandTypeId[operandType.Id];
+            if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
+            {
+                return this.permissionIds.Contains(permissionId);
+            }
 
-            return this.permissionIds.Contains(permissionId);
+            return false;
         }
 
         private void LazyLoad()
