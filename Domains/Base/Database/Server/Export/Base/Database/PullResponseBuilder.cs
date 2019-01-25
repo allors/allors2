@@ -107,8 +107,7 @@ namespace Allors.Server
         {
             if (collection != null)
             {
-                List<IObject> list;
-                if (!this.collectionsByName.TryGetValue(name, out list))
+                if (!this.collectionsByName.TryGetValue(name, out var list))
                 {
                     list = new List<IObject>();
                     this.collectionsByName.Add(name, list);

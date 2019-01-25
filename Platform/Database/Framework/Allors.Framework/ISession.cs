@@ -21,6 +21,7 @@
 namespace Allors
 {
     using System;
+    using System.Collections.Generic;
 
     using Allors.Meta;
 
@@ -41,7 +42,7 @@ namespace Allors
         /// </summary>
         /// <returns>The change set.</returns>
         IChangeSet Checkpoint();
-
+        
         /// <summary>
         /// Creates an Extent for the specified IObjectType.
         /// Only works for static domains.
@@ -158,13 +159,15 @@ namespace Allors
         /// <returns>The instantiated objects.</returns>
         IObject[] Instantiate(long[] objectIds);
 
-        void Prefetch(PrefetchPolicy prefetchPolicy, params string[] objectIds);
-
-        void Prefetch(PrefetchPolicy prefetchPolicy, params long[] objectIds);
-
-        void Prefetch(PrefetchPolicy prefetchPolicy, params IStrategy[] strategies);
-
         void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects);
+        
+        void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIds);
+
+        void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<long> objectIds);
+
+        void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies);
+
+        void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects);
         
         /// <summary>
         /// Gets the database.

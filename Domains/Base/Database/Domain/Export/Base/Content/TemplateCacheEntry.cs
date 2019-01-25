@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControl.cs" company="Allors bvba">
+// <copyright file="TemplateCacheEntry.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,21 +21,17 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Linq;
 
-    public partial class AccessControl
+    public class TemplateCacheEntry
     {
-        public void BaseOnDerive(ObjectOnDerive method)
+        internal TemplateCacheEntry(Template template, object subject)
         {
-            var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, Meta.Subjects, Meta.SubjectGroups);
-
-            this.EffectiveUsers = this.SubjectGroups.SelectMany(v => v.Members).Union(this.Subjects).ToArray();
-            this.EffectivePermissions = this.Role?.Permissions;
-
-            // Invalidate cache
-            this.CacheId = Guid.NewGuid();
+            this.Revision = template.Media.Revision.Value;
+            this.Subject = subject;
         }
+
+        public Guid Revision { get; }
+
+        public object Subject { get; }
     }
 }

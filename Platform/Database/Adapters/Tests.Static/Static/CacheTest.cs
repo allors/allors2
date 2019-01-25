@@ -21,6 +21,7 @@
 namespace Allors.Adapters
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors;
@@ -37,7 +38,7 @@ namespace Allors.Adapters
         public abstract void Dispose();
 
 
-        [Fact(Skip="Cache invalidation")]
+        [Fact(Skip = "Cache invalidation")]
         public void InitDifferentDatabase()
         {
             var database = this.CreateDatabase();
@@ -79,7 +80,7 @@ namespace Allors.Adapters
                 Assert.Equal("c", c1.C1AllorsString);
             }
         }
-        
+
         [Fact]
         public void FlushCacheOnInit()
         {
@@ -96,7 +97,7 @@ namespace Allors.Adapters
                 // load cache
                 c2a = c1a.C1C2one2one;
             }
-            
+
             database.Init();
 
             using (ISession session = database.CreateSession())
@@ -122,12 +123,12 @@ namespace Allors.Adapters
             {
                 var c1 = C1.Create(session);
                 c1.C1AllorsString = "Test";
-                
+
                 session.Commit();
 
             }
         }
-        
+
         [Fact]
         public void FailedCommit()
         {
@@ -150,7 +151,7 @@ namespace Allors.Adapters
                 session.Commit();
 
                 c1.C1AllorsString = "Session 1";
-                
+
                 using (var session2 = database.CreateSession())
                 {
                     var session2C1 = (C1)session2.Instantiate(c1);
@@ -180,12 +181,12 @@ namespace Allors.Adapters
 
                 Assert.True(exceptionThrown);
             }
-            
+
             using (var session = database.CreateSession())
             {
                 var c1 = (C1)session.Instantiate(c1Id);
                 var c2 = session.Instantiate(c2Id);
- 
+
                 Assert.Null(c1.C1C2one2one);
             }
         }
@@ -217,12 +218,12 @@ namespace Allors.Adapters
                 var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
                 prefetchPolicyBuilder.WithRule(M.C1.C1C2many2one, nestedPrefetchPolicy);
                 var prefetchPolicy = prefetchPolicyBuilder.Build();
-                session.Prefetch(prefetchPolicy, c1a, c1b);
-                
+                session.Prefetch(prefetchPolicy, new[] { c1a, c1b });
+
                 var result = c1a.C1C2many2one;
 
                 session.Rollback();
-                
+
                 Assert.False(c1a.ExistC1C2many2one);
             }
         }
@@ -259,12 +260,12 @@ namespace Allors.Adapters
                 var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
                 prefetchPolicyBuilder.WithRule(M.C1.C1C2one2manies, nestedPrefetchPolicy);
                 var prefetchPolicy = prefetchPolicyBuilder.Build();
-                session.Prefetch(prefetchPolicy, c1a, c1b);
-                
+                session.Prefetch(prefetchPolicy, new[] { c1a, c1b });
+
                 var result = c1a.C1C2one2manies;
 
                 session.Rollback();
-                
+
                 Assert.Equal(2, c1a.C1C2one2manies.Count);
                 Assert.Contains(c2a, c1a.C1C2one2manies.ToArray());
                 Assert.Contains(c2b, c1a.C1C2one2manies.ToArray());

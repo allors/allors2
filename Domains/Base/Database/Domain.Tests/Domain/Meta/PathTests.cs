@@ -57,7 +57,7 @@ namespace Tests
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
+            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
 
             var result = (ISet<object>)path.Get(c1a, acls);
             Assert.Equal(1, result.Count);
@@ -93,7 +93,7 @@ namespace Tests
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
+            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
 
             var result = (ISet<object>)path.Get(c1a, acls);
             Assert.Equal(1, result.Count);
@@ -130,7 +130,7 @@ namespace Tests
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
+            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
 
             var result = (C1)fetch.Get(c2A, acls);
             Assert.Equal(result, c1A);

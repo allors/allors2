@@ -22,7 +22,6 @@ namespace Allors.Services
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
 
     public class CacheService : ICacheService
     {
@@ -34,19 +33,19 @@ namespace Allors.Services
             stateService.Register(this);
         }
 
-        public IDictionary<long, T> Get<T>(Type type)
+        public TValue Get<TKey, TValue>()
         {
-            if (this.caches.TryGetValue(type, out var cache))
+            if (this.caches.TryGetValue(typeof(TKey), out var cache))
             {
-                return (IDictionary<long, T>)cache;
+                return (TValue)cache;
             }
 
-            return null;
+            return default(TValue);
         }
 
-        public void Set<T>(Type type, IDictionary<long, T> value)
+        public void Set<TKey, TValue>(TValue value)
         {
-            this.caches[type] = value;
+            this.caches[typeof(TKey)] = value;
         }
 
         public void Clear()

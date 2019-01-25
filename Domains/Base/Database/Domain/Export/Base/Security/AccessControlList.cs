@@ -32,28 +32,43 @@ namespace Allors.Domain
     /// </summary>
     public class AccessControlList : IAccessControlList
     {
+        private static readonly PrefetchPolicy PrefetchPolicy;
+
         private readonly AccessControlledObject @object;
-        private readonly User user;
         private readonly ISession session;
 
         private readonly Guid classId;
 
-        private IList<Dictionary<Guid, Operations>> operationsByOperandTypeIds;
+        private HashSet<long> permissionIds;
         private Permission[] deniedPermissions;
 
         private bool lazyLoaded;
 
+        private Dictionary<Guid, Dictionary<Operations, long>> PermissionIdByOperationByOperandTypeId;
+
+        static AccessControlList()
+        {
+            PrefetchPolicy = new PrefetchPolicyBuilder()
+                .WithRule(M.AccessControl.CacheId.RoleType)
+                .WithRule(M.AccessControl.EffectiveUsers)
+                .WithRule(M.AccessControl.EffectivePermissions)
+                .Build();
+        }
+
         public AccessControlList(IObject obj, User user)
         {
-            this.user = user;
-            this.session = this.user.Strategy.Session;
+            this.User = user;
+            this.session = this.User.Strategy.Session;
             this.@object = (AccessControlledObject)obj;
             this.classId = obj.Strategy.Class.Id;
 
             this.lazyLoaded = false;
         }
 
-        public User User => this.user;
+        public User User
+        {
+            get;
+        }
 
         public bool CanRead(IPropertyType propertyType)
         {
@@ -72,41 +87,19 @@ namespace Allors.Domain
 
         public bool IsPermitted(IOperandType operandType, Operations operation)
         {
-            if (operandType.Id.ToString().ToUpper() == "0BC3A4E1-C3EB-4312-A699-D28EB778EA05")
-            {
-                
-            }
-            return this.IsPermitted(operandType.Id, operation);
-        }
-
-        private bool IsPermitted(Guid operandTypeId, Operations operation)
-        {
             this.LazyLoad();
 
             if (this.deniedPermissions.Length > 0)
             {
-                if (this.deniedPermissions.Any(deniedPermission => deniedPermission.OperandTypePointer.Equals(operandTypeId) && deniedPermission.Operation.Equals(operation)))
+                if (this.deniedPermissions.Any(deniedPermission => deniedPermission.OperandTypePointer.Equals(operandType.Id) && deniedPermission.Operation.Equals(operation)))
                 {
                     return false;
                 }
             }
 
-            if (this.operationsByOperandTypeIds != null)
-            {
-                foreach (var operationsByOperandTypeId in this.operationsByOperandTypeIds)
-                {
-                    Operations operations;
-                    if (operationsByOperandTypeId.TryGetValue(operandTypeId, out operations))
-                    {
-                        if ((operations & operation) == operation)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
+            var permissionId = this.PermissionIdByOperationByOperandTypeId[operandType.Id][operation];
 
-            return false;
+            return this.permissionIds.Contains(permissionId);
         }
 
         private void LazyLoad()
@@ -116,12 +109,12 @@ namespace Allors.Domain
                 this.deniedPermissions = this.@object.DeniedPermissions.ToArray();
 
                 SecurityToken[] securityTokens;
-                if (this.@object is DelegatedAccessControlledObject)
+                if (this.@object is DelegatedAccessControlledObject controlledObject)
                 {
-                    var delegatedAccess = ((DelegatedAccessControlledObject)this.@object).DelegateAccess();
+                    var delegatedAccess = controlledObject.DelegateAccess();
                     securityTokens = delegatedAccess.SecurityTokens;
-                    var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
 
+                    var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
                     if (delegatedAccessDeniedPermissions != null)
                     {
                         this.deniedPermissions = this.deniedPermissions.Union(delegatedAccessDeniedPermissions).ToArray();
@@ -135,28 +128,59 @@ namespace Allors.Domain
                 if (securityTokens == null || securityTokens.Length == 0)
                 {
                     var singleton = this.session.GetSingleton();
-                    securityTokens = this.@object.Strategy.IsNewInSession ?
-                                         new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
-                                         new[] { singleton.DefaultSecurityToken };
+                    securityTokens = this.@object.Strategy.IsNewInSession
+                                          ? new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken }
+                                          : new[] { singleton.DefaultSecurityToken };
                 }
 
-                var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
-                foreach (var cache in caches)
-                {
-                    var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;
+                this.permissionIds = new HashSet<long>(this.Caches(securityTokens).SelectMany(v => v.EffectivePermissionIds));
 
-                    if (operationsByOperandTypeIdByClassId.TryGetValue(this.classId, out var operationsByClassId))
-                    {
-                        if (this.operationsByOperandTypeIds == null)
-                        {
-                            this.operationsByOperandTypeIds = new List<Dictionary<Guid, Operations>>();
-                        }
-
-                        this.operationsByOperandTypeIds.Add(operationsByClassId);
-                    }
-                }
+                var permissionCache = this.session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(this.session));
+                this.PermissionIdByOperationByOperandTypeId = permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
 
                 this.lazyLoaded = true;
+            }
+        }
+
+        private IEnumerable<AccessControlCacheEntry> Caches(SecurityToken[] securityTokens)
+        {
+            List<AccessControl> misses = null;
+
+            var caches = this.session.GetCache<AccessControlCacheEntry>();
+            foreach (var accessControl in securityTokens.SelectMany(v => v.AccessControls).Distinct())
+            {
+                caches.TryGetValue(accessControl.Id, out var cache);
+                if (cache == null || !accessControl.CacheId.Equals(cache.CacheId))
+                {
+                    if (misses == null)
+                    {
+                        misses = new List<AccessControl>();
+                    }
+
+                    misses.Add(accessControl);
+                }
+                else
+                {
+                    if (cache.EffectiveUserIds.Contains(this.User.Id))
+                    {
+                        yield return cache;
+                    }
+                }
+            }
+
+            if (misses != null)
+            {
+                this.session.Prefetch(PrefetchPolicy, misses);
+                foreach (var accessControl in misses)
+                {
+                    var cache = new AccessControlCacheEntry(accessControl);
+                    caches[accessControl.Id] = cache;
+
+                    if (cache.EffectiveUserIds.Contains(this.User.Id))
+                    {
+                        yield return cache;
+                    }
+                }
             }
         }
     }

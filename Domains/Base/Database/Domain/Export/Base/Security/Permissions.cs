@@ -28,7 +28,7 @@ namespace Allors.Domain
 
     public partial class Permissions
     {
-		// TODO: Cache permissions
+        // TODO: Cache permissions
         public Permission Get(Class @class, OperandType operand, Operations operation)
         {
             var extent = this.Extent();

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControlListTests.cs" Organisation="Allors bvba">
-//   Copyright 2002-2011 Allors bvba.
+// <copyright file="AccessControlListTests.cs" company="Allors bvba">
+// Copyright 2002-2019 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)

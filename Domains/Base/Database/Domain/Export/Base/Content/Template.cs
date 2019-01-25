@@ -32,11 +32,11 @@ namespace Allors.Domain
             get
             {
                 var session = this.strategy.Session;
-                var caches = session.GetCache<TemplateCache>();
+                var caches = session.GetCache<TemplateCacheEntry>();
                 caches.TryGetValue(this.Id, out var cache);
                 if (cache == null || !this.Media.Revision.Equals(cache.Revision))
                 {
-                    cache = new TemplateCache(this, this.CreateSubject());
+                    cache = new TemplateCacheEntry(this, this.CreateSubject());
                     caches[this.Id] = cache;
                 }
 
@@ -65,12 +65,9 @@ namespace Allors.Domain
 
         private object CreateSubject()
         {
-            if (this.TemplateType.IsOpenDocumentTemplate)
-            {
-                return new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments);
-            }
-
-            return null;
+            return this.TemplateType.IsOpenDocumentTemplate ? 
+                       new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments) : 
+                       null;
         }
     }
 }

@@ -61,14 +61,6 @@ namespace Allors.Adapters.Database.Sql
 
             this.changeSet = new ChangeSet();
         }
-
-        public event SessionCommittingEventHandler Committing;
-
-        public event SessionCommittedEventHandler Committed;
-
-        public event SessionRollingBackEventHandler RollingBack;
-
-        public event SessionRolledBackEventHandler RolledBack;
         
         public IServiceProvider ServiceProvider { get; }
 
@@ -301,19 +293,23 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params string[] objectIds)
-        {
-        }
-
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params long[] objectIds)
-        {
-        }
-
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params IStrategy[] strategies)
-        {
-        }
-
         public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)
+        {
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIds)
+        {
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<long> objectIds)
+        {
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies)
+        {
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects)
         {
         }
 
@@ -368,12 +364,6 @@ namespace Allors.Adapters.Database.Sql
                 try
                 {
                     this.busyCommittingOrRollingBack = true;
-                    if (this.Committing != null)
-                    {
-                        // Errors thrown in Committing event handlers 
-                        // should have no effect on the current state of the Session.
-                        this.Committing(this, new SessionCommittingEventArgs(this));
-                    }
 
                     var accessed = new List<long>(this.referenceByObjectId.Keys);
                     var changed = new long[0];
@@ -418,11 +408,6 @@ namespace Allors.Adapters.Database.Sql
                 {
                     this.busyCommittingOrRollingBack = false;
                 }
-
-                if (this.Committed != null)
-                {
-                    this.Committed(this, new SessionCommittedEventArgs(this));
-                }
             }
         }
 
@@ -433,10 +418,6 @@ namespace Allors.Adapters.Database.Sql
                 try
                 {
                     this.busyCommittingOrRollingBack = true;
-                    if (this.RollingBack != null)
-                    {
-                        this.RollingBack(this, new SessionRollingBackEventArgs(this));
-                    }
 
                     var accessed = new List<long>(this.referenceByObjectId.Keys);
 
@@ -470,11 +451,6 @@ namespace Allors.Adapters.Database.Sql
                 finally
                 {
                     this.busyCommittingOrRollingBack = false;
-                }
-
-                if (this.RolledBack != null)
-                {
-                    this.RolledBack(this, new SessionRolledBackEventArgs(this));
                 }
             }
         }

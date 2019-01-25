@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PermissionComparer.cs" company="Allors bvba">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AccessControlCache.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,18 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
-
-    public class PermissionComparer : IComparer<Permission>
+    public class PermissionIds
     {
-        public int Compare(Permission x, Permission y)
-        {
-            if (Equals(x, y))
-            {
-                return 0;
-            }
+        public long Read { get; set; }
 
-            return x.ToString().CompareTo(y.ToString());
-        }
+        public long Write { get; set; }
+
+        public long Execute { get; set; }
     }
 }

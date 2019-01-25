@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControlCache.cs" company="Allors bvba">
+// <copyright file="AccessControlCacheEntry.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,17 +21,23 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    public class TemplateCache
+    public class AccessControlCacheEntry
     {
-        internal TemplateCache(Template template, object subject)
+        internal AccessControlCacheEntry(AccessControl accessControl)
         {
-            this.Revision = template.Media.Revision.Value;
-            this.Subject = subject;
+            this.CacheId = accessControl.CacheId;
+
+            this.EffectiveUserIds = new HashSet<long>(accessControl.EffectiveUsers.Select(v => v.Id));
+            this.EffectivePermissionIds = new HashSet<long>(accessControl.EffectivePermissions.Select(v => v.Id));
         }
 
-        public Guid Revision { get; }
+        public Guid CacheId { get; }
 
-        public object Subject { get; }
+        public HashSet<long> EffectiveUserIds { get; }
+
+        public HashSet<long> EffectivePermissionIds { get; }
     }
 }

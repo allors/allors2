@@ -169,7 +169,7 @@ namespace Allors.Adapters.Memory
             {
                 throw new Exception("IObjectType should be a class");
             }
-            
+
             return (T)this.Create(@class);
         }
 
@@ -214,7 +214,7 @@ namespace Allors.Adapters.Memory
             {
                 return null;
             }
-            
+
             return this.Instantiate(obj.Strategy.ObjectId);
         }
 
@@ -282,22 +282,27 @@ namespace Allors.Adapters.Memory
             return allorsObjects.ToArray();
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params string[] objectIds)
-        {
-            // nop
-        }
-
-        public void Prefetch(PrefetchPolicy prefetchPolicy, long[] objectIds)
-        {
-            // nop
-        }
-
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params IStrategy[] strategies)
-        {
-            // nop
-        }
-
         public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)
+        {
+            // nop
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIds)
+        {
+            // nop
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<long> objectIds)
+        {
+            // nop
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies)
+        {
+            // nop
+        }
+
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects)
         {
             // nop
         }

@@ -67,7 +67,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
                             foreach (var @class in this.Session.Database.MetaPopulation.Classes)
                             {
                                 var prefetchPolicy = this.prefetchers[@class];
-                                this.Session.Prefetch(prefetchPolicy, this.Session.Extent(@class));
+                                this.Session.Prefetch(prefetchPolicy, this.Session.Extent(@class).ToArray());
                             }
                         });
                 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControl.cs" company="Allors bvba">
+// <copyright file="PermissionCache.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,21 +21,19 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
-    public partial class AccessControl
+    public class PermissionCache
     {
-        public void BaseOnDerive(ObjectOnDerive method)
+        public Dictionary<Guid, Dictionary<Guid, Dictionary<Operations, long>>> PermissionIdByOperationByOperandTypeIdByClassId { get; }
+
+        public PermissionCache(ISession session)
         {
-            var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, Meta.Subjects, Meta.SubjectGroups);
-
-            this.EffectiveUsers = this.SubjectGroups.SelectMany(v => v.Members).Union(this.Subjects).ToArray();
-            this.EffectivePermissions = this.Role?.Permissions;
-
-            // Invalidate cache
-            this.CacheId = Guid.NewGuid();
+            this.PermissionIdByOperationByOperandTypeIdByClassId = new Permissions(session).Extent()
+                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
+                    w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x =>
+                        x.GroupBy(v => v.Operation).ToDictionary(v => v.Key, y => y.First().Id)));
         }
     }
 }

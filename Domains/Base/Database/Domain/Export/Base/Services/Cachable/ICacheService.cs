@@ -20,13 +20,10 @@
 
 namespace Allors.Services
 {
-    using System;
-    using System.Collections.Generic;
-
     public interface ICacheService : IStateful
     {
-        IDictionary<long, T> Get<T>(Type type);
+        TValue Get<TKey, TValue>();
 
-        void Set<T>(Type type, IDictionary<long, T> value);
+        void Set<TKey, TValue>(TValue value);
     }
 }

@@ -20,29 +20,37 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     using Allors.Services;
+
+    using Antlr.Runtime.Misc;
 
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SessionExtension
     {
-        public static IDictionary<long, T> GetCache<T>(this ISession @this)
-        {
-            return GetCache<T>(@this, typeof(T));
-        }
-
-        public static IDictionary<long, T> GetCache<T>(this ISession @this, Type type)
+        public static Dictionary<long, T> GetCache<T>(this ISession @this)
         {
             var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
-            var cache = caches.Get<T>(type);
+            var cache = caches.Get<T, Dictionary<long, T>>();
             if (cache == null)
             {
-                cache = new ConcurrentDictionary<long, T>();
-                caches.Set(type, cache);
+                cache = new Dictionary<long, T>();
+                caches.Set<T, Dictionary<long, T>>(cache);
+            }
+
+            return cache;
+        }
+
+        public static TValue GetCache<TKey, TValue>(this ISession @this, Func<TValue> factory)
+        {
+            var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
+            var cache = caches.Get<TKey, TValue>();
+            if (cache == null)
+            {
+                cache = factory();
+                caches.Set<TKey, TValue>(cache);
             }
 
             return cache;

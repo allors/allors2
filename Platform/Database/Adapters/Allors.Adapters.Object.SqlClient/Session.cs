@@ -305,49 +305,27 @@ namespace Allors.Adapters.Object.SqlClient
 
         public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)
         {
-            var objectIds = new HashSet<long>(objects.Select(x => x.Strategy.ObjectId));
-            var references = this.Prefetcher.GetReferencesForPrefetching(objectIds);
-
-            if (references.Count != 0)
-            {
-                this.Flush();
-
-                var prefetcher = new Prefetch(this.Prefetcher, prefetchPolicy, references);
-                prefetcher.Execute();
-            }
+            this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params IStrategy[] strategies)
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects)
         {
-            var objectIds = new HashSet<long>(strategies.Select(x => x.ObjectId));
-            var references = this.Prefetcher.GetReferencesForPrefetching(objectIds);
-
-            if (references.Count != 0)
-            {
-                this.Flush();
-
-                var prefetcher = new Prefetch(this.Prefetcher, prefetchPolicy, references);
-                prefetcher.Execute();
-            }
+            this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
+        }
+        
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies)
+        {
+            this.Prefetch(prefetchPolicy, strategies.Select(v => v.ObjectId));
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params string[] objectIdStrings)
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIdStrings)
         {
-            var objectIds = new HashSet<long>(objectIdStrings.Select(v => long.Parse(v)));
-            var references = this.Prefetcher.GetReferencesForPrefetching(objectIds);
-
-            if (references.Count != 0)
-            {
-                this.Flush();
-
-                var prefetcher = new Prefetch(this.Prefetcher, prefetchPolicy, references);
-                prefetcher.Execute();
-            }
+            this.Prefetch(prefetchPolicy, objectIdStrings.Select(long.Parse));
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params long[] objectIds)
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<long> objectIds)
         {
-            var references = this.Prefetcher.GetReferencesForPrefetching(new HashSet<long>(objectIds));
+            var references = this.Prefetcher.GetReferencesForPrefetching(objectIds);
 
             if (references.Count != 0)
             {
@@ -444,8 +422,6 @@ namespace Allors.Adapters.Object.SqlClient
 
                     this.Prefetcher.ResetCommands();
                     this.Commands.ResetCommands();
-
-                    this.busyCommittingOrRollingBack = false;
                 }
                 finally
                 {

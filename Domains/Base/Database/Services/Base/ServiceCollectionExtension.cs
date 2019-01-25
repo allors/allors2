@@ -21,7 +21,6 @@
 
 namespace Allors.Services
 {
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceCollectionExtension
