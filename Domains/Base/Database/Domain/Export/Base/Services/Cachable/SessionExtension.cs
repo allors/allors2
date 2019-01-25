@@ -55,5 +55,11 @@ namespace Allors.Domain
 
             return cache;
         }
+
+        public static void ClearCache<T>(this ISession @this)
+        {
+            var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
+            caches.Clear<T>();
+        }
     }
 }

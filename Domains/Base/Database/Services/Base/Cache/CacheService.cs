@@ -33,6 +33,11 @@ namespace Allors.Services
             stateService.Register(this);
         }
 
+        public void Clear()
+        {
+            this.caches = new ConcurrentDictionary<Type, object>();
+        }
+
         public TValue Get<TKey, TValue>()
         {
             if (this.caches.TryGetValue(typeof(TKey), out var cache))
@@ -48,9 +53,9 @@ namespace Allors.Services
             this.caches[typeof(TKey)] = value;
         }
 
-        public void Clear()
+        public void Clear<TKey>()
         {
-            this.caches = new ConcurrentDictionary<Type, object>();
+            this.caches.TryRemove(typeof(TKey), out var value);
         }
     }
 }

@@ -38,6 +38,8 @@ namespace Allors.Domain
                 {
                     derivation.AddDependency(role, this);
                 }
+
+                this.strategy.Session.ClearCache<PermissionCache>();
             }
         }
 

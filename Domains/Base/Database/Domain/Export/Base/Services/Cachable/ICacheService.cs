@@ -25,5 +25,7 @@ namespace Allors.Services
         TValue Get<TKey, TValue>();
 
         void Set<TKey, TValue>(TValue value);
+
+        void Clear<TKey>();
     }
 }
