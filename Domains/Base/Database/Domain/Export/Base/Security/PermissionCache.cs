@@ -24,22 +24,31 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Meta;
+
     public class PermissionCache
     {
-        public Dictionary<Guid, Dictionary<Guid, Dictionary<Operations, long>>> PermissionIdByOperationByOperandTypeIdByClassId { get; }
+        private static readonly PrefetchPolicy PrefetchPolicy;
+
+        static PermissionCache()
+        {
+            PrefetchPolicy = new PrefetchPolicyBuilder()
+                .WithRule(M.Permission.ConcreteClassPointer)
+                .Build();
+        }
 
         public PermissionCache(ISession session)
         {
-            var xxx = new Permissions(session).Extent()
-                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
-                    w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x => x.ToArray()));
+            var permissions = new Permissions(session).Extent();
 
+            session.Prefetch(PrefetchPolicy, permissions);
 
-
-            this.PermissionIdByOperationByOperandTypeIdByClassId = new Permissions(session).Extent()
+            this.PermissionIdByOperationByOperandTypeIdByClassId = permissions
                 .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
                     w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x =>
                         x.ToDictionary(v => v.Operation, y => y.Id)));
         }
+
+        public Dictionary<Guid, Dictionary<Guid, Dictionary<Operations, long>>> PermissionIdByOperationByOperandTypeIdByClassId { get; }
     }
 }

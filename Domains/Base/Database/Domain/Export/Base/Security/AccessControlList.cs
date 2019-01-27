@@ -174,7 +174,11 @@ namespace Allors.Domain
 
             if (misses != null)
             {
-                this.session.Prefetch(PrefetchPolicy, misses);
+                if (misses.Count > 1)
+                {
+                    this.session.Prefetch(PrefetchPolicy, misses);
+                }
+
                 foreach (var accessControl in misses)
                 {
                     var cache = new AccessControlCacheEntry(accessControl);
