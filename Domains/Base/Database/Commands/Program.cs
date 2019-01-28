@@ -34,30 +34,36 @@ namespace Commands
     {
         public static void Main(string[] args)
         {
+            var services = new ServiceCollection();
+            services.AddAllors();
+
+            const string FileName = @"base.appSettings.json";
+            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
+            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .AddJsonFile(systemSettings, true)
+                .AddJsonFile(userSettings, true).Build();
+
+            services.AddSingleton<IConfiguration>(configuration);
+
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
+
+            var serviceProvider = services.BuildServiceProvider();
+
             try
             {
-                var services = new ServiceCollection();
-                services.AddAllors();
-
-                var myAppSettings =
-                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
-
-                var configuration = new ConfigurationBuilder().AddJsonFile(@"appSettings.json")
-                    .AddJsonFile(myAppSettings, true).Build();
-                services.AddSingleton<IConfiguration>(configuration);
-
-                services.AddSingleton<ILoggerFactory, LoggerFactory>();
-                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-                services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
-
                 var app = new CommandLineApplication<Commands>();
-                app.Conventions.UseDefaultConventions().UseConstructorInjection(services.BuildServiceProvider());
+                app.Conventions.UseDefaultConventions().UseConstructorInjection(serviceProvider);
                 app.Execute(args);
-
             }
-            catch 
+            catch (Exception e)
             {
-                throw;
+                var logger = serviceProvider.GetService<ILogger<Program>>();
+                logger.LogCritical(e, "Uncaught exception");
             }
         }
     }

@@ -36,8 +36,12 @@ namespace Allors.Server
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/apps.appSettings.json";
-                    config.AddJsonFile(myAppSettings, true);
+                    const string FileName = @"apps.appSettings.json";
+                    var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
+                    var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
+
+                    config.AddJsonFile(systemSettings, true);
+                    config.AddJsonFile(userSettings, true);
                 })
                 .ConfigureLogging(logging =>
                     {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DebugLog.cs" company="Allors bvba">
+// <copyright file="ListDerivationLog.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under

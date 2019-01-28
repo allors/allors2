@@ -75,9 +75,19 @@ namespace Allors.Domain
             return this.IsPermitted(propertyType, Operations.Read);
         }
 
+        public bool CanRead(ConcreteRoleType roleType)
+        {
+            return this.IsPermitted(roleType.RoleType, Operations.Read);
+        }
+
         public bool CanWrite(IRoleType roleType)
         {
             return this.IsPermitted(roleType, Operations.Write);
+        }
+
+        public bool CanWrite(ConcreteRoleType roleType)
+        {
+            return this.IsPermitted(roleType.RoleType, Operations.Write);
         }
 
         public bool CanExecute(IMethodType methodType)

@@ -53,7 +53,7 @@
 
         private Dictionary<RoleType, object> changedRoleByRoleType;
         private Dictionary<RoleType, object> roleByRoleType = new Dictionary<RoleType, object>();
-        
+
         protected SessionObject(Session session)
         {
             this.Session = session;
@@ -62,7 +62,7 @@
         public Session Session { get; }
 
         public WorkspaceObject WorkspaceObject { get; set; }
-        
+
         public Class ObjectType { get; set; }
 
         public long? NewId { get; set; }
@@ -78,6 +78,35 @@
 
                 return this.changedRoleByRoleType != null;
             }
+        }
+
+        public bool HasChangedRoles(params RoleType[] roleTypes)
+        {
+            if (roleTypes.Length == 0)
+            {
+                return HasChanges;
+            }
+
+            if (this.NewId != null)
+            {
+                // I am new in the session, and i have at least one of the requested roleTypes
+                if (roleTypes.Any(v => this.roleByRoleType.ContainsKey(v)))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (this.changedRoleByRoleType != null)
+            {
+                if (roleTypes.Any(v => this.changedRoleByRoleType.ContainsKey(v)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public long Id => this.WorkspaceObject?.Id ?? this.NewId.Value;
