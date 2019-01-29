@@ -1,7 +1,7 @@
 ﻿/// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
-namespace Allors {
 
+namespace Allors {
     export class Database {
         constructor(private $http: angular.IHttpService, public $q: angular.IQService, public prefix: string, public postfix: string, public baseUrl: string) {
         }
@@ -71,51 +71,71 @@ namespace Allors {
         }
 
         invoke(method: Method): angular.IPromise<Data.InvokeResponse>;
+        invoke(methods: Method[], options: Data.InvokeOptions): angular.IPromise<Data.InvokeResponse>;
         invoke(service: string, args?: any): angular.IPromise<Data.InvokeResponse>;
-        invoke(methodOrService: Method | string, args?: any): angular.IPromise<Data.InvokeResponse> {
+        invoke(methodOrService: Method | Method[] | string, args?: any): angular.IPromise<Data.InvokeResponse> {
+            if (methodOrService instanceof Method) {
+                return this.invokeMethods([methodOrService]);
+            } else if (methodOrService instanceof Array) {
+                return this.invokeMethods(methodOrService, args);
+            } else {
+                return this.invokeService(methodOrService, args);
+            }
+        }
+
+        private invokeMethods(methods: Method[], options?: Data.InvokeOptions): angular.IPromise<Data.InvokeResponse> {
+
             return this.$q((resolve, reject) => {
 
-                if (methodOrService instanceof Method) {
-                    const method = methodOrService;
-                    const invokeRequest: Data.InvokeRequest = {
-                        i: method.object.id,
-                        v: method.object.version,
-                        m: method.name
-                    };
+                const invokeRequest: Data.InvokeRequest = {
+                    i: methods.map(v => {
+                        return {
+                            i: v.object.id,
+                            m: v.name,
+                            v: v.object.version,
+                        };
+                    }),
+                    o: options
+                };
 
-                    const serviceName = `${this.baseUrl}${this.prefix}Invoke`;
-                    this.$http.post(serviceName, invokeRequest, this.headers)
-                        .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.InvokeResponse>) => {
-                            var response = callbackArg.data;
-                            response.responseType = Data.ResponseType.Invoke;
+                const serviceName = `${this.baseUrl}${this.prefix}Invoke`;
+                this.$http.post(serviceName, invokeRequest, this.headers)
+                    .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.InvokeResponse>) => {
+                        var response = callbackArg.data;
+                        response.responseType = Data.ResponseType.Invoke;
 
-                            if (response.hasErrors) {
-                                reject(response);
-                            } else {
-                                resolve(response);
-                            }
-                        })
-                        .catch(e => {
-                            reject(e);
-                        });
-                }
-                else {
-                    const serviceName = this.baseUrl + methodOrService + this.postfix;
-                    this.$http.post(serviceName, args, this.headers)
-                        .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.InvokeResponse>) => {
-                            var response = callbackArg.data;
-                            response.responseType = Data.ResponseType.Invoke;
+                        if (response.hasErrors) {
+                            reject(response);
+                        } else {
+                            resolve(response);
+                        }
+                    })
+                    .catch(e => {
+                        reject(e);
+                    });
 
-                            if (response.hasErrors) {
-                                reject(response);
-                            } else {
-                                resolve(response);
-                            }
-                        })
-                        .catch(e => {
-                            reject(e);
-                        });
-                }
+            });
+
+        }
+
+        private invokeService(methodOrService: string, args?: any): angular.IPromise<Data.InvokeResponse> {
+            return this.$q((resolve, reject) => {
+
+                const serviceName = this.baseUrl + methodOrService + this.postfix;
+                this.$http.post(serviceName, args, this.headers)
+                    .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.InvokeResponse>) => {
+                        var response = callbackArg.data;
+                        response.responseType = Data.ResponseType.Invoke;
+
+                        if (response.hasErrors) {
+                            reject(response);
+                        } else {
+                            resolve(response);
+                        }
+                    })
+                    .catch(e => {
+                        reject(e);
+                    });
 
             });
         }
