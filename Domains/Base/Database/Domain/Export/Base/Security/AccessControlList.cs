@@ -107,10 +107,12 @@ namespace Allors.Domain
                 }
             }
 
-            var permissionIdByOperation = this.PermissionIdByOperationByOperandTypeId[operandType.Id];
-            if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
+            if (this.PermissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
             {
-                return this.permissionIds.Contains(permissionId);
+                if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
+                {
+                    return this.permissionIds.Contains(permissionId);
+                }
             }
 
             return false;
