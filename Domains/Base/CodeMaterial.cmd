@@ -1,6 +1,6 @@
 @echo off
 
-cd workspace\typescript\modules\material
+cd workspace\typescript\module\material
 call code .
 exit
 

@@ -13,9 +13,9 @@ function link(src, dst){
 
 link ('../../../../../Platform/Workspace/Typescript/src/allors/framework', 'src/allors');
 
-link ('../../../../Base/Workspace/Typescript/modules/Domain/src/allors/meta/base', 'src/allors/meta');
-link ('../../../../Base/Workspace/Typescript/modules/Domain/src/allors/domain/base', 'src/allors/domain');
-link ('../../../../Base/Workspace/Typescript/modules/Angular/src/allors/angular/base', 'src/allors/angular');
-link ('../../../../Base/Workspace/Typescript/modules/Material/src/allors/material/base', 'src/allors/material');
+link ('../../../../Base/Workspace/Typescript/module/Domain/src/allors/meta/base', 'src/allors/meta');
+link ('../../../../Base/Workspace/Typescript/module/Domain/src/allors/domain/base', 'src/allors/domain');
+link ('../../../../Base/Workspace/Typescript/module/Angular/src/allors/angular/base', 'src/allors/angular');
+link ('../../../../Base/Workspace/Typescript/module/Material/src/allors/material/base', 'src/allors/material');
 
 link ('../Domain/src/allors/domain/apps', 'src/allors/domain');
