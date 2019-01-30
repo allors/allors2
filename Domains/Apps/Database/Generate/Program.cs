@@ -27,11 +27,11 @@
                     { "../Base/Database/Templates/domain.cs.stg", "DataBase/Domain/Generated" },
                     { "../Base/Database/Templates/uml.cs.stg", "DataBase/Diagrams/Generated" },
 
-                    { "../Base/Workspace/Typescript/module/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
-                    { "../Base/Workspace/Typescript/module/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+                    { "../Base/Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
 
-                    { "../Base/Workspace/Typescript/module/Templates/meta.ts.stg", "Workspace/Typescript/Intranet/src/allors/meta/generated" },
-                    { "../Base/Workspace/Typescript/module/Templates/domain.ts.stg", "Workspace/Typescript/Intranet/src/allors/domain/generated" },
+                    { "../Base/Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/Intranet/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/Intranet/src/allors/domain/generated" },
                 };
 
             for (var i = 0; i < config.GetLength(0); i++)
