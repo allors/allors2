@@ -38,12 +38,17 @@ namespace Tests.Material
             CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
-            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
-            
+            const string FileName = @"base.appSettings.json";
+            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
+            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
+
             var appConfiguration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(myAppSettings, true)
+                .AddJsonFile(systemSettings, true)
+                .AddJsonFile(userSettings, true)
+                .AddEnvironmentVariables()
                 .Build();
+
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
             var services = new ServiceCollection();

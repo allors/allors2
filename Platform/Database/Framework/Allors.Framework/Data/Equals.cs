@@ -88,7 +88,7 @@ namespace Allors.Data
                     }
                     else
                     {
-                        var equals = this.Parameter != null ? arguments[this.Parameter] : this.Object;
+                        var equals = this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);
@@ -98,7 +98,7 @@ namespace Allors.Data
                 else
                 {
                     var associationType = (IAssociationType)this.PropertyType;
-                    var equals = (IObject)(this.Parameter != null ? arguments[this.Parameter] : this.Object);
+                    var equals = (IObject)(this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object);
                     if (equals != null)
                     {
                         compositePredicate.AddEquals(associationType, equals);

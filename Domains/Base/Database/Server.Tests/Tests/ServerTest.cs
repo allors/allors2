@@ -49,13 +49,17 @@ namespace Server.Tests
 
         protected ServerTest()
         {
-            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(new FileInfo("../../..").FullName)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile(myAppSettings, true);
-            this.Configuration = builder.Build();
+            const string FileName = @"base.appSettings.json";
+            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
+            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
+
+            this.Configuration = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .AddJsonFile(systemSettings, true)
+                .AddJsonFile(userSettings, true)
+                .AddEnvironmentVariables()
+                .Build();
 
             this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
             var configuration = new Allors.Adapters.Object.SqlClient.Configuration
