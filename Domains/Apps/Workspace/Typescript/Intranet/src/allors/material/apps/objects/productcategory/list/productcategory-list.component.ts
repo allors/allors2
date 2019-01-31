@@ -4,11 +4,11 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
-import { ProductCategory } from '../../../../../domain';
+import { ProductCategory, CatScope, Good } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: ProductCategory;
@@ -80,11 +80,27 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.ProductCategory.InternalOrganisation });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Like({ roleType: m.ProductCategory.Name, parameter: 'name' }),
+      new Equals({ propertyType: m.ProductCategory.CatScope, parameter: 'scope' }),
+      new Contains({ propertyType: m.ProductCategory.Products, parameter: 'product' })
     ]);
 
-    this.filterService.init(predicate);
+    const scopeSearch = new SearchFactory({
+      objectType: m.CatScope,
+      roleTypes: [m.CatScope.Name],
+    });
+
+    const productSearch = new SearchFactory({
+      objectType: m.Good,
+      roleTypes: [m.Good.Name],
+    });
+
+    this.filterService.init(predicate,
+      {
+        scope: { search: scopeSearch, display: (v: CatScope) => v.Name },
+        product: { search: productSearch, display: (v: Good) => v.Name }
+      });
 
     const sorter = new Sorter(
       {
