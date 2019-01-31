@@ -36,13 +36,15 @@
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
             <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.Part" [options]="parts" display="Name"></a-mat-select>
           </div>
-<!--
+
           <div class="row">
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories"
-              display="Name"></a-mat-select>
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories"
-              display="Name"></a-mat-select>
-          </div> -->
+            <mat-form-field class="col-md">
+              <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true" (ngModelChange)="setDirty()">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
           <div class="row">
             <a-mat-static class="col-md" [object]="good.Part?.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>

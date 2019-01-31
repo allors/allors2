@@ -39,6 +39,8 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
   parts: Part[];
   goodIdentificationTypes: GoodIdentificationType[];
   productNumber: ProductNumber;
+  originalCategories: ProductCategory[] = [];
+  selectedCategories: ProductCategory[] = [];
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -70,7 +72,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
       this.good = undefined;
 
       if (this.panel.isCollapsed) {
-        const { pull, x } = this.metaService;
+        const { pull, x, m } = this.metaService;
         const id = this.panel.manager.id;
 
         pulls.push(
@@ -87,6 +89,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
               }
             }
           }),
+          pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
         );
       }
     };
@@ -148,6 +151,11 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
                 },
               },
             }),
+            pull.Good({
+              name: 'OriginalCategories',
+              object: id,
+              fetch: { ProductCategoriesWhereProduct : x}
+            }),
           ];
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }));
@@ -160,6 +168,9 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
         this.facility = internalOrganisation.DefaultFacility;
 
         this.good = loaded.objects.Good as Good;
+        this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
+        this.selectedCategories = this.originalCategories;
+
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
@@ -182,6 +193,19 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
+    this.selectedCategories.forEach((category: ProductCategory) => {
+      category.AddProduct(this.good);
+
+      const index = this.originalCategories.indexOf(category);
+      if (index > -1) {
+        this.originalCategories.splice(index, 1);
+      }
+    });
+
+    this.originalCategories.forEach((category: ProductCategory) => {
+      category.RemoveProduct(this.good);
+    });
+
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
@@ -189,5 +213,9 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public setDirty(): void {
+    this.allors.context.session.hasChanges = true;
   }
 }

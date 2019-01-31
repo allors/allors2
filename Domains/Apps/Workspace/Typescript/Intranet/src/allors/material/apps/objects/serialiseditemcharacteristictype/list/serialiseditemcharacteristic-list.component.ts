@@ -5,10 +5,10 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
-import { SerialisedItemCharacteristicType } from '../../../../../domain';
+import { SerialisedItemCharacteristicType, UnitOfMeasure } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: SerialisedItemCharacteristicType;
@@ -79,9 +79,19 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
 
     const predicate = new And([
       new Like({ roleType: m.SerialisedItemCharacteristicType.Name, parameter: 'name' }),
+      new Equals({ propertyType: m.SerialisedItemCharacteristicType.IsActive, parameter: 'active' }),
+      new Equals({ propertyType: m.SerialisedItemCharacteristicType.UnitOfMeasure, parameter: 'uom' })
     ]);
 
-    this.filterService.init(predicate);
+    const uomSearch = new SearchFactory({
+      objectType: m.UnitOfMeasure,
+      roleTypes: [m.UnitOfMeasure.Name],
+    });
+
+    this.filterService.init(predicate,
+      {
+        uom: { search: uomSearch, display: (v: UnitOfMeasure) => v.Name },
+      });
 
     const sorter = new Sorter(
       {
@@ -127,7 +137,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
           return {
             object: v,
             name: `${v.Name}`,
-            uom: `${v.UnitOfMeasure && v.UnitOfMeasure.Name}`,
+            uom: v.UnitOfMeasure ? v.UnitOfMeasure.Name : '',
             active: v.IsActive,
           } as Row;
         });
