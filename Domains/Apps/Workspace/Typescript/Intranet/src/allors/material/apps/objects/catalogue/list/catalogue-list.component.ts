@@ -4,11 +4,11 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService, StateService } from '../../../..';
 
-import { Catalogue } from '../../../../../domain';
+import { Catalogue, CatScope } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: Catalogue;
@@ -80,11 +80,17 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Catalogue.InternalOrganisation });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Like({ roleType: m.Catalogue.Name, parameter: 'Name' }),
+      new Equals({ propertyType: m.Catalogue.CatScope, parameter: 'Scope' }),
     ]);
 
-    this.filterService.init(predicate);
+    const scopeSearch = new SearchFactory({
+      objectType: m.CatScope,
+      roleTypes: [m.CatScope.Name],
+    });
+
+    this.filterService.init(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v.Name } });
 
     const sorter = new Sorter(
       {
