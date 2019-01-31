@@ -208,7 +208,10 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.selectedBrand = this.part.Brand;
         this.selectedModel = this.part.Model;
+
+        if (this.selectedBrand) {
         this.brandSelected(this.selectedBrand);
+        }
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
 

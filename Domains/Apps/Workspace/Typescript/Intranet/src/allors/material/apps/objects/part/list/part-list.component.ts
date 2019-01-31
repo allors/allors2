@@ -100,7 +100,7 @@ export class PartListComponent implements OnInit, OnDestroy {
         propertyType: m.Part.InventoryItemsWherePart,
         extent: new Filter({
           objectType: m.InventoryItem,
-          predicate: new ContainedIn({
+          predicate: new Equals({
             propertyType: m.InventoryItem.Facility,
             parameter: 'facility'
           })

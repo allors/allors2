@@ -35,13 +35,36 @@ export class PartOverviewComponent implements AfterViewInit, OnDestroy {
   ) {
 
     titleService.setTitle(this.title);
+
+    // const { pull, x } = this.metaService;
+
+    // const navRoute = new NavigationActivatedRoute(this.route);
+    // const id = navRoute.id();
+
+    // const pulls = [
+    //   pull.Part({
+    //     object: id,
+    //     include: {
+    //       InventoryItemKind: x
+    //     }
+    //   }),
+    // ];
+
+    // this.panelManager.onPull(pulls);
+
+    // this.panelManager.context
+    //   .load('Pull', new PullRequest({ pulls }))
+    //   .subscribe((loaded) => {
+    //     this.part = loaded.objects.Part as Part;
+    //     this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+    //   }, this.errorService.handler);
   }
 
   public ngAfterViewInit(): void {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const { m, pull, x } = this.metaService;
 

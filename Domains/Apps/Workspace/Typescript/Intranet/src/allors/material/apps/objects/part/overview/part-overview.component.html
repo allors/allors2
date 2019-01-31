@@ -17,16 +17,20 @@
       </div>
 
       <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
-        
+
         <part-overview-detail></part-overview-detail>
 
         <igoodidentification-panel [roleType]="metaService.m.Part.GoodIdentifications"></igoodidentification-panel>
 
-        <nonserialisedinventoryitem-overview-panel></nonserialisedinventoryitem-overview-panel>
+        <div *ngIf="!serialised">
+          <nonserialisedinventoryitem-overview-panel></nonserialisedinventoryitem-overview-panel>
+        </div>
 
-        <serialisedinventoryitem-overview-panel></serialisedinventoryitem-overview-panel>
+        <div *ngIf="serialised">
+          <serialisedinventoryitem-overview-panel></serialisedinventoryitem-overview-panel>
 
-        <serialiseditem-overview-panel></serialiseditem-overview-panel>
+          <serialiseditem-overview-panel></serialiseditem-overview-panel>
+        </div>
 
         <pricecomponent-overview-panel></pricecomponent-overview-panel>
 

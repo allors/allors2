@@ -56,8 +56,6 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.delete = this.deleteService.delete(this.panel.manager.context);
-
     this.panel.name = 'igoodidentification';
     this.panel.title = 'IGood Identification';
     this.panel.icon = 'fingerprint';
