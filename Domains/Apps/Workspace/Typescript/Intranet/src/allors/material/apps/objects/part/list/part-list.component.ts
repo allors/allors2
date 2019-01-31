@@ -4,11 +4,11 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Like, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Part, GoodIdentificationType } from '../../../../../domain';
+import { Part, GoodIdentificationType, IGoodIdentification, Facility } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -86,28 +86,36 @@ export class PartListComponent implements OnInit, OnDestroy {
     const internalOrganisationPredicate = new Equals({ propertyType: m.Part.InternalOrganisation });
 
     const predicate = new And([
-      internalOrganisationPredicate,
-      new Like({ roleType: m.Part.Name, parameter: 'Name' }),
-      // new ContainedIn({
-      //   propertyType: m.Part.GoodIdentifications,
-      //   extent: new Filter({
-      //     objectType: m.IGoodIdentification,
-      //     predicate: new Like({ roleType: m.PartNumber.Identification, parameter: 'PartNo' })
-      //   })
-      // }),
-      // new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'Supplier' }),
-      // new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' }),
-      // new Like({ roleType: m.Part.Brand, parameter: 'Brand' }),
-      // new Like({ roleType: m.Part.Model, parameter: 'Model' }),
-      // new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' }),
+      new Like({ roleType: m.Part.Name, parameter: 'name' }),
+      new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
+      new Contains({ propertyType: m.Part.GoodIdentifications, parameter: 'identification' }),
+      new ContainedIn({
+        propertyType: m.Part.InventoryItemsWherePart,
+        extent: new Filter({
+          objectType: m.InventoryItem,
+          predicate: new ContainedIn({
+            propertyType: m.InventoryItem.Facility,
+            parameter: 'facility'
+          })
+        })
+      })
     ]);
 
-    // const countrySearch = new SearchFactory({
-    //   objectType: m.Country,
-    //   roleTypes: [m.Country.Name],
-    // });
+    const idSearch = new SearchFactory({
+      objectType: m.IGoodIdentification,
+      roleTypes: [m.IGoodIdentification.Identification],
+    });
 
-    // this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v.Name } });
+    const facilitySearch = new SearchFactory({
+      objectType: m.Facility,
+      roleTypes: [m.Facility.Name],
+    });
+
+    this.filterService.init(predicate,
+      {
+        identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+        facility: { search: facilitySearch, display: (v: Facility) => v.Name },
+      });
 
     const sorter = new Sorter(
       {

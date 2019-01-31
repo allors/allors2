@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Good, ProductCategory } from '../../../../../domain';
+import { Good, ProductCategory, IGoodIdentification } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -81,16 +81,25 @@ export class GoodListComponent implements OnInit, OnDestroy {
     const predicate = new And([
       new Like({ roleType: m.Good.Name, parameter: 'name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
-      new ContainedIn({
-        propertyType: m.Good.VendorProductsWhereProduct,
-        extent: new Filter({
-          objectType: m.VendorProduct,
-          predicate: internalOrganisationPredicate
-        })
-      })
+      new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
+      new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
     ]);
 
-    this.filterService.init(predicate);
+    const categorySearch = new SearchFactory({
+      objectType: m.ProductCategory,
+      roleTypes: [m.ProductCategory.Name],
+    });
+
+    const idSearch = new SearchFactory({
+      objectType: m.IGoodIdentification,
+      roleTypes: [m.IGoodIdentification.Identification],
+    });
+
+    this.filterService.init(predicate,
+      {
+        category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
+        identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+      });
 
     const sorter = new Sorter(
       {
