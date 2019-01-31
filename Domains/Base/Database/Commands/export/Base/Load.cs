@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Daily.cs" company="Allors bvba">
+// <copyright file="Load.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,45 +18,51 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Commands
 {
-    using Allors;
-    using Allors.Domain;
+    using System.IO;
+    using System.Xml;
+
     using Allors.Services;
 
     using McMaster.Extensions.CommandLineUtils;
 
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     [Command(Description = "Add file contents to the index")]
-    public class Daily
+    public class Load
     {
+        private readonly IConfiguration configuration;
+
         private readonly IDatabaseService databaseService;
 
-        private readonly ILogger<Daily> logger;
+        private readonly ILogger<Load> logger;
 
-        public Daily(IDatabaseService databaseService, ILogger<Daily> logger)
+        public Load(IConfiguration configuration, IDatabaseService databaseService, ILogger<Load> logger)
         {
+            this.configuration = configuration;
             this.databaseService = databaseService;
             this.logger = logger;
         }
 
+        [Option("-f", Description = "File to load (default is population.xml)")]
+        public string FileName { get; set; } = "population.xml";
+
         public int OnExecute(CommandLineApplication app)
         {
-            using (var session = this.databaseService.Database.CreateSession())
+            this.logger.LogInformation("Begin");
+
+            var fileName = this.FileName ?? this.configuration["populationFile"];
+            var fileInfo = new FileInfo(fileName);
+
+            using (var reader = XmlReader.Create(fileInfo.FullName))
             {
-                this.logger.LogInformation("Begin");
-
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
-
-                session.Derive();
-                session.Commit();
-
-                this.logger.LogInformation("End");
+                this.logger.LogInformation("Loading {file}", fileInfo.FullName);
+                this.databaseService.Database.Load(reader);
             }
 
+            this.logger.LogInformation("End");
             return ExitCode.Success;
         }
     }

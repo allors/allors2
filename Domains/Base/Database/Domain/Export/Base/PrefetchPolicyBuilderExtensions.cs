@@ -25,15 +25,21 @@ namespace Allors
 
     public static partial class PrefetchPolicyBuilderExtensions
     {
+        private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
+
         private static readonly PrefetchPolicy SecuritTokenPrefetchPolicy;
 
         static PrefetchPolicyBuilderExtensions()
         {
+            AccessControlPrefetchPolicy = new PrefetchPolicyBuilder()
+                .WithRule(MetaAccessControl.Instance.CacheId.RoleType)
+                .Build();
+
             SecuritTokenPrefetchPolicy = new PrefetchPolicyBuilder()
-                .WithRule(MetaSecurityToken.Instance.AccessControls)
+                .WithRule(MetaSecurityToken.Instance.AccessControls, AccessControlPrefetchPolicy)
                 .Build();
         }
-        
+
         public static void WithWorkspaceRules(this PrefetchPolicyBuilder @this, Class @class)
         {
             foreach (var roleType in @class.WorkspaceRoleTypes)

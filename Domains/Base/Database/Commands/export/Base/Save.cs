@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Weekly.cs" company="Allors bvba">
+// <copyright file="Save.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,45 +18,54 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
 namespace Commands
 {
-    using Allors;
-    using Allors.Domain;
+    using System.IO;
+    using System.Xml;
+
     using Allors.Services;
 
     using McMaster.Extensions.CommandLineUtils;
 
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     [Command(Description = "Add file contents to the index")]
-    public class Weekly
+    public class Save
     {
+        private readonly IConfiguration configuration;
+
         private readonly IDatabaseService databaseService;
 
-        private readonly ILogger<Monthly> logger;
+        private readonly ILogger<Save> logger;
 
-        public Weekly(IDatabaseService databaseService, ILogger<Monthly> logger)
+        public Save(IConfiguration configuration, IDatabaseService databaseService, ILogger<Save> logger)
         {
+            this.configuration = configuration;
             this.databaseService = databaseService;
             this.logger = logger;
         }
 
+        [Option("-f", Description = "File to save")]
+        public string FileName { get; set; } = "population.xml";
+
         public int OnExecute(CommandLineApplication app)
         {
-            using (var session = this.databaseService.Database.CreateSession())
+            this.logger.LogInformation("Begin");
+
+            var fileName = this.FileName ?? this.configuration["populationFile"];
+            var fileInfo = new FileInfo(fileName);
+
+            using (var stream = File.Create(fileInfo.FullName))
             {
-                this.logger.LogInformation("Begin");
-
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
-
-                session.Derive();
-                session.Commit();
-
-                this.logger.LogInformation("End");
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    this.logger.LogInformation("Saving {file}", fileInfo.FullName);
+                    this.databaseService.Database.Save(writer);
+                }
             }
 
+            this.logger.LogInformation("End");
             return ExitCode.Success;
         }
     }

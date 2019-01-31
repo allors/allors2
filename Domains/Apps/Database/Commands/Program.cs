@@ -44,7 +44,9 @@ namespace Commands
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
                 .AddJsonFile(systemSettings, true)
-                .AddJsonFile(userSettings, true).Build();
+                .AddJsonFile(userSettings, true)
+                .AddEnvironmentVariables()
+                .Build();
 
             services.AddSingleton<IConfiguration>(configuration);
             

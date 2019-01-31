@@ -50,6 +50,8 @@ namespace Commands
         {
         };
 
+        private readonly IConfiguration configuration;
+
         private readonly IDatabaseService databaseService;
 
         private readonly ILogger<Upgrade> logger;
@@ -58,6 +60,7 @@ namespace Commands
 
         public Upgrade(IConfiguration configuration, IDatabaseService databaseService, ILogger<Upgrade> logger)
         {
+            this.configuration = configuration;
             this.dataPath = new DirectoryInfo(".").GetAncestorSibling(configuration["datapath"]);
             this.databaseService = databaseService;
             this.logger = logger;
@@ -68,9 +71,10 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
-            var fileInfo = new FileInfo(this.FileName);
-
             this.logger.LogInformation("Begin");
+
+            var fileName = this.FileName ?? this.configuration["populationFile"];
+            var fileInfo = new FileInfo(fileName);
 
             var notLoadedObjectTypeIds = new HashSet<Guid>();
             var notLoadedRelationTypeIds = new HashSet<Guid>();

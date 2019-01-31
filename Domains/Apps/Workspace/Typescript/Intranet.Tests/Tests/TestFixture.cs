@@ -47,8 +47,10 @@
             options.AddUserProfilePreference("browser.cache.offline.enable", false);
             options.AddUserProfilePreference("network.http.use-cache", false);
             options.AddArguments("disable-infobars");
-
+            
             this.Driver = new ChromeDriver(Environment.CurrentDirectory, options);
+
+            this.Driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(30);
 
             // Move to monitor on the left
             this.Driver.Manage().Window.Position = new Point(-1000, 0);

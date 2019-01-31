@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
     using System;
 
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     using NLog.Web;
