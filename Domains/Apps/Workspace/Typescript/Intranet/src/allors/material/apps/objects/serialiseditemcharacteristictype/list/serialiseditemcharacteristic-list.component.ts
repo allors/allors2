@@ -86,6 +86,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     const uomSearch = new SearchFactory({
       objectType: m.UnitOfMeasure,
       roleTypes: [m.UnitOfMeasure.Name],
+      predicates: [new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true })]
     });
 
     this.filterService.init(predicate,

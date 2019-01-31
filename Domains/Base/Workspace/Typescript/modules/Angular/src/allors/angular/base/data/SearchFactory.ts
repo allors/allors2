@@ -1,7 +1,7 @@
 ﻿import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { And, Exists, ISessionObject, Like, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
+import { And, ISessionObject, Like, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
 import { Loaded, Context, ContextService } from '../framework';
 
 import { SearchOptions } from './SearchOptions';
@@ -19,17 +19,9 @@ export class SearchFactory {
 
       const and: And = new And();
 
-      if (this.options.existRoletypes) {
-        this.options.existRoletypes.forEach((roleType: RoleType) => {
-          and.operands.push(new Exists({ propertyType: roleType }));
-        });
-      }
-
-      if (this.options.notExistRoletypes) {
-        this.options.notExistRoletypes.forEach((roleType: RoleType) => {
-          const not = new Not();
-          and.operands.push(not);
-          not.operand = new Exists({ propertyType: roleType });
+      if (this.options.predicates) {
+        this.options.predicates.forEach((predicate) => {
+          and.operands.push(predicate);
         });
       }
 
