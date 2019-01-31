@@ -8,6 +8,7 @@ import { AllorsFilterService } from '../../../../angular/base/filter';
 import { FilterField } from '../../../../../allors/angular/base/filter/FilterField';
 import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/filterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { filter } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -45,6 +46,16 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   selected(filterFieldDefinition: FilterFieldDefinition) {
     this.filterFieldDefinition = filterFieldDefinition;
+
+    let initialValue = filterFieldDefinition.options.initialValue;
+    if (initialValue === undefined || initialValue === null) {
+      if (filterFieldDefinition.isBoolean) {
+        initialValue = true;
+      }
+    }
+
+    this.formGroup.get('value').setValue(initialValue);
+
     // give angular time to process the [completed] directive
     timer(1).subscribe((v) => this.stepper.next());
   }

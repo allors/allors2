@@ -2,6 +2,7 @@ import { Class, Data, Interface } from './Data';
 
 import { MetaObject } from './MetaObject';
 import { Kind, ObjectType } from './ObjectType';
+import { unitIdByTypeName } from './Units';
 import { RelationType } from './RelationType';
 import { ConcreteRoleType } from './ConcreteRoleType';
 import { MethodType } from './MethodType';
@@ -20,17 +21,6 @@ export class MetaPopulation {
   readonly methodTypes: MethodType[] = [];
 
   constructor(data: Data) {
-
-    const unitIdByTypeName = {
-      Binary: 'c28e515bcae84d6b95bf062aec8042fc',
-      Boolean: 'b5ee6cea4e2b498ea5dd24671d896477',
-      DateTime: 'c4c0934361d3418cade2fe6fd588f128',
-      Decimal: 'da866d8e2c4041a8ae5b5f6dae0b89c8',
-      Float: 'ffcabd07f35f4083bef6f6c47970ca5d',
-      Integer: 'ccd6f13426de4103bff9a37ec3e997a3',
-      String: 'ad7f5ddcbedb4aaa97acd6693a009ba9',
-      Unique: '6dc0a1a888a44614adb492dd3d017c0e',
-    };
 
     // Units
     ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique']

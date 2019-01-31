@@ -90,6 +90,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
 
     this.filterService.init(predicate,
       {
+        active: { initialValue: true },
         uom: { search: uomSearch, display: (v: UnitOfMeasure) => v.Name },
       });
 

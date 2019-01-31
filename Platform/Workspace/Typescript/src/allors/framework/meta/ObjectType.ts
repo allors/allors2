@@ -3,6 +3,7 @@ import { MetaObject } from './MetaObject';
 import { MetaPopulation } from './MetaPopulation';
 import { MethodType } from './MethodType';
 import { RoleType } from './RoleType';
+import * as units from './Units';
 
 export enum Kind {
   unit,
@@ -28,6 +29,38 @@ export class ObjectType implements MetaObject {
 
   get isUnit(): boolean {
     return this.kind === Kind.unit;
+  }
+
+  get isBinary(): boolean {
+    return this.id === units.binaryId;
+  }
+
+  get isBoolean(): boolean {
+    return this.id === units.booleanId;
+  }
+
+  get isDateTime(): boolean {
+    return this.id === units.dateTimeId;
+  }
+
+  get isDecimal(): boolean {
+    return this.id === units.decimalId;
+  }
+
+  get isFloat(): boolean {
+    return this.id === units.floatId;
+  }
+
+  get isInteger(): boolean {
+    return this.id === units.integerId;
+  }
+
+  get isString(): boolean {
+    return this.id === units.stringId;
+  }
+
+  get isUnique(): boolean {
+    return this.id === units.uniqueId;
   }
 
   get isComposite(): boolean {

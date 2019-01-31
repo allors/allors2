@@ -4,6 +4,7 @@ import { ISessionObject } from 'src/allors/framework';
 export class FilterOptions {
   search: SearchFactory;
   display: (v: ISessionObject) => string;
+  initialValue: any;
 
   constructor(fields: Partial<FilterOptions>) {
     Object.assign(this, fields);

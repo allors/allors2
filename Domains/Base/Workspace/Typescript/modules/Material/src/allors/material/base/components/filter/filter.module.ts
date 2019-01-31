@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatChipsModule, MatToolbarModule, MatStepperModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
+import { MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule, MatChipsModule, MatToolbarModule, MatStepperModule, MatSelectModule, MatAutocompleteModule, MatSlideToggleModule } from '@angular/material';
 
 import { AllorsFocusModule } from '../../../../angular';
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
@@ -34,6 +34,7 @@ export { AllorsMaterialFilterComponent } from './filter.component';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatStepperModule,
     MatToolbarModule,
     AllorsFocusModule

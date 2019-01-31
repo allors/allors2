@@ -21,7 +21,11 @@
                         {{filterFieldDefinition.criteria}}</span>
                 </ng-template>
 
-                <mat-form-field *ngIf="filterFieldDefinition && !filterFieldDefinition.options.search">
+                <div *ngIf="filterFieldDefinition && !filterFieldDefinition.options.search && filterFieldDefinition.isBoolean" class="m-3">
+                    <mat-slide-toggle aFocus formControlName="value" required>{{filterFieldDefinition.fieldName}}</mat-slide-toggle>
+                </div>
+
+                <mat-form-field *ngIf="filterFieldDefinition && !filterFieldDefinition.options.search && !filterFieldDefinition.isBoolean">
                     <input aFocus matInput placeholder="Value" formControlName="value" required (keyup.enter)="apply(); false">
                 </mat-form-field>
 
