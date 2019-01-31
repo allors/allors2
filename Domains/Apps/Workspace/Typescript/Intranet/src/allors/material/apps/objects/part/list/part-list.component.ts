@@ -8,7 +8,7 @@ import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '.
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Part, GoodIdentificationType, IGoodIdentification, Facility } from '../../../../../domain';
+import { Part, GoodIdentificationType, IGoodIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -88,7 +88,14 @@ export class PartListComponent implements OnInit, OnDestroy {
     const predicate = new And([
       new Like({ roleType: m.Part.Name, parameter: 'name' }),
       new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
+      new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
       new Contains({ propertyType: m.Part.GoodIdentifications, parameter: 'identification' }),
+      new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'supplier' }),
+      new Equals({ propertyType: m.Part.ManufacturedBy, parameter: 'manufacturer' }),
+      new Equals({ propertyType: m.Part.Brand, parameter: 'brand' }),
+      new Equals({ propertyType: m.Part.Model, parameter: 'model' }),
+      new Equals({ propertyType: m.Part.InventoryItemKind, parameter: 'kind' }),
+      new Equals({ propertyType: m.Part.ProductType, parameter: 'type' }),
       new ContainedIn({
         propertyType: m.Part.InventoryItemsWherePart,
         extent: new Filter({
@@ -100,6 +107,33 @@ export class PartListComponent implements OnInit, OnDestroy {
         })
       })
     ]);
+
+    const typeSearch = new SearchFactory({
+      objectType: m.ProductType,
+      roleTypes: [m.ProductType.Name],
+    });
+
+    const kindSearch = new SearchFactory({
+      objectType: m.InventoryItemKind,
+      predicates: [new Equals ({ propertyType: m.Enumeration.IsActive, value: true })],
+      roleTypes: [m.InventoryItemKind.Name],
+    });
+
+    const brandSearch = new SearchFactory({
+      objectType: m.Brand,
+      roleTypes: [m.Brand.Name],
+    });
+
+    const modelSearch = new SearchFactory({
+      objectType: m.Model,
+      roleTypes: [m.Model.Name],
+    });
+
+    const manufacturerSearch = new SearchFactory({
+      objectType: m.Organisation,
+      predicates: [new Equals ({ propertyType: m.Organisation.IsManufacturer, value: true })],
+      roleTypes: [m.Organisation.PartyName],
+    });
 
     const idSearch = new SearchFactory({
       objectType: m.IGoodIdentification,
@@ -113,6 +147,12 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
+        supplier: { search: this.stateService.suppliersFilter, display: (v: Organisation) => v.PartyName },
+        manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v.PartyName },
+        brand: { search: brandSearch, display: (v: Brand) => v.Name },
+        model: { search: modelSearch, display: (v: Model) => v.Name },
+        kind: { search: kindSearch, display: (v: InventoryItemKind) => v.Name },
+        type: { search: typeSearch, display: (v: ProductType) => v.Name },
         identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
         facility: { search: facilitySearch, display: (v: Facility) => v.Name },
       });
