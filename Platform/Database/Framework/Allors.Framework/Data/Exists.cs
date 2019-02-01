@@ -35,14 +35,15 @@ namespace Allors.Data
         }
 
         public IPropertyType PropertyType { get; set; }
-        
+
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.Exists,
-                           PropertyType = this.PropertyType?.Id
-                       };
+            {
+                Kind = PredicateKind.Exists,
+                PropertyType = this.PropertyType?.Id,
+                Parameter = this.Parameter
+            };
         }
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
@@ -59,14 +60,17 @@ namespace Allors.Data
         {
             var propertyType = this.Parameter != null ? (IPropertyType)session.GetMetaObject(arguments[this.Parameter]) : this.PropertyType;
 
-            if (propertyType is IRoleType roleType)
+            if (propertyType != null)
             {
-                compositePredicate.AddExists(roleType);
-            }
-            else
-            {
-                var associationType = (IAssociationType)propertyType;
-                compositePredicate.AddExists(associationType);
+                if (propertyType is IRoleType roleType)
+                {
+                    compositePredicate.AddExists(roleType);
+                }
+                else
+                {
+                    var associationType = (IAssociationType)propertyType;
+                    compositePredicate.AddExists(associationType);
+                }
             }
         }
     }

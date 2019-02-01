@@ -1,82 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Person" Collapsed="true">
-    <Position X="3.5" Y="2.25" Width="1.5" />
+  <Interface Name="Allors.Domain.Part" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAggEiAJgAAAEiKABAwAAYEACAAAAiACAAgAACAAAg=</HashCode>
+      <HashCode>AAAAMQAUAQAgECCRAAAAQIWAQAAAAACjAAgBACABhBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="6.75" Y="0.5" Width="1.5" />
+  <Interface Name="Allors.Domain.InventoryItem">
+    <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAkUAAAAAAIFBANAgEI=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="PartyContactMechanisms" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.OrganisationContactRelationship">
-    <Position X="6.25" Y="3.25" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAACAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Organisation" />
-      <Property Name="Contact" />
+      <Property Name="Part" />
+      <Property Name="Facility" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Organisation" Collapsed="true">
-    <Position X="10.5" Y="3.5" Width="1.5" />
+  <Interface Name="Allors.Domain.Facility">
+    <Position X="3.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACoAgAAAAAAoAAAAAkAAUAAAAAAAhACAEBAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.PartyContactMechanism">
-    <Position X="1" Y="5.5" Width="4" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAgAAABAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ContactMechanism" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.ContactMechanism" Collapsed="true">
-    <Position X="8.75" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="10.5" Y="2.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>mAQAEAGESRYAAoCAUAhQppKIBgmOgoICCAESAAAxSAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.PostalAddress" Collapsed="true">
-    <Position X="6.5" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAAJIAAEAAAAABIAAAAARAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.ElectronicAddress" Collapsed="true">
-    <Position X="8.75" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.TelecommunicationsNumber" Collapsed="true">
-    <Position X="11" Y="7.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ACAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

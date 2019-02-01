@@ -84,6 +84,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
       new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
+<<<<<<< HEAD
       new ContainedIn({
         propertyType: m.Good.Part,
         extent: new Filter({
@@ -104,6 +105,9 @@ export class GoodListComponent implements OnInit, OnDestroy {
           })
         })
       })
+=======
+      new Exists({ parameter: 'discontinued' }),
+>>>>>>> e1a51fb58a3d469ed0db98b8e5259fad16d6b8b5
     ]);
 
     const modelSearch = new SearchFactory({
@@ -130,8 +134,12 @@ export class GoodListComponent implements OnInit, OnDestroy {
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
         identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+<<<<<<< HEAD
         brand: { search: brandSearch, display: (v: Brand) => v.Name },
         model: { search: modelSearch, display: (v: Model) => v.Name },
+=======
+        discontinued: { exist: m.Good.SalesDiscontinuationDate },
+>>>>>>> e1a51fb58a3d469ed0db98b8e5259fad16d6b8b5
       });
 
     const sorter = new Sorter(

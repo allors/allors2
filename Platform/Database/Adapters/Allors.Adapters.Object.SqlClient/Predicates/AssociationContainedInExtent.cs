@@ -44,16 +44,16 @@ namespace Allors.Adapters.Object.SqlClient
 
             inStatement.UseRole(this.association.RoleType);
 
-            if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
+            if ((this.association.IsMany && this.association.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForRole + " IS NOT NULL AND ");
-                statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForRole + " IN (\n");
+                statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IS NOT NULL AND ");
+                statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IN (\n");
                 this.inExtent.BuildSql(inStatement);
                 statement.Append(" ))\n");
             }
             else
             {
-                if (this.association.RelationType.RoleType.IsMany)
+                if (this.association.RoleType.IsMany)
                 {
                     statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + " IS NOT NULL AND ");
                     statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + " IN (\n");

@@ -815,6 +815,8 @@ namespace Allors.Adapters
                 init();
                 this.Populate();
 
+                this.Session.Commit();
+
                 foreach (var useOperator in this.UseOperator)
                 {
                     // Extent over Class
@@ -1066,6 +1068,70 @@ namespace Allors.Adapters
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
                     this.AssertC4(extent, false, false, false, false);
+
+
+                    // RelationType from Interface to Interface
+
+                    // ContainedIn Extent over Interface
+                    // Empty
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2one, inExtent);
+
+                    Assert.Empty(extent);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // Full
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2one, inExtent);
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, true, false, false);
+                    this.AssertC4(extent, false, true, false, false);
+
+                    // Filtered
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2one, inExtent);
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, true, false, false);
+                    this.AssertC4(extent, false, true, false, false);
                 }
             }
         }
