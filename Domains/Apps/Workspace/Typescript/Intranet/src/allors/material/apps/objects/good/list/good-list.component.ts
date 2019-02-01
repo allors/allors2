@@ -9,7 +9,7 @@ import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists }
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Good, ProductCategory, IGoodIdentification } from '../../../../../domain';
+import { Good, ProductCategory, IGoodIdentification, Brand, Model } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -79,11 +79,42 @@ export class GoodListComponent implements OnInit, OnDestroy {
     const internalOrganisationPredicate = new Equals({ propertyType: m.VendorProduct.InternalOrganisation });
 
     const predicate = new And([
+      internalOrganisationPredicate,
       new Like({ roleType: m.Good.Name, parameter: 'name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
       new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
+      new ContainedIn({
+        propertyType: m.Good.Part,
+        extent: new Filter({
+          objectType: m.Part,
+          predicate: new Equals({
+            propertyType: m.Part.Brand,
+            parameter: 'brand'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.Good.Part,
+        extent: new Filter({
+          objectType: m.Part,
+          predicate: new Equals({
+            propertyType: m.Part.Model,
+            parameter: 'model'
+          })
+        })
+      })
     ]);
+
+    const modelSearch = new SearchFactory({
+      objectType: m.Model,
+      roleTypes: [m.Model.Name],
+    });
+
+    const brandSearch = new SearchFactory({
+      objectType: m.Brand,
+      roleTypes: [m.Brand.Name],
+    });
 
     const categorySearch = new SearchFactory({
       objectType: m.ProductCategory,
@@ -99,6 +130,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
         identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+        brand: { search: brandSearch, display: (v: Brand) => v.Name },
+        model: { search: modelSearch, display: (v: Model) => v.Name },
       });
 
     const sorter = new Sorter(
@@ -141,6 +174,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
                 ProductCategoriesWhereProduct: {
                   include: {
                     Products: x,
+                    Parents: x
                   }
                 },
               }
@@ -161,7 +195,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Name,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.Name).join(', '),
+            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.Parents.length > 0 ? `${w.Parents.map((y) => y.Name).join(', ')}/${w.Name}` : w.Name).join(', '),
             qoh: v.Part.QuantityOnHand
           } as Row;
         });

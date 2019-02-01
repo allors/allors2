@@ -136,7 +136,10 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
       this.objects = loaded.collections[pullName] as PartyRelationship[];
 
       this.currentPartyRelationships = loaded.collections[active] as PartyRelationship[];
+      this.currentPartyRelationships = this.currentPartyRelationships.filter(v => v.objectType.name !== this.m.PartyFinancialRelationship.name);
+
       this.inactivePartyRelationships = loaded.collections[inactive] as PartyRelationship[];
+      this.inactivePartyRelationships = this.inactivePartyRelationships.filter(v => v.objectType.name !== this.m.PartyFinancialRelationship.name);
 
       this.allPartyRelationships = [];
 

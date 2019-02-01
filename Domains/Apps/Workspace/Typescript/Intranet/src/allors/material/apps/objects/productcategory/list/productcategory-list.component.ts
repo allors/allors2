@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
+import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains, Exists, Not } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
@@ -13,7 +13,7 @@ import { ProductCategory, CatScope, Good } from '../../../../../domain';
 interface Row extends TableRow {
   object: ProductCategory;
   name: string;
-  description: string;
+  parents: string;
   scope: string;
 }
 
@@ -61,8 +61,8 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
+        { name: 'parents' },
         { name: 'name', sort: true },
-        { name: 'description', sort: true },
         { name: 'scope', sort: true }
       ],
       actions: [
@@ -133,7 +133,8 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
                 CategoryImage: x,
                 LocalisedNames: x,
                 LocalisedDescriptions: x,
-                CatScope: x
+                CatScope: x,
+                Parents: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -151,8 +152,8 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
         this.table.data = objects.map((v) => {
           return {
             object: v,
-            name: `${v.Name}`,
-            description: `${v.Description || ''}`,
+            name: v.Name,
+            parents: v.Parents.length > 0 ? `${v.Parents.map((w) => w.Name).join(', ')}` : '',
             scope: v.CatScope.Name
           } as Row;
         });

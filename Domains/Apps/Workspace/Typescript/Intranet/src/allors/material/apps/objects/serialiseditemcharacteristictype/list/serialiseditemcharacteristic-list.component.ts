@@ -8,7 +8,7 @@ import { PullRequest, And, Equals, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
-import { SerialisedItemCharacteristicType, UnitOfMeasure } from '../../../../../domain';
+import { SerialisedItemCharacteristicType, UnitOfMeasure, IUnitOfMeasure } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: SerialisedItemCharacteristicType;
@@ -84,15 +84,15 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     ]);
 
     const uomSearch = new SearchFactory({
-      objectType: m.UnitOfMeasure,
-      roleTypes: [m.UnitOfMeasure.Name],
-      predicates: [new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true })]
+      objectType: m.IUnitOfMeasure,
+      roleTypes: [m.IUnitOfMeasure.Name],
+      predicates: [new Equals({ propertyType: m.IUnitOfMeasure.IsActive, value: true })]
     });
 
     this.filterService.init(predicate,
       {
         active: { initialValue: true },
-        uom: { search: uomSearch, display: (v: UnitOfMeasure) => v.Name },
+        uom: { search: uomSearch, display: (v: IUnitOfMeasure) => v.Name },
       });
 
     const sorter = new Sorter(
