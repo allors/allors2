@@ -457,6 +457,10 @@ namespace Allors.Adapters
             this.C3C.S1234many2one = this.C1C;
             this.C3D.S1234many2one = this.C1C;
 
+            this.C1B.I12I34many2one = this.C3B;
+            this.C2B.I12I34many2one = this.C4B;
+            this.C2D.I12I34many2one = this.C4B;
+
             this.C1B.AddC1C1many2many(this.C1B);
             this.C1C.AddC1C1many2many(this.C1B);
             this.C1D.AddC1C1many2many(this.C1B);
