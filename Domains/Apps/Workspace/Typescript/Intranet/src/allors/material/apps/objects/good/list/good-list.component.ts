@@ -83,6 +83,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
       new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
+      new Exists({ parameter: 'discontinued' }),
     ]);
 
     const categorySearch = new SearchFactory({
@@ -99,6 +100,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
         identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+        discontinued: { exist: m.Good.SalesDiscontinuationDate },
       });
 
     const sorter = new Sorter(

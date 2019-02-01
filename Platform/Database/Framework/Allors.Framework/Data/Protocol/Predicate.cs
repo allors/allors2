@@ -91,7 +91,8 @@ namespace Allors.Data.Protocol
 
                             return new Exists
                             {
-                                PropertyType = propertyType
+                                PropertyType = propertyType,
+                                Parameter = this.Parameter
                             };
 
                         case PredicateKind.Equals:

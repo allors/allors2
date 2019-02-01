@@ -1,10 +1,12 @@
 import { PropertyType } from '../../meta';
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class Exists implements Predicate {
-  public propertyType: PropertyType;
+export class Exists extends ParametrizedPredicate {
+  propertyType: PropertyType;
 
   constructor(fields?: Partial<Exists> | PropertyType) {
+    super();
+
     if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
     } else {
@@ -16,6 +18,7 @@ export class Exists implements Predicate {
     return {
       kind: 'Exists',
       propertytype: this.propertyType.id,
+      parameter: this.parameter,
     };
   }
 }
