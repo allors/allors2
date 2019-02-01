@@ -79,7 +79,6 @@ export class GoodListComponent implements OnInit, OnDestroy {
     const internalOrganisationPredicate = new Equals({ propertyType: m.VendorProduct.InternalOrganisation });
 
     const predicate = new And([
-      internalOrganisationPredicate,
       new Like({ roleType: m.Good.Name, parameter: 'name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),

@@ -86,6 +86,7 @@ export class PartListComponent implements OnInit, OnDestroy {
     const internalOrganisationPredicate = new Equals({ propertyType: m.Part.InternalOrganisation });
 
     const predicate = new And([
+      internalOrganisationPredicate,
       new Like({ roleType: m.Part.Name, parameter: 'name' }),
       new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
       new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
