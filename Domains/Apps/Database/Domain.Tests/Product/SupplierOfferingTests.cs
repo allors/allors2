@@ -82,9 +82,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFacility()
         {
+            var settings = this.Session.GetSingleton().Settings;
+
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var internalOrganisation = this.InternalOrganisation;
-            var before = internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count;
+            var before = settings.DefaultFacility.InventoryItemsWhereFacility.Count;
 
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -123,15 +125,16 @@ namespace Allors.Domain
             this.Session.Derive(); 
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
-            Assert.Equal(before + 1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
 
         [Fact]
         public void GivenNewGoodBasedOnPart_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryPartAndFacility()
         {
+            var settings = this.Session.GetSingleton().Settings;
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-            var before = this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count;
+            var before = settings.DefaultFacility.InventoryItemsWhereFacility.Count;
 
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -170,7 +173,7 @@ namespace Allors.Domain
             this.Session.Derive(); 
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
-            Assert.Equal(before + 1, this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
     }

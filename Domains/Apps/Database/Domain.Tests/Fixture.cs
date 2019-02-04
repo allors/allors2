@@ -90,7 +90,7 @@ namespace Allors
                     .WithOwner(internalOrganisation)
                     .Build();
 
-                internalOrganisation.DefaultFacility = facility;                
+                singleton.Settings.DefaultFacility = facility;
 
                 var collectionMethod = new PaymentMethods(session).Extent().First;
 

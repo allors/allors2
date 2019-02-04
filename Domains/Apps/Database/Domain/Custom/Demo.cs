@@ -67,10 +67,7 @@ namespace Allors
                 quoteNumberPrefix: "a-Q",
                 productNumberPrefix: "A-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1,
-                partNumberPrefix: "a-P",
-                useProductNumberCounter: true,
-                usePartNumberCounter: true);
+                quoteCounterValue: 1);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -102,10 +99,7 @@ namespace Allors
                 quoteNumberPrefix: "d-Q",
                 productNumberPrefix: "D-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1,
-                partNumberPrefix: "d-P",
-                useProductNumberCounter: true,
-                usePartNumberCounter: false);
+                quoteCounterValue: 1);
 
             this.SetupUser(allors, "employee1@allors.com", "first", "allors employee", "letmein");
             this.SetupUser(dipu, "employee1@allors.com", "first", "dipu employee", "letmein");
@@ -139,7 +133,6 @@ namespace Allors
                 .Build();
 
             var finishedGood = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -167,7 +160,6 @@ namespace Allors
             new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             var finishedGood2 = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
@@ -199,11 +191,9 @@ namespace Allors
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session).Available)
-                .WithFacility(allors.DefaultFacility)
                 .Build();
 
             var finishedGood3 = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -227,7 +217,6 @@ namespace Allors
             new VendorProductBuilder(this.Session).WithProduct(good3).WithInternalOrganisation(allors).Build();
 
             var finishedGood4 = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithName("finished good4")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
