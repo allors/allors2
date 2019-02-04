@@ -28,6 +28,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public Product AvailableFor { get; set; }
 
         #region Allors
@@ -38,6 +39,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ProductFeature ProductFeature { get; set; }
 
         #region Allors
@@ -48,6 +50,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ProductFeatureApplicabilityKind ProductFeatureApplicabilityKind { get; set; }
 
         #region inherited methods

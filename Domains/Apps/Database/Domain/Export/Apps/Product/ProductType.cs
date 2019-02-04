@@ -25,9 +25,11 @@ namespace Allors.Domain
             {
                 foreach (Part part in this.PartsWhereProductType)
                 {
-                    foreach (SerialisedInventoryItem serialisedInventoryItem in part.InventoryItemsWherePart)
+                    derivation.AddDependency(part, this);
+
+                    foreach (SerialisedItem serialisedItem in part.SerialisedItems)
                     {
-                        derivation.AddDependency(serialisedInventoryItem, this);
+                        derivation.AddDependency(serialisedItem, this);
                     }
                 }
             }

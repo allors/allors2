@@ -68,10 +68,7 @@ namespace Tests.Intranet
                 quoteNumberPrefix: "a-Q",
                 productNumberPrefix: "A-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1,
-                partNumberPrefix: "a-P",
-                useProductNumberCounter: true,
-                usePartNumberCounter: true);
+                quoteCounterValue: 1);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -103,10 +100,7 @@ namespace Tests.Intranet
                 quoteNumberPrefix: "d-Q",
                 productNumberPrefix: "D-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1,
-                partNumberPrefix: "d-P",
-                useProductNumberCounter: false,
-                usePartNumberCounter: false);
+                quoteCounterValue: 1);
 
             this.SetupUser(allors, "firstemployee@allors.com", "first", "allors employee", "letmein");
             this.SetupUser(allors, "firstemployee@allors.com", "second", "allors employee", "letmein");
@@ -141,7 +135,6 @@ namespace Tests.Intranet
                 .Build();
 
             var finishedGood = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -164,7 +157,6 @@ namespace Tests.Intranet
             new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             var finishedGood2 = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
@@ -186,10 +178,9 @@ namespace Tests.Intranet
             var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             finishedGood2.AddSerialisedItem(serialisedItem);
 
-            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.DefaultFacility).Build();
+            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility).Build();
 
             var finishedGood3 = new PartBuilder(this.Session)
-                .WithInternalOrganisation(allors)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())

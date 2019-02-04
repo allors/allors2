@@ -25,9 +25,6 @@ namespace Allors.Domain
 
     public static partial class InternalOrganisationExtensions
     {
-        public static InventoryStrategy GetInventoryStrategy(this InternalOrganisation @this)
-            => @this.InventoryStrategy ?? new InventoryStrategies(@this.Strategy.Session).Standard;
-
         public static void AppsOnBuild(this InternalOrganisation @this, ObjectOnBuild method)
         {
             if (!@this.ExistProductQuoteTemplate)
@@ -176,12 +173,6 @@ namespace Allors.Domain
                     @this.InvoiceSequence = new InvoiceSequences(@this.Strategy.Session).RestartOnFiscalYear;
                 }
 
-                if (@this.UsePartNumberCounter && !@this.ExistPartNumberCounter)
-                {
-                    @this.PartNumberCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
-                        .WithValue(0).Build();
-                }
-
                 if (!@this.ExistFiscalYearStartMonth)
                 {
                     @this.FiscalYearStartMonth = 1;
@@ -228,12 +219,6 @@ namespace Allors.Domain
         {
             var purchaseOrderNumber = @this.PurchaseOrderCounter.NextValue();
             return string.Concat(@this.ExistPurchaseOrderNumberPrefix? @this.PurchaseOrderNumberPrefix : string.Empty, purchaseOrderNumber);
-        }
-
-        public static string NextPartNumber(this InternalOrganisation @this)
-        {
-            var partNumber = @this.PartNumberCounter.NextValue();
-            return string.Concat(@this.ExistPartNumberPrefix ? @this.PartNumberPrefix : string.Empty, partNumber);
         }
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this)

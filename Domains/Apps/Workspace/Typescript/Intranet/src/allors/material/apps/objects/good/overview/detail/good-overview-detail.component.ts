@@ -3,7 +3,7 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { Locale, Organisation, Good, Facility, ProductCategory, ProductType, Brand, Model, VendorProduct, Ownership, VatRate, Part, GoodIdentificationType, ProductNumber } from '../../../../../../domain';
+import { Locale, Organisation, Good, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, GoodIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -21,7 +21,6 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
 
   good: Good;
 
-  facility: Facility;
   locales: Locale[];
   categories: ProductCategory[];
   productTypes: ProductType[];
@@ -30,7 +29,6 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
   selectedBrand: Brand;
   models: Model[];
   selectedModel: Model;
-  vendorProduct: VendorProduct;
   vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
@@ -41,6 +39,8 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
   productNumber: ProductNumber;
   originalCategories: ProductCategory[] = [];
   selectedCategories: ProductCategory[] = [];
+  productFeatureApplicabilities: ProductFeatureApplicability[];
+  productDimensions: ProductDimension[];
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -104,7 +104,7 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$)
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
@@ -154,7 +154,21 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
             pull.Good({
               name: 'OriginalCategories',
               object: id,
-              fetch: { ProductCategoriesWhereProduct : x}
+              fetch: { ProductCategoriesWhereProduct: x }
+            }),
+            pull.Good({
+              object: id,
+              fetch: {
+                ProductFeatureApplicabilitiesWhereAvailableFor: {
+                  include: {
+                    ProductFeature: {
+                      ProductDimension_Dimension: {
+                        UnitOfMeasure: x
+                      }
+                    }
+                  }
+                }
+              }
             }),
           ];
 
@@ -163,9 +177,6 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = internalOrganisation.DefaultFacility;
 
         this.good = loaded.objects.Good as Good;
         this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
@@ -176,6 +187,8 @@ export class GoodOverviewDetailComponent implements OnInit, OnDestroy {
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];
+        this.productDimensions = this.productFeatureApplicabilities.map(v => v.ProductFeature).filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
 
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 

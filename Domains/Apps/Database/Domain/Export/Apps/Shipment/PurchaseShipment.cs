@@ -82,9 +82,9 @@ namespace Allors.Domain
                 this.ShipToAddress = this.Receiver.ExistShippingAddress ? this.Receiver.ShippingAddress : this.Receiver.GeneralCorrespondence;
             }
 
-            if (!this.ExistFacility && this.ExistReceiver)
+            if (!this.ExistFacility && this.ExistReceiver && this.Receiver.StoresWhereInternalOrganisation.Count == 1)
             {
-                this.Facility = this.Receiver.DefaultFacility;
+                this.Facility = this.Receiver.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
 
             if (!this.ExistShipmentNumber && this.ExistReceiver)

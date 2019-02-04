@@ -24,29 +24,7 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this Product @this, ObjectOnDerive method)
         {
-            var session = @this.Strategy.Session;
-            var internalOrganisations = new Organisations(session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-                
-            if (!@this.ExistVendorProductsWhereProduct && internalOrganisations.Count() == 1)
-            {
-                new VendorProductBuilder(session)
-                    .WithProduct(@this)
-                    .WithInternalOrganisation(internalOrganisations.First())
-                    .Build();
-            }
-
             @this.AppsOnDeriveProductCategoriesExpanded();
-
-            //VendorProduct activeVendorProduct = null;
-            //foreach (VendorProduct vendorProduct in @this.VendorProductsWhereProduct)
-            //{
-            //    if (vendorProduct.FromDate <= DateTime.UtcNow &&
-            //        (!vendorProduct.ExistThroughDate || vendorProduct.ThroughDate >= DateTime.UtcNow))
-            //    {
-            //        activeVendorProduct = vendorProduct;
-            //        break;
-            //    }
-            //}
         }
 
         public static void AddToBasePrice(this Product @this, BasePrice basePrice)

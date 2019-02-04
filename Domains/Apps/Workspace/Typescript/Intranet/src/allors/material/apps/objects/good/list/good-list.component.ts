@@ -76,20 +76,11 @@ export class GoodListComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.VendorProduct.InternalOrganisation });
-
     const predicate = new And([
       new Like({ roleType: m.Good.Name, parameter: 'name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
       new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
-      new ContainedIn({
-        propertyType: m.Good.VendorProductsWhereProduct,
-        extent: new Filter({
-          objectType: m.VendorProduct,
-          predicate: internalOrganisationPredicate
-        })
-      }),
       new ContainedIn({
         propertyType: m.Good.Part,
         extent: new Filter({
@@ -146,7 +137,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -154,12 +145,9 @@ export class GoodListComponent implements OnInit, OnDestroy {
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
-
-          internalOrganisationPredicate.object = internalOrganisationId;
+        switchMap(([, filterFields, sort, pageEvent ]) => {
 
           const pulls = [
             pull.Good({

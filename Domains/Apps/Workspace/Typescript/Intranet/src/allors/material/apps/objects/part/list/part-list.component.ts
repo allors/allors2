@@ -83,10 +83,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.Part.InternalOrganisation });
-
     const predicate = new And([
-      internalOrganisationPredicate,
       new Like({ roleType: m.Part.Name, parameter: 'name' }),
       new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
       new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
@@ -169,7 +166,7 @@ export class PartListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -177,12 +174,9 @@ export class PartListComponent implements OnInit, OnDestroy {
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId
           ];
         }, []),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
-
-          internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.Part({

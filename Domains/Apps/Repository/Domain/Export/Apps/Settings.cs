@@ -75,7 +75,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        public Counter GlobalProductNumberCounter { get; set; }
+        public Counter ProductNumberCounter { get; set; }
 
         #region Allors
         [Id("E14816F1-65DA-4042-91E3-6F0906611D10")]
@@ -83,7 +83,7 @@ namespace Allors.Repository
         [RoleId("8822D37A-DA68-4CE0-8DEE-F1A8414C49D1")]
         #endregion
         [Workspace]
-        public string GlobalProductNumberPrefix { get; set; }
+        public string ProductNumberPrefix { get; set; }
 
         #region Allors
         [Id("C1FA075A-2607-476D-BC27-A13656C56684")]
@@ -92,7 +92,58 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Required]
-        public bool UseGlobalProductNumber { get; set; }
+        public bool UseProductNumberCounter { get; set; }
+
+        #region Allors
+        [Id("5F85CAE6-B43C-400E-A2C0-D86FD7A080FA")]
+        [AssociationId("9321472C-FE61-4AE4-ACFA-7441AABFDFD3")]
+        [RoleId("688D383D-FB35-49E4-A483-4D9D339302BA")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public Counter PartNumberCounter { get; set; }
+
+        #region Allors
+        [Id("FDFFDB77-D1DC-4479-8326-69722639E03B")]
+        [AssociationId("2CCEF250-1919-45F0-BC8C-251B952381A9")]
+        [RoleId("DED5FECC-4F27-461B-A595-6FE2192FD150")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string PartNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("840F8939-7CB8-4977-9BAC-A3375E50B3E6")]
+        [AssociationId("C43DC79A-637D-4853-9564-E1ABA3256418")]
+        [RoleId("F23B3F70-A8A8-443B-8357-348B608A74E0")]
+        [Required]
+        #endregion
+        [Workspace]
+        public bool UsePartNumberCounter { get; set; }
+
+        #region Allors
+        [Id("CC72A8ED-FE10-4350-ACAE-F88DF20E5AF4")]
+        [AssociationId("DA01931F-B38C-436D-A327-EC9ED73B6232")]
+        [RoleId("9F5CF68B-D791-41A0-A17B-89ED57E3E1F6")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Facility DefaultFacility { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the InventoryStrategy used by this InternalOrganisation
+        /// </summary>
+        #region Allors
+        [Id("78D1D6C1-1F79-4B8A-9C85-F60C1A5594E4")]
+        [AssociationId("6D751271-12C0-421D-97FF-BDB08E7E7B42")]
+        [RoleId("66DA0F04-9FD7-4ECD-A74B-6CE9132DA6AF")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public InventoryStrategy InventoryStrategy { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

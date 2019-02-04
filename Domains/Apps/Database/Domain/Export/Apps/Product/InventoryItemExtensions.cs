@@ -48,9 +48,9 @@ namespace Allors.Domain
                     .Build();
             }
 
-            if (!@this.ExistFacility && internalOrganisations.Count() == 1)
+            if (!@this.ExistFacility && internalOrganisations.Count() == 1 && internalOrganisations.Single().StoresWhereInternalOrganisation.Count == 1)
             {
-                @this.Facility = internalOrganisations.First().DefaultFacility;
+                @this.Facility = internalOrganisations.Single().StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
 
             //TODO: Let Sync set Unit of Measure

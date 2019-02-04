@@ -63,10 +63,7 @@ namespace Allors.Domain
             string quoteNumberPrefix,
             string productNumberPrefix,
             int? requestCounterValue,
-            int? quoteCounterValue,
-            string partNumberPrefix,
-            bool useProductNumberCounter,
-            bool usePartNumberCounter)
+            int? quoteCounterValue)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
@@ -102,9 +99,6 @@ namespace Allors.Domain
                 .WithDoAccounting(false)
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
-                .WithPartNumberPrefix(partNumberPrefix)
-                .WithUseProductNumberCounter(useProductNumberCounter)
-                .WithUsePartNumberCounter(usePartNumberCounter)
                 .Build();
 
             if (requestCounterValue != null)
@@ -187,8 +181,6 @@ namespace Allors.Domain
                 .WithOwner(organisation)
                 .Build();
 
-            organisation.DefaultFacility = magazijn;
-
             var paymentMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
 
             new StoreBuilder(session)
@@ -203,6 +195,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
                 .WithInternalOrganisation(organisation)
+                .WithDefaultFacility(magazijn)
                 .Build();
 
             return organisation;

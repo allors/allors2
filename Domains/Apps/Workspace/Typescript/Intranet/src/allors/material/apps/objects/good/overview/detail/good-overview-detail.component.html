@@ -39,7 +39,8 @@
 
           <div class="row">
             <mat-form-field class="col-md">
-              <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true" (ngModelChange)="setDirty()">
+              <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true"
+                (ngModelChange)="setDirty()">
                 <mat-option>None</mat-option>
                 <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
               </mat-select>
@@ -70,6 +71,17 @@
             </mat-expansion-panel>
           </div>
         </mat-tab>
+
+        <!-- <mat-tab label="Dimensions">
+          <div class="container-fluid">
+
+            <div class="row pt-3" *ngFor="let productDimension of productDimensions">
+              <a-mat-input class="col-md" [object]="productDimension" [roleType]="m.ProductDimension.Value"
+                [label]="productDimension.Dimension.Name + ' (' + productDimension.Dimension.UnitOfMeasure.Name + ')'"></a-mat-input>
+            </div>
+
+          </div>
+        </mat-tab> -->
 
         <mat-tab label="Comments">
           <div class="container-fluid">

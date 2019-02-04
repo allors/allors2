@@ -92,14 +92,6 @@ export class SerialisedInventoryItemComponent implements OnInit {
       defaultAction: this.changeInventory,
     });
 
-    const sorter = new Sorter(
-      {
-        facility: [m.Facility.Name],
-        item: [m.SerialisedItem.Name],
-        status: [m.SerialisedInventoryItemState.Name],
-      }
-    );
-
     const pullName = `${this.panel.name}_${this.m.SerialisedInventoryItem.name}`;
 
     this.panel.onPull = (pulls) => {

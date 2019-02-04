@@ -25,25 +25,11 @@ export class DefaultStateService extends StateService {
     this.goodsFilter = new SearchFactory({
       objectType: m.Good,
       roleTypes: [m.Good.Name],
-      post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: m.Product.VendorProductsWhereProduct,
-          extent: new Filter({
-            objectType: m.VendorProduct,
-            predicate: new Equals({ propertyType: m.VendorProduct.InternalOrganisation, object: this.internalOrganisationId }),
-          })
-        }));
-      },
     });
 
     this.partsFilter = new SearchFactory({
       objectType: m.Part,
       roleTypes: [m.Part.Name],
-      post: (predicate: And) => {
-        predicate.operands.push(
-          new Equals({ propertyType: m.Part.InternalOrganisation, object: this.internalOrganisationId })
-        );
-      },
     });
 
     this.customersFilter = new SearchFactory({

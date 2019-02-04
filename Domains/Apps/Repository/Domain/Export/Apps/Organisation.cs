@@ -76,8 +76,6 @@ namespace Allors.Repository
 
         public bool DoAccounting { get; set; }
 
-        public Facility DefaultFacility { get; set; }
-
         public GeneralLedgerAccount PurchasePaymentDiscountDifferencesAccount { get; set; }
 
         public string QuoteNumberPrefix { get; set; }
@@ -216,8 +214,6 @@ namespace Allors.Repository
 
         public Template WorkTaskTemplate { get; set; }
 
-        public InventoryStrategy InventoryStrategy { get; set; }
-
         public PartyRate CurrentPartyRate { get; set; }
 
         public PartyRate[] AllPartyRates { get; set; }
@@ -225,14 +221,6 @@ namespace Allors.Repository
         public Counter WorkEffortCounter { get; set; }
 
         public string WorkEffortPrefix { get; set; }
-
-        public Counter PartNumberCounter { get; set; }
-
-        public string PartNumberPrefix { get; set; }
-
-        public bool UseProductNumberCounter { get; set; }
-
-        public bool UsePartNumberCounter { get; set; }
 
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }
 

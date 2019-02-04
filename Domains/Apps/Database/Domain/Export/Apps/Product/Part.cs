@@ -42,9 +42,6 @@ namespace Allors.Domain
             }
         }
 
-        public InventoryStrategy GetInventoryStrategy
-            => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistInventoryItemKind)
@@ -57,19 +54,9 @@ namespace Allors.Domain
                 this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
             }
 
-            if (!this.ExistInternalOrganisation)
+            if (!this.ExistDefaultFacility)
             {
-                var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(o => o.IsInternalOrganisation);
-
-                if (internalOrganisations.Count() == 1)
-                {
-                    this.InternalOrganisation = internalOrganisations.First();
-                }
-            }
-
-            if (this.ExistInternalOrganisation && !this.ExistDefaultFacility)
-            {
-                this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
+                this.DefaultFacility = this.strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
 
             this.DeriveName();
@@ -95,6 +82,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var setings = this.strategy.Session.GetSingleton().Settings;
+
             if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
                 this.SyncDefaultInventoryItem();
@@ -106,10 +95,10 @@ namespace Allors.Domain
             identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Part);
             var partNumber = identifications.FirstOrDefault();
 
-            if (partNumber == null && this.InternalOrganisation.UsePartNumberCounter)
+            if (partNumber == null && setings.UsePartNumberCounter)
             {
                 this.AddGoodIdentification(new PartNumberBuilder(this.strategy.Session)
-                    .WithIdentification(this.InternalOrganisation.NextPartNumber())
+                    .WithIdentification(setings.NextPartNumber())
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Part).Build());
             }
 

@@ -316,8 +316,9 @@ namespace Allors.Domain
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
             var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
+            var defaultFacility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;
 
-            if (this.ExistProduct && internalOrganisation != null)
+            if (this.ExistProduct && internalOrganisation != null && defaultFacility != null)
             {
                 if (this.Product is Good good && good.ExistPart) 
                 {
@@ -333,14 +334,14 @@ namespace Allors.Domain
                         else
                         {
                             var inventoryItems = good.Part.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
                             this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
                         }
                     }
                     else
                     {
                         var inventoryItems = good.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
                         this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }

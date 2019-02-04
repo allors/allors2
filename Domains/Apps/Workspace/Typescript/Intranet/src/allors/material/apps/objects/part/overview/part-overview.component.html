@@ -22,15 +22,11 @@
 
         <igoodidentification-panel [roleType]="metaService.m.Part.GoodIdentifications"></igoodidentification-panel>
 
-        <div *ngIf="!serialised">
           <nonserialisedinventoryitem-overview-panel></nonserialisedinventoryitem-overview-panel>
-        </div>
 
-        <div *ngIf="serialised">
           <serialisedinventoryitem-overview-panel></serialisedinventoryitem-overview-panel>
 
           <serialiseditem-overview-panel></serialiseditem-overview-panel>
-        </div>
 
         <pricecomponent-overview-panel></pricecomponent-overview-panel>
 

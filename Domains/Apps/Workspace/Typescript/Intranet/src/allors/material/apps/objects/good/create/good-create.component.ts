@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
+import { Good, Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
@@ -23,12 +23,10 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
   public title = 'Add Good';
 
-  facility: Facility;
   locales: Locale[];
   categories: ProductCategory[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
-  vendorProduct: VendorProduct;
   vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
@@ -50,7 +48,6 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
     private refreshService: RefreshService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -61,7 +58,7 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
 
@@ -88,9 +85,6 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = internalOrganisation.DefaultFacility;
-
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
@@ -104,16 +98,12 @@ export class GoodCreateComponent implements OnInit, OnDestroy {
         this.good = this.allors.context.create('Good') as Good;
         this.good.VatRate = vatRateZero;
 
-        if (!this.settings.UseGlobalProductNumber) {
+        if (!this.settings.UseProductNumberCounter) {
           this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
           this.productNumber.GoodIdentificationType = this.goodNumberType;
 
           this.good.AddGoodIdentification(this.productNumber);
         }
-
-        this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
-        this.vendorProduct.Product = this.good;
-        this.vendorProduct.InternalOrganisation = internalOrganisation;
       }, this.errorService.handler);
     }
 

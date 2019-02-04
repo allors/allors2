@@ -342,16 +342,6 @@ namespace Allors.Repository
         GeneralLedgerAccount NetIncomeAccount { get; set; }
 
         #region Allors
-        [Id("dcf24d2f-7bf2-43fd-82b4-bd30fd545022")]
-        [AssociationId("b4b8b2e6-141c-416f-89a8-746c72c26e5c")]
-        [RoleId("dc7127c4-c4ca-49a3-95ae-970de554d4f3")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        Facility DefaultFacility { get; set; }
-
-        #region Allors
         [Id("dd008dfe-a219-42ab-bc08-d091da3f8ea4")]
         [AssociationId("77ce8418-a00b-46d0-ab7b-4a782b7387da")]
         [RoleId("a5ac9bc1-5323-41ec-a791-d4ecc7d0eee8")]
@@ -516,19 +506,6 @@ namespace Allors.Repository
         Template WorkTaskTemplate { get; set; }
 
         /// <summary>
-        /// Gets or Sets the InventoryStrategy used by this InternalOrganisation
-        /// </summary>
-        #region Allors
-        [Id("78D1D6C1-1F79-4B8A-9C85-F60C1A5594E4")]
-        [AssociationId("6D751271-12C0-421D-97FF-BDB08E7E7B42")]
-        [RoleId("66DA0F04-9FD7-4ECD-A74B-6CE9132DA6AF")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        InventoryStrategy InventoryStrategy { get; set; }
-
-        /// <summary>
         /// Gets or sets the WorkEffortCounter to be used to populate the WorkEfforNumber for WorkEffort objects
         /// </summary>
         #region Allors
@@ -552,43 +529,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         string WorkEffortPrefix { get; set; }
-
-        #region Allors
-        [Id("5F85CAE6-B43C-400E-A2C0-D86FD7A080FA")]
-        [AssociationId("9321472C-FE61-4AE4-ACFA-7441AABFDFD3")]
-        [RoleId("688D383D-FB35-49E4-A483-4D9D339302BA")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        Counter PartNumberCounter { get; set; }
-
-        #region Allors
-        [Id("FDFFDB77-D1DC-4479-8326-69722639E03B")]
-        [AssociationId("2CCEF250-1919-45F0-BC8C-251B952381A9")]
-        [RoleId("DED5FECC-4F27-461B-A595-6FE2192FD150")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        string PartNumberPrefix { get; set; }
-
-        #region Allors
-        [Id("EBBCBBB4-6688-40A0-8E53-3426479D71F4")]
-        [AssociationId("9EAC0CCB-B7B2-42CA-9F5C-63A61EFC9489")]
-        [RoleId("ED07DC4D-B415-4FBD-AA26-9C1AB16E6A01")]
-        [Required]
-        #endregion
-        [Workspace]
-        bool UseProductNumberCounter { get; set; }
-
-        #region Allors
-        [Id("840F8939-7CB8-4977-9BAC-A3375E50B3E6")]
-        [AssociationId("C43DC79A-637D-4853-9564-E1ABA3256418")]
-        [RoleId("F23B3F70-A8A8-443B-8357-348B608A74E0")]
-        [Required]
-        #endregion
-        [Workspace]
-        bool UsePartNumberCounter { get; set; }
 
         /// <summary>
         /// Gets or sets a flag to indicate if this InternalOrganisation Requires Existing WorkEffortPartyAssignment

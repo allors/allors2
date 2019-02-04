@@ -21,17 +21,6 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
         #endregion inheritedProperties
 
-        #region Allors
-        [Id("17D9A211-83AC-4F77-B0D6-2673C50EE4C2")]
-        [AssociationId("8B4C220A-A33B-468C-B345-2A40126118C1")]
-        [RoleId("28DB278D-0A00-492C-8329-6FE23B541386")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        public InternalOrganisation InternalOrganisation { get; set; }
-
         /// <summary>
         /// Gets or sets the Default Facility where this Part is stored
         /// </summary>
@@ -319,19 +308,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityExpectedIn { get; set; }
-
-        /// <summary>
-        /// Gets or Sets the InventoryStrategy used by this Part
-        /// </summary>
-        #region Allors
-        [Id("73BE7204-4AC4-4357-90B0-64E16D374B42")]
-        [AssociationId("86B0C071-41B6-4A8F-914F-9E675BA98285")]
-        [RoleId("DCABBDBE-B7A9-4F74-B244-4D8447FDF069")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public InventoryStrategy InventoryStrategy { get; set; }
 
         #region inheritedMethods
         public void OnBuild() { }

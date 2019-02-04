@@ -26,7 +26,7 @@ domain.extend((workspace) => {
 
   Object.defineProperty(obj, 'age', {
     get(this: SerialisedItem) {
-      if (obj.ManufacturingYear) {
+      if (this.ManufacturingYear) {
         return new Date().getFullYear() - this.ManufacturingYear;
       } else {
         return 0;
@@ -36,7 +36,7 @@ domain.extend((workspace) => {
 
   Object.defineProperty(obj, 'yearsToGo', {
     get(this: SerialisedItem) {
-      if (obj.ManufacturingYear) {
+      if (this.ManufacturingYear) {
         return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
       } else {
         return 0;
@@ -52,7 +52,7 @@ domain.extend((workspace) => {
 
   Object.defineProperty(obj, 'marketValue', {
     get(this: SerialisedItem) {
-      if (obj.ManufacturingYear) {
+      if (this.ManufacturingYear) {
         return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
       } else {
         return 0;

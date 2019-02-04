@@ -55,14 +55,6 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     this.goodsFacilityFilter = new SearchFactory({
       objectType: this.m.Good,
       roleTypes: [this.m.Good.Name],
-      post: (predicate: And) => {
-        const extent = new Filter({
-          objectType: this.m.VendorProduct,
-          predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, value: this.stateService.internalOrganisationId }),
-        });
-
-        predicate.operands.push(new ContainedIn({ propertyType: this.m.Product.VendorProductsWhereProduct, extent }));
-      },
     });
   }
 
@@ -210,24 +202,6 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-  }
-
-  public facilitySelected(facility: Facility): void {
-
-    if (facility !== undefined) {
-      this.goodsFacilityFilter = new SearchFactory({
-        objectType: this.m.Good,
-        roleTypes: [this.m.Good.Name],
-        post: (predicate: And) => {
-          const extent = new Filter({
-            objectType: this.m.VendorProduct,
-            predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, object: facility.Owner }),
-          });
-
-          predicate.operands.push(new ContainedIn({ propertyType: this.m.Product.VendorProductsWhereProduct, extent }));
-        },
-      });
-    }
   }
 
   private refreshSerialisedItems(good: Product): void {

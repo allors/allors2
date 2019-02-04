@@ -16,6 +16,8 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
+
     using Meta;
 
     public partial class ShipmentReceipt
@@ -63,7 +65,8 @@ namespace Allors.Domain
                 var purchaseShipment = (PurchaseShipment)this.ShipmentItem.ShipmentWhereShipmentItem;
                 var internalOrganisation = purchaseShipment.Receiver;
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as PurchaseOrderItem;
-                var defaultFacility = internalOrganisation?.DefaultFacility;
+
+                var defaultFacility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;
 
                 if (purchaseOrderItem != null && purchaseOrderItem.ExistPart)
                 {

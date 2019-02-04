@@ -17,7 +17,6 @@ export class Fetcher {
       include: {
         DefaultPaymentMethod: x,
         DefaultShipmentMethod: x,
-        DefaultFacility: x,
         DefaultCollectionMethod: x,
         PaymentMethods: x,
         ActiveCollectionMethods: x,

@@ -16,9 +16,9 @@
                 this.SerialisedItemCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            if (!this.ExistGlobalProductNumberCounter)
+            if (!this.ExistProductNumberCounter)
             {
-                this.GlobalProductNumberCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.ProductNumberCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
         }
 
@@ -34,10 +34,16 @@
             return string.Concat(this.SerialisedItemPrefix, serialisedItemNumber);
         }
 
-        public string NextGlobalProductNumber()
+        public string NextProductNumber()
         {
-            var productNumber = this.GlobalProductNumberCounter.NextValue();
-            return string.Concat(this.GlobalProductNumberPrefix, productNumber);
+            var productNumber = this.ProductNumberCounter.NextValue();
+            return string.Concat(this.ProductNumberPrefix, productNumber);
+        }
+
+        public string NextPartNumber()
+        {
+            var partNumber = this.PartNumberCounter.NextValue();
+            return string.Concat(this.ExistPartNumberPrefix ? this.PartNumberPrefix : string.Empty, partNumber);
         }
     }
 }

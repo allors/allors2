@@ -97,9 +97,9 @@ namespace Allors.Domain
                 this.Currency = this.OrderedBy.PreferredCurrency;
             }
 
-            if (!this.ExistFacility)
+            if (!this.ExistFacility && this.OrderedBy.StoresWhereInternalOrganisation.Count == 1)
             {
-                this.Facility = this.OrderedBy.DefaultFacility;
+                this.Facility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
 
             Organisation supplier = this.TakenViaSupplier as Organisation;

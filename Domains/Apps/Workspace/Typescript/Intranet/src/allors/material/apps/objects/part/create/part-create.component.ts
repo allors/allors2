@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, VendorProduct, GoodIdentificationType, PartNumber, UnitOfMeasure } from '../../../../../domain';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, GoodIdentificationType, PartNumber, UnitOfMeasure, Settings } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -36,7 +36,6 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   selectedBrand: Brand;
   models: Model[];
   selectedModel: Model;
-  vendorProduct: VendorProduct;
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
@@ -44,6 +43,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   partNumber: PartNumber;
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
+  settings: Settings;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -67,13 +67,14 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
+            this.fetcher.Settings,
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
@@ -84,9 +85,6 @@ export class PartCreateComponent implements OnInit, OnDestroy {
                 Models: x
               },
               sort: new Sort(m.Brand.Name)
-            }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
             }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
@@ -101,15 +99,13 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = this.internalOrganisation.DefaultFacility;
-
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.settings = loaded.objects.Settings as Settings;
 
         this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
@@ -123,11 +119,10 @@ export class PartCreateComponent implements OnInit, OnDestroy {
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
         this.part = this.allors.context.create('Part') as Part;
-        this.part.InternalOrganisation = this.internalOrganisation;
-        this.part.DefaultFacility = this.internalOrganisation.DefaultFacility;
+        this.part.DefaultFacility = this.settings.DefaultFacility;
         this.part.UnitOfMeasure = piece;
 
-        if (!this.internalOrganisation.UsePartNumberCounter) {
+        if (!this.settings.UsePartNumberCounter) {
           this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
           this.partNumber.GoodIdentificationType = partNumberType;
 

@@ -144,11 +144,6 @@ namespace Allors.Domain
                 this.InternalOrganisation = internalOrganisations.First();
             }
 
-            if (!this.ExistDefaultFacility && this.ExistInternalOrganisation)
-            {
-                this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
-            }
-
             if (this.ExistDefaultCollectionMethod && !this.CollectionMethods.Contains(this.DefaultCollectionMethod))
             {
                 this.AddCollectionMethod(this.DefaultCollectionMethod);

@@ -11,6 +11,7 @@
             base.AppsPrepare(setup);
 
             setup.AddDependency(this.ObjectType, M.Singleton);
+            setup.AddDependency(this.ObjectType, M.InventoryStrategy);
         }
 
         protected override void AppsSetup(Setup setup)
@@ -21,8 +22,12 @@
                 .WithSerialisedItemPrefix("S")
                 .WithSerialisedItemCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithGlobalProductNumberPrefix("art-")
-                .WithUseGlobalProductNumber(true)
+                .WithProductNumberCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .WithProductNumberPrefix("art-")
+                .WithUseProductNumberCounter(true)
+                .WithPartNumberCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .WithPartNumberPrefix("part-")
+                .WithUsePartNumberCounter(true)
                 .Build();
 
             this.Session.GetSingleton().Settings = settings;

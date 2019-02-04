@@ -51,10 +51,10 @@ namespace Allors.Domain
             identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Good);
             var goodNumber = identifications.FirstOrDefault();
 
-            if (goodNumber == null && settings.UseGlobalProductNumber)
+            if (goodNumber == null && settings.UseProductNumberCounter)
             {
                 this.AddGoodIdentification(new ProductNumberBuilder(this.strategy.Session)
-                    .WithIdentification(settings.NextGlobalProductNumber())
+                    .WithIdentification(settings.NextProductNumber())
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Good).Build());
             }
 
@@ -113,11 +113,6 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
-                foreach (VendorProduct vendorProduct in this.VendorProductsWhereProduct)
-                {
-                    vendorProduct.Delete();
-                }
-
                 foreach (LocalisedText localisedText in this.LocalisedNames)
                 {
                     localisedText.Delete();

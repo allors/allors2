@@ -66,10 +66,12 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
         {
+            var settings = this.strategy.Session.GetSingleton().Settings;
+
             // TODO: Test for changes in these relations for performance reasons
             this.QuantityOnHand = 0M;
 
-            if (!this.Part.GetInventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
+            if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
             {
                 return;  // This Inventorty Item's State is not counted for On-Hand inventory
             }

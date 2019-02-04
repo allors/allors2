@@ -29,11 +29,6 @@ namespace Allors.Domain
             {
                 this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
             }
-
-            if  (!this.ExistInventoryStrategy)
-            {
-                this.InventoryStrategy = new InventoryStrategies(this.strategy.Session).Standard;
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
+import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -23,7 +23,6 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
 
   public title = 'Add Serialised Asset';
 
-  facility: Facility;
   locales: Locale[];
   suppliers: Organisation[];
   ownerships: Ownership[];
@@ -33,7 +32,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
   serialisedItemStates: SerialisedItemState[];
   owner: Party;
 
-  forPart: Part;
+  part: Part;
   part: Part;
   itemPart: Part;
   parts: Part[];
@@ -66,6 +65,10 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
             pull.Party({ object: this.data.associationId }),
+            pull.Part({
+              name: 'forPart',
+              object: this.data.associationId
+            }),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.Part({
               include: {
@@ -87,11 +90,12 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = internalOrganisation.DefaultFacility;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
         this.owner = loaded.objects.Party as Party;
+        this.part = loaded.objects.forPart as Part;
+
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
         this.ownerships = loaded.collections.Ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
@@ -102,6 +106,11 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         this.serialisedItem = this.allors.context.create('SerialisedItem') as SerialisedItem;
         this.serialisedItem.AvailableForSale = false;
         this.serialisedItem.OwnedBy = this.owner;
+
+        if (this.part) {
+          this.part.AddSerialisedItem(this.serialisedItem);
+          this.serialisedItem.Name =  this.part.Name;
+        }
       }, this.errorService.handler);
   }
 

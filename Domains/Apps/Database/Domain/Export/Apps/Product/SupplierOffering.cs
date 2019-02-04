@@ -44,20 +44,15 @@ namespace Allors.Domain
             if (this.ExistPart && this.Part.ExistInventoryItemKind &&
                 this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
-                var internalOrganisation = this.Part.InternalOrganisation;
-
-                if (internalOrganisation != null)
+                foreach (Facility facility in this.strategy.Session.Extent<Facility>())
                 {
-                    foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
-                    {
-                        var inventoryItems = this.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                        var inventoryItem = inventoryItems.First;
+                    var inventoryItems = this.Part.InventoryItemsWherePart;
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                    var inventoryItem = inventoryItems.First;
 
-                        if (inventoryItem == null)
-                        {
-                            new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithPart(this.Part).WithFacility(facility).Build();
-                        }
+                    if (inventoryItem == null)
+                    {
+                        new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithPart(this.Part).WithFacility(facility).Build();
                     }
                 }
             }

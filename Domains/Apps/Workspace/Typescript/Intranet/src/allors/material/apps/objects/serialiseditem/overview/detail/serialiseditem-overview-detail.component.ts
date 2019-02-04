@@ -105,6 +105,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
                 Ownership: x,
                 OwnedBy: x,
                 RentedBy: x,
+                PrimaryPhoto: x,
+                Photos: x
               }
             }),
             fetcher.internalOrganisation,

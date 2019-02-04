@@ -3,7 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
-import { Locale, Organisation, Facility, ProductType, Brand, Model, VendorProduct, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings } from '../../../../../../domain';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -35,7 +35,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   selectedBrand: Brand;
   models: Model[];
   selectedModel: Model;
-  vendorProduct: VendorProduct;
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
@@ -95,12 +94,12 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refreshService.refresh$, this.panel.manager.on$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.panel.manager.on$)
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, , internalOrganisationId]) => {
+        switchMap(([]) => {
 
           this.part = undefined;
 
@@ -166,9 +165,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
               },
               sort: new Sort(m.Brand.Name)
             }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
-            }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
             })
@@ -179,9 +175,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facility = this.internalOrganisation.DefaultFacility;
 
         this.part = loaded.objects.Part as Part;
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];

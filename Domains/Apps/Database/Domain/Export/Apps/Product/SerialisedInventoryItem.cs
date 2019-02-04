@@ -27,11 +27,14 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public InventoryStrategy InventoryStrategy
+            => this.strategy.Session.GetSingleton().Settings.InventoryStrategy;
+
         public int QuantityOnHand
-            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
+            => this.InventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
 
         public int AvailableToPromise
-            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
+            => this.InventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
