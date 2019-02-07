@@ -31,6 +31,8 @@ namespace Allors.Repository
 
         public C1 C1one2one { get; set; }
 
+        public string Name { get; set; }
+
         public double S1234AllorsDouble { get; set; }
 
         public decimal S1234AllorsDecimal { get; set; }

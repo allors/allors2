@@ -253,60 +253,27 @@ namespace Allors.Adapters.Database.Sql
                 }
                 else
                 {
-                    var inAssociation = inStatement.AssociationType;
-                    var inRelationType = inAssociation.RelationType;
-
-                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
+                    if (statement.IsRoot)
                     {
-                        statement.Append("SELECT " + inAssociation.RoleType.SingularPropertyName + "_R." + this.Schema.RoleId);
+                        statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                        if (statement.Sorter != null)
+                        {
+                            statement.Sorter.BuildSelect(statement);
+                        }
                     }
                     else
                     {
-                        if (inAssociation.RoleType.IsMany)
-                        {
-                            statement.Append("SELECT " + inAssociation.RoleType.SingularPropertyName + "_R." +
-                                             this.Schema.Column(inAssociation.RoleType));
-                        }
-                        else
-                        {
-                            statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
-                        }
+                        statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
                     }
 
                     statement.Append(" FROM " + this.Schema.Table(exclusiveLeafClass) + " " + alias);
-                    statement.AddJoins(exclusiveLeafClass, alias);
 
-                    var wherePresent = statement.AddWhere(exclusiveLeafClass, alias);
-                    var filterUsed = false;
+                    statement.AddJoins(exclusiveLeafClass, alias);
+                    statement.AddWhere(exclusiveLeafClass, alias);
+
                     if (this.filter != null)
                     {
-                        filterUsed = this.filter.BuildWhere(statement, alias);
-                    }
-
-                    if (wherePresent || filterUsed)
-                    {
-                        statement.Append(" AND ");
-                    }
-                    else
-                    {
-                        statement.Append(" WHERE ");
-                    }
-
-                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
-                    {
-                        statement.Append(inAssociation.RoleType.SingularPropertyName + "_R." + this.Schema.RoleId + " IS NOT NULL ");
-                    }
-                    else
-                    {
-                        if (inAssociation.RoleType.IsMany)
-                        {
-                            statement.Append(inAssociation.RoleType.SingularPropertyName + "_R." +
-                                             this.Schema.Column(inAssociation.RoleType) + " IS NOT NULL ");
-                        }
-                        else
-                        {
-                            statement.Append(alias + "." + inAssociation.RoleType.SingularPropertyName + " IS NOT NULL ");
-                        }
+                        this.filter.BuildWhere(statement, alias);
                     }
                 }
             }

@@ -33,7 +33,6 @@ namespace Allors.Adapters.Object.SqlClient
         internal Not(ExtentFiltered extent)
         {
             this.extent = extent;
-
             if (extent.Strategy != null)
             {
                 var allorsObject = extent.Strategy.GetObject();
@@ -113,7 +112,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new RoleContainedInEnumerable(this.extent, role, containingEnumerable);
+            this.filter = new NotRoleContainedInEnumerable(this.extent, role, containingEnumerable);
             return this;
         }
 
@@ -299,9 +298,16 @@ namespace Allors.Adapters.Object.SqlClient
         {
             if (this.Include)
             {
-                statement.Append(" NOT (");
-                this.filter.BuildWhere(statement, alias);
-                statement.Append(")");
+                if (this.filter.IsNotFilter)
+                {
+                    this.filter.BuildWhere(statement, alias);
+                }
+                else
+                {
+                    statement.Append(" NOT (");
+                    this.filter.BuildWhere(statement, alias);
+                    statement.Append(")");
+                }
             }
 
             return this.Include;

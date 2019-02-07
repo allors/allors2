@@ -24,6 +24,8 @@ namespace Allors.Adapters.Object.SqlClient
     {
         internal virtual bool Include => true;
 
+        internal virtual bool IsNotFilter => false;
+
         internal abstract bool BuildWhere(ExtentStatement statement, string alias);
 
         internal abstract void Setup(ExtentStatement statement);

@@ -21,6 +21,8 @@ namespace Allors.Repository
 
         public double I2AllorsDouble { get; set; }
 
+        public string Name { get; set; }
+
         public double S1234AllorsDouble { get; set; }
 
         public decimal S1234AllorsDecimal { get; set; }

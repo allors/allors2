@@ -28,3 +28,5 @@ dotnet msbuild Adapters.sln /target:Generate:Rebuild /p:Configuration="Debug" /v
 
 dotnet Generate\bin\Debug\netcoreapp2.2\Generate.dll
 
+pause
+

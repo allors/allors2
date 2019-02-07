@@ -52,5 +52,10 @@ namespace Allors.Domain
         public void AnS1234Method()
         {
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

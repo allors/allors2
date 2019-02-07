@@ -44,8 +44,8 @@ namespace Allors.Adapters.Database.Sql
 
             if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.association.SingularFullName + "_A." + schema.RoleId + " IS NOT NULL AND ");
-                statement.Append(" " + this.association.SingularFullName + "_A." + schema.RoleId + " IN (\n");
+                statement.Append(" (" + this.association.SingularFullName + "_A." + schema.AssociationId + " IS NOT NULL AND ");
+                statement.Append(" " + this.association.SingularFullName + "_A." + schema.AssociationId + " IN (\n");
                 this.inExtent.BuildSql(inStatement);
                 statement.Append(" ))\n");
             }

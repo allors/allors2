@@ -9,6 +9,9 @@ namespace Allors.Repository
     public partial class C4 :  System.Object, I4, I34 
     {
         #region inherited properties
+
+        public string Name { get; set; }
+
         public double S1234AllorsDouble { get; set; }
 
         public decimal S1234AllorsDecimal { get; set; }

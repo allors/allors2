@@ -61,6 +61,24 @@ namespace Allors.Adapters
             this.C4C = C4.Create(session);
             this.C4D = C4.Create(session);
 
+            // Names
+            this.C1A.Name = "c1a";
+            this.C1B.Name = "c1b";
+            this.C1C.Name = "c1c";
+            this.C1D.Name = "c1d";
+            this.C2A.Name = "c2a";
+            this.C2B.Name = "c2b";
+            this.C2C.Name = "c2c";
+            this.C2D.Name = "c2d";
+            this.C3A.Name = "c3a";
+            this.C3B.Name = "c3b";
+            this.C3C.Name = "c3c";
+            this.C3D.Name = "c3d";
+            this.C4A.Name = "c4a";
+            this.C4B.Name = "c4b";
+            this.C4C.Name = "c4c";
+            this.C4D.Name = "c4d";
+
             // String
             // class
             this.C1B.C1AllorsString = "ᴀbra";
