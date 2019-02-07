@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
-import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
+import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -31,11 +31,10 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
   activeSuppliers: Organisation[];
   serialisedItemStates: SerialisedItemState[];
   owner: Party;
-
-  part: Part;
   part: Part;
   itemPart: Part;
   parts: Part[];
+  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -63,13 +62,17 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.locales,
-            this.fetcher.internalOrganisation,
             pull.Party({ object: this.data.associationId }),
             pull.Part({
               name: 'forPart',
               object: this.data.associationId
             }),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
+            pull.SupplierRelationship({
+              include: {
+                Supplier: x
+              }
+            }),
             pull.Part({
               include: {
                 InventoryItemKind: x,
@@ -87,11 +90,14 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
+
         this.allors.context.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
-        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        const now = new Date();
+
+        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.owner = loaded.objects.Party as Party;
         this.part = loaded.objects.forPart as Part;

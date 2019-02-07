@@ -5,7 +5,7 @@
   <div mat-dialog-content>
     <div class="container-fluid">
       <div class="row">
-        <a-mat-input *ngIf="!internalOrganisation.UsePartNumberCounter"class="col-md" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-input>
+        <a-mat-input *ngIf="!settings.UsePartNumberCounter"class="col-md" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-input>
         <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.Name"></a-mat-input>
       </div>
 
@@ -75,7 +75,7 @@
       <div class="row">
         <mat-form-field class="col-md">
           <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-            <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+            <mat-option *ngFor="let supplier of currentSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
           </mat-select>
         </mat-form-field>
         <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ManufacturedBy" [options]="manufacturers"

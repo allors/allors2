@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
@@ -58,7 +58,6 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           let pulls = [
-            this.fetcher.internalOrganisation,
             this.fetcher.Settings,
             pull.RatingType({ sort: new Sort(m.RateType.Name) }),
             pull.Ordinal({ sort: new Sort(m.Ordinal.Name) }),
@@ -110,9 +109,6 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
         this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
         this.part = loaded.objects.Part as Part;
-
-        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
         if (isCreate) {
           this.title = 'Add supplier offering';

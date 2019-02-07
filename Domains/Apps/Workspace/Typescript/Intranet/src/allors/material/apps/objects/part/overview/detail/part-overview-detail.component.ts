@@ -3,7 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
-import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings } from '../../../../../../domain';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -45,6 +45,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
   currentSellingPrice: PriceComponent;
   internalOrganisation: Organisation;
   settings: Settings;
+  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
 
@@ -109,7 +110,6 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
           const pulls = [
             fetcher.locales,
-            fetcher.internalOrganisation,
             fetcher.Settings,
             pull.Part({
               object: id,
@@ -120,6 +120,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
                 ElectronicDocuments: x,
                 ManufacturedBy: x,
                 SuppliedBy: x,
+                DefaultFacility: x,
                 SerialisedItemCharacteristics: {
                   LocalisedValues: x,
                   SerialisedItemCharacteristicType: {
@@ -159,6 +160,11 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
             pull.GoodIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.SupplierRelationship({
+              include: {
+                Supplier: x
+              }
+            }),
             pull.Brand({
               include: {
                 Models: x
@@ -174,7 +180,10 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
+
         this.allors.context.reset();
+
+        const now = new Date();
 
         this.part = loaded.objects.Part as Part;
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
@@ -186,8 +195,9 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
         this.manufacturers = loaded.collections.Organisations as Organisation[];
         this.settings = loaded.objects.Settings as Settings;
 
-        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
-        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');

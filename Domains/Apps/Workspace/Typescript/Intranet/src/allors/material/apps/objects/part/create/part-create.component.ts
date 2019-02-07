@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, GoodIdentificationType, PartNumber, UnitOfMeasure, Settings } from '../../../../../domain';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, GoodIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -25,11 +25,11 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   part: Part;
   facility: Facility;
   locales: Locale[];
+  supplierRelationships: SupplierRelationship[];
   inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
   suppliers: Organisation[];
-  activeSuppliers: Organisation[];
   selectedSuppliers: Organisation[];
   supplierOfferings: SupplierOffering[];
   brands: Brand[];
@@ -44,10 +44,10 @@ export class PartCreateComponent implements OnInit, OnDestroy {
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
   settings: Settings;
+  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
-  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
@@ -73,13 +73,17 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.locales,
-            this.fetcher.internalOrganisation,
             this.fetcher.Settings,
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.SupplierRelationship({
+              include: {
+                Supplier: x
+              }
+            }),
             pull.Brand({
               include: {
                 Models: x
@@ -88,7 +92,7 @@ export class PartCreateComponent implements OnInit, OnDestroy {
             }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
-            })
+            }),
           ];
 
           return this.allors.context
@@ -99,6 +103,8 @@ export class PartCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
+        const now = new Date();
+
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
@@ -107,8 +113,9 @@ export class PartCreateComponent implements OnInit, OnDestroy {
         this.manufacturers = loaded.collections.Organisations as Organisation[];
         this.settings = loaded.objects.Settings as Settings;
 
-        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
-        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');

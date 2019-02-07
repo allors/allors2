@@ -4,7 +4,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, SerialisedItemState, Ownership, Part } from '../../../../../../domain';
+import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -27,8 +27,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
   serialisedItemStates: Enumeration[];
   ownerships: Enumeration[];
   parts: Part[];
-  activeSuppliers: Organisation[];
   part: Part;
+  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
 
@@ -57,7 +57,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       this.serialisedItem = undefined;
 
       if (this.panel.isCollapsed) {
-        const { pull, x } = this.metaService;
+        const { pull } = this.metaService;
         const id = this.panel.manager.id;
 
         pulls.push(
@@ -122,6 +122,11 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
             pull.Part({
               include: { SerialisedItems: x}
             }),
+            pull.SupplierRelationship({
+              include: {
+                Supplier: x
+              }
+            }),
             pull.SerialisedItemState({
               predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedItemState.Name),
@@ -136,18 +141,21 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         })
       )
       .subscribe((loaded) => {
+
         this.allors.context.reset();
 
+        const now = new Date();
+
+        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
+
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as Enumeration[];
         this.ownerships = loaded.collections.Ownerships as Enumeration[];
         this.part = loaded.objects.Part as Part;
         this.parts = loaded.collections.Parts as Part[];
-
-        this.activeSuppliers = this.internalOrganisation.ActiveSuppliers as Organisation[];
-        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       }, this.errorService.handler);
 
   }
@@ -178,7 +186,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
 
     context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },

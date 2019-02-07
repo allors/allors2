@@ -81,6 +81,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
       new Contains({ propertyType: m.Good.GoodIdentifications, parameter: 'identification' }),
+      new Exists({ propertyType: m.Good.SalesDiscontinuationDate, parameter: 'discontinued' }),
       new ContainedIn({
         propertyType: m.Good.Part,
         extent: new Filter({

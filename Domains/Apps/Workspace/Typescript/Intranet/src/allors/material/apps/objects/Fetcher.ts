@@ -65,7 +65,8 @@ export class Fetcher {
       fetch: {
         Settings: {
           include: {
-            PreferredCurrency: x
+            PreferredCurrency: x,
+            DefaultFacility: x
           }
         }
       },

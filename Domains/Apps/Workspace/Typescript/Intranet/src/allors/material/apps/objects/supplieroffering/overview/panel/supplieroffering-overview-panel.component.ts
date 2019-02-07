@@ -28,7 +28,7 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: SupplierOffering[];
+  objects: SupplierOffering[] = [];
   table: Table<Row>;
 
   delete: Action;
@@ -99,7 +99,8 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
           fetch: {
             SupplierOfferingsWherePart: {
               include: {
-                Currency: x
+                Currency: x,
+                UnitOfMeasure: x
               }
             }
           }
