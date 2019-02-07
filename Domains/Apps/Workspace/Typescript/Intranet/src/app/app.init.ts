@@ -24,8 +24,6 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SalesOrder.list = '/sales/salesorders';
   m.SalesOrder.overview = '/sales/salesorder/:id';
 
-  m.SerialisedItem.overview = '/products/serialisedItem/:id';
-
   m.Good.list = '/products/goods';
   m.Good.overview = '/products/good/:id';
   m.Part.list = '/products/parts';
@@ -34,6 +32,8 @@ export function appInit(workspaceService: WorkspaceService) {
   m.ProductCategory.list = '/products/productcategories';
   m.SerialisedItemCharacteristic.list = '/products/serialiseditemcharacteristics';
   m.ProductType.list = '/products/producttypes';
+  m.SerialisedItem.list = '/products/serialiseditems';
+  m.SerialisedItem.overview = '/products/serialisedItem/:id';
 
   m.SalesInvoice.list = '/sales/salesinvoices';
   m.SalesInvoice.overview = '/sales/salesinvoice/:id';

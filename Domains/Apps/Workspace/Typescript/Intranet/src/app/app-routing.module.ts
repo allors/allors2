@@ -36,7 +36,6 @@ import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
-import * as SerialisedItemOverview from 'src/allors/material/apps/objects/serialiseditem/overview/serialiseditem-overview.module';
 import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
 import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/good-overview.module';
 import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
@@ -45,6 +44,8 @@ import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/list/serialiseditemcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
+import * as SerialisedItemList from 'src/allors/material/apps/objects/serialiseditem/list/serialiseditem-list.module';
+import * as SerialisedItemOverview from 'src/allors/material/apps/objects/serialiseditem/overview/serialiseditem-overview.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 
@@ -69,7 +70,6 @@ const modules = [
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
-  SerialisedItemOverview.SerialisedItemOverviewModule,
 
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
   RequestsForQuoteList.RequestForQuoteListModule,
@@ -89,6 +89,8 @@ const modules = [
   CategoriesOverview.ProductCategoriesOverviewModule,
   ProductCharacteristicsOverview.SerialisedItemCharacteristicListModule,
   ProductTypesOverview.ProductTypesOverviewModule,
+  SerialisedItemList.SerialisedItemListModule,
+  SerialisedItemOverview.SerialisedItemOverviewModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
 ];
@@ -136,9 +138,10 @@ export const routes: Routes = [
           { path: 'part/:id', component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'productcategories', component: CategoriesOverview.ProductCategoriesOverviewComponent },
-          { path: 'serialisedItem/:id', component: SerialisedItemOverview.SerialisedItemOverviewComponent},
           { path: 'serialiseditemcharacteristics', component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
           { path: 'producttypes', component: ProductTypesOverview.ProductTypesOverviewComponent },
+          { path: 'serialiseditems', component: SerialisedItemList.SerialisedItemListComponent },
+          { path: 'serialisedItem/:id', component: SerialisedItemOverview.SerialisedItemOverviewComponent},
         ],
       },
 

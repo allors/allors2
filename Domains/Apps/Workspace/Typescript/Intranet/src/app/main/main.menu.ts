@@ -27,6 +27,7 @@ export const menu: MenuItem[] = [
       { id: ids.ProductCategory },
       { id: ids.SerialisedItemCharacteristic, title: 'Characteristics' },
       { id: ids.ProductType },
+      { id: ids.SerialisedItem, title: 'Serialised Assets' },
     ]
   },
   {

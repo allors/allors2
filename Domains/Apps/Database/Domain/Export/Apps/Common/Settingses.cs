@@ -17,6 +17,7 @@
         protected override void AppsSetup(Setup setup)
         {
             var settings = new SettingsBuilder(this.Session)
+                .WithInventoryStrategy(new InventoryStrategies(this.Session).Standard)
                 .WithSkuPrefix("Sku")
                 .WithSkuCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithSerialisedItemPrefix("S")

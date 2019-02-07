@@ -101,6 +101,8 @@ namespace Allors
                 requestCounterValue: 1,
                 quoteCounterValue: 1);
 
+            singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
+
             this.SetupUser(allors, "employee1@allors.com", "first", "allors employee", "letmein");
             this.SetupUser(dipu, "employee1@allors.com", "first", "dipu employee", "letmein");
 
@@ -155,9 +157,12 @@ namespace Allors
                 .WithPart(finishedGood)
                 .Build();
 
-            new VendorProductBuilder(this.Session).WithProduct(good1).WithInternalOrganisation(allors).Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(finishedGood)
+                .WithFacility(allors.FacilitiesWhereOwner.First)
+                .WithQuantity(100)
+                .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
+                .Build();
 
             var finishedGood2 = new PartBuilder(this.Session)
                 .WithName("finished good2")
@@ -181,13 +186,12 @@ namespace Allors
                 .WithPart(finishedGood2)
                 .Build();
 
-            new VendorProductBuilder(this.Session).WithProduct(good2).WithInternalOrganisation(allors).Build();
-
             var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
             finishedGood2.AddSerialisedItem(serialisedItem);
 
             new InventoryItemTransactionBuilder(this.Session)
                 .WithSerialisedItem(serialisedItem)
+                .WithFacility(allors.FacilitiesWhereOwner.First)
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session).Available)
@@ -214,8 +218,6 @@ namespace Allors
                 .WithPart(finishedGood3)
                 .Build();
 
-            new VendorProductBuilder(this.Session).WithProduct(good3).WithInternalOrganisation(allors).Build();
-
             var finishedGood4 = new PartBuilder(this.Session)
                 .WithName("finished good4")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
@@ -232,8 +234,6 @@ namespace Allors
                 .WithVatRate(vatRate)
                 .WithPart(finishedGood4)
                 .Build();
-
-            new VendorProductBuilder(this.Session).WithProduct(good4).WithInternalOrganisation(allors).Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithInternalOrganisation(allors)
