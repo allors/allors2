@@ -75,7 +75,7 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
-      initialSort: 'name'
+      initialSort: 'id'
     });
   }
 

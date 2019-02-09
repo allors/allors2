@@ -13,7 +13,6 @@ import { ProductCategory, CatScope, Good } from '../../../../../domain';
 interface Row extends TableRow {
   object: ProductCategory;
   name: string;
-  parents: string;
   scope: string;
 }
 
@@ -61,7 +60,6 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'parents' },
         { name: 'name', sort: true },
         { name: 'scope', sort: true }
       ],
@@ -153,7 +151,6 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Name,
-            parents: v.Parents.length > 0 ? `${v.Parents.map((w) => w.Name).join(', ')}` : '',
             scope: v.CatScope.Name
           } as Row;
         });

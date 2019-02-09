@@ -158,6 +158,7 @@ export class PartOverviewDetailComponent implements OnInit, OnDestroy {
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
+            pull.Facility(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.SupplierRelationship({

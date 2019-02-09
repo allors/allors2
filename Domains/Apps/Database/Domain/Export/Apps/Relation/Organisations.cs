@@ -175,15 +175,19 @@ namespace Allors.Domain
                 organisation.LogoImage = image;
             }
 
-            var magazijn = new FacilityBuilder(session)
-                .WithName(facilityName)
-                .WithFacilityType(new FacilityTypes(session).Warehouse)
-                .WithOwner(organisation)
-                .Build();
+            Facility facility = null;
+            if (facilityName != null)
+            { 
+                facility = new FacilityBuilder(session)
+                    .WithName(facilityName)
+                    .WithFacilityType(new FacilityTypes(session).Warehouse)
+                    .WithOwner(organisation)
+                    .Build();
+            }
 
             var paymentMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
 
-            new StoreBuilder(session)
+            var store = new StoreBuilder(session)
                 .WithName(storeName)
                 .WithOutgoingShipmentNumberPrefix(outgoingShipmentNumberPrefix)
                 .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
@@ -195,8 +199,12 @@ namespace Allors.Domain
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
                 .WithInternalOrganisation(organisation)
-                .WithDefaultFacility(magazijn)
                 .Build();
+
+            if (facility != null)
+            {
+                store.DefaultFacility = facility;
+            }
 
             return organisation;
         }
