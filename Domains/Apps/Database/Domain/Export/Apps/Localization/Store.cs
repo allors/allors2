@@ -164,6 +164,11 @@ namespace Allors.Domain
                 }
             }
 
+            if (!this.ExistDefaultFacility)
+            {
+                this.DefaultFacility = this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+            }
+
             derivation.Validation.AssertExistsAtMostOne(this, M.Store.FiscalYearInvoiceNumbers, M.Store.SalesInvoiceCounter);
         }
     }

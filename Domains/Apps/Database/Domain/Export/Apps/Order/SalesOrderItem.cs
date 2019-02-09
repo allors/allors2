@@ -316,7 +316,7 @@ namespace Allors.Domain
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
             var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
-            var defaultFacility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;
+            var defaultFacility = this.SalesOrderWhereSalesOrderItem.ExistStore ? this.SalesOrderWhereSalesOrderItem.Store.DefaultFacility : this.strategy.Session.GetSingleton().Settings.DefaultFacility;
 
             if (this.ExistProduct && internalOrganisation != null && defaultFacility != null)
             {
