@@ -102,6 +102,8 @@ namespace Tests.Intranet
                 requestCounterValue: 1,
                 quoteCounterValue: 1);
 
+            singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
+
             this.SetupUser(allors, "firstemployee@allors.com", "first", "allors employee", "letmein");
             this.SetupUser(allors, "firstemployee@allors.com", "second", "allors employee", "letmein");
             this.SetupUser(dipu, "firstemployee@allors.com", "first", "dipu employee", "letmein");
