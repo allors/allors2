@@ -518,6 +518,17 @@ namespace Allors.Adapters
             this.C2A.AddI12C2many2many(this.C2C);
             this.C2A.AddI12C2many2many(this.C2D);
 
+            this.C1B.AddI12I34many2many(this.C3B);
+            this.C1C.AddI12I34many2many(this.C3B);
+            this.C1C.AddI12I34many2many(this.C3C);
+            this.C1D.AddI12I34many2many(this.C3B);
+            this.C1D.AddI12I34many2many(this.C3C);
+            this.C1D.AddI12I34many2many(this.C3D);
+            this.C2A.AddI12I34many2many(this.C4A);
+            this.C2A.AddI12I34many2many(this.C4B);
+            this.C2A.AddI12I34many2many(this.C4C);
+            this.C2A.AddI12I34many2many(this.C4D);
+            
             this.C1B.AddS1234C2many2many(this.C2B);
             this.C1C.AddS1234C2many2many(this.C2B);
             this.C1C.AddS1234C2many2many(this.C2C);
@@ -536,7 +547,7 @@ namespace Allors.Adapters
             this.C1D.AddC1I12many2many(this.C2B);
             this.C1D.AddC1I12many2many(this.C2C);
             this.C1D.AddC1I12many2many(this.C2D);
-
+            
             this.C1B.AddS1234many2many(this.C1B);
             this.C1B.AddS1234many2many(this.C1A);
             this.C1C.AddS1234many2many(this.C2B);
@@ -555,6 +566,7 @@ namespace Allors.Adapters
             this.C3C.AddS1234many2many(this.C1A);
             this.C3D.AddS1234many2many(this.C3D);
             this.C3D.AddS1234many2many(this.C1A);
+
 
             this.C1B.ClassName = "c1";
             this.C3B.ClassName = "c3";

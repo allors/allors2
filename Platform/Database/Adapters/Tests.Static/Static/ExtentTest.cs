@@ -583,6 +583,91 @@ namespace Allors.Adapters
                         this.AssertC2(extent, false, true, false, false);
                         this.AssertC3(extent, false, false, false, false);
                         this.AssertC4(extent, false, false, false, false);
+
+
+                        // ContainedIn Extent over Disjoint Interfaces
+                        // Empty
+                        inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                        if (useOperator)
+                        {
+                            var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                            var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                            inExtent = this.Session.Union(inExtentA, inExtentB);
+                        }
+
+                        extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        if (useEnumerable)
+                        {
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, (IEnumerable<IObject>)(Extent<IObject>)inExtent);
+                        }
+                        else
+                        {
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, inExtent);
+                        }
+
+                        Assert.Empty(extent);
+                        this.AssertC1(extent, false, false, false, false);
+                        this.AssertC2(extent, false, false, false, false);
+                        this.AssertC3(extent, false, false, false, false);
+                        this.AssertC4(extent, false, false, false, false);
+
+                        // Full
+                        inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        if (useOperator)
+                        {
+                            var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            inExtent = this.Session.Union(inExtentA, inExtentB);
+                        }
+
+                        extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        if (useEnumerable)
+                        {
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, enumerable);
+                        }
+                        else
+                        {
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, inExtent);
+                        }
+
+                        Assert.Equal(7, extent.Count);
+                        this.AssertC1(extent, false, false, false, false);
+                        this.AssertC2(extent, false, false, false, false);
+                        this.AssertC3(extent, false, true, true, true);
+                        this.AssertC4(extent, true, true, true, true);
+
+                        // Filtered
+                        inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                        if (useOperator)
+                        {
+                            var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                            var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                            inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                            inExtent = this.Session.Union(inExtentA, inExtentB);
+                        }
+
+                        extent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        if (useEnumerable)
+                        {
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, enumerable);
+                        }
+                        else
+                        {
+                            extent.Filter.AddContainedIn(MetaI34.Instance.I12sWhereI12I34many2many, inExtent);
+                        }
+
+                        Assert.Single(extent);
+                        this.AssertC1(extent, false, false, false, false);
+                        this.AssertC2(extent, false, false, false, false);
+                        this.AssertC3(extent, false, true, false, false);
+                        this.AssertC4(extent, false, false, false, false);
                     }
                 }
             }
@@ -3442,10 +3527,11 @@ namespace Allors.Adapters
                 init();
                 this.Populate();
 
+                this.Session.Commit();
+
                 foreach (var useOperator in this.UseOperator)
                 {
                     // Extent over C2
-
                     // RelationType from C1 to C2
 
                     // ContainedIn Extent over Class
@@ -6272,6 +6358,68 @@ namespace Allors.Adapters
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
                     this.AssertC4(extent, false, false, false, false);
+
+
+                    // ContainedIn Extent I12<->I34
+                    // Empty
+                    inExtent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Nothing here!");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Nothing here!");
+                        var inExtentB = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "Nothing here!");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.I12I34many2manies, inExtent);
+
+                    Assert.Equal(8, extent.Count);
+                    this.AssertC1(extent, true, true, true, true);
+                    this.AssertC2(extent, true, true, true, true);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // Full
+                    inExtent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.I12I34many2manies, inExtent);
+
+                    Assert.Equal(4, extent.Count);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, true, true, true);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // Filtered
+                    inExtent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
+                        var inExtentB = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.I12I34many2manies, inExtent);
+
+                    Assert.Equal(4, extent.Count);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, true, true, true);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
                 }
             }
         }
@@ -6288,161 +6436,161 @@ namespace Allors.Adapters
 
                 // Extent over Class
 
-                //// RelationType from C1 to C2
-                //// ContainedIn Extent over Class
-                //// Empty
-                //var inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Nothing here!");
-
-                //var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(4, extent.Count);
-                //this.AssertC1(extent, true, true, true, true);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Full
-                //inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Single(extent);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Filtered
-                //var inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
-
-                //var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(1, extent.Count);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// ContainedIn Extent over Class
-                //// Empty
-                //inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(4, extent.Count);
-                //this.AssertC1(extent, true, true, true, true);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Full
-                //inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Single(extent);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Filtered
-                //var inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
-
-                //var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(1, extent.Count);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// RelationType from C1 to C1
-
-                //// ContainedIn Extent over Class
-                //// Empty
-                //inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Nothing here!");
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(4, extent.Count);
-                //this.AssertC1(extent, true, true, true, true);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Full
-                //inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Single(extent);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Filtered
-                //var inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
-
-                //var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(1, extent.Count);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// ContainedIn Extent over Class
-                //// Empty
-                //inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-                //inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Equal(4, extent.Count);
-                //this.AssertC1(extent, true, true, true, true);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                //// Full
-                //inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-
-                //extent = this.Session.Extent(MetaC1.Instance.ObjectType);
-                //extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
-
-                //Assert.Single(extent);
-                //this.AssertC1(extent, true, false, false, false);
-                //this.AssertC2(extent, false, false, false, false);
-                //this.AssertC3(extent, false, false, false, false);
-                //this.AssertC4(extent, false, false, false, false);
-
-                // Filtered
-                var inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
-                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+                // RelationType from C1 to C2
+                // ContainedIn Extent over Class
+                // Empty
+                var inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "Nothing here!");
 
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(4, extent.Count);
+                this.AssertC1(extent, true, true, true, true);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Full
+                inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Single(extent);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Filtered
+                inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaC2.Instance.C2AllorsString, "ᴀbra");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(1, extent.Count);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // ContainedIn Extent over Class
+                // Empty
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(4, extent.Count);
+                this.AssertC1(extent, true, true, true, true);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Full
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Single(extent);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Filtered
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(1, extent.Count);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // RelationType from C1 to C1
+
+                // ContainedIn Extent over Class
+                // Empty
+                inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Nothing here!");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(3, extent.Count);
-                this.AssertC1(extent, true, false, true, true);
+                Assert.Equal(4, extent.Count);
+                this.AssertC1(extent, true, true, true, true);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Full
+                inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Single(extent);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Filtered
+                inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(1, extent.Count);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // ContainedIn Extent over Class
+                // Empty
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(4, extent.Count);
+                this.AssertC1(extent, true, true, true, true);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Full
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Single(extent);
+                this.AssertC1(extent, true, false, false, false);
+                this.AssertC2(extent, false, false, false, false);
+                this.AssertC3(extent, false, false, false, false);
+                this.AssertC4(extent, false, false, false, false);
+
+                // Filtered
+                inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
+
+                extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                Assert.Equal(1, extent.Count);
+                this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
@@ -6819,6 +6967,208 @@ namespace Allors.Adapters
         }
 
         [Fact]
+        public void NotRoleOne2ManyContainedInArray()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                this.Populate();
+
+                foreach (var useOperator in this.UseOperator)
+                {
+                    // Extent over Class
+                    // RelationType from Class to Class
+
+                    // ContainedIn Extent over Class
+                    // Emtpy Extent
+                    var inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Nothing here!");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Nothing here!");
+                        var inExtentB = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "Nothing here!");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(4, extent.Count);
+                    this.AssertC1(extent, true, true, true, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // Full Extent
+                    inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, true, false, false, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, true, false, false, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaC4.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC4.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC4.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC3.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, true, false, false, true);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // ContainedIn Extent over Interface
+                    // Emtpy Extent
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    inExtent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentA.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtentB.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "Nothing here!");
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(4, extent.Count);
+                    this.AssertC1(extent, true, true, true, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // Full Extent
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, true, false, false, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, true, false, false, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC3.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, true, false, false, true);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // RelationType from Class to Interface
+
+                    // ContainedIn Extent over Class
+                    inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.I12C2one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(3, extent.Count);
+                    this.AssertC1(extent, true, false, true, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // ContainedIn Extent over Interface
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.I12C2one2manies, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(3, extent.Count);
+                    this.AssertC1(extent, true, false, true, true);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+                }
+            }
+        }
+        
+        [Fact]
         public void NotRoleOne2ManyContains()
         {
             foreach (var init in this.Inits)
@@ -7094,6 +7444,165 @@ namespace Allors.Adapters
 
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12one2one, inExtent);
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+                }
+            }
+        }
+
+        [Fact]
+        public void NotRoleOne2OneContainedInArray()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                this.Populate();
+
+                foreach (var useOperator in this.UseOperator)
+                {
+                    // Extent over Class
+
+                    // RelationType from Class to Class
+
+                    // ContainedIn Extent over Class
+                    var inExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC1.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaC4.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC4.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC4.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC3.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, true, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // ContainedIn Extent over Interface
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, true, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    inExtent = this.Session.Extent(MetaI34.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI34.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC3.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Single(extent);
+                    this.AssertC1(extent, false, false, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, true, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // RelationType from Class to Interface
+
+                    // ContainedIn Extent over Class
+                    inExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaC2.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12one2one, (IEnumerable<IObject>)inExtent.ToArray());
+
+                    Assert.Equal(2, extent.Count);
+                    this.AssertC1(extent, true, true, false, false);
+                    this.AssertC2(extent, false, false, false, false);
+                    this.AssertC3(extent, false, false, false, false);
+                    this.AssertC4(extent, false, false, false, false);
+
+                    // ContainedIn Extent over Interface
+                    inExtent = this.Session.Extent(MetaI12.Instance.ObjectType);
+                    if (useOperator)
+                    {
+                        var inExtentA = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        var inExtentB = this.Session.Extent(MetaI12.Instance.ObjectType);
+                        inExtent = this.Session.Union(inExtentA, inExtentB);
+                    }
+
+                    extent = this.Session.Extent(MetaC1.Instance.ObjectType);
+                    extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12one2one, (IEnumerable<IObject>)inExtent.ToArray());
 
                     Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
@@ -13669,7 +14178,6 @@ namespace Allors.Adapters
                 foreach (var useOperator in this.UseOperator)
                 {
                     // Extent over Class
-
                     // RelationType from Class to Class
 
                     // ContainedIn Extent over Class

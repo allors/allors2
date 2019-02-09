@@ -120,7 +120,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new AssociationContainedInExtent(this.extent, association, containingExtent);
+            this.filter = new NotAssociationContainedInExtent(this.extent, association, containingExtent);
             return this;
         }
 
@@ -128,7 +128,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new AssociationContainedInEnumerable(this.extent, association, containingEnumerable);
+            this.filter = new NotAssociationContainedInEnumerable(this.extent, association, containingEnumerable);
             return this;
         }
 

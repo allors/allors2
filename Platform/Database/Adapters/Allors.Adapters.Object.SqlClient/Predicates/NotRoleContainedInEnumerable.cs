@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RoleContainedInEnumerable.cs" company="Allors bvba">
+// <copyright file="NotRoleContainedInEnumerable.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -57,7 +57,7 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IS NULL OR ");
                 statement.Append(" NOT " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForAssociation + " IN (");
-                statement.Append(" SELECT a FROM " + schema.TableNameForRelationByRelationType[this.role.RelationType] + " WHERE r IN (");
+                statement.Append(" SELECT " + Mapping.ColumnNameForAssociation + " FROM " + schema.TableNameForRelationByRelationType[this.role.RelationType] + " WHERE " + Mapping.ColumnNameForRole + " IN (");
                 statement.Append(inStatement.ToString());
                 statement.Append(" )))");
             }
@@ -65,15 +65,15 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 if (this.role.IsMany)
                 {
-                    statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IS NOT NULL AND ");
-                    statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IN (");
+                    statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IS NULL OR ");
+                    statement.Append(" NOT " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IN (");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))");
                 }
                 else
                 {
-                    statement.Append(" (" + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NOT NULL AND ");
-                    statement.Append(" " + schema.ColumnNameByRelationType[this.role.RelationType] + " IN (");
+                    statement.Append(" (" + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NULL OR ");
+                    statement.Append(" NOT " + schema.ColumnNameByRelationType[this.role.RelationType] + " IN (");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))");
                 }
