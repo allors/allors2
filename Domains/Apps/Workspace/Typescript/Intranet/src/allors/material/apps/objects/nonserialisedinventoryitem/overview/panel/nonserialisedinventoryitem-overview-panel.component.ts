@@ -125,7 +125,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
       this.panel.onPulled = (loaded) => {
 
         this.objects = loaded.collections[pullName] as NonSerialisedInventoryItem[];
-        this.objects = this.objects.filter(v => v.QuantityOnHand > 0 || v.QuantityCommittedOut > 0 || v.QuantityExpectedIn > 0 || v.AvailableToPromise > 0);
+        // this.objects = this.objects.filter(v => v.QuantityOnHand > 0 || v.QuantityCommittedOut > 0 || v.QuantityExpectedIn > 0 || v.AvailableToPromise > 0);
 
         if (this.objects) {
           this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;

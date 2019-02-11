@@ -25,7 +25,7 @@ namespace Allors.Domain
         private static readonly Guid TheftId = new Guid("21FA1D1D-F662-4c0e-A4F6-7BD3B5298A47");
         private static readonly Guid ShrinkageId = new Guid("CF6CCC79-7EE8-4755-A9C3-EC9A83649B55");
         private static readonly Guid UnknownId = new Guid("7A438996-B2DC-4b6d-8DDD-47690B06D9B6");
-        private static readonly Guid RuinedId = new Guid("6790C5D4-7CC6-43c9-9CAC-48227021E7E9");
+        private static readonly Guid StateId = new Guid("6790C5D4-7CC6-43c9-9CAC-48227021E7E9");
         private static readonly Guid PhysicalCountId = new Guid("971D0321-A86D-450C-ADAA-18B3C2114714");
         private static readonly Guid ReservationId = new Guid("D7785657-3771-40D3-9295-44DD3FC4FCC4");
         private static readonly Guid ConsumptionId = new Guid("FDDFE460-21E9-4A9E-808F-AB7B8E50F0A9");
@@ -44,7 +44,7 @@ namespace Allors.Domain
 
         public InventoryTransactionReason Unknown => this.Cache[UnknownId];
 
-        public InventoryTransactionReason Ruined => this.Cache[RuinedId];
+        public InventoryTransactionReason State => this.Cache[StateId];
 
         public InventoryTransactionReason PhysicalCount => this.Cache[PhysicalCountId];
 
@@ -135,20 +135,20 @@ namespace Allors.Domain
                 .WithIsManualEntryAllowed(true)
                 .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
                 .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true)  // Increases Quantity
+                .WithIncreasesQuantityOnHand(true)  // Affects Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
             
             new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Ruined")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vernield").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RuinedId)
+                .WithName("State change")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Status update").WithLocale(dutchLocale).Build())
+                .WithUniqueId(StateId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
                 .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
                 .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false)  // Decreases Quantity
+                .WithIncreasesQuantityOnHand(null)  // Does not affect Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
                 .Build();

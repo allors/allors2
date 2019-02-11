@@ -26,6 +26,8 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   internalOrganisation: InternalOrganisation;
   inventoryItemTransaction: InventoryItemTransaction;
   inventoryTransactionReasons: InventoryTransactionReason[];
+  selectedPart: Part;
+  parts: Part[];
   selectedFacility: Facility;
   addFacility = false;
   facilities: Facility[];
@@ -66,7 +68,8 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            this.fetcher.facilities,
+            pull.Facility(),
+            pull.Part(),
             pull.InventoryTransactionReason(),
             pull.NonSerialisedInventoryItemState(),
             pull.SerialisedInventoryItemState(),
@@ -81,6 +84,9 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
                   InventoryItemKind: x
                 }
               }
+            }),
+            pull.Part({
+              object: this.data.associationId,
             }),
             pull.SerialisedItem({
               object: this.data.associationId,
@@ -106,15 +112,17 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         this.inventoryTransactionReasons = loaded.collections.InventoryTransactionReasons as InventoryTransactionReason[];
         this.nonSerialisedInventoryItemState = loaded.collections.NonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
         this.serialisedInventoryItemState = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.part = loaded.objects.Part as Part;
+        this.parts = loaded.collections.Parts as Part[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.lots = loaded.collections.Lots as Lot[];
-
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
-        if (this.serialisedItem) {
-          this.part = loaded.objects.Part as Part;
+        this.inventoryItem = loaded.objects.InventoryItem as InventoryItem;
+
+        if (this.part) {
+          this.selectedPart = this.part;
         }
 
-        this.inventoryItem = loaded.objects.InventoryItem as InventoryItem;
         if (this.inventoryItem) {
           this.serialisedInventoryItem = loaded.objects.InventoryItem as SerialisedInventoryItem;
           this.nonSerialisedInventoryItem = loaded.objects.InventoryItem as NonSerialisedInventoryItem;

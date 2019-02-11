@@ -5,8 +5,21 @@
   <div mat-dialog-content>
     <div class="container-fluid">
 
-      <div class="row">
+      <div *ngIf="inventoryItem" class="row">
         <a-mat-static class="col-md-6" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Part" display="Name"></a-mat-static>
+      </div>
+
+      <div *ngIf="!inventoryItem" class="row">
+        <div class="col">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-select [(ngModel)]="selectedPart" name="partName" placeholder="part" multiple="false">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let part of parts" [value]="part">{{ part.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
 
       <div *ngIf="inventoryItem" class="row">

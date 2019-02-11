@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
-import { SerialisedItem } from '../../../../../../domain';
+import { SerialisedItem, Part } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
 @Component({
@@ -14,6 +14,7 @@ export class SerialisedItemOverviewSummaryComponent {
   m: Meta;
 
   serialisedItem: SerialisedItem;
+  part: Part;
 
   constructor(
     @Self() public panel: PanelService,
@@ -25,6 +26,7 @@ export class SerialisedItemOverviewSummaryComponent {
     panel.name = 'summary';
 
     const serialisedItemPullName = `${panel.name}_${this.m.SerialisedItem.name}`;
+    const partPullName = `${panel.name}_${this.m.Part.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
@@ -38,13 +40,22 @@ export class SerialisedItemOverviewSummaryComponent {
           include: {
             SerialisedItemState: x,
             OwnedBy: x,
-            RentedBy: x
+            RentedBy: x,
           }
-        }));
+        }),
+        pull.SerialisedItem({
+          name: partPullName,
+          object: id,
+          fetch: {
+            PartWhereSerialisedItem: x
+          }
+        }),
+      );
     };
 
     panel.onPulled = (loaded) => {
       this.serialisedItem = loaded.objects[serialisedItemPullName] as SerialisedItem;
+      this.part = loaded.objects[partPullName] as Part;
     };
   }
 }

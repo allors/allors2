@@ -41,7 +41,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
     const pulls = [
       this.fetcher.internalOrganisation,
-      this.fetcher.facilities,
+      pull.Facility(),
       pull.FacilityType({
         sort: new Sort(this.m.FacilityType.Name)
       })
@@ -50,11 +50,14 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
     this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facilityTypes = loaded.collections.FacilityTypes as FacilityType[];
         this.facilities = loaded.collections.Facilities as Facility[];
+
+        this.facilityTypes = loaded.collections.FacilityTypes as FacilityType[];
+        const warehouse = this.facilityTypes.find((v) => v.UniqueId.toUpperCase() === '56AD0A65-1FC0-40EA-BDA8-DADDFA6CBE63');
 
         this.facility = this.allors.context.create('Facility') as Facility;
         this.facility.Owner = this.internalOrganisation;
+        this.facility.FacilityType = warehouse;
       }, this.errorService.handler);
   }
 

@@ -126,7 +126,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
               facility: v.Facility.Name,
               item: v.SerialisedItem.displayName,
               status: 'TODO'
-              //              status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
+              // status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });
         }
