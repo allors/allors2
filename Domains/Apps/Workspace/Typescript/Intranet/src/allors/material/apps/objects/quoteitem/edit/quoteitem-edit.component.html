@@ -16,7 +16,7 @@
     <div class="row">
       <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.SerialisedItem" [options]="serialisedItems"
       (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
-      <a-mat-static [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-static [object]="quoteItem.SerialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
     </div>
 
     <div class="row">
@@ -33,12 +33,11 @@
     </div>
 
     <div class="row">
-      <a-mat-static *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment" class="col-md"></a-mat-static>
       <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Details" class="col-md-12"></a-mat-textarea>
       <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.Comment" class="col-md-12"></a-mat-textarea>
-      <a-mat-static *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"
-        class="col-md"></a-mat-static>
       <a-mat-textarea [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" class="col-md-12"></a-mat-textarea>
+      <a-mat-static *ngIf="requestItem?.Comment" class="col-md" [object]="requestItem" [roleType]="m.RequestItem.Comment" label="Request Comment"></a-mat-static>
+      <a-mat-static *ngIf="requestItem?.InternalComment" class="col-md" [object]="requestItem" [roleType]="m.RequestItem.InternalComment" label="Request Internal Comment"></a-mat-static>
     </div>
   </div>
 

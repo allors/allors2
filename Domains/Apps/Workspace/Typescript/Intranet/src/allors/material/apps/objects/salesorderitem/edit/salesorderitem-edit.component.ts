@@ -74,6 +74,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 ReservedFromNonSerialisedInventoryItem: x,
                 ReservedFromSerialisedInventoryItem: x,
                 NewSerialisedItemState: x,
+                Product: x,
+                SerialisedItem: x,
                 QuoteItem: x,
                 DiscountAdjustment: x,
                 SurchargeAdjustment: x,
@@ -147,11 +149,14 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         } else {
           this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
 
-          this.previousProduct = this.orderItem.Product;
-          this.serialisedItem = this.orderItem.SerialisedItem;
+          if (this.orderItem.Product) {
+            this.previousProduct = this.orderItem.Product;
 
-          if (this.orderItem.InvoiceItemType === this.productItemType) {
-            this.refreshSerialisedItems(this.orderItem.Product);
+            if (this.orderItem.InvoiceItemType === this.productItemType) {
+              this.refreshSerialisedItems(this.orderItem.Product);
+            }
+          } else {
+            this.serialisedItems.push(this.orderItem.SerialisedItem);
           }
 
           if (this.orderItem.DiscountAdjustment) {

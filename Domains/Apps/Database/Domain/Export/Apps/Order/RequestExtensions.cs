@@ -34,7 +34,7 @@ namespace Allors.Domain
                 @this.Recipient = internalOrganisations.First();
             }
 
-            if (!@this.ExistRequestNumber)
+            if (@this.ExistRecipient && !@this.ExistRequestNumber)
             {
                 @this.RequestNumber = @this.Recipient.NextRequestNumber();
             }

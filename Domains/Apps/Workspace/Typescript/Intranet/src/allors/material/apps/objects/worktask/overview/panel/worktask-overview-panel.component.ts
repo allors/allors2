@@ -67,7 +67,7 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
       columns: [
         { name: 'number', sort },
         { name: 'name', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'customer', sort },
         { name: 'lastModifiedDate', sort },
       ],

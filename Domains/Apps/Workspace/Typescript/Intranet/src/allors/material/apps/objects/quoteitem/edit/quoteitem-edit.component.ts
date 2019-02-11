@@ -67,6 +67,8 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
                 include: {
                   QuoteItemState: x,
                   RequestItem: x,
+                  Product: x,
+                  SerialisedItem: x
                 }
               }
             ),
@@ -123,9 +125,12 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
 
-          this.previousProduct = this.quoteItem.Product;
-          this.serialisedItem = this.quoteItem.SerialisedItem;
-          this.refreshSerialisedItems(this.quoteItem.Product);
+          if (this.quoteItem.Product) {
+            this.previousProduct = this.quoteItem.Product;
+            this.refreshSerialisedItems(this.quoteItem.Product);
+          } else {
+            this.serialisedItems.push(this.quoteItem.SerialisedItem);
+          }
 
           if (this.quoteItem.CanWriteQuantity) {
             this.title = 'Edit Quote Item';

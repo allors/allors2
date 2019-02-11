@@ -61,6 +61,7 @@ namespace Allors.Domain
                 productQuote.AddQuoteItem(
                     new QuoteItemBuilder(this.Strategy.Session)
                     .WithProduct(requestItem.Product)
+                    .WithSerialisedItem(requestItem.SerialisedItem)
                     .WithProductFeature(requestItem.ProductFeature)
                     .WithQuantity(requestItem.Quantity)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)

@@ -139,6 +139,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
         } else {
           this.organisation = this.allors.context.create('Organisation') as Organisation;
           this.organisation.IsManufacturer = false;
+          this.organisation.IsInternalOrganisation = false;
         }
 
         this.locales = loaded.collections.AdditionalLocales as Locale[];

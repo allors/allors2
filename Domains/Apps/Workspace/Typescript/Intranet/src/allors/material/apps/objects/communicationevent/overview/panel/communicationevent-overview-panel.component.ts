@@ -73,7 +73,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
         { name: 'type', sort },
         { name: 'description', sort },
         { name: 'involved', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'purpose', sort },
       ],
       actions: [

@@ -92,7 +92,7 @@ export class SalesOrderItemOverviewPanelComponent {
       columns: [
         { name: 'item', sort },
         { name: 'type', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'ordered', sort },
         { name: 'shipped', sort },
         { name: 'picked', sort },

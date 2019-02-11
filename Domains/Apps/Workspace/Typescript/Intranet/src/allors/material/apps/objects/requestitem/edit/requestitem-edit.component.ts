@@ -57,7 +57,11 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           const pulls = [
             pull.RequestItem({
               object: this.data.id,
-              include: { RequestItemState: x }
+              include: {
+                RequestItemState: x,
+                Product: x,
+                SerialisedItem: x
+              }
             }),
             pull.Good({
               sort: new Sort(m.Good.Name)
@@ -105,11 +109,20 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             this.title = 'View Request Item';
           }
 
-          this.previousProduct = this.requestItem.Product;
-          this.refreshSerialisedItems(this.requestItem.Product);
-          this.serialisedItem = this.requestItem.SerialisedItem;
+          if (this.requestItem.Product) {
+            this.previousProduct = this.requestItem.Product;
+            this.refreshSerialisedItems(this.requestItem.Product);
+          } else {
+            this.serialisedItems.push(this.requestItem.SerialisedItem);
+          }
         }
       }, this.errorService.handler);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public goodSelected(good: Product): void {
@@ -120,12 +133,6 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   public save(): void {

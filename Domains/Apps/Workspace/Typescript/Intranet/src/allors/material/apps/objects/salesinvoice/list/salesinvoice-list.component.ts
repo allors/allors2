@@ -83,7 +83,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
         { name: 'number', sort: true },
         { name: 'billedTo' },
         { name: 'reference', sort: true },
-        { name: 'status' },
+        { name: 'state' },
         { name: 'description', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],

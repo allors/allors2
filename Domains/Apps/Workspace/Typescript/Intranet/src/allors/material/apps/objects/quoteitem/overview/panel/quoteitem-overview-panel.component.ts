@@ -12,7 +12,7 @@ import { CreateData, ObjectService } from '../../../../../../material/base/servi
 interface Row extends TableRow {
   object: QuoteItem;
   item: string;
-  status: string;
+  state: string;
   quantity: number;
   lastModifiedDate: string;
 }
@@ -82,7 +82,7 @@ export class QuoteItemOverviewPanelComponent {
       selection: true,
       columns: [
         { name: 'item', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'quantity', sort },
         { name: 'lastModifiedDate', sort },
       ],
@@ -135,7 +135,7 @@ export class QuoteItemOverviewPanelComponent {
         return {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
-          status: `${v.QuoteItemState && v.QuoteItemState.Name}`,
+          state: `${v.QuoteItemState && v.QuoteItemState.Name}`,
           quantity: v.Quantity,
           lastModifiedDate: moment(v.LastModifiedDate).fromNow()
         } as Row;

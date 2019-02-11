@@ -11,7 +11,7 @@ interface Row extends TableRow {
   object: InventoryItem;
   facility: string;
   item: string;
-  status: string;
+  state: string;
 }
 
 @Component({
@@ -87,7 +87,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
       columns: [
         { name: 'facility', sort: true },
         { name: 'item', sort: true },
-        { name: 'status', sort: true },
+        { name: 'state', sort: true },
       ],
       defaultAction: this.changeInventory,
     });
@@ -125,8 +125,8 @@ export class SerialisedInventoryItemComponent implements OnInit {
               object: v,
               facility: v.Facility.Name,
               item: v.SerialisedItem.displayName,
-              status: 'TODO'
-              // status: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
+              state: 'TODO'
+              // state: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });
         }

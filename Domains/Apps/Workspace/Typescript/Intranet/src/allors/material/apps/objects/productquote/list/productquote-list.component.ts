@@ -6,15 +6,15 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../../../material';
 
-import { Quote } from '../../../../../domain';
+import { Quote, QuoteState, Party } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: Quote;
   number: string;
-  receiver: string;
+  to: string;
   state: string;
   responseRequired: string;
   description: string;
@@ -63,7 +63,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
       selection: true,
       columns: [
         { name: 'number', sort: true },
-        { name: 'receiver' },
+        { name: 'to' },
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'responseRequired', sort: true },
@@ -85,11 +85,27 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Quote.Issuer });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Equals({ propertyType: m.ProductQuote.QuoteState, parameter: 'state' }),
+      new Equals({ propertyType: m.ProductQuote.Receiver, parameter: 'to' }),
     ]);
 
-    this.filterService.init(predicate);
+    const stateSearch = new SearchFactory({
+      objectType: m.QuoteState,
+      roleTypes: [m.QuoteState.Name],
+    });
+
+    const receiverSearch = new SearchFactory({
+      objectType: m.Party,
+      roleTypes: [m.Party.PartyName],
+    });
+
+
+    this.filterService.init(predicate, {
+      active: { initialValue: true },
+      state: { search: stateSearch, display: (v: QuoteState) => v.Name },
+      to: { search: receiverSearch, display: (v: Party) => v.PartyName },
+    });
 
     const sorter = new Sorter(
       {
@@ -140,7 +156,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
           return {
             object: v,
             number: `${v.QuoteNumber}`,
-            receiver: v.Receiver && v.Receiver.displayName,
+            to: v.Receiver && v.Receiver.displayName,
             state: `${v.QuoteState && v.QuoteState.Name}`,
             description: `${v.Description || ''}`,
             responseRequired: v.RequiredResponseDate && moment(v.RequiredResponseDate).format('MMM Do YY'),

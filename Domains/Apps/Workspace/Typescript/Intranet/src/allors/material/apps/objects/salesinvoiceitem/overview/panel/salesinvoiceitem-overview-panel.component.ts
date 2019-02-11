@@ -75,7 +75,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
       columns: [
         { name: 'item', sort },
         { name: 'type', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'quantity', sort },
       ],
       actions: [

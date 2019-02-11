@@ -74,7 +74,7 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
       columns: [
         { name: 'number', sort: true },
         { name: 'shipToCustomer' },
-        { name: 'status' },
+        { name: 'state' },
         { name: 'customerReference', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],

@@ -71,7 +71,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
       columns: [
         { name: 'number', sort },
         { name: 'name', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'asset', sort },
         { name: 'from', sort },
         { name: 'through', sort },

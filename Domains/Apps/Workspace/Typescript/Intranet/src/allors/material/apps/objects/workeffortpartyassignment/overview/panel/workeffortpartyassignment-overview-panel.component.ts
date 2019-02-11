@@ -71,7 +71,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
       columns: [
         { name: 'number', sort },
         { name: 'name', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'party', sort },
         { name: 'from', sort },
         { name: 'through', sort },

@@ -5,7 +5,7 @@
   <div mat-dialog-content>
 
     <div *ngIf="!requestItem.isNew" class="row">
-      <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="Status" class="col-md"></a-mat-static>
+      <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="State" class="col-md"></a-mat-static>
     </div>
 
     <div class="row">
@@ -16,7 +16,7 @@
     <div class="row">
       <a-mat-select class="col-md" [object]="requestItem" [roleType]="m.RequestItem.SerialisedItem" [options]="serialisedItems"
       (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
-      <a-mat-static [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
+      <a-mat-static [object]="requestItem.SerialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
     </div>
 
     <div class="row">

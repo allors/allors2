@@ -92,7 +92,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
         { name: 'facility' },
         { name: 'part' },
         { name: 'uom' },
-        { name: 'status' },
+        { name: 'state' },
         'qoh',
         'atp',
         'committedOut',

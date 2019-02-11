@@ -5,16 +5,16 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Request } from '../../../../../domain';
+import { Request, RequestState, Party } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: Request;
   number: string;
-  originator: string;
+  from: string;
   state: string;
   description: string;
   responseRequired: string;
@@ -59,7 +59,7 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
       selection: true,
       columns: [
         { name: 'number', sort: true },
-        { name: 'originator' },
+        { name: 'from' },
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'responseRequired', sort: true },
@@ -80,11 +80,27 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Request.Recipient });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Equals({ propertyType: m.Request.RequestState, parameter: 'state' }),
+      new Equals({ propertyType: m.Request.Originator, parameter: 'from' }),
     ]);
 
-    this.filterService.init(predicate);
+    const stateSearch = new SearchFactory({
+      objectType: m.RequestState,
+      roleTypes: [m.RequestState.Name],
+    });
+
+    const originatorSearch = new SearchFactory({
+      objectType: m.Party,
+      roleTypes: [m.Party.PartyName],
+    });
+
+
+    this.filterService.init(predicate, {
+      active: { initialValue: true },
+      state: { search: stateSearch, display: (v: RequestState) => v.Name },
+      from: { search: originatorSearch, display: (v: Party) => v.PartyName },
+    });
 
     const sorter = new Sorter(
       {
@@ -134,7 +150,7 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
           return {
             object: v,
             number: `${v.RequestNumber}`,
-            originator: v.Originator && v.Originator.displayName,
+            from: v.Originator && v.Originator.displayName,
             state: `${v.RequestState && v.RequestState.Name}`,
             description: `${v.Description || ''}`,
             responseRequired: v.RequiredResponseDate && moment(v.RequiredResponseDate).format('MMM Do YY'),

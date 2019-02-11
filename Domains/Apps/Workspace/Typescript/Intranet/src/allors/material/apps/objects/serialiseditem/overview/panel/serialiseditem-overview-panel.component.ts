@@ -69,7 +69,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
       columns: [
         { name: 'number', sort },
         { name: 'name', sort },
-        { name: 'status', sort },
+        { name: 'state', sort },
         { name: 'ownership', sort },
       ],
       actions: [

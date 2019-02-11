@@ -74,7 +74,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
       columns: [
         { name: 'number', sort: true },
         { name: 'billedFrom' },
-        { name: 'status' },
+        { name: 'state' },
         { name: 'reference', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],

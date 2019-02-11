@@ -63,7 +63,7 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
       columns: [
         { name: 'id', sort: true },
         { name: 'name', sort: true },
-        { name: 'status' },
+        { name: 'state' },
         { name: 'ownership' },
         { name: 'suppliedBy' },
         { name: 'ownedBy' },
@@ -86,14 +86,14 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
     const predicate = new And([
       new Like({ roleType: m.SerialisedItem.Name, parameter: 'name' }),
       new Like({ roleType: m.SerialisedItem.Keywords, parameter: 'keyword' }),
-      new Equals({ propertyType: m.SerialisedItem.SerialisedItemState, parameter: 'status' }),
+      new Equals({ propertyType: m.SerialisedItem.SerialisedItemState, parameter: 'state' }),
       new Equals({ propertyType: m.SerialisedItem.Ownership, parameter: 'ownership' }),
       new Equals({ propertyType: m.SerialisedItem.SuppliedBy, parameter: 'suppliedby' }),
       new Equals({ propertyType: m.SerialisedItem.RentedBy, parameter: 'rentedby' }),
       new Equals({ propertyType: m.SerialisedItem.OwnedBy, parameter: 'ownedby' }),
     ]);
 
-    const statusSearch = new SearchFactory({
+    const stateSearch = new SearchFactory({
       objectType: m.SerialisedItemState,
       roleTypes: [m.SerialisedItemState.Name],
       predicates: [new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true })]
@@ -117,7 +117,7 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      status: { search: statusSearch, display: (v: SerialisedItemState) => v.Name },
+      state: { search: stateSearch, display: (v: SerialisedItemState) => v.Name },
       ownership: { search: ownershipSearch, display: (v: Ownership) => v.Name },
       suppliedby: { search: supplierSearch, display: (v: Organisation) => v.Name },
       ownedby: { search: partySearch, display: (v: Party) => v.displayName },

@@ -64,6 +64,7 @@ namespace Allors.Domain
                         .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
                         .WithActualUnitPrice(quoteItem.UnitPrice)
                         .WithProduct(quoteItem.Product)
+                        .WithSerialisedItem(quoteItem.SerialisedItem)
                         .WithProductFeature(quoteItem.ProductFeature)
                         .WithQuantityOrdered(quoteItem.Quantity).Build());
             }
