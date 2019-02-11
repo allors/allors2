@@ -1,4 +1,4 @@
-import { Exists } from '../../../../allors/framework';;
+import { Exists } from '../../../../allors/framework';
 import { FilterFieldDefinition } from './filterFieldDefinition';
 
 export class FilterField {

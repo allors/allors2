@@ -31,7 +31,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     private metaService: MetaService,
     private errorService: ErrorService,
     private titleService: Title,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, DoCheck } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
+import { Observable, of, timer } from 'rxjs';
+import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startWith } from 'rxjs/operators';
 
 import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
@@ -28,7 +28,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild(MatAutocomplete) private autoComoplete: MatAutocomplete;
+  @ViewChild(MatAutocomplete) private autoComplete: MatAutocomplete;
 
   @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
 
@@ -42,7 +42,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
     if (this.filter) {
       this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          filter((v) => v && v.trim && v.toLowerCase),
+          filter((v) => v !== null && v !== undefined && v.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           switchMap((search: string) => {
@@ -52,7 +52,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
     } else {
       this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          filter((v) => v && v.trim && v.toLowerCase),
+          filter((v) => v !== null && v !== undefined && v.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           map((search: string) => {
@@ -92,6 +92,9 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   inputFocus() {
     this.focused = true;
+    if (!this.model) {
+      this.trigger._onChange('');
+    }
   }
 
   displayFn(): (val: ISessionObject) => string {
