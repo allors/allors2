@@ -1,5 +1,5 @@
+import { Exists } from '../../../../allors/framework';;
 import { FilterFieldDefinition } from './filterFieldDefinition';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 export class FilterField {
   definition: FilterFieldDefinition;
@@ -13,6 +13,11 @@ export class FilterField {
 
     if (this.definition.isLike) {
       value = value + '%';
+    }
+
+    if (this.definition.isExists) {
+      const exists = this.definition.predicate as Exists;
+      value = value ? exists.propertyType.id : undefined;
     }
 
     return value;
