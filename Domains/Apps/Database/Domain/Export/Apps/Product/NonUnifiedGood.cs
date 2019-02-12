@@ -65,7 +65,7 @@ namespace Allors.Domain
 
             if (!this.ExistVariants)
             {
-                derivation.Validation.AssertExists(this, M.Good.Part);
+                derivation.Validation.AssertExists(this, M.NonUnifiedGood.Part);
             }
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))

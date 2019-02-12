@@ -24,10 +24,10 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './nonunifiedpart-list.component.html',
+  templateUrl: './part-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
+export class PartListComponent implements OnInit, OnDestroy {
 
   public title = 'Parts';
 
@@ -84,18 +84,18 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.NonUnifiedPart.Name, parameter: 'name' }),
-      new Like({ roleType: m.NonUnifiedPart.Keywords, parameter: 'keyword' }),
-      new Like({ roleType: m.NonUnifiedPart.HsCode, parameter: 'hsCode' }),
-      new Contains({ propertyType: m.NonUnifiedPart.ProductIdentifications, parameter: 'identification' }),
-      new Contains({ propertyType: m.NonUnifiedPart.SuppliedBy, parameter: 'supplier' }),
-      new Equals({ propertyType: m.NonUnifiedPart.ManufacturedBy, parameter: 'manufacturer' }),
-      new Equals({ propertyType: m.NonUnifiedPart.Brand, parameter: 'brand' }),
-      new Equals({ propertyType: m.NonUnifiedPart.Model, parameter: 'model' }),
-      new Equals({ propertyType: m.NonUnifiedPart.InventoryItemKind, parameter: 'kind' }),
-      new Equals({ propertyType: m.NonUnifiedPart.ProductType, parameter: 'type' }),
+      new Like({ roleType: m.Part.Name, parameter: 'name' }),
+      new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
+      new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
+      new Contains({ propertyType: m.Part.ProductIdentifications, parameter: 'identification' }),
+      new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'supplier' }),
+      new Equals({ propertyType: m.Part.ManufacturedBy, parameter: 'manufacturer' }),
+      new Equals({ propertyType: m.Part.Brand, parameter: 'brand' }),
+      new Equals({ propertyType: m.Part.Model, parameter: 'model' }),
+      new Equals({ propertyType: m.Part.InventoryItemKind, parameter: 'kind' }),
+      new Equals({ propertyType: m.Part.ProductType, parameter: 'type' }),
       new ContainedIn({
-        propertyType: m.NonUnifiedPart.InventoryItemsWherePart,
+        propertyType: m.Part.InventoryItemsWherePart,
         extent: new Filter({
           objectType: m.InventoryItem,
           predicate: new Equals({
@@ -179,7 +179,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
-            pull.NonUnifiedPart({
+            pull.Part({
               predicate,
               sort: sorter.create(sort),
               include: {
@@ -207,7 +207,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        const parts = loaded.collections.NonUnifiedParts as Part[];
+        const parts = loaded.collections.Parts as Part[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 

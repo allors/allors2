@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
-import { And, ContainedIn, Equals, PullRequest, Sort, Filter } from '../../../../../framework';
+import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
+import { And, Equals, PullRequest, Sort, Filter } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
   vatRegimes: VatRegime[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  goods: Good[];
+  goods: NonUnifiedGood[];
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
   facilities: Facility[];
@@ -83,9 +83,9 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
                 }
               }
             }),
-            pull.Good({
+            pull.NonUnifiedGood({
               sort: [
-                new Sort(m.Good.Name),
+                new Sort(m.NonUnifiedGood.Name),
               ],
             }),
             pull.SalesInvoiceItem({
@@ -136,7 +136,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.invoiceItem = loaded.objects.SalesInvoiceItem as SalesInvoiceItem;
         this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
-        this.goods = loaded.collections.Goods as Good[];
+        this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.facilities = loaded.collections.Facilities as Facility[];
@@ -209,7 +209,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Good({
+      pull.NonUnifiedGood({
         object: good.id,
         fetch: {
           Part: {

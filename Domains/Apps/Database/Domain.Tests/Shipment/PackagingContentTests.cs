@@ -42,8 +42,8 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
@@ -93,8 +93,8 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();

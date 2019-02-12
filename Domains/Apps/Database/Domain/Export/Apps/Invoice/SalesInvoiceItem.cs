@@ -464,7 +464,7 @@ namespace Allors.Domain
             this.InitialProfitMargin = 0;
             this.MaintainedProfitMargin = 0;
 
-            if (this.Product is Good good &&
+            if (this.Product is NonUnifiedGood good &&
                 this.ExistQuantity && this.Quantity > 0 &&
                 good.Part.ExistSupplierOfferingsWherePart &&
                 good.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)

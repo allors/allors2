@@ -43,7 +43,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -129,7 +129,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
@@ -179,7 +179,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
@@ -255,7 +255,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 

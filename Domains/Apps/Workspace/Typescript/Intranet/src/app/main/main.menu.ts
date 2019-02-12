@@ -21,13 +21,14 @@ export const menu: MenuItem[] = [
   {
     title: 'Products', icon: 'label',
     children: [
-      { id: ids.NonUnifiedGood, title: 'Goods' },
-      { id: ids.NonUnifiedPart, title: 'Parts' },
+      { id: ids.Good, title: 'Goods' },
+      { id: ids.Part, title: 'Parts' },
       { id: ids.Catalogue },
       { id: ids.ProductCategory },
       { id: ids.SerialisedItemCharacteristic, title: 'Characteristics' },
       { id: ids.ProductType },
       { id: ids.SerialisedItem, title: 'Serialised Assets' },
+      { id: ids.UnifiedGood, title: 'Unified Goods' },
     ]
   },
   {

@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem } from '../../../../../domain';
+import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -23,14 +23,15 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   request: Request;
   requestItem: RequestItem;
-  goods: Good[];
   unitsOfMeasure: UnitOfMeasure[];
+  parts: Part[];
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
 
   private previousProduct;
   private subscription: Subscription;
+  goods: Good[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -63,9 +64,11 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
                 SerialisedItem: x
               }
             }),
-            pull.Good({
-              sort: new Sort(m.Good.Name)
-            }),
+            pull.Good(
+              {
+                sort: new Sort(m.Good.Name),
+              }
+            ),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: new Sort(m.UnitOfMeasure.Name)
@@ -125,9 +128,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goodSelected(good: Product): void {
-    if (good) {
-      this.refreshSerialisedItems(good);
+  public goodSelected(product: Product): void {
+    if (product) {
+      this.refreshSerialisedItems(product);
     }
   }
 
@@ -152,19 +155,23 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  private refreshSerialisedItems(good: Product): void {
+  private refreshSerialisedItems(product: Product): void {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Good({
-        object: good.id,
+      pull.NonUnifiedGood({
+        object: product.id,
         fetch: {
           Part: {
-            include: {
-              SerialisedItems: x
-            }
+            SerialisedItems: x
           }
+        }
+      }),
+      pull.UnifiedGood({
+        object: product.id,
+        include: {
+          SerialisedItems: x
         }
       })
     ];
@@ -172,7 +179,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = loaded.objects.Part as Part;
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
         this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
         if (this.requestItem.Product !== this.previousProduct) {

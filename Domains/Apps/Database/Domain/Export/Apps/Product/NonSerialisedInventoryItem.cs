@@ -186,7 +186,7 @@ namespace Allors.Domain
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
-            var goods = this.Part?.GoodsWherePart;
+            var goods = this.Part?.NonUnifiedGoodsWherePart;
 
             if (goods != null)
             {

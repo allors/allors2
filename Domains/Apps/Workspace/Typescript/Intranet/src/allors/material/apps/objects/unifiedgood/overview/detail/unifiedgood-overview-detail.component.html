@@ -25,16 +25,15 @@
         <mat-tab label="General">
           <div class="row pt-3">
             <a-mat-static class="col-md" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-static>
-            <a-mat-input class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Name"></a-mat-input>
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.Name"></a-mat-input>
           </div>
 
           <div class="row">
-            <a-mat-textarea class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Description"></a-mat-textarea>
+            <a-mat-textarea class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-textarea>
           </div>
 
           <div class="row">
-            <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [options]="parts" display="Name"></a-mat-select>
+            <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.UnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
           </div>
 
           <div class="row">
@@ -48,8 +47,8 @@
           </div>
 
           <div class="row">
-            <a-mat-static class="col-md" [object]="good.Part?.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>
-            <a-mat-static class="col-md" [object]="good.Part?.Model" [roleType]="m.Model.Name" label="Model"></a-mat-static>
+            <a-mat-static class="col-md" [object]="good.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>
+            <a-mat-static class="col-md" [object]="good.Model" [roleType]="m.Model.Name" label="Model"></a-mat-static>
           </div>
 
           <div class="row">
@@ -63,8 +62,8 @@
               <div *ngFor="let locale of locales; let i = index">
                 <mat-divider *ngIf="i > 0"></mat-divider>
                 <div class="row">
-                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedNames" [locale]="locale"></a-mat-localised-text>
-                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedDescriptions"
+                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.LocalisedDescriptions"
                     [locale]="locale"></a-mat-localised-text>
                 </div>
               </div>
@@ -86,9 +85,9 @@
         <mat-tab label="Comments">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.InternalComment"></a-mat-textarea>
-              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Keywords"></a-mat-textarea>
-              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Comment"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.InternalComment"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.Keywords"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.Comment"></a-mat-textarea>
             </div>
 
             <div class="row">
@@ -102,7 +101,7 @@
                 <div *ngFor="let locale of locales; let i = index">
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
-                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedComments"
+                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.LocalisedComments"
                       [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
@@ -114,8 +113,8 @@
         <mat-tab label="Images">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-file class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PrimaryPhoto" accept="image/*"></a-mat-file>
-              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Photos" accept="image/*"></a-mat-files>
+              <a-mat-file class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.PrimaryPhoto" accept="image/*"></a-mat-file>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.Photos" accept="image/*"></a-mat-files>
             </div>
           </div>
         </mat-tab>
@@ -123,7 +122,7 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.ElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.ElectronicDocuments" accept="image/*"></a-mat-files>
             </div>
           </div>
         </mat-tab>

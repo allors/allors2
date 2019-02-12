@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
-import { NonUnifiedPartListComponent } from './nonunifiedpart-list.component';
-export { NonUnifiedPartListComponent } from './nonunifiedpart-list.component';
+import { PartListComponent } from './part-list.component';
+export { PartListComponent } from './part-list.component';
 
 @NgModule({
   declarations: [
-    NonUnifiedPartListComponent,
+    PartListComponent,
   ],
   exports: [
-    NonUnifiedPartListComponent,
+    PartListComponent,
   ],
   imports: [
     AllorsMaterialFactoryFabModule,
@@ -31,4 +31,4 @@ export { NonUnifiedPartListComponent } from './nonunifiedpart-list.component';
   entryComponents: [
   ]
 })
-export class NonUnifiedPartListModule { }
+export class PartListModule { }

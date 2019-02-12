@@ -1,19 +1,19 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
-import { NonUnifiedGood } from '../../../../../../domain';
+import { UnifiedGood } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'nonunifiedgood-overview-summary',
-  templateUrl: './nonunifiedgood-overview-summary.component.html',
+  selector: 'unifiedgood-overview-summary',
+  templateUrl: './unifiedgood-overview-summary.component.html',
   providers: [PanelService]
 })
-export class NonUnifiedGoodOverviewSummaryComponent {
+export class UnifiedGoodOverviewSummaryComponent {
 
   m: Meta;
 
-  good: NonUnifiedGood;
+  good: UnifiedGood;
 
   constructor(
     @Self() public panel: PanelService,
@@ -24,7 +24,7 @@ export class NonUnifiedGoodOverviewSummaryComponent {
 
     panel.name = 'summary';
 
-    const pullName = `${panel.name}_${this.m.NonUnifiedGood.name}`;
+    const pullName = `${panel.name}_${this.m.UnifiedGood.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -32,24 +32,22 @@ export class NonUnifiedGoodOverviewSummaryComponent {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.NonUnifiedGood({
+        pull.UnifiedGood({
           name: pullName,
           object: id,
           include: {
+            Brand: x,
+            Model: x,
             ProductIdentifications: {
               ProductIdentificationType: x
             },
-            Part: {
-              Brand: x,
-              Model: x
-            }
           }
         })
       );
     };
 
     panel.onPulled = (loaded) => {
-      this.good = loaded.objects[pullName] as NonUnifiedGood;
+      this.good = loaded.objects[pullName] as UnifiedGood;
     };
   }
 }

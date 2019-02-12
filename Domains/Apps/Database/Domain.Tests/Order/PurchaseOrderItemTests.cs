@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             this.finishedGood = good1.Part;
 
             new SupplierOfferingBuilder(this.Session)

@@ -25,8 +25,8 @@ import * as CommunicationEventList from 'src/allors/material/apps/objects/commun
 
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 
-import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering-edit.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
+import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
 import * as RequestsForQuoteList from 'src/allors/material/apps/objects/requestforquote/list/requestforquote-list.module';
 import * as RequestForQuoteOverview from 'src/allors/material/apps/objects/requestforquote/overview/requestforquote-overview.module';
 import * as ProductQuotesOverview from 'src/allors/material/apps/objects/productquote/list/productquote-list.module';
@@ -36,9 +36,8 @@ import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
-import * as NonUnifiedGoodList from 'src/allors/material/apps/objects/nonunifiedgood/list/nonunifiedgood-list.module';
 import * as NonUnifiedGoodOverview from 'src/allors/material/apps/objects/nonunifiedgood/overview/nonunifiedgood-overview.module';
-import * as NonUnifiedPartList from 'src/allors/material/apps/objects/nonunifiedpart/list/nonunifiedpart-list.module';
+import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
 import * as NonUnifiedPartOverview from 'src/allors/material/apps/objects/nonunifiedpart/overview/nonunifiedpart-overview.module';
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
@@ -46,6 +45,8 @@ import * as ProductCharacteristicsOverview from 'src/allors/material/apps/object
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
 import * as SerialisedItemList from 'src/allors/material/apps/objects/serialiseditem/list/serialiseditem-list.module';
 import * as SerialisedItemOverview from 'src/allors/material/apps/objects/serialiseditem/overview/serialiseditem-overview.module';
+import * as UnifiedGoodList from 'src/allors/material/apps/objects/unifiedgood/list/unifiedgood-list.module';
+import * as UnifiedGoodOverview from 'src/allors/material/apps/objects/unifiedgood/overview/unifiedgood-overview.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 
@@ -81,9 +82,9 @@ const modules = [
   RequestItemEdit.RequestItemEditModule,
   QuoteItemEdit.QuoteItemEditModule,
   SalesOrderItemEdit.SalesOrderItemEditModule,
-  NonUnifiedGoodList.NonUnifiedGoodListModule,
+  GoodList.GoodListModule,
   NonUnifiedGoodOverview.NonUnifiedGoodOverviewModule,
-  NonUnifiedPartList.NonUnifiedPartListModule,
+  PartList.PartListModule,
   NonUnifiedPartOverview.NonUnifiedPartOverviewModule,
   CataloguesOverview.CataloguesOverviewModule,
   CategoriesOverview.ProductCategoriesOverviewModule,
@@ -91,6 +92,8 @@ const modules = [
   ProductTypesOverview.ProductTypesOverviewModule,
   SerialisedItemList.SerialisedItemListModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
+  UnifiedGoodList.UnifiedGoodListModule,
+  UnifiedGoodOverview.UnifiedGoodOverviewModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
 ];
@@ -132,9 +135,9 @@ export const routes: Routes = [
       {
         path: 'products',
         children: [
-          { path: 'nonunifiedgoods', component: NonUnifiedGoodList.NonUnifiedGoodListComponent },
+          { path: 'goods', component: GoodList.GoodListComponent },
           { path: 'nonunifiedgood/:id', component: NonUnifiedGoodOverview.NonUnifiedGoodOverviewComponent },
-          { path: 'nonunifiedparts', component: NonUnifiedPartList.NonUnifiedPartListComponent },
+          { path: 'parts', component: PartList.PartListComponent },
           { path: 'nonunifiedpart/:id', component: NonUnifiedPartOverview.NonUnifiedPartOverviewComponent },
           { path: 'catalogues', component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'productcategories', component: CategoriesOverview.ProductCategoriesOverviewComponent },
@@ -142,6 +145,8 @@ export const routes: Routes = [
           { path: 'producttypes', component: ProductTypesOverview.ProductTypesOverviewComponent },
           { path: 'serialiseditems', component: SerialisedItemList.SerialisedItemListComponent },
           { path: 'serialisedItem/:id', component: SerialisedItemOverview.SerialisedItemOverviewComponent},
+          { path: 'unifiedgoods', component: UnifiedGoodList.UnifiedGoodListComponent },
+          { path: 'unifiedgood/:id', component: UnifiedGoodOverview.UnifiedGoodOverviewComponent },
         ],
       },
 

@@ -40,7 +40,6 @@ namespace Allors.Repository
         public PriceComponent[] BasePrices { get; set; }
         public ProductIdentification[] ProductIdentifications { get; set; }
         public string BarCode { get; set; }
-        public Part Part { get; set; }
         public Product[] ProductSubstitutions { get; set; }
         public Product[] ProductIncompatibilities { get; set; }
         public Facility DefaultFacility { get; set; }

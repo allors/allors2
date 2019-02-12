@@ -1306,7 +1306,7 @@ namespace Allors.Domain
 
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -1597,7 +1597,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 

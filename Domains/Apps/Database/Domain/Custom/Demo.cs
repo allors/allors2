@@ -394,7 +394,7 @@ namespace Allors
 
                 var requestItem = new RequestItemBuilder(this.Session)
                     .WithSerialisedItem(serialisedItem)
-                    .WithProduct(serialisedItem.PartWhereSerialisedItem.GoodsWherePart.FirstOrDefault())
+                    .WithProduct(serialisedItem.PartWhereSerialisedItem.NonUnifiedGoodsWherePart.FirstOrDefault())
                     .WithComment($"Comment {i}")
                     .WithQuantity(1)
                     .Build();
@@ -409,7 +409,7 @@ namespace Allors
 
                 var quoteItem = new QuoteItemBuilder(this.Session)
                     .WithSerialisedItem(serialisedItem)
-                    .WithProduct(serialisedItem.PartWhereSerialisedItem.GoodsWherePart.FirstOrDefault())
+                    .WithProduct(serialisedItem.PartWhereSerialisedItem.NonUnifiedGoodsWherePart.FirstOrDefault())
                     .WithComment($"Comment {i}")
                     .WithQuantity(1)
                     .Build();

@@ -17,16 +17,6 @@ namespace Allors.Repository
         string BarCode { get; set; }
 
         #region Allors
-        [Id("82295ab2-8488-4d7e-8703-9f7fbec55925")]
-        [AssociationId("c1801b8f-013b-42ff-b02a-a6c9b0e361b8")]
-        [RoleId("cdc45553-9c60-4c40-8c82-56c488ee6aae")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        Part Part { get; set; }
-
-        #region Allors
         [Id("acbe2dc6-63ad-4910-9752-4cab83e24afb")]
         [AssociationId("70d193cf-8985-4c25-84a5-31f4e2fd2a34")]
         [RoleId("73361510-c5a2-4c4f-afe5-94d2b9eaeea3")]

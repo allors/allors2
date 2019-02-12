@@ -3,7 +3,7 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
+import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -11,15 +11,15 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'nonunifiedgood-overview-detail',
-  templateUrl: './nonunifiedgood-overview-detail.component.html',
+  selector: 'unifiedgood-overview-detail',
+  templateUrl: './unifiedgood-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
+export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  good: NonUnifiedGood;
+  good: UnifiedGood;
 
   locales: Locale[];
   categories: ProductCategory[];
@@ -65,7 +65,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     panel.expandable = true;
 
     // Collapsed
-    const pullName = `${this.panel.name}_${this.m.Good.name}`;
+    const pullName = `${this.panel.name}_${this.m.UnifiedGood.name}`;
 
     panel.onPull = (pulls) => {
 
@@ -76,17 +76,15 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
         const id = this.panel.manager.id;
 
         pulls.push(
-          pull.NonUnifiedGood({
+          pull.UnifiedGood({
             name: pullName,
             object: id,
             include: {
+              Brand: x,
+              Model: x,
               ProductIdentifications: {
                 ProductIdentificationType: x
               },
-              Part: {
-                Brand: x,
-                Model: x
-              }
             }
           }),
           pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
@@ -96,7 +94,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.good = loaded.objects[pullName] as NonUnifiedGood;
+        this.good = loaded.objects[pullName] as UnifiedGood;
       }
     };
   }
@@ -129,13 +127,11 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
               },
               sort: new Sort(m.Part.Name),
             }),
-            pull.NonUnifiedGood({
+            pull.UnifiedGood({
               object: id,
               include: {
-                Part: {
-                  Brand: x,
-                  Model: x
-                },
+                Brand: x,
+                Model: x,
                 PrimaryPhoto: x,
                 ProductIdentifications: x,
                 Photos: x,
@@ -151,12 +147,12 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
                 },
               },
             }),
-            pull.NonUnifiedGood({
+            pull.Good({
               name: 'OriginalCategories',
               object: id,
               fetch: { ProductCategoriesWhereProduct: x }
             }),
-            pull.NonUnifiedGood({
+            pull.Good({
               object: id,
               fetch: {
                 ProductFeatureApplicabilitiesWhereAvailableFor: {
@@ -178,7 +174,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.good = loaded.objects.NonUnifiedGood as NonUnifiedGood;
+        this.good = loaded.objects.UnifiedGood as UnifiedGood;
         this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
         this.selectedCategories = this.originalCategories;
 

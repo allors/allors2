@@ -592,7 +592,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)

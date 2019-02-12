@@ -28,7 +28,7 @@ namespace Allors.Domain
     public class SalesInvoiceItemTests : DomainTest
     {
         private Part finishedGood;
-        private Good good;
+        private NonUnifiedGood good;
         private Colour feature1;
         private Colour feature2;
         private Singleton internalOrganisation;
@@ -71,7 +71,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            this.good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             this.finishedGood = this.good.Part;
 
             this.feature1 = new ColourBuilder(this.Session)
@@ -2427,7 +2427,7 @@ namespace Allors.Domain
 
         private void InstantiateObjects(ISession session)
         {
-            this.good = (Good)session.Instantiate(this.good);
+            this.good = (NonUnifiedGood)session.Instantiate(this.good);
             this.finishedGood = (Part)session.Instantiate(this.finishedGood);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);

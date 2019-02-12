@@ -81,8 +81,8 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
 
@@ -157,8 +157,8 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
@@ -349,7 +349,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -436,7 +436,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
@@ -508,7 +508,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -601,7 +601,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -664,7 +664,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -736,8 +736,8 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -845,7 +845,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -933,7 +933,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -1024,7 +1024,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -1077,7 +1077,7 @@ namespace Allors.Domain
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
@@ -1145,8 +1145,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -1200,8 +1200,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -1328,8 +1328,8 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -1483,7 +1483,7 @@ namespace Allors.Domain
                 .WithSalesRepresentative(salesrep)
                 .Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
 
@@ -1858,7 +1858,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
@@ -1911,7 +1911,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
@@ -1963,7 +1963,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
@@ -2015,7 +2015,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
@@ -2064,8 +2064,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -2106,8 +2106,8 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -2155,8 +2155,8 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -2205,8 +2205,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 
@@ -2249,8 +2249,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrder_WhenConfirmed_ThenShipmentItemsAreCreated()
         {
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
@@ -2323,8 +2323,8 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person1).WithInternalOrganisation(this.InternalOrganisation).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person2).WithInternalOrganisation(this.InternalOrganisation).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             this.Session.Derive();
 

@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
-import { NonUnifiedGoodListComponent } from './nonunifiedgood-list.component';
-export { NonUnifiedGoodListComponent } from './nonunifiedgood-list.component';
+import { UnifiedGoodListComponent } from './unifiedgood-list.component';
+export { UnifiedGoodListComponent } from './unifiedgood-list.component';
 
 @NgModule({
   declarations: [
-    NonUnifiedGoodListComponent,
+    UnifiedGoodListComponent,
   ],
   exports: [
-    NonUnifiedGoodListComponent,
+    UnifiedGoodListComponent,
   ],
   imports: [
     CommonModule,
@@ -29,4 +29,4 @@ export { NonUnifiedGoodListComponent } from './nonunifiedgood-list.component';
     AllorsMaterialTableModule,
   ],
 })
-export class NonUnifiedGoodListModule { }
+export class UnifiedGoodListModule { }

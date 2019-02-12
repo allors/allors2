@@ -17,20 +17,15 @@
           <mat-toolbar-row>
             <div class="pl-3 mr-auto">{{title}}</div>
             <div>
-              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
+              <button [disabled]="delete.disabled(table.selected)" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
                 <mat-icon>delete</mat-icon>
               </button>
-
-              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/parts']">
-                <mat-icon>save_alt</mat-icon>
-              </button>
-
             </div>
           </mat-toolbar-row>
         </mat-toolbar>
       </div>
 
-      <a-mat-factory-fab [objectType]="metaService.m.NonUnifiedPart" (created)="refreshService.refresh()"></a-mat-factory-fab>
+      <a-mat-factory-fab [objectType]="metaService.m.UnifiedGood" (created)="refreshService.refresh()"></a-mat-factory-fab>
 
       <div class="a-search container-fluid">
         <a-mat-filter></a-mat-filter>

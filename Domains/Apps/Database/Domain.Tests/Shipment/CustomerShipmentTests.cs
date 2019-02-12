@@ -272,7 +272,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate21;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -356,8 +356,8 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good2.Part).Build();
@@ -464,8 +464,8 @@ namespace Allors.Domain
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Theft).WithPart(good2.Part).Build();
@@ -523,7 +523,7 @@ namespace Allors.Domain
             store.ShipmentThreshold = 100;
             store.IsImmediatelyPicked = false;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -569,7 +569,7 @@ namespace Allors.Domain
             store.ShipmentThreshold = 100;
             store.IsImmediatelyPicked = false;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -622,7 +622,7 @@ namespace Allors.Domain
             store.ShipmentThreshold = 100;
             store.IsImmediatelyPicked = false;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -674,7 +674,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentOnHold_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -747,7 +747,7 @@ namespace Allors.Domain
             store.ShipmentThreshold = 100;
             store.IsImmediatelyPicked = false;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -797,7 +797,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -864,7 +864,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -934,7 +934,7 @@ namespace Allors.Domain
                 .WithOutgoingShipmentNumberPrefix("")
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -1033,7 +1033,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate21;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -1111,7 +1111,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate21;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -1186,7 +1186,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -1258,7 +1258,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate21;
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
@@ -1348,7 +1348,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 

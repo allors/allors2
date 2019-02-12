@@ -43,6 +43,7 @@ import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
+import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/apps/objects/unifiedgood/create/unifiedgood-create.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
@@ -95,6 +96,7 @@ export const create = {
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
+  [ids.UnifiedGood]: UnifiedGoodCreateComponent,
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
   [ids.WebAddress]: WebAddressCreateComponent,
@@ -188,6 +190,7 @@ export const edit = {
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
     TelecommunicationsNumberEditModule,
+    UnifiedGoodCreateModule,
     WebAddressCreateModule,
     WebAddressEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
@@ -234,6 +237,7 @@ export const edit = {
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,
     TelecommunicationsNumberEditComponent,
+    UnifiedGoodCreateComponent,
     WebAddressCreateComponent,
     WebAddressEditComponent,
     WorkEffortFixedAssetAssignmentEditComponent,

@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part } from '../../../../../domain';
+import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -27,15 +27,16 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   inventoryItems: InventoryItem[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  goods: Good[];
   unitsOfMeasure: UnitOfMeasure[];
   goodsFilter: SearchFactory;
   part: Part;
+  parts: Part[];
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
 
   private previousProduct;
   private subscription: Subscription;
+  goods: Good[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -147,9 +148,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public goodSelected(object: any) {
-    if (object) {
-      this.refreshSerialisedItems(object as Product);
+  public goodSelected(product: Product): void {
+    if (product) {
+      this.refreshSerialisedItems(product);
     }
   }
 
@@ -172,20 +173,23 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
         });
   }
-
-  private refreshSerialisedItems(good: Product): void {
+  private refreshSerialisedItems(product: Product): void {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Good({
-        object: good.id,
+      pull.NonUnifiedGood({
+        object: product.id,
         fetch: {
           Part: {
-            include: {
-              SerialisedItems: x
-            }
+            SerialisedItems: x
           }
+        }
+      }),
+      pull.UnifiedGood({
+        object: product.id,
+        include: {
+          SerialisedItems: x
         }
       })
     ];
@@ -193,13 +197,13 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = loaded.objects.Part as Part;
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
         this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
-        if (this.requestItem.Product !== this.previousProduct) {
-          this.requestItem.SerialisedItem = null;
+        if (this.quoteItem.Product !== this.previousProduct) {
+          this.quoteItem.SerialisedItem = null;
           this.serialisedItem = null;
-          this.previousProduct = this.requestItem.Product;
+          this.previousProduct = this.quoteItem.Product;
         }
 
       }, this.errorService.handler);

@@ -320,7 +320,7 @@ namespace Allors.Domain
 
             if (this.ExistProduct && internalOrganisation != null && defaultFacility != null)
             {
-                if (this.Product is Good good && good.ExistPart) 
+                if (this.Product is NonUnifiedGood good && good.ExistPart) 
                 {
                     if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                     {
@@ -572,7 +572,7 @@ namespace Allors.Domain
         {
             this.UnitPurchasePrice = 0;
 
-            if (this.Product is Good good &&
+            if (this.Product is NonUnifiedGood good &&
                 good.Part.ExistSupplierOfferingsWherePart &&
                 good.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
             {

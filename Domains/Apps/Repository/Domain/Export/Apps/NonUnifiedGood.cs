@@ -40,11 +40,20 @@ namespace Allors.Repository
         public PriceComponent[] BasePrices { get; set; }
         public ProductIdentification[] ProductIdentifications { get; set; }
         public string BarCode { get; set; }
-        public Part Part { get; set; }
         public Product[] ProductSubstitutions { get; set; }
         public Product[] ProductIncompatibilities { get; set; }
 
         #endregion
+
+        #region Allors
+        [Id("82295ab2-8488-4d7e-8703-9f7fbec55925")]
+        [AssociationId("c1801b8f-013b-42ff-b02a-a6c9b0e361b8")]
+        [RoleId("cdc45553-9c60-4c40-8c82-56c488ee6aae")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Part Part { get; set; }
 
         #region inherited methods
 

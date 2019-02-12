@@ -122,8 +122,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
@@ -234,8 +234,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
@@ -334,8 +334,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
@@ -420,8 +420,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)

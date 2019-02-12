@@ -149,10 +149,10 @@ namespace Allors.Domain
 
         public void AppsDeriveAllSerialisedItemsForSale()
         {
-            var allGoods = new List<Good>();
+            var allGoods = new List<NonUnifiedGood>();
             foreach (Product product in this.AllProducts)
             {
-                if (product is Good good)
+                if (product is NonUnifiedGood good)
                 {
                     allGoods.Add(good);
                 }
@@ -165,7 +165,7 @@ namespace Allors.Domain
         {
             foreach (Product product in this.AllProducts)
             {
-                if (product is Good good)
+                if (product is NonUnifiedGood good)
                 {
                     if (good.ExistPart && good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
                     {

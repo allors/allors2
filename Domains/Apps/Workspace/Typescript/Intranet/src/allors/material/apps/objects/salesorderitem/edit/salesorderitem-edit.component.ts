@@ -4,7 +4,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
+import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -23,7 +23,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   order: SalesOrder;
   orderItem: SalesOrderItem;
   quoteItem: QuoteItem;
-  goods: Good[];
+  goods: NonUnifiedGood[];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   discount: number;
@@ -98,7 +98,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             pull.VatRate(),
             pull.VatRegime(),
             pull.SerialisedItemState(),
-            pull.Good({ sort: new Sort(m.Good.Name) }),
+            pull.NonUnifiedGood({ sort: new Sort(m.NonUnifiedGood.Name) }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -134,7 +134,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
         this.order = loaded.objects.SalesOrder as SalesOrder;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
-        this.goods = loaded.collections.Goods as Good[];
+        this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
@@ -222,7 +222,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Good({
+      pull.NonUnifiedGood({
         object: good.id,
         fetch: {
           Part: {
