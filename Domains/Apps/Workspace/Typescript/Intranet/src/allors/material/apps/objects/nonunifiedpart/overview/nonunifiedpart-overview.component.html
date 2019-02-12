@@ -22,11 +22,11 @@
 
         <igoodidentification-panel [roleType]="metaService.m.Part.GoodIdentifications"></igoodidentification-panel>
 
-          <nonserialisedinventoryitem-overview-panel></nonserialisedinventoryitem-overview-panel>
+        <nonserialisedinventoryitem-overview-panel *ngIf="serialised === false"></nonserialisedinventoryitem-overview-panel>
 
-          <serialisedinventoryitem-overview-panel></serialisedinventoryitem-overview-panel>
+        <serialisedinventoryitem-overview-panel *ngIf="serialised === true"></serialisedinventoryitem-overview-panel>
 
-          <serialiseditem-overview-panel></serialiseditem-overview-panel>
+        <serialiseditem-overview-panel *ngIf="serialised === true"></serialiseditem-overview-panel>
 
         <pricecomponent-overview-panel></pricecomponent-overview-panel>
 

@@ -3,7 +3,6 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { InventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
-import { Equals, GreaterThan } from '../../../../../../framework';
 import { DeleteService, EditService, TableRow, Table, Sorter } from '../../../../..';
 import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
 

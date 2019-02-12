@@ -2,12 +2,13 @@ import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/co
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap, delay, map } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Part } from '../../../../../domain';
+import { Part, NonUnifiedPart } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
+import { timeout } from 'q';
 
 @Component({
   templateUrl: './nonunifiedpart-overview.component.html',
@@ -35,29 +36,6 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
   ) {
 
     titleService.setTitle(this.title);
-
-    // const { pull, x } = this.metaService;
-
-    // const navRoute = new NavigationActivatedRoute(this.route);
-    // const id = navRoute.id();
-
-    // const pulls = [
-    //   pull.Part({
-    //     object: id,
-    //     include: {
-    //       InventoryItemKind: x
-    //     }
-    //   }),
-    // ];
-
-    // this.panelManager.onPull(pulls);
-
-    // this.panelManager.context
-    //   .load('Pull', new PullRequest({ pulls }))
-    //   .subscribe((loaded) => {
-    //     this.part = loaded.objects.Part as Part;
-    //     this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
-    //   }, this.errorService.handler);
   }
 
   public ngAfterViewInit(): void {
@@ -66,7 +44,33 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
       .pipe(
         switchMap(([]) => {
 
-          const { m, pull, x } = this.metaService;
+          const { pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.id();
+
+          const pulls = [
+            pull.NonUnifiedPart({
+              object: id,
+              include: {
+                InventoryItemKind: x
+              }
+            }),
+          ];
+
+          return this.panelManager.context
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              tap((loaded) => {
+                const part = loaded.objects.NonUnifiedPart as NonUnifiedPart;
+                this.serialised = part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+              }),
+              delay(1)
+            );
+        }),
+        switchMap(([]) => {
+
+          const { m } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.objectType = m.Part;
@@ -75,15 +79,7 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
 
           this.panelManager.on();
 
-          const pulls = [
-            pull.NonUnifiedPart({
-              object: this.panelManager.id,
-              include: {
-                InventoryItemKind: x
-              }
-            }),
-          ];
-
+          const pulls = [];
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
@@ -95,8 +91,7 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
         this.panelManager.context.session.reset();
         this.panelManager.onPulled(loaded);
 
-        this.part = loaded.objects.NonUnifiedPart as Part;
-        this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+        this.part = loaded.objects.Part as Part;
 
       }, this.errorService.handler);
   }
