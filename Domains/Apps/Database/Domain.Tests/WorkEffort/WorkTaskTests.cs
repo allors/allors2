@@ -359,7 +359,7 @@ namespace Allors.Domain
 
 
         private Part CreatePart(string id) =>
-            new PartBuilder(this.Session)
+            new NonUnifiedPartBuilder(this.Session)
             .WithGoodIdentification(new PartNumberBuilder(this.Session)
             .WithIdentification(id)
             .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

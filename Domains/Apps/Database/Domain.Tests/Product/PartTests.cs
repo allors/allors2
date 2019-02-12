@@ -32,7 +32,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPart_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var finishedGood = new PartBuilder(this.Session)
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -45,7 +45,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewPart_WhenDeriving_ThenInventoryItemIsCreated()
         {
-            var finishedGood = new PartBuilder(this.Session)
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

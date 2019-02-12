@@ -31,7 +31,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("1")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -49,7 +49,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("1")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -66,7 +66,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                     .WithIdentification("1")
                                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -87,7 +87,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -107,7 +107,7 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -344,7 +344,7 @@ namespace Allors.Domain
         //    var level3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level3").WithParent(level2).Build();
         //    var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
 
-        //    var good = new GoodBuilder(this.DatabaseSession)
+        //    var good = new NonUnifiedGoodBuilder(this.DatabaseSession)
         //        .WithName("Good")
         //        .WithSku("10101")
         //        .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
@@ -413,14 +413,14 @@ namespace Allors.Domain
         //}
 
         private Part CreatePart(string partId, InventoryItemKind kind)
-            => new PartBuilder(this.Session)
+            => new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification(partId)
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(kind).Build();
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
-            => new GoodBuilder(this.Session)
+            => new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())

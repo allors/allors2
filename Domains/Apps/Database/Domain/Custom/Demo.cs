@@ -134,7 +134,7 @@ namespace Allors
                 .WithModel(new ModelBuilder(this.Session).WithName("model1").Build())
                 .Build();
 
-            var finishedGood = new PartBuilder(this.Session)
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -145,7 +145,7 @@ namespace Allors
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("G1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
@@ -164,7 +164,7 @@ namespace Allors
                 .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
 
-            var finishedGood2 = new PartBuilder(this.Session)
+            var finishedGood2 = new NonUnifiedPartBuilder(this.Session)
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
@@ -174,7 +174,7 @@ namespace Allors
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("G2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
@@ -197,7 +197,7 @@ namespace Allors
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session).Available)
                 .Build();
 
-            var finishedGood3 = new PartBuilder(this.Session)
+            var finishedGood3 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -206,7 +206,7 @@ namespace Allors
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good3 = new GoodBuilder(this.Session)
+            var good3 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("G3")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
@@ -218,14 +218,14 @@ namespace Allors
                 .WithPart(finishedGood3)
                 .Build();
 
-            var finishedGood4 = new PartBuilder(this.Session)
+            var finishedGood4 = new NonUnifiedPartBuilder(this.Session)
                 .WithName("finished good4")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good4 = new GoodBuilder(this.Session)
+            var good4 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("G4")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())

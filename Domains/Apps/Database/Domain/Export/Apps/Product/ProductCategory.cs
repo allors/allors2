@@ -152,9 +152,9 @@ namespace Allors.Domain
             var allGoods = new List<Good>();
             foreach (Product product in this.AllProducts)
             {
-                if (product.GetType().Name == typeof(Good).Name)
+                if (product is Good good)
                 {
-                    allGoods.Add((Good)product);
+                    allGoods.Add(good);
                 }
             }
 
@@ -165,10 +165,8 @@ namespace Allors.Domain
         {
             foreach (Product product in this.AllProducts)
             {
-                if (product.GetType().Name == typeof(Good).Name)
+                if (product is Good good)
                 {
-                    var good = (Good)product;
-
                     if (good.ExistPart && good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
                     {
                         foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in good.Part.InventoryItemsWherePart)

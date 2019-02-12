@@ -1,0 +1,38 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(metaService.m.Part)">parts</a> / {{part?.Name}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container">
+
+    <div class="a-content row">
+
+      <div class="col-md-4 mb-3">
+        <nonunifiedpart-overview-summary></nonunifiedpart-overview-summary>
+      </div>
+
+      <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
+
+        <nonunifiedpart-overview-detail></nonunifiedpart-overview-detail>
+
+        <igoodidentification-panel [roleType]="metaService.m.Part.GoodIdentifications"></igoodidentification-panel>
+
+          <nonserialisedinventoryitem-overview-panel></nonserialisedinventoryitem-overview-panel>
+
+          <serialisedinventoryitem-overview-panel></serialisedinventoryitem-overview-panel>
+
+          <serialiseditem-overview-panel></serialiseditem-overview-panel>
+
+        <pricecomponent-overview-panel></pricecomponent-overview-panel>
+
+        <supplieroffering-overview-panel></supplieroffering-overview-panel>
+
+      </div>
+    </div>
+  </div>
+</div>

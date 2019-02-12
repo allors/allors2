@@ -1,0 +1,34 @@
+<mat-card *ngIf="good">
+
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{good.Name}}</mat-card-title>
+
+    <mat-card-subtitle>
+      <div>{{good.Description}}</div>
+      <div>{{good.Part?.Brand?.Name}}</div>
+      <div>{{good.Part?.Model?.Name}}</div>
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <!-- <div>last modified: {{ good.LastModifiedDate | date}} by {{ good.LastModifiedBy?.displayName}}</div> -->
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <div *ngIf="good.Part" (click)="navigation.overview(good.Part)" style="cursor: pointer;">
+      <div style="color: grey">
+        Part
+      </div>
+      <div>
+        {{good.Part.Name}}
+      </div>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>

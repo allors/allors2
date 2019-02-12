@@ -21,8 +21,8 @@ export const menu: MenuItem[] = [
   {
     title: 'Products', icon: 'label',
     children: [
-      { id: ids.Good },
-      { id: ids.Part },
+      { id: ids.NonUnifiedGood, title: 'Goods' },
+      { id: ids.NonUnifiedPart, title: 'Parts' },
       { id: ids.Catalogue },
       { id: ids.ProductCategory },
       { id: ids.SerialisedItemCharacteristic, title: 'Characteristics' },

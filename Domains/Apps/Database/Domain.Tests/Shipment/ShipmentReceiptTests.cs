@@ -81,7 +81,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

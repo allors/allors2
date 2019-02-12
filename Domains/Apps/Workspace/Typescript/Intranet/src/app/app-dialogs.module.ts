@@ -11,7 +11,7 @@ import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/apps/objects/employment/edit/employment-edit.module';
-import { GoodCreateComponent, GoodCreateModule } from '../allors/material/apps/objects/good/create/good-create.module';
+import { NonUnifiedGoodCreateComponent, NonUnifiedGoodCreateModule } from '../allors/material/apps/objects/nonunifiedgood/create/nonunifiedgood-create.module';
 import { InventoryItemTransactionEditComponent, InventoryItemTransactionEditModule } from '../allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
 import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
@@ -19,7 +19,7 @@ import { LetterCorrespondenceEditComponent, LetterCorrespondenceEditModule } fro
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { OrganisationContactRelationshipEditComponent, OrganisationContactRelationshipEditModule } from '../allors/material/apps/objects/organisationcontactrelationship/edit/organisationcontactrelationship-edit.module';
 import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } from '../allors/material/apps/objects/partycontactmechanism/edit/partycontactmechanism-edit.module';
-import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
+import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/apps/objects/nonunifiedpart/create/nonunifiedpart-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationEditComponent, PhoneCommunicationEditModule } from '../allors/material/apps/objects/phonecommunication/edit/phonecommunication-edit.module';
 import { PostalAddressCreateComponent, PostalAddressCreateModule } from '../allors/material/apps/objects/postaladdress/create/postaladdress-create.module';
@@ -60,7 +60,6 @@ export const create = {
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
-  [ids.Good]: GoodCreateComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InventoryItemTransaction]: InventoryItemTransactionEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
@@ -70,7 +69,8 @@ export const create = {
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
-  [ids.Part]: PartCreateComponent,
+  [ids.NonUnifiedGood]: NonUnifiedGoodCreateComponent,
+  [ids.NonUnifiedPart]: NonUnifiedPartCreateComponent,
   [ids.PartNumber]: IGoodIdentificationEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
   [ids.Person]: PersonCreateComponent,
@@ -157,13 +157,13 @@ export const edit = {
     EmailCommunicationEditModule,
     EmploymentEditModule,
     FaceToFaceCommunicationEditModule,
-    GoodCreateModule,
+    NonUnifiedGoodCreateModule,
     IGoodIdentificationEditModule,
     InventoryItemTransactionEditModule,
     LetterCorrespondenceEditModule,
     OrganisationCreateModule,
     OrganisationContactRelationshipEditModule,
-    PartCreateModule,
+    NonUnifiedPartCreateModule,
     PartyContactmechanismEditModule,
     PersonCreateModule,
     PhoneCommunicationEditModule,
@@ -203,14 +203,14 @@ export const edit = {
     EmailCommunicationEditComponent,
     EmploymentEditComponent,
     FaceToFaceCommunicationEditComponent,
-    GoodCreateComponent,
+    NonUnifiedGoodCreateComponent,
     IGoodIdentificationEditComponent,
     InventoryItemTransactionEditComponent,
     LetterCorrespondenceEditComponent,
     OrganisationCreateComponent,
     OrganisationContactRelationshipEditComponent,
     PersonCreateComponent,
-    PartCreateComponent,
+    NonUnifiedPartCreateComponent,
     PartyContactmechanismEditComponent,
     PhoneCommunicationEditComponent,
     PostalAddressCreateComponent,

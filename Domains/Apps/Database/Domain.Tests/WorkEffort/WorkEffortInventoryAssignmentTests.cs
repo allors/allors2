@@ -33,7 +33,7 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -75,12 +75,12 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session)
+            var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
-            var part2 = new PartBuilder(this.Session)
+            var part2 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -129,7 +129,7 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -170,7 +170,7 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -214,7 +214,7 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -262,12 +262,12 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session)
+            var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
-            var part2 = new PartBuilder(this.Session)
+            var part2 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -317,12 +317,12 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session)
+            var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
-            var part2 = new PartBuilder(this.Session)
+            var part2 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -376,7 +376,7 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

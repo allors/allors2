@@ -36,10 +36,10 @@ import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
-import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
-import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/good-overview.module';
-import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
-import * as PartOverview from 'src/allors/material/apps/objects/part/overview/part-overview.module';
+import * as NonUnifiedGoodList from 'src/allors/material/apps/objects/nonunifiedgood/list/nonunifiedgood-list.module';
+import * as NonUnifiedGoodOverview from 'src/allors/material/apps/objects/nonunifiedgood/overview/nonunifiedgood-overview.module';
+import * as NonUnifiedPartList from 'src/allors/material/apps/objects/nonunifiedpart/list/nonunifiedpart-list.module';
+import * as NonUnifiedPartOverview from 'src/allors/material/apps/objects/nonunifiedpart/overview/nonunifiedpart-overview.module';
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/list/serialiseditemcharacteristic-list.module';
@@ -81,10 +81,10 @@ const modules = [
   RequestItemEdit.RequestItemEditModule,
   QuoteItemEdit.QuoteItemEditModule,
   SalesOrderItemEdit.SalesOrderItemEditModule,
-  GoodList.GoodListModule,
-  GoodOverview.GoodOverviewModule,
-  PartList.PartListModule,
-  PartOverview.PartOverviewModule,
+  NonUnifiedGoodList.NonUnifiedGoodListModule,
+  NonUnifiedGoodOverview.NonUnifiedGoodOverviewModule,
+  NonUnifiedPartList.NonUnifiedPartListModule,
+  NonUnifiedPartOverview.NonUnifiedPartOverviewModule,
   CataloguesOverview.CataloguesOverviewModule,
   CategoriesOverview.ProductCategoriesOverviewModule,
   ProductCharacteristicsOverview.SerialisedItemCharacteristicListModule,
@@ -132,10 +132,10 @@ export const routes: Routes = [
       {
         path: 'products',
         children: [
-          { path: 'goods', component: GoodList.GoodListComponent },
-          { path: 'good/:id', component: GoodOverview.GoodOverviewComponent },
-          { path: 'parts', component: PartList.PartListComponent },
-          { path: 'part/:id', component: PartOverview.PartOverviewComponent },
+          { path: 'nonunifiedgoods', component: NonUnifiedGoodList.NonUnifiedGoodListComponent },
+          { path: 'nonunifiedgood/:id', component: NonUnifiedGoodOverview.NonUnifiedGoodOverviewComponent },
+          { path: 'nonunifiedparts', component: NonUnifiedPartList.NonUnifiedPartListComponent },
+          { path: 'nonunifiedpart/:id', component: NonUnifiedPartOverview.NonUnifiedPartOverviewComponent },
           { path: 'catalogues', component: CataloguesOverview.CataloguesOverviewComponent },
           { path: 'productcategories', component: CategoriesOverview.ProductCategoriesOverviewComponent },
           { path: 'serialiseditemcharacteristics', component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },

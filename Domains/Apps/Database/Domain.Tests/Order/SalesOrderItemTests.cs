@@ -85,14 +85,14 @@ namespace Allors.Domain
                                                             .WithUseAsDefault(true)
                                                             .Build());
 
-            this.part = new PartBuilder(this.Session)
+            this.part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            this.good = new GoodBuilder(this.Session)
+            this.good = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
@@ -111,35 +111,35 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithCustomer(this.shipToCustomer).Build();
 
-            this.variantGood = new GoodBuilder(this.Session)
+            this.variantGood = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("2")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            this.variantGood2 = new GoodBuilder(this.Session)
+            this.variantGood2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10102")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("3")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            this.virtualGood = new GoodBuilder(this.Session)
+            this.virtualGood = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
