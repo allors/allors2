@@ -1,15 +1,19 @@
 namespace Tests.CatalogueTests
 {
+    using Pages.CatalogueTests;
+
     using Xunit;
 
     [Collection("Test collection")]
     public class CatalogueListTest : Test
     {
+        private readonly CatalogueListPage page;
+
         public CatalogueListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToCatalogueList();
+            this.page = dashboard.Sidenav.NavigateToCatalogueList();
         }
 
         [Fact]

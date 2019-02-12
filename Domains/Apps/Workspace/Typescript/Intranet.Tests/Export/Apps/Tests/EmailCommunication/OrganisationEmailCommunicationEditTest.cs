@@ -10,78 +10,54 @@ namespace Tests.EmailCommunicationTests
 
     using Pages.OrganisationTests;
 
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationEmailCommunicationEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
-
-        public EmailAddress employeeEmailAddress { get; set; }
-
-        public EmailAddress personEmailAddress { get; set; }
-
-        private readonly EmailCommunication editCommunicationEvent;
+        private readonly OrganisationListPage organisationListPage;
 
         public OrganisationEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
-
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
-
-            this.employeeEmailAddress = firstEmployee.PersonalEmailAddress;
-            this.personEmailAddress = organisation.CurrentContacts.First.PersonalEmailAddress;
-
-            this.editCommunicationEvent = new EmailCommunicationBuilder(this.Session)
-                .WithSubject("dummy")
-                .WithFromParty(firstEmployee)
-                .WithFromEmail(this.employeeEmailAddress)
-                .WithToParty(organisation.CurrentContacts.First)
-                .WithToEmail(this.personEmailAddress)
-                .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
         public void Create()
         {
-            var before = new EmailCommunications(this.Session).Extent().ToArray();
-
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisations = new Organisations(this.Session).Extent();
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
+            var employeeEmailAddress = employee.PersonalEmailAddress;
+            var personEmailAddress = organisation.CurrentContacts.First.PersonalEmailAddress;
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var before = new EmailCommunications(this.Session).Extent().ToArray();
+            
+            var organisationOverviewPage = this.organisationListPage.Select(organisation);
             var page = organisationOverviewPage.NewEmailCommunication();
 
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.FromParty.Value = employee.PartyName;
-            page.FromEmail.Value = this.employeeEmailAddress.ElectronicAddressString;
-            page.ToParty.Value = contact.PartyName;
-            page.ToEmail.Value = this.personEmailAddress.ElectronicAddressString;
-            page.Subject.Value = "subject";
-            page.Body.Value = "body";
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+                .FromParty.Set(employee.PartyName)
+                .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
+                .ToParty.Set(contact.PartyName)
+                .ToEmail.Set(personEmailAddress.ElectronicAddressString)
+                .Subject.Set("subject")
+                .Body.Set("body")
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -95,9 +71,9 @@ namespace Tests.EmailCommunicationTests
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
             Assert.Equal(employee, communicationEvent.FromParty);
-            Assert.Equal(this.employeeEmailAddress, communicationEvent.FromEmail);
+            Assert.Equal(employeeEmailAddress, communicationEvent.FromEmail);
             Assert.Equal(contact, communicationEvent.ToParty);
-            Assert.Equal(this.personEmailAddress, communicationEvent.ToEmail);
+            Assert.Equal(personEmailAddress, communicationEvent.ToEmail);
             Assert.Equal("subject", communicationEvent.EmailTemplate.SubjectTemplate);
             Assert.Equal("body", communicationEvent.EmailTemplate.BodyTemplate);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
@@ -109,33 +85,45 @@ namespace Tests.EmailCommunicationTests
         [Fact]
         public void Edit()
         {
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisations = new Organisations(this.Session).Extent();
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
+            var employeeEmailAddress = employee.PersonalEmailAddress;
+            var personEmailAddress = organisation.CurrentContacts.First.PersonalEmailAddress;
+
+            var editCommunicationEvent = new EmailCommunicationBuilder(this.Session)
+                .WithSubject("dummy")
+                .WithFromParty(employee)
+                .WithFromEmail(employeeEmailAddress)
+                .WithToParty(organisation.CurrentContacts.First)
+                .WithToEmail(personEmailAddress)
+                .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+            
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
+            var page = this.organisationListPage.Select(organisation).SelectEmailCommunication(editCommunicationEvent);
 
-            var page = organisationOverviewPage.SelectEmailCommunication(this.editCommunicationEvent);
-
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
-            page.FromParty.Value = contact.PartyName;
-            page.FromEmail.Value = this.personEmailAddress.ElectronicAddressString;
-            page.ToParty.Value = employee.PartyName;
-            page.ToEmail.Value = this.employeeEmailAddress.ElectronicAddressString;
-            page.Subject.Value = "new subject";
-            page.Body.Value = "new body";
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .FromParty.Set(contact.PartyName)
+                .FromEmail.Set(personEmailAddress.ElectronicAddressString)
+                .ToParty.Set(employee.PartyName)
+                .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
+                .Subject.Set("new subject")
+                .Body.Set("new body")
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -144,14 +132,14 @@ namespace Tests.EmailCommunicationTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, this.editCommunicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, this.editCommunicationEvent.EventPurposes);
-            Assert.Equal(contact, this.editCommunicationEvent.FromParty);
-            Assert.Equal(this.personEmailAddress, this.editCommunicationEvent.FromEmail);
-            Assert.Equal(employee, this.editCommunicationEvent.ToParty);
-            Assert.Equal(this.employeeEmailAddress, this.editCommunicationEvent.ToEmail);
-            Assert.Equal("new subject", this.editCommunicationEvent.EmailTemplate.SubjectTemplate);
-            Assert.Equal("new body", this.editCommunicationEvent.EmailTemplate.BodyTemplate);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, editCommunicationEvent.EventPurposes);
+            Assert.Equal(contact, editCommunicationEvent.FromParty);
+            Assert.Equal(personEmailAddress, editCommunicationEvent.FromEmail);
+            Assert.Equal(employee, editCommunicationEvent.ToParty);
+            Assert.Equal(employeeEmailAddress, editCommunicationEvent.ToEmail);
+            Assert.Equal("new subject", editCommunicationEvent.EmailTemplate.SubjectTemplate);
+            Assert.Equal("new body", editCommunicationEvent.EmailTemplate.BodyTemplate);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
