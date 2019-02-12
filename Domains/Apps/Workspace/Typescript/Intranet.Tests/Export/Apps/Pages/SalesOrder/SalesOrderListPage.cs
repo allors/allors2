@@ -13,8 +13,8 @@ namespace Pages.SalesOrderTest
         {
         }
 
-        public Input Company => new Input(this.Driver, formControlName: "company");
+        public Input<SalesOrderListPage> Company => this.Input(formControlName: "company");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<SalesOrderListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

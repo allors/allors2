@@ -13,6 +13,6 @@ namespace Pages.PurchaseInvoiceTest
         {
         }
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<PurchaseInvoiceListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

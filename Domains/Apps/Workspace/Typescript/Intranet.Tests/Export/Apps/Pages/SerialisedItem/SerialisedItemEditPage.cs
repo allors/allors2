@@ -16,22 +16,22 @@ namespace Pages.SerialisedItemTests
         {
         }
 
-        public MaterialSingleSelect Salutation => new MaterialSingleSelect(this.Driver, roleType: M.Person.Salutation);
+        public MaterialSingleSelect<SerialisedItemEditPage> Salutation => this.MaterialSingleSelect(roleType: M.Person.Salutation);
 
-        public MaterialSingleSelect Gender => new MaterialSingleSelect(this.Driver, roleType: M.Person.Gender);
+        public MaterialSingleSelect<SerialisedItemEditPage> Gender => this.MaterialSingleSelect(roleType: M.Person.Gender);
 
-        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Person.Locale);
+        public MaterialSingleSelect<SerialisedItemEditPage> Locale => this.MaterialSingleSelect(roleType: M.Person.Locale);
 
-        public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
+        public MaterialInput<SerialisedItemEditPage> FirstName => this.MaterialInput(roleType: M.Person.FirstName);
 
-        public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
+        public MaterialInput<SerialisedItemEditPage> MiddleName => this.MaterialInput(roleType: M.Person.MiddleName);
 
-        public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
+        public MaterialInput<SerialisedItemEditPage> LastName => this.MaterialInput(roleType: M.Person.LastName);
 
-        public MaterialInput Function => new MaterialInput(this.Driver, roleType: M.Person.Function);
+        public MaterialInput<SerialisedItemEditPage> Function => this.MaterialInput(roleType: M.Person.Function);
 
-        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
+        public MaterialTextArea<SerialisedItemEditPage> Comment => this.MaterialTextArea(roleType: M.Person.Comment);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<SerialisedItemEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }

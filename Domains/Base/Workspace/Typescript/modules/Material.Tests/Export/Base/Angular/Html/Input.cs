@@ -4,8 +4,6 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    
-
     public class Input : Component
     {
         public Input(IWebDriver driver, By selector = null, string formControlName = null)

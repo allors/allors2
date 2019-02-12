@@ -16,34 +16,34 @@ namespace Pages.PhoneCommunicationTests
         {
         }
 
-        public MaterialSingleSelect EventState => new MaterialSingleSelect(this.Driver, roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSingleSelect<PhoneCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialMultipleSelect<PhoneCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.FromParty);
+        public MaterialSingleSelect<PhoneCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.PhoneCommunication.FromParty);
 
-        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.ToParty);
+        public MaterialSingleSelect<PhoneCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.PhoneCommunication.ToParty);
 
-        public MaterialSingleSelect PhoneNumber => new MaterialSingleSelect(this.Driver, roleType: M.PhoneCommunication.PhoneNumber);
+        public MaterialSingleSelect<PhoneCommunicationEditPage> PhoneNumber => this.MaterialSingleSelect(roleType: M.PhoneCommunication.PhoneNumber);
 
-        public MaterialSlideToggle LeftVoiceMail => new MaterialSlideToggle(this.Driver, roleType: M.PhoneCommunication.LeftVoiceMail);
+        public MaterialSlideToggle<PhoneCommunicationEditPage> LeftVoiceMail => this.MaterialSlideToggle(roleType: M.PhoneCommunication.LeftVoiceMail);
 
-        public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
+        public MaterialInput<PhoneCommunicationEditPage> Subject => this.MaterialInput(roleType: M.CommunicationEvent.Subject);
 
-        public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledStart);
+        public MaterialDatetimePicker<PhoneCommunicationEditPage> ScheduledStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledStart);
 
-        public MaterialDatetimePicker ScheduledEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledEnd);
+        public MaterialDatetimePicker<PhoneCommunicationEditPage> ScheduledEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledEnd);
 
-        public MaterialDatetimePicker ActualStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualStart);
+        public MaterialDatetimePicker<PhoneCommunicationEditPage> ActualStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualStart);
 
-        public MaterialDatetimePicker ActualEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualEnd);
+        public MaterialDatetimePicker<PhoneCommunicationEditPage> ActualEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualEnd);
 
-        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.CommunicationEvent.Comment);
+        public MaterialTextArea<PhoneCommunicationEditPage> Comment => this.MaterialTextArea(roleType: M.CommunicationEvent.Comment);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<PhoneCommunicationEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<PhoneCommunicationEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewCommunicationEvent => new Button(this.Driver, By.CssSelector("div[data-allors-class='communicationevent']"));
+        public Button<PhoneCommunicationEditPage> NewCommunicationEvent => this.Button(By.CssSelector("div[data-allors-class='communicationevent']"));
     }
 }

@@ -3,13 +3,11 @@ namespace Angular.Material
     using System.Diagnostics.CodeAnalysis;
 
     using Allors;
-    using Allors.Meta;
+
+    using Angular;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
-
-    using Angular;
-    
 
     public class MaterialList : Component
     {

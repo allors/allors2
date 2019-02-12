@@ -16,25 +16,25 @@ namespace Pages.OrganisationTests
         {
         }
 
-        public MaterialInput Name => new MaterialInput(this.Driver, roleType: M.Organisation.Name);
+        public MaterialInput<OrganisationEditPage> Name => this.MaterialInput(roleType: M.Organisation.Name);
 
-        public MaterialInput TaxNumber => new MaterialInput(this.Driver, roleType: M.Organisation.TaxNumber);
+        public MaterialInput<OrganisationEditPage> TaxNumber => this.MaterialInput(roleType: M.Organisation.TaxNumber);
 
-        public MaterialSingleSelect LegalForm => new MaterialSingleSelect(this.Driver, roleType: M.Organisation.LegalForm);
+        public MaterialSingleSelect<OrganisationEditPage> LegalForm => this.MaterialSingleSelect(roleType: M.Organisation.LegalForm);
 
-        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Organisation.Locale);
+        public MaterialSingleSelect<OrganisationEditPage> Locale => this.MaterialSingleSelect(roleType: M.Organisation.Locale);
 
-        public MaterialMultipleSelect IndustryClassifications => new MaterialMultipleSelect(this.Driver, roleType: M.Organisation.IndustryClassifications);
+        public MaterialMultipleSelect<OrganisationEditPage> IndustryClassifications => this.MaterialMultipleSelect(roleType: M.Organisation.IndustryClassifications);
 
-        public MaterialMultipleSelect CustomClassifications => new MaterialMultipleSelect(this.Driver, roleType: M.Organisation.CustomClassifications);
+        public MaterialMultipleSelect<OrganisationEditPage> CustomClassifications => this.MaterialMultipleSelect(roleType: M.Organisation.CustomClassifications);
 
-        public MaterialSlideToggle IsManufacturer => new MaterialSlideToggle(this.Driver, roleType: M.Organisation.IsManufacturer);
+        public MaterialSlideToggle<OrganisationEditPage> IsManufacturer => this.MaterialSlideToggle(roleType: M.Organisation.IsManufacturer);
 
-        public MaterialSlideToggle IsInternalOrganisation => new MaterialSlideToggle(this.Driver, roleType: M.Organisation.IsInternalOrganisation);
+        public MaterialSlideToggle<OrganisationEditPage> IsInternalOrganisation => this.MaterialSlideToggle(roleType: M.Organisation.IsInternalOrganisation);
 
-        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Organisation.Comment);
+        public MaterialTextArea<OrganisationEditPage> Comment => this.MaterialTextArea(roleType: M.Organisation.Comment);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<OrganisationEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
     }
 }

@@ -13,8 +13,8 @@ namespace Pages.ProductTest
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "name");
+        public Input<ProductListPage> Name => this.Input(formControlName: "name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<ProductListPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
     }
 }

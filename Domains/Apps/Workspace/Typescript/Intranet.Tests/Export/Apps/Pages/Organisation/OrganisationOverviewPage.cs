@@ -2,10 +2,10 @@ namespace Pages.OrganisationTests
 {
     using Allors.Domain;
 
-    using OpenQA.Selenium;
-
     using Angular.Html;
     using Angular.Material;
+
+    using OpenQA.Selenium;
 
     using Pages.ApplicationTests;
     using Pages.EmailCommunicationTests;
@@ -14,9 +14,6 @@ namespace Pages.OrganisationTests
     using Pages.PartyRelationshipTests;
     using Pages.PhoneCommunicationTests;
 
-    using Tests.PartyRelationshipTests;
-    using Tests.PhoneCommunicationTests;
-
     public class OrganisationOverviewPage : MainPage
     {
         public OrganisationOverviewPage(IWebDriver driver)
@@ -24,33 +21,33 @@ namespace Pages.OrganisationTests
         {
         }
 
-        public Element DetailPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='detail']"));
+        public Element<OrganisationOverviewPage> DetailPanel => this.Element(By.CssSelector("div[data-allors-panel='detail']"));
 
-        public Element CommunicationEventPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='communicationevent']"));
+        public Element<OrganisationOverviewPage> CommunicationEventPanel => this.Element(By.CssSelector("div[data-allors-panel='communicationevent']"));
 
-        public Element PartyRelationshipPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='partyrelationship']"));
+        public Element<OrganisationOverviewPage> PartyRelationshipPanel => this.Element(By.CssSelector("div[data-allors-panel='partyrelationship']"));
 
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MaterialTable<OrganisationOverviewPage> Table => this.MaterialTable();
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<OrganisationOverviewPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
 
-        public Button BtnFaceToFaceCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='FaceToFaceCommunication']"));
+        public Button<OrganisationOverviewPage> BtnFaceToFaceCommunication => this.Button(By.CssSelector("button[data-allors-class='FaceToFaceCommunication']"));
 
-        public Button BtnEmailCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='EmailCommunication']"));
+        public Button<OrganisationOverviewPage> BtnEmailCommunication => this.Button(By.CssSelector("button[data-allors-class='EmailCommunication']"));
 
-        public Button BtnLetterCorrespondence => new Button(this.Driver, By.CssSelector("button[data-allors-class='LetterCorrespondence']"));
+        public Button<OrganisationOverviewPage> BtnLetterCorrespondence => this.Button(By.CssSelector("button[data-allors-class='LetterCorrespondence']"));
 
-        public Button BtnPhoneCommunication => new Button(this.Driver, By.CssSelector("button[data-allors-class='PhoneCommunication']"));
+        public Button<OrganisationOverviewPage> BtnPhoneCommunication => this.Button(By.CssSelector("button[data-allors-class='PhoneCommunication']"));
 
-        public Button BtnCustomerRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='CustomerRelationship']"));
+        public Button<OrganisationOverviewPage> BtnCustomerRelationship => this.Button(By.CssSelector("button[data-allors-class='CustomerRelationship']"));
 
-        public Button BtnEmployment => new Button(this.Driver, By.CssSelector("button[data-allors-class='Employment']"));
+        public Button<OrganisationOverviewPage> BtnEmployment => this.Button(By.CssSelector("button[data-allors-class='Employment']"));
 
-        public Button BtnSupplierRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='SupplierRelationship']"));
+        public Button<OrganisationOverviewPage> BtnSupplierRelationship => this.Button(By.CssSelector("button[data-allors-class='SupplierRelationship']"));
 
-        public Button BtnOrganisationContactRelationship => new Button(this.Driver, By.CssSelector("button[data-allors-class='OrganisationContactRelationship']"));
+        public Button<OrganisationOverviewPage> BtnOrganisationContactRelationship => this.Button(By.CssSelector("button[data-allors-class='OrganisationContactRelationship']"));
 
-        public Anchor List => new Anchor(this.Driver, By.LinkText("Organisations"));
+        public Anchor<OrganisationOverviewPage> List => this.Anchor(By.LinkText("Organisations"));
 
         public OrganisationEditPage Edit()
         {

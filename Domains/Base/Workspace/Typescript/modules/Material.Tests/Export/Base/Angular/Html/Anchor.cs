@@ -14,7 +14,7 @@ namespace Angular.Html
 
         public By Selector { get; }
 
-        public bool IsVisble => this.SelectorIsVisible(this.Selector);
+        public bool IsVisible => this.SelectorIsVisible(this.Selector);
 
         public void Click()
         {

@@ -34,7 +34,7 @@ namespace Tests
 
         public By Selector { get; }
 
-        public Anchor Home => new Anchor(this.Driver, this.ByHref("/"));
+        public Anchor Home => this.Anchor(this.ByHref("/"));
 
         public Element ContactsGroup => this.Group("Contacts");
 
@@ -78,7 +78,7 @@ namespace Tests
 
         public Anchor WorkEfforts => this.Link(M.WorkEffort.ObjectType);
 
-        public Button Toggle => new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
+        public Button Toggle => this.Button(By.CssSelector("button[aria-label='Toggle sidenav']"));
 
         public DashboardPage NavigateToHome()
         {
@@ -175,7 +175,7 @@ namespace Tests
         {
             this.Driver.WaitForAngular();
 
-            if (!link.IsVisble)
+            if (!link.IsVisible)
             {
                 if (!group.IsVisible)
                 {

@@ -16,22 +16,22 @@ namespace Pages.TelecommunicationsNumberTests
         {
         }
 
-        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialMultipleSelect<TelecommunicationsNumberEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
-        public MaterialInput CountryCode => new MaterialInput(this.Driver, roleType: M.TelecommunicationsNumber.CountryCode);
+        public MaterialInput<TelecommunicationsNumberEditPage> CountryCode => this.MaterialInput(roleType: M.TelecommunicationsNumber.CountryCode);
 
-        public MaterialInput AreaCode => new MaterialInput(this.Driver, roleType: M.TelecommunicationsNumber.AreaCode);
+        public MaterialInput<TelecommunicationsNumberEditPage> AreaCode => this.MaterialInput(roleType: M.TelecommunicationsNumber.AreaCode);
 
-        public MaterialInput ContactNumber => new MaterialInput(this.Driver, roleType: M.TelecommunicationsNumber.ContactNumber);
+        public MaterialInput<TelecommunicationsNumberEditPage> ContactNumber => this.MaterialInput(roleType: M.TelecommunicationsNumber.ContactNumber);
 
-        public MaterialSingleSelect ContactMechanismType => new MaterialSingleSelect(this.Driver, roleType: M.TelecommunicationsNumber.ContactMechanismType);
+        public MaterialSingleSelect<TelecommunicationsNumberEditPage> ContactMechanismType => this.MaterialSingleSelect(roleType: M.TelecommunicationsNumber.ContactMechanismType);
 
-        public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);
+        public MaterialTextArea<TelecommunicationsNumberEditPage> Description => this.MaterialTextArea(roleType: M.ContactMechanism.Description);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<TelecommunicationsNumberEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<TelecommunicationsNumberEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewContactMechanism=> new Button(this.Driver, By.CssSelector("div[data-allors-class='contactmechanism']"));
+        public Button<TelecommunicationsNumberEditPage> NewContactMechanism => this.Button(By.CssSelector("div[data-allors-class='contactmechanism']"));
     }
 }

@@ -2,10 +2,10 @@ namespace Pages.PartyContactMachanismTests
 {
     using Allors.Meta;
 
-    using OpenQA.Selenium;
-
     using Angular.Html;
     using Angular.Material;
+
+    using OpenQA.Selenium;
 
     using Pages.ApplicationTests;
 
@@ -16,34 +16,34 @@ namespace Pages.PartyContactMachanismTests
         {
         }
 
-        public MaterialDatePicker FromDate => new MaterialDatePicker(this.Driver, roleType: M.PartyContactMechanism.FromDate);
+        public MaterialDatePicker<PartyContactMachanismEditPage> FromDate => this.MaterialDatePicker(roleType: M.PartyContactMechanism.FromDate);
 
-        public MaterialDatePicker ThroughDate => new MaterialDatePicker(this.Driver, roleType: M.PartyContactMechanism.ThroughDate);
+        public MaterialDatePicker<PartyContactMachanismEditPage> ThroughDate => this.MaterialDatePicker(roleType: M.PartyContactMechanism.ThroughDate);
 
-        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialMultipleSelect<PartyContactMachanismEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
-        public MaterialInput Address1 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address1);
+        public MaterialInput<PartyContactMachanismEditPage> Address1 => this.MaterialInput(roleType: M.PostalAddress.Address1);
 
-        public MaterialInput Address2 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address2);
+        public MaterialInput<PartyContactMachanismEditPage> Address2 => this.MaterialInput(roleType: M.PostalAddress.Address2);
 
-        public MaterialInput Address3 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address3);
+        public MaterialInput<PartyContactMachanismEditPage> Address3 => this.MaterialInput(roleType: M.PostalAddress.Address3);
 
-        public MaterialInput Locality => new MaterialInput(this.Driver, roleType: M.PostalBoundary.Locality);
+        public MaterialInput<PartyContactMachanismEditPage> Locality => this.MaterialInput(roleType: M.PostalBoundary.Locality);
 
-        public MaterialInput PostalCode => new MaterialInput(this.Driver, roleType: M.PostalBoundary.PostalCode);
+        public MaterialInput<PartyContactMachanismEditPage> PostalCode => this.MaterialInput(roleType: M.PostalBoundary.PostalCode);
 
-        public MaterialSingleSelect Country => new MaterialSingleSelect(this.Driver, roleType: M.PostalBoundary.Country);
+        public MaterialSingleSelect<PartyContactMachanismEditPage> Country => this.MaterialSingleSelect(roleType: M.PostalBoundary.Country);
 
-        public MaterialSlideToggle UseAsDefault => new MaterialSlideToggle(this.Driver, roleType: M.PartyContactMechanism.UseAsDefault);
+        public MaterialSlideToggle<PartyContactMachanismEditPage> UseAsDefault => this.MaterialSlideToggle(roleType: M.PartyContactMechanism.UseAsDefault);
 
-        public MaterialSlideToggle NonSolicitationIndicator => new MaterialSlideToggle(this.Driver, roleType: M.PartyContactMechanism.NonSolicitationIndicator);
+        public MaterialSlideToggle<PartyContactMachanismEditPage> NonSolicitationIndicator => this.MaterialSlideToggle(roleType: M.PartyContactMechanism.NonSolicitationIndicator);
 
-        public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);
+        public MaterialTextArea<PartyContactMachanismEditPage> Description => this.MaterialTextArea(roleType: M.ContactMechanism.Description);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<PartyContactMachanismEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<PartyContactMachanismEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewContactMechanism=> new Button(this.Driver, By.CssSelector("div[data-allors-class='contactmechanism']"));
+        public Button<PartyContactMachanismEditPage> NewContactMechanism => this.Button(By.CssSelector("div[data-allors-class='contactmechanism']"));
     }
 }

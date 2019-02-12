@@ -137,9 +137,9 @@ namespace Tests
                 .Build();
 
             var finishedGood = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
+                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
                 .WithName("finished good")
                 .WithBrand(brand)
                 .WithModel(brand.Models[0])
@@ -162,9 +162,9 @@ namespace Tests
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
-                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
+                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10102")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
@@ -183,9 +183,9 @@ namespace Tests
             new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility).Build();
 
             var finishedGood3 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
+                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithManufacturedBy(manufacturer)

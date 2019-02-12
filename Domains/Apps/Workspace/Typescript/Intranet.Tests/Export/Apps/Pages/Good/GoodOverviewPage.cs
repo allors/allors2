@@ -14,9 +14,9 @@ namespace Pages.PersonTests
         {
         }
 
-        public Button EditButton => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
+        public Button<GoodOverviewPage> EditButton => this.Button(By.XPath("//button/span[contains(text(), 'Edit')]"));
 
-        public MaterialList List => new MaterialList(this.Driver);
+        public MaterialList<GoodOverviewPage> List => this.MaterialList();
 
         public GoodEditPage Edit()
         {

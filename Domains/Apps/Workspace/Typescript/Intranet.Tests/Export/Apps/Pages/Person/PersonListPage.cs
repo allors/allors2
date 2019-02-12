@@ -9,8 +9,6 @@ namespace Pages.PersonTests
 
     using Pages.ApplicationTests;
 
-    using Tests.PersonTests;
-
     public class PersonListPage : MainPage
     {
         public PersonListPage(IWebDriver driver)
@@ -18,11 +16,11 @@ namespace Pages.PersonTests
         {
         }
 
-        public Input LastName => new Input(this.Driver, formControlName: "lastName");
+        public Input<PersonListPage> LastName => this.Input(formControlName: "lastName");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<PersonListPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
 
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MaterialTable<PersonListPage> Table => this.MaterialTable();
 
         public PersonOverviewPage Select(Person person)
         {

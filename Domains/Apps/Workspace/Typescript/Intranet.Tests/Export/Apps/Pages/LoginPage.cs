@@ -1,9 +1,9 @@
 namespace Pages.ApplicationTests
 {
-    using OpenQA.Selenium;
-
     using Angular;
     using Angular.Html;
+
+    using OpenQA.Selenium;
 
     public class LoginPage : Page
     {
@@ -11,9 +11,9 @@ namespace Pages.ApplicationTests
         {
         }
 
-        public Input UserName => new Input(this.Driver, formControlName: "userName");
+        public Input<LoginPage> UserName => this.Input(formControlName: "userName");
 
-        public Button Button => new Button(this.Driver, By.CssSelector("button"));
+        public Button<LoginPage> Button => this.Button(By.CssSelector("button"));
 
         public DashboardPage Login(string userName = "administrator")
         {

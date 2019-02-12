@@ -13,8 +13,8 @@ namespace Pages.RequestsForQuoteTest
         {
         }
 
-        public Input Company => new Input(this.Driver, formControlName: "company");
+        public Input<RequestForQuoteListPage> Company => this.Input(formControlName: "company");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<RequestForQuoteListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

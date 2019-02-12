@@ -14,11 +14,11 @@ namespace Pages.SerialisedItemTests
         {
         }
 
-        public Element DetailPanel => new Element(this.Driver, By.CssSelector("div[data-allors-panel='detail']"));
+        public Element<SerialisedItemOverviewPage> DetailPanel => this.Element(By.CssSelector("div[data-allors-panel='detail']"));
 
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MaterialTable<SerialisedItemOverviewPage> Table => this.MaterialTable();
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<SerialisedItemOverviewPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
 
         public SerialisedItemEditPage Edit()
         {

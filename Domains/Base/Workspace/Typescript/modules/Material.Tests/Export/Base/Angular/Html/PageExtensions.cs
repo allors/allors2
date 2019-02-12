@@ -3,8 +3,6 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    
-
     public static partial class PageExtensions
     {
         public static Anchor<T> Anchor<T>(this T @this, By selector) where T : Page
@@ -22,7 +20,7 @@ namespace Angular.Html
             return new Element<T>(@this, selector);
         }
 
-        public static Input<T> Input<T>(this T @this, By selector, string formControlName = null) where T : Page
+        public static Input<T> Input<T>(this T @this, By selector = null, string formControlName = null) where T : Page
         {
             return new Input<T>(@this, selector, formControlName);
         }

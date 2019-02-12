@@ -4,8 +4,6 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    
-
     public class Button : Component
     {
         public Button(IWebDriver driver, By selector)

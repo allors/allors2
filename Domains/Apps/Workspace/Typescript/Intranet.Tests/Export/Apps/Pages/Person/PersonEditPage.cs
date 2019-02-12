@@ -16,23 +16,22 @@ namespace Pages.PersonTests
         {
         }
 
-        public MaterialSingleSelect Salutation => new MaterialSingleSelect(this.Driver, roleType: M.Person.Salutation);
+        public MaterialSingleSelect<PersonEditPage> Salutation => this.MaterialSingleSelect(roleType: M.Person.Salutation);
 
-        public MaterialSingleSelect Gender => new MaterialSingleSelect(this.Driver, roleType: M.Person.Gender);
+        public MaterialSingleSelect<PersonEditPage> Gender => this.MaterialSingleSelect(roleType: M.Person.Gender);
 
-        public MaterialSingleSelect Locale => new MaterialSingleSelect(this.Driver, roleType: M.Person.Locale);
+        public MaterialSingleSelect<PersonEditPage> Locale => this.MaterialSingleSelect(roleType: M.Person.Locale);
 
-        public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
+        public MaterialInput<PersonEditPage> FirstName => this.MaterialInput(roleType: M.Person.FirstName);
 
-        public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
+        public MaterialInput<PersonEditPage> MiddleName => this.MaterialInput(roleType: M.Person.MiddleName);
 
-        public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
+        public MaterialInput<PersonEditPage> LastName => this.MaterialInput(roleType: M.Person.LastName);
 
-        public MaterialInput Function => new MaterialInput(this.Driver, roleType: M.Person.Function);
+        public MaterialInput<PersonEditPage> Function => this.MaterialInput(roleType: M.Person.Function);
 
-        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
+        public MaterialTextArea<PersonEditPage> Comment => this.MaterialTextArea(roleType: M.Person.Comment);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
-
+        public Button<PersonEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }

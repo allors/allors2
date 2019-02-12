@@ -16,26 +16,26 @@ namespace Pages.PostalAddressTests
         {
         }
 
-        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialMultipleSelect<PostalAddressEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
-        public MaterialInput Address1 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address1);
+        public MaterialInput<PostalAddressEditPage> Address1 => this.MaterialInput(roleType: M.PostalAddress.Address1);
 
-        public MaterialInput Address2 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address2);
+        public MaterialInput<PostalAddressEditPage> Address2 => this.MaterialInput(roleType: M.PostalAddress.Address2);
 
-        public MaterialInput Address3 => new MaterialInput(this.Driver, roleType: M.PostalAddress.Address3);
+        public MaterialInput<PostalAddressEditPage> Address3 => this.MaterialInput(roleType: M.PostalAddress.Address3);
 
-        public MaterialInput Locality => new MaterialInput(this.Driver, roleType: M.PostalBoundary.Locality);
+        public MaterialInput<PostalAddressEditPage> Locality => this.MaterialInput(roleType: M.PostalBoundary.Locality);
 
-        public MaterialInput PostalCode => new MaterialInput(this.Driver, roleType: M.PostalBoundary.PostalCode);
+        public MaterialInput<PostalAddressEditPage> PostalCode => this.MaterialInput(roleType: M.PostalBoundary.PostalCode);
 
-        public MaterialSingleSelect Country => new MaterialSingleSelect(this.Driver, roleType: M.PostalBoundary.Country);
+        public MaterialSingleSelect<PostalAddressEditPage> Country => this.MaterialSingleSelect(roleType: M.PostalBoundary.Country);
 
-        public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);
+        public MaterialTextArea<PostalAddressEditPage> Description => this.MaterialTextArea(roleType: M.ContactMechanism.Description);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<PostalAddressEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<PostalAddressEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewContactMechanism=> new Button(this.Driver, By.CssSelector("div[data-allors-class='contactmechanism']"));
+        public Button<PostalAddressEditPage> NewContactMechanism => this.Button(By.CssSelector("div[data-allors-class='contactmechanism']"));
     }
 }

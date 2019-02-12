@@ -16,34 +16,34 @@ namespace Pages.EmailCommunicationTests
         {
         }
 
-        public MaterialSingleSelect EventState => new MaterialSingleSelect(this.Driver, roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSingleSelect<EmailCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialMultipleSelect<EmailCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.FromParty);
+        public MaterialSingleSelect<EmailCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.EmailCommunication.FromParty);
 
-        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.ToParty);
+        public MaterialSingleSelect<EmailCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.EmailCommunication.ToParty);
 
-        public MaterialSingleSelect FromEmail => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.FromEmail);
+        public MaterialSingleSelect<EmailCommunicationEditPage> FromEmail => this.MaterialSingleSelect(roleType: M.EmailCommunication.FromEmail);
 
-        public MaterialSingleSelect ToEmail => new MaterialSingleSelect(this.Driver, roleType: M.EmailCommunication.ToEmail);
+        public MaterialSingleSelect<EmailCommunicationEditPage> ToEmail => this.MaterialSingleSelect(roleType: M.EmailCommunication.ToEmail);
 
-        public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.EmailTemplate.SubjectTemplate);
+        public MaterialInput<EmailCommunicationEditPage> Subject => this.MaterialInput(roleType: M.EmailTemplate.SubjectTemplate);
 
-        public MaterialTextArea Body => new MaterialTextArea(this.Driver, roleType: M.EmailTemplate.BodyTemplate);
+        public MaterialTextArea<EmailCommunicationEditPage> Body => this.MaterialTextArea(roleType: M.EmailTemplate.BodyTemplate);
 
-        public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledStart);
+        public MaterialDatetimePicker<EmailCommunicationEditPage> ScheduledStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledStart);
 
-        public MaterialDatetimePicker ScheduledEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledEnd);
+        public MaterialDatetimePicker<EmailCommunicationEditPage> ScheduledEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledEnd);
 
-        public MaterialDatetimePicker ActualStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualStart);
+        public MaterialDatetimePicker<EmailCommunicationEditPage> ActualStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualStart);
 
-        public MaterialDatetimePicker ActualEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualEnd);
+        public MaterialDatetimePicker<EmailCommunicationEditPage> ActualEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualEnd);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<EmailCommunicationEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<EmailCommunicationEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewCommunicationEvent => new Button(this.Driver, By.CssSelector("div[data-allors-class='communicationevent']"));
+        public Button<EmailCommunicationEditPage> NewCommunicationEvent => this.Button(By.CssSelector("div[data-allors-class='communicationevent']"));
     }
 }

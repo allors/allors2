@@ -4,8 +4,6 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    
-
     public class Element : Component
     {
         public Element(IWebDriver driver, By selector)

@@ -14,8 +14,8 @@ namespace Pages.SerialisedItemCharacteristicTest
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "name");
+        public Input<SerialisedItemCharacteristicListPage> Name => this.Input(formControlName: "name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<SerialisedItemCharacteristicListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

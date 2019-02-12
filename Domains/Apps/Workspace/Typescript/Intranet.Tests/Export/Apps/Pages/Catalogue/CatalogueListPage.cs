@@ -13,8 +13,8 @@ namespace Pages.CatalogueTests
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "name");
+        public Input<CatalogueListPage> Name => this.Input(formControlName: "name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<CatalogueListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

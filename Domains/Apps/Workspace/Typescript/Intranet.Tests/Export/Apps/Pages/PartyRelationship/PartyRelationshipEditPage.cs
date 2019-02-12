@@ -16,24 +16,24 @@ namespace Pages.PartyRelationshipTests
         {
         }
 
-        public MaterialDatePicker FromDate => new MaterialDatePicker(this.Driver, roleType: M.PartyRelationship.FromDate);
+        public MaterialDatePicker<PartyRelationshipEditPage> FromDate => this.MaterialDatePicker(roleType: M.PartyRelationship.FromDate);
 
-        public MaterialDatePicker ThroughDate => new MaterialDatePicker(this.Driver, roleType: M.PartyRelationship.ThroughDate);
+        public MaterialDatePicker<PartyRelationshipEditPage> ThroughDate => this.MaterialDatePicker(roleType: M.PartyRelationship.ThroughDate);
 
-        public MaterialSingleSelect Employer => new MaterialSingleSelect(this.Driver, roleType: M.Employment.Employer);
+        public MaterialSingleSelect<PartyRelationshipEditPage> Employer => this.MaterialSingleSelect(roleType: M.Employment.Employer);
 
-        public MaterialSingleSelect Employee => new MaterialSingleSelect(this.Driver, roleType: M.Employment.Employee);
+        public MaterialSingleSelect<PartyRelationshipEditPage> Employee => this.MaterialSingleSelect(roleType: M.Employment.Employee);
 
-        public MaterialSingleSelect Contact => new MaterialSingleSelect(this.Driver, roleType: M.OrganisationContactRelationship.Contact);
+        public MaterialSingleSelect<PartyRelationshipEditPage> Contact => this.MaterialSingleSelect(roleType: M.OrganisationContactRelationship.Contact);
 
-        public MaterialSingleSelect Organisation => new MaterialSingleSelect(this.Driver, roleType: M.OrganisationContactRelationship.Organisation);
+        public MaterialSingleSelect<PartyRelationshipEditPage> Organisation => this.MaterialSingleSelect(roleType: M.OrganisationContactRelationship.Organisation);
 
-        public MaterialMultipleSelect ContactKinds => new MaterialMultipleSelect(this.Driver, roleType: M.OrganisationContactRelationship.ContactKinds);
+        public MaterialMultipleSelect<PartyRelationshipEditPage> ContactKinds => this.MaterialMultipleSelect(roleType: M.OrganisationContactRelationship.ContactKinds);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<PartyRelationshipEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<PartyRelationshipEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewpartyRelationship => new Button(this.Driver, By.CssSelector("div[data-allors-class='partyrelationship']"));
+        public Button<PartyRelationshipEditPage> NewpartyRelationship => this.Button(By.CssSelector("div[data-allors-class='partyrelationship']"));
     }
 }

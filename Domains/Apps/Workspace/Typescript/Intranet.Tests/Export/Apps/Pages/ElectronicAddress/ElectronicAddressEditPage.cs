@@ -16,16 +16,16 @@ namespace Pages.ElectronicAddressTests
         {
         }
 
-        public MaterialMultipleSelect ContactPurposes => new MaterialMultipleSelect(this.Driver, roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialMultipleSelect<ElectronicAddressEditPage> ContactPurposes => this.MaterialMultipleSelect(M.PartyContactMechanism.ContactPurposes);
 
-        public MaterialInput ElectronicAddressString => new MaterialInput(this.Driver, roleType: M.ElectronicAddress.ElectronicAddressString);
+        public MaterialInput<ElectronicAddressEditPage> ElectronicAddressString => this.MaterialInput(M.ElectronicAddress.ElectronicAddressString);
 
-        public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.ContactMechanism.Description);
+        public MaterialTextArea<ElectronicAddressEditPage> Description => this.MaterialTextArea(M.ContactMechanism.Description);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<ElectronicAddressEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<ElectronicAddressEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewContactMechanism=> new Button(this.Driver, By.CssSelector("div[data-allors-class='contactmechanism']"));
+        public Button<ElectronicAddressEditPage> NewContactMechanism => this.Button(By.CssSelector("div[data-allors-class='contactmechanism']"));
     }
 }

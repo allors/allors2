@@ -16,11 +16,11 @@ namespace Pages.OrganisationTests
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "Name");
+        public Input<OrganisationListPage> Name => this.Input(formControlName: "Name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<OrganisationListPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
 
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MaterialTable<OrganisationListPage> Table => this.MaterialTable();
 
         public OrganisationOverviewPage Select(Organisation organisation)
         {

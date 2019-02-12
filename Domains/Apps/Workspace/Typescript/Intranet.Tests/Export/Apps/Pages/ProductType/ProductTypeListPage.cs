@@ -13,8 +13,8 @@ namespace Pages.ProductTypeTest
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "name");
+        public Input<ProductTypeListPage> Name => this.Input(formControlName: "name");
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<ProductTypeListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

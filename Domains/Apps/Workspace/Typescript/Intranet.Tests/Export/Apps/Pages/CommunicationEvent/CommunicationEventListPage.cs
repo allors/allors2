@@ -16,17 +16,15 @@ namespace Pages.CommunicationEventTests
         {
         }
 
-        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
+        public Anchor<CommunicationEventListPage> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
 
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MaterialTable<CommunicationEventListPage> Table => this.MaterialTable();
 
-        public CommunicationEventListPage Select(CommunicationEvent communicationEvent)
+        public void Select(CommunicationEvent communicationEvent)
         {
             var row = this.Table.FindRow(communicationEvent);
             var cell = row.FindCell("subject");
             cell.Click();
-
-            return new CommunicationEventListPage(this.Driver);
         }
     }
 }

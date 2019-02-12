@@ -2,12 +2,9 @@ namespace Angular.Material
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using Allors;
+    using Angular;
 
     using OpenQA.Selenium;
-
-    using Angular;
-    
 
     public class MaterialListItem : Component
     {

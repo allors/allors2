@@ -2,10 +2,9 @@ namespace Angular.Material
 {
     using Allors.Meta;
 
-    using OpenQA.Selenium;
-
     using Angular;
-    
+
+    using OpenQA.Selenium;
 
     public static partial class PageExtensions
     {
@@ -72,6 +71,11 @@ namespace Angular.Material
         public static MaterialSlider<T> MaterialSlider<T>(this T @this, RoleType roleType) where T : Page
         {
             return new MaterialSlider<T>(@this, roleType);
+        }
+
+        public static MaterialSlideToggle<T> MaterialSlideToggle<T>(this T @this, RoleType roleType) where T : Page
+        {
+            return new MaterialSlideToggle<T>(@this, roleType);
         }
 
         public static MaterialTable<T> MaterialTable<T>(this T @this, By selector = null) where T : Page

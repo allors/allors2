@@ -16,23 +16,22 @@ namespace Pages.PersonTests
         {
         }
 
-        public MaterialInput ProductNumber => new MaterialInput(this.Driver, roleType: M.ProductNumber.Identification);
+        public MaterialInput<GoodEditPage> ProductNumber => this.MaterialInput(roleType: M.ProductNumber.Identification);
 
-        public MaterialInput Name => new MaterialInput(this.Driver, roleType: M.Good.Name);
+        public MaterialInput<GoodEditPage> Name => this.MaterialInput(roleType: M.Good.Name);
 
-        public MaterialTextArea Description => new MaterialTextArea(this.Driver, roleType: M.Good.Description);
+        public MaterialTextArea<GoodEditPage> Description => this.MaterialTextArea(roleType: M.Good.Description);
 
-        public MaterialDatePicker SalesDiscontinuationDate  => new MaterialDatePicker(this.Driver, roleType: M.Good.SalesDiscontinuationDate);
+        public MaterialDatePicker<GoodEditPage> SalesDiscontinuationDate => this.MaterialDatePicker(roleType: M.Good.SalesDiscontinuationDate);
 
-        public MaterialSingleSelect Part => new MaterialSingleSelect(this.Driver, roleType: M.Good.Part);
+        public MaterialSingleSelect<GoodEditPage> Part => this.MaterialSingleSelect(roleType: M.Good.Part);
 
-        public MaterialSingleSelect Brand => new MaterialSingleSelect(this.Driver, roleType: M.Part.Brand);
+        public MaterialSingleSelect<GoodEditPage> Brand => this.MaterialSingleSelect(roleType: M.Part.Brand);
 
-        public MaterialSingleSelect Model => new MaterialSingleSelect(this.Driver, roleType: M.Part.Model);
+        public MaterialSingleSelect<GoodEditPage> Model => this.MaterialSingleSelect(roleType: M.Part.Model);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<GoodEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Button Cancel => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'CANCEL')]"));
-
+        public Button<GoodEditPage> Cancel => this.Button(By.XPath("//button/span[contains(text(), 'CANCEL')]"));
     }
 }

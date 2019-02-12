@@ -4,11 +4,10 @@ namespace Angular.Material
 
     using Allors.Meta;
 
+    using Angular;
+
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
-
-    using Angular;
-    
 
     public class MaterialRadioGroup : Component
     {

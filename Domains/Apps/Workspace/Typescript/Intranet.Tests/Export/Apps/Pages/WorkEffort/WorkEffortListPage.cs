@@ -13,6 +13,6 @@ namespace Pages.WorkEffortOverviewTests
         {
         }
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor<WorkEffortListPage> AddNew => this.Anchor(By.LinkText("Add New"));
     }
 }

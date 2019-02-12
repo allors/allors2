@@ -2,10 +2,9 @@ namespace Angular.Material
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using OpenQA.Selenium;
-
     using Angular;
-    
+
+    using OpenQA.Selenium;
 
     public class MaterialTableRow : Component
     {

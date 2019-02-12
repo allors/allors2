@@ -16,30 +16,30 @@ namespace Pages.FaceToFaceCommunicationTests
         {
         }
 
-        public MaterialSingleSelect EventState => new MaterialSingleSelect(this.Driver, roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect Purposes => new MaterialMultipleSelect(this.Driver, roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialMultipleSelect<FaceToFaceCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect FromParty => new MaterialSingleSelect(this.Driver, roleType: M.FaceToFaceCommunication.FromParty);
+        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.FaceToFaceCommunication.FromParty);
 
-        public MaterialSingleSelect ToParty => new MaterialSingleSelect(this.Driver, roleType: M.FaceToFaceCommunication.ToParty);
+        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.FaceToFaceCommunication.ToParty);
 
-        public MaterialInput Location => new MaterialInput(this.Driver, roleType: M.FaceToFaceCommunication.Location);
+        public MaterialInput<FaceToFaceCommunicationEditPage> Location => this.MaterialInput(roleType: M.FaceToFaceCommunication.Location);
 
-        public MaterialInput Subject => new MaterialInput(this.Driver, roleType: M.CommunicationEvent.Subject);
+        public MaterialInput<FaceToFaceCommunicationEditPage> Subject => this.MaterialInput(roleType: M.CommunicationEvent.Subject);
 
-        public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledStart);
+        public MaterialDatetimePicker<FaceToFaceCommunicationEditPage> ScheduledStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledStart);
 
-        public MaterialDatetimePicker ScheduledEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ScheduledEnd);
+        public MaterialDatetimePicker<FaceToFaceCommunicationEditPage> ScheduledEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ScheduledEnd);
 
-        public MaterialDatetimePicker ActualStart => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualStart);
+        public MaterialDatetimePicker<FaceToFaceCommunicationEditPage> ActualStart => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualStart);
 
-        public MaterialDatetimePicker ActualEnd => new MaterialDatetimePicker(this.Driver, roleType: M.CommunicationEvent.ActualEnd);
+        public MaterialDatetimePicker<FaceToFaceCommunicationEditPage> ActualEnd => this.MaterialDatetimePicker(roleType: M.CommunicationEvent.ActualEnd);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<FaceToFaceCommunicationEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 
-        public Anchor List => new Anchor(this.Driver, By.CssSelector("a[href='/contacts/people']"));
+        public Anchor<FaceToFaceCommunicationEditPage> List => this.Anchor(By.CssSelector("a[href='/contacts/people']"));
 
-        public Button NewCommunicationEvent => new Button(this.Driver, By.CssSelector("div[data-allors-class='communicationevent']"));
+        public Button<FaceToFaceCommunicationEditPage> NewCommunicationEvent => this.Button(By.CssSelector("div[data-allors-class='communicationevent']"));
     }
 }

@@ -4,11 +4,10 @@ namespace Angular.Material
 
     using Allors;
 
+    using Angular;
+
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
-
-    using Angular;
-    
 
     public class MaterialTable : Component
     {

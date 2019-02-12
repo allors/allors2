@@ -5,10 +5,9 @@ namespace Angular.Material
 
     using Allors.Meta;
 
-    using OpenQA.Selenium;
-
     using Angular;
-    
+
+    using OpenQA.Selenium;
 
     public class MaterialDatetimePicker
     : Component
