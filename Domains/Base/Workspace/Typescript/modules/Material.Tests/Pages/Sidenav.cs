@@ -63,7 +63,7 @@ namespace Tests
         {
             this.Driver.WaitForAngular();
 
-            if (!link.IsVisble)
+            if (!link.IsVisible)
             {
                 if (!group.IsVisible)
                 {

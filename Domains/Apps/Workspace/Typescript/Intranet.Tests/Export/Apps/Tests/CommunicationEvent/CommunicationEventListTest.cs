@@ -10,7 +10,7 @@ namespace Tests.CommunicationEventTests
     [Collection("Test collection")]
     public class CommunicationEventListTest : Test
     {
-        private CommunicationEventListPage page;
+        private readonly CommunicationEventListPage page;
 
         public CommunicationEventListTest(TestFixture fixture)
             : base(fixture)
@@ -30,8 +30,9 @@ namespace Tests.CommunicationEventTests
         {
             var communicationEvent = new CommunicationEvents(this.Session).FindBy(M.CommunicationEvent.Subject, "meeting 0");
 
-            var row = this.page.Table.FindRow(communicationEvent);
-            var cell = row.FindCell("subject");
+            var cell = this.page.Table
+                .FindRow(communicationEvent)
+                .FindCell("subject");
 
             Assert.Equal("meeting 0", cell.Element.Text);
         }

@@ -18,28 +18,13 @@ namespace Tests.ElectronicAddressTests
     [Collection("Test collection")]
     public class WebAddressEditTest : Test
     {
-        private readonly PersonListPage people;
-
-        private readonly ElectronicAddress editContactMechanism;
-
+        private readonly PersonListPage personListPage;
+        
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
-
-            this.editContactMechanism = new WebAddressBuilder(this.Session)
-                .WithElectronicAddressString("www.acme.com")
-                .Build();
-
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.editContactMechanism).Build();
-            person.AddPartyContactMechanism(partyContactMechanism);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]
@@ -50,7 +35,7 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
+            var personOverview = this.personListPage.Select(person);
             var page = personOverview.NewWebAddress();
 
             page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
@@ -78,16 +63,23 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
+            var editContactMechanism = new WebAddressBuilder(this.Session)
+                .WithElectronicAddressString("www.acme.com")
+                .Build();
+
+            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(editContactMechanism).Build();
+            person.AddPartyContactMechanism(partyContactMechanism);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var before = new WebAddresses(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            var page = this.personListPage.Select(person).SelectElectronicAddress(editContactMechanism);
 
-            var page = personOverview.SelectElectronicAddress(this.editContactMechanism);
-
-            page.ElectronicAddressString.Value = "wwww.allors.com";
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.ElectronicAddressString.Set("wwww.allors.com")
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -96,8 +88,8 @@ namespace Tests.ElectronicAddressTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal("wwww.allors.com", this.editContactMechanism.ElectronicAddressString);
-            Assert.Equal("description", this.editContactMechanism.Description);
+            Assert.Equal("wwww.allors.com", editContactMechanism.ElectronicAddressString);
+            Assert.Equal("description", editContactMechanism.Description);
         }
     }
 }
