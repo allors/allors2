@@ -1,4 +1,4 @@
-<mat-form-field class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+<mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <input aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [matAutocomplete]="autocomplete">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 
@@ -12,4 +12,8 @@
     </mat-option>
   </mat-autocomplete>
 
+</mat-form-field>
+
+<mat-form-field *ngIf="disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <input aFocus [aFocusTrigger]="roleType" [(ngModel)]="model[display]" type="text" matInput [placeholder]="label" [required]="required" [disabled]="disabled" readonly>
 </mat-form-field>

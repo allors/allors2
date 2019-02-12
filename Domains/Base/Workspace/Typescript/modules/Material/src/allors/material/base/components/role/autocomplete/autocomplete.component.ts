@@ -79,8 +79,8 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
   }
 
   ngDoCheck() {
-    if (!this.focused && !this.trigger.panelOpen && this.searchControl) {
-      if (this.searchControl.value !== this.model) {
+    if (!this.focused && this.trigger && this.searchControl) {
+      if (!this.trigger.panelOpen && this.searchControl.value !== this.model) {
         this.searchControl.setValue(this.model);
       }
     }

@@ -35,7 +35,8 @@ namespace Allors.Domain
                 var deniedPermissions = new[]
                                             {
                                                 permissions.Get(this.Meta.Class, this.Meta.Name, Operations.Write),
-                                                permissions.Get(this.Meta.Class, this.Meta.Owner, Operations.Write)
+                                                permissions.Get(this.Meta.Class, this.Meta.Owner, Operations.Write),
+                                                permissions.Get(this.Meta.Class, this.Meta.Employees, Operations.Write)
                                             };
 
                 this.DeniedPermissions = deniedPermissions;
