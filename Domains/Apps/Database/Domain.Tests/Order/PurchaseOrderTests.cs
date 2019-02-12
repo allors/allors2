@@ -271,9 +271,9 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -317,9 +317,9 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             var order = new PurchaseOrderBuilder(this.Session)

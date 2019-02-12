@@ -3,7 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
-import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, GoodIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -38,7 +38,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
-  goodIdentificationTypes: GoodIdentificationType[];
+  goodIdentificationTypes: ProductIdentificationType[];
   partNumber: PartNumber;
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
@@ -131,8 +131,8 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
                 Brand: {
                   Models: x
                 },
-                GoodIdentifications: {
-                  GoodIdentificationType: x,
+                ProductIdentifications: {
+                  ProductIdentificationType: x,
                 },
                 LocalisedComments: {
                   Locale: x,
@@ -157,7 +157,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
             ),
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
-            pull.GoodIdentificationType(),
+            pull.ProductIdentificationType(),
             pull.Facility(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
@@ -200,12 +200,12 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
-        this.partNumber = this.part.GoodIdentifications.find(v => v.GoodIdentificationType === partNumberType);
+        this.partNumber = this.part.ProductIdentifications.find(v => v.ProductIdentificationType === partNumberType);
 
         this.suppliers = this.part.SuppliedBy as Organisation[];
         this.selectedSuppliers = this.suppliers;

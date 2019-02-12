@@ -82,9 +82,9 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualGood = new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v101")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithName("virtual gizmo")
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)

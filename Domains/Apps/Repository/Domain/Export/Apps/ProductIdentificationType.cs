@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A38A516C-4A0B-4D05-AD86-4F548B78F699")]
     #endregion
-    public partial class GoodIdentificationType : Enumeration
+    public partial class ProductIdentificationType : Enumeration
     {
         #region inherited properties
 

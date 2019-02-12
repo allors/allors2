@@ -34,9 +34,9 @@ namespace Allors.Domain
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var part = new NonUnifiedPartBuilder(this.Session).WithName("part")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .WithSerialisedItem(serialItem)
                 .Build();
 
@@ -169,9 +169,9 @@ namespace Allors.Domain
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
+                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
@@ -180,9 +180,9 @@ namespace Allors.Domain
 
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification(partId)
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(kind).Build();
 
         private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, SerialisedItem serialisedItem)

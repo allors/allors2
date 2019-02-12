@@ -33,6 +33,7 @@ namespace Allors.Repository
 
         public Product[] Variants { get; set; }
 
+        public ProductIdentification[] ProductIdentifications { get; set; }
         public string Name { get; set; }
 
         public DateTime IntroductionDate { get; set; }
@@ -42,6 +43,9 @@ namespace Allors.Repository
         public Media[] ElectronicDocuments { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
+        public string Keywords { get; set; }
+        public Media PrimaryPhoto { get; set; }
+        public Media[] Photos { get; set; }
 
         public EstimatedProductCost[] EstimatedProductCosts { get; set; }
 

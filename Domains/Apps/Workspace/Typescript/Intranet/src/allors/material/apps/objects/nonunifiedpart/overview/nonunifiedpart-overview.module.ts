@@ -14,7 +14,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
+import { ProductIdentificationPanelModule } from '../../productidentification/overview/panel/productIdentification-panel.module';
 import { NonSerialisedInventoryItemOverviewPanelModule } from '../../nonserialisedinventoryitem/overview/panel/nonserialisedinventoryitem-overview-panel.module';
 import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
 import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
@@ -38,7 +38,7 @@ export { NonUnifiedPartOverviewComponent } from './nonunifiedpart-overview.compo
     NonUnifiedPartOverviewSummaryModule,
     NonUnifiedPartOverviewDetailModule,
 
-    IGoodIdentificationPanelModule,
+    ProductIdentificationPanelModule,
     NonSerialisedInventoryItemOverviewPanelModule,
     PriceComponentOverviewPanelModule,
     SerialisedInventoryItemOverviewPanelModule,

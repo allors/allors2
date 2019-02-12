@@ -5,11 +5,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("75916246-b1b5-48ef-9578-d65980fd2623")]
+    [Id("76C7C629-AA80-48F7-8D66-0A4F3BB5AE38")]
     #endregion
-    public partial class NonUnifiedPart : Part
+    public partial class UnifiedGood : Good, Part
     {
-        #region inheritedProperties
+        #region inherited properties
         public string Comment { get; set; }
         public LocalisedText[] LocalisedComments { get; set; }
         public Guid UniqueId { get; set; }
@@ -26,7 +26,23 @@ namespace Allors.Repository
         public string Keywords { get; set; }
         public Media PrimaryPhoto { get; set; }
         public Media[] Photos { get; set; }
+        public DateTime SupportDiscontinuationDate { get; set; }
+        public DateTime SalesDiscontinuationDate { get; set; }
+        public PriceComponent[] VirtualProductPriceComponents { get; set; }
+        public string IntrastatCode { get; set; }
+        public ProductCategory[] ProductCategoriesExpanded { get; set; }
+        public Product ProductComplement { get; set; }
+        public Product[] Variants { get; set; }
+        public DateTime IntroductionDate { get; set; }
+        public EstimatedProductCost[] EstimatedProductCosts { get; set; }
+        public Product[] ProductObsolescences { get; set; }
+        public VatRate VatRate { get; set; }
+        public PriceComponent[] BasePrices { get; set; }
         public ProductIdentification[] ProductIdentifications { get; set; }
+        public string BarCode { get; set; }
+        public Part Part { get; set; }
+        public Product[] ProductSubstitutions { get; set; }
+        public Product[] ProductIncompatibilities { get; set; }
         public Facility DefaultFacility { get; set; }
         public PartSpecification[] PartSpecifications { get; set; }
         public Party ManufacturedBy { get; set; }
@@ -45,22 +61,22 @@ namespace Allors.Repository
         public decimal QuantityCommittedOut { get; set; }
         public decimal QuantityExpectedIn { get; set; }
 
-        #endregion inheritedProperties
 
-        #region inheritedMethods
-        public void OnBuild() { }
+        #endregion
 
-        public void OnDerive() { }
+        #region inherited methods
 
-        public void OnPostBuild() { }
+        public void OnBuild(){}
 
-        public void OnPostDerive() { }
+        public void OnPostBuild(){}
 
-        public void Delete()
-        {
-        }
+        public void OnPreDerive(){}
 
-        public void OnPreDerive() { }
-        #endregion inheritedMethods
+        public void OnDerive(){}
+
+        public void OnPostDerive(){}
+
+        public void Delete(){}
+        #endregion
    }
 }

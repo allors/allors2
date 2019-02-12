@@ -89,15 +89,15 @@ namespace Allors.Domain
 
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification(partId)
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build()).WithInventoryItemKind(kind).Build();
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build()).WithInventoryItemKind(kind).Build();
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
+                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)

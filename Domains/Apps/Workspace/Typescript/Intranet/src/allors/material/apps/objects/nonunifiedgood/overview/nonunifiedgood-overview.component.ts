@@ -55,8 +55,8 @@ export class NonUnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy
             pull.NonUnifiedGood({
               object: this.panelManager.id,
               include: {
-                GoodIdentifications: {
-                  GoodIdentificationType: x
+                ProductIdentifications: {
+                  ProductIdentificationType: x
                 },
                 Part: {
                   Brand: x,

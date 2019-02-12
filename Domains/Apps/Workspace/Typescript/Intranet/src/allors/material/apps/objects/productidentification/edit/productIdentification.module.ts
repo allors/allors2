@@ -17,15 +17,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { IGoodIdentificationEditComponent } from './igoodIdentification-edit.component';
-export { IGoodIdentificationEditComponent } from './igoodIdentification-edit.component';
+import { ProductIdentificationEditComponent } from './productIdentification-edit.component';
+export { ProductIdentificationEditComponent } from './productIdentification-edit.component';
 
 @NgModule({
   declarations: [
-    IGoodIdentificationEditComponent,
+    ProductIdentificationEditComponent,
   ],
   exports: [
-    IGoodIdentificationEditComponent,
+    ProductIdentificationEditComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -61,4 +61,4 @@ export { IGoodIdentificationEditComponent } from './igoodIdentification-edit.com
     RouterModule,
   ],
 })
-export class IGoodIdentificationEditModule { }
+export class ProductIdentificationEditModule { }

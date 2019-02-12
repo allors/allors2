@@ -360,9 +360,9 @@ namespace Allors.Domain
 
         private Part CreatePart(string id) =>
             new NonUnifiedPartBuilder(this.Session)
-            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+            .WithProductIdentification(new PartNumberBuilder(this.Session)
             .WithIdentification(id)
-            .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+            .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
             .Build();
 
         private WorkEffortInventoryAssignment CreateInventoryAssignment(WorkEffort workOrder, Part part, int quantity) =>

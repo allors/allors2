@@ -8,16 +8,6 @@ namespace Allors.Repository
     public partial interface Good : Product
     {
         #region Allors
-        [Id("1A5619BE-43D0-47CF-B906-0A15277B86A6")]
-        [AssociationId("3E3E2DEE-FABB-41C3-A0DD-6A457A829A8C")]
-        [RoleId("DE123A63-F0AC-41ED-9CF8-76ED588EA9E2")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        IGoodIdentification[] GoodIdentifications { get; set; }
-
-        #region Allors
         [Id("4e8eceff-aec2-44f8-9820-4e417ed904c1")]
         [AssociationId("30f4ec83-5854-4a53-a594-ba1247d02b2f")]
         [RoleId("80361383-e1fc-4256-9b69-7cd43469d0de")]
@@ -55,34 +45,5 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         Product[] ProductIncompatibilities { get; set; }
-
-        #region Allors
-        [Id("f52c0b7e-dbc4-4082-a2b9-9b1a05ce7179")]
-        [AssociationId("50478ca9-3eb4-487b-8c8a-6ff48d9155b5")]
-        [RoleId("802b6cdb-873a-4455-9fa7-7f2267407f0f")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        Media PrimaryPhoto { get; set; }
-
-        #region Allors
-        [Id("C7FB85EB-CF47-4FE1-BD67-E2832E5893B9")]
-        [AssociationId("1DE2FF68-A4CB-4244-8C34-6E9D08A6DFBF")]
-        [RoleId("2A1DB194-1B06-498D-BA0D-C2FDA629A45D")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToMany)]
-        Media[] Photos { get; set; }
-
-        #region Allors
-        [Id("19449147-C4FB-4FB9-94AB-32B200DD519A")]
-        [AssociationId("B6DA1EA1-8A1E-42D3-91AE-EA13C74BFC9A")]
-        [RoleId("FB868E3C-D846-4FD8-B5B9-651EF7471C22")]
-        #endregion
-        [Workspace]
-        [Size(-1)]
-        string Keywords { get; set; }
     }
 }

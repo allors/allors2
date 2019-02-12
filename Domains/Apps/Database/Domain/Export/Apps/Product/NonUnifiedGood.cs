@@ -47,20 +47,20 @@ namespace Allors.Domain
             var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
             var settings = this.strategy.Session.GetSingleton().Settings;
 
-            var identifications = this.GoodIdentifications;
-            identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Good);
+            var identifications = this.ProductIdentifications;
+            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.strategy.Session).Good);
             var goodNumber = identifications.FirstOrDefault();
 
             if (goodNumber == null && settings.UseProductNumberCounter)
             {
-                this.AddGoodIdentification(new ProductNumberBuilder(this.strategy.Session)
+                this.AddProductIdentification(new ProductNumberBuilder(this.strategy.Session)
                     .WithIdentification(settings.NextProductNumber())
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Good).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.strategy.Session).Good).Build());
             }
 
-            if (!this.ExistGoodIdentifications)
+            if (!this.ExistProductIdentifications)
             {
-                derivation.Validation.AssertExists(this, M.Good.GoodIdentifications);
+                derivation.Validation.AssertExists(this, M.Good.ProductIdentifications);
             }
 
             if (!this.ExistVariants)

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { IGoodIdentification, GoodIdentificationType } from '../../../../../domain';
+import { ProductIdentification, ProductIdentificationType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -11,25 +11,25 @@ import { switchMap, map } from 'rxjs/operators';
 import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
-  templateUrl: './igoodidentification-edit.component.html',
+  templateUrl: './productidentification-edit.component.html',
   providers: [ContextService]
 })
-export class IGoodIdentificationEditComponent implements OnInit, OnDestroy {
+export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
   public title = 'Edit IGood Identification';
 
   public container: ISessionObject;
-  public object: IGoodIdentification;
-  public goodIdentificationTypes: GoodIdentificationType[];
+  public object: ProductIdentification;
+  public productIdentificationTypes: ProductIdentificationType[];
 
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<IGoodIdentificationEditComponent>,
+    public dialogRef: MatDialogRef<ProductIdentificationEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService) {
@@ -49,17 +49,17 @@ export class IGoodIdentificationEditComponent implements OnInit, OnDestroy {
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
-            pull.IGoodIdentification(
+            pull.ProductIdentification(
               {
                 object: this.data.id,
                 include: {
-                  GoodIdentificationType: x,
+                  ProductIdentificationType: x,
                 }
               }),
-            pull.GoodIdentificationType({
-              predicate: new Equals({ propertyType: m.GoodIdentificationType.IsActive, value: true }),
+            pull.ProductIdentificationType({
+              predicate: new Equals({ propertyType: m.ProductIdentificationType.IsActive, value: true }),
               sort: [
-                new Sort(m.GoodIdentificationType.Name),
+                new Sort(m.ProductIdentificationType.Name),
               ],
             })
           ];
@@ -81,12 +81,12 @@ export class IGoodIdentificationEditComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.container = loaded.objects.Good || loaded.objects.Part;
-        this.object = loaded.objects.IGoodIdentification as IGoodIdentification;
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.object = loaded.objects.ProductIdentification as ProductIdentification;
+        this.productIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
 
         if (create) {
           this.title = 'Add Identification';
-          this.object = this.allors.context.create(objectType) as IGoodIdentification;
+          this.object = this.allors.context.create(objectType) as ProductIdentification;
           this.container.add(associationRoleType.name, this.object);
         }
 

@@ -85,9 +85,9 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var finishedGood = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -159,15 +159,15 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
@@ -225,15 +225,15 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
@@ -311,15 +311,15 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 

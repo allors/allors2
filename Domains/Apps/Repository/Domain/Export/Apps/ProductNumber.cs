@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8E475003-78C3-4E97-B565-1B2E864380EC")]
     #endregion
-    public partial class ProductNumber : IGoodIdentification
+    public partial class ProductNumber : ProductIdentification
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -14,7 +14,7 @@ namespace Allors.Repository
 
         public string Identification { get; set; }
 
-        public GoodIdentificationType GoodIdentificationType { get; set; }
+        public ProductIdentificationType ProductIdentificationType { get; set; }
 
         #endregion
 

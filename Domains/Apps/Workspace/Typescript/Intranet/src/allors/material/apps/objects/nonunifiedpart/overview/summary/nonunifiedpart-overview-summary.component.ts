@@ -59,8 +59,8 @@ export class NonUnifiedPartOverviewSummaryComponent {
           name: partPullName,
           object: id,
           include: {
-            GoodIdentifications: {
-              GoodIdentificationType: x
+            ProductIdentifications: {
+              ProductIdentificationType: x
             },
             ProductType: x,
             InventoryItemKind: x,

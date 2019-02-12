@@ -3,7 +3,7 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { Locale, Organisation, Good, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, GoodIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
+import { Locale, Organisation, Good, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -35,7 +35,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
   addBrand = false;
   addModel = false;
   parts: Part[];
-  goodIdentificationTypes: GoodIdentificationType[];
+  goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   originalCategories: ProductCategory[] = [];
   selectedCategories: ProductCategory[] = [];
@@ -80,8 +80,8 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
             name: pullName,
             object: id,
             include: {
-              GoodIdentifications: {
-                GoodIdentificationType: x
+              ProductIdentifications: {
+                ProductIdentificationType: x
               },
               Part: {
                 Brand: x,
@@ -120,7 +120,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
             pull.VatRate(),
-            pull.GoodIdentificationType(),
+            pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
             pull.Part({
               include: {
@@ -137,7 +137,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
                   Model: x
                 },
                 PrimaryPhoto: x,
-                GoodIdentifications: x,
+                ProductIdentifications: x,
                 Photos: x,
                 ElectronicDocuments: x,
                 LocalisedNames: {
@@ -185,14 +185,14 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];
         this.productDimensions = this.productFeatureApplicabilities.map(v => v.ProductFeature).filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
 
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
-        this.productNumber = this.good.GoodIdentifications.find(v => v.GoodIdentificationType === goodNumberType);
+        this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
 
       }, this.errorService.handler);
 

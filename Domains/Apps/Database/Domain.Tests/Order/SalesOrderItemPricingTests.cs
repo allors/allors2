@@ -102,16 +102,16 @@ namespace Allors.Domain
             this.productCategory.AddParent(this.parentProductCategory);
 
             this.part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             this.good = new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPart(this.part)
@@ -121,40 +121,40 @@ namespace Allors.Domain
             this.productCategory.AddProduct(this.good);
 
             this.variantGood = new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("p1")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.parentProductCategory.AddProduct(this.variantGood);
 
             this.variantGood2 = new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10102")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
-                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("p2")
-                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.parentProductCategory.AddProduct(this.variantGood2);
 
             this.virtualGood = new NonUnifiedGoodBuilder(this.Session)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v101")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)

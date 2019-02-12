@@ -5,12 +5,13 @@ import { switchMap } from 'rxjs/operators';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, GoodIdentificationType, ProductNumber, Settings } from '../../../../../domain';
+import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
 import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { Good } from 'src/allors/domain/generated';
 
 @Component({
   templateUrl: './nonunifiedgood-create.component.html',
@@ -31,11 +32,11 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
   ownerships: Ownership[];
   organisations: Organisation[];
   parts: Part[];
-  goodIdentificationTypes: GoodIdentificationType[];
+  goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   selectedCategories: ProductCategory[] = [];
   settings: Settings;
-  goodNumberType: GoodIdentificationType;
+  goodNumberType: ProductIdentificationType;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -67,7 +68,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
             this.fetcher.internalOrganisation,
             this.fetcher.Settings,
             pull.VatRate(),
-            pull.GoodIdentificationType(),
+            pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
             pull.Part({
               include: {
@@ -88,7 +89,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.settings = loaded.objects.Settings as Settings;
 
@@ -100,9 +101,9 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
         if (!this.settings.UseProductNumberCounter) {
           this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
-          this.productNumber.GoodIdentificationType = this.goodNumberType;
+          this.productNumber.ProductIdentificationType = this.goodNumberType;
 
-          this.good.AddGoodIdentification(this.productNumber);
+          this.good.AddProductIdentification(this.productNumber);
         }
       }, this.errorService.handler);
     }

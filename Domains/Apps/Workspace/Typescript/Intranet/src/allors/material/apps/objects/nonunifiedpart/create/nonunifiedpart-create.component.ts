@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, GoodIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship } from '../../../../../domain';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -39,7 +39,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
-  goodIdentificationTypes: GoodIdentificationType[];
+  goodIdentificationTypes: ProductIdentificationType[];
   partNumber: PartNumber;
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
@@ -76,7 +76,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
             this.fetcher.Settings,
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
-            pull.GoodIdentificationType(),
+            pull.ProductIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.SupplierRelationship({
@@ -120,7 +120,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
 
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId.toUpperCase() === '5735191A-CDC4-4563-96EF-DDDC7B969CA6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
@@ -131,9 +131,9 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
         if (!this.settings.UsePartNumberCounter) {
           this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
-          this.partNumber.GoodIdentificationType = partNumberType;
+          this.partNumber.ProductIdentificationType = partNumberType;
 
-          this.part.AddGoodIdentification(this.partNumber);
+          this.part.AddProductIdentification(this.partNumber);
         }
       }, this.errorService.handler);
   }

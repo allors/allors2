@@ -36,8 +36,8 @@ export class NonUnifiedGoodOverviewSummaryComponent {
           name: pullName,
           object: id,
           include: {
-            GoodIdentifications: {
-              GoodIdentificationType: x
+            ProductIdentifications: {
+              ProductIdentificationType: x
             },
             Part: {
               Brand: x,

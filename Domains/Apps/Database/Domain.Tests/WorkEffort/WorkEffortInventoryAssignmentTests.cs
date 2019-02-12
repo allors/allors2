@@ -34,9 +34,9 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             // Act
@@ -76,14 +76,14 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
             var part2 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             this.Session.Derive(true);
@@ -130,9 +130,9 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             this.Session.Derive(true);
@@ -171,9 +171,9 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(100).WithReason(reasons.PhysicalCount).Build();
@@ -215,9 +215,9 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             this.Session.Derive(true);
@@ -263,14 +263,14 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
             var part2 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(10).WithReason(reasons.PhysicalCount).Build();
@@ -318,14 +318,14 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
             var part2 = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(5).WithReason(reasons.PhysicalCount).Build();
@@ -377,9 +377,9 @@ namespace Allors.Domain
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new NonUnifiedPartBuilder(this.Session)
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(20).WithReason(reasons.PhysicalCount).Build();

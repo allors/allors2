@@ -9,7 +9,7 @@ import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists }
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Good, ProductCategory, IGoodIdentification, Brand, Model } from '../../../../../domain';
+import { Good, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -80,7 +80,7 @@ export class NonUnifiedGoodListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.NonUnifiedGood.Name, parameter: 'name' }),
       new Like({ roleType: m.NonUnifiedGood.Keywords, parameter: 'keyword' }),
       new Contains({ propertyType: m.NonUnifiedGood.ProductCategoriesWhereProduct, parameter: 'category' }),
-      new Contains({ propertyType: m.NonUnifiedGood.GoodIdentifications, parameter: 'identification' }),
+      new Contains({ propertyType: m.NonUnifiedGood.ProductIdentifications, parameter: 'identification' }),
       new Exists({ propertyType: m.NonUnifiedGood.SalesDiscontinuationDate, parameter: 'discontinued' }),
       new ContainedIn({
         propertyType: m.NonUnifiedGood.Part,
@@ -120,14 +120,14 @@ export class NonUnifiedGoodListComponent implements OnInit, OnDestroy {
     });
 
     const idSearch = new SearchFactory({
-      objectType: m.IGoodIdentification,
-      roleTypes: [m.IGoodIdentification.Identification],
+      objectType: m.ProductIdentification,
+      roleTypes: [m.ProductIdentification.Identification],
     });
 
     this.filterService.init(predicate,
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
-        identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+        identification: { search: idSearch, display: (v: ProductIdentification) => v.Identification },
         brand: { search: brandSearch, display: (v: Brand) => v.Name },
         model: { search: modelSearch, display: (v: Model) => v.Name },
       });

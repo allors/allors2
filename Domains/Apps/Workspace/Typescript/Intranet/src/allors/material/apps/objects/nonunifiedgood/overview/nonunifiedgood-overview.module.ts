@@ -15,7 +15,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
-import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
+import { ProductIdentificationPanelModule } from '../../productidentification/overview/panel/productIdentification-panel.module';
 
 import { NonUnifiedGoodOverviewSummaryModule } from './summary/nonunifiedgood-overview-summary.module';
 import { NonUnifiedGoodOverviewDetailModule } from './detail/nonunifiedgood-overview-detail.module';
@@ -34,7 +34,7 @@ export { NonUnifiedGoodOverviewComponent } from './nonunifiedgood-overview.compo
     NonUnifiedGoodOverviewSummaryModule,
     NonUnifiedGoodOverviewDetailModule,
 
-    IGoodIdentificationPanelModule,
+    ProductIdentificationPanelModule,
     PriceComponentOverviewPanelModule,
 
     AllorsMaterialFileModule,

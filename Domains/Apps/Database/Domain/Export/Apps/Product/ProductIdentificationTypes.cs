@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GoodIdentificationTypes.cs" company="Allors bvba">
+// <copyright file="ProductIdentificationTypes.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class GoodIdentificationTypes
+    public partial class ProductIdentificationTypes
     {
         private static readonly Guid SkuId = new Guid("2BFB8F67-B2E1-4730-AC3D-3F2AF39B7EAF");
         private static readonly Guid IsbnId = new Guid("BA6A724F-7E90-4025-BED6-C10884735BAB");
@@ -28,25 +28,25 @@ namespace Allors.Domain
         private static readonly Guid PartId = new Guid("5735191A-CDC4-4563-96EF-DDDC7B969CA6");
         private static readonly Guid GoodId = new Guid("B640630D-A556-4526-A2E5-60A84AB0DB3F");
 
-        private UniquelyIdentifiableSticky<GoodIdentificationType> cache;
+        private UniquelyIdentifiableSticky<ProductIdentificationType> cache;
 
-        public GoodIdentificationType Sku => this.Cache[SkuId];
+        public ProductIdentificationType Sku => this.Cache[SkuId];
 
-        public GoodIdentificationType Isbn => this.Cache[IsbnId];
+        public ProductIdentificationType Isbn => this.Cache[IsbnId];
 
-        public GoodIdentificationType Upca => this.Cache[UpcaId];
+        public ProductIdentificationType Upca => this.Cache[UpcaId];
 
-        public GoodIdentificationType Upce => this.Cache[UpceId];
+        public ProductIdentificationType Upce => this.Cache[UpceId];
 
-        public GoodIdentificationType Ean => this.Cache[EanId];
+        public ProductIdentificationType Ean => this.Cache[EanId];
 
-        public GoodIdentificationType Manufacturer => this.Cache[ManufacturerId];
+        public ProductIdentificationType Manufacturer => this.Cache[ManufacturerId];
 
-        public GoodIdentificationType Part => this.Cache[PartId];
+        public ProductIdentificationType Part => this.Cache[PartId];
 
-        public GoodIdentificationType Good => this.Cache[GoodId];
+        public ProductIdentificationType Good => this.Cache[GoodId];
 
-        private UniquelyIdentifiableSticky<GoodIdentificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<GoodIdentificationType>(this.Session));
+        private UniquelyIdentifiableSticky<ProductIdentificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductIdentificationType>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
@@ -54,56 +54,56 @@ namespace Allors.Domain
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("SKU")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("SKU").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SkuId)
                 .WithIsActive(true)
                 .Build();
             
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("ISBN")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ISBN").WithLocale(dutchLocale).Build())
                 .WithUniqueId(IsbnId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("UPCA")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("UPCA").WithLocale(dutchLocale).Build())
                 .WithUniqueId(UpcaId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("UPCE")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("UPCE").WithLocale(dutchLocale).Build())
                 .WithUniqueId(UpceId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("EAN")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("EAN").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EanId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("Manufacturer Id")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fabrikant Id").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ManufacturerId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("Product Id")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Id").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GoodId)
                 .WithIsActive(true)
                 .Build();
 
-            new GoodIdentificationTypeBuilder(this.Session)
+            new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("Part Id")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Id").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartId)

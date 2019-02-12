@@ -1,7 +1,7 @@
 import { Component, Self, Input, OnInit, HostBinding } from '@angular/core';
 
 import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
-import { IGoodIdentification } from '../../../../../../domain';
+import { ProductIdentification } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../../../material';
 import { ObjectService, CreateData } from '../../../../../../material/base/services/object';
@@ -9,18 +9,18 @@ import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../f
 import { Step } from 'src/allors/framework/database/data/Step';
 
 interface Row extends TableRow {
-  object: IGoodIdentification;
+  object: ProductIdentification;
   type: string;
   identification: string;
 }
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'igoodidentification-panel',
-  templateUrl: './igoodIdentification-panel.component.html',
+  selector: 'productidentification-panel',
+  templateUrl: './productIdentification-panel.component.html',
   providers: [PanelService]
 })
-export class IGoodIdentificationsPanelComponent implements OnInit {
+export class ProductIdentificationsPanelComponent implements OnInit {
   @Input() roleType: RoleType;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
@@ -29,7 +29,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: IGoodIdentification[];
+  objects: ProductIdentification[];
   table: Table<Row>;
 
   delete: Action;
@@ -56,8 +56,8 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.panel.name = 'igoodidentification';
-    this.panel.title = 'IGood Identification';
+    this.panel.name = 'productidentification';
+    this.panel.title = 'Product Identification';
     this.panel.icon = 'fingerprint';
     this.panel.expandable = true;
 
@@ -80,7 +80,7 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
       autoFilter: true,
     });
 
-    const pullName = `${this.panel.name}_${this.m.IGoodIdentification.name}`;
+    const pullName = `${this.panel.name}_${this.m.ProductIdentification.name}`;
 
     this.panel.onPull = (pulls) => {
       const { x, tree } = this.metaService;
@@ -93,8 +93,8 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
           fetch: new Fetch({
             step: new Step({
               propertyType: this.roleType,
-              include: tree.IGoodIdentification({
-                GoodIdentificationType: x,
+              include: tree.ProductIdentification({
+                ProductIdentificationType: x,
               })
             })
           })
@@ -102,12 +102,12 @@ export class IGoodIdentificationsPanelComponent implements OnInit {
       );
 
       this.panel.onPulled = (loaded) => {
-        this.objects = loaded.collections[pullName] as IGoodIdentification[];
+        this.objects = loaded.collections[pullName] as ProductIdentification[];
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            type: v.GoodIdentificationType && v.GoodIdentificationType.Name,
+            type: v.ProductIdentificationType && v.ProductIdentificationType.Name,
             identification: v.Identification,
           } as Row;
         });

@@ -8,7 +8,7 @@ import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '.
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Part, GoodIdentificationType, IGoodIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -37,7 +37,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
   delete: Action;
 
   private subscription: Subscription;
-  goodIdentificationTypes: GoodIdentificationType[];
+  goodIdentificationTypes: ProductIdentificationType[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -87,7 +87,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.NonUnifiedPart.Name, parameter: 'name' }),
       new Like({ roleType: m.NonUnifiedPart.Keywords, parameter: 'keyword' }),
       new Like({ roleType: m.NonUnifiedPart.HsCode, parameter: 'hsCode' }),
-      new Contains({ propertyType: m.NonUnifiedPart.GoodIdentifications, parameter: 'identification' }),
+      new Contains({ propertyType: m.NonUnifiedPart.ProductIdentifications, parameter: 'identification' }),
       new Contains({ propertyType: m.NonUnifiedPart.SuppliedBy, parameter: 'supplier' }),
       new Equals({ propertyType: m.NonUnifiedPart.ManufacturedBy, parameter: 'manufacturer' }),
       new Equals({ propertyType: m.NonUnifiedPart.Brand, parameter: 'brand' }),
@@ -134,8 +134,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     });
 
     const idSearch = new SearchFactory({
-      objectType: m.IGoodIdentification,
-      roleTypes: [m.IGoodIdentification.Identification],
+      objectType: m.ProductIdentification,
+      roleTypes: [m.ProductIdentification.Identification],
     });
 
     const facilitySearch = new SearchFactory({
@@ -151,7 +151,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         model: { search: modelSearch, display: (v: Model) => v.Name },
         kind: { search: kindSearch, display: (v: InventoryItemKind) => v.Name },
         type: { search: typeSearch, display: (v: ProductType) => v.Name },
-        identification: { search: idSearch, display: (v: IGoodIdentification) => v.Identification },
+        identification: { search: idSearch, display: (v: ProductIdentification) => v.Identification },
         facility: { search: facilitySearch, display: (v: Facility) => v.Name },
       });
 
@@ -188,15 +188,15 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
                 ProductType: x,
                 PrimaryPhoto: x,
                 InventoryItemKind: x,
-                GoodIdentifications: {
-                  GoodIdentificationType: x
+                ProductIdentifications: {
+                  ProductIdentificationType: x
                 },
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
-            pull.GoodIdentificationType(),
+            pull.ProductIdentificationType(),
             pull.BasePrice(),
           ];
 
@@ -208,11 +208,11 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         const parts = loaded.collections.NonUnifiedParts as Part[];
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         const partNumberByPart = parts.reduce((map, obj) => {
-          map[obj.id] = obj.GoodIdentifications.filter(v => v.GoodIdentificationType === partNumberType).map(w => w.Identification);
+          map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
           return map;
         }, {});
 

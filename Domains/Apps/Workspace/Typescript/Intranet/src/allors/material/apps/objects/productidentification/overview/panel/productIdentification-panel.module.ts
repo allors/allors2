@@ -6,15 +6,15 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialFileModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../..';
 
-import { IGoodIdentificationsPanelComponent } from './igoodIdentification-panel.component';
-export { IGoodIdentificationsPanelComponent as IGoodIdentificationsPanel } from './igoodIdentification-panel.component';
+import { ProductIdentificationsPanelComponent } from './productIdentification-panel.component';
+export { ProductIdentificationsPanelComponent as ProductIdentificationsPanel } from './productIdentification-panel.component';
 
 @NgModule({
   declarations: [
-    IGoodIdentificationsPanelComponent,
+    ProductIdentificationsPanelComponent,
   ],
   exports: [
-    IGoodIdentificationsPanelComponent,
+    ProductIdentificationsPanelComponent,
   ],
   imports: [
     CommonModule,
@@ -40,4 +40,4 @@ export { IGoodIdentificationsPanelComponent as IGoodIdentificationsPanel } from 
     AllorsMaterialTableModule,
   ],
 })
-export class IGoodIdentificationPanelModule { }
+export class ProductIdentificationPanelModule { }

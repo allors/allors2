@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("894BE589-D536-4FEB-8B94-8E127A170F80")]
     #endregion
-    public partial interface Part : Commentable, AccessControlledObject, UniquelyIdentifiable, Deletable
+    public partial interface Part : UnifiedProduct
     {
         /// <summary>
         /// Gets or sets the Default Facility where this Part is stored
@@ -22,82 +22,6 @@ namespace Allors.Repository
         Facility DefaultFacility { get; set; }
 
         #region Allors
-        [Id("D33A2108-8B1C-4528-91D3-56AAFE0DD34B")]
-        [AssociationId("D8090532-ACE5-4E8E-A9B0-314FE583BD89")]
-        [RoleId("3155FCA4-53ED-4BC7-AD90-40A514D7B213")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        string BarCode { get; set; }
-
-        #region Allors
-        [Id("5239147e-0829-4250-bdbc-8115e9c19206")]
-        [AssociationId("6f267a60-802b-454f-9ac7-762a92746255")]
-        [RoleId("a9efc713-6574-4b82-b20e-0fc22747566a")]
-        #endregion
-        [Workspace]
-        [Size(256)]
-        string Name { get; set; }
-
-        #region Allors
-        [Id("24792709-FB33-44BA-B180-1A35BFA666EA")]
-        [AssociationId("C74EAE13-B85B-4255-8372-EAA8A8842008")]
-        [RoleId("1B3EEA73-936D-4C9D-8101-E1CF28BF7D83")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        LocalisedText[] LocalisedNames { get; set; }
-
-        #region Allors
-        [Id("A8854C3C-395B-4527-8544-5B7EBF9E4262")]
-        [AssociationId("DCA55877-2856-43B1-8926-593C5F6BF03C")]
-        [RoleId("54D6992F-DDCC-44D4-BAAD-D71D43DC5B2A")]
-        #endregion
-        [Workspace]
-        [Size(-1)]
-        string InternalComment { get; set; }
-
-        #region Allors
-        [Id("EFC7EB02-BE79-4281-8A62-796616629FD4")]
-        [AssociationId("A333FDF5-EB25-4108-B2BD-4B3B47DB0A97")]
-        [RoleId("3F56B8E7-FDF2-4407-A464-E5943D7B232B")]
-        #endregion
-        [Workspace]
-        [Size(-1)]
-        string Keywords { get; set; }
-
-        #region Allors
-        [Id("F7F94771-FCB6-4E81-9106-16C77059D64B")]
-        [AssociationId("6AFB2380-7BCA-46B5-A6DA-023F8DAB41FA")]
-        [RoleId("C2D9D6F9-0298-4F2D-B7DF-23417A57AEAF")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        Media PrimaryPhoto { get; set; }
-
-        #region Allors
-        [Id("6BAB2B93-9E5C-46FF-945A-B581C68ED065")]
-        [AssociationId("C0C77CDF-D353-452D-AD21-554DA8B9F06F")]
-        [RoleId("8ABBD05B-8939-4DFB-B5D4-AEB6A018F355")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        Media[] Photos { get; set; }
-
-        #region Allors
-        [Id("210AB5B0-746E-4332-A475-0B17FF4A9E1B")]
-        [AssociationId("2093223B-6746-4BDA-946E-4D7D0E5C7CA5")]
-        [RoleId("30739B0E-B5CD-49AB-8D77-985002222D77")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        IGoodIdentification[] GoodIdentifications { get; set; }
-
-        #region Allors
         [Id("527c0d02-7723-4715-b975-ec9474d0d22d")]
         [AssociationId("b8cce82f-8555-4d15-8012-3b122ad47b3d")]
         [RoleId("72e60215-a8fb-40a1-ac9b-0204421adde0")]
@@ -105,40 +29,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         PartSpecification[] PartSpecifications { get; set; }
-
-        /// <summary>
-        /// Gets or sets the UnitOfMeasure in which this Part is tracked
-        /// </summary>
-        #region Allors
-        [Id("610f6c8c-0d1d-4c8e-9d3d-a98e17d181b5")]
-        [AssociationId("00a2efd5-0a43-4b86-8ce3-2196c2ad7c3d")]
-        [RoleId("f843b974-81bf-48a1-9397-8708da48e39c")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Workspace]
-        UnitOfMeasure UnitOfMeasure { get; set; }
-
-        #region Allors
-        [Id("773e731d-47f7-4742-b8c6-81dec0a09f29")]
-        [AssociationId("183113ef-8420-444d-8a80-61580a9f95dc")]
-        [RoleId("05f1428a-26cd-4f08-9f1d-dec02edf6fe1")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        Document[] Documents { get; set; }
-
-        #region Allors
-        [Id("525C9EB2-829D-44BD-8C9E-25465122247A")]
-        [AssociationId("6DA633DD-D85C-4FB0-A2EF-D2B24E8F4E98")]
-        [RoleId("EAF5FB6D-8413-425F-BAD0-1975550D73F4")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        Media[] ElectronicDocuments { get; set; }
 
         #region Allors
         [Id("5f727bd9-9c3e-421e-93eb-646c4fdf73d3")]

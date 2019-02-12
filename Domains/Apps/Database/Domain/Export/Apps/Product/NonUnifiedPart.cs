@@ -30,13 +30,13 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.GoodIdentifications.Count == 0)
+                if (this.ProductIdentifications.Count == 0)
                 {
                     return null;
                 }
 
-                var partId = this.GoodIdentifications.FirstOrDefault(g => g.ExistGoodIdentificationType
-                        && g.GoodIdentificationType.Equals(new GoodIdentificationTypes(this.strategy.Session).Part));
+                var partId = this.ProductIdentifications.FirstOrDefault(g => g.ExistProductIdentificationType
+                        && g.ProductIdentificationType.Equals(new ProductIdentificationTypes(this.strategy.Session).Part));
 
                 return partId.Identification;
             }
@@ -91,15 +91,15 @@ namespace Allors.Domain
 
             this.DeriveName();
 
-            var identifications = this.GoodIdentifications;
-            identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Part);
+            var identifications = this.ProductIdentifications;
+            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.strategy.Session).Part);
             var partNumber = identifications.FirstOrDefault();
 
             if (partNumber == null && setings.UsePartNumberCounter)
             {
-                this.AddGoodIdentification(new PartNumberBuilder(this.strategy.Session)
+                this.AddProductIdentification(new PartNumberBuilder(this.strategy.Session)
                     .WithIdentification(setings.NextPartNumber())
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Part).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.strategy.Session).Part).Build());
             }
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
