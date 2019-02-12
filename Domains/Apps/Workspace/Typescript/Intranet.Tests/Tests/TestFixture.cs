@@ -1,4 +1,4 @@
-﻿namespace Tests.Intranet
+﻿namespace Tests
 {
     using System;
     using System.Diagnostics;

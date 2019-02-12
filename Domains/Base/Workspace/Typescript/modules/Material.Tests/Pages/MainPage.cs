@@ -1,8 +1,10 @@
-namespace Tests.Material.Pages
+namespace Pages
 {
-    using Tests.Material;
+    using Tests;
 
     using OpenQA.Selenium;
+
+    using Angular;
 
     public abstract class MainPage : Page
     {

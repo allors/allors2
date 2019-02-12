@@ -1,11 +1,11 @@
-namespace Tests.Material.Pages.Relations
+namespace Pages.Relations
 {
     using Allors.Meta;
 
     using OpenQA.Selenium;
 
-    using Tests.Components.Html;
-    using Tests.Components.Material;
+    using Angular.Html;
+    using Angular.Material;
 
     public class OrganisationEditPage : MainPage
     {

@@ -1,13 +1,13 @@
-namespace Tests.Material
+namespace Tests
 {
     using System.Linq;
 
     using Allors.Domain;
     using Allors.Meta;
 
-    using Tests.Components;
-    using Tests.Material.Pages;
-    using Tests.Material.Pages.Relations;
+    using Angular;
+    using Pages;
+    using Pages.Relations;
 
     using Xunit;
 

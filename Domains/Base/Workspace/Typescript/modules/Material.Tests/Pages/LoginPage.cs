@@ -1,9 +1,9 @@
-namespace Tests.Material.Pages
+namespace Pages
 {
     using OpenQA.Selenium;
 
-    using Tests.Components;
-    using Tests.Components.Html;
+    using Angular;
+    using Angular.Html;
 
     public class LoginPage : Page
     {
@@ -17,7 +17,7 @@ namespace Tests.Material.Pages
 
         public DashboardPage Login(string userName = "administrator")
         {
-            this.UserName.Text = userName;
+            this.UserName.Value = userName;
             this.Button.Click();
 
             this.Driver.WaitForAngular();

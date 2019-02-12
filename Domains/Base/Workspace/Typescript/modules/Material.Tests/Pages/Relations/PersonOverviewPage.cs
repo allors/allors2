@@ -1,8 +1,8 @@
-namespace Tests.Material.Pages.Relations
+namespace Pages.Relations
 {
     using OpenQA.Selenium;
 
-    using Tests.Components.Html;
+    using Angular.Html;
 
     public class PersonOverviewPage : MainPage
     {
@@ -11,7 +11,7 @@ namespace Tests.Material.Pages.Relations
         {
         }
 
-        public Button EditButton => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
+        public Button<PersonOverviewPage> EditButton => this.Button(By.XPath("//button/span[contains(text(), 'Edit')]"));
 
         public PersonEditPage Edit()
         {

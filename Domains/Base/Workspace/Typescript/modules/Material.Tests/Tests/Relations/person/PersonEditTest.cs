@@ -1,12 +1,12 @@
-namespace Tests.Material.Relations
+namespace Tests.Relations
 {
     using System.Linq;
 
     using Allors.Domain;
 
-    using Tests.Material.Pages.Relations;
+    using Pages.Relations;
 
-    using Tests.Components;
+    using Angular;
 
     using Xunit;
 
@@ -35,12 +35,11 @@ namespace Tests.Material.Relations
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonEditPage(this.Driver);
-            
-            page.FirstName.Value = "Jos";
-            page.LastName.Value = "Smos";
+            var personEditPage = new PersonEditPage(this.Driver);
 
-            page.Save.Click();
+            personEditPage.FirstName.Set("Jos")
+                          .LastName.Set("Smos")
+                          .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -58,31 +57,24 @@ namespace Tests.Material.Relations
         [Fact]
         public void Edit()
         {
-            //var before = new People(this.Session).Extent().ToArray();
+            var before = new People(this.Session).Extent().ToArray();
+            var person = before.First(v => v.FullName == "John Doe");
 
-            //var person = before.First(v => v.PartyName.Equals("contact1"));
+            var page = this.people.Select(person).Edit();
 
-            //var personOverview = this.people.Select(person);
-            //var page = personOverview.Edit();
-            
-            //page.Salutation.Value = "Mr.";
+            page.FirstName.Set("Jos")
+                .LastName.Set("Smos")
+                .Save.Click();
 
-            //page.FirstName.Text = "Jos";
-            //page.LastName.Text = "Smos";
-            //page.Comment.Text = "This is a comment";
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
 
-            //page.Save.Click();
+            var after = new People(this.Session).Extent().ToArray();
 
-            //this.Session.Rollback();
+            Assert.Equal(after.Length, before.Length);
 
-            //var after = new People(this.Session).Extent().ToArray();
-
-            //Assert.Equal(after.Length, before.Length);
-
-            //Assert.Equal("Mr.", person.Salutation.Name);
-            //Assert.Equal("Jos", person.FirstName);
-            //Assert.Equal("Smos", person.LastName);
-            //Assert.Equal("This is a comment", person.Comment);
+            Assert.Equal("Jos", person.FirstName);
+            Assert.Equal("Smos", person.LastName);
         }
     }
 }

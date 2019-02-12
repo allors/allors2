@@ -60,6 +60,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
         this.overview,
         this.delete
       ],
+      defaultAction: this.overview
     });
   }
 

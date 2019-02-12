@@ -1,8 +1,8 @@
-namespace Tests.Material.Pages.Relations
+namespace Pages.Relations
 {
     using OpenQA.Selenium;
 
-    using Tests.Components.Html;
+    using Angular.Html;
 
     public class OrganisationListPage : MainPage
     {

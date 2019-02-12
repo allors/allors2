@@ -1,0 +1,3 @@
+- ng new material (Routing/Sass)
+- ng add @angular/material
+- overwrite files and adjust

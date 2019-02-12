@@ -1,12 +1,12 @@
-namespace Tests.Material
+namespace Tests
 {
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Components.Html;
-    using Tests.Material.Pages;
-    using Tests.Material.Pages.Relations;
+    using Angular;
+    using Angular.Html;
+    using Pages;
+    using Pages.Relations;
 
     public class Sidenav : Page
     {

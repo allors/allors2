@@ -1,4 +1,4 @@
-namespace Tests.Material.Pages
+namespace Pages
 {
     using OpenQA.Selenium;
 

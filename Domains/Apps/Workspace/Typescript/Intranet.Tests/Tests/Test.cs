@@ -1,4 +1,4 @@
-namespace Tests.Intranet
+namespace Tests
 {
     using System;
     using System.Globalization;
@@ -15,6 +15,10 @@ namespace Tests.Intranet
     using Microsoft.Extensions.DependencyInjection;
 
     using OpenQA.Selenium;
+
+    using Pages.ApplicationTests;
+
+    using Tests.ApplicationTests;
 
     using ObjectFactory = Allors.ObjectFactory;
 

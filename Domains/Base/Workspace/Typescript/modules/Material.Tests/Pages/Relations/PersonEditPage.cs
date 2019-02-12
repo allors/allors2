@@ -1,11 +1,11 @@
-namespace Tests.Material.Pages.Relations
+namespace Pages.Relations
 {
     using Allors.Meta;
 
     using OpenQA.Selenium;
 
-    using Tests.Components.Html;
-    using Tests.Components.Material;
+    using Angular.Html;
+    using Angular.Material;
 
     public class PersonEditPage : MainPage
     {
@@ -14,12 +14,12 @@ namespace Tests.Material.Pages.Relations
         {
         }
 
-        public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
+        public MaterialInput<PersonEditPage> FirstName => this.MaterialInput(M.Person.FirstName);
 
-        public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
+        public MaterialInput<PersonEditPage> MiddleName => this.MaterialInput(M.Person.MiddleName);
 
-        public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
+        public MaterialInput<PersonEditPage> LastName => this.MaterialInput(M.Person.LastName);
 
-        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+        public Button<PersonEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }

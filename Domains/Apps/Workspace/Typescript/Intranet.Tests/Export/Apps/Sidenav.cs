@@ -1,26 +1,28 @@
-namespace Tests.Intranet
+namespace Tests
 {
     using Allors.Meta;
+
+    using Angular;
+    using Angular.Html;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Components.Html;
-    using Tests.Intranet.CatalogueTests;
-    using Tests.Intranet.CommunicationEventTests;
-    using Tests.Intranet.OrganisationTests;
-    using Tests.Intranet.PersonTests;
-    using Tests.Intranet.ProductCategoryTest;
-    using Tests.Intranet.SerialisedItemCharacteristicTest;
-    using Tests.Intranet.ProductQuoteTest;
-    using Tests.Intranet.ProductTest;
-    using Tests.Intranet.ProductTypeTest;
-    using Tests.Intranet.PurchaseInvoiceTest;
-    using Tests.Intranet.RequestsForQuoteTest;
-    using Tests.Intranet.SalesInvoicesOverviewTest;
-    using Tests.Intranet.SalesOrderTest;
-    using Tests.Intranet.WorkEffortOverviewTests;
+    using Pages.ApplicationTests;
+    using Pages.CatalogueTests;
+    using Pages.CommunicationEventTests;
+    using Pages.OrganisationTests;
+    using Pages.PersonTests;
+    using Pages.ProductCategoryTest;
+    using Pages.ProductQuoteTest;
+    using Pages.ProductTest;
+    using Pages.ProductTypeTest;
+    using Pages.PurchaseInvoiceTest;
+    using Pages.RequestsForQuoteTest;
+    using Pages.SalesInvoicesOverviewTest;
+    using Pages.SalesOrderTest;
+    using Pages.SerialisedItemCharacteristicTest;
+    using Pages.WorkEffortOverviewTests;
 
     public class Sidenav : Page
     {
