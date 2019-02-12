@@ -24,10 +24,10 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SalesOrder.list = '/sales/salesorders';
   m.SalesOrder.overview = '/sales/salesorder/:id';
 
-  m.Good.list = '/products/goods';
-  m.Good.overview = '/products/good/:id';
-  m.Part.list = '/products/parts';
-  m.Part.overview = '/products/part/:id';
+  m.NonUnifiedGood.list = '/products/nonunifiedgoods';
+  m.NonUnifiedGood.overview = '/products/nonunifiedgood/:id';
+  m.NonUnifiedPart.list = '/products/nonunifiedparts';
+  m.NonUnifiedPart.overview = '/products/nonunifiedpart/:id';
   m.Catalogue.list = '/products/catalogues';
   m.ProductCategory.list = '/products/productcategories';
   m.SerialisedItemCharacteristic.list = '/products/serialiseditemcharacteristics';

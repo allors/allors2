@@ -270,7 +270,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -316,7 +316,7 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

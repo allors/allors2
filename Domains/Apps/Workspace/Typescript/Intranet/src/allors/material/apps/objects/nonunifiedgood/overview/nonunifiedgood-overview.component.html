@@ -1,0 +1,30 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(metaService.m.Good)">goods</a> / {{good?.Name}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container">
+
+    <div class="a-content row">
+
+      <div class="col-md-4 mb-3">
+        <nonunifiedgood-overview-summary></nonunifiedgood-overview-summary>
+      </div>
+
+      <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
+
+        <nonunifiedgood-overview-detail></nonunifiedgood-overview-detail>
+
+        <igoodidentification-panel [roleType]="metaService.m.Good.GoodIdentifications"></igoodidentification-panel>
+
+        <pricecomponent-overview-panel></pricecomponent-overview-panel>
+
+      </div>
+    </div>
+  </div>
+</div>

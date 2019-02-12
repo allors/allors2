@@ -31,7 +31,7 @@ namespace Allors.Domain
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("organisation").Build();
-            var part = new PartBuilder(this.Session)
+            var part = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -99,14 +99,14 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good = new GoodBuilder(this.Session)
+            var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -147,14 +147,14 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var good = new GoodBuilder(this.Session)
+            var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

@@ -392,91 +392,91 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good1")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("1")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good2")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("2")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good11 = new GoodBuilder(this.Session)
+            var good11 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good11")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good11")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("3")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good12 = new GoodBuilder(this.Session)
+            var good12 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good12")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good12")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("4")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good111 = new GoodBuilder(this.Session)
+            var good111 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good111")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good111")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("5")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good121 = new GoodBuilder(this.Session)
+            var good121 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good121")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good121")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("6")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var good122 = new GoodBuilder(this.Session)
+            var good122 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good122")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good122")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("7")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -559,13 +559,13 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good1")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("1")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -578,13 +578,13 @@ namespace Allors.Domain
             good1.Part.AddSerialisedItem(serialisedItem1);
             good1.Part.AddSerialisedItem(serialisedItem1Not);
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good2")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("2")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -597,13 +597,13 @@ namespace Allors.Domain
             good2.Part.AddSerialisedItem(serialisedItem2a);
             good2.Part.AddSerialisedItem(serialisedItem2b);
 
-            var good11 = new GoodBuilder(this.Session)
+            var good11 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good11")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good11")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("3")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -614,13 +614,13 @@ namespace Allors.Domain
             var serialisedItem11 = new SerialisedItemBuilder(this.Session).WithSerialNumber("11").WithAvailableForSale(true).Build();
             good11.Part.AddSerialisedItem(serialisedItem11);
 
-            var good12 = new GoodBuilder(this.Session)
+            var good12 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good12")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good12")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("4")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -631,13 +631,13 @@ namespace Allors.Domain
             var serialisedItem12 = new SerialisedItemBuilder(this.Session).WithSerialNumber("12").WithAvailableForSale(true).Build();
             good12.Part.AddSerialisedItem(serialisedItem12);
 
-            var good111 = new GoodBuilder(this.Session)
+            var good111 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good111")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good111")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("5")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -648,13 +648,13 @@ namespace Allors.Domain
             var serialisedItem111 = new SerialisedItemBuilder(this.Session).WithSerialNumber("111").WithAvailableForSale(true).Build();
             good111.Part.AddSerialisedItem(serialisedItem111);
 
-            var good121 = new GoodBuilder(this.Session)
+            var good121 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good121")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good121")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("6")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -665,13 +665,13 @@ namespace Allors.Domain
             var serialisedItem121 = new SerialisedItemBuilder(this.Session).WithSerialNumber("121").WithAvailableForSale(true).Build();
             good121.Part.AddSerialisedItem(serialisedItem121);
 
-            var good122 = new GoodBuilder(this.Session)
+            var good122 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good122")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good122")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("7")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -759,13 +759,13 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good1")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("1")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -776,13 +776,13 @@ namespace Allors.Domain
             var item1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
             var item1Not = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Scrap).Build();
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good2")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("2")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -793,13 +793,13 @@ namespace Allors.Domain
             var item2a = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good2.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
             var item2b = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good2.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).SlightlyDamaged).Build();
 
-            var good11 = new GoodBuilder(this.Session)
+            var good11 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good11")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good11")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("3")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -809,13 +809,13 @@ namespace Allors.Domain
 
             var item11 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good11.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
 
-            var good12 = new GoodBuilder(this.Session)
+            var good12 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good12")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good12")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("4")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -825,13 +825,13 @@ namespace Allors.Domain
 
             var item12 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good12.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
 
-            var good111 = new GoodBuilder(this.Session)
+            var good111 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good111")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good111")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("5")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -841,13 +841,13 @@ namespace Allors.Domain
 
             var item111 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good111.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
 
-            var good121 = new GoodBuilder(this.Session)
+            var good121 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good121")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good121")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("6")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -857,13 +857,13 @@ namespace Allors.Domain
 
             var item121 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good121.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
 
-            var good122 = new GoodBuilder(this.Session)
+            var good122 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good122")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("good122")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                             .WithGoodIdentification(new PartNumberBuilder(this.Session)
                                 .WithIdentification("7")
                                 .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

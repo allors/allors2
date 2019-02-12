@@ -136,7 +136,7 @@ namespace Tests.Intranet
                 .WithModel(new ModelBuilder(this.Session).WithName("model1").Build())
                 .Build();
 
-            var finishedGood = new PartBuilder(this.Session)
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -147,7 +147,7 @@ namespace Tests.Intranet
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
@@ -158,7 +158,7 @@ namespace Tests.Intranet
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
-            var finishedGood2 = new PartBuilder(this.Session)
+            var finishedGood2 = new NonUnifiedPartBuilder(this.Session)
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
@@ -168,7 +168,7 @@ namespace Tests.Intranet
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("Tiny red round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -182,7 +182,7 @@ namespace Tests.Intranet
 
             new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility).Build();
 
-            var finishedGood3 = new PartBuilder(this.Session)
+            var finishedGood3 = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
@@ -191,7 +191,7 @@ namespace Tests.Intranet
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
-            var good3 = new GoodBuilder(this.Session)
+            var good3 = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("Tiny green round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")

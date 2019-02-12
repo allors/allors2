@@ -81,7 +81,7 @@ namespace Allors.Domain
         public void GivenBasePriceForVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsUpdated()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var virtualGood = new GoodBuilder(this.Session)
+            var virtualGood = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())

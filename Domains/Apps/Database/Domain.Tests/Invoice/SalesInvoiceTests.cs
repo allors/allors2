@@ -1225,14 +1225,14 @@ namespace Allors.Domain
                 .WithCustomer(billToCustomer)
                 .Build();
 
-            var good1 = new GoodBuilder(this.Session)
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -1241,14 +1241,14 @@ namespace Allors.Domain
 
             childProductCategory.AddProduct(good1);
 
-            var good2 = new GoodBuilder(this.Session)
+            var good2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("2")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

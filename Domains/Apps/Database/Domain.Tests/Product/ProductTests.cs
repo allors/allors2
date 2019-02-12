@@ -84,7 +84,7 @@ namespace Allors.Domain
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var finishedGood = new PartBuilder(this.Session)
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -94,7 +94,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
             
-            var builder = new GoodBuilder(this.Session);
+            var builder = new NonUnifiedGoodBuilder(this.Session);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -157,14 +157,14 @@ namespace Allors.Domain
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
+            var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -223,14 +223,14 @@ namespace Allors.Domain
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
+            var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
@@ -309,14 +309,14 @@ namespace Allors.Domain
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
+            var good = new NonUnifiedGoodBuilder(this.Session)
                 .WithName("good")
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithGoodIdentification(new PartNumberBuilder(this.Session)
                         .WithIdentification("1")
                         .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())

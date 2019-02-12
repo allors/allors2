@@ -88,13 +88,13 @@ namespace Allors.Domain
         }
 
         private Part CreatePart(string partId, InventoryItemKind kind)
-            => new PartBuilder(this.Session)
+            => new NonUnifiedPartBuilder(this.Session)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification(partId)
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build()).WithInventoryItemKind(kind).Build();
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
-            => new GoodBuilder(this.Session)
+            => new NonUnifiedGoodBuilder(this.Session)
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
