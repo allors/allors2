@@ -31,15 +31,14 @@ namespace Tests.PersonTests
 
             var page = new PersonEditPage(this.Driver);
 
-            page.Salutation.Value = new Salutations(this.Session).Mr.Name;
-            page.FirstName.Value = "Jos";
-            page.MiddleName.Value = "de";
-            page.LastName.Value = "Smos";
-            page.Function.Value = "CEO";
-            page.Gender.Value = new GenderTypes(this.Session).Male.Name;
-            page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
-
-            page.Save.Click();
+            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+                .FirstName.Set("Jos")
+                .MiddleName.Set("de")
+                .LastName.Set("Smos")
+                .Function.Set("CEO")
+                .Gender.Set(new GenderTypes(this.Session).Male.Name)
+                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -70,16 +69,15 @@ namespace Tests.PersonTests
             var personOverview = this.people.Select(person);
             var page = personOverview.Edit();
 
-            page.Salutation.Value = new Salutations(this.Session).Mr.Name;
-            page.FirstName.Value = "Jos";
-            page.MiddleName.Value = "de";
-            page.LastName.Value = "Smos";
-            page.Function.Value = "CEO";
-            page.Gender.Value = new GenderTypes(this.Session).Male.Name;
-            page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
-            page.Comment.Value = "unpleasant person";
-
-            page.Save.Click();
+            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+                .FirstName.Set("Jos")
+                .MiddleName.Set("de")
+                .LastName.Set("Smos")
+                .Function.Set("CEO")
+                .Gender.Set(new GenderTypes(this.Session).Male.Name)
+                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .Comment.Set("unpleasant person")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

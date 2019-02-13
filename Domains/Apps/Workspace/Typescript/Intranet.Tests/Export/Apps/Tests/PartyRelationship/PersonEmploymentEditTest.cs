@@ -10,8 +10,6 @@ namespace Tests.PartyRelationshipTests
 
     using Pages.PersonTests;
 
-    using Tests.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]
@@ -57,10 +55,9 @@ namespace Tests.PartyRelationshipTests
             var personOverviewPage = this.people.Select(this.employee);
             var page = personOverviewPage.NewEmployment();
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -87,10 +84,9 @@ namespace Tests.PartyRelationshipTests
             var personOverviewPage = this.people.Select(this.employee);
             var page = personOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

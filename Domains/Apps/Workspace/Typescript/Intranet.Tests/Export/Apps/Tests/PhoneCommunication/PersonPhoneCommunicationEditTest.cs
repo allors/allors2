@@ -70,20 +70,19 @@ namespace Tests.PhoneCommunicationTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPhoneCommunication();
 
-            page.LeftVoiceMail.Value = true;
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
-            page.Subject.Value = "subject";
-            page.FromParty.Value = person.PartyName;
-            page.ToParty.Value = employee.PartyName;
-            page.PhoneNumber.Value = "+1 123 456";
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.Comment.Value = "comment";
-
-            page.Save.Click();
+            page.LeftVoiceMail.Set(true)
+                .EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .Subject.Set("subject")
+                .FromParty.Set(person.PartyName)
+                .ToParty.Set(employee.PartyName)
+                .PhoneNumber.Set("+1 123 456")
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .Comment.Set("comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -123,20 +122,19 @@ namespace Tests.PhoneCommunicationTests
 
             var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
 
-            page.LeftVoiceMail.Value = false;
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
-            page.PhoneNumber.Value = "+1 111 222";
-            page.Subject.Value = "new subject";
-            page.FromParty.Value = firstEmployee.PartyName;
-            page.ToParty.Value = person.PartyName;
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 25);
-            page.Comment.Value = "new comment";
-
-            page.Save.Click();
+            page.LeftVoiceMail.Set(false)
+                .EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .PhoneNumber.Set("+1 111 222")
+                .Subject.Set("new subject")
+                .FromParty.Set(firstEmployee.PartyName)
+                .ToParty.Set(person.PartyName)
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 25))
+                .Comment.Set("new comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

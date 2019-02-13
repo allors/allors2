@@ -38,11 +38,10 @@ namespace Tests.ElectronicAddressTests
             var personOverview = this.personListPage.Select(person);
             var page = personOverview.NewWebAddress();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            page.ElectronicAddressString.Value = "wwww.allors.com";
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+                .ElectronicAddressString.Set("wwww.allors.com")
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

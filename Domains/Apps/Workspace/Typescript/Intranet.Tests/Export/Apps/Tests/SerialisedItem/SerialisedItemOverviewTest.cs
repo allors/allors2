@@ -5,8 +5,6 @@ namespace Tests.SerialisedItemTests
 
     using Pages.PersonTests;
 
-    using Tests.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]

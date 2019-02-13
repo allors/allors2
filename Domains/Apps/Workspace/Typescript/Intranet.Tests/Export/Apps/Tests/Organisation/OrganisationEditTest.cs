@@ -15,47 +15,40 @@ namespace Tests.OrganisationTests
     [Collection("Test collection")]
     public class OrganisationEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
-
-        private readonly IndustryClassification industryClassification;
-
-        private readonly CustomOrganisationClassification customOrganisationClassification;
-
-        private readonly LegalForm legalForm;
+        private readonly OrganisationListPage organisationListPage;
 
         public OrganisationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            this.customOrganisationClassification = new CustomOrganisationClassificationBuilder(this.Session).WithName("Gold").Build();
-            this.industryClassification = new IndustryClassificationBuilder(this.Session).WithName("Retail").Build();
-            this.legalForm = new LegalForms(this.Session).FindBy(M.LegalForm.Description, "BE - BVBA / SPRL");
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
         public void Create()
         {
-            this.organisations.AddNew.Click();
+            var customOrganisationClassification = new CustomOrganisationClassificationBuilder(this.Session).WithName("Gold").Build();
+            var industryClassification = new IndustryClassificationBuilder(this.Session).WithName("Retail").Build();
+            var legalForm = new LegalForms(this.Session).FindBy(M.LegalForm.Description, "BE - BVBA / SPRL");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.organisationListPage.AddNew.Click();
             var before = new Organisations(this.Session).Extent().ToArray();
 
             var page = new OrganisationEditPage(this.Driver);
 
-            page.Name.Value = "new organisation";
-            page.TaxNumber.Value = "BE 123 456 789 01";
-            page.LegalForm.Value = this.legalForm.Description;
-            page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
-            page.IndustryClassifications.Toggle(this.industryClassification.Name);
-            page.CustomClassifications.Toggle(this.customOrganisationClassification.Name);
-            page.IsManufacturer.Value = true;
-            page.IsInternalOrganisation.Value = true;
-            page.Comment.Value = "comment";
-
-            page.Save.Click();
+            page.Name.Set("new organisation")
+                .TaxNumber.Set("BE 123 456 789 01")
+                .LegalForm.Set(legalForm.Description)
+                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .IndustryClassifications.Toggle(industryClassification.Name)
+                .CustomClassifications.Toggle(customOrganisationClassification.Name)
+                .IsManufacturer.Set(true)
+                .IsInternalOrganisation.Set(true)
+                .Comment.Set("comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -68,10 +61,10 @@ namespace Tests.OrganisationTests
 
             Assert.Equal("new organisation", organisation.Name);
             Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
-            Assert.Equal(this.legalForm, organisation.LegalForm);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
-            Assert.Contains(this.industryClassification, organisation.IndustryClassifications);
-            Assert.Contains(this.customOrganisationClassification, organisation.CustomClassifications);
+            Assert.Equal(legalForm, organisation.LegalForm);
+            Assert.Equal(Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
+            Assert.Contains(industryClassification, organisation.IndustryClassifications);
+            Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
             Assert.True(organisation.IsManufacturer);
             Assert.True(organisation.IsInternalOrganisation);
             Assert.Equal("comment", organisation.Comment);
@@ -80,25 +73,31 @@ namespace Tests.OrganisationTests
         [Fact]
         public void Edit()
         {
+            var customOrganisationClassification = new CustomOrganisationClassificationBuilder(this.Session).WithName("Gold").Build();
+            var industryClassification = new IndustryClassificationBuilder(this.Session).WithName("Retail").Build();
+            var legalForm = new LegalForms(this.Session).FindBy(M.LegalForm.Description, "BE - BVBA / SPRL");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var before = new Organisations(this.Session).Extent().ToArray();
 
             var organisation = before.First(v => v.PartyName.Equals("Acme0"));
             var id = organisation.Id;
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
+            var organisationOverviewPage = this.organisationListPage.Select(organisation);
             var page = organisationOverviewPage.Edit();
 
-            page.Name.Value = "new organisation";
-            page.TaxNumber.Value = "BE 123 456 789 01";
-            page.LegalForm.Value = this.legalForm.Description;
-            page.Locale.Value = this.Session.GetSingleton().AdditionalLocales.First.Name;
-            page.IndustryClassifications.Toggle(this.industryClassification.Name);
-            page.CustomClassifications.Toggle(this.customOrganisationClassification.Name);
-            page.IsManufacturer.Value = true;
-            page.IsInternalOrganisation.Value = true;
-            page.Comment.Value = "comment";
-
-            page.Save.Click();
+            page.Name.Set("new organisation")
+                .TaxNumber.Set("BE 123 456 789 01")
+                .LegalForm.Set(legalForm.Description)
+                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .IndustryClassifications.Toggle(industryClassification.Name)
+                .CustomClassifications.Toggle(customOrganisationClassification.Name)
+                .IsManufacturer.Set(true)
+                .IsInternalOrganisation.Set(true)
+                .Comment.Set("comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -111,10 +110,10 @@ namespace Tests.OrganisationTests
 
             Assert.Equal("new organisation", organisation.Name);
             Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
-            Assert.Equal(this.legalForm, organisation.LegalForm);
+            Assert.Equal(legalForm, organisation.LegalForm);
             Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
-            Assert.Contains(this.industryClassification, organisation.IndustryClassifications);
-            Assert.Contains(this.customOrganisationClassification, organisation.CustomClassifications);
+            Assert.Contains(industryClassification, organisation.IndustryClassifications);
+            Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
             Assert.True(organisation.IsManufacturer);
             Assert.True(organisation.IsInternalOrganisation);
             Assert.Equal("comment", organisation.Comment);

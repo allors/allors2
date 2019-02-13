@@ -1,6 +1,5 @@
 namespace Tests.PostalAddressTests
 {
-    using System;
     using System.Linq;
 
     using Allors;
@@ -10,8 +9,6 @@ namespace Tests.PostalAddressTests
     using Angular;
 
     using Pages.PersonTests;
-
-    using Tests.PersonTests;
 
     using Xunit;
 
@@ -60,16 +57,15 @@ namespace Tests.PostalAddressTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPostalAddress();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            page.Address1.Value = "addressline 1";
-            page.Address2.Value = "addressline 2";
-            page.Address3.Value = "addressline 3";
-            page.Locality.Value = "city";
-            page.PostalCode.Value = "postalcode";
-            page.Country.Value = country.Name;
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+                .Address1.Set("addressline 1")
+                .Address2.Set("addressline 2")
+                .Address3.Set("addressline 3")
+                .Locality.Set("city")
+                .PostalCode.Set("postalcode")
+                .Country.Set(country.Name)
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -105,15 +101,14 @@ namespace Tests.PostalAddressTests
 
             var page = personOverview.SelectPostalAddress(this.editContactMechanism);
 
-            page.Address1.Value = "addressline 1";
-            page.Address2.Value = "addressline 2";
-            page.Address3.Value = "addressline 3";
-            page.Locality.Value = "city";
-            page.PostalCode.Value = "postalcode";
-            page.Country.Value = country.Name;
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.Address1.Set("addressline 1")
+                .Address2.Set("addressline 2")
+                .Address3.Set("addressline 3")
+                .Locality.Set("city")
+                .PostalCode.Set("postalcode")
+                .Country.Set(country.Name)
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

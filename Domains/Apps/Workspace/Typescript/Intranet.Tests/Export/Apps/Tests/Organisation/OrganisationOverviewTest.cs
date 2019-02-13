@@ -10,20 +10,22 @@ namespace Tests.OrganisationTests
     [Collection("Test collection")]
     public class OrganisationOverviewTest : Test
     {
-        private readonly OrganisationListPage organisations;
+        private readonly OrganisationListPage organisationListPage;
 
         public OrganisationOverviewTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
         public void Title()
         {
             var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
-            this.organisations.Select(organisation);
+
+            this.organisationListPage.Select(organisation);
+
             Assert.Equal("Organisation", this.Driver.Title);
         }
 
@@ -31,10 +33,9 @@ namespace Tests.OrganisationTests
         public void NavigateToList()
         {
             var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
-            var overviewPage = this.organisations.Select(organisation);
-            Assert.Equal("Organisation", this.Driver.Title);
+            var page = this.organisationListPage.Select(organisation);
 
-            overviewPage.List.Click();
+            page.List.Click();
 
             Assert.Equal("Organisations", this.Driver.Title);
         }
