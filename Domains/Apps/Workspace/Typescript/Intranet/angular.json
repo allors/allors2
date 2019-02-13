@@ -10,7 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "sass"
         }
       },
       "architect": {
@@ -31,7 +31,8 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "es5BrowserSupport": true
           },
           "configurations": {
             "production": {
@@ -108,7 +109,7 @@
           }
         }
       }
-    }   
+    }
   },
   "defaultProject": "intranet"
 }
