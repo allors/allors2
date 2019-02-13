@@ -21,6 +21,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SupplierOfferingOverviewPanelComponent implements OnInit {
+  currentObjects: SupplierOffering[];
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -109,6 +110,7 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
 
     this.panel.onPulled = (loaded) => {
       this.objects = loaded.collections[pullName] as SupplierOffering[];
+      this.currentObjects = this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;

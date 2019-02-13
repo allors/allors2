@@ -355,12 +355,12 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
             v.FromDate <= now &&
             (v.ThroughDate === null || v.ThroughDate >= now));
 
-          if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier));
-          } else {
-            supplierOffering.ThroughDate = null;
-          }
-        });
+            if (supplierOffering === undefined) {
+              this.supplierOfferings.push(this.newSupplierOffering(supplier));
+            } else {
+              supplierOffering.ThroughDate = null;
+            }
+          });
       }
 
       if (suppliersToDelete !== undefined) {

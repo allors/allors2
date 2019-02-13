@@ -6,15 +6,15 @@
     <div class="container-fluid">
       <div class="row pt-3">
         <a-mat-input class="col-md" *ngIf="!settings.UseGlobalProductNumber" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-input>
-        <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
+        <a-mat-input class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Name"></a-mat-input>
       </div>
 
       <div class="row">
-        <a-mat-textarea class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-textarea>
+        <a-mat-textarea class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Description"></a-mat-textarea>
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.Part" [options]="parts" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [options]="parts" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="row">
-        <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
       </div>
 
     </div>

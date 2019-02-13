@@ -70,6 +70,9 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
               ...pulls,
               pull.Part({
                 object: this.data.associationId,
+                include: {
+                  SuppliedBy: x
+                }
               }),
             ];
           }
@@ -80,6 +83,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
               pull.SupplierOffering({
                 object: this.data.id,
                 include: {
+                  Part: x,
                   Rating: x,
                   Preference: x,
                   Supplier: x,
@@ -107,19 +111,18 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
         this.currencies = loaded.collections.Currencies as Currency[];
         this.settings = loaded.objects.Settings as Settings;
 
-        this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
-        this.part = loaded.objects.Part as Part;
-
         if (isCreate) {
           this.title = 'Add supplier offering';
 
           this.supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
+          this.part = loaded.objects.Part as Part;
           this.supplierOffering.Part = this.part;
           this.supplierOffering.Currency = this.settings.PreferredCurrency;
 
         } else {
 
           this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
+          this.part = this.supplierOffering.Part;
 
           if (this.supplierOffering.CanWritePrice) {
             this.title = 'Edit supplier offering';
