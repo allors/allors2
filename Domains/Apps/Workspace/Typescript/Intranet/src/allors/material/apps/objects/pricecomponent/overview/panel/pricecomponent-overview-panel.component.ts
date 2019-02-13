@@ -41,7 +41,7 @@ export class PriceComponentOverviewPanelComponent implements OnInit {
     };
   }
 
-  priceComponentsCollection = 'Current';
+  priceComponentsCollection: string;
 
   constructor(
     @Self() public panel: PanelService,

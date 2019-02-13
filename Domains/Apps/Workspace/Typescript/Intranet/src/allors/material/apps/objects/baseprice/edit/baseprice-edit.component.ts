@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Good, Part, PriceComponent, InternalOrganisation, Organisation } from '../../../../../domain';
+import { Good, Part, PriceComponent, InternalOrganisation, Organisation, NonUnifiedGood } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -20,7 +20,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  good: Good;
+  nonUnifiedGood: Good;
   part: Part;
   priceComponent: PriceComponent;
   internalOrganisation: InternalOrganisation;
@@ -60,7 +60,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
           if (isCreate) {
             pulls = [
               ...pulls,
-              pull.Good({
+              pull.NonUnifiedGood({
                 object: this.data.associationId,
               }),
               pull.Part({
@@ -93,7 +93,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.good = loaded.objects.Good as Good;
+        this.nonUnifiedGood = loaded.objects.NonUnifiedGood as NonUnifiedGood;
         this.part = loaded.objects.Part as Part;
 
         if (isCreate) {
@@ -103,8 +103,8 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
           this.priceComponent.FromDate = new Date();
           this.priceComponent.PricedBy = this.internalOrganisation;
 
-          if (this.good) {
-            this.priceComponent.Product = this.good;
+          if (this.nonUnifiedGood) {
+            this.priceComponent.Product = this.nonUnifiedGood;
           }
 
           if (this.part) {
