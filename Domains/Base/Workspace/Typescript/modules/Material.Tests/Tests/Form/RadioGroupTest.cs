@@ -1,6 +1,7 @@
 namespace Tests
 {
     using System.Linq;
+    using System.Threading;
 
     using Allors;
     using Allors.Domain;
@@ -35,6 +36,10 @@ namespace Tests
             this.page.Save.Click();
 
             this.Driver.WaitForAngular();
+
+            // TODO: Check if Sql Server finished the transaction from the application
+            Thread.Sleep(500);
+
             this.Session.Rollback();
 
             var after = new Datas(this.Session).Extent().ToArray();

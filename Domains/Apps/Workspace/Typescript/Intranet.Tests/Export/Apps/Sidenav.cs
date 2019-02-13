@@ -135,10 +135,10 @@ namespace Tests
             return new ProductCategorieListPage(this.Driver);
         }
 
-        public ProductListPage NavigateToProductList()
+        public GoodListPage NavigateToGoodList()
         {
             this.Navigate(this.ProductsGroup, this.Goods);
-            return new ProductListPage(this.Driver);
+            return new GoodListPage(this.Driver);
         }
 
         public SerialisedItemCharacteristicListPage NavigateToProductCharacteristicList()

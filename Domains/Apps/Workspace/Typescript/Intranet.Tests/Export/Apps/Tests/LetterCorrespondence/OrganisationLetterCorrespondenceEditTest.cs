@@ -16,7 +16,7 @@ namespace Tests.LetterCorrespondenceTests
     public class OrganisationLetterCorrespondenceEditTest : Test
     {
         private readonly OrganisationListPage organisationListPage;
-        
+
         public OrganisationLetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)
         {
@@ -38,6 +38,8 @@ namespace Tests.LetterCorrespondenceTests
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
                 .Build();
 
+            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(organisationAddress).Build());
+            
             this.Session.Derive();
             this.Session.Commit();
 

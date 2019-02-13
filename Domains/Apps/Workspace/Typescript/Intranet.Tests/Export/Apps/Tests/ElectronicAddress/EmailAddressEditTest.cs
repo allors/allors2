@@ -32,8 +32,7 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverviewPage = this.personListPage.Select(person);
-            var page = personOverviewPage.NewEmailAddress();
+            var page = this.personListPage.Select(person).NewEmailAddress();
 
             page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
                 .ElectronicAddressString.Set("me@myself.com")

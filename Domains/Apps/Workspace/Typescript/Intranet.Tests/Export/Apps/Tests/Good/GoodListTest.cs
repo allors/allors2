@@ -3,19 +3,19 @@ namespace Tests.ProductTest
     using Xunit;
 
     [Collection("Test collection")]
-    public class ProductListTest : Test
+    public class GoodListTest : Test
     {
-        public ProductListTest(TestFixture fixture)
+        public GoodListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToProductList();
+            dashboard.Sidenav.NavigateToGoodList();
         }
 
         [Fact]
         public void Title()
         {
-            Assert.Equal("Products", this.Driver.Title);
+            Assert.Equal("Goods", this.Driver.Title);
         }
     }
 }
