@@ -1,4 +1,4 @@
-namespace Pages.ApplicationTests
+namespace Pages
 {
     using Angular;
 

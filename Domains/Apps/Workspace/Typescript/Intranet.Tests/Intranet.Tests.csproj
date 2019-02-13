@@ -51,4 +51,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Export\Apps\NonUnifiedGood\" />
+  </ItemGroup>
+
 </Project>

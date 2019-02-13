@@ -1,13 +1,9 @@
-namespace Tests.Intranet.PersonTests
+namespace Pages.NonUnifiedGood
 {
-    using Allors.Domain;
-
-    using Tests.Intranet;
+    using Angular.Html;
+    using Angular.Material;
 
     using OpenQA.Selenium;
-
-    using Tests.Components.Html;
-    using Tests.Components.Material;
 
     public class NonUnifiedGoodOverviewPage : MainPage
     {
@@ -16,9 +12,9 @@ namespace Tests.Intranet.PersonTests
         {
         }
 
-        public Button EditButton => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
+        public Button<NonUnifiedGoodOverviewPage> EditButton => this.Button(By.XPath("//button/span[contains(text(), 'Edit')]"));
 
-        public MaterialList List => new MaterialList(this.Driver);
+        public MaterialList<NonUnifiedGoodOverviewPage> List => this.MaterialList();
 
         public NonUnifiedGoodEditPage Edit()
         {

@@ -1,12 +1,13 @@
-namespace Tests.Intranet.GoodTests
+namespace Tests.NonUnifiedGood
 {
     using System.Linq;
 
     using Allors.Domain;
 
-    using Tests.Components;
-    using Tests.Intranet.PersonTests;
-    using Tests.Intranet.ProductTest;
+    using Angular;
+
+    using Pages.NonUnifiedGood;
+    using Pages.ProductTest;
 
     using Xunit;
 
