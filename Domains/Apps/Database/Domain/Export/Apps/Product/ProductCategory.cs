@@ -149,11 +149,18 @@ namespace Allors.Domain
 
         public void AppsDeriveAllSerialisedItemsForSale()
         {
-            this.AllSerialisedItemsForSale = this.Parts.SelectMany(v => v.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+            this.RemoveAllSerialisedItemsForSale();
+
+            if (this.Parts.Count > 0)
+            { 
+                this.AllSerialisedItemsForSale = this.Parts?.SelectMany(v => v.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+            }
         }
 
         public void AppsDeriveAllNonSerialisedInventoryItemsForSale()
         {
+            this.RemoveAllNonSerialisedInventoryItemsForSale();
+
             foreach (Part part in this.Parts)
             {
                 if (part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
@@ -176,7 +183,7 @@ namespace Allors.Domain
                 var parts = new List<Part>();
                 foreach (Product product in this.AllProducts)
                 {
-                    if (product is NonUnifiedGood nonUnifiedGood)
+                    if (product is NonUnifiedGood nonUnifiedGood && nonUnifiedGood.ExistPart)
                     {
                         parts.Add(nonUnifiedGood.Part);
                     }
