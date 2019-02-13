@@ -17,6 +17,9 @@ import { AllorsMaterialLocalisedTextModule } from '../../../../../base/component
 import { AllorsMaterialFilesModule } from '../../../../../base/components/role/files';
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/role/datepicker';
 
+import { BrandInlineModule } from '../../../brand/inline/brand-inline.module';
+import { ModelInlineModule } from '../../../model/inline/model-inline.module';
+
 import { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detail.component';
 export { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detail.component';
 
@@ -28,6 +31,9 @@ export { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detai
     UnifiedGoodOverviewDetailComponent,
   ],
   imports: [
+    BrandInlineModule,
+    ModelInlineModule,
+
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,

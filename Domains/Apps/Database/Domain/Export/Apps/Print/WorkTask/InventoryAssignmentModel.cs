@@ -22,7 +22,7 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             if (assignment != null)
             {
-                this.PartId = ((NonUnifiedPart)assignment.Part)?.PartIdentification;
+                this.PartId = assignment.Part?.PartIdentification();
                 this.PartName = assignment.Part?.Name;
                 this.Quantity = assignment.Quantity;
                 this.UnitOfMeasure = assignment.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??

@@ -11,18 +11,33 @@ namespace Allors.Domain
     public partial class SalesOrderItem
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            {
-                new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemState),
-                new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemShipmentState),
-                new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemInvoiceState),
-                new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemPaymentState),
-            };
+        {
+            new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemState),
+            new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemShipmentState),
+            new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemInvoiceState),
+            new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemPaymentState),
+        };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
+
+        public Part Part
+        {
+            get
+            {
+                if (this.ExistProduct)
+                {
+                    var nonUnifiedGood = this.Product as NonUnifiedGood;
+                    var unifiedGood = this.Product as UnifiedGood;
+                    return unifiedGood ?? nonUnifiedGood?.Part;
+                }
+
+                return null;
+            }
+        }
 
         public Party ItemDifferentShippingParty
         {
@@ -318,32 +333,29 @@ namespace Allors.Domain
             var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
             var defaultFacility = this.SalesOrderWhereSalesOrderItem.ExistStore ? this.SalesOrderWhereSalesOrderItem.Store.DefaultFacility : this.strategy.Session.GetSingleton().Settings.DefaultFacility;
 
-            if (this.ExistProduct && internalOrganisation != null && defaultFacility != null)
+            if (this.Part != null && internalOrganisation != null && defaultFacility != null)
             {
-                if (this.Product is NonUnifiedGood good && good.ExistPart) 
+                if (this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                 {
-                    if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
+                    if (this.ExistSerialisedItem)
                     {
-                        if (this.ExistSerialisedItem)
+                        if (this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem)
                         {
-                            if (this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem)
-                            {
-                                this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.First(v => v.Quantity == 1); 
-                            }
-                        }
-                        else
-                        {
-                            var inventoryItems = good.Part.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
-                            this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
+                            this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.First(v => v.Quantity == 1); 
                         }
                     }
                     else
                     {
-                        var inventoryItems = good.Part.InventoryItemsWherePart;
+                        var inventoryItems = this.Part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
-                        this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
+                        this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
                     }
+                }
+                else
+                {
+                    var inventoryItems = this.Part.InventoryItemsWherePart;
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
+                    this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
             }
         }
@@ -572,14 +584,14 @@ namespace Allors.Domain
         {
             this.UnitPurchasePrice = 0;
 
-            if (this.Product is NonUnifiedGood good &&
-                good.Part.ExistSupplierOfferingsWherePart &&
-                good.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
+            if (this.Part != null &&
+                this.Part.ExistSupplierOfferingsWherePart &&
+                this.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
             {
                 decimal price = 0;
                 UnitOfMeasure uom = null;
 
-                foreach (SupplierOffering supplierOffering in good.Part.SupplierOfferingsWherePart)
+                foreach (SupplierOffering supplierOffering in this.Part.SupplierOfferingsWherePart)
                 {
                     if (supplierOffering.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
                         (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))

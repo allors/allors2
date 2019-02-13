@@ -149,35 +149,45 @@ namespace Allors.Domain
 
         public void AppsDeriveAllSerialisedItemsForSale()
         {
-            var allGoods = new List<NonUnifiedGood>();
-            foreach (Product product in this.AllProducts)
-            {
-                if (product is NonUnifiedGood good)
-                {
-                    allGoods.Add(good);
-                }
-            }
-
-            this.AllSerialisedItemsForSale = allGoods.Where(v => v.ExistPart).SelectMany(v => v.Part.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
+            this.AllSerialisedItemsForSale = this.Parts.SelectMany(v => v.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
         }
 
         public void AppsDeriveAllNonSerialisedInventoryItemsForSale()
         {
-            foreach (Product product in this.AllProducts)
+            foreach (Part part in this.Parts)
             {
-                if (product is NonUnifiedGood good)
+                if (part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
                 {
-                    if (good.ExistPart && good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
+                    foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in part.InventoryItemsWherePart)
                     {
-                        foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in good.Part.InventoryItemsWherePart)
+                        if (nonSerialisedInventoryItem.NonSerialisedInventoryItemState.AvailableForSale)
                         {
-                            if (nonSerialisedInventoryItem.NonSerialisedInventoryItemState.AvailableForSale)
-                            {
-                                this.AddAllNonSerialisedInventoryItemsForSale(nonSerialisedInventoryItem);
-                            }
+                            this.AddAllNonSerialisedInventoryItemsForSale(nonSerialisedInventoryItem);
                         }
                     }
                 }
+            }
+        }
+
+        private List<Part> Parts
+        {
+            get
+            {
+                var parts = new List<Part>();
+                foreach (Product product in this.AllProducts)
+                {
+                    if (product is NonUnifiedGood nonUnifiedGood)
+                    {
+                        parts.Add(nonUnifiedGood.Part);
+                    }
+
+                    if (product is UnifiedGood unifiedGood)
+                    {
+                        parts.Add(unifiedGood);
+                    }
+                }
+
+                return parts;
             }
         }
     }

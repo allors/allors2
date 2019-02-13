@@ -5,13 +5,13 @@ import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
-import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, ProductIdentificationType, ProductNumber, Settings, UnifiedGood } from '../../../../../domain';
+import { ProductType, VatRate, ProductIdentificationType, ProductNumber, Settings, UnifiedGood } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
 import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
-import { Good } from 'src/allors/domain/generated';
+import { Good, InventoryItemKind } from 'src/allors/domain/generated';
 
 @Component({
   templateUrl: './unifiedgood-create.component.html',
@@ -24,16 +24,11 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
   public title = 'Add Unified Good';
 
-  locales: Locale[];
-  categories: ProductCategory[];
   productTypes: ProductType[];
-  manufacturers: Organisation[];
+  inventoryItemKinds: InventoryItemKind[];
   vatRates: VatRate[];
-  ownerships: Ownership[];
-  organisations: Organisation[];
   goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
-  selectedCategories: ProductCategory[] = [];
   settings: Settings;
   goodNumberType: ProductIdentificationType;
 
@@ -56,19 +51,18 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
 
           const pulls = [
-            this.fetcher.locales,
-            this.fetcher.internalOrganisation,
             this.fetcher.Settings,
+            pull.InventoryItemKind(),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.VatRate(),
             pull.ProductIdentificationType(),
-            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
           ];
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }));
@@ -78,10 +72,10 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.categories = loaded.collections.ProductCategories as ProductCategory[];
+        this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
+        this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.settings = loaded.objects.Settings as Settings;
 
         const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
@@ -106,10 +100,6 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-
-    this.selectedCategories.forEach((category: ProductCategory) => {
-      category.AddProduct(this.good);
-    });
 
     this.allors.context.save()
       .subscribe(() => {

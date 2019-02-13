@@ -22,7 +22,15 @@
 
         <productidentification-panel [roleType]="metaService.m.Good.ProductIdentifications"></productidentification-panel>
 
+        <nonserialisedinventoryitem-overview-panel *ngIf="serialised === false"></nonserialisedinventoryitem-overview-panel>
+
+        <serialisedinventoryitem-overview-panel *ngIf="serialised === true"></serialisedinventoryitem-overview-panel>
+
+        <serialiseditem-overview-panel *ngIf="serialised === true"></serialiseditem-overview-panel>
+
         <pricecomponent-overview-panel></pricecomponent-overview-panel>
+
+        <supplieroffering-overview-panel></supplieroffering-overview-panel>
 
       </div>
     </div>

@@ -20,6 +20,21 @@ namespace Allors.Domain
 
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
+        public Part Part
+        {
+            get
+            {
+                if (this.ExistProduct)
+                {
+                    var nonUnifiedGood = this.Product as NonUnifiedGood;
+                    var unifiedGood = this.Product as UnifiedGood;
+                    return unifiedGood ?? nonUnifiedGood?.Part;
+                }
+
+                return null;
+            }
+        }
+
         internal bool IsDeletable =>
             !this.ExistOrderItemBillingsWhereInvoiceItem &&
             !this.ExistShipmentItemBillingsWhereInvoiceItem &&
@@ -464,15 +479,15 @@ namespace Allors.Domain
             this.InitialProfitMargin = 0;
             this.MaintainedProfitMargin = 0;
 
-            if (this.Product is NonUnifiedGood good &&
+            if (this.Part != null &&
                 this.ExistQuantity && this.Quantity > 0 &&
-                good.Part.ExistSupplierOfferingsWherePart &&
-                good.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
+                this.Part.ExistSupplierOfferingsWherePart &&
+                this.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
             {
                 decimal price = 0;
                 UnitOfMeasure uom = null;
 
-                foreach (SupplierOffering supplierOffering in good.Part.SupplierOfferingsWherePart)
+                foreach (SupplierOffering supplierOffering in this.Part.SupplierOfferingsWherePart)
                 {
                     if (supplierOffering.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
                         (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))

@@ -23,6 +23,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
   part: Part;
 
   facility: Facility;
+  facilities: Facility[];
   locales: Locale[];
   inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
@@ -40,7 +41,6 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
   addModel = false;
   goodIdentificationTypes: ProductIdentificationType[];
   partNumber: PartNumber;
-  facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
   currentSellingPrice: PriceComponent;
   internalOrganisation: Organisation;
@@ -214,7 +214,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         this.selectedModel = this.part.Model;
 
         if (this.selectedBrand) {
-        this.brandSelected(this.selectedBrand);
+          this.brandSelected(this.selectedBrand);
         }
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];

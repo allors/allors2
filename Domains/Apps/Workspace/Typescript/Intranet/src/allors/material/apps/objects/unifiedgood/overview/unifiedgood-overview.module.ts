@@ -14,8 +14,12 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
 import { ProductIdentificationPanelModule } from '../../productidentification/overview/panel/productIdentification-panel.module';
+import { NonSerialisedInventoryItemOverviewPanelModule } from '../../nonserialisedinventoryitem/overview/panel/nonserialisedinventoryitem-overview-panel.module';
+import { PriceComponentOverviewPanelModule } from '../../pricecomponent/overview/panel/pricecomponent-overview-panel.module';
+import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
+import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { SupplierOfferingOverviewPanelModule } from '../../supplieroffering/overview/panel/supplieroffering-overview-panel.module';
 
 import { UnifiedGoodOverviewSummaryModule } from './summary/unifiedgood-overview-summary.module';
 import { UnifiedGoodOverviewDetailModule } from './detail/unifiedgood-overview-detail.module';
@@ -35,7 +39,11 @@ export { UnifiedGoodOverviewComponent } from './unifiedgood-overview.component';
     UnifiedGoodOverviewDetailModule,
 
     ProductIdentificationPanelModule,
+    NonSerialisedInventoryItemOverviewPanelModule,
     PriceComponentOverviewPanelModule,
+    SerialisedInventoryItemOverviewPanelModule,
+    SerialisedItemOverviewPanelModule,
+    SupplierOfferingOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

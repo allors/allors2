@@ -14,6 +14,7 @@ export class UnifiedGoodOverviewSummaryComponent {
   m: Meta;
 
   good: UnifiedGood;
+  suppliers: string;
 
   constructor(
     @Self() public panel: PanelService,
@@ -36,11 +37,11 @@ export class UnifiedGoodOverviewSummaryComponent {
           name: pullName,
           object: id,
           include: {
+            ProductType: x,
             Brand: x,
             Model: x,
-            ProductIdentifications: {
-              ProductIdentificationType: x
-            },
+            SuppliedBy: x,
+            ManufacturedBy: x
           }
         })
       );
@@ -48,6 +49,12 @@ export class UnifiedGoodOverviewSummaryComponent {
 
     panel.onPulled = (loaded) => {
       this.good = loaded.objects[pullName] as UnifiedGood;
+
+      if (this.good.SuppliedBy.length > 0) {
+        this.suppliers = this.good.SuppliedBy
+          .map(v => v.displayName)
+          .reduce((acc: string, cur: string) => acc + ', ' + cur);
+      }
     };
   }
 }

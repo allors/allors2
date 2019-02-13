@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -186,7 +189,7 @@ namespace Allors.Domain
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
-            var goods = this.Part?.NonUnifiedGoodsWherePart;
+            var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new [] { this.Part };
 
             if (goods != null)
             {

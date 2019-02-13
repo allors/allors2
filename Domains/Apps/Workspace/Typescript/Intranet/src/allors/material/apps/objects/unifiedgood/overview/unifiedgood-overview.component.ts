@@ -2,11 +2,11 @@ import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/co
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap, delay } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Good } from '../../../../../domain';
-import { PullRequest, Pull } from '../../../../../framework';
+import { Good, Part } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
@@ -20,6 +20,7 @@ export class UnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
   good: Good;
 
   subscription: Subscription;
+  serialised: boolean;
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -40,9 +41,35 @@ export class UnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const { m, pull, x } = this.metaService;
+          const { pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.id();
+
+          const pulls = [
+            pull.Part({
+              object: id,
+              include: {
+                InventoryItemKind: x
+              }
+            }),
+          ];
+
+          return this.panelManager.context
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              tap((loaded) => {
+                const part = loaded.objects.Part as Part;
+                this.serialised = part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+              }),
+              delay(1)
+            );
+        }),
+        switchMap(([]) => {
+
+          const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.objectType = m.Good;
@@ -52,17 +79,8 @@ export class UnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
           this.panelManager.on();
 
           const pulls = [
-            pull.NonUnifiedGood({
+            pull.UnifiedGood({
               object: this.panelManager.id,
-              include: {
-                ProductIdentifications: {
-                  ProductIdentificationType: x
-                },
-                Part: {
-                  Brand: x,
-                  Model: x
-                }
-              }
             })
           ];
 

@@ -26,22 +26,6 @@ namespace Allors.Domain
     {
         public new string ToString() => this.Name ?? this.Id.ToString();
 
-        public string PartIdentification
-        {
-            get
-            {
-                if (this.ProductIdentifications.Count == 0)
-                {
-                    return null;
-                }
-
-                var partId = this.ProductIdentifications.FirstOrDefault(g => g.ExistProductIdentificationType
-                        && g.ProductIdentificationType.Equals(new ProductIdentificationTypes(this.strategy.Session).Part));
-
-                return partId.Identification;
-            }
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistInventoryItemKind)
@@ -128,7 +112,7 @@ namespace Allors.Domain
         {
             if (!this.ExistName)
             {
-                this.Name = "Part " + (this.PartIdentification ?? this.UniqueId.ToString());
+                this.Name = "Part " + (this.PartIdentification() ?? this.UniqueId.ToString());
             }
         }
 

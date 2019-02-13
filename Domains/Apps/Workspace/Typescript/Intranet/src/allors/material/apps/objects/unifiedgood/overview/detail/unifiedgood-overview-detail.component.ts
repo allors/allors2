@@ -3,11 +3,12 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
-import { PullRequest, Sort } from '../../../../../../framework';
+import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, VatRate, ProductIdentificationType, ProductNumber, Facility, InventoryItemKind, SupplierOffering, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -21,26 +22,34 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
 
   good: UnifiedGood;
 
+  facility: Facility;
+  facilities: Facility[];
   locales: Locale[];
-  categories: ProductCategory[];
+  inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
+  categories: ProductCategory[];
   manufacturers: Organisation[];
+  vatRates: VatRate[];
+  suppliers: Organisation[];
+  currentSuppliers: Set<Organisation>;
+  activeSuppliers: Organisation[];
+  selectedSuppliers: Organisation[];
+  supplierOfferings: SupplierOffering[];
   brands: Brand[];
   selectedBrand: Brand;
   models: Model[];
   selectedModel: Model;
-  vatRates: VatRate[];
-  ownerships: Ownership[];
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
-  parts: Part[];
   goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   originalCategories: ProductCategory[] = [];
   selectedCategories: ProductCategory[] = [];
-  productFeatureApplicabilities: ProductFeatureApplicability[];
-  productDimensions: ProductDimension[];
+  unitsOfMeasure: UnitOfMeasure[];
+  currentSellingPrice: PriceComponent;
+  internalOrganisation: Organisation;
+  settings: Settings;
 
   private subscription: Subscription;
   private fetcher: Fetcher;
@@ -53,7 +62,8 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
-    private stateService: StateService) {
+    private stateService: StateService,
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject(new Date());
@@ -72,22 +82,14 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       this.good = undefined;
 
       if (this.panel.isCollapsed) {
-        const { pull, x, m } = this.metaService;
+        const { pull } = this.metaService;
         const id = this.panel.manager.id;
 
         pulls.push(
           pull.UnifiedGood({
             name: pullName,
             object: id,
-            include: {
-              Brand: x,
-              Model: x,
-              ProductIdentifications: {
-                ProductIdentificationType: x
-              },
-            }
           }),
-          pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
         );
       }
     };
@@ -116,26 +118,30 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.locales,
-            this.fetcher.internalOrganisation,
-            pull.VatRate(),
-            pull.ProductIdentificationType(),
-            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
-            pull.Part({
-              include: {
-                Brand: x,
-                Model: x
-              },
-              sort: new Sort(m.Part.Name),
-            }),
+            this.fetcher.Settings,
             pull.UnifiedGood({
               object: id,
               include: {
-                Brand: x,
-                Model: x,
                 PrimaryPhoto: x,
-                ProductIdentifications: x,
                 Photos: x,
                 ElectronicDocuments: x,
+                ManufacturedBy: x,
+                SuppliedBy: x,
+                DefaultFacility: x,
+                SerialisedItemCharacteristics: {
+                  LocalisedValues: x,
+                  SerialisedItemCharacteristicType: {
+                    UnitOfMeasure: x,
+                    LocalisedNames: x
+                  }
+                },
+                ProductIdentifications: {
+                  ProductIdentificationType: x,
+                },
+                Brand: {
+                  Models: x
+                },
+                Model: x,
                 LocalisedNames: {
                   Locale: x,
                 },
@@ -147,24 +153,48 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
                 },
               },
             }),
-            pull.Good({
+            pull.UnifiedGood(
+              {
+                object: id,
+                fetch: {
+                  SupplierOfferingsWherePart: x
+                }
+              }
+            ),
+            pull.UnifiedGood(
+              {
+                object: id,
+                fetch: {
+                  PriceComponentsWherePart: x
+                }
+              }
+            ),
+            pull.UnitOfMeasure(),
+            pull.InventoryItemKind(),
+            pull.ProductIdentificationType(),
+            pull.Facility(),
+            pull.VatRate(),
+            pull.ProductIdentificationType(),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
+            pull.SupplierRelationship({
+              include: {
+                Supplier: x
+              }
+            }),
+            pull.Brand({
+              include: {
+                Models: x
+              },
+              sort: new Sort(m.Brand.Name)
+            }),
+            pull.Organisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
+            }),
+            pull.UnifiedGood({
               name: 'OriginalCategories',
               object: id,
               fetch: { ProductCategoriesWhereProduct: x }
-            }),
-            pull.Good({
-              object: id,
-              fetch: {
-                ProductFeatureApplicabilitiesWhereAvailableFor: {
-                  include: {
-                    ProductFeature: {
-                      ProductDimension_Dimension: {
-                        UnitOfMeasure: x
-                      }
-                    }
-                  }
-                }
-              }
             }),
           ];
 
@@ -174,21 +204,45 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        const now = new Date();
+
         this.good = loaded.objects.UnifiedGood as UnifiedGood;
         this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
         this.selectedCategories = this.originalCategories;
 
-        this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.parts = loaded.collections.Parts as Part[];
+        this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
+        this.productTypes = loaded.collections.ProductTypes as ProductType[];
+        this.brands = loaded.collections.Brands as Brand[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.facilities = loaded.collections.Facilities as Facility[];
+        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
+        this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.settings = loaded.objects.Settings as Settings;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
-        this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];
-        this.productDimensions = this.productFeatureApplicabilities.map(v => v.ProductFeature).filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
+        this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.categories = loaded.collections.ProductCategories as ProductCategory[];
+
+        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
+
+        this.suppliers = this.good.SuppliedBy as Organisation[];
+        this.selectedSuppliers = this.suppliers;
+
+        this.selectedBrand = this.good.Brand;
+        this.selectedModel = this.good.Model;
+
+        if (this.selectedBrand) {
+          this.brandSelected(this.selectedBrand);
+        }
+
+        this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
 
       }, this.errorService.handler);
 
@@ -200,7 +254,74 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  public brandAdded(brand: Brand): void {
+    this.brands.push(brand);
+    this.selectedBrand = brand;
+    this.models = [];
+    this.selectedModel = undefined;
+    this.allors.context.session.hasChanges = true;
+    this.setDirty();
+  }
+
+  public modelAdded(model: Model): void {
+    this.selectedBrand.AddModel(model);
+    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.selectedModel = model;
+    this.allors.context.session.hasChanges = true;
+    this.setDirty();
+  }
+
+  public brandSelected(brand: Brand): void {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Brand({
+        object: brand,
+        include: {
+          Models: x,
+        }
+      }
+      )
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe(() => {
+        this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+      }, this.errorService.handler);
+  }
+
   public save(): void {
+
+    this.onSave();
+
+    this.allors.context.save()
+      .subscribe(() => {
+        this.panel.toggle();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    this.onSave();
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  private onSave() {
 
     this.selectedCategories.forEach((category: ProductCategory) => {
       category.AddProduct(this.good);
@@ -215,13 +336,57 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       category.RemoveProduct(this.good);
     });
 
-    this.allors.context.save()
-      .subscribe(() => {
-        this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
+    this.good.Brand = this.selectedBrand;
+    this.good.Model = this.selectedModel;
+
+    if (this.suppliers !== undefined) {
+      const suppliersToDelete = this.suppliers.filter(v => v);
+
+      if (this.selectedSuppliers !== undefined) {
+        this.selectedSuppliers.forEach((supplier: Organisation) => {
+          const index = suppliersToDelete.indexOf(supplier);
+          if (index > -1) {
+            suppliersToDelete.splice(index, 1);
+          }
+
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering === undefined) {
+            this.supplierOfferings.push(this.newSupplierOffering(supplier));
+          } else {
+            supplierOffering.ThroughDate = null;
+          }
         });
+      }
+
+      if (suppliersToDelete !== undefined) {
+        suppliersToDelete.forEach((supplier: Organisation) => {
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering !== undefined) {
+            supplierOffering.ThroughDate = new Date();
+          }
+        });
+      }
+    }
+  }
+
+  private newSupplierOffering(supplier: Organisation): SupplierOffering {
+
+    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
+    supplierOffering.Supplier = supplier;
+    supplierOffering.Part = this.good;
+    supplierOffering.UnitOfMeasure = this.good.UnitOfMeasure;
+    supplierOffering.Currency = this.settings.PreferredCurrency;
+    return supplierOffering;
   }
 
   public setDirty(): void {

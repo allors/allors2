@@ -10,20 +10,10 @@
       </div>
 
       <div class="row">
-        <a-mat-textarea class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-textarea>
-      </div>
-
-      <div class="row">
-        <mat-form-field class="col-md">
-          <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.UnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
+        <a-mat-select class="col-md" [object]="good" [roleType]="m.UnifiedGood.ProductType" [options]="productTypes"
+          display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="good" [roleType]="m.UnifiedGood.InventoryItemKind" [options]="inventoryItemKinds"
+          display="Name"></a-mat-select>
       </div>
 
     </div>
