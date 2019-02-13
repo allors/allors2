@@ -14,22 +14,21 @@ namespace Tests.NonUnifiedGood
     [Collection("Test collection")]
     public class NonUnifiedGoodEditTest : Test
     {
-        private readonly ProductListPage goods;
+        private readonly GoodListPage goods;
 
         public NonUnifiedGoodEditTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.goods = dashboard.Sidenav.NavigateToProductList();
+            this.goods = dashboard.Sidenav.NavigateToGoodList();
         }
 
         [Fact]
         public void Create()
         {
-            this.goods.AddNew.Click();
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            var page = new NonUnifiedGoodEditPage(this.Driver);
+            var page = this.goods.NewNonUnifiedGood();
 
             page.Name.Set("Mercedes Vito")
                 .Description.Set("Vans. Born to run.")

@@ -27,17 +27,32 @@ namespace Tests.LetterCorrespondenceTests
         [Fact]
         public void Create()
         {
+            var people = new People(this.Session).Extent();
+            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+
+            var address = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .Build();
+
+            person.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(address).Build());
+
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First;
-            var postalAddress = (PostalAddress)employee.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
+
+            var employeeAddress = new PostalAddressBuilder(this.Session)
+                .WithAddress1("home sweet home")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("suncity").WithPostalCode("0000").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .Build();
+
+            employee.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(employeeAddress).Build());
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
-
-            var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewLetterCorrespondence();
+            var page = this.personListPage.Select(person).NewLetterCorrespondence();
 
             page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
@@ -63,7 +78,7 @@ namespace Tests.LetterCorrespondenceTests
 
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Equal(postalAddress, communicationEvent.PostalAddress);
+            Assert.Equal(employeeAddress, communicationEvent.PostalAddress);
             Assert.Equal(employee, communicationEvent.FromParty);
             Assert.Equal(person, communicationEvent.ToParty);
             Assert.Equal("subject", communicationEvent.Subject);
