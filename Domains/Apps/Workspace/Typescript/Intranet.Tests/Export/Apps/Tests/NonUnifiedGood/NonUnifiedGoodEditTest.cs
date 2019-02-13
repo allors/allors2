@@ -31,11 +31,10 @@ namespace Tests.NonUnifiedGood
 
             var page = new NonUnifiedGoodEditPage(this.Driver);
 
-            page.Name.Value = "Mercedes Vito";
-            page.Description.Value = "Vans. Born to run.";
-            page.Part.Value = "finished good";
-
-            page.Save.Click();
+            page.Name.Set("Mercedes Vito")
+                .Description.Set("Vans. Born to run.")
+                .Part.Set("finished good")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -61,13 +60,13 @@ namespace Tests.NonUnifiedGood
             //var personOverview = this.people.Select(person);
             //var page = personOverview.Edit();
             
-            //page.Salutation.Value = "Mr.";
+            //.Salutation.Set("Mr.";
 
-            //page.FirstName.Text = "Jos";
-            //page.LastName.Text = "Smos";
-            //page.Comment.Text = "This is a comment";
+            //.FirstName.Text = "Jos";
+            //.LastName.Text = "Smos";
+            //.Comment.Text = "This is a comment";
 
-            //page.Save.Click();
+            //.Save.Click();
 
             //this.Session.Rollback();
 

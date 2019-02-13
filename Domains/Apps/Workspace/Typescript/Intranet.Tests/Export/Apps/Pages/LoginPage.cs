@@ -17,7 +17,7 @@ namespace Pages.ApplicationTests
 
         public DashboardPage Login(string userName = "administrator")
         {
-            this.UserName.Value = userName;
+            this.UserName.Set(userName);
             this.Button.Click();
 
             this.Driver.WaitForAngular();

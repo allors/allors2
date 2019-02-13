@@ -1,7 +1,6 @@
 namespace Tests.FaceToFaceCommunicationTests
 {
     using System.Linq;
-    using System.Reflection.Metadata;
 
     using Allors;
     using Allors.Domain;
@@ -11,38 +10,18 @@ namespace Tests.FaceToFaceCommunicationTests
 
     using Pages.OrganisationTests;
 
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationFaceToFaceCommunicationEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
-
-        private readonly FaceToFaceCommunication editCommunicationEvent;
+        private readonly OrganisationListPage organisationListPage;
 
         public OrganisationFaceToFaceCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
-
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
-
-            this.editCommunicationEvent = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithSubject("dummy")
-                .WithFromParty(organisation.CurrentContacts.First)
-                .WithToParty(firstEmployee)
-                .WithLocation("old location")
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
@@ -57,21 +36,20 @@ namespace Tests.FaceToFaceCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
-            var personOverview = this.organisations.Select(organisation);
+            var personOverview = this.organisationListPage.Select(organisation);
             var page = personOverview.NewFaceToFaceCommunication();
 
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.Location.Value = "location";
-            page.Subject.Value = "subject";
-            page.FromParty.Value = employee.PartyName;
-            page.ToParty.Value = contact.PartyName;
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+                .Location.Set("location")
+                .Subject.Set("subject")
+                .FromParty.Set(employee.PartyName)
+                .ToParty.Set(contact.PartyName)
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -97,31 +75,39 @@ namespace Tests.FaceToFaceCommunicationTests
         [Fact]
         public void Edit()
         {
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisations = new Organisations(this.Session).Extent();
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
             var secondEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("second"));
 
+            var editCommunicationEvent = new FaceToFaceCommunicationBuilder(this.Session)
+                .WithSubject("dummy")
+                .WithFromParty(organisation.CurrentContacts.First)
+                .WithToParty(firstEmployee)
+                .WithLocation("old location")
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+            
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
+            var page = this.organisationListPage.Select(organisation).SelectFaceToFaceCommunication(editCommunicationEvent);
 
-            var page = organisationOverviewPage.SelectFaceToFaceCommunication(this.editCommunicationEvent);
-
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name);
-            page.Location.Value = "new location";
-            page.Subject.Value = "new subject";
-            page.FromParty.Value = secondEmployee.PartyName;
-            page.ToParty.Value = contact.PartyName;
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)
+                .Location.Set("new location")
+                .Subject.Set("new subject")
+                .FromParty.Set(secondEmployee.PartyName)
+                .ToParty.Set(contact.PartyName)
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -130,12 +116,12 @@ namespace Tests.FaceToFaceCommunicationTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, this.editCommunicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, this.editCommunicationEvent.EventPurposes);
-            Assert.Equal(secondEmployee, this.editCommunicationEvent.FromParty);
-            Assert.Equal(contact, this.editCommunicationEvent.ToParty);
-            Assert.Equal("new location", this.editCommunicationEvent.Location);
-            Assert.Equal("new subject", this.editCommunicationEvent.Subject);
+            Assert.Equal(new CommunicationEventStates(this.Session).Completed, editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, editCommunicationEvent.EventPurposes);
+            Assert.Equal(secondEmployee, editCommunicationEvent.FromParty);
+            Assert.Equal(contact, editCommunicationEvent.ToParty);
+            Assert.Equal("new location", editCommunicationEvent.Location);
+            Assert.Equal("new subject", editCommunicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);

@@ -10,23 +10,22 @@ namespace Tests.LetterCorrespondenceTests
 
     using Pages.OrganisationTests;
 
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationLetterCorrespondenceEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
-
-        private readonly LetterCorrespondence editCommunicationEvent;
-
-        private readonly PostalAddress organisationAddress;
-
-        private readonly PostalAddress employeeAddress;
-
+        private readonly OrganisationListPage organisationListPage;
+        
         public OrganisationLetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)
+        {
+            var dashboard = this.Login();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
+        }
+
+        [Fact]
+        public void Create()
         {
             var organisations = new Organisations(this.Session).Extent();
             var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
@@ -34,61 +33,30 @@ namespace Tests.LetterCorrespondenceTests
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
-            this.organisationAddress = new PostalAddressBuilder(this.Session)
+            var organisationAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
-                .Build();
-
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.organisationAddress).Build());
-
-            this.employeeAddress = new PostalAddressBuilder(this.Session)
-                .WithAddress1("home sweet home")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("suncity").WithPostalCode("0000").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
-                .Build();
-
-            employee.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.employeeAddress).Build());
-
-            this.editCommunicationEvent = new LetterCorrespondenceBuilder(this.Session)
-                .WithSubject("dummy")
-                .WithFromParty(employee)
-                .WithToParty(organisation)
-                .WithPostalAddress(this.organisationAddress)
                 .Build();
 
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
-        }
-
-        [Fact]
-        public void Create()
-        {
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First;
-
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var page = this.organisationListPage.Select(organisation).NewLetterCorrespondence();
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
-            var page = organisationOverviewPage.NewLetterCorrespondence();
-
-            page.EventState.Value = new CommunicationEventStates(this.Session).Completed.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.FromParty.Value = organisation.PartyName;
-            page.ToParty.Value = employee.PartyName;
-            page.PostalAddress.Value = "Haverwerf 15 1111 city Belgium";
-            page.Subject.Value = "subject";
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.Comment.Value = "comment";
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+                .FromParty.Set(organisation.PartyName)
+                .ToParty.Set(employee.PartyName)
+                .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .Subject.Set("subject")
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .Comment.Set("comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -101,7 +69,7 @@ namespace Tests.LetterCorrespondenceTests
 
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
             Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Equal(this.organisationAddress, communicationEvent.PostalAddress);
+            Assert.Equal(organisationAddress, communicationEvent.PostalAddress);
             Assert.Equal(organisation, communicationEvent.FromParty);
             Assert.Equal(employee, communicationEvent.ToParty);
             Assert.Equal("subject", communicationEvent.Subject);
@@ -115,31 +83,54 @@ namespace Tests.LetterCorrespondenceTests
         [Fact]
         public void Edit()
         {
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisations = new Organisations(this.Session).Extent();
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
 
+            var organisationAddress = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .Build();
+
+            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(organisationAddress).Build());
+
+            var employeeAddress = new PostalAddressBuilder(this.Session)
+                .WithAddress1("home sweet home")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("suncity").WithPostalCode("0000").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .Build();
+
+            employee.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(employeeAddress).Build());
+
+            var editCommunicationEvent = new LetterCorrespondenceBuilder(this.Session)
+                .WithSubject("dummy")
+                .WithFromParty(employee)
+                .WithToParty(organisation)
+                .WithPostalAddress(organisationAddress)
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
+            var organisationOverviewPage = this.organisationListPage.Select(organisation);
 
-            var page = organisationOverviewPage.SelectLetterCorrespondence(this.editCommunicationEvent);
+            var page = organisationOverviewPage.SelectLetterCorrespondence(editCommunicationEvent);
 
-            page.EventState.Value = new CommunicationEventStates(this.Session).InProgress.Name;
-            page.Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name);
-            page.FromParty.Value = organisation.PartyName;
-            page.ToParty.Value = employee.PartyName;
-            page.PostalAddress.Value = "Haverwerf 15 1111 city Belgium";
-            page.Subject.Value = "new subject";
-            page.ScheduledStart.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ScheduledEnd.Value = DateTimeFactory.CreateDate(2018, 12, 23);
-            page.ActualStart.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.ActualEnd.Value = DateTimeFactory.CreateDate(2018, 12, 24);
-            page.Comment.Value = "new comment";
-
-            page.Save.Click();
+            page.EventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
+                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+                .FromParty.Set(organisation.PartyName)
+                .ToParty.Set(employee.PartyName)
+                .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .Subject.Set("new subject")
+                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .Comment.Set("new comment")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -148,17 +139,17 @@ namespace Tests.LetterCorrespondenceTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, this.editCommunicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, this.editCommunicationEvent.EventPurposes);
-            Assert.Equal(organisation, this.editCommunicationEvent.FromParty);
-            Assert.Equal(employee, this.editCommunicationEvent.ToParty);
-            Assert.Equal(this.organisationAddress, this.editCommunicationEvent.PostalAddress);
-            Assert.Equal("new subject", this.editCommunicationEvent.Subject);
+            Assert.Equal(new CommunicationEventStates(this.Session).InProgress, editCommunicationEvent.CommunicationEventState);
+            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, editCommunicationEvent.EventPurposes);
+            Assert.Equal(organisation, editCommunicationEvent.FromParty);
+            Assert.Equal(employee, editCommunicationEvent.ToParty);
+            Assert.Equal(organisationAddress, editCommunicationEvent.PostalAddress);
+            Assert.Equal("new subject", editCommunicationEvent.Subject);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
-            Assert.Equal("new comment", this.editCommunicationEvent.Comment);
+            Assert.Equal("new comment", editCommunicationEvent.Comment);
         }
     }
 }

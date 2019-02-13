@@ -51,12 +51,11 @@ namespace Tests.PartyRelationshipTests
             var organisationOverviewPage = this.organisations.Select(this.organisation);
             var page = organisationOverviewPage.NewOrganisationContactRelationship();
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-            page.ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description);
-            page.Contact.Value = this.contact.PartyName;
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
+                .Contact.Set(this.contact.PartyName)
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -84,13 +83,12 @@ namespace Tests.PartyRelationshipTests
             var organisationOverviewPage = this.organisations.Select(this.organisation);
             var page = organisationOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-            page.ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description);
-            page.ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description);
-            page.ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact.Description);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact.Description)
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -17,28 +17,13 @@ namespace Tests.PartyRelationshipTests
     [Collection("Test collection")]
     public class CustomerRelationshipEditTest : Test
     {
-        private readonly PersonListPage people;
-
-        private readonly PartyRelationship editPartyRelationship;
+        private readonly PersonListPage personListPage;
 
         public CustomerRelationshipEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
-
-            this.editPartyRelationship = new CustomerRelationshipBuilder(this.Session)
-                .WithCustomer(person)
-                .WithInternalOrganisation(allors)
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]
@@ -46,16 +31,14 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var people = new People(this.Session).Extent();
+            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var page = personOverview.NewCustomerRelationship();
+            var page = this.personListPage.Select(person).NewCustomerRelationship();
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -73,19 +56,28 @@ namespace Tests.PartyRelationshipTests
         [Fact]
         public void Edit()
         {
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            var people = new People(this.Session).Extent();
+            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+
+            var editPartyRelationship = new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(person)
+                .WithInternalOrganisation(allors)
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            var personOverview = this.personListPage.Select(person);
 
-            var page = personOverview.SelectPartyRelationship(this.editPartyRelationship);
+            var page = personOverview.SelectPartyRelationship(editPartyRelationship);
 
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -10,58 +10,43 @@ namespace Tests.PartyRelationshipTests
 
     using Pages.OrganisationTests;
 
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class InternalOrganisationEmploymentEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
-
-        private readonly Employment editPartyRelationship;
-
-        private readonly Person employee;
+        private readonly OrganisationListPage organisationListPage;
 
         public InternalOrganisationEmploymentEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            this.employee = new PersonBuilder(this.Session).WithLastName("employee").Build();
-
-            // Delete all existing for the new one to be in the first page of the list.
-            foreach (PartyRelationship partyRelationship in allors.PartyRelationshipsWhereParty)
-            {
-                partyRelationship.Delete();
-            }
-
-            this.editPartyRelationship = new EmploymentBuilder(this.Session)
-                .WithEmployee(this.employee)
-                .WithEmployer(allors)
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
         }
 
         [Fact]
         public void Create()
         {
+            var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var employee = new PersonBuilder(this.Session).WithLastName("employee").Build();
+
+            // Delete all existing for the new one to be in the first page of the list.
+            foreach (PartyRelationship relationship in employer.PartyRelationshipsWhereParty)
+            {
+                relationship.Delete();
+            }
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var before = new Employments(this.Session).Extent().ToArray();
 
-            var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var page = this.organisationListPage.Select(employer).NewEmployment();
 
-            var organisationOverviewPage = this.organisations.Select(employer);
-            var page = organisationOverviewPage.NewEmployment();
-
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-            page.Employee.Value = this.employee.PartyName;
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Employee.Set(employee.PartyName)
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -75,23 +60,36 @@ namespace Tests.PartyRelationshipTests
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, partyRelationship.FromDate.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1).Date, partyRelationship.ThroughDate.Value.Date.ToUniversalTime().Date);
             Assert.Equal(employer, partyRelationship.Employer);
-            Assert.Equal(this.employee, partyRelationship.Employee);
+            Assert.Equal(employee, partyRelationship.Employee);
         }
 
         [Fact]
         public void Edit()
         {
+            var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var employee = new PersonBuilder(this.Session).WithLastName("employee").Build();
+
+            // Delete all existing for the new one to be in the first page of the list.
+            foreach (PartyRelationship partyRelationship in employer.PartyRelationshipsWhereParty)
+            {
+                partyRelationship.Delete();
+            }
+
+            var editPartyRelationship = new EmploymentBuilder(this.Session)
+                .WithEmployee(employee)
+                .WithEmployer(employer)
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+            
             var before = new Employments(this.Session).Extent().ToArray();
 
-            var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var page = this.organisationListPage.Select(employer).SelectPartyRelationship(editPartyRelationship);
 
-            var organisationOverviewPage = this.organisations.Select(employer);
-            var page = organisationOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
-
-            page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 22);
-            page.ThroughDate.Value = DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1);
-
-            page.Save.Click();
+            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+                .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -102,8 +100,8 @@ namespace Tests.PartyRelationshipTests
 
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, this.editPartyRelationship.FromDate.Date.ToUniversalTime().Date);
             //Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1).Date, this.editPartyRelationship.ThroughDate.Value.Date.ToUniversalTime().Date);
-            Assert.Equal(employer, this.editPartyRelationship.Employer);
-            Assert.Equal(this.employee, this.editPartyRelationship.Employee);
+            Assert.Equal(employer, editPartyRelationship.Employer);
+            Assert.Equal(employee, editPartyRelationship.Employee);
         }
     }
 }

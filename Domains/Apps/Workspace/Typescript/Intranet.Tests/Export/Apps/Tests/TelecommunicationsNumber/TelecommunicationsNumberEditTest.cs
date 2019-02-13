@@ -55,14 +55,13 @@ namespace Tests.TelecommunicationsNumberTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewTelecommunicationsNumber();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            page.CountryCode.Value = "111";
-            page.AreaCode.Value = "222";
-            page.ContactNumber.Value = "333";
-            page.ContactMechanismType.Value = new ContactMechanismTypes(this.Session).MobilePhone.Name;
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+                .CountryCode.Set("111")
+                .AreaCode.Set("222")
+                .ContactNumber.Set("333")
+                .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -92,13 +91,12 @@ namespace Tests.TelecommunicationsNumberTests
 
             var page = personOverview.SelectTelecommunicationsNumber(this.editContactMechanism);
 
-            page.CountryCode.Value = "111";
-            page.AreaCode.Value = "222";
-            page.ContactNumber.Value = "333";
-            page.ContactMechanismType.Value = new ContactMechanismTypes(this.Session).MobilePhone.Name;
-            page.Description.Value = "description";
-
-            page.Save.Click();
+            page.CountryCode.Set("111")
+                .AreaCode.Set("222")
+                .ContactNumber.Set("333")
+                .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
+                .Description.Set("description")
+                .Save.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

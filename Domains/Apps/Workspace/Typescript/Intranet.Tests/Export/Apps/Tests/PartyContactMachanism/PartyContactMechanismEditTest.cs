@@ -55,21 +55,21 @@ namespace Tests.PartyContactMachanismTests
             //var personOverview = this.people.Select(person);
             //var page = personOverview.NewPostalAddress();
 
-            //page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 28);
-            //page.ThroughDate.Value = DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
-            //page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            //page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
-            //page.Address1.Value = "addressline 1";
-            //page.Address2.Value = "addressline 2";
-            //page.Address3.Value = "addressline 3";
-            //page.Locality.Value = "city";
-            //page.PostalCode.Value = "postalcode";
-            //page.Country.Value = country.Name;
-            //page.UseAsDefault.Value = true;
-            //page.NonSolicitationIndicator.Value = true;
-            //page.Description.Value = "description";
+            //.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 28);
+            //.ThroughDate.Set(DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
+            //.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
+            //.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
+            //.Address1.Set("addressline 1";
+            //.Address2.Set("addressline 2";
+            //.Address3.Set("addressline 3";
+            //.Locality.Set("city";
+            //.PostalCode.Set("postalcode";
+            //.Country.Set(country.Name;
+            //.UseAsDefault.Set(true;
+            //.NonSolicitationIndicator.Set(true;
+            //.Description.Set("description";
 
-            //page.Save.Click();
+            //.Save.Click();
 
             //this.Driver.WaitForAngular();
             //this.Session.Rollback();
@@ -115,21 +115,21 @@ namespace Tests.PartyContactMachanismTests
             //var page = personOverview.SelectPostalAddress(this.editPartyContactMechanism);
             //var contactMechanism = (PostalAddress)this.editPartyContactMechanism.ContactMechanism;
 
-            //page.FromDate.Value = DateTimeFactory.CreateDate(2018, 12, 28);
-            //page.ThroughDate.Value = DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
-            //page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
-            //page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
-            //page.Address1.Value = "addressline 1";
-            //page.Address2.Value = "addressline 2";
-            //page.Address3.Value = "addressline 3";
-            //page.Locality.Value = "city";
-            //page.PostalCode.Value = "postalcode";
-            //page.Country.Value = country.Name;
-            //page.UseAsDefault.Value = true;
-            //page.NonSolicitationIndicator.Value = true;
-            //page.Description.Value = "description";
+            //.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 28);
+            //.ThroughDate.Set(DateTimeFactory.CreateDate(DateTime.Now).AddYears(1);
+            //.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name);
+            //.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).HeadQuarters.Name);
+            //.Address1.Set("addressline 1";
+            //.Address2.Set("addressline 2";
+            //.Address3.Set("addressline 3";
+            //.Locality.Set("city";
+            //.PostalCode.Set("postalcode";
+            //.Country.Set(country.Name;
+            //.UseAsDefault.Set(true;
+            //.NonSolicitationIndicator.Set(true;
+            //.Description.Set("description";
 
-            //page.Save.Click();
+            //.Save.Click();
 
             //this.Driver.WaitForAngular();
             //this.Session.Rollback();
