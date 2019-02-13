@@ -156,6 +156,11 @@ namespace Allors.Domain
                 }
             }
 
+            if (!this.ExistOriginFacility)
+            {
+                this.OriginFacility = this.ExistStore ? this.Store.DefaultFacility : this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+            }
+
             if (!this.ExistOrderNumber && this.ExistStore)
             {
                 this.OrderNumber = this.Store.DeriveNextSalesOrderNumber();
@@ -910,8 +915,6 @@ namespace Allors.Domain
                 .WithFee(this.Fee)
                 .WithCustomerReference(this.CustomerReference)
                 .WithPaymentMethod(this.PaymentMethod)
-                .WithComment(this.Comment)
-                .WithInternalComment(this.InternalComment)
                 .Build();
 
             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
@@ -927,7 +930,6 @@ namespace Allors.Domain
                         .WithActualUnitPrice(orderItem.ActualUnitPrice)
                         .WithProduct(orderItem.Product)
                         .WithQuantity(orderItem.QuantityOrdered)
-                        .WithComment(orderItem.Comment)
                         .WithDetails(orderItem.Details)
                         .WithDescription(orderItem.Description)
                         .WithInternalComment(orderItem.InternalComment)

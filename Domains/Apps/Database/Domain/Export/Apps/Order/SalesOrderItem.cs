@@ -331,9 +331,8 @@ namespace Allors.Domain
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
             var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
-            var defaultFacility = this.SalesOrderWhereSalesOrderItem.ExistStore ? this.SalesOrderWhereSalesOrderItem.Store.DefaultFacility : this.strategy.Session.GetSingleton().Settings.DefaultFacility;
 
-            if (this.Part != null && internalOrganisation != null && defaultFacility != null)
+            if (this.Part != null && internalOrganisation != null)
             {
                 if (this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                 {
@@ -347,14 +346,14 @@ namespace Allors.Domain
                     else
                     {
                         var inventoryItems = this.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.OriginFacility);
                         this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
                     }
                 }
                 else
                 {
                     var inventoryItems = this.Part.InventoryItemsWherePart;
-                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.SalesOrderWhereSalesOrderItem.OriginFacility);
                     this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
             }

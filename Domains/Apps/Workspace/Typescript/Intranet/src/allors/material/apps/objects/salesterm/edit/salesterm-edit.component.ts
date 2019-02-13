@@ -82,6 +82,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
         this.container = loaded.objects.SalesInvoice || loaded.objects.SalesOrder;
         this.object = loaded.objects.SalesTerm as SalesTerm;
         this.termTypes = loaded.collections.TermTypes as TermType[];
+        this.termTypes = this.termTypes.filter(v => v.objectType.name === `${objectType.name}Type`);
 
         if (create) {
           this.title = 'Add Sales Term';

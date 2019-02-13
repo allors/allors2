@@ -10,7 +10,7 @@ interface Row extends TableRow {
   object: SerialisedItem;
   number: string;
   name: string;
-  status: string;
+  state: string;
   ownership: string;
 }
 
@@ -168,7 +168,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
               object: v,
               number: v.ItemNumber,
               name: v.displayName,
-              status: v.SerialisedItemState ? v.SerialisedItemState.Name : '',
+              state: v.SerialisedItemState ? v.SerialisedItemState.Name : '',
               ownership: v.Ownership ? v.Ownership.Name : '',
             } as Row;
           });

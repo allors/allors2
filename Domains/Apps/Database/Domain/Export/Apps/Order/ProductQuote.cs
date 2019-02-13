@@ -42,11 +42,9 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
                 .WithTakenBy(this.Issuer)
                 .WithBillToCustomer(this.Receiver)
-                .WithComment(this.Comment)
                 .WithDescription(this.Description)
                 .WithShipToContactPerson(this.ContactPerson)
                 .WithBillToContactPerson(this.ContactPerson)
-                .WithInternalComment(this.InternalComment)
                 .WithQuote(this)
                 .Build();
 
@@ -59,7 +57,6 @@ namespace Allors.Domain
                 salesOrder.AddSalesOrderItem(
                     new SalesOrderItemBuilder(this.Strategy.Session)
                         .WithInvoiceItemType(new InvoiceItemTypes(this.strategy.Session).ProductItem)
-                        .WithComment(quoteItem.Comment)
                         .WithInternalComment(quoteItem.InternalComment)
                         .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
                         .WithActualUnitPrice(quoteItem.UnitPrice)

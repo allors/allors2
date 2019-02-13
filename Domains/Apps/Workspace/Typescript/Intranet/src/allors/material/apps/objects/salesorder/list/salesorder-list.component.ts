@@ -17,7 +17,7 @@ interface Row extends TableRow {
   object: SalesOrder;
   number: string;
   shipToCustomer: string;
-  status: string;
+  state: string;
   customerReference: string;
   lastModifiedDate: string;
 }
@@ -151,7 +151,7 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
             object: v,
             number: `${v.OrderNumber}`,
             shipToCustomer: v.ShipToCustomer && v.ShipToCustomer.displayName,
-            status: `${v.SalesOrderState && v.SalesOrderState.Name}`,
+            state: `${v.SalesOrderState && v.SalesOrderState.Name}`,
             customerReference: `${v.Description || ''}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

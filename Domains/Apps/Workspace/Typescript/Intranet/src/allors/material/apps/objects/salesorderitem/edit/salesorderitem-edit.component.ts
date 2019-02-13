@@ -200,9 +200,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  public goodSelected(object: any) {
-    if (object) {
-      this.refreshSerialisedItems(object as Product);
+  public goodSelected(product: Product): void {
+    if (product) {
+      this.refreshSerialisedItems(product);
     }
   }
 
@@ -217,19 +217,23 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  private refreshSerialisedItems(good: Product): void {
+  private refreshSerialisedItems(product: Product): void {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
       pull.NonUnifiedGood({
-        object: good.id,
+        object: product.id,
         fetch: {
           Part: {
-            include: {
-              SerialisedItems: x
-            }
+            SerialisedItems: x
           }
+        }
+      }),
+      pull.UnifiedGood({
+        object: product.id,
+        include: {
+          SerialisedItems: x
         }
       })
     ];
@@ -237,7 +241,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = loaded.objects.Part as Part;
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
         this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
         if (this.orderItem.Product !== this.previousProduct) {

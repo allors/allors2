@@ -17,7 +17,7 @@ interface Row extends TableRow {
   object: SerialisedItem;
   id: string;
   name: string;
-  status: string;
+  state: string;
   ownership: string;
   suppliedBy: string;
   ownedBy: string;
@@ -171,7 +171,7 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
             object: v,
             id: v.ItemNumber,
             name: v.Name,
-            status: `${v.SerialisedItemState && v.SerialisedItemState.Name}`,
+            state: `${v.SerialisedItemState && v.SerialisedItemState.Name}`,
             ownership: `${v.Ownership && v.Ownership.Name}`,
             suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',
             ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',

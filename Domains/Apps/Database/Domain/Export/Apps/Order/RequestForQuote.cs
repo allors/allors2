@@ -48,8 +48,6 @@ namespace Allors.Domain
                 .WithRequiredResponseDate(this.RequiredResponseDate)
                 .WithCurrency(this.Currency)
                 .WithFullfillContactMechanism(this.FullfillContactMechanism)
-                .WithComment(this.Comment)
-                .WithInternalComment(this.InternalComment)
                 .Build();
 
             var sourceItems = this.RequestItems.Where(i => i.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)).ToArray();
@@ -66,7 +64,6 @@ namespace Allors.Domain
                     .WithQuantity(requestItem.Quantity)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
-                    .WithComment(requestItem.Comment)
                     .WithInternalComment(requestItem.InternalComment).Build());
             }
 

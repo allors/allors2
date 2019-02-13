@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -67,6 +67,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private fetcher: Fetcher;
   private subscription: Subscription;
+  facilities: Facility[];
 
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
@@ -222,6 +223,8 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
             pull.SalesOrder({
               object: id,
               include: {
+                Store: x,
+                OriginFacility: x,
                 ShipToCustomer: x,
                 ShipToAddress: x,
                 ShipToContactPerson: x,
@@ -238,6 +241,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
                 }
               }
             }),
+            pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
@@ -261,6 +265,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.order = loaded.objects.SalesOrder as SalesOrder;
 
+        this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.stores = loaded.collections.Stores as Store[];

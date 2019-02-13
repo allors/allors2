@@ -16,7 +16,7 @@ interface Row extends TableRow {
   object: SalesInvoice;
   number: string;
   billedTo: string;
-  status: string;
+  state: string;
   reference: string;
   description: string;
   lastModifiedDate: string;
@@ -164,7 +164,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
             object: v,
             number: v.InvoiceNumber,
             billedTo: v.BillToCustomer.displayName,
-            status: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
+            state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

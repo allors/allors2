@@ -102,10 +102,10 @@
 
         <div class="row">
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.Description"></a-mat-textarea>
-          <a-mat-static class="col-md-12" *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
-          <a-mat-static class="col-md-12" *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+          <a-mat-static class="col-md-12" *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+          <a-mat-static class="col-md-12" *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
         </div>
 
       </div>

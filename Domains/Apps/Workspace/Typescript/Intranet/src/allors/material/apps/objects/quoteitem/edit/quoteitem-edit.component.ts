@@ -173,6 +173,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
         });
   }
+
   private refreshSerialisedItems(product: Product): void {
 
     const { pull, x } = this.metaService;

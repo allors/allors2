@@ -425,6 +425,17 @@ namespace Allors.Repository
         public Person PlacingCustomerContactPerson { get; set; }
 
         #region Allors
+        [Id("81560BAA-D8E1-4688-A191-3081C0CE3B01")]
+        [AssociationId("A127E9CB-DF58-484F-BB9D-41B22BBBACC5")]
+        [RoleId("ADDE584C-6ED0-4A3F-87DA-F76EF2069D49")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public Facility OriginFacility{ get; set; }
+
+        #region Allors
         [Id("2d097a42-0cfd-43d7-a683-2ae94b9ddaf1")]
         [AssociationId("2921dfd5-e57c-4686-b95d-54da85af6604")]
         [RoleId("683dcf30-f20f-44fa-947b-e8b1901b5165")]

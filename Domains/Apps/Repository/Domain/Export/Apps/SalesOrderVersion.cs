@@ -474,7 +474,19 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public ProductQuote Quote { get; set; }
-        
+
+        #region Allors
+        [Id("11698673-09EA-480F-B287-3D742FC89A93")]
+        [AssociationId("530060AF-6B2B-4332-B20F-7693717C509B")]
+        [RoleId("DF713725-3C65-4128-BB88-79885D113034")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public Facility OriginFacility { get; set; }
+
+
         #region inherited methods
 
         public void OnBuild() { }
