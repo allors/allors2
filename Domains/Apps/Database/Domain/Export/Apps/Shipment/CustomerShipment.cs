@@ -463,8 +463,8 @@ namespace Allors.Domain
                                 pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
                                 if (salesOrderItem.ExistNewSerialisedItemState)
                                 {
-                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState =
-                                        salesOrderItem.NewSerialisedItemState;
+                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
+                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
                                 }
                             }
 
