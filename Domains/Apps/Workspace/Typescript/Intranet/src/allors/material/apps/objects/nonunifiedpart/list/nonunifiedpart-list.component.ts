@@ -8,7 +8,7 @@ import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '.
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
@@ -38,6 +38,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
+  parts: Part[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -179,7 +180,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
-            pull.Part({
+            pull.NonUnifiedPart({
               predicate,
               sort: sorter.create(sort),
               include: {
@@ -207,18 +208,18 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        const parts = loaded.collections.Parts as Part[];
+        this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
-        const partNumberByPart = parts.reduce((map, obj) => {
+        const partNumberByPart = this.parts.reduce((map, obj) => {
           map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
           return map;
         }, {});
 
         this.table.total = loaded.values.NonUnifiedParts_total;
 
-        this.table.data = parts.map((v) => {
+        this.table.data = this.parts.map((v) => {
           return {
             object: v,
             name: v.Name,
