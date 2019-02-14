@@ -121,24 +121,6 @@ namespace Allors.Domain
             {
                 this.PartiallyShip = true;
             }
-        }
-
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.AddDependency(this.BillToCustomer, this);
-            derivation.AddDependency(this.ShipToCustomer, this);
-
-            foreach (var orderItem in this.OrderItems)
-            {
-                derivation.AddDependency(this, orderItem);
-            }
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
 
             var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -165,6 +147,24 @@ namespace Allors.Domain
             {
                 this.OrderNumber = this.Store.DeriveNextSalesOrderNumber();
             }
+        }
+
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            derivation.AddDependency(this.BillToCustomer, this);
+            derivation.AddDependency(this.ShipToCustomer, this);
+
+            foreach (var orderItem in this.OrderItems)
+            {
+                derivation.AddDependency(this, orderItem);
+            }
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
 
             if (!this.ExistBillToCustomer && this.ExistShipToCustomer)
             {
