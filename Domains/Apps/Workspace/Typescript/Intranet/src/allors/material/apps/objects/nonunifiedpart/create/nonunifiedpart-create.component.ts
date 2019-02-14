@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship } from '../../../../../domain';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -74,6 +74,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
           const pulls = [
             this.fetcher.locales,
             this.fetcher.Settings,
+            pull.Facility(),
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),
@@ -125,7 +126,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
-        this.part = this.allors.context.create('Part') as Part;
+        this.part = this.allors.context.create('NonUnifiedPart') as NonUnifiedPart;
         this.part.DefaultFacility = this.settings.DefaultFacility;
         this.part.UnitOfMeasure = piece;
 

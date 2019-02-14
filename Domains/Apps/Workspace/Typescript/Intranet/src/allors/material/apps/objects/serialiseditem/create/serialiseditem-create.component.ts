@@ -76,6 +76,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
             pull.Part({
               include: {
                 InventoryItemKind: x,
+                SerialisedItems: x
               },
               sort: new Sort(m.Part.Name),
             }),
@@ -114,8 +115,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         this.serialisedItem.OwnedBy = this.owner;
 
         if (this.part) {
-          this.part.AddSerialisedItem(this.serialisedItem);
-          this.serialisedItem.Name =  this.part.Name;
+          this.serialisedItem.Name = this.part.Name;
         }
       }, this.errorService.handler);
   }
@@ -126,7 +126,14 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  public partSelected(part: Part): void {
+
+    this.serialisedItem.Name = part.Name;
+  }
+
   public save(): void {
+
+    this.part.AddSerialisedItem(this.serialisedItem);
 
     this.allors.context
       .save()

@@ -7,7 +7,7 @@
 
       <div class="row">
         <mat-form-field class="col-md">
-          <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false">
+          <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false" (ngModelChange)="partSelected($event)">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let part of parts" [value]="part"> {{ part.Name }} </mat-option>
           </mat-select>
