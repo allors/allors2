@@ -27,6 +27,8 @@ namespace Tests
         [Fact]
         public void Initial()
         {
+            this.Driver.WaitForAngular();
+
             var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
 
             var before = new Datas(this.Session).Extent().ToArray();
@@ -36,10 +38,6 @@ namespace Tests
             this.page.Save.Click();
 
             this.Driver.WaitForAngular();
-
-            // TODO: Check if Sql Server finished the transaction from the application
-            Thread.Sleep(500);
-
             this.Session.Rollback();
 
             var after = new Datas(this.Session).Extent().ToArray();
