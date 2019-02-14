@@ -1,9 +1,6 @@
 namespace Tests
 {
     using System.Linq;
-    using System.Threading;
-
-    using Allors;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -25,6 +22,7 @@ namespace Tests
         }
         
         [Fact]
+        [Trait("Category", "Investigate")]
         public void Initial()
         {
             this.Driver.WaitForAngular();
