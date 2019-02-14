@@ -4,7 +4,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship } from '../../../../../../domain';
+import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -29,6 +29,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
   parts: Part[];
   part: Part;
   currentSuppliers: Set<Organisation>;
+  currentFacility: Facility;
 
   private subscription: Subscription;
 
@@ -119,6 +120,12 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
                 }
               }
             }),
+            pull.SerialisedItem({
+              object: id,
+              fetch: {
+                SerialisedInventoryItemsWhereSerialisedItem: x
+              }
+            }),
             pull.Part({
               include: { SerialisedItems: x}
             }),
@@ -156,6 +163,10 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         this.ownerships = loaded.collections.Ownerships as Enumeration[];
         this.part = loaded.objects.Part as Part;
         this.parts = loaded.collections.Parts as Part[];
+
+        const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
+        this.currentFacility = serialisedInventoryItems.find(v => v.Quantity === 1).Facility;
+
       }, this.errorService.handler);
 
   }

@@ -59,6 +59,12 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveQuantity(derivation);
+
+            if (this.Quantity < 0 || this.Quantity > 1)
+            {
+                var message = "Invalid transaction";
+                derivation.Validation.AddError(this, this.Meta.Quantity, message);
+            }
         }
 
         public void AppsOnDeriveQuantity(IDerivation derivation)

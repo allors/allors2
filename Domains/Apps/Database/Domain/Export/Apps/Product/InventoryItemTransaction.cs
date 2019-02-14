@@ -79,13 +79,16 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.Reason, message);
                 }
 
-                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity > 0)
+                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity <= 0)
                 {
                     var message = "Invalid transaction";
                     derivation.Validation.AddError(this, this.Meta.Reason, message);
                 }
 
-                if (this.Quantity == 1 && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1))
+                if (this.Quantity == 1 
+                    && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem 
+                    && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1)
+                    && this.Reason.IncreasesQuantityOnHand == true)
                 {
                     var message = "Serialized item already in inventory";
                     derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
