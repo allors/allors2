@@ -1055,16 +1055,19 @@ namespace Allors.Domain
             SalesOrderItemPaymentState state = null;
             foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
             {
-                foreach (SalesInvoiceItem invoiceItem in orderShipment.OrderItem.OrderItemBillingsWhereOrderItem)
+                foreach (OrderItemBilling orderItemBilling in orderShipment.OrderItem.OrderItemBillingsWhereOrderItem)
                 {
-                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                    if (orderItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
                     {
-                        state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
-                    }
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                        {
+                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
+                        }
 
-                    if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
-                    {
-                        state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
+                        {
+                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
+                        }
                     }
                 }
 

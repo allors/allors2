@@ -63,7 +63,9 @@ namespace Allors.Domain
             string quoteNumberPrefix,
             string productNumberPrefix,
             int? requestCounterValue,
-            int? quoteCounterValue)
+            int? quoteCounterValue,
+            int? orderCounterValue,
+            int? invoiceCounterValue)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
@@ -195,7 +197,7 @@ namespace Allors.Domain
                 .WithDefaultCollectionMethod(paymentMethod)
                 .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
                 .WithDefaultCarrier(new Carriers(session).Fedex)
-                .WithBillingProcess(new BillingProcesses(session).BillingForShipmentItems)
+                .WithBillingProcess(new BillingProcesses(session).BillingForOrderItems)
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
                 .WithInternalOrganisation(organisation)
@@ -204,6 +206,16 @@ namespace Allors.Domain
             if (facility != null)
             {
                 store.DefaultFacility = facility;
+            }
+
+            if (orderCounterValue != null)
+            {
+                store.SalesOrderCounter = new CounterBuilder(session).WithValue(orderCounterValue).Build();
+            }
+
+            if (invoiceCounterValue != null)
+            {
+                store.SalesInvoiceCounter = new CounterBuilder(session).WithValue(invoiceCounterValue).Build();
             }
 
             return organisation;

@@ -207,7 +207,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-autocomplete class="col-md" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" [filter]="stateService.customersFilter.create(allors.context)"
-              display="displayName" (changed)="billToCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
+              display="displayName" (changed)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
             <button mat-mini-fab color="accent" [disabled]="!order.CanWriteBillToEndCustomer" type="button" (click)="addBillToEndCustomer = !addBillToEndCustomer">
               <mat-icon *ngIf="!addBillToEndCustomer">add</mat-icon>
               <mat-icon *ngIf="addBillToEndCustomer">close</mat-icon>
@@ -278,10 +278,6 @@
       <div class="row">
         <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>
         <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
-        <a-mat-static class="col-md" *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
-        <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
-        <a-mat-static class="col-md" *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment"
-          label="Quote Internal Comment"></a-mat-static>
         <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
       </div>
     </div>
