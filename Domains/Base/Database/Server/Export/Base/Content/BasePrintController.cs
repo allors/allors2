@@ -38,8 +38,7 @@ namespace Allors.Server
         private ISession Session { get; }
 
         [AllowAnonymous]
-        [ResponseCache(Duration = OneYearInSeconds)]
-        public virtual ActionResult Download(string id, string revision)
+        public virtual ActionResult Download(string id)
         {
             var printable = this.Session.Instantiate(id) as Printable;
 
@@ -62,6 +61,13 @@ namespace Allors.Server
             }
 
             return this.NotFound("Printable with id " + id + " not found.");
+        }
+
+        [AllowAnonymous]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
+        public virtual ActionResult DownloadWithRevision(string id, string revision)
+        {
+            return this.Download(id);
         }
     }
 }

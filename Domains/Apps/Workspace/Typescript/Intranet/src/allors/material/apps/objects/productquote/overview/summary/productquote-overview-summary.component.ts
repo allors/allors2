@@ -62,6 +62,9 @@ export class ProductQuoteOverviewSummaryComponent {
                 PostalAddress_PostalBoundary: {
                   Country: x,
                 }
+              },
+              PrintDocument: {
+                Media: x,
               }
             }
           }),

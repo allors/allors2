@@ -135,6 +135,7 @@
                             });
                 });
 
+            services.AddResponseCaching();
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -219,6 +220,8 @@
                             else await next();
                         });
                 });
+
+            app.UseResponseCaching();
 
             app.UseMvc(routes =>
             {
