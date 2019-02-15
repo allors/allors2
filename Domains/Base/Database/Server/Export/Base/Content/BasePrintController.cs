@@ -20,6 +20,8 @@
 
 namespace Allors.Server
 {
+    using System;
+
     using Allors.Domain;
     using Allors.Services;
 
@@ -51,23 +53,57 @@ namespace Allors.Server
                     this.Session.Commit();
                 }
 
-                var media = printable.PrintDocument.Media;
-                var mediaContent = media?.MediaContent;
-
-                if (mediaContent != null)
+                if (!printable.PrintDocument.ExistMedia)
                 {
-                    return this.File(mediaContent.Data, mediaContent.Type, media.FileName);
+                    return this.NoContent();
                 }
+
+                return this.RedirectToAction("DownloadWithRevision", new { id, revision = printable.PrintDocument.Media.Revision });
             }
 
-            return this.NotFound("Printable with id " + id + " not found.");
+            return this.NotFound("Printable with id " + id + " has no document.");
         }
 
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
         public virtual ActionResult DownloadWithRevision(string id, string revision)
         {
-            return this.Download(id);
+            var printable = this.Session.Instantiate(id) as Printable;
+
+            if (printable?.ExistPrintDocument == true)
+            {
+                if (!printable.PrintDocument.ExistMedia)
+                {
+                    printable.Print();
+                    this.Session.Derive();
+                    this.Session.Commit();
+
+                    if (!printable.PrintDocument.ExistMedia)
+                    {
+                        return this.NoContent();
+                    }
+
+                    return this.RedirectToAction("DownloadWithRevision", new { id, revision = printable.PrintDocument.Media.Revision });
+                }
+
+                if (Guid.TryParse(revision, out var revisionGuid))
+                {
+                    if (!revisionGuid.Equals(printable.PrintDocument.Media.Revision))
+                    {
+                        return this.RedirectToAction("DownloadWithRevision", new { id, revision = printable.PrintDocument.Media.Revision });
+                    }
+                }
+
+                var mediaContent = printable.PrintDocument.Media.MediaContent;
+                if (mediaContent?.Data == null)
+                {
+                    return this.NoContent();
+                }
+
+                return this.File(mediaContent.Data, mediaContent.Type, printable.PrintDocument.Media.FileName);
+            }
+
+            return this.NotFound("Printable with id " + id + " has no document.");
         }
     }
 }

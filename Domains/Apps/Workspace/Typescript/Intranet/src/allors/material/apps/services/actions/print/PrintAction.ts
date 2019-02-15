@@ -14,8 +14,8 @@ export class PrintAction implements Action {
       let revision: string;
       try {
         revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;
-      } catch(exception) {
-         errorService.handle(exception);
+      } catch (exception) {
+        errorService.handle(exception);
       }
 
       const url = revision ?

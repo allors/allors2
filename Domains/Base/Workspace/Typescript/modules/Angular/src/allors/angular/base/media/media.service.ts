@@ -9,6 +9,6 @@ export class MediaService {
   }
 
   public url(media: Media): string {
-    return `${this.config.url}Media/Download/${media.UniqueId}?revision=${media.Revision}`;
+    return `${this.config.url}Media/DownloadWithRevision/${media.UniqueId}?revision=${media.Revision}`;
   }
 }

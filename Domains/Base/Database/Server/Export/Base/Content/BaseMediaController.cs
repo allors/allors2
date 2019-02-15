@@ -41,21 +41,39 @@ namespace Allors.Server
         private ISession Session { get; }
 
         [AllowAnonymous]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
-        public virtual ActionResult Download(string id, string revision)
+        public virtual ActionResult Download(string id)
         {
-            if (Guid.TryParse(id, out Guid uniqueId))
+            if (Guid.TryParse(id, out var uniqueId))
             {
                 var media = new Medias(this.Session).FindBy(M.Media.UniqueId, uniqueId);
-                var mediaContent = media?.MediaContent;
-
-                if (mediaContent != null)
+                if (media != null)
                 {
-                    return this.File(mediaContent.Data, mediaContent.Type, media.FileName);
+                    return this.RedirectToAction("DownloadWithRevision", new { id, revision = media.Revision });
                 }
             }
 
-            return this.NotFound("Media with unique id " + uniqueId + " not found.");
+            return this.NotFound("Media with unique id " + id + " not found.");
+        }
+
+        [AllowAnonymous]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
+        public virtual ActionResult DownloadWithRevision(string id, string revision)
+        {
+            if (Guid.TryParse(id, out var uniqueId))
+            {
+                var media = new Medias(this.Session).FindBy(M.Media.UniqueId, uniqueId);
+                if (media != null)
+                {
+                    if (media.MediaContent?.Data == null)
+                    {
+                        return this.NoContent();
+                    }
+
+                    return this.File(media.MediaContent.Data, media.MediaContent.Type, media.FileName);
+                }
+            }
+
+            return this.NotFound("Media with unique id " + id + " not found.");
         }
     }
 }
