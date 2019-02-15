@@ -9,6 +9,7 @@
 
 namespace Allos.Document.OpenDocument.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -31,6 +32,8 @@ namespace Allos.Document.OpenDocument.Tests
             public ModelPerson Person { get; set; }
 
             public ModelPerson[] People { get; set; }
+
+            public string[] Images { get; set; }
         }
 
         [Fact]
@@ -43,19 +46,31 @@ namespace Allos.Document.OpenDocument.Tests
                          {
                              new Model.ModelPerson { FirstName = "John" },
                              new Model.ModelPerson { FirstName = "Jenny" },
-                         }
+                         },
+                Images = new[]
+                             {
+                                 "number1",
+                                 "number2",
+                                 "number3",
+                             },
             };
 
             var document = this.GetResource("EmbeddedTemplate.odt");
             var template = new OpenDocumentTemplate<Model>(document);
+
             var images = new Dictionary<string, byte[]>
                              {
                                  { "logo", this.GetResource("logo.png") },
-                                 { "logo2", this.GetResource("logo.png") }
+                                 { "logo2", this.GetResource("logo.png") },
+                                 { "number1", this.GetResource("1.png") },
+                                 { "number2", this.GetResource("2.png") },
+                                 { "number3", this.GetResource("3.png") }
                              };
+
             var result = template.Render(model, images);
 
-            File.WriteAllBytes(@"C:\temp\generated.odt", result);
+            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            File.WriteAllBytes(Path.Combine(desktopDir, "generated.odt"), result);
         }
 
 
@@ -63,21 +78,30 @@ namespace Allos.Document.OpenDocument.Tests
         public void Rerender()
         {
             var model = new Model
-                            {
-                                Person = new Model.ModelPerson { FirstName = "Jane" },
-                                People = new[]
+            {
+                Person = new Model.ModelPerson { FirstName = "Jane" },
+                People = new[]
                                              {
                                                  new Model.ModelPerson { FirstName = "John" },
                                                  new Model.ModelPerson { FirstName = "Jenny" },
-                                             }
-                            };
+                                             },
+                Images = new[]
+                             {
+                                 "number1",
+                                 "number2",
+                                 "number3",
+                             },
+            };
 
             var document = this.GetResource("EmbeddedTemplate.odt");
             var template = new OpenDocumentTemplate<Model>(document);
             var images = new Dictionary<string, byte[]>
                              {
                                  { "logo", this.GetResource("logo.png") },
-                                 { "logo2", this.GetResource("logo.png") }
+                                 { "logo2", this.GetResource("logo.png") },
+                                 { "number1", this.GetResource("1.png") },
+                                 { "number2", this.GetResource("2.png") },
+                                 { "number3", this.GetResource("3.png") }
                              };
 
             // warmup
@@ -99,7 +123,8 @@ namespace Allos.Document.OpenDocument.Tests
 
             Assert.InRange(run2, run1 * 0.8, run1 * 1.2);
 
-            File.WriteAllBytes(@"C:\temp\generated.odt", result);
+            var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            File.WriteAllBytes(Path.Combine(desktopDir, "generated.odt"), result);
         }
 
         private byte[] GetResource(string name)

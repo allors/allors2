@@ -86,11 +86,20 @@ namespace Allors.Document.OpenDocument
                 {
                     var documentElement = manifest.DocumentElement;
                     var elements = documentElement.ChildNodes.OfType<XmlElement>().ToArray();
+                    
+                    var debugExistingElements = elements.Select(
+                        v =>
+                            {
+                                var manifestNs = v.GetNamespaceOfPrefix("manifest");
+                                return v.GetAttribute("full-path", manifestNs);
+                            }).ToArray();
+
+
                     foreach (var element in elements)
                     {
                         var manifestNs = element.GetNamespaceOfPrefix("manifest");
                         var fullPath = element.GetAttribute("full-path", manifestNs);
-
+                        
                         foreach (var image in this.images.Where(v => v.OriginalFullPath.Equals(fullPath)))
                         {
                             var newElement = (XmlElement)element.Clone();

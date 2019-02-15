@@ -6,11 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\1.png" />
+    <None Remove="Resources\2.png" />
+    <None Remove="Resources\3.png" />
     <None Remove="Resources\EmbeddedTemplate.odt" />
     <None Remove="Resources\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\1.png" />
+    <EmbeddedResource Include="Resources\2.png" />
+    <EmbeddedResource Include="Resources\3.png" />
     <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
     <EmbeddedResource Include="Resources\logo.png" />
   </ItemGroup>

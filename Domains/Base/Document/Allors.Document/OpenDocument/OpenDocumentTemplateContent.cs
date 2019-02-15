@@ -166,6 +166,17 @@ namespace Allors.Document.OpenDocument
                         }
                     }
 
+                    if (element.LocalName.Equals("frame") && element.NamespaceURI.Contains("opendocument:xmlns:drawing"))
+                    {
+                        var drawNs = element.GetNamespaceOfPrefix("draw");
+                        var name = element.GetAttribute("name", drawNs).Trim();
+                        if (name.StartsWith("$"))
+                        {
+                            var value = this.LeftDelimiter + name.Substring(1) + this.RightDelimiter;
+                            element.SetAttribute("name", drawNs, value);
+                        }
+                    }
+
                     this.Prepare(element, ref parentPair, stack, bindingByOriginalXmlElement);
                 }
             }
