@@ -15,5 +15,5 @@
 </mat-form-field>
 
 <mat-form-field *ngIf="disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <input aFocus [aFocusTrigger]="roleType" [(ngModel)]="model[display]" type="text" matInput [placeholder]="label" [required]="required" [disabled]="disabled" readonly>
+  <input aFocus [aFocusTrigger]="roleType" [(ngModel)]="model && model[display]" type="text" matInput [placeholder]="label" [required]="required" [disabled]="disabled" readonly>
 </mat-form-field>

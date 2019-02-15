@@ -84,6 +84,26 @@ namespace Allors.Domain
                     this.Quantity -= inventoryTransaction.Quantity;
                 }
             }
+
+            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+            {
+                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                {
+                    this.Quantity -= (int)pickListItem.ActualQuantity.Value;
+                }
+            }
+
+            foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
+            {
+                if (shipmentReceipt.ExistShipmentItem)
+                {
+                    var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
+                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed))
+                    {
+                        this.Quantity += (int)shipmentReceipt.QuantityAccepted;
+                    }
+                }
+            }
         }
 
         public void AppsDelete(DeletableDelete method)

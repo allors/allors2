@@ -20,7 +20,7 @@ export class SalesOrderOverviewSummaryComponent {
   quote: ProductQuote;
   orderItems: SalesOrderItem[] = [];
   goods: Good[] = [];
-  salesInvoice: SalesInvoice;
+  salesInvoices: SalesInvoice[] = [];
   billingProcesses: BillingProcess[];
   billingForOrderItems: BillingProcess;
   selectedSerialisedInventoryState: string;
@@ -124,18 +124,18 @@ export class SalesOrderOverviewSummaryComponent {
           predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
           sort: new Sort(m.SerialisedInventoryItemState.Name)
         }),
-
       );
     };
 
     panel.onPulled = (loaded) => {
       this.order = loaded.objects[salesOrderPullName] as SalesOrder;
       this.orderItems = loaded.collections[salesOrderPullName] as SalesOrderItem[];
-      this.salesInvoice = loaded.objects[salesInvoicePullName] as SalesInvoice;
       this.goods = loaded.collections[goodPullName] as Good[];
       this.billingProcesses = loaded.collections[billingProcessPullName] as BillingProcess[];
       this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
       this.inventoryItemStates = loaded.collections[serialisedInventoryItemStatePullName] as SerialisedInventoryItemState[];
+
+      this.salesInvoices = loaded.collections[salesInvoicePullName] as SalesInvoice[];
     };
   }
 

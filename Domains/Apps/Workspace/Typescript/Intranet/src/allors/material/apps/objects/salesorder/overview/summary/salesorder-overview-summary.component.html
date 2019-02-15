@@ -30,7 +30,8 @@
       </div>
     </div>
 
-    <div *ngIf="order.ShipToCustomer === order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)" style="cursor: pointer;">
+    <div *ngIf="order.ShipToCustomer === order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)"
+      style="cursor: pointer;">
       <div style="color: grey">
         Ship to / Bill to
       </div>
@@ -39,7 +40,8 @@
       </div>
     </div>
 
-    <div *ngIf="order.ShipToCustomer !== order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)" style="cursor: pointer;">
+    <div *ngIf="order.ShipToCustomer !== order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)"
+      style="cursor: pointer;">
       <div style="color: grey">
         Ship to
       </div>
@@ -48,7 +50,8 @@
       </div>
     </div>
 
-    <div *ngIf="order.ShipToCustomer !== order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)" style="cursor: pointer;">
+    <div *ngIf="order.ShipToCustomer !== order.BillToCustomer" (click)="navigation.overview(order.ShipToCustomer)"
+      style="cursor: pointer;">
       <div style="color: grey">
         Bill to
       </div>
@@ -56,6 +59,18 @@
         {{order.BillToCustomer?.displayName}}
       </div>
     </div>
+
+    <div *ngFor="let salesInvoice of salesInvoices">
+      <div (click)="navigation.overview(salesInvoice)" style="cursor: pointer;">
+        <div style="color: grey">
+          Invoice
+        </div>
+        <div>
+          {{salesInvoice?.InvoiceNumber}}
+        </div>
+      </div>
+    </div>
+
   </mat-card-content>
 
   <mat-card-actions>
@@ -67,7 +82,8 @@
     <button *ngIf="order.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
     <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship</button>
     <button mat-button type="button" (click)="print.execute(order)">Print</button>
-    <button *ngIf="order.CanExecuteInvoice && order.ValidOrderItems.length > 0" mat-button (click)="invoice()">Create Invoice</button>
+    <button *ngIf="order.CanExecuteInvoice && order.ValidOrderItems.length > 0" mat-button (click)="invoice()">Create
+      Invoice</button>
   </mat-card-actions>
 
 </mat-card>
