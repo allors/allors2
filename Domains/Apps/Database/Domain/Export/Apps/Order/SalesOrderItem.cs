@@ -248,7 +248,8 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess))
+            if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess)
+                && (!this.ExistSalesOrderItemShipmentState || !this.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped)))
             {
                 if (this.ExistReservedFromNonSerialisedInventoryItem)
                 {
@@ -340,7 +341,7 @@ namespace Allors.Domain
                     {
                         if (this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem)
                         {
-                            this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.First(v => v.Quantity == 1); 
+                            this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.FirstOrDefault(v => v.Quantity == 1); 
                         }
                     }
                     else
@@ -440,7 +441,9 @@ namespace Allors.Domain
                 this.QuantityOrdered = item.QuantityOrdered;
             }
 
-            if (this.ExistReservedFromNonSerialisedInventoryItem && this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess))
+            if (this.ExistReservedFromNonSerialisedInventoryItem 
+                && this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess)
+                && !this.ExistSalesOrderItemShipmentState)
             {
                 if (this.ExistPreviousReservedFromNonSerialisedInventoryItem && !this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
                 {

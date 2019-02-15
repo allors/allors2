@@ -73,10 +73,7 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this, pickListItem);
 
-                if (pickListItem.InventoryItem is NonSerialisedInventoryItem inventoryItem)
-                {
-                    derivation.AddDependency(this, inventoryItem);
-                }
+                derivation.AddDependency(this, pickListItem.InventoryItem);
             }
 
             if (this.ExistShipToParty)

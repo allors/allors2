@@ -461,10 +461,12 @@ namespace Allors.Domain
                             if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
                             {
                                 pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
+
+                                salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
+
                                 if (salesOrderItem.ExistNewSerialisedItemState)
                                 {
                                     salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
-                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
                                 }
                             }
 
@@ -539,7 +541,10 @@ namespace Allors.Domain
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
                     var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
-                    salesOrderItem?.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
+                    if (salesOrderItem != null && (!salesOrderItem.ExistSalesOrderItemShipmentState || !salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.strategy.Session).Shipped)))
+                    {
+                        salesOrderItem?.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
+                    }
                 }
             }
         }

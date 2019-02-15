@@ -56,6 +56,7 @@ namespace Allors.Domain
             Currency currency,
             string logo,
             string storeName,
+            BillingProcess billingProcess,
             string outgoingShipmentNumberPrefix,
             string salesInvoiceNumberPrefix,
             string salesOrderNumberPrefix,
@@ -197,9 +198,10 @@ namespace Allors.Domain
                 .WithDefaultCollectionMethod(paymentMethod)
                 .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
                 .WithDefaultCarrier(new Carriers(session).Fedex)
-                .WithBillingProcess(new BillingProcesses(session).BillingForOrderItems)
+                .WithBillingProcess(billingProcess)
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
+                .WithIsAutomaticallyShipped(true)
                 .WithInternalOrganisation(organisation)
                 .Build();
 

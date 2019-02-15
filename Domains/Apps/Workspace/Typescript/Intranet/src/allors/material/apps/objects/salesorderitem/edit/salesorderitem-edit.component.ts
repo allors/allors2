@@ -226,7 +226,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         object: product.id,
         fetch: {
           Part: {
-            SerialisedItems: x
+            include: {
+              SerialisedItems: x
+            }
           }
         }
       }),
@@ -241,7 +243,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
+
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
         this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
         if (this.orderItem.Product !== this.previousProduct) {
