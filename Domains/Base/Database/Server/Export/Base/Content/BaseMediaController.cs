@@ -41,7 +41,7 @@ namespace Allors.Server
         private ISession Session { get; }
 
         [AllowAnonymous]
-        [ResponseCache(Duration = OneYearInSeconds)]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
         public virtual ActionResult Download(string id, string revision)
         {
             if (Guid.TryParse(id, out Guid uniqueId))

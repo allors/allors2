@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoggingService } from '../allors/angular';
 
-import { environment } from '../environments/environment';
-
 @Injectable()
 export class DefaultLoggingService extends LoggingService {
 
