@@ -67,7 +67,9 @@ namespace Allors
                 quoteNumberPrefix: "a-Q",
                 productNumberPrefix: "A-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1);
+                quoteCounterValue: 1,
+                orderCounterValue: 1,
+                invoiceCounterValue: 1);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -99,7 +101,9 @@ namespace Allors
                 quoteNumberPrefix: "d-Q",
                 productNumberPrefix: "D-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1);
+                quoteCounterValue: 1,
+                orderCounterValue: 1,
+                invoiceCounterValue: 1);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
