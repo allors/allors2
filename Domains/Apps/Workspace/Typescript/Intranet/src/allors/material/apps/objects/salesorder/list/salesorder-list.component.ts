@@ -6,11 +6,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../..';
 
-import { SalesOrder } from '../../../../../domain';
+import { SalesOrder, Party, SalesOrderState, SerialisedItem, Product } from '../../../../../domain';
 import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
@@ -96,11 +96,66 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.SalesOrder.TakenBy });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Equals({ propertyType: m.SalesOrder.OrderNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.SalesOrder.CustomerReference, parameter: 'customerReference' }),
+      new Equals({ propertyType: m.SalesOrder.SalesOrderState, parameter: 'state' }),
+      new Equals({ propertyType: m.SalesOrder.ShipToCustomer, parameter: 'shipTo' }),
+      new Equals({ propertyType: m.SalesOrder.BillToCustomer, parameter: 'billTo' }),
+      new Equals({ propertyType: m.SalesOrder.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
+      new Equals({ propertyType: m.SalesOrder.BillToEndCustomer, parameter: 'billToEndCustomer' }),
+      new ContainedIn({
+        propertyType: m.SalesOrder.SalesOrderItems,
+        extent: new Filter({
+          objectType: m.SalesOrderItem,
+          predicate: new ContainedIn({
+            propertyType: m.SalesOrderItem.Product,
+            parameter: 'product'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.SalesOrder.SalesOrderItems,
+        extent: new Filter({
+          objectType: m.SalesOrderItem,
+          predicate: new ContainedIn({
+            propertyType: m.SalesOrderItem.SerialisedItem,
+            parameter: 'serialisedItem'
+          })
+        })
+      })
     ]);
 
-    this.filterService.init(predicate);
+    const stateSearch = new SearchFactory({
+      objectType: m.SalesOrderState,
+      roleTypes: [m.SalesOrderState.Name],
+    });
+
+    const partySearch = new SearchFactory({
+      objectType: m.Party,
+      roleTypes: [m.Party.PartyName],
+    });
+
+    const productSearch = new SearchFactory({
+      objectType: m.Product,
+      roleTypes: [m.Product.Name],
+    });
+
+    const serialisedItemSearch = new SearchFactory({
+      objectType: m.SerialisedItem,
+      roleTypes: [m.SerialisedItem.ItemNumber],
+    });
+
+    this.filterService.init(predicate, {
+      active: { initialValue: true },
+      state: { search: stateSearch, display: (v: SalesOrderState) => v.Name },
+      shipTo: { search: partySearch, display: (v: Party) => v.PartyName },
+      billTo: { search: partySearch, display: (v: Party) => v.PartyName },
+      shipToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
+      billToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
+      product: { search: productSearch, display: (v: Product) => v.Name },
+      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v.ItemNumber },
+    });
 
     const sorter = new Sorter(
       {

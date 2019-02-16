@@ -6,9 +6,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action } from '../../../../../angular';
-import { SalesInvoice } from '../../../../../domain';
-import { And, Like, PullRequest, Sort, Equals } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory } from '../../../../../angular';
+import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem } from '../../../../../domain';
+import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, StateService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
 
@@ -108,11 +108,66 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.SalesInvoice.BilledFrom });
     const predicate = new And([
-      new Like({ roleType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
-      internalOrganisationPredicate
+      internalOrganisationPredicate,
+      new Equals({ propertyType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.SalesInvoice.CustomerReference, parameter: 'customerReference' }),
+      new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, parameter: 'state' }),
+      new Equals({ propertyType: m.SalesInvoice.ShipToCustomer, parameter: 'shipTo' }),
+      new Equals({ propertyType: m.SalesInvoice.BillToCustomer, parameter: 'billTo' }),
+      new Equals({ propertyType: m.SalesInvoice.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
+      new Equals({ propertyType: m.SalesInvoice.BillToEndCustomer, parameter: 'billToEndCustomer' }),
+      new ContainedIn({
+        propertyType: m.SalesInvoice.SalesInvoiceItems,
+        extent: new Filter({
+          objectType: m.SalesInvoiceItem,
+          predicate: new ContainedIn({
+            propertyType: m.SalesInvoiceItem.Product,
+            parameter: 'product'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.SalesInvoice.SalesInvoiceItems,
+        extent: new Filter({
+          objectType: m.SalesInvoiceItem,
+          predicate: new ContainedIn({
+            propertyType: m.SalesInvoiceItem.SerialisedItem,
+            parameter: 'serialisedItem'
+          })
+        })
+      })
     ]);
 
-    this.filterService.init(predicate);
+    const stateSearch = new SearchFactory({
+      objectType: m.SalesInvoiceState,
+      roleTypes: [m.SalesInvoiceState.Name],
+    });
+
+    const partySearch = new SearchFactory({
+      objectType: m.Party,
+      roleTypes: [m.Party.PartyName],
+    });
+
+    const productSearch = new SearchFactory({
+      objectType: m.Product,
+      roleTypes: [m.Product.Name],
+    });
+
+    const serialisedItemSearch = new SearchFactory({
+      objectType: m.SerialisedItem,
+      roleTypes: [m.SerialisedItem.ItemNumber],
+    });
+
+    this.filterService.init(predicate, {
+      active: { initialValue: true },
+      state: { search: stateSearch, display: (v: SalesInvoiceState) => v.Name },
+      shipTo: { search: partySearch, display: (v: Party) => v.PartyName },
+      billTo: { search: partySearch, display: (v: Party) => v.PartyName },
+      shipToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
+      billToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
+      product: { search: productSearch, display: (v: Product) => v.Name },
+      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v.ItemNumber },
+    });
 
     const sorter = new Sorter(
       {

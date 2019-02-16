@@ -293,6 +293,11 @@
         </div>
 
         <div class="row">
+          <a-mat-datepicker class="col-md" [object]="order" [roleType]="m.SalesOrder.OrderDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="order" [roleType]="m.SalesOrder.EntryDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
           <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
           <a-mat-static class="col-md" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
         </div>
