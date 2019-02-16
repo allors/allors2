@@ -23,6 +23,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Rate { get; set; }
 
         #region Allors
@@ -33,6 +34,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public RateType RateType { get; set; }
 
         #region Allors
@@ -43,6 +45,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public TimeFrequency TimeFrequency { get; set; }
 
         #region inherited methods
@@ -56,6 +59,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

@@ -27,6 +27,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Rate { get; set; }
 
         #region Allors
@@ -37,6 +38,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public RateType RateType { get; set; }
 
         #region Allors
@@ -46,6 +48,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Cost { get; set; }
         
         #region Allors
@@ -55,6 +58,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public PriceComponent[] GoverningPriceComponents { get; set; }
 
         #region Allors
@@ -63,6 +67,7 @@ namespace Allors.Repository
         [RoleId("F9850F45-AC4B-467E-9149-FB8FE7C30D8F")]
         #endregion
         [Size(-1)]
+        [Workspace]
         public string ChangeReason { get; set; }
 
         #region Allors
@@ -72,6 +77,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region inherited methods

@@ -17,14 +17,23 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("F2D5DB2C-2639-4415-8ACF-E8D9C5DB3C43")]
+        [AssociationId("E0470A14-D36D-483E-885F-5235DC1E3776")]
+        [RoleId("2F56A4A1-9485-4362-B68E-8A6B85BC3131")]
+        #endregion
+        [Required]
+        [Workspace]
+        public string Name { get; set; }
+
+        #region Allors
         [Id("08ca7d83-ca74-4cc1-9d8a-6cc254c7bd5b")]
         [AssociationId("9c14fc30-8b9c-4aaa-8e85-e635c0191111")]
         [RoleId("692c0d2f-0e62-4601-b7d4-21e496596f5d")]
         #endregion
-        [Required]
         [Size(-1)]
-
+        [Workspace]
         public string Description { get; set; }
+
         #region Allors
         [Id("44d5c360-a82d-40ca-a56c-e377327a4858")]
         [AssociationId("0588e142-76ff-43a7-ae6e-63427fc18b43")]
@@ -32,8 +41,9 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-
+        [Workspace]
         public Responsibility[] Responsibilities { get; set; }
+
         #region Allors
         [Id("520649d5-7775-43d0-ab4b-762b2ec6557e")]
         [AssociationId("e63e57e3-ae72-456a-9dd4-881ac8c07525")]
@@ -41,15 +51,18 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal BenefitPercentage { get; set; }
+
         #region Allors
         [Id("8e8e40ff-d11d-4805-abde-845a1b3f1241")]
         [AssociationId("f20d568c-3bd8-4383-9cae-052e10065c8e")]
         [RoleId("169055d1-d2ec-4a10-8792-574d8577b273")]
         #endregion
         [Size(256)]
-
+        [Workspace]
         public string Title { get; set; }
+
         #region Allors
         [Id("aa3886a5-a407-4598-900c-8fc3bcfc0604")]
         [AssociationId("bb552053-d6e7-470b-a8d9-81ed85950b19")]
@@ -57,9 +70,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public PositionTypeRate PositionTypeRate { get; set; }
-
 
         #region inherited methods
 
@@ -75,6 +87,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }
