@@ -14,6 +14,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
+import { RepeatingSalesInvoiceOverviewPanelModule } from '../../repeatingsalesinvoice/overview/panel/repeatingsalesinvoice-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
@@ -40,6 +41,7 @@ import { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component
 
     CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
+    RepeatingSalesInvoiceOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
 

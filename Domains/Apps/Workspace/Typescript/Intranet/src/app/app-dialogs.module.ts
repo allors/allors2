@@ -27,6 +27,7 @@ import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/m
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
+import { RepeatingSalesInvoiceEditComponent, RepeatingSalesInvoiceEditModule } from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
@@ -84,6 +85,7 @@ export const create = {
   [ids.PurchaseInvoice]: PurchaseInvoiceCreateComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
+  [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
   [ids.SalesInvoice]: SalesInvoiceCreateComponent,
@@ -131,6 +133,7 @@ export const edit = {
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
+  [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
@@ -177,6 +180,7 @@ export const edit = {
     PurchaseInvoiceCreateModule,
     PurchaseInvoiceItemEditModule,
     QuoteItemEditModule,
+    RepeatingSalesInvoiceEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
     SalesInvoiceCreateModule,
@@ -223,6 +227,7 @@ export const edit = {
     ProductTypeEditComponent,
     PurchaseInvoiceCreateComponent,
     PurchaseInvoiceItemEditComponent,
+    RepeatingSalesInvoiceEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,
