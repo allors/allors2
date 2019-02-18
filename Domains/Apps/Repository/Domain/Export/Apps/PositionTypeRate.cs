@@ -7,9 +7,13 @@ namespace Allors.Repository
     #region Allors
     [Id("17b9c8f1-ddf2-4db0-8358-ae66a02395ce")]
     #endregion
-    public partial class PositionTypeRate : AccessControlledObject 
+    public partial class PositionTypeRate : Period, AccessControlledObject 
     {
         #region inherited properties
+
+        public DateTime FromDate { get; set; }
+        public DateTime ThroughDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
