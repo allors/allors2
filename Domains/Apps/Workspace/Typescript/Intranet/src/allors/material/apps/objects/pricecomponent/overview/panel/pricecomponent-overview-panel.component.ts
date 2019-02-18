@@ -157,7 +157,7 @@ export class PriceComponentOverviewPanelComponent implements OnInit {
       case 'Current':
         return this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
       case 'Inactive':
-        return this.objects.filter(v => moment(v.FromDate).isAfter(moment()) || (!v.ThroughDate && moment(v.ThroughDate).isBefore(moment())));
+        return this.objects.filter(v => moment(v.FromDate).isAfter(moment()) || (v.ThroughDate && moment(v.ThroughDate).isBefore(moment())));
       case 'All':
       default:
         return this.objects;

@@ -42,6 +42,17 @@ namespace Allors.Repository
         public RateType RateType { get; set; }
 
         #region Allors
+        [Id("CA9D5A86-F155-4EB8-A8C0-D600F9EA0919")]
+        [AssociationId("7C25B519-E83D-45A0-8625-B4DF47DC6D1E")]
+        [RoleId("65E7460D-4A98-4332-A8C6-0F5A974E5740")]
+        [Indexed]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal Cost { get; set; }
+
+        #region Allors
         [Id("f49e4e9e-2e8f-49f6-9c10-4aefb4bb61bf")]
         [AssociationId("6f36fb29-7820-45fa-9dca-888c11d8b0a3")]
         [RoleId("135731d2-4120-45dd-b36c-36c8c93ea99e")]

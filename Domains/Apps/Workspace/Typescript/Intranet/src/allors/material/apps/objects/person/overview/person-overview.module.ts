@@ -17,6 +17,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/overview/panel/contactmechanism-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
+import { PartyRateOverviewPanelModule } from '../../partyrate/overview/panel/partyrate-overview-panel.module';
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -42,6 +43,7 @@ export { PersonOverviewComponent } from './person-overview.component';
     CommunicationEventOverviewPanelModule,
     ContactMechanismOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
+    PartyRateOverviewPanelModule,
     PartyRelationshipOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

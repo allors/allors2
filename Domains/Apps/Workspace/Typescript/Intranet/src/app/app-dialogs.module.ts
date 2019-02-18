@@ -12,6 +12,7 @@ import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/mat
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/apps/objects/employment/edit/employment-edit.module';
 import { NonUnifiedGoodCreateComponent, NonUnifiedGoodCreateModule } from '../allors/material/apps/objects/nonunifiedgood/create/nonunifiedgood-create.module';
+import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/apps/objects/nonunifiedpart/create/nonunifiedpart-create.module';
 import { InventoryItemTransactionEditComponent, InventoryItemTransactionEditModule } from '../allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import { ProductIdentificationEditComponent, ProductIdentificationEditModule } from '../allors/material/apps/objects/productidentification/edit/productIdentification.module';
 import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
@@ -19,7 +20,7 @@ import { LetterCorrespondenceEditComponent, LetterCorrespondenceEditModule } fro
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { OrganisationContactRelationshipEditComponent, OrganisationContactRelationshipEditModule } from '../allors/material/apps/objects/organisationcontactrelationship/edit/organisationcontactrelationship-edit.module';
 import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } from '../allors/material/apps/objects/partycontactmechanism/edit/partycontactmechanism-edit.module';
-import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/apps/objects/nonunifiedpart/create/nonunifiedpart-create.module';
+import { PartyRateEditComponent, PartyRateEditModule } from '../allors/material/apps/objects/partyrate/edit/partyrate-edit.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationEditComponent, PhoneCommunicationEditModule } from '../allors/material/apps/objects/phonecommunication/edit/phonecommunication-edit.module';
 import { PositionTypeEditComponent, PositionTypeEditModule } from '../allors/material/apps/objects/positiontype/edit/positiontype-edit.module';
@@ -77,6 +78,7 @@ export const create = {
   [ids.NonUnifiedPart]: NonUnifiedPartCreateComponent,
   [ids.PartNumber]: ProductIdentificationEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
+  [ids.PartyRate]: PartyRateEditComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
   [ids.PositionType]: PositionTypeEditComponent,
@@ -129,6 +131,7 @@ export const edit = {
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
+  [ids.PartyRate]: PartyRateEditComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
   [ids.PositionType]: PositionTypeEditComponent,
   [ids.PositionTypeRate]: PositionTypeRateEditComponent,
@@ -176,6 +179,7 @@ export const edit = {
     OrganisationContactRelationshipEditModule,
     NonUnifiedPartCreateModule,
     PartyContactmechanismEditModule,
+    PartyRateEditModule,
     PersonCreateModule,
     PhoneCommunicationEditModule,
     PositionTypeEditModule,
@@ -219,20 +223,21 @@ export const edit = {
     EmploymentEditComponent,
     FaceToFaceCommunicationEditComponent,
     NonUnifiedGoodCreateComponent,
-    ProductIdentificationEditComponent,
+    NonUnifiedPartCreateComponent,
     InventoryItemTransactionEditComponent,
     LetterCorrespondenceEditComponent,
     OrganisationCreateComponent,
     OrganisationContactRelationshipEditComponent,
     PersonCreateComponent,
-    NonUnifiedPartCreateComponent,
     PartyContactmechanismEditComponent,
+    PartyRateEditComponent,
     PhoneCommunicationEditComponent,
     PositionTypeEditComponent,
     PositionTypeRateEditComponent,
     PostalAddressCreateComponent,
     PostalAddressEditComponent,
     ProductCategoryEditComponent,
+    ProductIdentificationEditComponent,
     ProductQuoteCreateComponent,
     ProductTypeEditComponent,
     PurchaseInvoiceCreateComponent,

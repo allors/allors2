@@ -455,23 +455,13 @@ namespace Allors.Repository
         PaymentMethod DefaultPaymentMethod { get; set; }
 
         #region Allors
-        [Id("5D8C69C7-D7A5-4F88-98BC-BF48ED906F78")]
-        [AssociationId("71A6C47F-0D9C-4054-A787-8C4DE7DBFDCB")]
-        [RoleId("7A6BDDAB-1CFD-4D2D-B80E-86A099DE5966")]
-        #endregion
-        [Indexed]
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        PartyRate CurrentPartyRate { get; set; }
-
-        #region Allors
         [Id("FF4DE48B-DB82-46D0-8544-385425E79BCA")]
         [AssociationId("723400D2-DF93-4D56-A353-366B30A779DD")]
         [RoleId("C8F69A29-EC27-4CA8-B140-083838B6FB08")]
         #endregion
         [Indexed]
         [Workspace]
-        [Multiplicity(Multiplicity.ManyToMany)]
-        PartyRate[] AllPartyRates { get; set; }
+        [Multiplicity(Multiplicity.OneToMany)]
+        PartyRate[] PartyRates { get; set; }
     }
 }

@@ -1,27 +1,26 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
-import { SupplierOffering } from '../../../../../../domain';
+import { PartyRate } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
+import { DeleteService, TableRow, Table, CreateData, EditService, EditData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: SupplierOffering;
-  supplier: string;
-  price: string;
-  uom: string;
+  object: PartyRate;
+  rateType: string;
   from: string;
   through: string;
+  rate: number;
+  frequency: string;
 }
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'supplieroffering-overview-panel',
-  templateUrl: './supplieroffering-overview-panel.component.html',
+  selector: 'partyrate-overview-panel',
+  templateUrl: './partyrate-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SupplierOfferingOverviewPanelComponent implements OnInit {
-  currentObjects: SupplierOffering[];
+export class PartyRateOverviewPanelComponent implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -29,7 +28,7 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: SupplierOffering[] = [];
+  objects: PartyRate[];
   table: Table<Row>;
 
   delete: Action;
@@ -43,6 +42,9 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
   }
 
   collection = 'Current';
+  currentPartyRates: PartyRate[];
+  inactivePartyRates: PartyRate[];
+  allPartyRates: PartyRate[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -59,9 +61,9 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.panel.name = 'supplieroffering';
-    this.panel.title = 'Supplier Offerings';
-    this.panel.icon = 'business';
+    this.panel.name = 'partyrate';
+    this.panel.title = 'Party Rates';
+    this.panel.icon = 'contacts';
     this.panel.expandable = true;
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
@@ -71,11 +73,11 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'supplier', sort },
-        { name: 'price', sort },
-        { name: 'uom', sort },
+        { name: 'rateType' },
         { name: 'from', sort },
         { name: 'through', sort },
+        { name: 'rate', sort },
+        { name: 'frequency' },
       ],
       actions: [
         this.edit,
@@ -86,31 +88,31 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
       autoFilter: true,
     });
 
-    const pullName = `${this.panel.name}_${this.m.SupplierOffering.name}`;
+    const pullName = `${this.panel.name}_${this.m.PartyRate.name}`;
 
     this.panel.onPull = (pulls) => {
 
-      const { pull, x } = this.metaService;
+      const { pull, x, tree } = this.metaService;
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Part({
+        pull.Party({
           name: pullName,
           object: id,
           fetch: {
-            SupplierOfferingsWherePart: {
+            PartyRates: {
               include: {
-                Currency: x,
-                UnitOfMeasure: x
+                RateType: x,
+                Frequency: x
               }
             }
           }
-        }));
+        }),
+      );
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as SupplierOffering[];
-      this.currentObjects = this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
+      this.objects = loaded.collections[pullName] as PartyRate[];
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
@@ -120,25 +122,25 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
   }
 
   public refreshTable() {
-    this.table.data = this.suplierOfferings.map((v) => {
+    this.table.data = this.partyRates.map((v) => {
       return {
         object: v,
-        supplier: v.Supplier.displayName,
-        price: v.Currency.IsoCode + ' ' + v.Price,
-        uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
+        rateType: v.RateType.Name,
         from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : ''
+        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+        rate: v.Rate,
+        frequency: v.Frequency.Name,
       } as Row;
     });
   }
 
-  get suplierOfferings(): SupplierOffering[] {
+  get partyRates(): any {
 
     switch (this.collection) {
       case 'Current':
-        return this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
+        return this.objects && this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
       case 'Inactive':
-        return this.objects.filter(v => moment(v.FromDate).isAfter(moment()) || (v.ThroughDate && moment(v.ThroughDate).isBefore(moment())));
+        return this.objects && this.objects.filter(v => moment(v.FromDate).isAfter(moment()) || (v.ThroughDate && moment(v.ThroughDate).isBefore(moment())));
       case 'All':
       default:
         return this.objects;

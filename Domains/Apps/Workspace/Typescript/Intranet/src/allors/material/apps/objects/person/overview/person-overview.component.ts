@@ -2,10 +2,10 @@ import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/co
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap, delay } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Person } from '../../../../../domain';
+import { Person, Employment } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
@@ -18,6 +18,7 @@ export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
   title = 'Person';
 
   person: Person;
+  employee: boolean;
 
   subscription: Subscription;
 
@@ -40,6 +41,32 @@ export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
+        switchMap(([]) => {
+
+          const { pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.id();
+
+          const pulls = [
+            pull.Person({
+              object: id,
+              fetch: {
+                EmploymentsWhereEmployee: x
+              }
+            }),
+          ];
+
+          return this.panelManager.context
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              tap((loaded) => {
+                const employments = loaded.collections.Employments as Employment[];
+                this.employee = employments.length > 0;
+              }),
+              delay(1)
+            );
+        }),
         switchMap(([]) => {
 
           const { m, pull } = this.metaService;

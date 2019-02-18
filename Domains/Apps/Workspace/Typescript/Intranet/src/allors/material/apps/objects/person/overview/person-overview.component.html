@@ -17,7 +17,7 @@
       </div>
 
       <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
-        
+
         <person-overview-detail></person-overview-detail>
 
         <communicationevent-overview-panel></communicationevent-overview-panel>
@@ -33,6 +33,8 @@
         <worktask-overview-panel></worktask-overview-panel>
 
         <workeffortpartyassignment-overview-panel></workeffortpartyassignment-overview-panel>
+
+        <partyrate-overview-panel *ngIf="employee === true"></partyrate-overview-panel>
 
       </div>
     </div>

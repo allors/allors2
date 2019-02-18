@@ -97,9 +97,7 @@ namespace Allors.Repository
 
         public CommunicationEvent[] CommunicationEvents { get; set; }
 
-        public PartyRate CurrentPartyRate { get; set; }
-
-        public PartyRate[] AllPartyRates { get; set; }
+        public PartyRate[] PartyRates { get; set; }
         #endregion
 
         #region inherited methods

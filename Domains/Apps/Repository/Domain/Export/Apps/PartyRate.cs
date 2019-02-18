@@ -78,7 +78,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public TimeFrequency Frequency { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

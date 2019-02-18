@@ -403,24 +403,13 @@ namespace Allors.Repository
         CommunicationEvent[] CommunicationEvents { get; set; }
 
         #region Allors
-        [Id("29051CDB-C7C3-48A5-97B4-164EED1339EE")]
-        [AssociationId("8E5E186B-58C6-41A0-BD1E-3FCE8B751A65")]
-        [RoleId("36A4B30D-E314-42B2-AD49-B44929BB381B")]
-        #endregion
-        [Indexed]
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        PartyRate CurrentPartyRate { get; set; }
-
-        #region Allors
         [Id("E25BB549-9B1B-4FAF-A62C-72EB95897D0F")]
         [AssociationId("7E0B4EC2-FC0D-48D9-980B-C05280897499")]
         [RoleId("B4146BF3-EC12-44C4-8202-B08CFE491104")]
         #endregion
         [Indexed]
         [Workspace]
-        [Multiplicity(Multiplicity.ManyToMany)]
-        PartyRate[] AllPartyRates { get; set; }
-
+        [Multiplicity(Multiplicity.OneToMany)]
+        PartyRate[] PartyRates { get; set; }
     }
 }
