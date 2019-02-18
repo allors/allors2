@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
@@ -14,6 +15,8 @@ interface Row extends TableRow {
   object: PositionTypeRate;
   positionType: string;
   rateType: string;
+  from: string;
+  through: string;
   rate: number;
   frequency: string;
 }
@@ -32,6 +35,7 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
   delete: Action;
 
   private subscription: Subscription;
+  positionTypes: PositionType[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -59,12 +63,15 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
       this.table.selection.clear();
     });
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
         { name: 'positionType' },
         { name: 'rateType' },
-        { name: 'rate', sort: true },
+        { name: 'from', sort },
+        { name: 'through', sort },
+        { name: 'rate', sort },
         { name: 'frequency' },
       ],
       actions: [
@@ -105,7 +112,9 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
-        name: m.PositionTypeRate.Rate,
+        rate: m.PositionTypeRate.Rate,
+        from: m.PositionTypeRate.FromDate,
+        through: m.PositionTypeRate.ThroughDate,
       }
     );
 
@@ -127,11 +136,18 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
               sort: sorter.create(sort),
               include: {
                 TimeFrequency: x,
+                RateType: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+            pull.PositionType({
+              include: {
+                PositionTypeRate: x
+              }
+            })
+          ];
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
@@ -139,13 +155,17 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        this.positionTypes = loaded.collections.PositionTypes as PositionType[];
         const objects = loaded.collections.PositionTypeRates as PositionTypeRate[];
+
         this.table.total = loaded.values.PositionTypeRates_total;
         this.table.data = objects.map((v) => {
           return {
             object: v,
-            positionType: v.PositionTypesWherePositionTypeRate.map(p => p.Title).join(', '),
+            positionType: this.positionTypes.filter(p => p.PositionTypeRate === v).map(p => p.Title).join(', '),
             rateType: v.RateType.Name,
+            from: moment(v.FromDate).format('L'),
+            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
             rate: v.Rate,
             frequency: v.TimeFrequency.Name,
           } as Row;
