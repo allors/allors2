@@ -35,9 +35,13 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
+            if (derivation.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, contactRelationship);
+                foreach (OrganisationContactRelationship contactRelationship in this
+                    .OrganisationContactRelationshipsWhereOrganisation)
+                {
+                    derivation.AddDependency(this, contactRelationship);
+                }
             }
         }
 
