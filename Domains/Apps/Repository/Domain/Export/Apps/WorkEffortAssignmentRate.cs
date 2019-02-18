@@ -1,3 +1,5 @@
+using System;
+
 namespace Allors.Repository
 {
     using Attributes;
@@ -5,13 +7,28 @@ namespace Allors.Repository
     #region Allors
     [Id("ac18c87b-683c-4529-9171-d23e73c583d4")]
     #endregion
-    public partial class WorkEffortAssignmentRate : AccessControlledObject 
+    public partial class WorkEffortAssignmentRate : Period, AccessControlledObject 
     {
         #region inherited properties
+
+        public DateTime FromDate { get; set; }
+        public DateTime ThroughDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
         #endregion
+
+        #region Allors
+        [Id("BFFC696B-84AE-4803-8C80-FF20E99BE46D")]
+        [AssociationId("FE4E09BF-FC44-4773-8827-C7D4D0BEB952")]
+        [RoleId("8FDFA483-EA9F-4EC7-BBBA-0479F5493E7F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        public WorkEffort WorkEffort { get; set; }
 
         #region Allors
         [Id("738EFE42-075D-46B6-974C-CD57FFAC7401")]
@@ -46,6 +63,16 @@ namespace Allors.Repository
         public decimal Cost { get; set; }
 
         #region Allors
+        [Id("953BAA4D-5455-47C8-B8B0-D3673EFF358D")]
+        [AssociationId("45E3A81D-B08B-4172-850E-B87A0A7648D2")]
+        [RoleId("F2D37E12-5450-4EE2-82AF-14A1D5E14B48")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public TimeFrequency Frequency { get; set; }
+
+        #region Allors
         [Id("627da684-d501-4221-97c2-81329e2b5e8c")]
         [AssociationId("4b9c1fd3-acf0-4e5b-8cb5-d32f94bff10b")]
         [RoleId("e6409680-f8e1-4c61-8bd3-b9ec42435741")]
@@ -67,6 +94,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

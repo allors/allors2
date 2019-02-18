@@ -6,7 +6,8 @@ import { DeleteService, TableRow, Table, CreateData, EditService, EditData } fro
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: PartyRate;
+  object: WorkEffortAssignmentRate;
+  partyAssignment: string;
   rateType: string;
   from: string;
   through: string;
@@ -28,7 +29,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: PartyRate[];
+  objects: WorkEffortAssignmentRate[];
   table: Table<Row>;
 
   delete: Action;
@@ -42,9 +43,9 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
   }
 
   collection = 'Current';
-  currentPartyRates: PartyRate[];
-  inactivePartyRates: PartyRate[];
-  allPartyRates: PartyRate[] = [];
+  currentRates: WorkEffortAssignmentRate[];
+  inactiveRates: WorkEffortAssignmentRate[];
+  allRates: WorkEffortAssignmentRate[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -61,8 +62,8 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.panel.name = 'partyrate';
-    this.panel.title = 'Party Rates';
+    this.panel.name = 'workeffortrate';
+    this.panel.title = 'Work Effort Rates';
     this.panel.icon = 'contacts';
     this.panel.expandable = true;
 
@@ -74,6 +75,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       selection: true,
       columns: [
         { name: 'rateType' },
+        { name: 'partyAssignment' },
         { name: 'from', sort },
         { name: 'through', sort },
         { name: 'rate', sort },
@@ -88,7 +90,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       autoFilter: true,
     });
 
-    const pullName = `${this.panel.name}_${this.m.PartyRate.name}`;
+    const pullName = `${this.panel.name}_${this.m.WorkEffortAssignmentRate.name}`;
 
     this.panel.onPull = (pulls) => {
 
@@ -96,11 +98,11 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Party({
+        pull.WorkEffort({
           name: pullName,
           object: id,
           fetch: {
-            PartyRates: {
+            WorkEffortAssignmentRatesWhereWorkEffort: {
               include: {
                 RateType: x,
                 Frequency: x
@@ -112,7 +114,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as PartyRate[];
+      this.objects = loaded.collections[pullName] as WorkEffortAssignmentRate[];
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
@@ -122,9 +124,10 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
   }
 
   public refreshTable() {
-    this.table.data = this.partyRates.map((v) => {
+    this.table.data = this.workEffortAssignmentRates.map((v) => {
       return {
         object: v,
+        partyAssignment: v.partyAssignment.name,
         rateType: v.RateType.Name,
         from: moment(v.FromDate).format('L'),
         through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
@@ -134,7 +137,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
     });
   }
 
-  get partyRates(): any {
+  get workEffortAssignmentRates(): any {
 
     switch (this.collection) {
       case 'Current':

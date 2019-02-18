@@ -55,4 +55,4 @@ export { WorkEffortAssignmentRateOverviewPanelComponent } from './workeffortassi
     RouterModule,
   ],
 })
-export class WorkEffortAssignmentRateverviewPanelModule { }
+export class WorkEffortAssignmentRateOverviewPanelModule { }

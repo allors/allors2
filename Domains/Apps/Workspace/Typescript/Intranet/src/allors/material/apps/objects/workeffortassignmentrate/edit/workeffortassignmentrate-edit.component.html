@@ -1,24 +1,26 @@
-<form *ngIf="partyRate" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="workEffortAssignmentRate" #form="ngForm" (submit)="save()" novalidate>
 
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
 
     <div class="row">
-      <a-mat-select class="col-md" [object]="partyRate" [roleType]="m.PartyRate.RateType"
+      <a-mat-select class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.RateType"
         [options]="rateTypes" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.WorkEffortPartyAssignment"
+        [options]="workEffortPartyAssignments" display="displayName" label="Party Assignment"></a-mat-select>
     </div>
 
     <div class="row">
-      <a-mat-datepicker class="col-md" [object]="partyRate" [roleType]="m.PartyRate.FromDate">
+      <a-mat-datepicker class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.FromDate">
       </a-mat-datepicker>
-      <a-mat-datepicker class="col-md" [object]="partyRate" [roleType]="m.PartyRate.ThroughDate">
+      <a-mat-datepicker class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.ThroughDate">
       </a-mat-datepicker>
     </div>
 
     <div class="row">
-      <a-mat-input class="col-md" [object]="partyRate" [roleType]="m.PartyRate.Rate"></a-mat-input>
-      <a-mat-select class="col-md" [object]="partyRate" [roleType]="m.PartyRate.Frequency"
+      <a-mat-input class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.Rate"></a-mat-input>
+      <a-mat-select class="col-md" [object]="workEffortAssignmentRate" [roleType]="m.WorkEffortAssignmentRate.Frequency"
         [options]="timeFrequencies" display="Name" label="Frequency"></a-mat-select>
     </div>
 

@@ -50,6 +50,7 @@ import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModu
 import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/apps/objects/unifiedgood/create/unifiedgood-create.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
+import { WorkEffortAssignmentRateEditComponent, WorkEffortAssignmentRateEditModule } from '../allors/material/apps/objects/workeffortassignmentrate/edit/workeffortassignmentrate-edit.module';
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
@@ -108,6 +109,7 @@ export const create = {
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
   [ids.WebAddress]: WebAddressCreateComponent,
+  [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
@@ -154,6 +156,7 @@ export const edit = {
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
+  [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
@@ -209,6 +212,7 @@ export const edit = {
     UnifiedGoodCreateModule,
     WebAddressCreateModule,
     WebAddressEditModule,
+    WorkEffortAssignmentRateEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
     WorkTaskCreateModule,
@@ -260,6 +264,7 @@ export const edit = {
     UnifiedGoodCreateComponent,
     WebAddressCreateComponent,
     WebAddressEditComponent,
+    WorkEffortAssignmentRateEditComponent,
     WorkEffortFixedAssetAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,
     WorkTaskCreateComponent,

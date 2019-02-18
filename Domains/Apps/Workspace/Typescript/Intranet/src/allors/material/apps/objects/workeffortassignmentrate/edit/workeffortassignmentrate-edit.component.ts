@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { PartyRate, TimeFrequency, RateType, Party } from '../../../../../domain';
+import { WorkEffortAssignmentRate, TimeFrequency, RateType, WorkEffort, WorkEffortPartyAssignment } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -21,12 +21,13 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
 
   readonly m: Meta;
 
-  partyRate: PartyRate;
+  workEffortAssignmentRate: WorkEffortAssignmentRate;
+  workEffort: WorkEffort;
+  workEffortPartyAssignments: WorkEffortPartyAssignment[];
   timeFrequencies: TimeFrequency[];
   rateTypes: RateType[];
 
   private subscription: Subscription;
-  party: Party;
 
   constructor(
     @Self() private allors: ContextService,
@@ -51,17 +52,23 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.PartyRate({
+            pull.WorkEffortAssignmentRate({
               object: this.data.id,
               include: {
                 RateType: x,
-                Frequency: x
+                Frequency: x,
+                WorkEffortPartyAssignment: x
               }
             }),
-            pull.Party({
+            pull.WorkEffort({
               object: this.data.associationId,
-              include: {
-                PartyRates: x,
+              fetch: {
+                WorkEffortPartyAssignmentsWhereAssignment:
+                {
+                  include: {
+                    Party: x
+                  }
+                }
               }
             }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
@@ -79,21 +86,21 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
 
         this.allors.context.reset();
 
-        this.party = loaded.objects.Party as Party;
+        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+        this.workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
 
         if (isCreate) {
-          this.title = 'Add Party Rate';
-          this.partyRate = this.allors.context.create('PartyRate') as PartyRate;
-          this.party.AddPartyRate(this.partyRate);
+          this.title = 'Add Work Effort Rate';
+          this.workEffortAssignmentRate = this.allors.context.create('WorkEffortAssignmentRate') as WorkEffortAssignmentRate;
         } else {
-          this.partyRate = loaded.objects.PartyRate as PartyRate;
+          this.workEffortAssignmentRate = loaded.objects.WorkEffortAssignmentRate as WorkEffortAssignmentRate;
 
-          if (this.partyRate.CanWriteRate) {
-            this.title = 'Edit Party Rate';
+          if (this.workEffortAssignmentRate.CanWriteRate) {
+            this.title = 'Edit Work Effort Rate';
           } else {
-            this.title = 'View Party Rate';
+            this.title = 'View Work Effort Rate';
           }
         }
       }, this.errorService.handler);
@@ -115,8 +122,8 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
       .save()
       .subscribe((saved: Saved) => {
         const data: ObjectData = {
-          id: this.partyRate.id,
-          objectType: this.partyRate.objectType,
+          id: this.workEffortAssignmentRate.id,
+          objectType: this.workEffortAssignmentRate.objectType,
         };
 
         this.dialogRef.close(data);
