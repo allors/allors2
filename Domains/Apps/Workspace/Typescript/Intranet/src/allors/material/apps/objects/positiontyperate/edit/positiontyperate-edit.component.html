@@ -1,0 +1,39 @@
+<form *ngIf="positionTypeRate" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.RateType"
+        [options]="rateTypes" display="Name"></a-mat-select>
+      <mat-form-field class="col-md">
+        <mat-select name="positions" [(ngModel)]="selectedPositionTypes" placeholder="positions" multiple="true"
+          (ngModelChange)="setDirty()">
+          <mat-option *ngFor="let positionType of positionTypes" [value]="positionType">{{ positionType.Title }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <a-mat-datepicker class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.FromDate">
+      </a-mat-datepicker>
+      <a-mat-datepicker class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.ThroughDate">
+      </a-mat-datepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.Rate"></a-mat-input>
+      <a-mat-select class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.TimeFrequency"
+        [options]="timeFrequencies" display="Name" label="Frequency"></a-mat-select>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit"
+      [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

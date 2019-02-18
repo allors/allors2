@@ -51,5 +51,12 @@ export const menu: MenuItem[] = [
     children: [
       { id: ids.WorkEffort },
     ]
+  },
+  {
+    title: 'HR', icon: 'group',
+    children: [
+      { id: ids.PositionType },
+      { id: ids.PositionTypeRate },
+    ]
   }
 ];

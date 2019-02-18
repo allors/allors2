@@ -45,4 +45,7 @@ export function appInit(workspaceService: WorkspaceService) {
 
   m.WorkEffort.list = '/workefforts/workefforts';
   m.WorkTask.overview = '/workefforts/worktask/:id';
+
+  m.PositionType.list = '/humanresource/positiontypes';
+  m.PositionTypeRate.list = '/humanresource/positiontyperates';
 }

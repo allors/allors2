@@ -19,11 +19,11 @@ namespace Allors.Domain
 
     public partial class RateTypes
     {
-        private static readonly Guid BillingRateId = new Guid("FE2C3012-7FBC-4c10-B76E-F0DA4754020A");
+        private static readonly Guid StandardRateId = new Guid("FE2C3012-7FBC-4c10-B76E-F0DA4754020A");
         private static readonly Guid CostId = new Guid("48C5CDA0-1A07-4484-90FC-7AA6BF1D3FF2");
         private static readonly Guid RegularPayId = new Guid("9C1051EA-DDAF-4e21-ACA7-8ABB9A06073D");
         private static readonly Guid OvertimePayId = new Guid("2422BDBB-C30C-452a-B02F-ED1EE6839B56");
-        private static readonly Guid OvertimeBillingRateId = new Guid("DE4D0A4C-EDDC-460c-BF78-A45A9B881F48");
+        private static readonly Guid OvertimeRateId = new Guid("DE4D0A4C-EDDC-460c-BF78-A45A9B881F48");
         private static readonly Guid WeekendRateId = new Guid("2AA92139-E634-444e-9997-89B5F598812F");
         private static readonly Guid AveragePayRateId = new Guid("68D502D8-FB6F-4f63-BD33-18AF3D5D1F75");
         private static readonly Guid HighestPayRateId = new Guid("5D09F716-5C8F-4c30-91C2-87AFB55BB371");
@@ -31,7 +31,7 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<RateType> cache;
 
-        public RateType BillingRate => this.Cache[BillingRateId];
+        public RateType StandardRate => this.Cache[StandardRateId];
 
         public RateType Cost => this.Cache[CostId];
 
@@ -39,7 +39,7 @@ namespace Allors.Domain
 
         public RateType OvertimePay => this.Cache[OvertimePayId];
 
-        public RateType OvertimeBillingRate => this.Cache[OvertimeBillingRateId];
+        public RateType OvertimeRate => this.Cache[OvertimeRateId];
 
         public RateType WeekendRate => this.Cache[WeekendRateId];
 
@@ -58,9 +58,9 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RateTypeBuilder(this.Session)
-                .WithName("Billing Rate")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie rate").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingRateId)
+                .WithName("Standard Rate")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Standaard tarief").WithLocale(dutchLocale).Build())
+                .WithUniqueId(StandardRateId)
                 .WithIsActive(true)
                 .Build();
             
@@ -86,15 +86,15 @@ namespace Allors.Domain
                 .Build();
             
             new RateTypeBuilder(this.Session)
-                .WithName("Overtime Billing Rate")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overuren rate").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OvertimeBillingRateId)
+                .WithName("Overtime Rate")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overuren tarief").WithLocale(dutchLocale).Build())
+                .WithUniqueId(OvertimeRateId)
                 .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Weekend Rate")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend rate").WithLocale(dutchLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend tarief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WeekendRateId)
                 .WithIsActive(true)
                 .Build();

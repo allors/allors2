@@ -22,6 +22,8 @@ import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } f
 import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/apps/objects/nonunifiedpart/create/nonunifiedpart-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationEditComponent, PhoneCommunicationEditModule } from '../allors/material/apps/objects/phonecommunication/edit/phonecommunication-edit.module';
+import { PositionTypeEditComponent, PositionTypeEditModule } from '../allors/material/apps/objects/positiontype/edit/positiontype-edit.module';
+import { PositionTypeRateEditComponent, PositionTypeRateEditModule } from '../allors/material/apps/objects/positiontyperate/edit/positiontyperate-edit.module';
 import { PostalAddressCreateComponent, PostalAddressCreateModule } from '../allors/material/apps/objects/postaladdress/create/postaladdress-create.module';
 import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/material/apps/objects/postaladdress/edit/postaladdress-edit.module';
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
@@ -77,6 +79,8 @@ export const create = {
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
+  [ids.PositionType]: PositionTypeEditComponent,
+  [ids.PositionTypeRate]: PositionTypeRateEditComponent,
   [ids.PostalAddress]: PostalAddressCreateComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.ProductNumber]: ProductIdentificationEditComponent,
@@ -126,6 +130,8 @@ export const edit = {
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
   [ids.PhoneCommunication]: PhoneCommunicationEditComponent,
+  [ids.PositionType]: PositionTypeEditComponent,
+  [ids.PositionTypeRate]: PositionTypeRateEditComponent,
   [ids.PostalAddress]: PostalAddressEditComponent,
   [ids.ProductCategory]: ProductCategoryEditComponent,
   [ids.PartNumber]: ProductIdentificationEditComponent,
@@ -172,6 +178,8 @@ export const edit = {
     PartyContactmechanismEditModule,
     PersonCreateModule,
     PhoneCommunicationEditModule,
+    PositionTypeEditModule,
+    PositionTypeRateEditModule,
     PostalAddressCreateModule,
     PostalAddressEditModule,
     ProductCategoryEditModule,
@@ -220,6 +228,8 @@ export const edit = {
     NonUnifiedPartCreateComponent,
     PartyContactmechanismEditComponent,
     PhoneCommunicationEditComponent,
+    PositionTypeEditComponent,
+    PositionTypeRateEditComponent,
     PostalAddressCreateComponent,
     PostalAddressEditComponent,
     ProductCategoryEditComponent,
