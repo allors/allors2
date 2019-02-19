@@ -27,11 +27,15 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this Request @this, ObjectOnDerive method)
         {
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
-            if (!@this.ExistRecipient && internalOrganisations.Count() == 1)
+            if (!@this.ExistRecipient)
             {
-                @this.Recipient = internalOrganisations.First();
+                var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
+                internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
+                if (internalOrganisations.Count() == 1)
+                {
+                    @this.Recipient = internalOrganisations.Single();
+                }
             }
 
             if (@this.ExistRecipient && !@this.ExistRequestNumber)

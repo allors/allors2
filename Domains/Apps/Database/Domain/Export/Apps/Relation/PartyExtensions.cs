@@ -354,7 +354,8 @@ namespace Allors.Domain
 
         public static void AppsOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)
         {
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
 
             if (!internalOrganisations.Contains(@this))
             {

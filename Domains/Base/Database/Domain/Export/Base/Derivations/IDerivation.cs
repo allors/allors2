@@ -86,8 +86,13 @@ namespace Allors.Domain
 
         bool HasChangedRoles(Object derivable, RelationKind relationKind);
 
-        void MarkAsModified(Object derivable);
+        void MarkAsModified(Object derivable, RelationType relationType = null);
+
+        void MarkAsModified(Object derivable, RoleType roleType);
 
         void MarkAsModified(IEnumerable<Object> derivables);
+
+        ISet<RelationType> MarkedAsModifiedBy(Object markedAsModified);
+
     }
 }
