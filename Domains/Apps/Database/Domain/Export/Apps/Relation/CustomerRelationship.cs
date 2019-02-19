@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System;
@@ -43,10 +45,15 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-            if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            if (!this.ExistInternalOrganisation)
             {
-                this.InternalOrganisation = internalOrganisations.First();
+                var internalOrganisations = new Organisations(this.strategy.Session).Extent();
+                internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
+                if (internalOrganisations.Count() == 1)
+                {
+                    this.InternalOrganisation = internalOrganisations.Single();
+                }
             }
 
             if (this.ExistCustomer)

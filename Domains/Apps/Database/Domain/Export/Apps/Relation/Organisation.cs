@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
+using Allors.Meta;
 
 namespace Allors.Domain
 {
@@ -34,15 +36,6 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-
-            if (derivation.HasChangedRoles(this))
-            {
-                foreach (OrganisationContactRelationship contactRelationship in this
-                    .OrganisationContactRelationshipsWhereOrganisation)
-                {
-                    derivation.AddDependency(this, contactRelationship);
-                }
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -110,13 +103,33 @@ namespace Allors.Domain
             }
 
             this.PartyName = this.Name;
-            
-            this.AppsOnDeriveCurrentContacts(derivation);
-            this.AppsOnDeriveInactiveContacts(derivation);
-            this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveContactUserGroup(derivation);
 
+            // Contacts
+            if (!this.ExistContactsUserGroup)
+            {
+                var customerContactGroupName = $"Customer contacts at {this.Name} ({this.UniqueId})";
+                this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
+            }
+
+            var allContactRelationships = this.OrganisationContactRelationshipsWhereOrganisation.ToArray();
+
+            this.CurrentOrganisationContactRelationships = allContactRelationships
+                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .ToArray();
+
+            this.InactiveOrganisationContactRelationships = allContactRelationships
+                .Except(this.CurrentOrganisationContactRelationships)
+                .ToArray();
+
+            this.CurrentContacts = this.CurrentOrganisationContactRelationships
+                .Select(v => v.Contact).ToArray();
+
+            this.InactiveContacts = this.InactiveOrganisationContactRelationships
+                .Select(v => v.Contact)
+                .ToArray();
+
+            this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
+            
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -129,7 +142,7 @@ namespace Allors.Domain
 
             this.Sync();
         }
-
+        
         public List<string> Roles => new List<string>() { "Internal organisation" };
 
         public bool AppsIsActiveProfessionalServicesProvider(DateTime? date)
@@ -192,74 +205,6 @@ namespace Allors.Domain
             return false;
         }
 
-        public void AppsOnDeriveCurrentContacts(IDerivation derivation)
-        {
-            this.RemoveCurrentContacts();
-
-            var contactRelationships = this.OrganisationContactRelationshipsWhereOrganisation;
-            foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
-            {
-                if (contactRelationship.FromDate <= DateTime.UtcNow &&
-                    (!contactRelationship.ExistThroughDate || contactRelationship.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.AddCurrentContact(contactRelationship.Contact);
-                }
-            }
-        }
-
-        public void AppsOnDeriveInactiveContacts(IDerivation derivation)
-        {
-            this.RemoveInactiveContacts();
-
-            var contactRelationships = this.OrganisationContactRelationshipsWhereOrganisation;
-            foreach (OrganisationContactRelationship contactRelationship in contactRelationships)
-            {
-                if (contactRelationship.FromDate > DateTime.UtcNow ||
-                    (contactRelationship.ExistThroughDate && contactRelationship.ThroughDate < DateTime.UtcNow))
-                {
-                    this.AddInactiveContact(contactRelationship.Contact);
-                }
-            }
-        }
-
-        public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)
-        {
-            this.RemoveCurrentOrganisationContactRelationships();
-
-            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
-            {
-                if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
-                    (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.AddCurrentOrganisationContactRelationship(organisationContactRelationship);
-                }
-            }
-        }
-
-        public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
-        {
-            this.RemoveInactiveOrganisationContactRelationships();
-
-            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
-            {
-                if (organisationContactRelationship.FromDate > DateTime.UtcNow ||
-                    (organisationContactRelationship.ExistThroughDate && organisationContactRelationship.ThroughDate < DateTime.UtcNow))
-                {
-                    this.AddInactiveOrganisationContactRelationship(organisationContactRelationship);
-                }
-            }
-        }
-
-        public void AppsOnDeriveContactUserGroup(IDerivation derivation)
-        {
-            if (!this.ExistContactsUserGroup)
-            {
-                var customerContactGroupName = $"Customer contacts at {this.Name} ({this.UniqueId})";
-                this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
-            }
-
-            this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
-        }
 
         public void AppsDelete(DeletableDelete method)
         {

@@ -31,9 +31,9 @@ namespace Allors.Domain
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public abstract class DerivationBase : IDerivation
     {
-        private readonly HashSet<long> markedAsModified;
+        private readonly Dictionary<long, ISet<RelationType>> relationsByMarkedAsModified;
         private readonly HashSet<Object> derivedObjects;
-
+        
         private Dictionary<string, object> properties;
 
         private IValidation validation;
@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             this.Session = session;
 
-            this.markedAsModified = new HashSet<long>();
+            this.relationsByMarkedAsModified = new Dictionary<long, ISet<RelationType>>();
             this.derivedObjects = new HashSet<Object>();
 
             this.ChangeSet = session.Checkpoint();
@@ -213,12 +213,42 @@ namespace Allors.Domain
 
         public bool IsMarkedAsModified(Object derivable)
         {
-            return this.markedAsModified.Contains(derivable.Id);
+            if (derivable != null)
+            {
+                return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
+            }
+
+            return false;
         }
 
-        public void MarkAsModified(Object derivable)
+        public void MarkAsModified(Object derivable, RelationType relationType = null)
         {
-            this.markedAsModified.Add(derivable.Id);
+            if (derivable != null)
+            {
+                if (!this.relationsByMarkedAsModified.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
+                {
+                    this.relationsByMarkedAsModified.Add(derivable.Id, null);
+                }
+
+                if (relationType != null)
+                {
+                    if (relationTypes == null)
+                    {
+                        relationTypes = new HashSet<RelationType>();
+                        this.relationsByMarkedAsModified[derivable.Id] = relationTypes;
+                    }
+
+                    relationTypes.Add(relationType);
+                }
+            }
+        }
+
+        public void MarkAsModified(Object derivable, RoleType roleType)
+        {
+            if (derivable != null)
+            {
+                this.MarkAsModified(derivable, roleType.RelationType);
+            }
         }
 
         public void MarkAsModified(IEnumerable<Object> derivables)
@@ -227,6 +257,12 @@ namespace Allors.Domain
             {
                 this.MarkAsModified(derivable);
             }
+        }
+
+        public ISet<RelationType> MarkedAsModifiedBy(Object markedAsModified)
+        {
+            this.relationsByMarkedAsModified.TryGetValue(markedAsModified.Id, out var relationTypes);
+            return relationTypes;
         }
 
         public void AddDerivable(Object derivable)
@@ -298,7 +334,7 @@ namespace Allors.Domain
             var changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
             changedObjectIds.UnionWith(this.ChangeSet.Roles);
             changedObjectIds.UnionWith(this.ChangeSet.Created);
-            changedObjectIds.UnionWith(this.markedAsModified);
+            changedObjectIds.UnionWith(this.relationsByMarkedAsModified.Keys);
 
             var preparedObjects = new HashSet<IObject>();
             var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds.ToArray()));

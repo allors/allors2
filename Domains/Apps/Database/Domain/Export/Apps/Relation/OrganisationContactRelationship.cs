@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System;
@@ -24,28 +27,16 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.AddDependency(this.Organisation, this);
+            derivation.MarkAsModified(this.Organisation, M.OrganisationContactRelationship.Organisation);
+
             derivation.AddDependency(this.Contact, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
-            this.AppsOnDeriveContactMembership(derivation);
-
+            
             this.Parties = new Party[] { this.Contact, this.Organisation };
-        }
-
-        public void AppsOnDeriveContactMembership(IDerivation derivation)
-        {
-            if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistContactsUserGroup)
-            {
-                this.Organisation.ContactsUserGroup.RemoveMember(this.Contact);
-                if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.Organisation.ContactsUserGroup.AddMember(this.Contact);
-                }
-            }
         }
     }
 }

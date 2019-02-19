@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using Allors.Meta;
 
 namespace Allors.Domain
 {
@@ -31,11 +32,16 @@ namespace Allors.Domain
 
         public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
         {
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!@this.ExistIssuer && internalOrganisations.Count() == 1)
+            if (!@this.ExistIssuer)
             {
-                @this.Issuer = internalOrganisations.First();
+                var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
+                internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
+                if (internalOrganisations.Count() == 1)
+                {
+                    @this.Issuer = internalOrganisations.First();
+                }
             }
 
             if (!@this.ExistQuoteNumber && @this.ExistIssuer)
