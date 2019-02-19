@@ -15,6 +15,11 @@
     </div>
 
     <div class="row">
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.RateType"
+        [options]="rateTypes" display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
       <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate">
       </a-mat-datetimepicker>
     </div>

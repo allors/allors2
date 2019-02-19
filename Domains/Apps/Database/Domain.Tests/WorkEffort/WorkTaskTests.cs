@@ -97,18 +97,21 @@ namespace Allors.Domain
             var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
 
             var timeEntry1 = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry2 = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry3 = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
                 .WithWorkEffort(workOrder)
@@ -147,6 +150,7 @@ namespace Allors.Domain
             var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
 
             var timeEntryToday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
                 .WithWorkEffort(workOrder)
@@ -163,6 +167,7 @@ namespace Allors.Domain
 
             //// Re-arrange
             var timeEntryYesterday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
                 .WithWorkEffort(workOrder)
@@ -180,6 +185,7 @@ namespace Allors.Domain
             //// Re-arrange
 
             var timeEntryTomorrow = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
                 .WithTimeFrequency(frequencies.Minute)
@@ -369,11 +375,12 @@ namespace Allors.Domain
 
         private TimeEntry CreateTimeEntry(DateTime fromDate, DateTime throughDate, TimeFrequency frequency, WorkEffort workEffort) =>
             new TimeEntryBuilder(this.Session)
-            .WithFromDate(fromDate)
-            .WithThroughDate(throughDate)
-            .WithTimeFrequency(frequency)
-            .WithWorkEffort(workEffort)
-            .Build();
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(fromDate)
+                .WithThroughDate(throughDate)
+                .WithTimeFrequency(frequency)
+                .WithWorkEffort(workEffort)
+                .Build();
 
         private PostalAddress CreatePostalAddress(string addressLine1,
             string addressLine2,

@@ -9,3 +9,4 @@ import './SerialisedItemCharacteristicType';
 import './TelecommunicationsNumber';
 import './User';
 import './WebAddress';
+import './WorkEffortPartyAssignment';

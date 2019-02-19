@@ -75,13 +75,12 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
             }
 
-            this.Worker = this.TimeSheetWhereTimeEntry.Worker;
+            if (this.ExistTimeSheetWhereTimeEntry)
+            {
+                this.Worker = this.TimeSheetWhereTimeEntry.Worker;
+            }
 
-            this.DeriveAmountOfTimeOrThroughDate();
-        }
-
-        private void DeriveAmountOfTimeOrThroughDate()
-        {
+            // calculate AmountOfTime Or ThroughDate
             var frequencies = new TimeFrequencies(this.strategy.Session);
 
             if (this.ThroughDate != null)
@@ -112,6 +111,73 @@ namespace Allors.Domain
                     var timeSpan = TimeSpan.FromMinutes((double)minutes);
                     this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
                 }
+            }
+
+            // BillingAmount
+            if (this.ExistFromDate && this.ExistThroughDate)
+            {
+                var entryTimeSpan = (decimal)(this.ThroughDate - this.FromDate).Value.TotalMinutes;
+                var timeInTimeEntryRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, this.BillingFrequency);
+
+                if (this.ExistBillingRate)
+                {
+                    this.BillingAmount = Math.Round((decimal) (this.BillingRate * timeInTimeEntryRateFrequency), 2);
+                }
+
+                if (this.BillingAmount == 0)
+                {
+                    foreach (WorkEffortAssignmentRate workEffortAssignmentRate in this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort)
+                    {
+                        if (workEffortAssignmentRate.WorkEffortPartyAssignment.Party.Equals(this.Worker) 
+                            && workEffortAssignmentRate.RateType.Equals(this.RateType))
+                        {
+                            var fromDate = this.FromDate;
+                            if (workEffortAssignmentRate.FromDate > this.FromDate)
+                            {
+                                fromDate = workEffortAssignmentRate.FromDate;
+                            }
+
+                            var throughDate = this.ThroughDate;
+                            if (workEffortAssignmentRate.ExistThroughDate &&
+                                workEffortAssignmentRate.ThroughDate < this.ThroughDate)
+                            {
+                                throughDate = workEffortAssignmentRate.ThroughDate;
+                            }
+
+                            var rateTimeSpan = (decimal)(throughDate - fromDate).Value.TotalMinutes;
+                            var smallestTimeSpan = rateTimeSpan <= entryTimeSpan ? rateTimeSpan : entryTimeSpan;
+
+                            var timeInWorkEffortRateFrequency = frequencies.Minute.ConvertToFrequency(smallestTimeSpan, workEffortAssignmentRate.Frequency);
+                            this.BillingAmount += Math.Round((decimal)(workEffortAssignmentRate.Rate * timeInWorkEffortRateFrequency), 2);
+                        }
+                    }
+                }
+
+                //if (this.BillingAmount == 0)
+                //{
+                //    foreach (PartyRate partyRate in this.Worker.PartyRates)
+                //    {
+                //        if (this.FromDate >= partyRate.FromDate.Date
+                //            && (!partyRate.ExistThroughDate || this.FromDate <= partyRate.ThroughDate))
+                //        {
+                //            var timeInPartyRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, partyRate.Frequency);
+                //            this.BillingAmount = Math.Round((decimal)(partyRate.Rate * timeInPartyRateFrequency), 2);
+                //        }
+                //    }
+                //}
+
+                //if (this.BillingAmount == 0)
+                //{
+                //    foreach (PositionFulfillment positionFulfillment in this.Worker.PositionFulfillmentsWherePerson)
+                //    {
+                //        if (this.FromDate >= positionFulfillment.FromDate.Date
+                //            && (!positionFulfillment.ExistThroughDate || this.FromDate <= positionFulfillment.ThroughDate))
+                //        {
+                //            var timeInPartyRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, positionFulfillment.Frequency);
+                //            this.BillingAmount = Math.Round((decimal)(positionFulfillment.Rate * timeInPartyRateFrequency), 2);
+                //        }
+                //    }
+                //}
             }
         }
     }

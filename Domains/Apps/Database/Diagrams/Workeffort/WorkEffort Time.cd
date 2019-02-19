@@ -38,14 +38,14 @@
     <Position X="7.5" Y="9.25" Width="1.75" />
     <AssociationLine Name="Worker" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.5" Y="10.75" />
-        <Point X="7.125" Y="10.75" />
+        <Point X="7.5" Y="10.929" />
+        <Point X="7.125" Y="10.929" />
         <Point X="7.125" Y="10.812" />
         <Point X="2.25" Y="10.812" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAABAUAAAAQAAAAgAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAABAUAAAAQAAAAgAAABCAAAAACQAAAAEAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -57,8 +57,8 @@
     <AssociationLine Name="TimeEntries" Type="Allors.Domain.TimeEntry" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="6.281" Y="5.377" />
-        <Point X="6.281" Y="9.5" />
-        <Point X="7.5" Y="9.5" />
+        <Point X="6.281" Y="9.519" />
+        <Point X="7.5" Y="9.519" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -73,7 +73,7 @@
   <Interface Name="Allors.Domain.WorkEffortPartyAssignment">
     <Position X="1" Y="5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAgACAAAAAAAAAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -117,17 +117,6 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.EmploymentApplication">
-    <Position X="9.75" Y="11.25" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAAAgAAAAAAIAAAAAAAABAIAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Person" />
-      <Property Name="Position" />
-    </ShowAsAssociation>
-  </Interface>
   <Interface Name="Allors.Domain.Position">
     <Position X="13.25" Y="11.25" Width="1.5" />
     <TypeIdentifier>
@@ -136,6 +125,17 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="PositionType" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PositionFulfillment">
+    <Position X="9" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="Position" />
     </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

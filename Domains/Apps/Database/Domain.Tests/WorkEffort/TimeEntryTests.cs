@@ -32,7 +32,9 @@ namespace Allors.Domain
         public void GivenTimeEntry_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             // Arrange
-            var timeEntry = new TimeEntryBuilder(this.Session).Build();
+            var timeEntry = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .Build();
 
             // Act
             var derivation = this.Session.Derive(false);
@@ -94,6 +96,7 @@ namespace Allors.Domain
             var later = DateTimeFactory.CreateDateTime(now.AddHours(4));
 
             var timeEntry = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(now)
                 .WithThroughDate(later)
                 .WithTimeFrequency(frequencies.Hour)
@@ -147,6 +150,7 @@ namespace Allors.Domain
             var hour = frequencies.Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(now)
                 .WithAmountOfTime(4.0M)
                 .WithTimeFrequency(hour)

@@ -44,6 +44,17 @@ namespace Allors.Repository
         public Person Worker { get; set; }
 
         #region Allors
+        [Id("E086CAE8-62C2-4892-AC97-004A811A3904")]
+        [AssociationId("E671F25C-1B9F-465F-8D8E-41518233EFBA")]
+        [RoleId("1C5168E6-1636-4D1F-BDAD-E6323F149FF9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public RateType RateType { get; set; }
+
+        #region Allors
         [Id("1b07c419-42af-480b-87ba-1c001995dc51")]
         [AssociationId("2c605991-8d65-4b8f-9daf-e085af5b12c0")]
         [RoleId("90872970-372a-4f8d-9c53-c753aca9f99f")]

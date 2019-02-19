@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort } from '../../../../../domain';
+import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -29,6 +29,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
   workers: Party[];
   selectedWorker: Party;
   workEffort: WorkEffort;
+  rateTypes: RateType[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -69,6 +70,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
                 WorkEffortPartyAssignmentsWhereAssignment: x
               }
             }),
+            pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
 
@@ -83,6 +85,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
+        this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         const hour = this.frequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
