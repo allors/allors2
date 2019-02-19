@@ -213,31 +213,42 @@ namespace Allors.Domain
 
         public bool IsMarkedAsModified(Object derivable)
         {
-            return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
+            if (derivable != null)
+            {
+                return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
+            }
+
+            return false;
         }
 
         public void MarkAsModified(Object derivable, RelationType relationType = null)
         {
-            if (!this.relationsByMarkedAsModified.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
+            if (derivable != null)
             {
-                this.relationsByMarkedAsModified.Add(derivable.Id, null);
-            }
-
-            if (relationType != null)
-            {
-                if (relationTypes == null)
+                if (!this.relationsByMarkedAsModified.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
                 {
-                    relationTypes = new HashSet<RelationType>();
-                    this.relationsByMarkedAsModified[derivable.Id] = relationTypes;
+                    this.relationsByMarkedAsModified.Add(derivable.Id, null);
                 }
 
-                relationTypes.Add(relationType);
+                if (relationType != null)
+                {
+                    if (relationTypes == null)
+                    {
+                        relationTypes = new HashSet<RelationType>();
+                        this.relationsByMarkedAsModified[derivable.Id] = relationTypes;
+                    }
+
+                    relationTypes.Add(relationType);
+                }
             }
         }
 
         public void MarkAsModified(Object derivable, RoleType roleType)
         {
-            this.MarkAsModified(derivable, roleType.RelationType);
+            if (derivable != null)
+            {
+                this.MarkAsModified(derivable, roleType.RelationType);
+            }
         }
 
         public void MarkAsModified(IEnumerable<Object> derivables)
