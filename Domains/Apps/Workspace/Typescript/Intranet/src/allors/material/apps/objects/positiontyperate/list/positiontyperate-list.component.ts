@@ -135,7 +135,7 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
-                TimeFrequency: x,
+                Frequency: x,
                 RateType: x
               },
               arguments: this.filterService.arguments(filterFields),
@@ -167,7 +167,7 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
             from: moment(v.FromDate).format('L'),
             through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
             rate: v.Rate,
-            frequency: v.TimeFrequency.Name,
+            frequency: v.Frequency.Name,
           } as Row;
         });
       }, this.errorService.handler);

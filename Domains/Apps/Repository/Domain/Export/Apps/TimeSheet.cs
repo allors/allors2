@@ -22,9 +22,10 @@ namespace Allors.Repository
         [AssociationId("D39519EB-4AEF-4525-9BD4-2ABA38A30989")]
         [RoleId("B14E5FAC-B660-419C-B75B-866E140F1F50")]
         #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
         public Person Worker { get; set; }
 
         #region Allors
@@ -34,6 +35,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
         public TimeEntry[] TimeEntries { get; set; }
 
         #region inherited methods

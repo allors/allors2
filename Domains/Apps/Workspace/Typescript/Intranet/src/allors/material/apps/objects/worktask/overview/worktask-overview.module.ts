@@ -14,6 +14,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
+import { TimeEntryOverviewPanelModule } from '../../timeentry/overview/panel/timeentry-overview-panel.module';
 import { WorkEffortAssignmentRateOverviewPanelModule } from '../../workeffortassignmentrate/overview/panel/workeffortassignmentrate-overview-panel.module';
 import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -35,6 +36,7 @@ export { WorkTaskOverviewComponent } from './worktask-overview.component';
     WorkTaskOverviewSummaryModule,
     WorkTaskOverviewDetailModule,
 
+    TimeEntryOverviewPanelModule,
     WorkEffortAssignmentRateOverviewPanelModule,
     WorkEffortFixedAssetAssignmentOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

@@ -33,6 +33,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("0BF79180-E5A6-44BD-ACC7-1A1563E29152")]
+        [AssociationId("22C01EE9-AC26-4E49-8CE9-A84FC03B4FE3")]
+        [RoleId("AA56EB9E-C4F0-4D04-875D-D79A36297603")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Workspace]
+        public Person Worker { get; set; }
+
+        #region Allors
         [Id("1b07c419-42af-480b-87ba-1c001995dc51")]
         [AssociationId("2c605991-8d65-4b8f-9daf-e085af5b12c0")]
         [RoleId("90872970-372a-4f8d-9c53-c753aca9f99f")]
@@ -40,6 +51,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Cost { get; set; }
 
         #region Allors
@@ -51,6 +63,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal GrossMargin { get; set; }
 
         #region Allors
@@ -60,6 +73,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public QuoteTerm QuoteTerm { get; set; }
 
         #region Allors
@@ -69,6 +83,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal BillingRate { get; set; }
 
         #region Allors
@@ -78,17 +93,35 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
-        public TimeFrequency TimeFrequency { get; set; }
+        [Workspace]
+        public TimeFrequency BillingFrequency { get; set; }
 
         #region Allors
         [Id("c163457c-6a36-45ab-8c62-e555128afbfc")]
         [AssociationId("01112e75-888e-4dac-93e0-185afe6988af")]
         [RoleId("56c9d8a5-45d0-4bb4-8809-43740938b824")]
         #endregion
-        [Precision(19)]
-        [Scale(2)]
+        [Workspace]
         public decimal AmountOfTime { get; set; }
+
+        #region Allors
+        [Id("430F0646-64C9-40EA-89AE-A07A30AF85B4")]
+        [AssociationId("0A85B6C8-8AE2-4052-8456-2659A124638D")]
+        [RoleId("A92105BF-90BA-413D-99B1-7A53C44DC7BF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public TimeFrequency TimeFrequency { get; set; }
+
+        #region Allors
+        [Id("6E85CFA6-205B-47C7-B03B-458838E8DA97")]
+        [AssociationId("3DE59D81-D3AF-4DA3-8DBA-0EFD8BDA9604")]
+        [RoleId("EFDA2159-AD97-4470-A1F6-BC049A5EE059")]
+        #endregion
+        [Derived]
+        [Workspace]
+        public decimal BillingAmount { get; set; }
 
         #region inherited methods
         public void OnBuild(){}
@@ -101,6 +134,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

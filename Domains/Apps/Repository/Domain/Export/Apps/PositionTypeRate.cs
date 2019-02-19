@@ -61,7 +61,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

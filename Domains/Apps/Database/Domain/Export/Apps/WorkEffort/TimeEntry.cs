@@ -36,6 +36,11 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
+            if (!this.ExistBillingFrequency)
+            {
+                this.BillingFrequency = new TimeFrequencies(this.strategy.Session).Hour;
+            }
+
             if (!this.ExistTimeFrequency)
             {
                 this.TimeFrequency = new TimeFrequencies(this.strategy.Session).Hour;
@@ -59,6 +64,18 @@ namespace Allors.Domain
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.ThroughDate, this.Meta.AmountOfTime);
+
+            if (this.ExistBillingRate)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.BillingFrequency);
+            }
+
+            if (this.ExistAmountOfTime)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
+            }
+
+            this.Worker = this.TimeSheetWhereTimeEntry.Worker;
 
             this.DeriveAmountOfTimeOrThroughDate();
         }

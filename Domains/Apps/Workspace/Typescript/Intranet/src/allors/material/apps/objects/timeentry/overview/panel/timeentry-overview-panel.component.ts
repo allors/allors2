@@ -1,27 +1,26 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
-import { WorkEffortAssignmentRate } from '../../../../../../domain';
+import { TimeEntry } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, CreateData, EditService, EditData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: WorkEffortAssignmentRate;
-  partyAssignment: string;
-  rateType: string;
+  object: TimeEntry;
+  person: string;
   from: string;
   through: string;
-  rate: number;
-  frequency: string;
+  time: number;
+  billingAmount: number;
 }
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'workeffortassignmentrate-overview-panel',
-  templateUrl: './workeffortassignmentrate-overview-panel.component.html',
+  selector: 'timeentry-overview-panel',
+  templateUrl: './timeentry-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
+export class TimeEntryOverviewPanelComponent implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -29,7 +28,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
 
   m: Meta;
 
-  objects: WorkEffortAssignmentRate[];
+  objects: TimeEntry[];
   table: Table<Row>;
 
   delete: Action;
@@ -41,11 +40,6 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       associationObjectType: this.panel.manager.objectType,
     };
   }
-
-  collection = 'Current';
-  currentRates: WorkEffortAssignmentRate[];
-  inactiveRates: WorkEffortAssignmentRate[];
-  allRates: WorkEffortAssignmentRate[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -62,9 +56,9 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
 
   ngOnInit() {
 
-    this.panel.name = 'workeffortrate';
-    this.panel.title = 'Work Effort Rates';
-    this.panel.icon = 'contacts';
+    this.panel.name = 'timeentry';
+    this.panel.title = 'Time Entry';
+    this.panel.icon = 'timer';
     this.panel.expandable = true;
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
@@ -74,12 +68,11 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'rateType' },
-        { name: 'partyAssignment' },
+        { name: 'person' },
         { name: 'from', sort },
         { name: 'through', sort },
-        { name: 'rate', sort },
-        { name: 'frequency' },
+        { name: 'time', sort },
+        { name: 'billingAmount' },
       ],
       actions: [
         this.edit,
@@ -90,7 +83,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       autoFilter: true,
     });
 
-    const pullName = `${this.panel.name}_${this.m.WorkEffortAssignmentRate.name}`;
+    const pullName = `${this.panel.name}_${this.m.TimeEntry.name}`;
 
     this.panel.onPull = (pulls) => {
 
@@ -102,54 +95,32 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
           name: pullName,
           object: id,
           fetch: {
-            WorkEffortAssignmentRatesWhereWorkEffort: {
+            ServiceEntriesWhereWorkEffort: {
               include: {
-                RateType: x,
-                Frequency: x,
-                WorkEffortPartyAssignment: {
-                  Party: x
-                }
+                TimeEntry_Worker: x
               }
             }
           }
-        }),
+        })
       );
     };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as WorkEffortAssignmentRate[];
+      this.objects = loaded.collections[pullName] as TimeEntry[];
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
-        this.refreshTable();
+        this.table.data = this.objects.map((v) => {
+          return {
+            object: v,
+            person: v.Worker.displayName,
+            from: moment(v.FromDate).format('L'),
+            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+            time: v.AmountOfTime,
+            billingAmount: v.BillingAmount,
+          } as Row;
+        });
       }
     };
-  }
-
-  public refreshTable() {
-    this.table.data = this.workEffortAssignmentRates.map((v) => {
-      return {
-        object: v,
-        partyAssignment: v.WorkEffortPartyAssignment.displayName,
-        rateType: v.RateType.Name,
-        from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
-        rate: v.Rate,
-        frequency: v.Frequency.Name,
-      } as Row;
-    });
-  }
-
-  get workEffortAssignmentRates(): any {
-
-    switch (this.collection) {
-      case 'Current':
-        return this.objects && this.objects.filter(v => moment(v.FromDate).isBefore(moment()) && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment())));
-      case 'Inactive':
-        return this.objects && this.objects.filter(v => moment(v.FromDate).isAfter(moment()) || (v.ThroughDate && moment(v.ThroughDate).isBefore(moment())));
-      case 'All':
-      default:
-        return this.objects;
-    }
   }
 }

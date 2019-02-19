@@ -58,14 +58,14 @@ namespace Allors.Domain
         private AccountingPeriod AppsAddNextMonth()
         {
             var allPeriods = new AccountingPeriods(this.strategy.Session).Extent();
-            allPeriods.Filter.AddEquals(this.Meta.TimeFrequency, new TimeFrequencies(this.Strategy.Session).Month);
+            allPeriods.Filter.AddEquals(this.Meta.Frequency, new TimeFrequencies(this.Strategy.Session).Month);
             allPeriods.AddSort(this.Meta.FromDate.RoleType, SortDirection.Descending);
 
             var mostRecentMonth = allPeriods.First;
 
             var newMonth = new AccountingPeriodBuilder(this.Strategy.Session)
                 .WithPeriodNumber(mostRecentMonth.PeriodNumber + 1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Month)
+                .WithFrequency(new TimeFrequencies(this.Strategy.Session).Month)
                 .Build();
 
             if (newMonth.PeriodNumber < 13)
@@ -95,7 +95,7 @@ namespace Allors.Domain
         {
             var newQuarter = new AccountingPeriodBuilder(this.Strategy.Session)
                 .WithPeriodNumber(previousPeriod.PeriodNumber + 1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Trimester)
+                .WithFrequency(new TimeFrequencies(this.Strategy.Session).Trimester)
                 .WithFromDate(previousPeriod.FromDate.AddMonths(3).Date)
                 .WithThroughDate(previousPeriod.FromDate.AddMonths(6).AddSeconds(-1).Date)
                 .Build();
@@ -116,7 +116,7 @@ namespace Allors.Domain
         {
             var newSemester = new AccountingPeriodBuilder(this.Strategy.Session)
                 .WithPeriodNumber(previousPeriod.PeriodNumber + 1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Semester)
+                .WithFrequency(new TimeFrequencies(this.Strategy.Session).Semester)
                 .WithFromDate(previousPeriod.FromDate.AddMonths(6).Date)
                 .WithThroughDate(previousPeriod.FromDate.AddMonths(12).AddSeconds(-1).Date)
                 .WithParent(previousPeriod.Parent)

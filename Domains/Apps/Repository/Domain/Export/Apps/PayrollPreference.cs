@@ -51,7 +51,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
         #region Allors
         [Id("c71eb13a-8053-4d56-a3e3-dcd38a1e4f29")]
         [AssociationId("8955caa1-cfdb-4463-a6d2-80ce0f775470")]

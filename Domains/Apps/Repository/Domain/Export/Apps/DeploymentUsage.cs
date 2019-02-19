@@ -20,7 +20,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        TimeFrequency TimeFrequency { get; set; }
+        TimeFrequency Frequency { get; set; }
 
     }
 }

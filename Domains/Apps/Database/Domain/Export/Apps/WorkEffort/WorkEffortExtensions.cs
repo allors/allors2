@@ -71,7 +71,6 @@ namespace Allors.Domain
             }
 
             @this.DeriveOwnerSecurity();
-            @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
         }
 
@@ -119,48 +118,6 @@ namespace Allors.Domain
                 @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
                     .WithAccessControl(@this.OwnerAccessControl)
                     .Build();
-            }
-        }
-
-        private static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
-        {
-            var existingAssignmentRequired = @this.TakenBy?.RequireExistingWorkEffortPartyAssignment == true;
-            var existingAssignments = @this.WorkEffortPartyAssignmentsWhereAssignment.ToArray();
-
-            foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
-            {
-                if (serviceEntry is TimeEntry timeEntry)
-                {
-                    var from = timeEntry.FromDate;
-                    var through = timeEntry.ThroughDate;
-                    var worker = timeEntry.TimeSheetWhereTimeEntry?.Worker;
-                    var facility = timeEntry.WorkEffort.Facility;
-
-                    var matchingAssignment = existingAssignments.FirstOrDefault
-                        (a => a.Assignment.Equals(@this)
-                        && (a.Party.Equals(worker))
-                        && (a.ExistFacility && a.Facility.Equals(facility))
-                        && (!a.ExistFromDate || (a.ExistFromDate && (a.FromDate <= from)))
-                        && (!a.ExistThroughDate || (a.ExistThroughDate && (a.ThroughDate >= through))));
-
-                    if (matchingAssignment == null)
-                    {
-                        if (existingAssignmentRequired)
-                        {
-                            var message = $"No Work Effort Party Assignment matches Worker: {worker}, Facility: {facility}" +
-                                $", Work Effort: {@this}, From: {from}, Through {through}";
-                            derivation.Validation.AddError(@this, M.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment, message);
-                        }
-                        else if (worker != null)  // Sync a new WorkEffortPartyAssignment
-                        {
-                            new WorkEffortPartyAssignmentBuilder(@this.Strategy.Session)
-                                .WithAssignment(@this)
-                                .WithParty(worker)
-                                .WithFacility(facility)
-                                .Build();
-                        }
-                    }
-                }
             }
         }
 

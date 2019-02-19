@@ -57,7 +57,7 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
               object: this.data.id,
               include: {
                 RateType: x,
-                TimeFrequency: x
+                Frequency: x
               }
             }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
@@ -83,10 +83,12 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
 
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
+        const hour = this.timeFrequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
         if (isCreate) {
           this.title = 'Add Position Type Rate';
           this.positionTypeRate = this.allors.context.create('PositionTypeRate') as PositionTypeRate;
+          this.positionTypeRate.Frequency = hour;
         } else {
           this.positionTypeRate = loaded.objects.PositionTypeRate as PositionTypeRate;
 

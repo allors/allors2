@@ -1,24 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="2" Y="8.75" Width="1.5" />
+    <Position X="0.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAgUAAAACAIFBANAgEI=</HashCode>
+      <HashCode>AYAIGAABVAAQAoAQIJgGAACgoAkUAAAAAQIFBANAgEI=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="CurrentPartyRate" />
+      <Property Name="PartyRates" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Period">
-    <Position X="6.75" Y="1.75" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Allors.Domain.ServiceEntry">
-    <Position X="4.75" Y="4.25" Width="1.75" />
+    <Position X="7.5" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -27,39 +20,47 @@
       <Property Name="WorkEffort" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.MaterialsUsage">
-    <Position X="5.75" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Allors.Domain.PartyRate">
-    <Position X="7" Y="4.25" Width="2.25" />
+    <Position X="3" Y="7" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>QAAAIAAAAAAAAAAAAACAABAAAAAACAAAAAAAAAAAAIA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAAAAACAABAAAIAACAAAAAAAAAAAAIA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="UnitOfMeasure" />
-    </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Person" Collapsed="true">
-    <Position X="2" Y="6.75" Width="1.5" />
+    <Position X="0.75" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAggEiAJgAAAEiKABAQAAYEACAAAAiAAAAgAACAAAg=</HashCode>
+      <HashCode>AAEggEiAJgAAAEiKABAwAAYEACAAAAiACAAgAACAAAg=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.TimeEntry">
-    <Position X="4" Y="6.75" Width="1.5" />
+    <Position X="7.5" Y="9.25" Width="1.75" />
+    <AssociationLine Name="Worker" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.5" Y="10.75" />
+        <Point X="7.125" Y="10.75" />
+        <Point X="7.125" Y="10.812" />
+        <Point X="2.25" Y="10.812" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAQAAAAAAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAABAUAAAAQAAAAgAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Worker" />
+    </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.TimeSheet">
-    <Position X="3" Y="4.25" Width="1.5" />
+    <Position X="5.25" Y="4.25" Width="1.5" />
+    <AssociationLine Name="TimeEntries" Type="Allors.Domain.TimeEntry" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.281" Y="5.377" />
+        <Point X="6.281" Y="9.5" />
+        <Point X="7.5" Y="9.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -70,74 +71,72 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortPartyAssignment">
-    <Position X="0.5" Y="4.25" Width="2.25" />
+    <Position X="1" Y="5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAABAAA=</HashCode>
+      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Assignment" />
       <Property Name="Party" />
+      <Property Name="AssignmentRates" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffort" Collapsed="true">
-    <Position X="4" Y="1.75" Width="2.25" />
+    <Position X="5" Y="1.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkAIAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="TakenBy" />
-      <Property Name="Facility" />
-    </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Organisation" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
+  <Interface Name="Allors.Domain.WorkEffortAssignmentRate">
+    <Position X="1.5" Y="2.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAACoAgAAAAAAIAAAAAEAAUAAAgAAAhAAAEBAAAAAQA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.Facility" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.UnitOfMeasureConversion">
-    <Position X="14" Y="3.75" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEAAAAA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAIAAAAAABAAAIAACAAAAAgAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ToUnitOfMeasure" />
+      <Property Name="WorkEffort" />
+      <Property Name="WorkEffortPartyAssignment" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.IUnitOfMeasure">
-    <Position X="10" Y="3.75" Width="2.25" />
+  <Interface Name="Allors.Domain.PositionType">
+    <Position X="13.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQBAAAAgAAAAAAAAAAAACAAAAAAAAAAAAAAACAA=</HashCode>
+      <HashCode>AgAAAAAAAAAgAEAAAAAAAAAAAAAAAgAAAAAAQAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="UnitOfMeasureConversions" />
+      <Property Name="PositionTypeRate" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.UnitOfMeasure">
-    <Position X="9.25" Y="6.75" Width="1.75" />
+  <Interface Name="Allors.Domain.PositionTypeRate">
+    <Position X="10" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAABAAAIAACAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.TimeFrequency">
-    <Position X="11.25" Y="6.75" Width="1.75" />
+  <Interface Name="Allors.Domain.EmploymentApplication">
+    <Position X="9.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAAAgAAAAAAIAAAAAAAABAIAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Person" />
+      <Property Name="Position" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Position">
+    <Position X="13.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAAAACAAAAAAAEAAAAAAIAAAAAAIAAIAEEAEEAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PositionType" />
+    </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

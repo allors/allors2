@@ -99,21 +99,18 @@ namespace Allors.Domain
             var timeEntry1 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
-                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry2 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
-                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry3 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -152,7 +149,6 @@ namespace Allors.Domain
             var timeEntryToday = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
-                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -169,7 +165,6 @@ namespace Allors.Domain
             var timeEntryYesterday = new TimeEntryBuilder(this.Session)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
-                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 

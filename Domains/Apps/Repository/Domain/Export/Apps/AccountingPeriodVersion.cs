@@ -77,7 +77,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
         
         #region inherited methods
 

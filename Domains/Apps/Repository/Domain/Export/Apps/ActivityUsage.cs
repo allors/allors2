@@ -11,7 +11,7 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

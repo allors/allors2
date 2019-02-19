@@ -17,6 +17,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         EngagementItem EngagementItem { get; set; }
 
         #region Allors
@@ -24,6 +25,7 @@ namespace Allors.Repository
         [AssociationId("2c25dc8f-c253-471e-87fb-fe6934cf2b15")]
         [RoleId("b80138a0-0a0b-4a3a-8fbb-5bca2dc8c84c")]
         #endregion
+        [Workspace]
         bool IsBillable { get; set; }
 
         #region Allors
@@ -32,6 +34,7 @@ namespace Allors.Repository
         [RoleId("04df18b1-b92d-437d-a666-852c85e64330")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string Description { get; set; }
 
         #region Allors
@@ -41,6 +44,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         WorkEffort WorkEffort { get; set; }
     }
 }

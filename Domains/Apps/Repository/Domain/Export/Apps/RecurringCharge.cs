@@ -73,7 +73,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
 
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

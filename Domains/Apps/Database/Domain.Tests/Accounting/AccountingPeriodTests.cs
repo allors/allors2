@@ -44,7 +44,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithTimeFrequency(new TimeFrequencies(this.Session).Day);
+            builder.WithFrequency(new TimeFrequencies(this.Session).Day);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -109,7 +109,7 @@ namespace Allors.Domain
             Assert.Equal(5, this.Session.Extent<AccountingPeriod>().Count);
 
             Assert.Equal(organisation.ActualAccountingPeriod.PeriodNumber + 1, nextMonth.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Month, nextMonth.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Month, nextMonth.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(1).Date, nextMonth.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(2).AddSeconds(-1).Date, nextMonth.ThroughDate);
             Assert.True(nextMonth.ExistParent);
@@ -153,7 +153,7 @@ namespace Allors.Domain
             Assert.Equal(8, this.Session.Extent<AccountingPeriod>().Count);
 
             Assert.Equal(organisation.ActualAccountingPeriod.PeriodNumber + 3, fourthMonth.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Month, fourthMonth.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Month, fourthMonth.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(3).Date, fourthMonth.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(4).AddSeconds(-1).Date, fourthMonth.ThroughDate);
             Assert.True(fourthMonth.ExistParent);
@@ -161,7 +161,7 @@ namespace Allors.Domain
             var secondQuarter = fourthMonth.Parent;
 
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.PeriodNumber + 1, secondQuarter.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Trimester, secondQuarter.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Trimester, secondQuarter.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(3).Date, secondQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(6).AddSeconds(-1).Date, secondQuarter.ThroughDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent, secondQuarter.Parent);
@@ -219,14 +219,14 @@ namespace Allors.Domain
             var thirdQuarter = seventhMonth.Parent;
 
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.PeriodNumber + 2, thirdQuarter.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Trimester, thirdQuarter.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Trimester, thirdQuarter.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(6).Date, thirdQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(9).AddSeconds(-1).Date, thirdQuarter.ThroughDate);
 
             var secondSemester = thirdQuarter.Parent;
 
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.PeriodNumber + 1, secondSemester.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Semester, secondSemester.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Semester, secondSemester.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.FromDate.AddMonths(6).Date, secondSemester.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.FromDate.AddMonths(12).AddSeconds(-1).Date, secondSemester.ThroughDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.Parent.Parent, secondSemester.Parent);
@@ -272,7 +272,7 @@ namespace Allors.Domain
             Assert.Equal(20, this.Session.Extent<AccountingPeriod>().Count);
 
             Assert.Equal(13, period13.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Month, period13.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Month, period13.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(11).Date, period13.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.FromDate.AddMonths(12).AddSeconds(-1).Date, period13.ThroughDate);
             Assert.True(period13.ExistParent);
@@ -280,7 +280,7 @@ namespace Allors.Domain
             var fourthQuarter = period13.Parent;
 
             Assert.Equal(4, fourthQuarter.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Trimester, fourthQuarter.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Trimester, fourthQuarter.Frequency);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(9).Date, fourthQuarter.FromDate);
             Assert.Equal(organisation.ActualAccountingPeriod.Parent.FromDate.AddMonths(12).AddSeconds(-1).Date, fourthQuarter.ThroughDate);
         }

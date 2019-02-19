@@ -69,14 +69,14 @@ namespace Allors.Domain
 
                 var yearPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
                     .WithPeriodNumber(1)
-                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Year)
+                    .WithFrequency(new TimeFrequencies(@this.Strategy.Session).Year)
                     .WithFromDate(fromDate)
                     .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
                     .Build();
 
                 var semesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
                     .WithPeriodNumber(1)
-                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Semester)
+                    .WithFrequency(new TimeFrequencies(@this.Strategy.Session).Semester)
                     .WithFromDate(fromDate)
                     .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
                     .WithParent(yearPeriod)
@@ -84,7 +84,7 @@ namespace Allors.Domain
 
                 var trimesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
                     .WithPeriodNumber(1)
-                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Trimester)
+                    .WithFrequency(new TimeFrequencies(@this.Strategy.Session).Trimester)
                     .WithFromDate(fromDate)
                     .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
                     .WithParent(semesterPeriod)
@@ -92,7 +92,7 @@ namespace Allors.Domain
 
                 var monthPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
                     .WithPeriodNumber(1)
-                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Month)
+                    .WithFrequency(new TimeFrequencies(@this.Strategy.Session).Month)
                     .WithFromDate(fromDate)
                     .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
                     .WithParent(trimesterPeriod)

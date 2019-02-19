@@ -90,10 +90,12 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
         this.workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
+        const hour = this.timeFrequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
         if (isCreate) {
           this.title = 'Add Work Effort Rate';
           this.workEffortAssignmentRate = this.allors.context.create('WorkEffortAssignmentRate') as WorkEffortAssignmentRate;
+          this.workEffortAssignmentRate.Frequency = hour;
         } else {
           this.workEffortAssignmentRate = loaded.objects.WorkEffortAssignmentRate as WorkEffortAssignmentRate;
 

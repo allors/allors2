@@ -24,7 +24,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
 
-        public TimeFrequency TimeFrequency { get; set; }
+        public TimeFrequency Frequency { get; set; }
         #region Allors
         [Id("1c4a69e7-62c7-4e6b-b7a5-69817d1788df")]
         [AssociationId("67280aad-73cd-4366-8a4f-2d38257e022e")]

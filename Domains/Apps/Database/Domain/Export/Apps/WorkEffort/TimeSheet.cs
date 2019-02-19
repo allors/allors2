@@ -17,13 +17,24 @@ namespace Allors.Domain
 {
     using System;
 
-    using Allors.Meta;
-
     public partial class TimeSheet
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+        }
+
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(this, this.Meta.TimeEntries))
+            {
+                foreach (TimeEntry timeEntry in this.TimeEntries)
+                {
+                    derivation.AddDependency(timeEntry, this);
+                }
+            }
         }
 
         public void AppsDelete(DeletableDelete method)

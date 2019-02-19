@@ -47,6 +47,7 @@ import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
+import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/apps/objects/timeentry/edit/timeentry-edit.module';
 import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/apps/objects/unifiedgood/create/unifiedgood-create.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
@@ -105,6 +106,7 @@ export const create = {
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
+  [ids.TimeEntry]: TimeEntryEditComponent,
   [ids.UnifiedGood]: UnifiedGoodCreateComponent,
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
@@ -153,6 +155,7 @@ export const edit = {
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
+  [ids.TimeEntry]: TimeEntryEditComponent,
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
@@ -209,6 +212,7 @@ export const edit = {
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
     TelecommunicationsNumberEditModule,
+    TimeEntryEditModule,
     UnifiedGoodCreateModule,
     WebAddressCreateModule,
     WebAddressEditModule,
@@ -261,6 +265,7 @@ export const edit = {
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,
     TelecommunicationsNumberEditComponent,
+    TimeEntryEditComponent,
     UnifiedGoodCreateComponent,
     WebAddressCreateComponent,
     WebAddressEditComponent,

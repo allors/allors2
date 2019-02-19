@@ -144,7 +144,7 @@ namespace Allors.Domain
             var month = organisation.ActualAccountingPeriod;
 
             Assert.Equal(1, month.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Month, month.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Month, month.Frequency);
             Assert.Equal(fromDate, month.FromDate);
             Assert.Equal(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
             Assert.True(month.ExistParent);
@@ -152,7 +152,7 @@ namespace Allors.Domain
             var trimester = month.Parent;
 
             Assert.Equal(1, trimester.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Trimester, trimester.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Trimester, trimester.Frequency);
             Assert.Equal(fromDate, trimester.FromDate);
             Assert.Equal(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
             Assert.True(trimester.ExistParent);
@@ -160,7 +160,7 @@ namespace Allors.Domain
             var semester = trimester.Parent;
 
             Assert.Equal(1, semester.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Semester, semester.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Semester, semester.Frequency);
             Assert.Equal(fromDate, semester.FromDate);
             Assert.Equal(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
             Assert.True(semester.ExistParent);
@@ -168,7 +168,7 @@ namespace Allors.Domain
             var year = semester.Parent;
 
             Assert.Equal(1, year.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Year, year.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Year, year.Frequency);
             Assert.Equal(fromDate, year.FromDate);
             Assert.Equal(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
             Assert.False(year.ExistParent);
@@ -193,7 +193,7 @@ namespace Allors.Domain
             var month = organisation.ActualAccountingPeriod;
 
             Assert.Equal(1, month.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Month, month.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Month, month.Frequency);
             Assert.Equal(fromDate, month.FromDate);
             Assert.Equal(fromDate.AddMonths(1).AddSeconds(-1).Date, month.ThroughDate);
             Assert.True(month.ExistParent);
@@ -201,7 +201,7 @@ namespace Allors.Domain
             var trimester = month.Parent;
 
             Assert.Equal(1, trimester.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Trimester, trimester.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Trimester, trimester.Frequency);
             Assert.Equal(fromDate, trimester.FromDate);
             Assert.Equal(fromDate.AddMonths(3).AddSeconds(-1).Date, trimester.ThroughDate);
             Assert.True(trimester.ExistParent);
@@ -209,7 +209,7 @@ namespace Allors.Domain
             var semester = trimester.Parent;
 
             Assert.Equal(1, semester.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Semester, semester.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Semester, semester.Frequency);
             Assert.Equal(fromDate, semester.FromDate);
             Assert.Equal(fromDate.AddMonths(6).AddSeconds(-1).Date, semester.ThroughDate);
             Assert.True(semester.ExistParent);
@@ -217,7 +217,7 @@ namespace Allors.Domain
             var year = semester.Parent;
 
             Assert.Equal(1, year.PeriodNumber);
-            Assert.Equal(new TimeFrequencies(this.Session).Year, year.TimeFrequency);
+            Assert.Equal(new TimeFrequencies(this.Session).Year, year.Frequency);
             Assert.Equal(fromDate, year.FromDate);
             Assert.Equal(fromDate.AddMonths(12).AddSeconds(-1).Date, year.ThroughDate);
             Assert.False(year.ExistParent);

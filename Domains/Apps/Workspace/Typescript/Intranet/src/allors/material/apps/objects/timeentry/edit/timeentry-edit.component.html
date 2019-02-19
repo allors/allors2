@@ -1,0 +1,58 @@
+<form *ngIf="timeEntry" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field class="col-md">
+        <mat-select [(ngModel)]="selectedWorker" name="workers" placeholder="Workers"
+          (ngModelChange)="workerSelected($event)">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let worker of workers" [value]="worker"> {{ worker.displayName }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate">
+      </a-mat-datetimepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate">
+      </a-mat-datetimepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-slidetoggle class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.IsBillable"></a-mat-slidetoggle>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingRate"></a-mat-input>
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" [options]="frequencies"
+        display="Name" label="Frequency"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AmountOfTime"></a-mat-input>
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.TimeFrequency" [options]="frequencies"
+        display="Name" label="Frequency"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.Description"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.Comment"></a-mat-textarea>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE</button>
+  </div>
+
+</form>

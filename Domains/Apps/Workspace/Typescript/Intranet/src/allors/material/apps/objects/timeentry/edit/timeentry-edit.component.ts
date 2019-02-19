@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { PartyRate, TimeFrequency, RateType, Party } from '../../../../../domain';
+import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -11,27 +11,29 @@ import { CreateData, EditData, ObjectData } from 'src/allors/material/base/servi
 import { StateService } from '../../../services/state';
 
 @Component({
-  templateUrl: './partyrate-edit.component.html',
+  templateUrl: './timeentry-edit.component.html',
   providers: [ContextService]
 })
-export class PartyRateEditComponent implements OnInit, OnDestroy {
+export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
 
   readonly m: Meta;
 
-  partyRate: PartyRate;
-  timeFrequencies: TimeFrequency[];
-  rateTypes: RateType[];
+  frequencies: TimeFrequency[];
 
   private subscription: Subscription;
-  party: Party;
+  timeEntry: TimeEntry;
+  timeSheet: TimeSheet;
+  workers: Party[];
+  selectedWorker: Party;
+  workEffort: WorkEffort;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
-    public dialogRef: MatDialogRef<PartyRateEditComponent>,
+    public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
@@ -51,20 +53,22 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.PartyRate({
+            pull.TimeEntry({
               object: this.data.id,
               include: {
-                RateType: x,
-                Frequency: x
+                TimeFrequency: x,
+                BillingFrequency: x
               }
             }),
-            pull.Party({
+            pull.WorkEffort({
+              object: this.data.associationId
+            }),
+            pull.WorkEffort({
               object: this.data.associationId,
-              include: {
-                PartyRates: x,
+              fetch: {
+                WorkEffortPartyAssignmentsWhereAssignment: x
               }
             }),
-            pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
 
@@ -79,23 +83,29 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        this.party = loaded.objects.Party as Party;
-        this.rateTypes = loaded.collections.RateTypes as RateType[];
-        this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
-        const hour = this.timeFrequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
+        this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
+        const hour = this.frequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
+
+        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+
+        const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
+
+        this.workers = Array.from(new Set(workEffortPartyAssignments.map( v => v.Party)).values());
 
         if (isCreate) {
-          this.title = 'Add Party Rate';
-          this.partyRate = this.allors.context.create('PartyRate') as PartyRate;
-          this.partyRate.Frequency = hour;
-          this.party.AddPartyRate(this.partyRate);
+          this.title = 'Add Time Entry';
+          this.timeEntry = this.allors.context.create('TimeEntry') as TimeEntry;
+          this.timeEntry.WorkEffort = this.workEffort;
+          this.timeEntry.IsBillable = true;
+          this.timeEntry.BillingFrequency = hour;
+          this.timeEntry.TimeFrequency = hour;
         } else {
-          this.partyRate = loaded.objects.PartyRate as PartyRate;
+          this.timeEntry = loaded.objects.TimeEntry as TimeEntry;
 
-          if (this.partyRate.CanWriteRate) {
-            this.title = 'Edit Party Rate';
+          if (this.timeEntry.CanWriteAmountOfTime) {
+            this.title = 'Edit Time Entry';
           } else {
-            this.title = 'View Party Rate';
+            this.title = 'View Time Entry';
           }
         }
       }, this.errorService.handler);
@@ -111,14 +121,37 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
     this.allors.context.session.hasChanges = true;
   }
 
+  public workerSelected(party: Party): void {
+    const { pull, tree, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        fetch: {
+          Person_TimeSheetWhereWorker: {
+          }
+        },
+      })
+    ];
+
+    this.allors.context
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
+      }, this.errorService.handler);
+  }
+
   public save(): void {
+
+    this.timeSheet.AddTimeEntry(this.timeEntry);
 
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         const data: ObjectData = {
-          id: this.partyRate.id,
-          objectType: this.partyRate.objectType,
+          id: this.timeEntry.id,
+          objectType: this.timeEntry.objectType,
         };
 
         this.dialogRef.close(data);
