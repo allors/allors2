@@ -261,5 +261,47 @@ namespace Allors.Domain
             this.ownBankAccount = (OwnBankAccount)session.Instantiate(this.ownBankAccount);
             this.billingAddress = (WebAddress)session.Instantiate(this.billingAddress);
         }
+
+        [Fact]
+        public void GivenInternalOrganisation_ActiveCustomers_AreDerived()
+        {
+            var internalOrganisation = this.InternalOrganisation;
+
+            Assert.Equal(1, this.InternalOrganisation.ActiveCustomers.Count);
+
+            var acme = new OrganisationBuilder(this.Session).WithName("Acme").Build();
+            var nike = new OrganisationBuilder(this.Session).WithName("Nike").Build();
+
+            var acmeRelation = new CustomerRelationshipBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation).WithCustomer(acme)
+                .WithFromDate(Session.Now().AddDays(-10))
+                .Build();
+
+            var nikeRelation = new CustomerRelationshipBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithCustomer(nike)
+                .Build();
+            
+            this.Session.Derive();
+            
+            Assert.True(this.InternalOrganisation.ExistCustomerRelationshipsWhereInternalOrganisation);
+            Assert.True(this.InternalOrganisation.ExistActiveCustomers);
+            Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);
+
+            // Removing will not do anything.
+            this.InternalOrganisation.RemoveActiveCustomers();
+            this.Session.Derive();
+            Assert.True(this.InternalOrganisation.ExistActiveCustomers);
+            Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);
+
+            // Ending a RelationShip affects the ActiveCustomers
+            acmeRelation.ThroughDate = Session.Now().AddDays(-1).Date;
+
+            this.Session.Derive();
+
+            Assert.True(this.InternalOrganisation.ExistCustomerRelationshipsWhereInternalOrganisation);
+            Assert.True(this.InternalOrganisation.ExistActiveCustomers);
+            Assert.Equal(2, this.InternalOrganisation.ActiveCustomers.Count);
+        }
     }
 }

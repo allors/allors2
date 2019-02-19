@@ -213,12 +213,7 @@ namespace Allors.Domain
 
         public bool IsMarkedAsModified(Object derivable)
         {
-            if (derivable != null)
-            {
-                return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
-            }
-
-            return false;
+            return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
         }
 
         public void MarkAsModified(Object derivable, RelationType relationType = null)
@@ -245,10 +240,7 @@ namespace Allors.Domain
 
         public void MarkAsModified(Object derivable, RoleType roleType)
         {
-            if (derivable != null)
-            {
-                this.MarkAsModified(derivable, roleType.RelationType);
-            }
+            this.MarkAsModified(derivable, roleType.RelationType);
         }
 
         public void MarkAsModified(IEnumerable<Object> derivables)

@@ -25,7 +25,18 @@ namespace Allors.Domain
 
             if (this.ExistCustomer && this.ExistSalesRepresentative)
             {
-                this.Customer.AppsOnDeriveCurrentSalesReps(derivation);
+                Party tempQualifier = this.Customer;
+                tempQualifier.RemoveCurrentSalesReps();
+
+                foreach (SalesRepRelationship salesRepRelationship in tempQualifier.SalesRepRelationshipsWhereCustomer)
+                {
+                    if (salesRepRelationship.FromDate <= DateTime.UtcNow &&
+                        (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= DateTime.UtcNow))
+                    {
+                        tempQualifier.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
+                    }
+                }
+
                 this.SalesRepresentative.OnDerive(x => x.WithDerivation(derivation));
             }
 

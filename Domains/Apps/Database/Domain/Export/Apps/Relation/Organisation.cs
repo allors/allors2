@@ -23,6 +23,11 @@ namespace Allors.Domain
 
     public partial class Organisation
     {
+        public override string ToString()
+        {
+            return $"Organisation: {this.Id} {this.Name}";
+        }
+
         private bool IsDeletable => !this.ExistCurrentContacts;
 
         public void AppsOnBuild(ObjectOnBuild method)
@@ -43,6 +48,8 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var validation = derivation.Validation;
 
+            this.Strategy.Session.Prefetch(this.PrefetchPolicy);
+
             if (this.IsInternalOrganisation)
             {
                 if (!this.ExistRequestCounter)
@@ -54,12 +61,7 @@ namespace Allors.Domain
                 {
                     this.QuoteCounter = new CounterBuilder(this.strategy.Session).Build();
                 }
-
-                if (!this.ExistRequestCounter)
-                {
-                    this.RequestCounter = new CounterBuilder(this.strategy.Session).Build();
-                }
-
+                
                 if (!this.ExistPurchaseInvoiceCounter)
                 {
                     this.PurchaseInvoiceCounter = new CounterBuilder(this.strategy.Session).Build();
@@ -112,6 +114,7 @@ namespace Allors.Domain
             }
 
             var allContactRelationships = this.OrganisationContactRelationshipsWhereOrganisation.ToArray();
+            var allContacts = allContactRelationships.Select(v => v.Contact);
 
             this.CurrentOrganisationContactRelationships = allContactRelationships
                 .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
@@ -129,7 +132,9 @@ namespace Allors.Domain
                 .ToArray();
 
             this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
-            
+
+            this.Sync();
+
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -139,10 +144,46 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
-
-            this.Sync();
         }
-        
+
+        public void Sync()
+        {
+            var partyContactMechanisms = this.PartyContactMechanisms.ToArray();
+            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
+            {
+                organisationContactRelationship.Contact.Sync(partyContactMechanisms);
+            }
+        }
+
+        public PrefetchPolicy PrefetchPolicy
+        {
+            get
+            {
+                var organisationContactRelationshipPrefetch = new PrefetchPolicyBuilder()
+                    .WithRule(M.OrganisationContactRelationship.Contact)
+                    .Build();
+
+                var partyContactMechanismePrefetch = new PrefetchPolicyBuilder()
+                    .WithRule(M.PartyContactMechanism.ContactMechanism)
+                    .Build();
+
+                return new PrefetchPolicyBuilder()
+                    .WithRule(M.Organisation.RequestCounter.RoleType)
+                    .WithRule(M.Organisation.QuoteCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseInvoiceCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseOrderCounter.RoleType)
+                    .WithRule(M.Organisation.SubAccountCounter.RoleType)
+                    .WithRule(M.Organisation.IncomingShipmentCounter.RoleType)
+                    .WithRule(M.Organisation.WorkEffortCounter.RoleType)
+                    .WithRule(M.Organisation.InvoiceSequence.RoleType)
+                    .WithRule(M.Organisation.ContactsUserGroup)
+                    .WithRule(M.Organisation.OrganisationContactRelationshipsWhereOrganisation, organisationContactRelationshipPrefetch)
+                    .WithRule(M.Organisation.PartyContactMechanisms.RoleType, partyContactMechanismePrefetch)
+                    .WithRule(M.Organisation.CurrentContacts.RoleType)
+                    .Build();
+            }
+        }
+
         public List<string> Roles => new List<string>() { "Internal organisation" };
 
         public bool AppsIsActiveProfessionalServicesProvider(DateTime? date)
@@ -152,17 +193,10 @@ namespace Allors.Domain
                 return false;
             }
 
-            var professionalServicesRelationships = this.ProfessionalServicesRelationshipsWhereProfessionalServicesProvider;
-            foreach (ProfessionalServicesRelationship relationship in professionalServicesRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistProfessionalServicesRelationshipsWhereProfessionalServicesProvider 
+                   && this.ProfessionalServicesRelationshipsWhereProfessionalServicesProvider
+                       .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
+           
         }
 
         public bool AppsIsActiveSubContractor(DateTime? date)
@@ -172,17 +206,9 @@ namespace Allors.Domain
                 return false;
             }
 
-            var subContractorRelationships = this.SubContractorRelationshipsWhereSubContractor;
-            foreach (SubContractorRelationship relationship in subContractorRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistSubContractorRelationshipsWhereContractor 
+                   && this.SubContractorRelationshipsWhereContractor
+                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
 
         public bool AppsIsActiveSupplier(DateTime? date)
@@ -192,20 +218,10 @@ namespace Allors.Domain
                 return false;
             }
 
-            var supplierRelationships = this.SupplierRelationshipsWhereSupplier;
-            foreach (SupplierRelationship relationship in supplierRelationships)
-            {
-                if (relationship.FromDate <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistSupplierRelationshipsWhereSupplier && this.SupplierRelationshipsWhereSupplier
+                       .Any(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
-
-
+        
         public void AppsDelete(DeletableDelete method)
         {
             if (this.IsDeletable)
@@ -225,14 +241,6 @@ namespace Allors.Domain
                 {
                     organisationContactRelationship.Contact.Delete();
                 }
-            }
-        }
-
-        public void Sync()
-        {
-            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereOrganisation)
-            {
-                organisationContactRelationship.Contact.Sync(this.PartyContactMechanisms.ToArray());
             }
         }
     }

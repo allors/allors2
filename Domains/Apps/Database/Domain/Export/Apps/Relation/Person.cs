@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System;
@@ -22,7 +24,7 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        public new string ToString() => this.PartyName;
+        public new string ToString() => $"Person {this.Id} {this.PartyName}";
 
         private bool IsDeletable =>
             !this.ExistCurrentOrganisationContactRelationships
@@ -36,16 +38,9 @@ namespace Allors.Domain
                 return false;
             }
 
-            foreach (Employment relationship in this.EmploymentsWhereEmployee)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistEmploymentsWhereEmployee 
+                   && this.EmploymentsWhereEmployee
+                       .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
 
         public bool AppsIsActiveContact(DateTime? date)
@@ -55,16 +50,9 @@ namespace Allors.Domain
                 return false;
             }
 
-            foreach (OrganisationContactRelationship relationship in this.OrganisationContactRelationshipsWhereContact)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistOrganisationContactRelationshipsWhereContact
+                   && this.OrganisationContactRelationshipsWhereContact
+                       .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
 
         public bool AppsIsActiveSalesRep(DateTime? date)
@@ -74,28 +62,44 @@ namespace Allors.Domain
                 return false;
             }
 
-            foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return this.ExistSalesRepRelationshipsWhereSalesRepresentative
+                   && this.SalesRepRelationshipsWhereSalesRepresentative
+                       .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
+          
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            this.PartyName = this.DerivePartyName();
+            this.Strategy.Session.Prefetch(this.PrefetchPolicy);
 
-            this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveInactiveOrganisationContactRelationships(derivation);
-            this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
-            this.SyncTimeSheet();
+            this.PartyName = this.DerivePartyName();
+            
+            var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
+
+            this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships
+                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .ToArray();
+
+            this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
+                .Except(this.CurrentOrganisationContactRelationships)
+                .ToArray();
+            
+            this.CurrentPartyContactMechanisms = this.PartyContactMechanisms
+                .Where(v => v.FromDate > DateTime.UtcNow || (v.ExistThroughDate && v.ThroughDate < DateTime.UtcNow))
+                .ToArray();
+            
+            this.InactivePartyContactMechanisms = this.PartyContactMechanisms
+                    .Except(this.CurrentPartyContactMechanisms).ToArray();
+
+            if (!this.ExistTimeSheetWhereWorker
+                && (this.ExistEmploymentsWhereEmployee
+                    || this.ExistSubContractorRelationshipsWhereContractor
+                    || this.ExistSubContractorRelationshipsWhereSubContractor))
+            {
+                new TimeSheetBuilder(this.strategy.Session).WithWorker(this).Build();
+            }
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
@@ -108,47 +112,20 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveCurrentOrganisationContactRelationships(IDerivation derivation)
+        public PrefetchPolicy PrefetchPolicy
         {
-            this.RemoveCurrentOrganisationContactRelationships();
-
-            var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            foreach (OrganisationContactRelationship relationship in contactRelationships)
+            get
             {
-                if (relationship.FromDate <= DateTime.UtcNow &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= DateTime.UtcNow))
-                {
-                    this.AddCurrentOrganisationContactRelationship(relationship);
-                }
-            }
-        }
+                var organisationContactRelationshipPrefetch = new PrefetchPolicyBuilder()
+                    .WithRule(M.OrganisationContactRelationship.Contact)
+                    .Build();
 
-        public void AppsOnDeriveInactiveOrganisationContactRelationships(IDerivation derivation)
-        {
-            this.RemoveInactiveOrganisationContactRelationships();
-
-            var contactRelationships = this.OrganisationContactRelationshipsWhereContact;
-            foreach (OrganisationContactRelationship relationship in contactRelationships)
-            {
-                if (relationship.FromDate > DateTime.UtcNow ||
-                    (relationship.ExistThroughDate && relationship.ThroughDate < DateTime.UtcNow))
-                {
-                    this.AddInactiveOrganisationContactRelationship(relationship);
-                }
-            }
-        }
-
-        public void AppsOnDeriveInactivePartyContactMechanisms(IDerivation derivation)
-        {
-            this.RemoveInactivePartyContactMechanisms();
-
-            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
-            {
-                if (partyContactMechanism.FromDate > DateTime.UtcNow ||
-                    (partyContactMechanism.ExistThroughDate && partyContactMechanism.ThroughDate < DateTime.UtcNow))
-                {
-                    this.AddInactivePartyContactMechanism(partyContactMechanism);
-                }
+             
+                return new PrefetchPolicyBuilder()
+                    .WithRule(M.Person.OrganisationContactRelationshipsWhereContact)
+                    .WithRule(M.Person.PartyContactMechanisms.RoleType)
+                    .WithRule(M.Person.TimeSheetWhereWorker)
+                    .Build();
             }
         }
 
@@ -182,17 +159,6 @@ namespace Allors.Domain
             }
 
             return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
-        }
-
-        private void SyncTimeSheet()
-        {
-            if (!this.ExistTimeSheetWhereWorker
-                && (this.ExistEmploymentsWhereEmployee
-                || this.ExistSubContractorRelationshipsWhereContractor
-                || this.ExistSubContractorRelationshipsWhereSubContractor))
-            {
-                new TimeSheetBuilder(this.strategy.Session).WithWorker(this).Build();
-            }
         }
 
         public void AppsDelete(DeletableDelete method)
