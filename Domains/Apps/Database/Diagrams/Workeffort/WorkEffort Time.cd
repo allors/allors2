@@ -118,7 +118,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.EmploymentApplication">
-    <Position X="9.75" Y="11.25" Width="1.5" />
+    <Position X="9.75" Y="11.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAgAAAAAAIAAAAAAAABAIAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
