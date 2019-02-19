@@ -8,8 +8,8 @@
     "postinstall": "node ./postinstall.js",
     "lint": "tslint --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "test": "_mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
-    "tc:test": "_mocha --timeout 30000 --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "test": "_mocha --require ts-node/register ./test/**/*.spec.ts",
+    "tc:test": "_mocha --timeout 30000 --require ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
     "axios": "latest"
