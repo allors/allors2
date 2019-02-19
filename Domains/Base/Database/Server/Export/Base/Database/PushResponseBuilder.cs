@@ -139,12 +139,8 @@ namespace Allors.Server
                 }
             }
 
-            //var validation = this.session.Derive(false);
-
-            var derivation = new Allors.Domain.Logging.Derivation(this.session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
-            var validation = derivation.Derive();
-            var list = ((DerivationLog)derivation.DerivationLog).List;
-
+            var validation = this.session.Derive(false);
+            
             if (validation.HasErrors)
             {
                 pushResponse.AddDerivationErrors(validation);
@@ -338,41 +334,6 @@ namespace Allors.Server
             }
 
             return roles.ToArray();
-        }
-
-        public class DerivationLog : Allors.Domain.Logging.ListDerivationLog
-        {
-            public override void AddedDerivable(Allors.Domain.Object derivable)
-            {
-                if (derivable is Permission)
-                {
-
-                }
-                if (derivable is CustomerRelationship)
-                {
-
-                }
-                base.AddedDerivable(derivable);
-            }
-
-            /// <summary>
-            /// The dependee is derived before the dependent object;
-            /// </summary>
-            public override void AddedDependency(Allors.Domain.Object dependent, Allors.Domain.Object dependee)
-            {
-                if (dependent is Permission || dependee is Permission)
-                {
-
-                }
-
-
-                if (dependent is CustomerRelationship || dependee is CustomerRelationship)
-                {
-
-                }
-
-                base.AddedDependency(dependent, dependee);
-            }
         }
     }
 }
