@@ -311,16 +311,14 @@ namespace Allors.Repository
         WorkEffort[] Concurrencies { get; set; }
 
         #region Allors
-        [Id("B95571A0-84DF-4648-80FD-C4FE9067991F")]
+        [Id("76EEC72E-3636-42FD-9F50-B1A2818A2CC3")]
+        [AssociationId("3A04E2E9-8B9E-42B5-8CA4-27B644A1CF23")]
+        [RoleId("71991371-B74B-4DA0-B95D-8F54F4AFF447")]
         #endregion
+        [Derived]
+        [Required]
         [Workspace]
-        void Confirm();
-
-        #region Allors
-        [Id("46D78F1B-D77A-4240-87AB-14934BA12761")]
-        #endregion
-        [Workspace]
-        void Finish();
+        bool CanInvoice { get; set; }
 
         #region Allors
         [Id("D9234724-215F-4F6C-B3E8-9743CB22A245")]
@@ -339,5 +337,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Complete();
+
+        #region Allors
+        [Id("506B288D-94C1-4157-A244-B62887BEA609")]
+        #endregion
+        [Workspace]
+        void Invoice();
     }
 }

@@ -30,11 +30,11 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var openedState = new WorkEffortStates(this.Session).NeedsAction;
+            var createdState = new WorkEffortStates(this.Session).Created;
             var cancelledState = new WorkEffortStates(this.Session).Cancelled;
             var finishedState = new WorkEffortStates(this.Session).Completed;
 
-            config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
+            config.Deny(this.ObjectType, createdState, M.WorkEffort.Reopen);
 
             config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Read);

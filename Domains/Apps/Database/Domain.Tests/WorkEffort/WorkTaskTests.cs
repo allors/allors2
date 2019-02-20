@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new WorkEffortStates(this.Session).NeedsAction, workEffort.WorkEffortState);
+            Assert.Equal(new WorkEffortStates(this.Session).Created, workEffort.WorkEffortState);
             Assert.Equal(workEffort.LastWorkEffortState, workEffort.WorkEffortState);
         }
 

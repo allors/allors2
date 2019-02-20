@@ -23,14 +23,23 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var openedState = new WorkEffortStates(this.Session).NeedsAction;
-            var cancelledState = new WorkEffortStates(this.Session).Cancelled;
-            var finishedState = new WorkEffortStates(this.Session).Finished;
+            var created = new WorkEffortStates(this.Session).Created;
+            var cancelled = new WorkEffortStates(this.Session).Cancelled;
+            var completed = new WorkEffortStates(this.Session).Completed;
+            var finished = new WorkEffortStates(this.Session).Finished;
 
-            config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
+            var cancel = this.Meta.Cancel;
+            var reopen = this.Meta.Reopen;
+            var invoice = this.Meta.Invoice;
 
-            config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, created, M.WorkEffort.Reopen);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+
+            config.Deny(this.ObjectType, cancelled, cancel, invoice);
+            config.Deny(this.ObjectType, completed, cancel);
+            config.Deny(this.ObjectType, finished, cancel, invoice, reopen);
         }
     }
 }

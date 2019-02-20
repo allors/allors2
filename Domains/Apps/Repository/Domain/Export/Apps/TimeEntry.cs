@@ -125,15 +125,6 @@ namespace Allors.Repository
         [Workspace]
         public TimeFrequency TimeFrequency { get; set; }
 
-        #region Allors
-        [Id("6E85CFA6-205B-47C7-B03B-458838E8DA97")]
-        [AssociationId("3DE59D81-D3AF-4DA3-8DBA-0EFD8BDA9604")]
-        [RoleId("EFDA2159-AD97-4470-A1F6-BC049A5EE059")]
-        #endregion
-        [Derived]
-        [Workspace]
-        public decimal BillingAmount { get; set; }
-
         #region inherited methods
         public void OnBuild(){}
 

@@ -228,4 +228,7 @@
   <data name="DateDayOfWeek" xml:space="preserve">
     <value>Selected date does not match weekday</value>
   </data>
+  <data name="WorkEffortRateError" xml:space="preserve">
+    <value>Maximum 1 Rate allowed for this work effort</value>
+  </data>
 </root>

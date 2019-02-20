@@ -25,6 +25,7 @@ namespace Allors.Repository
         [AssociationId("2c25dc8f-c253-471e-87fb-fe6934cf2b15")]
         [RoleId("b80138a0-0a0b-4a3a-8fbb-5bca2dc8c84c")]
         #endregion
+        [Required]
         [Workspace]
         bool IsBillable { get; set; }
 

@@ -30,7 +30,7 @@ namespace Allors.Domain
         private static readonly Guid ProductFeatureItemId = new Guid("2C8742AA-B4CD-436b-9350-B4B7AD18E7AC");
         private static readonly Guid PartItemId = new Guid("FF2B943D-57C9-4311-9C56-9FF37959653B");
         private static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
-        private static readonly Guid ServiceProductItemId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
+        private static readonly Guid TimeId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
         private static readonly Guid FreightChargeId = new Guid("199AEA42-FDC1-4C40-AF19-2255EBBD2729");
 
         private UniquelyIdentifiableSticky<InvoiceItemType> cache;
@@ -57,7 +57,7 @@ namespace Allors.Domain
 
         public InvoiceItemType ProductItem => this.Cache[ProductItemId];
 
-        public InvoiceItemType ServiceProductItem => this.Cache[ServiceProductItemId];
+        public InvoiceItemType Time => this.Cache[TimeId];
 
         public InvoiceItemType FreightCharge => this.Cache[FreightChargeId];
 
@@ -147,9 +147,9 @@ namespace Allors.Domain
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Service Product Item")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dienst onderdeel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ServiceProductItemId)
+                .WithName("Time")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tijd").WithLocale(dutchLocale).Build())
+                .WithUniqueId(TimeId)
                 .WithIsActive(true)
                 .Build();
 

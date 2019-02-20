@@ -392,5 +392,14 @@ namespace Resources {
                 return ResourceManager.GetString("SalesOrderItemQuantityToShipNowNotAvailable", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum 1 Rate allowed for this work effort.
+        /// </summary>
+        public static string WorkEffortRateError {
+            get {
+                return ResourceManager.GetString("WorkEffortRateError", resourceCulture);
+            }
+        }
     }
 }

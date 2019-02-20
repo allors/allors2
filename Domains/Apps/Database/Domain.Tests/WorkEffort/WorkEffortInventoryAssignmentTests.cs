@@ -44,7 +44,7 @@ namespace Allors.Domain
 
             // Assert
             Assert.Empty(workEffort.WorkEffortInventoryAssignmentsWhereAssignment);
-            Assert.True(workEffort.WorkEffortState.IsNeedsAction);
+            Assert.True(workEffort.WorkEffortState.IsCreated);
 
             // Re-arrange
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)

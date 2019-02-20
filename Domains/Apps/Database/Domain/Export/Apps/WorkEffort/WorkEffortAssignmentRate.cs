@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Resources;
+
 namespace Allors.Domain
 {
     public partial class WorkEffortAssignmentRate
@@ -24,6 +27,11 @@ namespace Allors.Domain
             if (!this.ExistWorkEffort && this.ExistWorkEffortPartyAssignment)
             {
                 this.WorkEffort = this.WorkEffortPartyAssignment.Assignment;
+            }
+
+            if (this.ExistWorkEffort && this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.Count > 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.WorkEffort, ErrorMessages.WorkEffortRateError);
             }
         }
     }

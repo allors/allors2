@@ -47,6 +47,7 @@ namespace Allors.Repository
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
+        public bool CanInvoice { get; set; }
 
         public WorkEffortState PreviousWorkEffortState { get; set; }
 
@@ -131,16 +132,25 @@ namespace Allors.Repository
         #region inherited methods
 
         public void OnBuild() { }
+
         public void OnPostBuild() { }
+
         public void OnPreDerive() { }
+
         public void OnDerive() { }
+
         public void OnPostDerive() { }
-        public void Confirm() { }
-        public void Finish() { }
+
         public void Complete() { }
+
+        public void Invoice() { }
+        
         public void Cancel() { }
+
         public void Reopen() { }
+
         public void Delete() { }
+
         public void Print() { }
 
         #endregion

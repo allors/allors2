@@ -173,6 +173,16 @@ namespace Allors.Repository
         public Product Product { get; set; }
 
         #region Allors
+        [Id("44103C15-D438-433A-B157-3ACAA4544D29")]
+        [AssociationId("FE3A79EF-9EC6-4929-B740-771C23806F93")]
+        [RoleId("1E576337-FFB0-4B9F-96F6-81DFBD19FB64")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Part Part { get; set; }
+
+        #region Allors
         [Id("6df95cf4-115f-4f43-aaea-52313c47d824")]
         [AssociationId("93ba1265-4050-41c1-aaf8-d09786889245")]
         [RoleId("0abd9811-a8ac-42bf-9113-4f9760cfe9eb")]
@@ -282,15 +292,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal MaintainedProfitMargin { get; set; }
-
-        #region Allors
-        [Id("bd485f1f-6937-4270-8695-6f9a50e671c3")]
-        [AssociationId("4314e405-2692-4cda-9617-804b43d7090f")]
-        [RoleId("b8ab5103-31c0-41cb-b6a0-e8f3e18a7945")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        public TimeEntry[] TimeEntries { get; set; }
 
         #region Allors
         [Id("bfd8c2d5-57f9-4650-97ae-2f2b1819b3a9")]

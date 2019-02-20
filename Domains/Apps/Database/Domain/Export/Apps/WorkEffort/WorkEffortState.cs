@@ -19,11 +19,7 @@ namespace Allors.Domain
 
     public partial class WorkEffortState
     {
-        public bool IsNeedsAction => this.Equals(new WorkEffortStates(this.strategy.Session).NeedsAction);
-
-        public bool IsConfirmed => this.Equals(new WorkEffortStates(this.strategy.Session).Confirmed);
-
-        public bool IsDeclined => this.Equals(new WorkEffortStates(this.strategy.Session).Declined);
+        public bool IsCreated => this.Equals(new WorkEffortStates(this.strategy.Session).Created);
 
         public bool IsInProgress => this.Equals(new WorkEffortStates(this.strategy.Session).InProgress);
 
@@ -33,16 +29,5 @@ namespace Allors.Domain
 
         public bool IsCancelled => this.Equals(new WorkEffortStates(this.strategy.Session).Cancelled);
 
-        public bool IsDelegated => this.Equals(new WorkEffortStates(this.strategy.Session).Delagated);
-
-        public bool IsInPlanning => this.Equals(new WorkEffortStates(this.strategy.Session).InPlanning);
-
-        public bool IsPlanned => this.Equals(new WorkEffortStates(this.strategy.Session).Planned);
-
-        public bool IsSent => this.Equals(new WorkEffortStates(this.strategy.Session).Sent);
-
-        public bool IsAccepted => this.Equals(new WorkEffortStates(this.strategy.Session).Accepted);
-
-        public bool IsTentative => this.Equals(new WorkEffortStates(this.strategy.Session).Tentative);
     }
 }

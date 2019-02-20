@@ -226,15 +226,6 @@ namespace Allors.Repository
         public decimal MaintainedProfitMargin { get; set; }
 
         #region Allors
-        [Id("B77A583B-5F97-4843-A1C0-603467BADE51")]
-        [AssociationId("4DCD87D0-864A-44A1-AFE3-5C7DE75CC78D")]
-        [RoleId("D6FAA55B-BB79-4C38-AB05-EB30B008D0CA")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        public TimeEntry[] TimeEntries { get; set; }
-
-        #region Allors
         [Id("D8589BDF-698B-40C1-A9F2-06631823F7DB")]
         [AssociationId("135E7966-F436-4F27-BE4F-A721758D5457")]
         [RoleId("0B527A4E-7E5B-4A83-A88F-41F5371B390F")]

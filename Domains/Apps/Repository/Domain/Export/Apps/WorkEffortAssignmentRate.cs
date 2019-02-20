@@ -7,12 +7,9 @@ namespace Allors.Repository
     #region Allors
     [Id("ac18c87b-683c-4529-9171-d23e73c583d4")]
     #endregion
-    public partial class WorkEffortAssignmentRate : Period, AccessControlledObject 
+    public partial class WorkEffortAssignmentRate : AccessControlledObject 
     {
         #region inherited properties
-
-        public DateTime FromDate { get; set; }
-        public DateTime ThroughDate { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -26,9 +23,26 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Workspace]
         public WorkEffort WorkEffort { get; set; }
+
+        #region Allors
+        [Id("98BF1DDB-F0B7-48B6-9CFA-FD1832B4C0AC")]
+        [AssociationId("9E36B3C6-39DE-4584-8CB6-634491BB332C")]
+        [RoleId("66D022BB-F7C1-43F9-806D-365BDCF529E1")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        public DateTime FromDate { get; set; }
+
+        #region Allors
+        [Id("651B674C-44AA-41D4-979D-958EBC3FEC5D")]
+        [AssociationId("1C7B9EEC-2D35-4B71-AEB1-83B419DCA1A2")]
+        [RoleId("49DF17D7-7793-4584-A3B6-EE99F385653F")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        public DateTime ThroughDate { get; set; }
 
         #region Allors
         [Id("738EFE42-075D-46B6-974C-CD57FFAC7401")]
@@ -79,7 +93,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public WorkEffortPartyAssignment WorkEffortPartyAssignment { get; set; }
 

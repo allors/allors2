@@ -20,15 +20,22 @@ namespace Allors.Domain
 
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
-        public Part Part
+        public Part DerivedPart
         {
             get
             {
-                if (this.ExistProduct)
+                if (this.ExistPart)
                 {
-                    var nonUnifiedGood = this.Product as NonUnifiedGood;
-                    var unifiedGood = this.Product as UnifiedGood;
-                    return unifiedGood ?? nonUnifiedGood?.Part;
+                    return this.Part;
+                }
+                else
+                {
+                    if (this.ExistProduct)
+                    {
+                        var nonUnifiedGood = this.Product as NonUnifiedGood;
+                        var unifiedGood = this.Product as UnifiedGood;
+                        return unifiedGood ?? nonUnifiedGood?.Part;
+                    }
                 }
 
                 return null;
@@ -113,8 +120,8 @@ namespace Allors.Domain
 
             this.AppsOnDeriveAmountPaid(derivation);
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.TimeEntries);
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.TimeEntries);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.Part);
 
             if (this.ExistInvoiceItemType && this.Quantity == 0)
             {
@@ -479,15 +486,15 @@ namespace Allors.Domain
             this.InitialProfitMargin = 0;
             this.MaintainedProfitMargin = 0;
 
-            if (this.Part != null &&
+            if (this.DerivedPart != null &&
                 this.ExistQuantity && this.Quantity > 0 &&
-                this.Part.ExistSupplierOfferingsWherePart &&
-                this.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
+                this.DerivedPart.ExistSupplierOfferingsWherePart &&
+                this.DerivedPart.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
             {
                 decimal price = 0;
                 UnitOfMeasure uom = null;
 
-                foreach (SupplierOffering supplierOffering in this.Part.SupplierOfferingsWherePart)
+                foreach (SupplierOffering supplierOffering in this.DerivedPart.SupplierOfferingsWherePart)
                 {
                     if (supplierOffering.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
                         (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))

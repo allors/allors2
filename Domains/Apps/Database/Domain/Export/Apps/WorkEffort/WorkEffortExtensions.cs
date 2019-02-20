@@ -16,7 +16,9 @@
 
 using Allors.Meta;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Resources;
 
 namespace Allors.Domain
 {
@@ -26,17 +28,20 @@ namespace Allors.Domain
 
         public static DateTime? ThroughDate(this WorkEffort @this) => @this.ActualCompletion ?? @this.ScheduledCompletion;
 
+        public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistWorkEffortState)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
+            }
+        }
+
         public static void AppsOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
 
             if (derivation.ChangeSet.Associations.Contains(@this.Id))
             {
-                foreach (WorkEffortPartyAssignment partyAssignment in @this.WorkEffortPartyAssignmentsWhereAssignment)
-                {
-                    derivation.AddDependency(partyAssignment, @this);
-                }
-
                 foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
                 {
                     derivation.AddDependency(inventoryAssignment, @this);
@@ -75,17 +80,16 @@ namespace Allors.Domain
             @this.DeriveActualHoursAndDates();
         }
 
-        public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
+        public static void AppsOnPostDerive(this WorkEffort @this, ObjectOnPostDerive method)
         {
-            if (!@this.ExistWorkEffortState)
+            if (!@this.CanInvoice)
             {
-                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
+                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get(@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
             }
-        }
-
-        public static void AppsConfirm(this WorkEffort @this, WorkEffortConfirm method)
-        {
-            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Confirmed;
+            else
+            {
+                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get(@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
+            }
         }
 
         public static void AppsComplete(this WorkEffort @this, WorkEffortComplete method)
@@ -100,7 +104,16 @@ namespace Allors.Domain
 
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
-            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
+            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+        }
+
+        public static void AppsInvoice(this WorkEffort @this, WorkEffortInvoice method)
+        {
+            if (@this.CanInvoice)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Finished;
+                @this.InvoiceThis();
+            }
         }
 
         private static void DeriveOwnerSecurity(this WorkEffort @this)
@@ -121,6 +134,7 @@ namespace Allors.Domain
                     .Build();
             }
         }
+
         private static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
         {
             var existingAssignmentRequired = @this.TakenBy?.RequireExistingWorkEffortPartyAssignment == true;
@@ -193,5 +207,108 @@ namespace Allors.Domain
                 }
             }
         }
+
+        private static void InvoiceThis(this WorkEffort @this)
+        {
+            var session = @this.Strategy.Session;
+            var frequencies = new TimeFrequencies(session);
+
+            var salesInvoice = new SalesInvoiceBuilder(session)
+                .WithBilledFrom(@this.TakenBy)
+                .WithBillToCustomer(@this.Customer)
+                .WithBillToContactMechanism(@this.FullfillContactMechanism)
+                .WithBillToContactPerson(@this.ContactPerson)
+                .WithInvoiceDate(DateTime.UtcNow)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(session).SalesInvoice)
+                .Build();
+
+            var timeBillingAmount = 0M;
+            var hours = 0M;
+            var billableEntries = new List<TimeEntry>();
+
+            foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
+            {
+                if (timeEntry.IsBillable)
+                {
+                    billableEntries.Add(timeEntry);
+                    var entryTimeSpan = (decimal)(timeEntry.ThroughDate - timeEntry.FromDate).Value.TotalMinutes;
+
+                    if (timeEntry.ExistBillingRate)
+                    {
+                        var timeInTimeEntryRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, timeEntry.BillingFrequency);
+                        timeBillingAmount += Math.Round((decimal)(timeEntry.BillingRate * timeInTimeEntryRateFrequency), 2);
+                    }
+                    else
+                    {
+                        var workEffortAssignmentRate = @this.WorkEffortAssignmentRatesWhereWorkEffort.First;
+                        var timeInWorkEffortRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, workEffortAssignmentRate.Frequency);
+                        timeBillingAmount += Math.Round((decimal)(workEffortAssignmentRate.Rate * timeInWorkEffortRateFrequency), 2);
+                    }
+                }
+            }
+
+            if (timeBillingAmount > 0)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(session)
+                    .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
+                    .WithActualUnitPrice(timeBillingAmount)
+                    .WithQuantity(hours)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                foreach (TimeEntry billableEntry in billableEntries)
+                {
+                    new TimeEntryBillingBuilder(session)
+                        .WithTimeEntry(billableEntry)
+                        .WithInvoiceItem(invoiceItem)
+                        .Build();
+                }
+            }
+
+            foreach (WorkEffortInventoryAssignment workEffortInventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(session)
+                    .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
+                    .WithPart(workEffortInventoryAssignment.Part)
+                    .WithActualUnitPrice(0M)
+                    .WithQuantity(workEffortInventoryAssignment.Quantity)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                new WorkEffortBillingBuilder(session)
+                    .WithWorkEffort(@this)
+                    .WithInvoiceItem(invoiceItem)
+                    .Build();
+            }
+        }
+
+        private static void DeriveCanInvoice(this WorkEffort @this)
+        {
+            if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
+            {
+                @this.CanInvoice = true;
+
+                foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
+                {
+                    if (!timeEntry.ExistThroughDate)
+                    {
+                        @this.CanInvoice = false;
+                        break;
+                    }
+                }
+
+                if (@this.ExistWorkEffortAssignmentRatesWhereWorkEffort && !@this.ExistWorkEffortAssignmentRatesWhereWorkEffort)
+                {
+                    @this.CanInvoice = false;
+                }
+            }
+            else
+            {
+                @this.CanInvoice = false;
+            }
+        }
     }
 }
+    
