@@ -32,7 +32,7 @@ namespace Allors.Domain
         private bool IsDeletable =>
             this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.strategy.Session).ReadyForPosting) &&
             this.AllItemsDeletable() &&
-            !this.ExistSalesOrder &&
+            this.SalesOrders.Count == 0 &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
             !this.IsRepeatingInvoice;
@@ -176,9 +176,9 @@ namespace Allors.Domain
                 derivation.AddDependency(this, invoiceItem);
             }
 
-            if (this.ExistSalesOrder)
+            foreach (SalesOrder salesOrder in this.SalesOrders)
             {
-                derivation.AddDependency(this.SalesOrder, this);
+                derivation.AddDependency(salesOrder, this);
             }
         }
 
@@ -243,6 +243,26 @@ namespace Allors.Domain
                     this.Currency = this.BilledFrom.ExistPreferredCurrency ?
                         this.BilledFrom.PreferredCurrency :
                         this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
+                }
+            }
+
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
+                {
+                    var salesOrder = orderItemBilling.OrderItem.SalesOrderWhereSalesOrderItem;
+                    if (this.SalesOrders.Contains(salesOrder))
+                    {
+                        this.SalesOrders.Add(salesOrder);
+                    }
+                }
+
+                foreach (WorkEffortBilling workEffortBilling in salesInvoiceItem.WorkEffortBillingsWhereInvoiceItem)
+                {
+                    if (this.SalesOrders.Contains(workEffortBilling.WorkEffort))
+                    {
+                        this.SalesOrders.Add(workEffortBilling.WorkEffort);
+                    }
                 }
             }
 
@@ -415,7 +435,6 @@ namespace Allors.Domain
         public SalesInvoice AppsCopy(SalesInvoiceCopy method)
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                .WithSalesOrder(this.SalesOrder)
                 .WithPurchaseInvoice(this.PurchaseInvoice)
                 .WithBilledFrom(this.BilledFrom)
                 .WithBilledFromContactMechanism(this.BilledFromContactMechanism)
@@ -536,7 +555,6 @@ namespace Allors.Domain
         public SalesInvoice AppsCredit(SalesInvoiceCredit method)
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                .WithSalesOrder(this.SalesOrder)
                 .WithPurchaseInvoice(this.PurchaseInvoice)
                 .WithBilledFrom(this.BilledFrom)
                 .WithBilledFromContactMechanism(this.BilledFromContactMechanism)

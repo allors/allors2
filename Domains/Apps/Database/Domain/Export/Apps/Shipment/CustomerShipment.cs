@@ -291,7 +291,6 @@ namespace Allors.Domain
                     {
                         salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                             .WithStore(salesOrder.Store)
-                            .WithSalesOrder(salesOrder)
                             .WithBilledFrom(salesOrder.TakenBy)
                             .WithBilledFromContactMechanism(salesOrder.TakenByContactMechanism)
                             .WithBilledFromContactPerson(salesOrder.TakenByContactPerson)

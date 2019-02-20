@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------------------------------------------- 
-// <copyright file="WorkTaskTests.cs" company="Allors bvba">
+// <copyright file="WorkEffortPartyAssignmentTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -113,6 +113,34 @@ namespace Allors.Domain
 
             // Assert
             Assert.True(derivation.HasErrors);
+        }
+
+        [Fact]
+        public void GivenWorkEffort_WhenAddingRates_ThenRateForPartyIsNotAllowed()
+        {
+            // Calculating rates per party is not implemented yet
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+
+            var assignedParty = new WorkEffortPartyAssignmentBuilder(this.Session).WithAssignment(workOrder).WithParty(employee).Build();
+
+            this.Session.Derive(true);
+
+            var assignedRate = new WorkEffortAssignmentRateBuilder(this.Session)
+                .WithWorkEffort(workOrder)
+                .WithRate(1)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .Build();
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+
+            assignedParty.AddAssignmentRate(assignedRate);
+
+            var derivation = this.Session.Derive(false);
+
+            Assert.True(derivation.HasErrors);
+            Assert.Contains(derivation.Errors.SelectMany(e => e.Relations), r => r.RoleType.Equals(M.WorkEffortPartyAssignment.AssignmentRates));
         }
     }
 }

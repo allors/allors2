@@ -394,7 +394,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum 1 Rate allowed for this work effort.
+        ///   Looks up a localized string similar to Rate for this type already exists.
         /// </summary>
         public static string WorkEffortRateError {
             get {

@@ -887,7 +887,6 @@ namespace Allors.Domain
         private void AppsInvoiceThis(IDerivation derivation)
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                .WithSalesOrder(this)
                 .WithBilledFrom(this.TakenBy)
                 .WithBilledFromContactMechanism(this.TakenByContactMechanism)
                 .WithBilledFromContactPerson(this.TakenByContactPerson)

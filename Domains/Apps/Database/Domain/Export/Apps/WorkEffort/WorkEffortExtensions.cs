@@ -18,7 +18,6 @@ using Allors.Meta;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Resources;
 
 namespace Allors.Domain
 {

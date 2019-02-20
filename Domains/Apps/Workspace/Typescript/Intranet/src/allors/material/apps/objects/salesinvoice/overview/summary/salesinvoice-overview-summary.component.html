@@ -15,7 +15,7 @@
   </mat-card-header>
 
   <mat-card-content>
-    <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
+    <div *ngFor="let order of orders" (click)="navigation.overview(order)" style="cursor: pointer;">
       <div style="color: grey">
         Order
       </div>

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkEffortAssignmentRate.cs" company="Allors bvba">
+// <copyright file="WorkEffortPartyAssignment.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,30 +14,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
 using Resources;
 
 namespace Allors.Domain
 {
-    public partial class WorkEffortAssignmentRate
+    public partial class WorkEffortPartyAssignment
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistWorkEffort && this.ExistWorkEffortPartyAssignment)
-            {
-                this.WorkEffort = this.WorkEffortPartyAssignment.Assignment;
-            }
 
-            if (this.ExistRateType)
+            if (this.ExistAssignmentRates)
             {
-                var extent = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort;
-                extent.Filter.AddEquals(M.WorkEffortAssignmentRate.RateType, this.RateType);
-                if (extent.Count > 1)
-                {
-                    derivation.Validation.AddError(this, this.Meta.RateType, ErrorMessages.WorkEffortRateError);
-                }
+                derivation.Validation.AddError(this, this.Meta.AssignmentRates, ErrorMessages.WorkEffortRateError);
             }
         }
     }

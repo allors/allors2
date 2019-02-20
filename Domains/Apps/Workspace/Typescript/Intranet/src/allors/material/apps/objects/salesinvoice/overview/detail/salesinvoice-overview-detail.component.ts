@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesOrder, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -21,7 +21,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
   readonly m: Meta;
 
   invoice: SalesInvoice;
-  order: SalesOrder;
   goods: Good[] = [];
   internalOrganisation: Organisation;
   currencies: Currency[];
@@ -123,7 +122,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
             SalesInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            SalesOrder: x,
             BillToContactMechanism: {
               PostalAddress_PostalBoundary: {
                 Country: x
@@ -146,13 +144,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
             }
           }
         }),
-        pull.SalesInvoice({
-          name: salesOrderPullName,
-          object: id,
-          fetch: {
-            SalesOrder: x
-          }
-        }),
         pull.Good({
           name: goodPullName,
           sort: new Sort(m.Good.Name),
@@ -162,7 +153,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
     panel.onPulled = (loaded) => {
       this.goods = loaded.collections.Goods as Good[];
-      this.order = loaded.objects.SalesOrder as SalesOrder;
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
     };
   }
@@ -200,14 +190,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 SalesInvoiceState: x,
-                SalesOrder: x,
               },
-            }),
-            pull.SalesInvoice({
-              object: id,
-              fetch: {
-                SalesOrder: x
-              }
             }),
             pull.VatRate(),
             pull.VatRegime(),
@@ -234,7 +217,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         this.currencies = loaded.collections.Currencies as Currency[];
 
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
-        this.order = loaded.objects.SalesOrder as SalesOrder;
 
         if (this.invoice.BillToCustomer) {
           this.previousBillToCustomer = this.invoice.BillToCustomer;

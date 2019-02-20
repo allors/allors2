@@ -76,7 +76,6 @@ export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
                 SalesInvoiceState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
-                SalesOrder: x,
                 BillToContactMechanism: {
                   PostalAddress_PostalBoundary: {
                     Country: x
@@ -97,12 +96,6 @@ export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
                     Country: x
                   }
                 }
-              }
-            }),
-            pull.SalesInvoice({
-              object: id,
-              fetch: {
-                SalesOrder: x
               }
             }),
             pull.Good(

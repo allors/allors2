@@ -17,7 +17,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   m: Meta;
 
   invoice: SalesInvoice;
-  order: SalesOrder;
+  orders: SalesOrder[];
   repeatingInvoices: RepeatingSalesInvoice[];
   repeatingInvoice: RepeatingSalesInvoice;
   goods: Good[] = [];
@@ -71,7 +71,6 @@ export class SalesInvoiceOverviewSummaryComponent {
             SalesInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            SalesOrder: x,
             BillToContactMechanism: {
               PostalAddress_PostalBoundary: {
                 Country: x
@@ -98,7 +97,7 @@ export class SalesInvoiceOverviewSummaryComponent {
           name: salesOrderPullName,
           object: id,
           fetch: {
-            SalesOrder: x
+            SalesOrders: x
           }
         }),
         pull.Good({
@@ -118,7 +117,7 @@ export class SalesInvoiceOverviewSummaryComponent {
 
     panel.onPulled = (loaded) => {
       this.goods = loaded.collections.Goods as Good[];
-      this.order = loaded.objects.SalesOrder as SalesOrder;
+      this.orders = loaded.collections.SalesOrders as SalesOrder[];
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
       this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
       if (this.repeatingInvoices.length > 0) {

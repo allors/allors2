@@ -57,7 +57,8 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
               include: {
                 RateType: x,
                 Frequency: x,
-                WorkEffortPartyAssignment: x
+                WorkEffortPartyAssignment: x,
+                WorkEffort: x
               }
             }),
             pull.WorkEffort({
@@ -70,6 +71,9 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
                   }
                 }
               }
+            }),
+            pull.WorkEffort({
+              object: this.data.associationId,
             }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
@@ -95,6 +99,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
         if (isCreate) {
           this.title = 'Add Work Effort Rate';
           this.workEffortAssignmentRate = this.allors.context.create('WorkEffortAssignmentRate') as WorkEffortAssignmentRate;
+          this.workEffortAssignmentRate.WorkEffort = this.workEffort;
           this.workEffortAssignmentRate.Frequency = hour;
         } else {
           this.workEffortAssignmentRate = loaded.objects.WorkEffortAssignmentRate as WorkEffortAssignmentRate;

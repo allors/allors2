@@ -7,10 +7,10 @@ import * as moment from 'moment';
 
 interface Row extends TableRow {
   object: WorkEffortAssignmentRate;
-  partyAssignment: string;
+  // partyAssignment: string;
+  // from: string;
+  // through: string;
   rateType: string;
-  from: string;
-  through: string;
   rate: number;
   frequency: string;
 }
@@ -42,7 +42,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
     };
   }
 
-  collection = 'Current';
+  collection = 'All';
   currentRates: WorkEffortAssignmentRate[];
   inactiveRates: WorkEffortAssignmentRate[];
   allRates: WorkEffortAssignmentRate[] = [];
@@ -75,9 +75,9 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
       selection: true,
       columns: [
         { name: 'rateType' },
-        { name: 'partyAssignment' },
-        { name: 'from', sort },
-        { name: 'through', sort },
+        // { name: 'partyAssignment' },
+        // { name: 'from', sort },
+        // { name: 'through', sort },
         { name: 'rate', sort },
         { name: 'frequency' },
       ],
@@ -130,10 +130,10 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
     this.table.data = this.workEffortAssignmentRates.map((v) => {
       return {
         object: v,
-        partyAssignment: v.WorkEffortPartyAssignment.displayName,
+        // partyAssignment: v.WorkEffortPartyAssignment.displayName,
+        // from: moment(v.FromDate).format('L'),
+        // through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
         rateType: v.RateType.Name,
-        from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
         rate: v.Rate,
         frequency: v.Frequency.Name,
       } as Row;

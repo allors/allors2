@@ -1056,24 +1056,25 @@ namespace Allors.Domain
         public void AppsOnDerivePaymentState(IDerivation derivation)
         {
             SalesOrderItemPaymentState state = null;
-            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
-            {
-                foreach (OrderItemBilling orderItemBilling in orderShipment.OrderItem.OrderItemBillingsWhereOrderItem)
-                {
-                    if (orderItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
-                    {
-                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
-                        {
-                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
-                        }
 
-                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
-                        {
-                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
-                        }
+            foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereOrderItem)
+            {
+                if (orderItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
+                {
+                    if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                    {
+                        state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
+                    }
+
+                    if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
+                    {
+                        state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
                     }
                 }
+            }
 
+            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
+            {
                 foreach (ShipmentItemBilling shipmentItemBilling in orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
                 {
                     if (shipmentItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)

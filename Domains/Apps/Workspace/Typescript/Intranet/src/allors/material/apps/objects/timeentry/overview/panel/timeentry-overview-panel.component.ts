@@ -11,7 +11,6 @@ interface Row extends TableRow {
   from: string;
   through: string;
   time: number;
-  billingAmount: number;
 }
 
 @Component({
@@ -72,7 +71,6 @@ export class TimeEntryOverviewPanelComponent implements OnInit {
         { name: 'from', sort },
         { name: 'through', sort },
         { name: 'time', sort },
-        { name: 'billingAmount' },
       ],
       actions: [
         this.edit,
@@ -117,7 +115,6 @@ export class TimeEntryOverviewPanelComponent implements OnInit {
             from: moment(v.FromDate).format('L'),
             through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
             time: v.AmountOfTime,
-            billingAmount: v.BillingAmount,
           } as Row;
         });
       }
