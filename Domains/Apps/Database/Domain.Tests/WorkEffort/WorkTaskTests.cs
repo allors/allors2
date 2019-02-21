@@ -497,11 +497,85 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffortAndPartsUsed_WhenInvoiced_ThenPartsAreInvoiced()
+        public void GivenWorkEffortAndTimeEntriesWithoutBillingRate_WhenInvoiced_ThenWorkEffortRateIsUsed()
         {
+            var frequencies = new TimeFrequencies(this.Session);
+
             var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
             var customer = new PersonBuilder(this.Session).WithLastName("Customer").Build();
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).Build();
+
+            new WorkEffortAssignmentRateBuilder(this.Session).WithWorkEffort(workOrder).WithRate(10).WithRateType(new RateTypes(this.Session).StandardRate).Build();
+
+            this.Session.Derive(true);
+
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var timeEntryYesterday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(yesterday)
+                .WithThroughDate(laterYesterday)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
+
+            var timeEntryToday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(today)
+                .WithThroughDate(laterToday)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
+
+            var timeEntryTomorrow = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(tomorrow)
+                .WithThroughDate(laterTomorrow)
+                .WithTimeFrequency(frequencies.Minute)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
+
+            workOrder.Complete();
+
+            this.Session.Derive(true);
+
+            workOrder.Invoice();
+
+            var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
+
+            Assert.Single(salesInvoice.InvoiceItems);
+            Assert.Equal(130, salesInvoice.InvoiceItems.First().ActualUnitPrice); // (3 * 10) + (4 * 10) + (6 * 10)
+        }
+
+        [Fact]
+        public void GivenWorkEffortAndPartsUsed_WhenInvoiced_ThenPartsAreInvoiced()
+        {
+            var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+
+            var customerEmail = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString($"customer@acme.com").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new PersonBuilder(this.Session).WithLastName("Customer").WithPartyContactMechanism(customerEmail).Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
 
@@ -512,12 +586,7 @@ namespace Allors.Domain
 
             var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
 
-            var part1 = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var part1 = this.CreatePart("P1");
 
             var part1BasePriceYesterday = new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice part1")
@@ -544,6 +613,8 @@ namespace Allors.Domain
 
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).Build();
 
+            this.Session.Derive(true);
+
             var timeEntryToday = new TimeEntryBuilder(this.Session)
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(today)
@@ -563,6 +634,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             workOrder.Invoice();
+
+            this.Session.Derive(true);
 
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
