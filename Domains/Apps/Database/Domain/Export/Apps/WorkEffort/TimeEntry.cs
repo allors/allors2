@@ -45,6 +45,11 @@ namespace Allors.Domain
             {
                 this.TimeFrequency = new TimeFrequencies(this.strategy.Session).Hour;
             }
+
+            if (!this.ExistIsBillable)
+            {
+                this.IsBillable = true;
+            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

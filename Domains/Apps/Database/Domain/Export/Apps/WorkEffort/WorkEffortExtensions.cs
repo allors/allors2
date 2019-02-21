@@ -77,6 +77,7 @@ namespace Allors.Domain
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
+            @this.DeriveCanInvoice();
         }
 
         public static void AppsOnPostDerive(this WorkEffort @this, ObjectOnPostDerive method)
@@ -207,23 +208,33 @@ namespace Allors.Domain
             }
         }
 
-        private static void InvoiceThis(this WorkEffort @this)
+        private static SalesInvoice InvoiceThis(this WorkEffort @this)
         {
-            var session = @this.Strategy.Session;
-            var frequencies = new TimeFrequencies(session);
-
-            var salesInvoice = new SalesInvoiceBuilder(session)
+            var salesInvoice = new SalesInvoiceBuilder(@this.Strategy.Session)
                 .WithBilledFrom(@this.TakenBy)
                 .WithBillToCustomer(@this.Customer)
                 .WithBillToContactMechanism(@this.FullfillContactMechanism)
                 .WithBillToContactPerson(@this.ContactPerson)
                 .WithInvoiceDate(DateTime.UtcNow)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(session).SalesInvoice)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(@this.Strategy.Session).SalesInvoice)
                 .Build();
 
+            CreateInvoiceItems(@this, salesInvoice);
+            foreach (WorkEffort childWorkEffort in @this.Children)
+            {
+                CreateInvoiceItems(childWorkEffort, salesInvoice);
+            }
+
+            return salesInvoice;
+        }
+
+        private static void CreateInvoiceItems(this WorkEffort @this, SalesInvoice salesInvoice)
+        {
+            var session = @this.Strategy.Session;
             var timeBillingAmount = 0M;
             var hours = 0M;
             var billableEntries = new List<TimeEntry>();
+            var frequencies = new TimeFrequencies(session);
 
             foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
             {
