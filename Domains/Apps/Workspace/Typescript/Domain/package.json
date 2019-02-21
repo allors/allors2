@@ -8,8 +8,8 @@
     "postinstall": "node ./postinstall.js",
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "test": "mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
-    "tc:test": "mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
+    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {},
   "devDependencies": {
