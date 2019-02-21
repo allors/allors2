@@ -278,10 +278,28 @@ namespace Allors.Domain
 
             foreach (WorkEffortInventoryAssignment workEffortInventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
             {
+                var part = workEffortInventoryAssignment.Part;
+                var priceComponents = GetPriceComponents(@this, part);
+
+                var basePrice = 0M;
+                foreach (var priceComponent in priceComponents)
+                {
+                    if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
+                    {
+                        if (priceComponent.ExistPrice)
+                        {
+                            if (basePrice < priceComponent.Price)
+                            {
+                                basePrice = (decimal) priceComponent.Price;
+                            }
+                        }
+                    }
+                }
+
                 var invoiceItem = new SalesInvoiceItemBuilder(session)
                     .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
-                    .WithPart(workEffortInventoryAssignment.Part)
-                    .WithActualUnitPrice(0M)
+                    .WithPart(part)
+                    .WithActualUnitPrice(basePrice)
                     .WithQuantity(workEffortInventoryAssignment.Quantity)
                     .Build();
 
@@ -318,6 +336,36 @@ namespace Allors.Domain
             {
                 @this.CanInvoice = false;
             }
+        }
+
+        private static List<PriceComponent> GetPriceComponents(this WorkEffort @this, Part part)
+        {
+            var priceComponents = new List<PriceComponent>();
+
+            var extent = new PriceComponents(@this.Strategy.Session).Extent();
+            foreach (PriceComponent priceComponent in extent)
+            {
+                if (priceComponent.ExistPart && priceComponent.Part.Equals(part) &&
+                    priceComponent.FromDate <= @this.ActualStart &&
+                    (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= @this.ActualStart))
+                {
+                    priceComponents.Add(priceComponent);
+                }
+            }
+
+            // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
+            extent = new PriceComponents(@this.Strategy.Session).Extent();
+            foreach (PriceComponent priceComponent in extent)
+            {
+                if (!priceComponent.ExistProduct && !priceComponent.ExistPart && !priceComponent.ExistProductFeature &&
+                    priceComponent.FromDate <= @this.ActualStart &&
+                    (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= @this.ActualStart))
+                {
+                    priceComponents.Add(priceComponent);
+                }
+            }
+
+            return priceComponents;
         }
     }
 }

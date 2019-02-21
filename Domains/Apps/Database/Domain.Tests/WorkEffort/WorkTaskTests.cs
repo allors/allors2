@@ -358,9 +358,8 @@ namespace Allors.Domain
             stream.Close();
         }
 
-
         [Fact]
-        public void GivenWorkEffortAndTimeEntries_WhenInvoiced_ThenTimeEntryBillingRateIsUsed()
+        public void GivenWorkEffortAndTimeEntriesWithBillingRate_WhenInvoiced_ThenTimeEntryBillingRateIsUsed()
         {
             var frequencies = new TimeFrequencies(this.Session);
 
@@ -424,6 +423,152 @@ namespace Allors.Domain
 
             Assert.Single(salesInvoice.InvoiceItems);
             Assert.Equal(162, salesInvoice.InvoiceItems.First().ActualUnitPrice); // (3 * 10) + (4 * 12) + (6 * 14)
+        }
+
+        [Fact]
+        public void GivenParentWorkEffortAndTimeEntriesWithBillingRate_WhenInvoiced_ThenTimeEntryBillingRateIsUsed()
+        {
+            var frequencies = new TimeFrequencies(this.Session);
+
+            var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            var customer = new PersonBuilder(this.Session).WithLastName("Customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+
+            var parentWorkOrder = new WorkTaskBuilder(this.Session).WithName("Parent Task").WithCustomer(customer).Build();
+
+            this.Session.Derive(true);
+
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var timeEntryYesterday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(yesterday)
+                .WithThroughDate(laterYesterday)
+                .WithWorkEffort(parentWorkOrder)
+                .WithBillingRate(10)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
+
+            var timeEntryToday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(today)
+                .WithThroughDate(laterToday)
+                .WithWorkEffort(parentWorkOrder)
+                .WithBillingRate(12)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
+
+            var childWorkOrder = new WorkTaskBuilder(this.Session).WithName("Child Task").WithCustomer(customer).Build();
+            parentWorkOrder.AddChild(childWorkOrder);
+
+            var timeEntryTomorrow = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(tomorrow)
+                .WithThroughDate(laterTomorrow)
+                .WithTimeFrequency(frequencies.Minute)
+                .WithWorkEffort(childWorkOrder)
+                .WithBillingRate(14)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
+
+            parentWorkOrder.Complete();
+
+            this.Session.Derive(true);
+
+            parentWorkOrder.Invoice();
+
+            var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
+
+            Assert.Equal(2, salesInvoice.InvoiceItems.Length);
+            Assert.Equal(78, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.ActualUnitPrice); // (3 * 10) + (4 * 12)
+            Assert.Equal(84, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.ActualUnitPrice); // 6 * 14
+        }
+
+        [Fact]
+        public void GivenWorkEffortAndPartsUsed_WhenInvoiced_ThenPartsAreInvoiced()
+        {
+            var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            var customer = new PersonBuilder(this.Session).WithLastName("Customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+
+            var part1 = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var part1BasePriceYesterday = new BasePriceBuilder(this.Session)
+                .WithDescription("baseprice part1")
+                .WithPrice(9)
+                .WithPart(part1)
+                .WithFromDate(yesterday)
+                .WithThroughDate(today)
+                .Build();
+
+            var part1BasePriceToday = new BasePriceBuilder(this.Session)
+                .WithDescription("baseprice part1")
+                .WithPrice(10)
+                .WithPart(part1)
+                .WithFromDate(today)
+                .WithThroughDate(tomorrow)
+                .Build();
+
+            var part1BasePriceTomorrow = new BasePriceBuilder(this.Session)
+                .WithDescription("baseprice part1")
+                .WithPrice(11)
+                .WithPart(part1)
+                .WithFromDate(tomorrow)
+                .Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).Build();
+
+            var timeEntryToday = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(today)
+                .WithThroughDate(laterToday)
+                .WithWorkEffort(workOrder)
+                .WithBillingRate(12)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
+
+            new WorkEffortInventoryAssignmentBuilder(this.Session).WithAssignment(workOrder).WithPart(part1).WithQuantity(3).Build();
+
+            this.Session.Derive(true);
+
+            workOrder.Complete();
+
+            this.Session.Derive(true);
+
+            workOrder.Invoice();
+
+            var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
+
+            Assert.Equal(2, salesInvoice.InvoiceItems.Length);
+            Assert.Equal(10, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.ActualUnitPrice);
+            Assert.Equal(30, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.TotalBasePrice);
         }
 
         private Part CreatePart(string id) =>
