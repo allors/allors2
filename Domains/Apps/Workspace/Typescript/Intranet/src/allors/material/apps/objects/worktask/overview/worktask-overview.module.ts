@@ -18,6 +18,7 @@ import { TimeEntryOverviewPanelModule } from '../../timeentry/overview/panel/tim
 import { WorkEffortOverviewPanelModule } from '../../workeffort/overview/panel/workeffort-overview-panel.module';
 import { WorkEffortAssignmentRateOverviewPanelModule } from '../../workeffortassignmentrate/overview/panel/workeffortassignmentrate-overview-panel.module';
 import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
+import { WorkEffortInventoryAssignmentOverviewPanelModule } from '../../workeffortinventoryassignment/overview/panel/workeffortinventoryassignment-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
 import { WorkTaskOverviewSummaryModule } from './summary/worktask-overview-summary.module';
@@ -41,6 +42,7 @@ export { WorkTaskOverviewComponent } from './worktask-overview.component';
     WorkEffortOverviewPanelModule,
     WorkEffortAssignmentRateOverviewPanelModule,
     WorkEffortFixedAssetAssignmentOverviewPanelModule,
+    WorkEffortInventoryAssignmentOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
 
     AllorsMaterialFileModule,

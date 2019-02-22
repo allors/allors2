@@ -47,7 +47,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public Part Part { get; set; }
+        public InventoryItem InventoryItem { get; set; }
 
         /// <summary>
         /// Gets or sets the Quantity of the Part for this WorkEffortInventoryAssignment.
@@ -60,19 +60,6 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public int Quantity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the SerialisedItem affected by this WorkEffortInventoryAssignment (optional).
-        /// </summary>
-        #region Allors
-        [Id("B8553DCE-F6E8-4E1D-AAAC-988A0134FBCB")]
-        [AssociationId("FA584713-F5DA-4FF1-A532-AA54C8E62470")]
-        [RoleId("0E0C098A-24E9-4922-8295-DFCA95CDE73D")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public SerialisedItem SerialisedItem { get; set; }
 
         /// <summary>
         /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).

@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, Person, WorkEffort, Party } from '../../../../../domain';
+import { WorkEffortInventoryAssignment, WorkEffort, Part } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -19,17 +19,12 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
   readonly m: Meta;
 
-  workEffortPartyAssignment: WorkEffortPartyAssignment;
-  people: Person[];
-  workEfforts: WorkEffort[];
-  person: Person;
-  party: Party;
-  workEffort: WorkEffort;
-  assignment: WorkEffort;
-  contacts: Person[] = [];
+  workEffortInventoryAssignment: WorkEffortInventoryAssignment;
   title: string;
 
   private subscription: Subscription;
+  parts: Part[];
+  workEffort: WorkEffort;
 
   constructor(
     @Self() private allors: ContextService,
@@ -54,24 +49,18 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.WorkEffortPartyAssignment({
+            pull.WorkEffortInventoryAssignment({
               object: this.data.id,
               include: {
                 Assignment: x,
-                Party: x
+                Part: x
               }
             }),
-            pull.Party({
-              object: this.data.associationId
-            }),
             pull.WorkEffort({
               object: this.data.associationId
             }),
-            pull.WorkEffort({
-              sort: new Sort(m.WorkEffort.Name)
-            }),
-            pull.Person({
-              sort: new Sort(m.Person.PartyName)
+            pull.Part({
+              sort: new Sort(m.Part.Name)
             }),
           ];
 
@@ -86,35 +75,22 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         this.allors.context.reset();
 
-        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
-        this.people = loaded.collections.People as Person[];
-        this.party = loaded.objects.Party as Party;
+        this.parts = loaded.collections.People as Part[];
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
         if (isCreate) {
-          this.title = 'Add Work Effort Assignment';
+          this.title = 'Add work effort inventory assignment';
 
-          this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
-
-          if (this.party !== undefined && this.party.objectType.name === m.Person.name) {
-            this.person = this.party as Person;
-            this.workEffortPartyAssignment.Party = this.person;
-          }
-
-          if (this.workEffort !== undefined && this.workEffort.objectType.name === m.WorkTask.name) {
-            this.assignment = this.workEffort as WorkEffort;
-            this.workEffortPartyAssignment.Assignment = this.assignment;
-          }
+          this.workEffortInventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
+          this.workEffortInventoryAssignment.Assignment = this.workEffort;
 
         } else {
-          this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
-          this.person = this.workEffortPartyAssignment.Party as Person;
-          this.assignment = this.workEffortPartyAssignment.Assignment;
+          this.workEffortInventoryAssignment = loaded.objects.WorkEffortInventoryAssignment as WorkEffortInventoryAssignment;
 
-          if (this.workEffortPartyAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Assignment';
+          if (this.workEffortInventoryAssignment.CanWritePart) {
+            this.title = 'Edit work effort inventory assignment';
           } else {
-            this.title = 'View Work Effort Assignment';
+            this.title = 'View work effort inventory assignment';
           }
         }
       }, this.errorService.handler);
@@ -131,8 +107,8 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     this.allors.context.save()
       .subscribe(() => {
         const data: ObjectData = {
-          id: this.workEffortPartyAssignment.id,
-          objectType: this.workEffortPartyAssignment.objectType,
+          id: this.workEffortInventoryAssignment.id,
+          objectType: this.workEffortInventoryAssignment.objectType,
         };
 
         this.dialogRef.close(data);

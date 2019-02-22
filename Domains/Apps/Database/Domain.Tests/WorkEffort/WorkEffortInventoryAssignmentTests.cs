@@ -19,9 +19,10 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
-    using System.Linq;
     using Xunit;
         
     public class WorkEffortInventoryAssignmentTests : DomainTest
@@ -39,6 +40,12 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(11)
+                .Build();
+
             // Act
             this.Session.Derive(true);
 
@@ -49,7 +56,7 @@ namespace Allors.Domain
             // Re-arrange
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -88,9 +95,23 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part1)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part2)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
+            this.Session.Derive(true);
+
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part1)
+                .WithInventoryItem(part1.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -106,7 +127,7 @@ namespace Allors.Domain
             Assert.Equal(reasons.Reservation, transactions[0].Reason);
 
             // Re-arrange
-            inventoryAssignment.Part = part2;
+            inventoryAssignment.InventoryItem = part2.InventoryItemsWherePart.First;
 
             // Act
             this.Session.Derive(true);
@@ -135,11 +156,17 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
             this.Session.Derive(true);
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -182,7 +209,7 @@ namespace Allors.Domain
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -220,11 +247,17 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
             this.Session.Derive(true);
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -273,20 +306,30 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
-            new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(10).WithReason(reasons.PhysicalCount).Build();
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part1)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part2)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
 
             this.Session.Derive(true);
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part1)
+                .WithInventoryItem(part1.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
             this.Session.Derive(true);
 
             // Act
-            inventoryAssignment.Part = part2;
+            inventoryAssignment.InventoryItem= part2.InventoryItemsWherePart.First;
             inventoryAssignment.Quantity = 5;
 
             workEffort.Complete();
@@ -328,13 +371,25 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part1)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part2)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
             new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(5).WithReason(reasons.PhysicalCount).Build();
 
             this.Session.Derive(true);
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part1)
+                .WithInventoryItem(part1.InventoryItemsWherePart.First)
                 .WithQuantity(10)
                 .Build();
 
@@ -344,7 +399,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Act
-            inventoryAssignment.Part = part2;
+            inventoryAssignment.InventoryItem = part2.InventoryItemsWherePart.First;
             inventoryAssignment.Quantity = 5;
 
             workEffort.Reopen();
@@ -382,13 +437,19 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(10)
+                .Build();
+
             new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(20).WithReason(reasons.PhysicalCount).Build();
 
             this.Session.Derive(true);
 
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
                 .WithQuantity(5)
                 .Build();
 

@@ -53,6 +53,7 @@ import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/mat
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkEffortAssignmentRateEditComponent, WorkEffortAssignmentRateEditModule } from '../allors/material/apps/objects/workeffortassignmentrate/edit/workeffortassignmentrate-edit.module';
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
+import { WorkEffortInventoryAssignmentEditComponent, WorkEffortInventoryAssignmentEditModule } from '../allors/material/apps/objects/workeffortinventoryassignment/edit/workeffortinventoryassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
@@ -113,6 +114,7 @@ export const create = {
   [ids.WebAddress]: WebAddressCreateComponent,
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
+  [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
@@ -161,6 +163,7 @@ export const edit = {
   [ids.WebAddress]: WebAddressEditComponent,
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
+  [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
@@ -219,6 +222,7 @@ export const edit = {
     WorkEffortAssignmentRateEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
+    WorkEffortInventoryAssignmentEditModule,
     WorkTaskCreateModule,
   ],
   entryComponents: [
@@ -271,6 +275,7 @@ export const edit = {
     WebAddressEditComponent,
     WorkEffortAssignmentRateEditComponent,
     WorkEffortFixedAssetAssignmentEditComponent,
+    WorkEffortInventoryAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,
     WorkTaskCreateComponent,
   ],

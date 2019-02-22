@@ -1,18 +1,14 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
-import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
+import { WorkEffortInventoryAssignment } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
-  object: WorkEffortPartyAssignment;
-  number: string;
-  name: string;
-  status: string;
-  party: string;
-  from: string;
-  through: string;
+  object: WorkEffortInventoryAssignment;
+  part: string;
+  quantity: number;
 }
 
 @Component({
@@ -29,9 +25,8 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
 
   m: Meta;
 
-  objects: WorkEffortPartyAssignment[] = [];
+  objects: WorkEffortInventoryAssignment[] = [];
 
-  delete: Action;
   edit: Action;
   table: Table<TableRow>;
 
@@ -57,11 +52,10 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
 
   ngOnInit() {
 
-    this.delete = this.deleteService.delete(this.panel.manager.context);
     this.edit = this.editService.edit();
 
-    this.panel.name = 'workeffortpartyassignment';
-    this.panel.title = 'Work Effort Party Assignment';
+    this.panel.name = 'workeffortinventoryassignment';
+    this.panel.title = 'Work Effort Inventory Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
@@ -69,24 +63,18 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number', sort },
-        { name: 'name', sort },
-        { name: 'state', sort },
-        { name: 'party', sort },
-        { name: 'from', sort },
-        { name: 'through', sort },
+        { name: 'part' },
+        { name: 'quantity' },
       ],
       actions: [
         this.edit,
-        this.delete,
       ],
       defaultAction: this.edit,
       autoSort: true,
       autoFilter: true,
     });
 
-    const partypullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_party`;
-    const workeffortpullName = `${this.panel.name}_${this.m.WorkEffortPartyAssignment.name}_workeffort`;
+    const pullName = `${this.panel.name}_${this.m.WorkEffortInventoryAssignment.name}`;
 
     this.panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -94,28 +82,13 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Person({
-          name: partypullName,
-          object: id,
-          fetch: {
-            WorkEffortPartyAssignmentsWhereParty: {
-              include: {
-                Party: x,
-                Assignment: {
-                  WorkEffortState: x,
-                  Priority: x,
-                }
-              }
-            }
-          }
-        }),
         pull.WorkEffort({
-          name: workeffortpullName,
+          name: pullName,
           object: id,
           fetch: {
-            WorkEffortPartyAssignmentsWhereAssignment: {
+            WorkEffortInventoryAssignmentsWhereAssignment: {
               include: {
-                Party: x,
+                Part: x,
                 Assignment: {
                   WorkEffortState: x,
                   Priority: x,
@@ -128,30 +101,15 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     };
 
     this.panel.onPulled = (loaded) => {
-      const fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
-      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
-
-      if (fromParty !== undefined && fromParty.length > 0) {
-        this.objects = fromParty;
-      }
-
-      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
-        this.objects = fromWorkEffort;
-      }
-
-      this.objects = fromParty || fromWorkEffort;
+      this.objects = loaded.collections[pullName] as WorkEffortInventoryAssignment[];
 
       if (this.objects) {
         this.table.total = this.objects.length;
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            number: v.Assignment.WorkEffortNumber,
-            name: v.Assignment.Name,
-            party: v.Party.displayName,
-            status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
-            from: moment(v.FromDate).format('L'),
-            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+            part: v.Part.Name,
+            quantity: v.Quantity,
           } as Row;
         });
       }

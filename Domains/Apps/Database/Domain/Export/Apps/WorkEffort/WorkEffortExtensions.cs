@@ -283,7 +283,7 @@ namespace Allors.Domain
 
             foreach (WorkEffortInventoryAssignment workEffortInventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
             {
-                var part = workEffortInventoryAssignment.Part;
+                var part = workEffortInventoryAssignment.InventoryItem.Part;
                 var priceComponents = GetPriceComponents(@this, part);
 
                 var basePrice = 0M;
@@ -323,12 +323,32 @@ namespace Allors.Domain
             {
                 @this.CanInvoice = true;
 
-                foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
+                if (@this.ExistWorkEffortWhereChild)
                 {
-                    if (!timeEntry.ExistThroughDate)
+                    @this.CanInvoice = false;
+                }
+
+                if (@this.CanInvoice == true)
+                {
+                    foreach (WorkEffort child in @this.Children)
                     {
-                        @this.CanInvoice = false;
-                        break;
+                        if (!@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
+                        {
+                            @this.CanInvoice = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (@this.CanInvoice == true)
+                {
+                    foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
+                    {
+                        if (!timeEntry.ExistThroughDate)
+                        {
+                            @this.CanInvoice = false;
+                            break;
+                        }
                     }
                 }
 

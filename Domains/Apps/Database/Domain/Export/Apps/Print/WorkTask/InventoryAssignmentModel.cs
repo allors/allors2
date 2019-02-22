@@ -22,11 +22,11 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             if (assignment != null)
             {
-                this.PartId = assignment.Part?.PartIdentification();
-                this.PartName = assignment.Part?.Name;
+                this.PartId = assignment.InventoryItem.Part?.PartIdentification();
+                this.PartName = assignment.InventoryItem.Part?.Name;
                 this.Quantity = assignment.Quantity;
-                this.UnitOfMeasure = assignment.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
-                                     assignment.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
+                this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
+                                     assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                      "EA";
             }
         }

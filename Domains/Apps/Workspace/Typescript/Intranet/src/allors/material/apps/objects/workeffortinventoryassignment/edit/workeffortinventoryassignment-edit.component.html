@@ -1,4 +1,4 @@
-<form *ngIf="workEffortPartyAssignment" #form="ngForm" (submit)="save()" novalidate>
+<form *ngIf="workEffortInventoryAssignment" #form="ngForm" (submit)="save()" novalidate>
   <h1></h1>
 
   <h3 mat-dialog-title>{{title}}</h3>
@@ -7,29 +7,8 @@
     <div class="container-fluid">
 
       <div class="row">
-        <a-mat-datetimepicker class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.FromDate"></a-mat-datetimepicker>
-      </div>
-
-      <div class="row">
-        <a-mat-datetimepicker class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.ThroughDate"></a-mat-datetimepicker>
-      </div>
-
-      <div class="row">
-        <a-mat-static *ngIf="person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
-          display="displayName"></a-mat-static>
-          <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
-          [options]="people" display="displayName"></a-mat-select>
-      </div>
-
-      <div class="row">
-        <a-mat-static *ngIf="assignment" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
-          display="Name" label="Work Effort"></a-mat-static>
-        <a-mat-select *ngIf="!assignment" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
-          [options]="workEfforts" label="Work Effort" display="Name"></a-mat-select>
-      </div>
-
-      <div class="row">
-        <a-mat-textarea class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Comment"></a-mat-textarea>
+        <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.Part" [options]="parts" display="Name"></a-mat-select>
+        <a-mat-input class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.Quantity"></a-mat-input>
       </div>
 
     </div>
