@@ -74,6 +74,11 @@ namespace Allors.Domain
                 @this.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
             }
 
+            if (!@this.ExistExecutedBy && @this.ExistTakenBy)
+            {
+                @this.ExecutedBy = @this.TakenBy;
+            }
+
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();

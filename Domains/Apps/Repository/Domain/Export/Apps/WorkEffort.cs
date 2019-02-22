@@ -74,6 +74,16 @@ namespace Allors.Repository
         Organisation TakenBy { get; set; }
 
         #region Allors
+        [Id("3B6366EB-AD53-4F35-AE0F-EFD9503CF271")]
+        [AssociationId("E74362AF-2411-46F0-810E-6E15465C82CC")]
+        [RoleId("650A22EE-F840-40BA-A297-A393370D2EAF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Organisation ExecutedBy { get; set; }
+
+        #region Allors
         [Id("0db9b217-c54f-4a7b-a1c0-9592eeabd51f")]
         [AssociationId("c918d8f5-77f0-4c0d-b02a-7695a7109cf2")]
         [RoleId("ae8f325d-31e5-473a-8caf-d378ba571025")]
@@ -257,7 +267,7 @@ namespace Allors.Repository
         [AssociationId("0e92f113-f607-46bb-85c1-eb3cddb317ef")]
         [RoleId("40e23b5c-8943-4e27-86a1-d0a0140068e6")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
         WorkEffort[] Children { get; set; }

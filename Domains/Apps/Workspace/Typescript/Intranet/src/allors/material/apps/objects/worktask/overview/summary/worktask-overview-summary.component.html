@@ -29,5 +29,17 @@
       </div>
     </div>
 
+    <div *ngIf="parent" (click)="navigation.overview(parent)"
+      style="cursor: pointer;">
+
+      <div>
+        <div style="color: grey">
+          Parent
+        </div>
+        {{parent.Name}}
+      </div>
+
+    </div>
+
   </mat-card-content>
 </mat-card>

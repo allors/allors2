@@ -16,6 +16,8 @@ namespace Allors.Repository
 
         public Organisation TakenBy { get; set; }
 
+        public Organisation ExecutedBy { get; set; }
+
         //public Store Store { get; set; }
 
         public Party Customer { get; set; }
