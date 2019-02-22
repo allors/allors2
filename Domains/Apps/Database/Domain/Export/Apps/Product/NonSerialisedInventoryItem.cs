@@ -37,14 +37,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.MarkAsModified(this.Part);
-            derivation.AddDependency(this.Part, this);
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -73,6 +65,8 @@ namespace Allors.Domain
             this.AppsOnDeriveUnitOfMeasure(derivation);
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
+
+            this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)

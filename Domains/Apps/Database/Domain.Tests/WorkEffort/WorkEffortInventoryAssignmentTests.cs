@@ -93,8 +93,6 @@ namespace Allors.Domain
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
-            this.Session.Derive(true);
-
             new InventoryItemTransactionBuilder(this.Session)
                 .WithPart(part1)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
@@ -285,7 +283,7 @@ namespace Allors.Domain
             Assert.Equal(-10, consumptionCancellation.Quantity);
 
             Assert.Equal(0, part.QuantityCommittedOut);
-            Assert.Equal(0, part.QuantityOnHand);
+            Assert.Equal(10, part.QuantityOnHand);
         }
 
         [Fact]
@@ -348,7 +346,7 @@ namespace Allors.Domain
             Assert.Equal(5, part2Consumption.Sum(c => c.Quantity));
 
             Assert.Equal(0, part1.QuantityCommittedOut);
-            Assert.Equal(0, part1.QuantityOnHand);
+            Assert.Equal(10, part1.QuantityOnHand);
             Assert.Equal(0, part2.QuantityCommittedOut);
             Assert.Equal(5, part2.QuantityOnHand);
         }
@@ -380,10 +378,8 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session)
                 .WithPart(part2)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
-                .WithQuantity(10)
+                .WithQuantity(5)
                 .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(5).WithReason(reasons.PhysicalCount).Build();
 
             this.Session.Derive(true);
 
@@ -418,7 +414,7 @@ namespace Allors.Domain
             Assert.Equal(5, part2Reservations.Sum(r => r.Quantity));
 
             Assert.Equal(0, part1.QuantityCommittedOut);
-            Assert.Equal(0, part1.QuantityOnHand);
+            Assert.Equal(10, part1.QuantityOnHand);
 
             Assert.Equal(5, part2.QuantityCommittedOut);
             Assert.Equal(5, part2.QuantityOnHand);
@@ -440,10 +436,8 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session)
                 .WithPart(part)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
-                .WithQuantity(10)
+                .WithQuantity(20)
                 .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(20).WithReason(reasons.PhysicalCount).Build();
 
             this.Session.Derive(true);
 
