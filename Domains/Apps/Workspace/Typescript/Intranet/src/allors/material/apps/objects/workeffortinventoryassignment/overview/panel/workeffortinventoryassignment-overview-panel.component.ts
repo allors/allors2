@@ -108,7 +108,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            part: v.Part.Name,
+            part: v.InventoryItem.Name,
             quantity: v.Quantity,
           } as Row;
         });

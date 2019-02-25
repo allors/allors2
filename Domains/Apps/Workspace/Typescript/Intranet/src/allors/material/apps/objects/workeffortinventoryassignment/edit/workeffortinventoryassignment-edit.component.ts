@@ -53,7 +53,9 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
               object: this.data.id,
               include: {
                 Assignment: x,
-                Part: x
+                InventoryItem: {
+                  Part: x
+                }
               }
             }),
             pull.WorkEffort({
@@ -87,7 +89,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         } else {
           this.workEffortInventoryAssignment = loaded.objects.WorkEffortInventoryAssignment as WorkEffortInventoryAssignment;
 
-          if (this.workEffortInventoryAssignment.CanWritePart) {
+          if (this.workEffortInventoryAssignment.CanWriteInventoryItem) {
             this.title = 'Edit work effort inventory assignment';
           } else {
             this.title = 'View work effort inventory assignment';

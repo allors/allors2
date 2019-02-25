@@ -36,6 +36,7 @@ import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
 import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
@@ -93,6 +94,7 @@ export const create = {
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.PurchaseInvoice]: PurchaseInvoiceCreateComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
+  [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
@@ -200,6 +202,7 @@ export const edit = {
     ProductTypeEditModule,
     PurchaseInvoiceCreateModule,
     PurchaseInvoiceItemEditModule,
+    PurchaseOrderCreateModule,
     QuoteItemEditModule,
     RepeatingSalesInvoiceEditModule,
     RequestItemEditModule,
@@ -254,6 +257,7 @@ export const edit = {
     ProductTypeEditComponent,
     PurchaseInvoiceCreateComponent,
     PurchaseInvoiceItemEditComponent,
+    PurchaseOrderCreateComponent,
     RepeatingSalesInvoiceEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,

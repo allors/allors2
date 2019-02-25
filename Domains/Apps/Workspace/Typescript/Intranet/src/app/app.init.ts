@@ -40,6 +40,8 @@ export function appInit(workspaceService: WorkspaceService) {
   m.SalesInvoice.list = '/sales/salesinvoices';
   m.SalesInvoice.overview = '/sales/salesinvoice/:id';
 
+  m.PurchaseOrder.list = '/purchasing/purchaseorders';
+  m.PurchaseOrder.overview = '/purchasing/purchaseorder/:id';
   m.PurchaseInvoice.list = '/purchasing/purchaseinvoices';
   m.PurchaseInvoice.overview = '/purchasing/purchaseinvoice/:id';
 

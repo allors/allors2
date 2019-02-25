@@ -15,7 +15,7 @@ import { StateService } from '../../../services/state';
 })
 export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
 
-  title = 'Quote';
+  title = 'Sales Order';
 
   public order: SalesOrder;
   public orderItems: SalesOrderItem[] = [];
