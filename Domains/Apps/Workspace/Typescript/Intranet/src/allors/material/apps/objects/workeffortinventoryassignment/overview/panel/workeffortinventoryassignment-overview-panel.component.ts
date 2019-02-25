@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
-import { WorkEffortInventoryAssignment } from '../../../../../../domain';
+import { WorkEffortInventoryAssignment, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
 import * as moment from 'moment';
@@ -8,7 +8,10 @@ import * as moment from 'moment';
 interface Row extends TableRow {
   object: WorkEffortInventoryAssignment;
   part: string;
+  facility: string;
+  state: string;
   quantity: number;
+  uom: string;
 }
 
 @Component({
@@ -64,7 +67,10 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
       selection: true,
       columns: [
         { name: 'part' },
+        { name: 'facility' },
+        { name: 'state' },
         { name: 'quantity' },
+        { name: 'uom' },
       ],
       actions: [
         this.edit,
@@ -88,10 +94,12 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
           fetch: {
             WorkEffortInventoryAssignmentsWhereAssignment: {
               include: {
-                Part: x,
-                Assignment: {
-                  WorkEffortState: x,
-                  Priority: x,
+                InventoryItem: {
+                  Part: x,
+                  Facility: x,
+                  UnitOfMeasure: x,
+                  NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x,
+                  SerialisedInventoryItem_SerialisedInventoryItemState: x
                 }
               }
             }
@@ -108,8 +116,11 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            part: v.InventoryItem.Name,
+            part: v.InventoryItem.Part.Name,
+            facility: v.InventoryItem.Facility.Name,
+            state: (v.InventoryItem as NonSerialisedInventoryItem).NonSerialisedInventoryItemState.Name || (v.InventoryItem as SerialisedInventoryItem).SerialisedInventoryItemState.Name,
             quantity: v.Quantity,
+            uom: v.InventoryItem.UnitOfMeasure.Name,
           } as Row;
         });
       }

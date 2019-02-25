@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortInventoryAssignment, WorkEffort, Part } from '../../../../../domain';
+import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -19,12 +19,16 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
   readonly m: Meta;
 
-  workEffortInventoryAssignment: WorkEffortInventoryAssignment;
   title: string;
-
-  private subscription: Subscription;
+  workEffortInventoryAssignment: WorkEffortInventoryAssignment;
   parts: Part[];
   workEffort: WorkEffort;
+  inventoryItems: InventoryItem[];
+  facility: Facility;
+  state: NonSerialisedInventoryItemState | SerialisedInventoryItemState;
+  serialised: boolean;
+
+  private subscription: Subscription;
 
   constructor(
     @Self() private allors: ContextService,
@@ -54,15 +58,25 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
               include: {
                 Assignment: x,
                 InventoryItem: {
-                  Part: x
+                  Part: {
+                    InventoryItemKind: x
+                  },
                 }
               }
             }),
             pull.WorkEffort({
               object: this.data.associationId
             }),
-            pull.Part({
-              sort: new Sort(m.Part.Name)
+            pull.InventoryItem({
+              sort: new Sort(m.InventoryItem.Name),
+              include: {
+                Part: {
+                  InventoryItemKind: x
+                },
+                Facility: x,
+                SerialisedInventoryItem_SerialisedInventoryItemState: x,
+                NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x
+              }
             }),
           ];
 
@@ -77,7 +91,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         this.allors.context.reset();
 
-        this.parts = loaded.collections.People as Part[];
+        this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
         if (isCreate) {
@@ -88,6 +102,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         } else {
           this.workEffortInventoryAssignment = loaded.objects.WorkEffortInventoryAssignment as WorkEffortInventoryAssignment;
+          this.inventoryItemSelected(this.workEffortInventoryAssignment.InventoryItem);
 
           if (this.workEffortInventoryAssignment.CanWriteInventoryItem) {
             this.title = 'Edit work effort inventory assignment';
@@ -118,5 +133,17 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public inventoryItemSelected(inventoryItem: InventoryItem): void {
+    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+
+    if (inventoryItem.objectType === this.metaService.m.NonSerialisedInventoryItem) {
+      const item = inventoryItem as NonSerialisedInventoryItem;
+      this.state = item.NonSerialisedInventoryItemState;
+    } else {
+      const item = inventoryItem as SerialisedInventoryItem;
+      this.state = item.SerialisedInventoryItemState;
+    }
   }
 }

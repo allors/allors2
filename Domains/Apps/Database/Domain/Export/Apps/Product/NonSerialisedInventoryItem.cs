@@ -41,9 +41,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistName && this.ExistPart && this.Part.ExistName)
+            if (!this.ExistName)
             {
-                this.Name = this.Part.Name;
+                this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.NonSerialisedInventoryItemState?.Name}";
             }
 
             this.AppsOnDeriveQuantityOnHand(derivation);
@@ -61,7 +61,6 @@ namespace Allors.Domain
                 this.AppsDepleteSalesOrders(derivation);
             }
 
-            this.AppsOnDeriveName(derivation);
             this.AppsOnDeriveUnitOfMeasure(derivation);
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
@@ -254,14 +253,6 @@ namespace Allors.Domain
                     salesOrderItem.AppsOnDeriveSubtractFromShipping(derivation, diff);
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
-            }
-        }
-
-        public void AppsOnDeriveName(IDerivation derivation)
-        {
-            if (this.ExistPart)
-            {
-                this.Name = this.Part.Name;
             }
         }
 

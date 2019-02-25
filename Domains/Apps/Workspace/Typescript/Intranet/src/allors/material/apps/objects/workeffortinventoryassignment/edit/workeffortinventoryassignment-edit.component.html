@@ -7,8 +7,18 @@
     <div class="container-fluid">
 
       <div class="row">
-        <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.Part" [options]="parts" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.InventoryItem" [options]="inventoryItems" 
+        (selected)="inventoryItemSelected($event)" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
         <a-mat-input class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.Quantity"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-static class="col-md" [object]="workEffortInventoryAssignment.InventoryItem?.Facility" [roleType]="m.Facility.Name"></a-mat-static>
+        <a-mat-static class="col-md" [object]="state" [roleType]="m.ObjectState.Name" label="State"></a-mat-static>
+        <a-mat-static class="col-md" *ngIf="!serialised" [object]="workEffortInventoryAssignment.InventoryItem" [roleType]="m.NonSerialisedInventoryItem.AvailableToPromise"></a-mat-static>
       </div>
 
     </div>

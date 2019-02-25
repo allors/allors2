@@ -11,7 +11,7 @@ interface Row extends TableRow {
   facility: string;
   part: string;
   uom: string;
-  status: string;
+  state: string;
   qoh: number;
   atp: number;
   committedOut: number;
@@ -113,7 +113,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
           fetch: {
             InventoryItemsWherePart: {
               include: {
-                NonSerialisedInventoryItem_InventoryItemState: x,
+                NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x,
                 Facility: x,
                 UnitOfMeasure: x
               }
@@ -134,8 +134,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
               object: v,
               facility: v.Facility.Name,
               part: v.Part.Name,
-              status: 'TODO',
-              // status: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
+              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
               uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
               qoh: v.QuantityOnHand,
               atp: v.AvailableToPromise,
