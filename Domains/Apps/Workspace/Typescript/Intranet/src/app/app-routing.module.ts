@@ -38,7 +38,6 @@ import * as RequestForQuoteOverview from 'src/allors/material/apps/objects/reque
 import * as SalesInvoiceList from '../allors/material/apps/objects/salesinvoice/list/salesinvoice-list.module';
 import * as SalesInvoiceItemEdit from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import * as SalesInvoiceOverview from '../allors/material/apps/objects/salesinvoice/overview/salesinvoice-overview.module';
-import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import * as SalesOrderList from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as SerialisedItemList from 'src/allors/material/apps/objects/serialiseditem/list/serialiseditem-list.module';
@@ -82,7 +81,6 @@ const modules = [
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
-  SalesOrderItemEdit.SalesOrderItemEditModule,
   SalesOrderList.SalesOrderListModule,
   SalesOrderOverview.SalesOrderOverviewModule,
   SerialisedItemList.SerialisedItemListModule,

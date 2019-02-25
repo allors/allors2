@@ -19,7 +19,7 @@ import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpa
 
 import { PurchaseOrderOverviewSummaryModule } from './summary/purchaseorder-overview-summary.module';
 import { PurchaseOrderOverviewDetailModule } from './detail/purchaseorder-overview-detail.module';
-// import { PurchaseOrderItemOverviewPanelModule } from '../../purchaseorderitem/overview/panel/purchaseorderitem-overview-panel.module';
+import { PurchaseOrderItemOverviewPanelModule } from '../../purchaseorderitem/overview/panel/purchaseorderitem-overview-panel.module';
 
 export { PurchaseOrderOverviewComponent } from './purchaseorder-overview.component';
 import { PurchaseOrderOverviewComponent } from './purchaseorder-overview.component';
@@ -34,7 +34,7 @@ import { PurchaseOrderOverviewComponent } from './purchaseorder-overview.compone
   imports: [
     PurchaseOrderOverviewSummaryModule,
     PurchaseOrderOverviewDetailModule,
-    // PurchaseOrderItemOverviewPanelModule,
+    PurchaseOrderItemOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,

@@ -281,7 +281,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.takenViaContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
       }, this.errorService.handler);
   }

@@ -1,6 +1,6 @@
 import { Component, Self, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ContextService } from '../../../../../../angular';
-import { SalesOrderItem, SalesOrder } from '../../../../../../domain';
+import { PurchaseOrderItem, PurchaseOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
 import * as moment from 'moment';
@@ -10,26 +10,21 @@ import { MatSnackBar } from '@angular/material';
 import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
 
 interface Row extends TableRow {
-  object: SalesOrderItem;
+  object: PurchaseOrderItem;
   item: string;
-  type: string;
   state: string;
   ordered: number;
-  shipped: number;
-  picked: number;
-  reserved: number;
-  short: number;
-  returned: number;
+  received: number;
   lastModifiedDate: string;
 }
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'salesorderitem-overview-panel',
-  templateUrl: './salesorderitem-overview-panel.component.html',
+  selector: 'purchaseorderitem-overview-panel',
+  templateUrl: './purchaseorderitem-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class SalesOrderItemOverviewPanelComponent {
+export class PurchaseOrderItemOverviewPanelComponent {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -37,8 +32,8 @@ export class SalesOrderItemOverviewPanelComponent {
 
   m: Meta;
 
-  order: SalesOrder;
-  salesOrderItems: SalesOrderItem[];
+  order: PurchaseOrder;
+  objects: PurchaseOrderItem[];
   table: Table<Row>;
 
   delete: Action;
@@ -53,7 +48,7 @@ export class SalesOrderItemOverviewPanelComponent {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
-      associationRoleType: this.metaService.m.SalesOrder.SalesOrderItems,
+      associationRoleType: this.metaService.m.PurchaseOrder.PurchaseOrderItems,
     };
   }
 
@@ -73,32 +68,26 @@ export class SalesOrderItemOverviewPanelComponent {
 
     this.m = this.metaService.m;
 
-    panel.name = 'salesordertitem';
-    panel.title = 'Sales Order Items';
-    panel.icon = 'contacts';
+    panel.name = 'purchaseordertitem';
+    panel.title = 'Purchase Order Items';
+    panel.icon = 'business';
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
     this.edit = editService.edit();
-    this.cancel = methodService.create(allors.context, this.m.SalesOrderItem.Cancel, { name: 'Cancel' });
-    this.reject = methodService.create(allors.context, this.m.SalesOrderItem.Reject, { name: 'Reject' });
-    this.confirm = methodService.create(allors.context, this.m.SalesOrderItem.Confirm, { name: 'Confirm' });
-    this.approve = methodService.create(allors.context, this.m.SalesOrderItem.Approve, { name: 'Approve' });
-    this.continue = methodService.create(allors.context, this.m.SalesOrderItem.Continue, { name: 'Continue' });
+    this.cancel = methodService.create(allors.context, this.m.PurchaseOrderItem.Cancel, { name: 'Cancel' });
+    this.reject = methodService.create(allors.context, this.m.PurchaseOrderItem.Reject, { name: 'Reject' });
+    this.confirm = methodService.create(allors.context, this.m.PurchaseOrderItem.Confirm, { name: 'Confirm' });
+    this.approve = methodService.create(allors.context, this.m.PurchaseOrderItem.Approve, { name: 'Approve' });
 
     const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
         { name: 'item', sort },
-        { name: 'type', sort },
         { name: 'state', sort },
         { name: 'ordered', sort },
-        { name: 'shipped', sort },
-        { name: 'picked', sort },
-        { name: 'reserved', sort },
-        { name: 'short', sort },
-        { name: 'returned', sort },
+        { name: 'received', sort },
         { name: 'lastModifiedDate', sort },
       ],
       actions: [
@@ -108,15 +97,14 @@ export class SalesOrderItemOverviewPanelComponent {
         this.reject,
         this.confirm,
         this.approve,
-        this.continue,
       ],
       defaultAction: this.edit,
       autoSort: true,
       autoFilter: true,
     });
 
-    const pullName = `${panel.name}_${this.m.SalesOrderItem.name}`;
-    const orderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
+    const pullName = `${panel.name}_${this.m.PurchaseOrderItem.name}`;
+    const orderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
@@ -124,21 +112,20 @@ export class SalesOrderItemOverviewPanelComponent {
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.SalesOrder({
+        pull.PurchaseOrder({
           name: pullName,
           object: id,
           fetch: {
-            SalesOrderItems: {
+            PurchaseOrderItems: {
               include: {
-                InvoiceItemType: x,
-                SalesOrderItemState: x,
-                Product: x,
+                PurchaseOrderItemState: x,
+                Part: x,
                 SerialisedItem: x,
               }
             }
           }
         }),
-        pull.SalesOrder({
+        pull.PurchaseOrder({
           name: orderPullName,
           object: id
         }),
@@ -147,21 +134,16 @@ export class SalesOrderItemOverviewPanelComponent {
 
     panel.onPulled = (loaded) => {
 
-      this.salesOrderItems = loaded.collections[pullName] as SalesOrderItem[];
-      this.order = loaded.objects[orderPullName] as SalesOrder;
-      this.table.total = loaded.values[`${pullName}_total`] || this.salesOrderItems.length;
-      this.table.data = this.salesOrderItems.map((v) => {
+      this.objects = loaded.collections[pullName] as PurchaseOrderItem[];
+      this.order = loaded.objects[orderPullName] as PurchaseOrder;
+      this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+      this.table.data = this.objects.map((v) => {
         return {
           object: v,
-          item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
-          type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
-          state: `${v.SalesOrderItemState && v.SalesOrderItemState.Name}`,
+          item: (v.Part && v.Part.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          state: `${v.PurchaseOrderItemState && v.PurchaseOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
-          shipped: v.QuantityShipped,
-          picked: v.QuantityPicked,
-          reserved: v.QuantityReserved,
-          short: v.QuantityShortFalled,
-          returned: v.QuantityReturned,
+          received: v.QuantityReceived,
           lastModifiedDate: moment(v.LastModifiedDate).fromNow()
         } as Row;
       });

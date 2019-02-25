@@ -84,7 +84,7 @@
             <mat-card>
               <mat-card-header>Add a new person</mat-card-header>
               <mat-card-content>
-                <person-inline (cancelled)="addTakenViaContactPerson = false" (saved)="shipToContactPersonAdded($event); addTakenViaContactPerson = false">
+                <person-inline (cancelled)="addTakenViaContactPerson = false" (saved)="takenViaContactPersonAdded($event); addTakenViaContactPerson = false">
                 </person-inline>
               </mat-card-content>
             </mat-card>

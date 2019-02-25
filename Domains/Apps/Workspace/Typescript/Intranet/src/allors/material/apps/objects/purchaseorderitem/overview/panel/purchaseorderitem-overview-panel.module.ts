@@ -6,14 +6,14 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialFileModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../..';
 
-import { SalesOrderItemOverviewPanelComponent as SalesOrderItemOverviewPanelComponent } from './salesorderitem-overview-panel.component';
+import { PurchaseOrderItemOverviewPanelComponent as PurchaseOrderItemOverviewPanelComponent } from './purchaseorderitem-overview-panel.component';
 
 @NgModule({
   declarations: [
-    SalesOrderItemOverviewPanelComponent,
+    PurchaseOrderItemOverviewPanelComponent,
   ],
   exports: [
-    SalesOrderItemOverviewPanelComponent,
+    PurchaseOrderItemOverviewPanelComponent,
   ],
   imports: [
     CommonModule,
@@ -42,4 +42,4 @@ import { SalesOrderItemOverviewPanelComponent as SalesOrderItemOverviewPanelComp
     AllorsMaterialTableModule,
   ],
 })
-export class SalesOrderItemOverviewPanelModule { }
+export class PurchaseOrderItemOverviewPanelModule { }
