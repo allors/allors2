@@ -59,7 +59,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCatScope)
             {
-                this.CatScope = new CatScopes(this.strategy.Session).Public;
+                this.CatScope = new CatScopes(this.Strategy.Session).Public;
             }
         }
 
@@ -76,7 +76,7 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
+            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
@@ -90,7 +90,7 @@ namespace Allors.Domain
 
             if (!this.ExistCategoryImage)
             {
-                this.CategoryImage = this.strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
+                this.CategoryImage = this.Strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
 
             foreach (ProductCategory productCategory in this.ProductCategoriesWhereSuperJacent)
@@ -163,7 +163,7 @@ namespace Allors.Domain
 
             foreach (Part part in this.Parts)
             {
-                if (part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised))
+                if (part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
                     foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in part.InventoryItemsWherePart)
                     {

@@ -50,12 +50,12 @@ namespace Allors.Domain
 
             if (!this.ExistUnitOfMeasure)
             {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
             if (!this.ExistDefaultFacility)
             {
-                this.DefaultFacility = this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+                this.DefaultFacility = this.Strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
         }
 
@@ -78,8 +78,8 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
-            var settings = this.strategy.Session.GetSingleton().Settings;
+            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
+            var settings = this.Strategy.Session.GetSingleton().Settings;
 
             if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
@@ -87,14 +87,14 @@ namespace Allors.Domain
             }
 
             var identifications = this.ProductIdentifications;
-            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.strategy.Session).Good);
+            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.Strategy.Session).Good);
             var goodNumber = identifications.FirstOrDefault();
 
             if (goodNumber == null && settings.UseProductNumberCounter)
             {
-                this.AddProductIdentification(new ProductNumberBuilder(this.strategy.Session)
+                this.AddProductIdentification(new ProductNumberBuilder(this.Strategy.Session)
                     .WithIdentification(settings.NextProductNumber())
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.strategy.Session).Good).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Good).Build());
             }
 
             if (!this.ExistProductIdentifications)
@@ -218,7 +218,7 @@ namespace Allors.Domain
                     if (characteristic == null)
                     {
                         this.AddSerialisedItemCharacteristic(
-                            new SerialisedItemCharacteristicBuilder(this.strategy.Session)
+                            new SerialisedItemCharacteristicBuilder(this.Strategy.Session)
                                 .WithSerialisedItemCharacteristicType(characteristicType)
                                 .Build());
                     }

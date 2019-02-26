@@ -36,7 +36,7 @@ namespace Allors.Domain
                 using (TextReader reader = new StringReader(this.Content))
                 {
                     var protocolFetch = (Allors.Data.Protocol.Fetch)XmlSerializer.Deserialize(reader);
-                    return protocolFetch.Load(this.strategy.Session);
+                    return protocolFetch.Load(this.Strategy.Session);
                 }
             }
 

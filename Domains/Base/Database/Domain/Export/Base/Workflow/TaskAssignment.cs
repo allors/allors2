@@ -37,7 +37,7 @@ namespace Allors.Domain
             }
             else
             {
-                var singleton = this.strategy.Session.GetSingleton();
+                var singleton = this.Strategy.Session.GetSingleton();
                 this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
 
                 this.Task.ManageNotification(this);

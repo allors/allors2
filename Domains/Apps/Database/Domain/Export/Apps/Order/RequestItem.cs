@@ -47,7 +47,7 @@ namespace Allors.Domain
 
             if (!this.ExistUnitOfMeasure)
             {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
             if (this.RequestWhereRequestItem.RequestState.Equals(new RequestStates(this.Strategy.Session).Cancelled))

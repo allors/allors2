@@ -85,8 +85,6 @@ namespace Allors.Domain
             }
         }
 
-        public OrderItem[] OrderItems => this.SalesOrderItems;
-
         public bool ScheduledManually
         {
             get
@@ -107,6 +105,21 @@ namespace Allors.Domain
                 this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
             }
 
+            if (!this.ExistSalesOrderShipmentState)
+            {
+                this.SalesOrderShipmentState = new SalesOrderShipmentStates(this.Strategy.Session).NotShipped;
+            }
+
+            if (!this.ExistSalesOrderInvoiceState)
+            {
+                this.SalesOrderInvoiceState = new SalesOrderInvoiceStates(this.Strategy.Session).NotInvoiced;
+            }
+
+            if (!this.ExistSalesOrderPaymentState)
+            {
+                this.SalesOrderPaymentState = new SalesOrderPaymentStates(this.Strategy.Session).NotPaid;
+            }
+
             if (!this.ExistOrderDate)
             {
                 this.OrderDate = DateTime.UtcNow;
@@ -122,25 +135,29 @@ namespace Allors.Domain
                 this.PartiallyShip = true;
             }
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
-            if (!this.ExistTakenBy && internalOrganisations.Count() == 1)
+            if (!this.ExistTakenBy)
             {
-                this.TakenBy = internalOrganisations.First();
+                var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
+                if (internalOrganisations.Count() == 1)
+                {
+                    this.TakenBy = internalOrganisations.First();
+                }
             }
 
             if (!this.ExistStore && this.ExistTakenBy)
             {
-                var store = new Stores(this.strategy.Session).Extent().FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
-                if (store != null)
+                var stores = new Stores(this.Strategy.Session).Extent();
+                stores.Filter.AddEquals(M.Store.InternalOrganisation, this.TakenBy);
+
+                if (stores.Any())
                 {
-                    this.Store = store;
+                    this.Store = stores.First;
                 }
             }
 
             if (!this.ExistOriginFacility)
             {
-                this.OriginFacility = this.ExistStore ? this.Store.DefaultFacility : this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+                this.OriginFacility = this.ExistStore ? this.Store.DefaultFacility : this.Strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
 
             if (!this.ExistOrderNumber && this.ExistStore)
@@ -153,18 +170,32 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.AddDependency(this.BillToCustomer, this);
-            derivation.AddDependency(this.ShipToCustomer, this);
-
-            foreach (var orderItem in this.OrderItems)
+            if (derivation.IsModified(this))
             {
-                derivation.AddDependency(this, orderItem);
+                derivation.MarkAsModified(this.BillToCustomer, M.SalesOrder.BillToCustomer);
+                derivation.AddDependency(this.BillToCustomer, this);
+
+                derivation.MarkAsModified(this.ShipToCustomer, M.SalesOrder.ShipToCustomer);
+                derivation.AddDependency(this.ShipToCustomer, this);
+
+                foreach (SalesOrderItem orderItem in this.SalesOrderItems)
+                {
+                    derivation.MarkAsModified(orderItem);
+                    derivation.AddDependency(this, orderItem);
+                }
             }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            this.AppsOnDeriveShipment(derivation);
+
+
+            this.AppsOnDeriveOrderPaymentState(derivation);
+            this.AppsOnDeriveOrderInvoiceState(derivation);
+            this.AppsOnDeriveOrderState(derivation);
 
             if (!this.ExistBillToCustomer && this.ExistShipToCustomer)
             {
@@ -278,16 +309,331 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
             }
 
-            this.AppsOnDeriveOrderItems(derivation);
+            var quantityOrderedByProduct = new Dictionary<Product, decimal>();
+            var totalBasePriceByProduct = new Dictionary<Product, decimal>();
 
-            this.AppsOnDeriveOrderShipmentState(derivation);
-            this.AppsOnDeriveOrderInvoiceState(derivation);
-            this.AppsOnDeriveOrderState(derivation);
+            this.ValidOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
+
+            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItems)
+            {
+                salesOrderItem.ShipToAddress = salesOrderItem.ExistAssignedShipToAddress ? salesOrderItem.AssignedShipToAddress : salesOrderItem.SalesOrderWhereSalesOrderItem.ShipToAddress;
+                salesOrderItem.ShipToParty = salesOrderItem.ExistAssignedShipToParty ? salesOrderItem.AssignedShipToParty : salesOrderItem.SalesOrderWhereSalesOrderItem.ShipToCustomer;
+
+                if (salesOrderItem.AssignedDeliveryDate.HasValue)
+                {
+                    salesOrderItem.DeliveryDate = salesOrderItem.AssignedDeliveryDate.Value;
+                }
+                else if (this.ExistDeliveryDate)
+                {
+                    //TODO: check if item can have its own deliverydate
+                    salesOrderItem.DeliveryDate = this.DeliveryDate;
+                }
+
+                if (salesOrderItem.ExistProduct)
+                {
+                    salesOrderItem.SalesReps = salesOrderItem.Product.ProductCategoriesWhereAllProduct
+                        .Select(v => SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, v, salesOrderItem.SalesOrderWhereSalesOrderItem.OrderDate))
+                        .ToArray();
+                }
+                else
+                {
+                    salesOrderItem.RemoveSalesReps();
+                }
+
+                salesOrderItem.VatRegime = salesOrderItem.ExistAssignedVatRegime ? salesOrderItem.AssignedVatRegime : this.VatRegime;
+
+
+                if (salesOrderItem.ExistVatRegime && salesOrderItem.VatRegime.ExistVatRate)
+                {
+                    salesOrderItem.DerivedVatRate = salesOrderItem.VatRegime.VatRate;
+                }
+
+                if (!salesOrderItem.ExistDerivedVatRate && (salesOrderItem.ExistProduct || salesOrderItem.ExistProductFeature))
+                {
+                    salesOrderItem.DerivedVatRate = salesOrderItem.ExistProduct ? salesOrderItem.Product.VatRate : salesOrderItem.ProductFeature.VatRate;
+                }
+
+                // TODO
+                if (!salesOrderItem.SalesOrderItemShipmentState.Shipped)
+                {
+
+                }
+
+                //foreach (OrderShipment orderShipment in salesOrderItem.OrderShipmentsWhereOrderItem)
+                //{
+                //    if ((!salesOrderItem.ExistSalesOrderItemShipmentState || !salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).Shipped)))
+                //    {
+                //        decimal quantity = orderShipment.Quantity;
+                //        salesOrderItem.QuantityPicked -= quantity;
+                //        salesOrderItem.QuantityPendingShipment -= quantity;
+                //        salesOrderItem.QuantityShipped += quantity;
+                //    }
+                //}
+
+                #region State
+
+                var salesOrderItemStates = new SalesOrderItemStates(salesOrderItem.Strategy.Session);
+
+                if (salesOrderItem.SalesOrderItemShipmentState.Shipped && salesOrderItem.SalesOrderItemInvoiceState.Invoiced)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Completed;
+                }
+
+                if (salesOrderItem.SalesOrderItemState.Completed && salesOrderItem.SalesOrderItemPaymentState.Paid)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
+                }
+
+                if (salesOrderItem.ExistOrderWhereValidOrderItem)
+                {
+                    var order = salesOrderItem.SalesOrderWhereSalesOrderItem;
+
+                    if (order.SalesOrderState.InProcess)
+                    {
+                        if (salesOrderItem.SalesOrderItemState.Created)
+                        {
+                            salesOrderItem.Confirm();
+                        }
+                    }
+
+                    if (order.SalesOrderState.Finished)
+                    {
+                        salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
+                    }
+
+                    if (order.SalesOrderState.Cancelled)
+                    {
+                        salesOrderItem.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Cancelled;
+                    }
+
+                    if (order.SalesOrderState.Rejected)
+                    {
+                        salesOrderItem.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Rejected;
+                    }
+                }
+
+                if (salesOrderItem.SalesOrderItemState.Equals(salesOrderItemStates.InProcess)
+                    && !salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).Shipped))
+                {
+                    if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
+                    {
+                        salesOrderItem.AppsOnDeriveQuantities(derivation);
+
+                        salesOrderItem.PreviousQuantity = salesOrderItem.QuantityOrdered;
+                        salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
+                        salesOrderItem.PreviousProduct = salesOrderItem.Product;
+                    }
+
+                    if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
+                    {
+                        salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(salesOrderItem.Strategy.Session).Assigned;
+                        salesOrderItem.QuantityReserved = 1;
+                        salesOrderItem.QuantityRequestsShipping = 1;
+                    }
+                }
+
+                if (salesOrderItem.SalesOrderItemState.Equals(salesOrderItemStates.Cancelled) ||
+                    salesOrderItem.SalesOrderItemState.Equals(salesOrderItemStates.Rejected))
+                {
+                    if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
+                    {
+                        salesOrderItem.AppsOnDeriveQuantities(derivation);
+                    }
+
+                    if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
+                    {
+                        salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(salesOrderItem.Strategy.Session).Available;
+                    }
+                }
+
+                if (salesOrderItem.QuantityShipped > 0)
+                {
+                    if (salesOrderItem.QuantityShipped < salesOrderItem.QuantityOrdered)
+                    {
+                        if (!salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).PartiallyShipped))
+                        {
+                            salesOrderItem.SalesOrderItemShipmentState = new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).PartiallyShipped;
+                        }
+                    }
+                    else
+                    {
+                        if (!salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).Shipped))
+                        {
+                            salesOrderItem.SalesOrderItemShipmentState = new SalesOrderItemShipmentStates(salesOrderItem.Strategy.Session).Shipped;
+                        }
+                    }
+                }
+
+                SalesOrderItemPaymentState state = null;
+
+                foreach (OrderItemBilling orderItemBilling in salesOrderItem.OrderItemBillingsWhereOrderItem)
+                {
+                    if (orderItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
+                    {
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(salesOrderItem.Strategy.Session).Paid))
+                        {
+                            state = new SalesOrderItemPaymentStates(salesOrderItem.Strategy.Session).Paid;
+                        }
+
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(salesOrderItem.Strategy.Session).PartiallyPaid))
+                        {
+                            state = new SalesOrderItemPaymentStates(salesOrderItem.Strategy.Session).PartiallyPaid;
+                        }
+                    }
+                }
+
+                foreach (OrderShipment orderShipment in salesOrderItem.OrderShipmentsWhereOrderItem)
+                {
+                    foreach (ShipmentItemBilling shipmentItemBilling in orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
+                    {
+                        if (shipmentItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
+                        {
+                            if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(salesOrderItem.Strategy.Session).Paid))
+                            {
+                                state = new SalesOrderItemPaymentStates(salesOrderItem.Strategy.Session).Paid;
+                            }
+
+                            if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(salesOrderItem.Strategy.Session).PartiallyPaid))
+                            {
+                                state = new SalesOrderItemPaymentStates(salesOrderItem.Strategy.Session).PartiallyPaid;
+                            }
+                        }
+                    }
+                }
+
+                if (state != null)
+                {
+                    if (!salesOrderItem.SalesOrderItemPaymentState.Equals(state))
+                    {
+                        salesOrderItem.SalesOrderItemPaymentState = state;
+                    }
+                }
+
+                #endregion
+
+            }
+
+
+            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItems)
+            {
+                foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
+                {
+                    this.CalculatePrices(featureItem, 0, 0);
+                }
+
+                salesOrderItem.UnitPurchasePrice = 0;
+
+                if (salesOrderItem.Part != null &&
+                    salesOrderItem.Part.ExistSupplierOfferingsWherePart &&
+                    salesOrderItem.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
+                {
+                    decimal price = 0;
+                    UnitOfMeasure uom = null;
+
+                    foreach (SupplierOffering supplierOffering in salesOrderItem.Part.SupplierOfferingsWherePart)
+                    {
+                        if (supplierOffering.FromDate <= this.OrderDate &&
+                            (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.OrderDate))
+                        {
+                            price = supplierOffering.Price;
+                            uom = supplierOffering.UnitOfMeasure;
+                        }
+                    }
+
+                    if (price != 0)
+                    {
+                        salesOrderItem.UnitPurchasePrice = price;
+                        if (uom != null && !uom.Equals(salesOrderItem.Product.UnitOfMeasure))
+                        {
+                            foreach (UnitOfMeasureConversion unitOfMeasureConversion in uom.UnitOfMeasureConversions)
+                            {
+                                if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(salesOrderItem.Product.UnitOfMeasure))
+                                {
+                                    salesOrderItem.UnitPurchasePrice = Math.Round(salesOrderItem.UnitPurchasePrice * (1 / unitOfMeasureConversion.ConversionFactor), 2);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (salesOrderItem.RequiredMarkupPercentage.HasValue && salesOrderItem.UnitPurchasePrice > 0)
+                {
+                    salesOrderItem.ActualUnitPrice = Math.Round((1 + (salesOrderItem.RequiredMarkupPercentage.Value / 100)) * salesOrderItem.UnitPurchasePrice, 2);
+                }
+
+                if (salesOrderItem.RequiredProfitMargin.HasValue && salesOrderItem.UnitPurchasePrice > 0)
+                {
+                    salesOrderItem.ActualUnitPrice = Math.Round(salesOrderItem.UnitPurchasePrice / (1 - (salesOrderItem.RequiredProfitMargin.Value / 100)), 2);
+                }
+
+                this.CalculatePrices(salesOrderItem, 0, 0);
+
+                var amountAlreadyInvoiced = salesOrderItem.OrderItemBillingsWhereOrderItem?.Sum(v => v.Amount);
+                if (amountAlreadyInvoiced == 0)
+                {
+                    amountAlreadyInvoiced = salesOrderItem.OrderShipmentsWhereOrderItem
+                        .SelectMany(orderShipment => orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
+                        .Aggregate(amountAlreadyInvoiced, (current, shipmentItemBilling) => current + shipmentItemBilling.Amount);
+                }
+
+                var leftToInvoice = (salesOrderItem.QuantityOrdered * salesOrderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+
+                if (amountAlreadyInvoiced > 0 && leftToInvoice > 0)
+                {
+                    salesOrderItem.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(salesOrderItem.Strategy.Session).PartiallyInvoiced;
+                }
+
+                if (amountAlreadyInvoiced > 0 && leftToInvoice <= 0)
+                {
+                    salesOrderItem.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(salesOrderItem.Strategy.Session).Invoiced;
+                }
+
+                if (salesOrderItem.ExistProduct)
+                {
+                    if (!quantityOrderedByProduct.ContainsKey(salesOrderItem.Product))
+                    {
+                        quantityOrderedByProduct.Add(salesOrderItem.Product, salesOrderItem.QuantityOrdered);
+                        totalBasePriceByProduct.Add(salesOrderItem.Product, salesOrderItem.TotalBasePrice);
+                    }
+                    else
+                    {
+                        quantityOrderedByProduct[salesOrderItem.Product] += salesOrderItem.QuantityOrdered;
+                        totalBasePriceByProduct[salesOrderItem.Product] += salesOrderItem.TotalBasePrice;
+                    }
+                }
+            }
+
+            // for the second time, because unitbaseprice might not be set
+            this.ValidOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
+
+            foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
+            {
+                decimal quantityOrdered = 0;
+                decimal totalBasePrice = 0;
+
+                if (salesOrderItem.ExistProduct)
+                {
+                    quantityOrderedByProduct.TryGetValue(salesOrderItem.Product, out quantityOrdered);
+                    totalBasePriceByProduct.TryGetValue(salesOrderItem.Product, out totalBasePrice);
+                }
+
+                foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
+                {
+                    this.CalculatePrices(featureItem, quantityOrdered, totalBasePrice);
+                }
+
+                this.CalculatePrices(salesOrderItem, quantityOrdered, totalBasePrice);
+            }
+
             this.AppsOnDeriveLocale(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
             this.AppsOnDeriveCustomers(derivation);
-            this.AppsOnDeriveSalesReps(derivation);
-            this.AppsOnDeriveOrderPaymentState(derivation);
+
+            this.SalesReps = this.ValidOrderItems
+                .OfType<SalesOrderItem>()
+                .SelectMany(v => v.SalesReps)
+                .Distinct()
+                .ToArray();
             this.AppsDeriveCanShip(derivation);
             this.AppsDeriveCanInvoice(derivation);
 
@@ -298,7 +644,7 @@ namespace Allors.Domain
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
-            
+
             this.ResetPrintDocument();
         }
 
@@ -306,18 +652,18 @@ namespace Allors.Domain
         {
             if (!this.CanShip)
             {
-                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
             }
 
             if (!this.CanInvoice)
             {
-                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
 
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
-                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
             {
-                this.RemoveDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
         }
 
@@ -406,116 +752,99 @@ namespace Allors.Domain
             {
                 this.SalesOrderPaymentState = new SalesOrderPaymentStates(this.Strategy.Session).PartiallyPaid;
             }
-
-            this.AppsOnDeriveOrderState(derivation);
         }
 
-        public void AppsOnDeriveOrderShipmentState(IDerivation derivation)
+
+        public void AppsOnDeriveShipment(IDerivation derivation)
         {
-            var itemsShipped = false;
-            var itemsPartiallyShipped = false;
-            var itemsNotShipped = false;
-
-            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItems)
             {
-                if (orderItem.ExistSalesOrderItemShipmentState)
-                {
-                    if (orderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).PartiallyShipped))
-                    {
-                        itemsPartiallyShipped = true;
-                    }
-
-                    if (orderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped))
-                    {
-                        itemsShipped = true;
-                    }
-                }
-                else
-                {
-                    itemsNotShipped = true;
-                }
+                salesOrderItem.QuantityPicked = salesOrderItem.OrderShipmentsWhereOrderItem.Sum(v => v.QuantityPicked);
+                salesOrderItem.QuantityShipped = salesOrderItem.OrderShipmentsWhereOrderItem.Sum(v => v.Quantity);
             }
 
-            if (itemsShipped && !itemsNotShipped && !itemsPartiallyShipped &&
-                (!this.ExistSalesOrderShipmentState || !this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped)))
+            var validSalesOrderItems = this.ValidOrderItems.Cast<SalesOrderItem>().ToArray();
+
+            // true if any item has been shipped
+            var itemsShipped = validSalesOrderItems.Any(v => v.SalesOrderItemShipmentState.Shipped);
+
+            // true if any item has been Partially Shipped
+            var itemsPartiallyShipped = validSalesOrderItems.Any(v => v.SalesOrderItemShipmentState.PartiallyShipped);
+
+            // true if any item has no shipmentstate
+            var itemsNotShipped = validSalesOrderItems.Any(v => !v.ExistSalesOrderItemShipmentState);
+
+            if (itemsShipped && !itemsNotShipped
+                             && !itemsPartiallyShipped
+                             && !this.SalesOrderShipmentState.Shipped)
             {
                 this.SalesOrderShipmentState = new SalesOrderShipmentStates(this.Strategy.Session).Shipped;
             }
 
-            if ((itemsPartiallyShipped || (itemsShipped && itemsNotShipped)) &&
-                (!this.ExistSalesOrderShipmentState || !this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).PartiallyShipped)))
+            if ((itemsPartiallyShipped
+                 || itemsShipped && itemsNotShipped)
+                    && !this.SalesOrderShipmentState.PartiallyShipped)
             {
                 this.SalesOrderShipmentState = new SalesOrderShipmentStates(this.Strategy.Session).PartiallyShipped;
             }
-
-            this.AppsOnDeriveOrderState(derivation);
         }
 
         public void AppsOnDeriveOrderInvoiceState(IDerivation derivation)
         {
-            var itemsInvoiced = false;
-            var itemsPartiallyInvoiced = false;
+            var validSalesOrderItems = this.ValidOrderItems.Cast<SalesOrderItem>().ToArray();
+
+            var itemsInvoiced = validSalesOrderItems.Any(v => v.SalesOrderItemInvoiceState.PartiallyInvoiced);
+
+            var itemsPartiallyInvoiced = validSalesOrderItems.Any(v => v.SalesOrderItemInvoiceState.PartiallyInvoiced);
+
             var itemsNotInvoiced = false;
 
             foreach (SalesOrderItem orderItem in this.ValidOrderItems)
             {
                 if (orderItem.ExistSalesOrderItemInvoiceState)
                 {
-                    if (orderItem.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).PartiallyInvoiced))
+                    if (orderItem.SalesOrderItemInvoiceState.PartiallyInvoiced)
                     {
                         itemsPartiallyInvoiced = true;
                     }
 
-                    if (orderItem.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
+                    if (orderItem.SalesOrderItemInvoiceState.Invoiced)
                     {
                         itemsInvoiced = true;
                     }
-                }
-                else
-                {
-                    itemsNotInvoiced = true;
+
+                    if (orderItem.SalesOrderItemInvoiceState.NotInvoiced)
+                    {
+                        itemsNotInvoiced = true;
+                    }
                 }
             }
 
-            if (itemsInvoiced && !itemsNotInvoiced && !itemsPartiallyInvoiced &&
-                (!this.ExistSalesOrderInvoiceState || !this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced)))
+            if (itemsInvoiced && !itemsNotInvoiced && !itemsPartiallyInvoiced && !this.SalesOrderInvoiceState.Invoiced)
             {
                 this.SalesOrderInvoiceState = new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced;
             }
 
-            if ((itemsPartiallyInvoiced || (itemsInvoiced && itemsNotInvoiced)) &&
-                (!this.ExistSalesOrderInvoiceState || !this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).PartiallyInvoiced)))
+            if ((itemsPartiallyInvoiced || itemsInvoiced && itemsNotInvoiced) && !this.SalesOrderInvoiceState.PartiallyInvoiced)
             {
                 this.SalesOrderInvoiceState = new SalesOrderInvoiceStates(this.Strategy.Session).PartiallyInvoiced;
             }
-
-            this.AppsOnDeriveOrderState(derivation);
         }
 
+        /// <summary>
+        /// Depends on AppsOnDeriveShipment, AppsOnDeriveOrderPaymentState, AppsOnDeriveOrderInvoiceState
+        /// </summary>
+        /// <param name="derivation"></param>
         public void AppsOnDeriveOrderState(IDerivation derivation)
         {
-            if (this.ExistSalesOrderShipmentState && this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped) &&
-                this.ExistSalesOrderInvoiceState && this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced))
+            if (this.SalesOrderShipmentState.Shipped && this.SalesOrderInvoiceState.Invoiced)
             {
-                this.Complete();
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
             }
 
-            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Completed) &&
-                this.ExistSalesOrderPaymentState && this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).Paid))
+            if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
             {
-                this.SalesOrderState = new SalesOrderStates(this.strategy.Session).Finished;
-            }
-        }
-
-        public void AppsOnDeriveSalesReps(IDerivation derivation)
-        {
-            this.RemoveSalesReps();
-            foreach (SalesOrderItem item in this.ValidOrderItems)
-            {
-                foreach (Person salesRep in item.SalesReps)
-                {
-                    this.AddSalesRep(salesRep);
-                }
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
             }
         }
 
@@ -674,7 +1003,7 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = this.strategy.Session.GetSingleton().DefaultLocale;
+                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
             }
         }
 
@@ -814,8 +1143,6 @@ namespace Allors.Domain
                     {
                         orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
                     }
-
-                    orderItem.AppsOnDeriveOnShip(derivation);
                 }
             }
 
@@ -850,7 +1177,7 @@ namespace Allors.Domain
         private void AppsDeriveCanInvoice(IDerivation derivation)
         {
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
-                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForOrderItems))
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForOrderItems))
             {
                 this.CanInvoice = false;
 
@@ -937,7 +1264,7 @@ namespace Allors.Domain
 
                     salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
-                    new OrderItemBillingBuilder(this.strategy.Session)
+                    new OrderItemBillingBuilder(this.Strategy.Session)
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithAmount(leftToInvoice)
                         .WithOrderItem(orderItem)
@@ -950,7 +1277,7 @@ namespace Allors.Domain
             {
                 if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.Strategy.Session)
                                                 .WithTermType(salesTerm.TermType)
                                                 .WithTermValue(salesTerm.TermValue)
                                                 .WithDescription(salesTerm.Description)
@@ -959,7 +1286,7 @@ namespace Allors.Domain
 
                 if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.Strategy.Session)
                         .WithTermType(salesTerm.TermType)
                         .WithTermValue(salesTerm.TermValue)
                         .WithDescription(salesTerm.Description)
@@ -968,78 +1295,12 @@ namespace Allors.Domain
 
                 if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.Strategy.Session)
                         .WithTermType(salesTerm.TermType)
                         .WithTermValue(salesTerm.TermValue)
                         .WithDescription(salesTerm.Description)
                         .Build());
                 }
-            }
-        }
-
-        public void AppsOnDeriveOrderItems(IDerivation derivation)
-        {
-            var quantityOrderedByProduct = new Dictionary<Product, decimal>();
-            var totalBasePriceByProduct = new Dictionary<Product, decimal>();
-
-            foreach (SalesOrderItem salesOrderItem in this.OrderItems)
-            {
-                salesOrderItem.AppsOnDeriveShipTo(derivation);
-                salesOrderItem.AppsOnDeriveIsValidOrderItem(derivation);
-            }
-
-            foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
-            {
-                foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
-                {
-                    featureItem.AppsOnDerivePrices(derivation, 0, 0);
-                }
-
-                salesOrderItem.AppsOnDeriveDeliveryDate(derivation);
-                salesOrderItem.AppsOnDeriveSalesRep(derivation);
-                salesOrderItem.AppsOnDeriveVatRegime(derivation);
-                salesOrderItem.AppsCalculatePurchasePrice(derivation);
-                salesOrderItem.AppsCalculateUnitPrice(derivation);
-                salesOrderItem.AppsOnDerivePrices(derivation, 0, 0);
-                salesOrderItem.AppsOnDeriveInvoiceState(derivation);
-                salesOrderItem.AppsOnDeriveShipmentState(derivation);
-                salesOrderItem.AppsOnDerivePaymentState(derivation);
-
-                // for the second time, because unitbaseprice might not be set
-                salesOrderItem.AppsOnDeriveIsValidOrderItem(derivation);
-
-                if (salesOrderItem.ExistProduct)
-                {
-                    if (!quantityOrderedByProduct.ContainsKey(salesOrderItem.Product))
-                    {
-                        quantityOrderedByProduct.Add(salesOrderItem.Product, salesOrderItem.QuantityOrdered);
-                        totalBasePriceByProduct.Add(salesOrderItem.Product, salesOrderItem.TotalBasePrice);
-                    }
-                    else
-                    {
-                        quantityOrderedByProduct[salesOrderItem.Product] += salesOrderItem.QuantityOrdered;
-                        totalBasePriceByProduct[salesOrderItem.Product] += salesOrderItem.TotalBasePrice;
-                    }
-                }
-            }
-
-            foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
-            {
-                decimal quantityOrdered = 0;
-                decimal totalBasePrice = 0;
-
-                if (salesOrderItem.ExistProduct)
-                {
-                    quantityOrderedByProduct.TryGetValue(salesOrderItem.Product, out quantityOrdered);
-                    totalBasePriceByProduct.TryGetValue(salesOrderItem.Product, out totalBasePrice);
-                }
-
-                foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
-                {
-                    featureItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
-                }
-
-                salesOrderItem.AppsOnDerivePrices(derivation, quantityOrdered, totalBasePrice);
             }
         }
 
@@ -1069,6 +1330,217 @@ namespace Allors.Domain
                 this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model, images);
 
                 this.PrintDocument.Media.FileName = $"{this.OrderNumber}.odt";
+            }
+        }
+
+        public void CalculatePrices(SalesOrderItem salesOrderItem, decimal quantityOrdered, decimal totalBasePrice)
+        {
+            salesOrderItem.RemoveCurrentPriceComponents();
+
+            salesOrderItem.UnitBasePrice = 0;
+            salesOrderItem.UnitDiscount = 0;
+            salesOrderItem.UnitSurcharge = 0;
+            salesOrderItem.CalculatedUnitPrice = 0;
+            decimal discountAdjustmentAmount = 0;
+            decimal surchargeAdjustmentAmount = 0;
+
+            var customer = this.BillToCustomer;
+
+            var priceComponents = salesOrderItem.GetPriceComponents();
+
+            foreach (var priceComponent in priceComponents)
+            {
+                if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
+                {
+                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                    {
+                        PriceComponent = priceComponent,
+                        Customer = customer,
+                        Product = salesOrderItem.Product,
+                        SalesOrder = this,
+                        QuantityOrdered = quantityOrdered,
+                        ValueOrdered = totalBasePrice,
+                    }))
+                    {
+                        if (priceComponent.ExistPrice)
+                        {
+                            if (salesOrderItem.UnitBasePrice == 0 || priceComponent.Price < salesOrderItem.UnitBasePrice)
+                            {
+                                salesOrderItem.UnitBasePrice = priceComponent.Price ?? 0;
+
+                                salesOrderItem.RemoveCurrentPriceComponents();
+                                salesOrderItem.AddCurrentPriceComponent(priceComponent);
+                            }
+                        }
+                    }
+                }
+            }
+
+            ////SafeGuard
+            if (salesOrderItem.ExistProduct && !salesOrderItem.ExistActualUnitPrice)
+            {
+                var invalid = true;
+                foreach (BasePrice basePrice in salesOrderItem.CurrentPriceComponents)
+                {
+                    if (basePrice.Price > 0)
+                    {
+                        invalid = false;
+                    }
+                }
+
+                if (invalid)
+                {
+                    salesOrderItem.QuantityOrdered = 0;
+                }
+            }
+
+            if (!salesOrderItem.ExistActualUnitPrice)
+            {
+                var revenueBreakDiscount = 0M;
+                var revenueBreakSurcharge = 0M;
+
+                foreach (var priceComponent in priceComponents)
+                {
+                    if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
+                    {
+                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                        {
+                            PriceComponent = priceComponent,
+                            Customer = customer,
+                            Product = salesOrderItem.Product,
+                            SalesOrder = this,
+                            QuantityOrdered = quantityOrdered,
+                            ValueOrdered = totalBasePrice,
+                        }))
+                        {
+                            salesOrderItem.AddCurrentPriceComponent(priceComponent);
+
+                            revenueBreakDiscount = salesOrderItem.SetUnitDiscount(priceComponent, revenueBreakDiscount);
+                            revenueBreakSurcharge = salesOrderItem.SetUnitSurcharge(priceComponent, revenueBreakSurcharge);
+                        }
+                    }
+                }
+
+                var adjustmentBase = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+
+                if (salesOrderItem.ExistDiscountAdjustment)
+                {
+                    if (salesOrderItem.DiscountAdjustment.Percentage.HasValue)
+                    {
+                        discountAdjustmentAmount = Math.Round((adjustmentBase * salesOrderItem.DiscountAdjustment.Percentage.Value) / 100, 2);
+                    }
+                    else
+                    {
+                        discountAdjustmentAmount = salesOrderItem.DiscountAdjustment.Amount ?? 0;
+                    }
+
+                    salesOrderItem.UnitDiscount += discountAdjustmentAmount;
+                }
+
+                if (salesOrderItem.ExistSurchargeAdjustment)
+                {
+                    if (salesOrderItem.SurchargeAdjustment.Percentage.HasValue)
+                    {
+                        surchargeAdjustmentAmount = Math.Round((adjustmentBase * salesOrderItem.SurchargeAdjustment.Percentage.Value) / 100, 2);
+                    }
+                    else
+                    {
+                        surchargeAdjustmentAmount = salesOrderItem.SurchargeAdjustment.Amount ?? 0;
+                    }
+
+                    salesOrderItem.UnitSurcharge += surchargeAdjustmentAmount;
+                }
+            }
+
+            var price = salesOrderItem.ActualUnitPrice ?? salesOrderItem.UnitBasePrice;
+
+            decimal vat = 0;
+            if (salesOrderItem.ExistDerivedVatRate)
+            {
+                var vatRate = salesOrderItem.DerivedVatRate.Rate;
+                var vatBase = price - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+                vat = Math.Round((vatBase * vatRate) / 100, 2);
+            }
+
+            salesOrderItem.UnitVat = vat;
+            salesOrderItem.TotalBasePrice = price * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalDiscount = salesOrderItem.UnitDiscount * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalSurcharge = salesOrderItem.UnitSurcharge * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalOrderAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * salesOrderItem.QuantityOrdered;
+
+            if (salesOrderItem.TotalBasePrice > 0)
+            {
+                salesOrderItem.TotalDiscountAsPercentage = Math.Round((salesOrderItem.TotalDiscount / salesOrderItem.TotalBasePrice) * 100, 2);
+                salesOrderItem.TotalSurchargeAsPercentage = Math.Round((salesOrderItem.TotalSurcharge / salesOrderItem.TotalBasePrice) * 100, 2);
+            }
+
+            if (salesOrderItem.ActualUnitPrice.HasValue)
+            {
+                salesOrderItem.CalculatedUnitPrice = salesOrderItem.ActualUnitPrice.Value;
+            }
+            else
+            {
+                salesOrderItem.CalculatedUnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+            }
+
+            salesOrderItem.TotalExVat = salesOrderItem.CalculatedUnitPrice * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalVat = salesOrderItem.UnitVat * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalIncVat = salesOrderItem.TotalExVat + salesOrderItem.TotalVat;
+
+            foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
+            {
+                salesOrderItem.CalculatedUnitPrice += salesOrderItem.CalculatedUnitPrice;
+                salesOrderItem.TotalBasePrice += salesOrderItem.TotalBasePrice;
+                salesOrderItem.TotalDiscount += salesOrderItem.TotalDiscount;
+                salesOrderItem.TotalSurcharge += salesOrderItem.TotalSurcharge;
+                salesOrderItem.TotalExVat += salesOrderItem.TotalExVat;
+                salesOrderItem.TotalVat += salesOrderItem.TotalVat;
+                salesOrderItem.TotalIncVat += salesOrderItem.TotalIncVat;
+            }
+
+            var toCurrency = this.Currency;
+            var fromCurrency = this.TakenBy?.PreferredCurrency;
+
+            if (fromCurrency != null && toCurrency != null)
+            {
+                if (fromCurrency != null && toCurrency != null && fromCurrency.Equals(toCurrency))
+                {
+                    salesOrderItem.TotalBasePriceCustomerCurrency = salesOrderItem.TotalBasePrice;
+                    salesOrderItem.TotalDiscountCustomerCurrency = salesOrderItem.TotalDiscount;
+                    salesOrderItem.TotalSurchargeCustomerCurrency = salesOrderItem.TotalSurcharge;
+                    salesOrderItem.TotalExVatCustomerCurrency = salesOrderItem.TotalExVat;
+                    salesOrderItem.TotalVatCustomerCurrency = salesOrderItem.TotalVat;
+                    salesOrderItem.TotalIncVatCustomerCurrency = salesOrderItem.TotalIncVat;
+                }
+                else
+                {
+                    salesOrderItem.TotalBasePriceCustomerCurrency =
+                        Currencies.ConvertCurrency(salesOrderItem.TotalBasePrice, fromCurrency, toCurrency);
+                    salesOrderItem.TotalDiscountCustomerCurrency =
+                        Currencies.ConvertCurrency(salesOrderItem.TotalDiscount, fromCurrency, toCurrency);
+                    salesOrderItem.TotalSurchargeCustomerCurrency =
+                        Currencies.ConvertCurrency(salesOrderItem.TotalSurcharge, fromCurrency, toCurrency);
+                    salesOrderItem.TotalExVatCustomerCurrency =
+                        Currencies.ConvertCurrency(salesOrderItem.TotalExVat, fromCurrency, toCurrency);
+                    salesOrderItem.TotalVatCustomerCurrency = Currencies.ConvertCurrency(salesOrderItem.TotalVat, fromCurrency, toCurrency);
+                    salesOrderItem.TotalIncVatCustomerCurrency =
+                        Currencies.ConvertCurrency(salesOrderItem.TotalIncVat, fromCurrency, toCurrency);
+                }
+            }
+
+            salesOrderItem.InitialMarkupPercentage = 0;
+            salesOrderItem.MaintainedMarkupPercentage = 0;
+            salesOrderItem.InitialProfitMargin = 0;
+            salesOrderItem.MaintainedProfitMargin = 0;
+
+            ////internet wiki page on markup business
+            if (salesOrderItem.ExistUnitPurchasePrice && salesOrderItem.UnitPurchasePrice != 0 && salesOrderItem.CalculatedUnitPrice != 0 && salesOrderItem.UnitBasePrice != 0)
+            {
+                salesOrderItem.InitialMarkupPercentage = Math.Round(((salesOrderItem.UnitBasePrice / salesOrderItem.UnitPurchasePrice) - 1) * 100, 2);
+                salesOrderItem.MaintainedMarkupPercentage = Math.Round(((salesOrderItem.CalculatedUnitPrice / salesOrderItem.UnitPurchasePrice) - 1) * 100, 2);
+
+                salesOrderItem.InitialProfitMargin = Math.Round(((salesOrderItem.UnitBasePrice - salesOrderItem.UnitPurchasePrice) / salesOrderItem.UnitBasePrice) * 100, 2);
+                salesOrderItem.MaintainedProfitMargin = Math.Round(((salesOrderItem.CalculatedUnitPrice - salesOrderItem.UnitPurchasePrice) / salesOrderItem.CalculatedUnitPrice) * 100, 2);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public InventoryStrategy InventoryStrategy
-            => this.strategy.Session.GetSingleton().Settings.InventoryStrategy;
+            => this.Strategy.Session.GetSingleton().Settings.InventoryStrategy;
 
         public int QuantityOnHand
             => this.InventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? this.Quantity : 0;
@@ -87,9 +87,9 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.Quantity -= (int)pickListItem.ActualQuantity.Value;
+                    this.Quantity -= (int)pickListItem.QuantityPicked;
                 }
             }
 

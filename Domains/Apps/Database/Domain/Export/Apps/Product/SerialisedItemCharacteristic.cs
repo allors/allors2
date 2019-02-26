@@ -35,7 +35,7 @@ namespace Allors.Domain
         {
             var existingLocalisedtexts = this.LocalisedValues.ToDictionary(d => d.Locale);
 
-            foreach (Locale locale in this.strategy.Session.GetSingleton().AdditionalLocales)
+            foreach (Locale locale in this.Strategy.Session.GetSingleton().AdditionalLocales)
             {
                 if (existingLocalisedtexts.TryGetValue(locale, out LocalisedText localisedText))
                 {
@@ -44,7 +44,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    localisedText = new LocalisedTextBuilder(this.strategy.Session)
+                    localisedText = new LocalisedTextBuilder(this.Strategy.Session)
                         .WithLocale(locale)
                         .Build();
 

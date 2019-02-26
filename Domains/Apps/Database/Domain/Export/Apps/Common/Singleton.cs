@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (derivation.HasChangedRole(this, this.Meta.AdditionalLocales))
             {
-                foreach (Good product in new Goods(this.strategy.Session).Extent())
+                foreach (Good product in new Goods(this.Strategy.Session).Extent())
                 {
                     derivation.AddDerivable(product);
                 }
@@ -50,7 +50,7 @@ namespace Allors.Domain
         {
             if (!this.ExistLogoImage)
             {
-                this.LogoImage = new MediaBuilder(this.strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
+                this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
             }
         }
 

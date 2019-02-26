@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -21,54 +24,24 @@ namespace Allors.Domain
 
     public partial class PickListItem
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
+            {
+                derivation.AddDependency(itemIssuance, this);
+                derivation.MarkAsModified(itemIssuance, M.ItemIssuance.PickListItem);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.ExistActualQuantity && this.ActualQuantity > this.RequestedQuantity)
+            if (this.QuantityPicked > this.Quantity)
             {
-                derivation.Validation.AddError(this, M.PickListItem.ActualQuantity, ErrorMessages.PickListItemQuantityMoreThanAllowed);
-            }
-
-            this.AppsOnDeriveOrderItemAdjustment(derivation);
-        }
-
-        public void AppsOnDeriveOrderItemAdjustment(IDerivation derivation)
-        {
-            if (this.ActualQuantity.HasValue && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked))
-            {
-                var diff = this.RequestedQuantity - this.ActualQuantity.Value;
-
-                foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
-                {
-                    itemIssuance.IssuanceDateTime = DateTime.UtcNow;
-                    foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
-                    {
-                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem && !orderShipment.Picked)
-                        {
-                            if (diff > 0)
-                            {
-                                if (orderShipment.Quantity >= diff)
-                                {
-                                    orderShipment.Quantity -= diff;
-                                    orderShipment.ShipmentItem.Quantity -= diff;
-                                    itemIssuance.Quantity -= diff;
-                                    diff = 0;
-                                }
-                                else
-                                {
-                                    orderShipment.ShipmentItem.Quantity -= orderShipment.Quantity;
-                                    itemIssuance.Quantity -= orderShipment.Quantity;
-                                    diff -= orderShipment.Quantity;
-                                    orderShipment.Quantity = 0;
-                                }
-                            }
-
-                            salesOrderItem.AppsOnDeriveOnPicked(derivation, orderShipment.Quantity);
-                            orderShipment.Picked = true;
-                        }
-                    }
-                }
+                derivation.Validation.AddError(this, M.PickListItem.QuantityPicked, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }
         }
     }

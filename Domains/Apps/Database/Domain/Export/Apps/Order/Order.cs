@@ -17,6 +17,5 @@ namespace Allors.Domain
 {
     public partial interface Order
     {
-        OrderItem[] OrderItems { get; }
     }
 }

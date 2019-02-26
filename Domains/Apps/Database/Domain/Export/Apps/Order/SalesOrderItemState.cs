@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedItemCharacteristicType.cs" company="Allors bvba">
+// <copyright file="SalesOrderItemStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,21 +15,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Linq;
+    using System;
 
-    using Meta;
-
-    public partial class SerialisedItemCharacteristicType
+    public partial class SalesOrderItemState
     {
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
+        public bool Created => Equals(this.UniqueId, SalesOrderItemStates.CreatedId);
 
-            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
-            {
-                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
-            }
-        }
+        public bool Cancelled => Equals(this.UniqueId, SalesOrderItemStates.CancelledId);
+
+        public bool Completed => Equals(this.UniqueId, SalesOrderItemStates.CompletedId);
+
+        public bool Rejected => Equals(this.UniqueId, SalesOrderItemStates.RejectedId);
+
+        public bool Finished => Equals(this.UniqueId, SalesOrderItemStates.FinishedId);
+
+        public bool OnHold => Equals(this.UniqueId, SalesOrderItemStates.OnHoldId);
+
+        public bool InProcess => Equals(this.UniqueId, SalesOrderItemStates.InProcessId);
     }
 }

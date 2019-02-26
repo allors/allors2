@@ -16,22 +16,19 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     using Meta;
 
     public partial class People
     {
         protected override void AppsSetup(Setup config)
         {
-            var internalOrganisations = this.Session.Extent<Organisation>();
-            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
-
+            var internalOrganisations = new Organisations(this.Session).InternalOrganisations();
+            
             var users = new Users(this.Session).Extent();
 
             foreach (Person person in users)
             {
-                foreach (InternalOrganisation internalOrganisation in internalOrganisations)
+                foreach (var internalOrganisation in internalOrganisations)
                 {
                     new EmploymentBuilder(this.Session).WithEmployer(internalOrganisation).WithEmployee(person).Build();
                 }

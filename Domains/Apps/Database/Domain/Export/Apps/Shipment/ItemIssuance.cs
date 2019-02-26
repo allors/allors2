@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedItemCharacteristicType.cs" company="Allors bvba">
+// <copyright file="PickList.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,22 +13,31 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
-    using System.Linq;
+    using System;
+    using System.Collections.Generic;
 
-    using Meta;
+    using Allors.Meta;
 
-    public partial class SerialisedItemCharacteristicType
+    public partial class ItemIssuance
     {
-        public void AppsOnDerive(ObjectOnDerive method)
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
-            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
+            derivation.AddDependency(this.ShipmentItem, this);
+            derivation.MarkAsModified(this.ShipmentItem, M.ItemIssuance.ShipmentItem);
+        }
+
+        public void AppsOnPostBuild(ObjectOnPostBuild method)
+        {
+            if (!this.ExistIssuanceDateTime)
             {
-                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
+                this.IssuanceDateTime = this.Strategy.Session.Now();
             }
         }
     }

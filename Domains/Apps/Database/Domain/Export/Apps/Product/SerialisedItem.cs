@@ -31,7 +31,7 @@ namespace Allors.Domain
 
             if (!this.ExistItemNumber)
             {
-                this.ItemNumber = this.strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
+                this.ItemNumber = this.Strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
             }
         }
 
@@ -64,7 +64,7 @@ namespace Allors.Domain
                     var characteristic = this.SerialisedItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedItemCharacteristicType, characteristicType));
                     if (characteristic == null)
                     {
-                        var newCharacteristic = new SerialisedItemCharacteristicBuilder(this.strategy.Session)
+                        var newCharacteristic = new SerialisedItemCharacteristicBuilder(this.Strategy.Session)
                             .WithSerialisedItemCharacteristicType(characteristicType).Build();
 
                         this.AddSerialisedItemCharacteristic(newCharacteristic);

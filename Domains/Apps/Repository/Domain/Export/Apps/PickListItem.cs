@@ -17,16 +17,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("6e89daf6-f07f-4a7d-8032-cc3c08d443c2")]
-        [AssociationId("73671086-9f60-489a-a77b-69ab508862cc")]
-        [RoleId("50ef0257-edfd-44c4-ab76-230432d1be7d")]
-        #endregion
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        public decimal RequestedQuantity { get; set; }
-
-        #region Allors
         [Id("8a8ad2c2-e301-40be-8c7e-3c8291c3bbe9")]
         [AssociationId("1b28c7b7-f770-4e49-acbf-ade8e67ba939")]
         [RoleId("eb4da206-6f39-4615-84e7-afb12f1cf486")]
@@ -35,6 +25,16 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public InventoryItem InventoryItem { get; set; }
+
+        #region Allors
+        [Id("6e89daf6-f07f-4a7d-8032-cc3c08d443c2")]
+        [AssociationId("73671086-9f60-489a-a77b-69ab508862cc")]
+        [RoleId("50ef0257-edfd-44c4-ab76-230432d1be7d")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        public decimal Quantity { get; set; }
         
         #region Allors
         [Id("f32d100b-a6e8-4cb2-98b4-c06264789c76")]
@@ -43,7 +43,8 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
-        public decimal ActualQuantity { get; set; }
+        [Required]
+        public decimal QuantityPicked { get; set; }
         
         #region inherited methods
 

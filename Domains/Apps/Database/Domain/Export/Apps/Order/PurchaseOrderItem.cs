@@ -243,11 +243,11 @@ namespace Allors.Domain
             {
                 if (quantityReceived < this.QuantityOrdered)
                 {
-                   this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.strategy.Session).PartiallyReceived;
+                   this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).PartiallyReceived;
                 }
                 else
                 {
-                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.strategy.Session).Completed;
+                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Completed;
                 }
             }
 

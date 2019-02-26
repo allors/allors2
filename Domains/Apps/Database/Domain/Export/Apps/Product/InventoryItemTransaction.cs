@@ -206,7 +206,7 @@ namespace Allors.Domain
 
             if (this.Part.InventoryItemKind.IsSerialized && this.Quantity > 0)
             {
-                var builder = new SerialisedInventoryItemBuilder(this.strategy.Session)
+                var builder = new SerialisedInventoryItemBuilder(this.Strategy.Session)
                     .WithFacility(facility)
                     .WithUnitOfMeasure(unitOfMeasure)
                     .WithSerialisedItem(this.SerialisedItem)
@@ -222,7 +222,7 @@ namespace Allors.Domain
             }
             else if (this.Part.InventoryItemKind.IsNonSerialized)
             {
-                var builder = new NonSerialisedInventoryItemBuilder(this.strategy.Session)
+                var builder = new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
                     .WithFacility(facility)
                     .WithUnitOfMeasure(unitOfMeasure)
                     .WithPart(this.Part)

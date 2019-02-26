@@ -19,6 +19,8 @@ namespace Allors.Domain
 
     public partial class QuoteItem
     {
+        public decimal LineTotal => this.Quantity * this.UnitPrice;
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.QuoteItem, M.QuoteItem.QuoteItemState),
@@ -38,14 +40,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistQuoteWhereQuoteItem)
+            if (derivation.IsModified(this))
             {
-                derivation.AddDependency(this.QuoteWhereQuoteItem, this);
-            }
-
-            if (derivation.IsCreated(this) && this.ExistSerialisedItem)
-            {
-                this.Details = this.SerialisedItem.Details;
+                if (this.ExistQuoteWhereQuoteItem)
+                {
+                    derivation.AddDependency(this.QuoteWhereQuoteItem, this);
+                }
             }
         }
 
@@ -57,6 +57,11 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.SerialisedItem, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
 
+            if (!this.ExistDetails && this.ExistSerialisedItem)
+            {
+                this.Details = this.SerialisedItem.Details;
+            }
+
             if (this.ExistRequestItem)
             {
                 this.RequiredByDate = this.RequestItem.RequiredByDate;
@@ -64,7 +69,7 @@ namespace Allors.Domain
 
             if (!this.ExistUnitOfMeasure)
             {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
             if (this.QuoteWhereQuoteItem.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Cancelled))

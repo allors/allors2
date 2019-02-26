@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.Good" Collapsed="true">
+    <Position X="5.5" Y="8.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Part" />
+      <Property Name="Facility" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderItem">
+    <Position X="12.5" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAgAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Part" Collapsed="true">
+    <Position X="2.75" Y="7.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEQAQAAAAAACQAAAAQAGAQAAAAAAgAAgBACABBBA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Product" Collapsed="true">
+    <Position X="7.5" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgBABEAAQAAAAAAABAAAAQAABAAAAAAAAAAICAAIgA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Shipment" Collapsed="true">
+    <Position X="12.5" Y="1" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>CAgAAoCAAAAEEAAAAAAQAYAAAkAQQCACAgSAIUAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipmentItems" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Facility" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ItemIssuance">
+    <Position X="0.5" Y="0.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAACAAAAAAAAAAAAAAACAAAAAAAQAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InventoryItem" />
+      <Property Name="ShipmentItem" />
+      <Property Name="PickListItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderShipment">
+    <Position X="7.75" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEACAAAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OrderItem" />
+      <Property Name="ShipmentItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PickListItem">
+    <Position X="3.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InventoryItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem">
+    <Position X="12.75" Y="7.75" Width="2.25" />
+    <Members>
+      <Property Name="AllVersions" Hidden="true" />
+      <Property Name="AssignedShipToAddress" Hidden="true" />
+      <Property Name="AssignedShipToParty" Hidden="true" />
+      <Property Name="CurrentVersion" Hidden="true" />
+      <Property Name="Details" Hidden="true" />
+      <Property Name="InitialMarkupPercentage" Hidden="true" />
+      <Property Name="InitialProfitMargin" Hidden="true" />
+      <Property Name="InvoiceItemType" Hidden="true" />
+      <Property Name="LastSalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="LastSalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="LastSalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="LastSalesOrderItemState" Hidden="true" />
+      <Property Name="MaintainedMarkupPercentage" Hidden="true" />
+      <Property Name="MaintainedProfitMargin" Hidden="true" />
+      <Property Name="NewSerialisedItemState" Hidden="true" />
+      <Property Name="OrderedWithFeatures" Hidden="true" />
+      <Property Name="PreviousProduct" Hidden="true" />
+      <Property Name="PreviousReservedFromNonSerialisedInventoryItem" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemState" Hidden="true" />
+      <Property Name="ProductFeature" Hidden="true" />
+      <Property Name="RequiredMarkupPercentage" Hidden="true" />
+      <Property Name="RequiredProfitMargin" Hidden="true" />
+      <Property Name="ReservedFromNonSerialisedInventoryItem" Hidden="true" />
+      <Property Name="ReservedFromSerialisedInventoryItem" Hidden="true" />
+      <Property Name="SalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="SalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="SalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="SalesOrderItemState" Hidden="true" />
+      <Property Name="SalesReps" Hidden="true" />
+      <Property Name="SerialisedItem" Hidden="true" />
+      <Property Name="ShipToAddress" Hidden="true" />
+      <Property Name="ShipToParty" Hidden="true" />
+      <Property Name="UnitPurchasePrice" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAxGFAkAIQABACIAQEwAAICKEMApAApAAAKAACAE4AE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.ShipmentItem">
+    <Position X="7.5" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAIAAAAQAAAAABIAAAAACAAAAgAAAAAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Part" />
+      <Property Name="Good" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PickList" Collapsed="true">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAQAAAAAAAAAAAgIAAAABCAAgAAAAgCQAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PickListItems" />
+    </ShowAsAssociation>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

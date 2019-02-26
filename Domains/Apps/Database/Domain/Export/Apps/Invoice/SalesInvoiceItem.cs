@@ -421,7 +421,7 @@ namespace Allors.Domain
 
             if (priceComponents.Count == 0)
             {
-                var extent = new PriceComponents(this.strategy.Session).Extent();
+                var extent = new PriceComponents(this.Strategy.Session).Extent();
                 if (this.ExistProduct)
                 {
                     foreach (PriceComponent priceComponent in extent)
@@ -436,7 +436,7 @@ namespace Allors.Domain
 
                     if (priceComponents.Count == 0 && this.Product.ExistProductWhereVariant)
                     {
-                        extent = new PriceComponents(this.strategy.Session).Extent();
+                        extent = new PriceComponents(this.Strategy.Session).Extent();
                         foreach (PriceComponent priceComponent in extent)
                         {
                             if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
@@ -463,7 +463,7 @@ namespace Allors.Domain
                 }
 
                 // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-                extent = new PriceComponents(this.strategy.Session).Extent();
+                extent = new PriceComponents(this.Strategy.Session).Extent();
                 foreach (PriceComponent priceComponent in extent)
                 {
                     if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&

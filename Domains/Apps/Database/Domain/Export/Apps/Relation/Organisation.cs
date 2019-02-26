@@ -54,43 +54,43 @@ namespace Allors.Domain
             {
                 if (!this.ExistRequestCounter)
                 {
-                    this.RequestCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.RequestCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
                 if (!this.ExistQuoteCounter)
                 {
-                    this.QuoteCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.QuoteCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
                 
                 if (!this.ExistPurchaseInvoiceCounter)
                 {
-                    this.PurchaseInvoiceCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.PurchaseInvoiceCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
                 if (!this.ExistPurchaseOrderCounter)
                 {
-                    this.PurchaseOrderCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.PurchaseOrderCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
                 if (!this.ExistSubAccountCounter)
                 {
-                    this.SubAccountCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.SubAccountCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
                 if (!this.ExistIncomingShipmentCounter)
                 {
-                    this.IncomingShipmentCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.IncomingShipmentCounter = new CounterBuilder(this.Strategy.Session).Build();
                 }
 
                 if (!this.ExistWorkEffortCounter)
                 {
-                    this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.WorkEffortCounter = new CounterBuilder(this.Strategy.Session).Build();
                     this.WorkEffortPrefix = "W";
                 }
 
                 if (!this.ExistInvoiceSequence)
                 {
-                    this.InvoiceSequence = new InvoiceSequenceBuilder(this.strategy.Session).Build();
+                    this.InvoiceSequence = new InvoiceSequenceBuilder(this.Strategy.Session).Build();
                 }
 
                 if (this.DoAccounting && !this.ExistFiscalYearStartMonth)
@@ -110,7 +110,7 @@ namespace Allors.Domain
             if (!this.ExistContactsUserGroup)
             {
                 var customerContactGroupName = $"Customer contacts at {this.Name} ({this.UniqueId})";
-                this.ContactsUserGroup = new UserGroupBuilder(this.strategy.Session).WithName(customerContactGroupName).Build();
+                this.ContactsUserGroup = new UserGroupBuilder(this.Strategy.Session).WithName(customerContactGroupName).Build();
             }
 
             var allContactRelationships = this.OrganisationContactRelationshipsWhereOrganisation.ToArray();
@@ -135,7 +135,7 @@ namespace Allors.Domain
 
             this.Sync();
 
-            var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
                 this.RemoveDeniedPermission(deletePermission);

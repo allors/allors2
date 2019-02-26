@@ -33,9 +33,7 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public bool IsProvisional => this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Provisional);
-
-        public OrderItem[] OrderItems => this.PurchaseOrderItems;
-
+        
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistPurchaseOrderState)
@@ -70,7 +68,7 @@ namespace Allors.Domain
                 derivation.AddDependency(this, this.TakenViaSupplier);
             }
 
-            foreach (PurchaseOrderItem orderItem in this.OrderItems)
+            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
             {
                 derivation.AddDependency(this, orderItem);
             }
@@ -80,7 +78,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistOrderedBy && internalOrganisations.Count() == 1)
             {
@@ -174,7 +172,7 @@ namespace Allors.Domain
 
             if (this.ExistPurchaseOrderPaymentState && this.PurchaseOrderPaymentState.Equals(new PurchaseOrderPaymentStates(this.Strategy.Session).Paid))
             {
-                this.PurchaseOrderState = new PurchaseOrderStates(this.strategy.Session).Finished;
+                this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Finished;
             }
         }
 

@@ -118,7 +118,7 @@ namespace Allors.Domain
 
             if (!this.ExistStore)
             {
-                this.Store = this.strategy.Session.Extent<Store>().First;
+                this.Store = this.Strategy.Session.Extent<Store>().First;
             }
 
             if (!this.ExistEstimatedShipDate)
@@ -150,6 +150,7 @@ namespace Allors.Domain
                     if (orderShipment.ExistOrderItem && !orderShipment.OrderItem.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(this, orderShipment.OrderItem);
+                        derivation.MarkAsModified(orderShipment.OrderItem, M.OrderShipment.OrderItem);
                     }
                 }
             }
@@ -164,7 +165,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistShipFromParty && internalOrganisations.Count() == 1)
             {
@@ -269,7 +270,7 @@ namespace Allors.Domain
             var derivation = new Derivation(this.Strategy.Session);
 
             if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped) &&
-                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
             {
                 this.AppsInvoiceThis(derivation);
             }
@@ -334,7 +335,7 @@ namespace Allors.Domain
                         {
                             if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
                             {
-                                salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                                salesInvoice.AddSalesTerm(new IncoTermBuilder(this.Strategy.Session)
                                     .WithTermType(salesTerm.TermType)
                                     .WithTermValue(salesTerm.TermValue)
                                     .WithDescription(salesTerm.Description)
@@ -343,7 +344,7 @@ namespace Allors.Domain
 
                             if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
                             {
-                                salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                                salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.Strategy.Session)
                                     .WithTermType(salesTerm.TermType)
                                     .WithTermValue(salesTerm.TermValue)
                                     .WithDescription(salesTerm.Description)
@@ -352,7 +353,7 @@ namespace Allors.Domain
 
                             if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
                             {
-                                salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                                salesInvoice.AddSalesTerm(new OrderTermBuilder(this.Strategy.Session)
                                     .WithTermType(salesTerm.TermType)
                                     .WithTermValue(salesTerm.TermValue)
                                     .WithDescription(salesTerm.Description)
@@ -376,7 +377,7 @@ namespace Allors.Domain
 
                             salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
-                            new ShipmentItemBillingBuilder(this.strategy.Session)
+                            new ShipmentItemBillingBuilder(this.Strategy.Session)
                                 .WithQuantity(shipmentItem.Quantity)
                                 .WithAmount(leftToInvoice)
                                 .WithShipmentItem(shipmentItem)
@@ -437,7 +438,7 @@ namespace Allors.Domain
 
                         if (pickListItem != null)
                         {
-                            pickListItem.RequestedQuantity += shipmentItem.Quantity;
+                            pickListItem.Quantity += shipmentItem.Quantity;
 
                             var itemIssuances = pickListItem.ItemIssuancesWherePickListItem;
                             itemIssuances.Filter.AddEquals(M.ItemIssuance.ShipmentItem, shipmentItem);
@@ -448,8 +449,7 @@ namespace Allors.Domain
                             var quantity = shipmentItem.Quantity - quantityIssued;
                             pickListItem = new PickListItemBuilder(this.Strategy.Session)
                                 .WithInventoryItem(salesOrderItem.ReservedFromNonSerialisedInventoryItem)
-                                .WithRequestedQuantity(quantity)
-                                .WithActualQuantity(quantity)
+                                .WithQuantity(quantity)
                                 .Build();
 
                             if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
@@ -500,7 +500,7 @@ namespace Allors.Domain
 
                 pickList.AddPickListItem(new PickListItemBuilder(this.Strategy.Session)
                                         .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
-                                        .WithRequestedQuantity(0 - quantity)
+                                        .WithQuantity(0 - quantity)
                                         .Build());
             }
         }
@@ -532,22 +532,7 @@ namespace Allors.Domain
 
             return charges;
         }
-
-        public void AppsOnDeriveOrderItemQuantityShipped(IDerivation derivation)
-        {
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
-                {
-                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
-                    if (salesOrderItem != null && (!salesOrderItem.ExistSalesOrderItemShipmentState || !salesOrderItem.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.strategy.Session).Shipped)))
-                    {
-                        salesOrderItem?.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
-                    }
-                }
-            }
-        }
-
+        
         public void AppsOnDeriveQuantityDecreased(IDerivation derivation, ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
         {
             var remainingCorrection = correction;
@@ -735,12 +720,10 @@ namespace Allors.Domain
             if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState) &&
                 this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
             {
-                if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+                if (Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
                 {
                     this.Invoice();
                 }
-
-                this.AppsOnDeriveOrderItemQuantityShipped(derivation);
             }
         }
     }

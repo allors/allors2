@@ -19,10 +19,10 @@ namespace Allors.Domain
 
     public partial class SerialisedItemState
     {
-        public bool IsNA => this.Equals(new SerialisedItemStates(this.strategy.Session).NA);
+        public bool IsNA => this.Equals(new SerialisedItemStates(this.Strategy.Session).NA);
 
-        public bool IsSold => this.Equals(new SerialisedItemStates(this.strategy.Session).Sold);
+        public bool IsSold => this.Equals(new SerialisedItemStates(this.Strategy.Session).Sold);
 
-        public bool IsInRent => this.Equals(new SerialisedItemStates(this.strategy.Session).InRent);
+        public bool IsInRent => this.Equals(new SerialisedItemStates(this.Strategy.Session).InRent);
     }
 }

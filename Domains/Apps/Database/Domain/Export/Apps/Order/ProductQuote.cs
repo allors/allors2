@@ -56,7 +56,7 @@ namespace Allors.Domain
 
                 salesOrder.AddSalesOrderItem(
                     new SalesOrderItemBuilder(this.Strategy.Session)
-                        .WithInvoiceItemType(new InvoiceItemTypes(this.strategy.Session).ProductItem)
+                        .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
                         .WithInternalComment(quoteItem.InternalComment)
                         .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
                         .WithActualUnitPrice(quoteItem.UnitPrice)

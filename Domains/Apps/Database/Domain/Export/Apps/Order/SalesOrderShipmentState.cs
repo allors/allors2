@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedItemCharacteristicType.cs" company="Allors bvba">
+// <copyright file="SalesOrderShipmentState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,21 +15,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Linq;
+    using System;
 
-    using Meta;
-
-    public partial class SerialisedItemCharacteristicType
+    public partial class SalesOrderShipmentState
     {
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
+        public bool NotShipped => Equals(this.UniqueId, SalesOrderShipmentStates.NotShippedId);
 
-            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
-            {
-                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
-            }
-        }
+        public bool PartiallyShipped => Equals(this.UniqueId, SalesOrderShipmentStates.PartiallyShippedId);
+
+        public bool Shipped => Equals(this.UniqueId, SalesOrderShipmentStates.ShippedId);
     }
 }

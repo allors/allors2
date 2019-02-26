@@ -184,9 +184,9 @@ namespace Allors.Domain
             //// item5: only 4 out of 5 are actually picked
             foreach (PickListItem pickListItem in pickList.PickListItems)
             {
-                if (pickListItem.RequestedQuantity == 5)
+                if (pickListItem.Quantity == 5)
                 {
-                    pickListItem.ActualQuantity = 4;
+                    pickListItem.QuantityPicked = 4;
                 }
             }
 
@@ -287,7 +287,7 @@ namespace Allors.Domain
             PickListItem adjustedPicklistItem = null;
             foreach (PickListItem pickListItem in pickList.PickListItems)
             {
-                if (pickListItem.RequestedQuantity == 5)
+                if (pickListItem.Quantity == 5)
                 {
                     adjustedPicklistItem = pickListItem;
                 }
@@ -299,7 +299,7 @@ namespace Allors.Domain
             Assert.Equal(5, itemIssuance.Quantity);
             Assert.Equal(5, shipmentItem.Quantity);
 
-            adjustedPicklistItem.ActualQuantity = 4;
+            adjustedPicklistItem.QuantityPicked = 4;
 
             pickList.SetPicked();
 
@@ -390,11 +390,11 @@ namespace Allors.Domain
 
             var extent1 = pickList.PickListItems;
             extent1.Filter.AddEquals(M.PickListItem.InventoryItem, good1Inventory);
-            Assert.Equal(3, extent1.First.RequestedQuantity);
+            Assert.Equal(3, extent1.First.Quantity);
 
             var extent2 = pickList.PickListItems;
             extent2.Filter.AddEquals(M.PickListItem.InventoryItem, good2Inventory);
-            Assert.Equal(5, extent2.First.RequestedQuantity);
+            Assert.Equal(5, extent2.First.Quantity);
         }
 
         [Fact]

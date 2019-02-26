@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedItemCharacteristicType.cs" company="Allors bvba">
+// <copyright file="SalesOrderPaymentState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,21 +15,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Linq;
+    using System;
 
-    using Meta;
-
-    public partial class SerialisedItemCharacteristicType
+    public partial class SalesOrderPaymentState
     {
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
+        public bool NotPaid => Equals(this.UniqueId, SalesOrderPaymentStates.NotPaidId);
 
-            if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
-            {
-                this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
-            }
-        }
+        public bool PartiallyPaid => Equals(this.UniqueId, SalesOrderPaymentStates.PartiallyPaidId);
+
+        public bool Paid => Equals(this.UniqueId, SalesOrderPaymentStates.PaidId);
+
     }
 }

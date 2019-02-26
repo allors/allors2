@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             get
             {
-                var frequencies = new TimeFrequencies(this.strategy.Session);
+                var frequencies = new TimeFrequencies(this.Strategy.Session);
                 var minutes = (decimal)(this.ThroughDate - this.FromDate).Value.TotalMinutes;
                 var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 
@@ -38,12 +38,12 @@ namespace Allors.Domain
         {
             if (!this.ExistBillingFrequency)
             {
-                this.BillingFrequency = new TimeFrequencies(this.strategy.Session).Hour;
+                this.BillingFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
             }
 
             if (!this.ExistTimeFrequency)
             {
-                this.TimeFrequency = new TimeFrequencies(this.strategy.Session).Hour;
+                this.TimeFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
             }
 
             if (!this.ExistIsBillable)
@@ -86,7 +86,7 @@ namespace Allors.Domain
             }
 
             // calculate AmountOfTime Or ThroughDate
-            var frequencies = new TimeFrequencies(this.strategy.Session);
+            var frequencies = new TimeFrequencies(this.Strategy.Session);
 
             if (this.ThroughDate != null)
             {
