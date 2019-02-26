@@ -103,7 +103,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
           fetch: {
             InventoryItemsWherePart: {
               include: {
-                SerialisedInventoryItem_InventoryItemState: x,
+                SerialisedInventoryItem_SerialisedInventoryItemState: x,
                 Facility: x,
                 UnitOfMeasure: x
               }
@@ -124,8 +124,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
               object: v,
               facility: v.Facility.Name,
               item: v.SerialisedItem.displayName,
-              state: 'TODO'
-              // state: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
+              state: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });
         }

@@ -1,0 +1,53 @@
+<mat-card *ngIf="order">
+
+  <mat-card-header (click)="panel.manager.toggle('edit')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{order.OrderNumber}}</mat-card-title>
+
+    <mat-card-subtitle>
+      <div>{{order.PurchaseOrderState?.Name}}</div>
+      <div>{{order.PurchaseOrderShipmentState?.Name}}</div>
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-content>
+    <div *ngIf="order.TakenViaSupplier" (click)="navigation.overview(order.TakenViaSupplier)" style="cursor: pointer;">
+      <div style="color: grey">
+        Supplier
+      </div>
+      <div>
+        {{order.TakenViaSupplier?.displayName}}
+      </div>
+    </div>
+
+    <div *ngFor="let purchaseInvoice of purchaseInvoices">
+      <div (click)="navigation.overview(purchaseInvoice)" style="cursor: pointer;">
+        <div style="color: grey">
+          Invoice
+        </div>
+        <div>
+          {{purchaseInvoice?.InvoiceNumber}}
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button *ngIf="order.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
+    <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
+    <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>
+    <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
+    <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
+    <button *ngIf="order.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
+    <button *ngIf="order.CanExecuteQuickReceive" mat-button (click)="quickReceive()">Quick Receive</button>
+  </mat-card-actions>
+
+</mat-card>

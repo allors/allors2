@@ -164,7 +164,7 @@
           <div class="row">
             <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
               display="displayName" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteShipToEndCustomer"
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteShipToEndCustomerAddress"
               type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
               <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
@@ -175,7 +175,7 @@
           <mat-card>
             <mat-card-header>Add a new contact mechanism</mat-card-header>
             <mat-card-content>
-              <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="addShipToEndCustomerAddress = false">
+              <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event); addShipToEndCustomerAddress = false" (cancelled)="addShipToEndCustomerAddress = false">
               </party-contactmechanism-postaladdress>
             </mat-card-content>
           </mat-card>

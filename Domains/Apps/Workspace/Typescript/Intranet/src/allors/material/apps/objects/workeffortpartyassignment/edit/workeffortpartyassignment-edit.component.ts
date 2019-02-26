@@ -21,7 +21,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
   workEffortPartyAssignment: WorkEffortPartyAssignment;
   people: Person[];
-  workEfforts: WorkEffort[];
   person: Person;
   party: Party;
   workEffort: WorkEffort;
@@ -67,9 +66,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
             pull.WorkEffort({
               object: this.data.associationId
             }),
-            pull.WorkEffort({
-              sort: new Sort(m.WorkEffort.Name)
-            }),
             pull.Person({
               sort: new Sort(m.Person.PartyName)
             }),
@@ -86,7 +82,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         this.allors.context.reset();
 
-        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.people = loaded.collections.People as Person[];
         this.party = loaded.objects.Party as Party;
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;

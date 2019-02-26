@@ -588,6 +588,12 @@ namespace Allors.Domain
 
             var part1 = this.CreatePart("P1");
 
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part1)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(11)
+                .Build();
+
             var part1BasePriceYesterday = new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice part1")
                 .WithPrice(9)
@@ -625,7 +631,7 @@ namespace Allors.Domain
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
 
-            new WorkEffortInventoryAssignmentBuilder(this.Session).WithAssignment(workOrder).WithPart(part1).WithQuantity(3).Build();
+            new WorkEffortInventoryAssignmentBuilder(this.Session).WithAssignment(workOrder).WithInventoryItem(part1.InventoryItemsWherePart.First).WithQuantity(3).Build();
 
             this.Session.Derive(true);
 
@@ -651,12 +657,20 @@ namespace Allors.Domain
             .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
             .Build();
 
-        private WorkEffortInventoryAssignment CreateInventoryAssignment(WorkEffort workOrder, Part part, int quantity) =>
-            new WorkEffortInventoryAssignmentBuilder(this.Session)
-            .WithAssignment(workOrder)
-            .WithPart(part)
-            .WithQuantity(quantity)
-            .Build();
+        private WorkEffortInventoryAssignment CreateInventoryAssignment(WorkEffort workOrder, Part part, int quantity)
+        {
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(quantity)
+                .Build();
+
+            return new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workOrder)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
+                .WithQuantity(quantity)
+                .Build();
+        }
 
         private TimeEntry CreateTimeEntry(DateTime fromDate, DateTime throughDate, TimeFrequency frequency, WorkEffort workEffort) =>
             new TimeEntryBuilder(this.Session)

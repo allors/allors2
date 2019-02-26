@@ -1,0 +1,28 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(metaService.m.PurchaseOrder)">PurchaseOrders</a> / {{order?.OrderNumber}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container">
+
+    <div class="a-content row">
+
+      <div class="col-md-4 mb-3">
+        <purchaseorder-overview-summary></purchaseorder-overview-summary>
+      </div>
+
+      <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
+        <purchaseorder-overview-detail></purchaseorder-overview-detail>
+
+        <purchaseorderitem-overview-panel></purchaseorderitem-overview-panel>
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -460,12 +460,21 @@ namespace Allors.Domain
                             if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
                             {
                                 pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
+                            }
 
+                            if (salesOrderItem.ExistSerialisedItem)
+                            {
                                 salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
 
                                 if (salesOrderItem.ExistNewSerialisedItemState)
                                 {
                                     salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
+                                }
+
+                                if (salesOrderItem.NewSerialisedItemState.Equals(
+                                    new SerialisedItemStates(this.strategy.Session).Sold))
+                                {
+                                    salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
                                 }
                             }
 

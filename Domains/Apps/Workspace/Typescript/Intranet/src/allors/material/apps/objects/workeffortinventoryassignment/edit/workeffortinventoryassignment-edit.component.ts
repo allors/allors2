@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, Person, WorkEffort, Party } from '../../../../../domain';
+import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -19,15 +19,14 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
   readonly m: Meta;
 
-  workEffortPartyAssignment: WorkEffortPartyAssignment;
-  people: Person[];
-  workEfforts: WorkEffort[];
-  person: Person;
-  party: Party;
-  workEffort: WorkEffort;
-  assignment: WorkEffort;
-  contacts: Person[] = [];
   title: string;
+  workEffortInventoryAssignment: WorkEffortInventoryAssignment;
+  parts: Part[];
+  workEffort: WorkEffort;
+  inventoryItems: InventoryItem[];
+  facility: Facility;
+  state: NonSerialisedInventoryItemState | SerialisedInventoryItemState;
+  serialised: boolean;
 
   private subscription: Subscription;
 
@@ -54,24 +53,30 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
           const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.WorkEffortPartyAssignment({
+            pull.WorkEffortInventoryAssignment({
               object: this.data.id,
               include: {
                 Assignment: x,
-                Party: x
+                InventoryItem: {
+                  Part: {
+                    InventoryItemKind: x
+                  },
+                }
               }
             }),
-            pull.Party({
-              object: this.data.associationId
-            }),
             pull.WorkEffort({
               object: this.data.associationId
             }),
-            pull.WorkEffort({
-              sort: new Sort(m.WorkEffort.Name)
-            }),
-            pull.Person({
-              sort: new Sort(m.Person.PartyName)
+            pull.InventoryItem({
+              sort: new Sort(m.InventoryItem.Name),
+              include: {
+                Part: {
+                  InventoryItemKind: x
+                },
+                Facility: x,
+                SerialisedInventoryItem_SerialisedInventoryItemState: x,
+                NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x
+              }
             }),
           ];
 
@@ -86,35 +91,23 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         this.allors.context.reset();
 
-        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
-        this.people = loaded.collections.People as Person[];
-        this.party = loaded.objects.Party as Party;
+        this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
         if (isCreate) {
-          this.title = 'Add Work Effort Assignment';
+          this.title = 'Add work effort inventory assignment';
 
-          this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
-
-          if (this.party !== undefined && this.party.objectType.name === m.Person.name) {
-            this.person = this.party as Person;
-            this.workEffortPartyAssignment.Party = this.person;
-          }
-
-          if (this.workEffort !== undefined && this.workEffort.objectType.name === m.WorkTask.name) {
-            this.assignment = this.workEffort as WorkEffort;
-            this.workEffortPartyAssignment.Assignment = this.assignment;
-          }
+          this.workEffortInventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
+          this.workEffortInventoryAssignment.Assignment = this.workEffort;
 
         } else {
-          this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
-          this.person = this.workEffortPartyAssignment.Party as Person;
-          this.assignment = this.workEffortPartyAssignment.Assignment;
+          this.workEffortInventoryAssignment = loaded.objects.WorkEffortInventoryAssignment as WorkEffortInventoryAssignment;
+          this.inventoryItemSelected(this.workEffortInventoryAssignment.InventoryItem);
 
-          if (this.workEffortPartyAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Assignment';
+          if (this.workEffortInventoryAssignment.CanWriteInventoryItem) {
+            this.title = 'Edit work effort inventory assignment';
           } else {
-            this.title = 'View Work Effort Assignment';
+            this.title = 'View work effort inventory assignment';
           }
         }
       }, this.errorService.handler);
@@ -131,8 +124,8 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     this.allors.context.save()
       .subscribe(() => {
         const data: ObjectData = {
-          id: this.workEffortPartyAssignment.id,
-          objectType: this.workEffortPartyAssignment.objectType,
+          id: this.workEffortInventoryAssignment.id,
+          objectType: this.workEffortInventoryAssignment.objectType,
         };
 
         this.dialogRef.close(data);
@@ -140,5 +133,17 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public inventoryItemSelected(inventoryItem: InventoryItem): void {
+    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+
+    if (inventoryItem.objectType === this.metaService.m.NonSerialisedInventoryItem) {
+      const item = inventoryItem as NonSerialisedInventoryItem;
+      this.state = item.NonSerialisedInventoryItemState;
+    } else {
+      const item = inventoryItem as SerialisedInventoryItem;
+      this.state = item.SerialisedInventoryItemState;
+    }
   }
 }

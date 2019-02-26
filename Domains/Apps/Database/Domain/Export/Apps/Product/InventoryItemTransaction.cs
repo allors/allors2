@@ -28,17 +28,8 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        public void AppsOnPostBuild(ObjectOnPostBuild method)
         {
-            var derivation = method.Derivation;
-
-            derivation.AddDependency(this.InventoryItem, this);
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
             if (!this.ExistFacility)
             {
                 this.Facility = this.Part.DefaultFacility;
@@ -54,59 +45,26 @@ namespace Allors.Domain
                 this.UnitOfMeasure = this.Part?.UnitOfMeasure;
             }
 
-            if (this.Part.InventoryItemKind.IsSerialized)
+            if (this.ExistPart && this.Part.InventoryItemKind.IsSerialized)
             {
-                if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
-                {
-                    var message = "Serialized Inventory Items only accept Quantities of -1, 0, and 1.";
-                    derivation.Validation.AddError(this, this.Meta.Quantity, message);
-                }
-
                 if (!this.ExistSerialisedInventoryItemState)
                 {
                     this.SerialisedInventoryItemState = this.Reason.DefaultSerialisedInventoryItemState;
                 }
-
-                if (!this.ExistSerialisedItem)
-                {
-                    var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
-                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
-                }
-
-                if (this.Reason.IncreasesQuantityOnHand == true && this.Quantity <= 0)
-                {
-                    var message = "Invalid transaction";
-                    derivation.Validation.AddError(this, this.Meta.Reason, message);
-                }
-
-                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity <= 0)
-                {
-                    var message = "Invalid transaction";
-                    derivation.Validation.AddError(this, this.Meta.Reason, message);
-                }
-
-                if (this.Quantity == 1 
-                    && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem 
-                    && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1)
-                    && this.Reason.IncreasesQuantityOnHand == true)
-                {
-                    var message = "Serialized item already in inventory";
-                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
-                }
             }
-            else if (this.Part.InventoryItemKind.IsNonSerialized)
+            else
             {
                 if (!this.ExistNonSerialisedInventoryItemState)
                 {
                     this.NonSerialisedInventoryItemState = this.Reason.DefaultNonSerialisedInventoryItemState;
                 }
             }
-
-            this.AttachToInventoryItem(derivation);
         }
 
-        private void AttachToInventoryItem(IDerivation derivation)
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
+            var derivation = method.Derivation;
+
             // Match on required properties
             bool matched = false;
             var matchingItems = this.Part.InventoryItemsWherePart.ToArray();
@@ -187,7 +145,51 @@ namespace Allors.Domain
                     nonSerialItem.NonSerialisedInventoryItemState = this.NonSerialisedInventoryItemState;
                 }
             }
-            else
+
+            derivation.AddDependency(this.InventoryItem, this);
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.Part.InventoryItemKind.IsSerialized)
+            {
+                if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
+                {
+                    var message = "Serialized Inventory Items only accept Quantities of -1, 0, and 1.";
+                    derivation.Validation.AddError(this, this.Meta.Quantity, message);
+                }
+
+                if (!this.ExistSerialisedItem)
+                {
+                    var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
+                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
+                }
+
+                if (this.Reason.IncreasesQuantityOnHand == true && this.Quantity <= 0)
+                {
+                    var message = "Invalid transaction";
+                    derivation.Validation.AddError(this, this.Meta.Reason, message);
+                }
+
+                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity <= 0)
+                {
+                    var message = "Invalid transaction";
+                    derivation.Validation.AddError(this, this.Meta.Reason, message);
+                }
+
+                if (this.Quantity == 1 
+                    && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem 
+                    && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1)
+                    && this.Reason.IncreasesQuantityOnHand == true)
+                {
+                    var message = "Serialized item already in inventory";
+                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
+                }
+            }
+
+            if (!this.ExistInventoryItem)
             {
                 this.SyncInventoryItem(derivation);
             }

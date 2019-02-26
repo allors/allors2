@@ -53,9 +53,9 @@ namespace Allors.Domain
                 this.Facility = this.Part.DefaultFacility;
             }
 
-            if (!this.ExistName && this.ExistPart && this.Part.ExistName)
+            if (!this.ExistName)
             {
-                this.Name = this.Part.Name;
+                this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.SerialisedInventoryItemState?.Name}";
             }
 
             this.AppsOnDeriveQuantity(derivation);

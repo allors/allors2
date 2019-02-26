@@ -36,6 +36,8 @@ import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
+import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/apps/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
 import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
@@ -53,6 +55,7 @@ import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/mat
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 import { WorkEffortAssignmentRateEditComponent, WorkEffortAssignmentRateEditModule } from '../allors/material/apps/objects/workeffortassignmentrate/edit/workeffortassignmentrate-edit.module';
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
+import { WorkEffortInventoryAssignmentEditComponent, WorkEffortInventoryAssignmentEditModule } from '../allors/material/apps/objects/workeffortinventoryassignment/edit/workeffortinventoryassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
@@ -92,6 +95,8 @@ export const create = {
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.PurchaseInvoice]: PurchaseInvoiceCreateComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
+  [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
+  [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
@@ -113,6 +118,7 @@ export const create = {
   [ids.WebAddress]: WebAddressCreateComponent,
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
+  [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
@@ -145,6 +151,7 @@ export const edit = {
   [ids.ProductNumber]: ProductIdentificationEditComponent,
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
+  [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
@@ -161,6 +168,7 @@ export const edit = {
   [ids.WebAddress]: WebAddressEditComponent,
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
+  [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
@@ -197,6 +205,8 @@ export const edit = {
     ProductTypeEditModule,
     PurchaseInvoiceCreateModule,
     PurchaseInvoiceItemEditModule,
+    PurchaseOrderCreateModule,
+    PurchaseOrderItemEditModule,
     QuoteItemEditModule,
     RepeatingSalesInvoiceEditModule,
     RequestItemEditModule,
@@ -219,6 +229,7 @@ export const edit = {
     WorkEffortAssignmentRateEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
+    WorkEffortInventoryAssignmentEditModule,
     WorkTaskCreateModule,
   ],
   entryComponents: [
@@ -250,6 +261,8 @@ export const edit = {
     ProductTypeEditComponent,
     PurchaseInvoiceCreateComponent,
     PurchaseInvoiceItemEditComponent,
+    PurchaseOrderCreateComponent,
+    PurchaseOrderItemEditComponent,
     RepeatingSalesInvoiceEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
@@ -271,6 +284,7 @@ export const edit = {
     WebAddressEditComponent,
     WorkEffortAssignmentRateEditComponent,
     WorkEffortFixedAssetAssignmentEditComponent,
+    WorkEffortInventoryAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,
     WorkTaskCreateComponent,
   ],

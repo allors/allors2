@@ -43,6 +43,7 @@ export const menu: MenuItem[] = [
   {
     title: 'Purchasing', icon: 'local_shipping',
     children: [
+      { id: ids.PurchaseOrder },
       { id: ids.PurchaseInvoice },
     ]
   },

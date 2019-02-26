@@ -177,7 +177,17 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Part Part { get; set; }
-        
+
+        #region Allors
+        [Id("E0FC1C78-EE7A-499E-8D48-BFD846CCA47C")]
+        [AssociationId("95D94E82-6AE3-4C41-B283-B278AAFA4E41")]
+        [RoleId("C0F176F7-3D0B-44C8-A132-4EE65326568E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItem SerialisedItem { get; set; }
+
         #region inherited methods
 
 
