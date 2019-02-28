@@ -98,7 +98,7 @@ namespace Allors.Domain
             // Assignment when inventory qoh = 0
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workEffort)
-                .WithPart(part)
+                .WithInventoryItem(inventoryItem)
                 .WithQuantity(10)
                 .Build();
 
