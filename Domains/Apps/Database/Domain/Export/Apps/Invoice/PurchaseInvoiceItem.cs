@@ -67,7 +67,7 @@ namespace Allors.Domain
             if (this.ExistAssignedUnitPrice)
             {
                 this.UnitBasePrice = this.AssignedUnitPrice??  0;
-                this.CalculatedUnitPrice = this.AssignedUnitPrice?? 0;
+                this.UnitPrice = this.AssignedUnitPrice?? 0;
 
                 var discountAdjustment = this.GetDiscountAdjustment();
 
@@ -116,9 +116,9 @@ namespace Allors.Domain
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;
                 this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
-                this.CalculatedUnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
                 this.TotalVat = this.UnitVat * this.Quantity;
-                this.TotalExVat = this.CalculatedUnitPrice * this.Quantity;
+                this.TotalExVat = this.UnitPrice * this.Quantity;
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
             }
         }

@@ -52,7 +52,7 @@ namespace Allors.Repository
         public decimal AssignedUnitPrice { get; set; }
         
         public decimal UnitBasePrice { get; set; }
-        public decimal CalculatedUnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
         
         public decimal TotalIncVat { get; set; }
         public decimal TotalSurchargeAsPercentage { get; set; }

@@ -246,7 +246,7 @@ namespace Allors.Domain
             this.UnitBasePrice = 0;
             this.UnitDiscount = 0;
             this.UnitSurcharge = 0;
-            this.CalculatedUnitPrice = 0;
+            this.UnitPrice = 0;
             decimal discountAdjustmentAmount = 0;
             decimal surchargeAdjustmentAmount = 0;
 
@@ -318,15 +318,15 @@ namespace Allors.Domain
 
             if (this.AssignedUnitPrice.HasValue)
             {
-                this.CalculatedUnitPrice = this.AssignedUnitPrice.Value;
+                this.UnitPrice = this.AssignedUnitPrice.Value;
             }
             else
             {
-                this.CalculatedUnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
             }
 
             this.TotalVat = this.UnitVat * this.Quantity;
-            this.TotalExVat = this.CalculatedUnitPrice * this.Quantity;
+            this.TotalExVat = this.UnitPrice * this.Quantity;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
         }
 

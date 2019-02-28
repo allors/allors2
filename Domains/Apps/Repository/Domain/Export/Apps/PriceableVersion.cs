@@ -119,7 +119,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
-        decimal CalculatedUnitPrice { get; set; }
+        decimal UnitPrice { get; set; }
 
         #region Allors
         [Id("C75F67AF-3875-46F7-9B4D-C569799821E2")]

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PriceComponentExtensions.cs" company="Allors bvba">
+// <copyright file="SalesInvoiceState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,23 +13,22 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
-    using System.Linq;
+    using System;
 
-    public static class PriceComponentExtensions
+    public partial class SalesInvoiceState
     {
-        public static void AppsOnDerive(this PriceComponent @this, ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
+        public bool Sent => this.UniqueId == SalesInvoiceStates.SentId;
 
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+        public bool Paid => this.UniqueId == SalesInvoiceStates.PaidId;
 
-            if (!@this.ExistPricedBy && internalOrganisations.Count() == 1)
-            {
-                @this.PricedBy = internalOrganisations.First();
-            }
-        }
+        public bool PartiallyPaid => this.UniqueId == SalesInvoiceStates.PartiallyPaidId;
+
+        public bool ReadyForPosting => this.UniqueId == SalesInvoiceStates.ReadyForPostingId;
+
+        public bool WrittenOff => this.UniqueId == SalesInvoiceStates.WrittenOffId;
+
+        public bool Cancelled => this.UniqueId == SalesInvoiceStates.CancelledId;
     }
 }

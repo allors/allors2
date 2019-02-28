@@ -27,7 +27,7 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.Quantity = item.QuantityOrdered;
             // TODO: Where does the currency come from?
             var currency = "€";
-            this.Price = item.CalculatedUnitPrice.ToString("0.00") + " " + currency;
+            this.Price = item.UnitPrice.ToString("0.00") + " " + currency;
             this.Amount = item.TotalExVat.ToString("0.00") + " " + currency;
             this.Comment = item.Comment;
         }

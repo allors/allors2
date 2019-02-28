@@ -326,14 +326,14 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, item1.TotalVat);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, item1.TotalVat);
 
             var purchasePrice = this.goodPurchasePrice.Price * 0.5M;
 
@@ -341,7 +341,7 @@ namespace Allors.Domain
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace Allors.Domain
             Assert.Equal(10, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(15, item1.CalculatedUnitPrice);
+            Assert.Equal(15, item1.UnitPrice);
             Assert.Equal(3.15m, item1.UnitVat);
             Assert.Equal(45, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
@@ -389,20 +389,20 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, item1.TotalVat);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, item1.TotalVat);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
-            Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
+            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
         }
 
         [Fact]
@@ -419,7 +419,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentFeature1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentFeature1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentFeature1BasePrice.Price, item1.UnitPrice);
             Assert.Equal(this.currentFeature1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
@@ -443,7 +443,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.currentBasePriceGeoBoundary.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentBasePriceGeoBoundary.Price, item1.UnitPrice);
 
             var invoice2 = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
@@ -455,7 +455,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
         }
 
         [Fact]
@@ -484,7 +484,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -514,7 +514,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -547,7 +547,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -578,7 +578,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -611,7 +611,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -647,7 +647,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -685,7 +685,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -721,7 +721,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -759,7 +759,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -798,7 +798,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -839,7 +839,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -878,7 +878,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -919,7 +919,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -965,7 +965,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -975,12 +975,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -990,17 +990,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1046,7 +1046,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1058,12 +1058,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1075,17 +1075,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1131,7 +1131,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1141,12 +1141,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1156,17 +1156,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1212,7 +1212,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1224,12 +1224,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1241,17 +1241,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1297,7 +1297,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1307,12 +1307,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1322,17 +1322,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1378,7 +1378,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1390,12 +1390,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1407,17 +1407,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1463,7 +1463,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1473,12 +1473,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1488,17 +1488,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1544,7 +1544,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1556,12 +1556,12 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.UnitPrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1573,17 +1573,17 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.UnitPrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.UnitPrice);
         }
 
         [Fact]
@@ -1616,7 +1616,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -1664,7 +1664,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(discount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price - discount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price - discount, item1.UnitPrice);
         }
 
         [Fact]
@@ -1697,7 +1697,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -1732,7 +1732,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.UnitPrice);
         }
 
         [Fact]
@@ -1780,7 +1780,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(surcharge, item1.UnitSurcharge);
-            Assert.Equal(this.currentGood1BasePrice.Price + surcharge, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentGood1BasePrice.Price + surcharge, item1.UnitPrice);
         }
 
         [Fact]

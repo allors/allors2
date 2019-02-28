@@ -168,7 +168,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentPurchasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(this.currentPurchasePrice.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(this.currentPurchasePrice.Price, item1.UnitPrice);
 
             Assert.Equal(this.currentPurchasePrice.Price * QuantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
@@ -229,7 +229,7 @@ namespace Allors.Domain
             Assert.Equal(currentOffer.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(currentOffer.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(currentOffer.Price, item1.UnitPrice);
 
             Assert.Equal(currentOffer.Price * QuantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
@@ -255,7 +255,7 @@ namespace Allors.Domain
             Assert.Equal(15, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(15, item1.CalculatedUnitPrice);
+            Assert.Equal(15, item1.UnitPrice);
             Assert.Equal(0, item1.UnitVat);
             Assert.Equal(45, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);

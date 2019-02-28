@@ -633,7 +633,7 @@ namespace Allors.Domain
                 this.TotalVat += item.TotalVat;
                 this.TotalExVat += item.TotalExVat;
                 this.TotalIncVat += item.TotalIncVat;
-                this.TotalListPrice += item.CalculatedUnitPrice;
+                this.TotalListPrice += item.UnitPrice;
             }
 
             this.DeriveDiscountAdjustments(derivation);
@@ -729,7 +729,7 @@ namespace Allors.Domain
                 if (item.TotalExVat > 0)
                 {
                     totalUnitBasePrice += item.UnitBasePrice;
-                    totalListPrice += item.CalculatedUnitPrice;
+                    totalListPrice += item.UnitPrice;
                 }
             }
         }

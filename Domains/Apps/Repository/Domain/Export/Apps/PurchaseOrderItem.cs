@@ -65,7 +65,7 @@ namespace Allors.Repository
 
         public decimal UnitBasePrice { get; set; }
 
-        public decimal CalculatedUnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
 
         
 

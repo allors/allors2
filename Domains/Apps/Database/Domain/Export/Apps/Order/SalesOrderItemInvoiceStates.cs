@@ -31,7 +31,6 @@ namespace Allors.Domain
 
         public SalesOrderItemInvoiceState PartiallyInvoiced => this.StateCache[PartiallyInvoicedId];
 
-
         private UniquelyIdentifiableSticky<SalesOrderItemInvoiceState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemInvoiceState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
