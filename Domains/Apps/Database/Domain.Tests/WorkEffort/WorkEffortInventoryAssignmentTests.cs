@@ -66,6 +66,100 @@ namespace Allors.Domain
             Assert.Equal(reasons.Reservation, transaction.Reason);
 
             Assert.Equal(10, part.QuantityCommittedOut);
+            Assert.Equal(0, part.QuantityOnHand);
+        }
+
+        [Fact]
+        public void GivenWorkEffort_WhenAddingInventoryAssignment_ThenInventory()
+        {
+            var reasons = new InventoryTransactionReasons(this.Session);
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .Build();
+
+            this.Session.Derive(true);
+
+            var inventoryItem = part.InventoryItemsWherePart.FirstOrDefault() as NonSerialisedInventoryItem;
+
+            Assert.Empty(workEffort.WorkEffortInventoryAssignmentsWhereAssignment);
+            Assert.True(workEffort.WorkEffortState.IsCreated);
+
+            // Assignment when inventory qoh = 0
+            var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workEffort)
+                .WithPart(part)
+                .WithQuantity(10)
+                .Build();
+
+            this.Session.Derive(true);
+
+            var transactions = inventoryAssignment.InventoryItemTransactions;
+
+            Assert.Single(transactions);
+            var transaction = transactions[0];
+            Assert.Equal(part, transaction.Part);
+            Assert.Equal(10, transaction.Quantity);
+            Assert.Equal(reasons.Reservation, transaction.Reason);
+
+            Assert.Equal(10, inventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, inventoryItem.QuantityOnHand);
+            Assert.Equal(0, inventoryItem.AvailableToPromise);
+            Assert.Equal(0, inventoryItem.QuantityExpectedIn);
+
+            // PurchaseOrder for part 
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
+
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(20).Build();
+            order.AddPurchaseOrderItem(item1);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            Assert.Equal(10, inventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, inventoryItem.QuantityOnHand);
+            Assert.Equal(0, inventoryItem.AvailableToPromise);
+            Assert.Equal(20, inventoryItem.QuantityExpectedIn);
+
+            //Shipment receipt
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(part).Build();
+            shipment.AddShipmentItem(shipmentItem);
+
+            new ShipmentReceiptBuilder(this.Session)
+                .WithQuantityAccepted(20)
+                .WithShipmentItem(shipmentItem)
+                .WithOrderItem(item1)
+                .Build();
+
+            this.Session.Derive();
+
+            shipment.AppsComplete();
+
+            this.Session.Derive();
+
+            Assert.Equal(10, inventoryItem.QuantityCommittedOut);
+            Assert.Equal(20, inventoryItem.QuantityOnHand);
+            Assert.Equal(10, inventoryItem.AvailableToPromise);
+            Assert.Equal(0, inventoryItem.QuantityExpectedIn);
+
+            workEffort.Complete();
+
+            this.Session.Derive(true);
+
+            Assert.Equal(0, inventoryItem.QuantityCommittedOut);
+            Assert.Equal(10, inventoryItem.QuantityOnHand);
+            Assert.Equal(10, inventoryItem.AvailableToPromise);
+            Assert.Equal(0, inventoryItem.QuantityExpectedIn);
         }
 
         [Fact]
