@@ -24,13 +24,15 @@ namespace Allors.Adapters.Database.Sql
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Meta;
     using Allors;
+    using Allors.Meta;
 
     using Microsoft.Extensions.DependencyInjection;
 
     public abstract class DatabaseSession : ISession
     {
+        private static readonly IObject[] EmptyObjects = { };
+
         private ChangeSet changeSet;
 
         private Dictionary<Reference, Roles> modifiedRolesByReference;
@@ -219,37 +221,25 @@ namespace Allors.Adapters.Database.Sql
             return strategyReference.Strategy;
         }
 
-        public virtual IObject[] Instantiate(string[] objectIdStrings)
+        public IObject[] Instantiate(IEnumerable<string> objectIdStrings)
         {
-            var objectIds = new long[objectIdStrings.Length];
-            for (var i = 0; i < objectIdStrings.Length; i++)
-            {
-                objectIds[i] = long.Parse(objectIdStrings[i]);
-            }
-
-            return this.Instantiate(objectIds);
+            return objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
         }
 
-        public virtual IObject[] Instantiate(IObject[] objects)
+        public IObject[] Instantiate(IEnumerable<IObject> objects)
         {
-            var objectIds = new long[objects.Length];
-            for (var i = 0; i < objects.Length; i++)
-            {
-                objectIds[i] = objects[i].Strategy.ObjectId;
-            }
-
-            return this.Instantiate(objectIds);
+            return objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
         }
 
-        public virtual IObject[] Instantiate(long[] objectIds)
+        public virtual IObject[] Instantiate(IEnumerable<long> objectIds)
         {
-            var references = new List<Reference>(objectIds.Length);
+            var objectIdArray = objectIds.ToArray();
+            var references = new List<Reference>(objectIdArray.Length);
 
             var nonCachedObjectIds = new List<long>();
-            foreach (var objectId in objectIds)
+            foreach (var objectId in objectIdArray)
             {
-                Reference reference;
-                if (!this.referenceByObjectId.TryGetValue(objectId, out reference))
+                if (!this.referenceByObjectId.TryGetValue(objectId, out var reference))
                 {
                     nonCachedObjectIds.Add(objectId);
                 }
@@ -270,10 +260,9 @@ namespace Allors.Adapters.Database.Sql
                 var objectByObjectId = references.ToDictionary(strategyReference => strategyReference.ObjectId, strategyReference => strategyReference.Strategy.GetObject());
 
                 var allorsObjects = new List<IObject>();
-                foreach (var objectId in objectIds)
+                foreach (var objectId in objectIdArray)
                 {
-                    IObject allorsObject;
-                    if (objectByObjectId.TryGetValue(objectId, out allorsObject))
+                    if (objectByObjectId.TryGetValue(objectId, out var allorsObject))
                     {
                         allorsObjects.Add(allorsObject);
                     }

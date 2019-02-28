@@ -363,7 +363,7 @@ namespace Allors.Domain
                     }
 
                     var amountAlreadyInvoiced = shipmentItem.ShipmentItemBillingsWhereShipmentItem.Sum(v => v.Amount);
-                    var leftToInvoice = (orderShipment.OrderItem.QuantityOrdered * orderShipment.OrderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+                    var leftToInvoice = (orderShipment.OrderItem.QuantityOrdered * orderShipment.OrderItem.AssignedUnitPrice) - amountAlreadyInvoiced;
 
                     if (leftToInvoice > 0)
                     {

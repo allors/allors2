@@ -16,6 +16,8 @@
 
 namespace Allors.Domain.Print.SalesOrderModel
 {
+    using System;
+
     public class OrderModel
     {
         public OrderModel(SalesOrder order)
@@ -23,7 +25,17 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.Description = order.Description;
             this.Number = order.OrderNumber;
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
-            this.DueDate = order.DueDate?.ToString("yyyy-MM-dd");
+            DateTime? ret;
+            if (order.ExistOrderDate)
+            {
+                ret = order.OrderDate.AddDays(order.PaymentNetDays);
+            }
+            else
+            {
+                ret = null;
+            }
+
+            this.DueDate = ret?.ToString("yyyy-MM-dd");
             this.CustomerReference = order.CustomerReference;
 
             // TODO: Where does the currency come from?

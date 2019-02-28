@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrderValue.cs" company="Allors bvba">
+// <copyright file="InventoryItemKind.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -19,8 +19,8 @@ namespace Allors.Domain
 
     public partial class InventoryItemKind
     {
-        public bool IsSerialized => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);
+        public bool Serialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);
 
-        public bool IsNonSerialized => this.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised);
+        public bool NonSerialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised);
     }
 }

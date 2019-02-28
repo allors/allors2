@@ -209,8 +209,7 @@ namespace Allors.Domain
 
             return false;
         }
-
-
+        
         public bool IsMarkedAsModified(Object derivable)
         {
             return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
@@ -323,13 +322,19 @@ namespace Allors.Domain
                 throw new Exception("Derive can only be called once. Create a new Derivation object.");
             }
 
+            var newObjects = this.Session.Instantiate(this.ChangeSet.Created);
+            foreach (var newObject in newObjects)
+            {
+                ((Object)newObject).OnInit();
+            }
+
             var changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
             changedObjectIds.UnionWith(this.ChangeSet.Roles);
             changedObjectIds.UnionWith(this.ChangeSet.Created);
             changedObjectIds.UnionWith(this.relationsByMarkedAsModified.Keys);
 
             var preparedObjects = new HashSet<IObject>();
-            var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds.ToArray()));
+            var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
 
             while (changedObjects.Count > 0)
             {
@@ -395,7 +400,7 @@ namespace Allors.Domain
                 changedObjectIds.UnionWith(this.ChangeSet.Roles);
                 changedObjectIds.UnionWith(this.ChangeSet.Created);
 
-                changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds.ToArray()));
+                changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
                 changedObjects.ExceptWith(this.derivedObjects);
 
                 this.derivationGraph = null;

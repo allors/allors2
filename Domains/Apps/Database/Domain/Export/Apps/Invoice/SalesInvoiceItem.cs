@@ -48,6 +48,8 @@ namespace Allors.Domain
             !this.ExistWorkEffortBillingsWhereInvoiceItem &&
             !this.ExistServiceEntryBillingsWhereInvoiceItem;
 
+        private bool IsSubTotalItem => this.AppsIsSubTotalItem;
+
         public void SetActualDiscountAmount(decimal amount)
         {
             if (!this.ExistDiscountAdjustment)
@@ -230,12 +232,12 @@ namespace Allors.Domain
         {
             if (this.ExistProduct || this.ExistProductFeature)
             {
-                this.DerivedVatRate = this.ExistProduct ? this.Product.VatRate : this.ProductFeature.VatRate;
+                this.VatRate = this.ExistProduct ? this.Product.VatRate : this.ProductFeature.VatRate;
             }
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
-                this.DerivedVatRate = this.VatRegime.VatRate;
+                this.VatRate = this.VatRegime.VatRate;
             }
         }
 
@@ -270,7 +272,7 @@ namespace Allors.Domain
                 {
                     if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
                     {
-                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
+                        if (PriceComponents.AppsIsApplicable(new PriceComponents.IsApplicable
                         {
                             PriceComponent = priceComponent,
                             Customer = customer,
@@ -285,9 +287,6 @@ namespace Allors.Domain
                                 if (priceComponent.Price.HasValue && (this.UnitBasePrice == 0 || priceComponent.Price < this.UnitBasePrice))
                                 {
                                     this.UnitBasePrice = priceComponent.Price.Value;
-
-                                    this.RemoveCurrentPriceComponents();
-                                    this.AddCurrentPriceComponent(priceComponent);
                                 }
                             }
                         }
@@ -295,72 +294,12 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.ExistActualUnitPrice)
-            {
-                var priceComponents = this.GetPriceComponents();
-
-                var revenueBreakDiscount = 0M;
-                var revenueBreakSurcharge = 0M;
-
-                foreach (var priceComponent in priceComponents)
-                {
-                    if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
-                    {
-                        if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
-                        {
-                            PriceComponent = priceComponent,
-                            Customer = customer,
-                            Product = this.Product,
-                            SalesInvoice = salesInvoice,
-                            QuantityOrdered = quantityInvoiced,
-                            ValueOrdered = totalBasePrice,
-                        }))
-                        {
-                            this.AddCurrentPriceComponent(priceComponent);
-
-                            revenueBreakDiscount = this.SetUnitDiscount(priceComponent, revenueBreakDiscount);
-                            revenueBreakSurcharge = this.SetUnitSurcharge(priceComponent, revenueBreakSurcharge);
-                        }
-                    }
-                }
-
-                var adjustmentBase = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    if (this.DiscountAdjustment.Percentage.HasValue)
-                    {
-                        discountAdjustmentAmount = Math.Round((adjustmentBase * this.DiscountAdjustment.Percentage.Value) / 100, 2);
-                    }
-                    else
-                    {
-                        discountAdjustmentAmount = this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
-                    }
-
-                    this.UnitDiscount += discountAdjustmentAmount;
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    if (this.SurchargeAdjustment.Percentage.HasValue)
-                    {
-                        surchargeAdjustmentAmount = Math.Round((adjustmentBase * this.SurchargeAdjustment.Percentage.Value) / 100, 2);
-                    }
-                    else
-                    {
-                        surchargeAdjustmentAmount = this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
-                    }
-
-                    this.UnitSurcharge += surchargeAdjustmentAmount;
-                }
-            }
-
-            var price = this.ActualUnitPrice.HasValue ? this.ActualUnitPrice.Value : this.UnitBasePrice;
+               var price = this.AssignedUnitPrice.HasValue ? this.AssignedUnitPrice.Value : this.UnitBasePrice;
 
             decimal vat = 0;
-            if (this.ExistDerivedVatRate)
+            if (this.ExistVatRate)
             {
-                var vatRate = this.DerivedVatRate.Rate;
+                var vatRate = this.VatRate.Rate;
                 var vatBase = price - this.UnitDiscount + this.UnitSurcharge;
                 vat = Math.Round((vatBase * vatRate) / 100, 2);
             }
@@ -377,9 +316,9 @@ namespace Allors.Domain
                 this.TotalSurchargeAsPercentage = Math.Round((this.TotalSurcharge / this.TotalBasePrice) * 100, 2);
             }
 
-            if (this.ActualUnitPrice.HasValue)
+            if (this.AssignedUnitPrice.HasValue)
             {
-                this.CalculatedUnitPrice = this.ActualUnitPrice.Value;
+                this.CalculatedUnitPrice = this.AssignedUnitPrice.Value;
             }
             else
             {
@@ -389,146 +328,6 @@ namespace Allors.Domain
             this.TotalVat = this.UnitVat * this.Quantity;
             this.TotalExVat = this.CalculatedUnitPrice * this.Quantity;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
-
-            var toCurrency = this.SalesInvoiceWhereSalesInvoiceItem.Currency;
-            var fromCurrency = this.SalesInvoiceWhereSalesInvoiceItem.BilledFrom.PreferredCurrency;
-
-            if (fromCurrency.Equals(toCurrency))
-            {
-                this.TotalBasePriceCustomerCurrency = this.TotalBasePrice;
-                this.TotalDiscountCustomerCurrency = this.TotalDiscount;
-                this.TotalSurchargeCustomerCurrency = this.TotalSurcharge;
-                this.TotalExVatCustomerCurrency = this.TotalExVat;
-                this.TotalVatCustomerCurrency = this.TotalVat;
-                this.TotalIncVatCustomerCurrency = this.TotalIncVat;
-            }
-            else
-            {
-                this.TotalBasePriceCustomerCurrency = Currencies.ConvertCurrency(this.TotalBasePrice, fromCurrency, toCurrency);
-                this.TotalDiscountCustomerCurrency = Currencies.ConvertCurrency(this.TotalDiscount, fromCurrency, toCurrency);
-                this.TotalSurchargeCustomerCurrency = Currencies.ConvertCurrency(this.TotalSurcharge, fromCurrency, toCurrency);
-                this.TotalExVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalExVat, fromCurrency, toCurrency);
-                this.TotalVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalVat, fromCurrency, toCurrency);
-                this.TotalIncVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalIncVat, fromCurrency, toCurrency);
-            }
-
-            this.AppsOnDeriveMarkupAndProfitMargin(derivation);
-        }
-
-        private IEnumerable<PriceComponent> GetPriceComponents()
-        {
-            var priceComponents = new List<PriceComponent>();
-
-            if (priceComponents.Count == 0)
-            {
-                var extent = new PriceComponents(this.Strategy.Session).Extent();
-                if (this.ExistProduct)
-                {
-                    foreach (PriceComponent priceComponent in extent)
-                    {
-                        if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product) && !priceComponent.ExistProductFeature &&
-                            priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                        {
-                            priceComponents.Add(priceComponent);
-                        }
-                    }
-
-                    if (priceComponents.Count == 0 && this.Product.ExistProductWhereVariant)
-                    {
-                        extent = new PriceComponents(this.Strategy.Session).Extent();
-                        foreach (PriceComponent priceComponent in extent)
-                        {
-                            if (priceComponent.ExistProduct && priceComponent.Product.Equals(this.Product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
-                                priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                                (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                            {
-                                priceComponents.Add(priceComponent);
-                            }
-                        }
-                    }
-                }
-
-                if (this.ExistProductFeature)
-                {
-                    foreach (PriceComponent priceComponent in extent)
-                    {
-                        if (priceComponent.ExistProductFeature && priceComponent.ProductFeature.Equals(this.ProductFeature) && !priceComponent.ExistProduct &&
-                            priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                            (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                        {
-                            priceComponents.Add(priceComponent);
-                        }
-                    }
-                }
-
-                // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-                extent = new PriceComponents(this.Strategy.Session).Extent();
-                foreach (PriceComponent priceComponent in extent)
-                {
-                    if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&
-                        priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                        (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                    {
-                        priceComponents.Add(priceComponent);
-                    }
-                }
-            }
-
-            return priceComponents;
-        }
-
-        public void AppsOnDeriveMarkupAndProfitMargin(IDerivation derivation)
-        {
-            this.UnitPurchasePrice = 0;
-            this.InitialMarkupPercentage = 0;
-            this.MaintainedMarkupPercentage = 0;
-            this.InitialProfitMargin = 0;
-            this.MaintainedProfitMargin = 0;
-
-            if (this.DerivedPart != null &&
-                this.ExistQuantity && this.Quantity > 0 &&
-                this.DerivedPart.ExistSupplierOfferingsWherePart &&
-                this.DerivedPart.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
-            {
-                decimal price = 0;
-                UnitOfMeasure uom = null;
-
-                foreach (SupplierOffering supplierOffering in this.DerivedPart.SupplierOfferingsWherePart)
-                {
-                    if (supplierOffering.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                        (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                    {
-                        price = supplierOffering.Price;
-                        uom = supplierOffering.UnitOfMeasure;
-                    }
-                }
-
-                if (price != 0)
-                {
-                    this.UnitPurchasePrice = price;
-                    if (uom != null && !uom.Equals(this.Product.UnitOfMeasure))
-                    {
-                        foreach (UnitOfMeasureConversion unitOfMeasureConversion in uom.UnitOfMeasureConversions)
-                        {
-                            if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(this.Product.UnitOfMeasure))
-                            {
-                                this.UnitPurchasePrice = Math.Round(this.UnitPurchasePrice * (1 / unitOfMeasureConversion.ConversionFactor), 2);
-                            }
-                        }
-                    }
-
-                    ////internet wiki page on markup business
-                    if (this.UnitPurchasePrice != 0 && this.TotalExVat != 0 && this.UnitBasePrice != 0)
-                    {
-                        this.InitialMarkupPercentage = Math.Round(((this.UnitBasePrice / this.UnitPurchasePrice) - 1) * 100, 2);
-                        this.MaintainedMarkupPercentage = Math.Round(((this.CalculatedUnitPrice / this.UnitPurchasePrice) - 1) * 100, 2);
-
-                        this.InitialProfitMargin = Math.Round(((this.UnitBasePrice - this.UnitPurchasePrice) / this.UnitBasePrice) * 100, 2);
-                        this.MaintainedProfitMargin = Math.Round(((this.CalculatedUnitPrice - this.UnitPurchasePrice) / this.CalculatedUnitPrice) * 100, 2);
-                    }
-                }
-            }
         }
 
         public void AppsOnDeriveSalesRep(IDerivation derivation)

@@ -329,7 +329,7 @@ namespace Allors.Server
 
             if (existingRoleIds != null)
             {
-                var existingRoles = this.session.Instantiate(existingRoleIds.ToArray());
+                var existingRoles = this.session.Instantiate(existingRoleIds);
                 roles.AddRange(existingRoles);
             }
 

@@ -134,7 +134,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -247,7 +247,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
             this.order.AddPurchaseOrderItem(item1);
 
             this.Session.Derive();
@@ -289,7 +289,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -323,7 +323,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -357,7 +357,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(20)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -406,7 +406,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);            
@@ -442,7 +442,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -477,7 +477,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -526,7 +526,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
@@ -561,7 +561,7 @@ namespace Allors.Domain
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);

@@ -392,7 +392,7 @@ namespace Allors.Domain
                 {
                     var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
                         .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
-                        .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice)
+                        .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                         .WithProduct(salesInvoiceItem.Product)
                         .WithQuantity(salesInvoiceItem.Quantity)
                         .WithComment(salesInvoiceItem.Comment)
@@ -460,7 +460,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
-                    .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice)
+                    .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                     .WithProduct(salesInvoiceItem.Product)
                     .WithProductFeature(salesInvoiceItem.ProductFeature)
                     .WithQuantity(salesInvoiceItem.Quantity)
@@ -586,7 +586,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
-                    .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice * -1)
+                    .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice * -1)
                     .WithProduct(salesInvoiceItem.Product)
                     .WithProductFeature(salesInvoiceItem.ProductFeature)
                     .WithQuantity(salesInvoiceItem.Quantity)
@@ -623,12 +623,7 @@ namespace Allors.Domain
             this.TotalVat = 0;
             this.TotalExVat = 0;
             this.TotalIncVat = 0;
-            this.TotalPurchasePrice = 0;
             this.TotalListPrice = 0;
-            this.MaintainedMarkupPercentage = 0;
-            this.InitialMarkupPercentage = 0;
-            this.MaintainedProfitMargin = 0;
-            this.InitialProfitMargin = 0;
 
             foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
             {
@@ -638,7 +633,6 @@ namespace Allors.Domain
                 this.TotalVat += item.TotalVat;
                 this.TotalExVat += item.TotalExVat;
                 this.TotalIncVat += item.TotalIncVat;
-                this.TotalPurchasePrice += item.UnitPurchasePrice;
                 this.TotalListPrice += item.CalculatedUnitPrice;
             }
 
@@ -727,27 +721,16 @@ namespace Allors.Domain
         {
             //// Only take into account items for which there is data at the item level.
             //// Skip negative sales.
-            decimal totalPurchasePrice = 0;
             decimal totalUnitBasePrice = 0;
             decimal totalListPrice = 0;
 
             foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
             {
-                if (item.TotalExVat > 0 && item.InitialMarkupPercentage > 0)
+                if (item.TotalExVat > 0)
                 {
-                    totalPurchasePrice += item.UnitPurchasePrice;
                     totalUnitBasePrice += item.UnitBasePrice;
                     totalListPrice += item.CalculatedUnitPrice;
                 }
-            }
-
-            if (totalPurchasePrice != 0 && totalListPrice != 0 && totalUnitBasePrice != 0)
-            {
-                this.InitialMarkupPercentage = Math.Round(((totalUnitBasePrice / totalPurchasePrice) - 1) * 100, 2);
-                this.MaintainedMarkupPercentage = Math.Round(((totalListPrice / totalPurchasePrice) - 1) * 100, 2);
-
-                this.InitialProfitMargin = Math.Round(((totalUnitBasePrice - totalPurchasePrice) / totalUnitBasePrice) * 100, 2);
-                this.MaintainedProfitMargin = Math.Round(((totalListPrice - totalPurchasePrice) / totalListPrice) * 100, 2);
             }
         }
 

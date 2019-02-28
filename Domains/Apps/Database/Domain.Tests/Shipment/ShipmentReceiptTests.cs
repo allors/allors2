@@ -193,7 +193,7 @@ namespace Allors.Domain
                 .WithDeliveryDate(DateTime.UtcNow)
                 .Build();
 
-            var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good1).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
+            var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good1).WithQuantityOrdered(30).WithAssignedUnitPrice(15).Build();
             order1.AddSalesOrderItem(salesItem);
 
             this.Session.Derive();

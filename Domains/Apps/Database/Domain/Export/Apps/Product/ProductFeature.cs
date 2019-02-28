@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccountingPeriod.v.cs" company="Allors bvba">
+// <copyright file="ProductFeature.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,11 +15,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    public partial class AccountingPeriod
+    public partial interface ProductFeature
     {
-        public AccountingPeriod AddNextMonth()
-        {
-            return this.AppsAddNextMonth();
-        }
-    }
+        void AddToBasePrice(BasePrice basePrice);
+
+        void RemoveFromBasePrices(BasePrice basePrice);
+    } 
 }

@@ -55,32 +55,37 @@ namespace Allors.Repository
 
         public void OnBuild()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void OnPostBuild()
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void OnInit()
+        {
+            
         }
 
         public void OnPreDerive()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void OnDerive()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void OnPostDerive()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            
         }
 
         #endregion

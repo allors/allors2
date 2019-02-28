@@ -107,7 +107,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public override IObject[] ToArray(Type type)
         {
-            var objects = this.Session.Instantiate(this.ObjectIds.ToArray());
+            var objects = this.Session.Instantiate(this.ObjectIds);
             var array = Array.CreateInstance(type, objects.Length);
             Array.Copy(objects, array, objects.Length);
             return (IObject[])array;

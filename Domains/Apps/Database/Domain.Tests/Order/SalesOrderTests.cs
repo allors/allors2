@@ -102,9 +102,9 @@ namespace Allors.Domain
                 .WithShipToAddress(mechelenAddress)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -193,9 +193,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).WithComment("item1").Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).WithComment("item2").Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).WithComment("item3").Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).WithComment("item1").Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).WithComment("item2").Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).WithComment("item3").Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -380,7 +380,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order1.AddSalesOrderItem(item);
@@ -412,7 +412,7 @@ namespace Allors.Domain
             item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(2)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order2.AddSalesOrderItem(item);
@@ -467,7 +467,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good1)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -539,7 +539,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order1.AddSalesOrderItem(item);
@@ -561,7 +561,7 @@ namespace Allors.Domain
             item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(20)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order2.AddSalesOrderItem(item);
@@ -628,7 +628,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -691,7 +691,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -775,13 +775,13 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good1)
                 .WithQuantityOrdered(20)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good2)
                 .WithQuantityOrdered(20)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item1);
@@ -876,7 +876,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(100).WithInvoiceItemType(productItem).Build();
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithAssignedUnitPrice(100).WithInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
             this.Session.Derive();
@@ -892,7 +892,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -971,7 +971,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(11).WithInvoiceItemType(productItem).Build();
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithAssignedUnitPrice(11).WithInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
             this.Session.Derive();
@@ -987,7 +987,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -1056,7 +1056,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(1)
-                .WithActualUnitPrice(0.1M)
+                .WithAssignedUnitPrice(0.1M)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -1113,7 +1113,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(50)
-                .WithActualUnitPrice(50)
+                .WithAssignedUnitPrice(50)
                 .Build();
 
             order.AddSalesOrderItem(item);
@@ -1158,10 +1158,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(shipToContactMechanism)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -1213,10 +1213,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(shipToContactMechanism)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -1341,10 +1341,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -1493,7 +1493,7 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
             
-            order.AddSalesOrderItem(new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).WithActualUnitPrice(10).Build());
+            order.AddSalesOrderItem(new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).WithAssignedUnitPrice(10).Build());
 
             this.Session.Derive();
 
@@ -1880,7 +1880,7 @@ namespace Allors.Domain
                 .Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1893,7 +1893,6 @@ namespace Allors.Domain
             Assert.Equal(52.5m, order.TotalExVat);
             Assert.Equal(11.03m, order.TotalVat);
             Assert.Equal(63.53m, order.TotalIncVat);
-            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -1932,7 +1931,7 @@ namespace Allors.Domain
                 .Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1945,7 +1944,6 @@ namespace Allors.Domain
             Assert.Equal(47.25m, order.TotalExVat);
             Assert.Equal(9.92m, order.TotalVat);
             Assert.Equal(57.17m, order.TotalIncVat);
-            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -1984,7 +1982,7 @@ namespace Allors.Domain
                 .Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1997,7 +1995,6 @@ namespace Allors.Domain
             Assert.Equal(52.5m, order.TotalExVat);
             Assert.Equal(11.03m, order.TotalVat);
             Assert.Equal(63.53m, order.TotalIncVat);
-            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -2036,7 +2033,7 @@ namespace Allors.Domain
                 .Build();
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(quantityOrdered).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -2049,7 +2046,6 @@ namespace Allors.Domain
             Assert.Equal(47.25m, order.TotalExVat);
             Assert.Equal(9.92m, order.TotalVat);
             Assert.Equal(57.17m, order.TotalIncVat);
-            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -2076,9 +2072,9 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2118,10 +2114,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2167,10 +2163,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2182,7 +2178,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            item4.RemoveActualUnitPrice();
+            item4.RemoveAssignedUnitPrice();
 
             this.Session.Derive();
 
@@ -2217,10 +2213,10 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(4).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2277,9 +2273,9 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2348,13 +2344,13 @@ namespace Allors.Domain
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorBlack).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorBlack).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).WithAssignedShipToParty(person2).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).WithAssignedShipToParty(person2).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -2514,7 +2510,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good2)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item1);
@@ -2528,7 +2524,7 @@ namespace Allors.Domain
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good1)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item2);

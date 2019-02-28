@@ -64,10 +64,10 @@ namespace Allors.Domain
             this.UnitDiscount = 0;
             this.UnitSurcharge = 0;
 
-            if (this.ExistActualUnitPrice)
+            if (this.ExistAssignedUnitPrice)
             {
-                this.UnitBasePrice = this.ActualUnitPrice??  0;
-                this.CalculatedUnitPrice = this.ActualUnitPrice?? 0;
+                this.UnitBasePrice = this.AssignedUnitPrice??  0;
+                this.CalculatedUnitPrice = this.AssignedUnitPrice?? 0;
 
                 var discountAdjustment = this.GetDiscountAdjustment();
 
@@ -105,9 +105,9 @@ namespace Allors.Domain
 
                 decimal vat = 0;
 
-                if (this.ExistDerivedVatRate)
+                if (this.ExistVatRate)
                 {
-                    var vatRate = this.DerivedVatRate.Rate;
+                    var vatRate = this.VatRate.Rate;
                     var vatBase = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
                     vat = Math.Round((vatBase * vatRate) / 100, 2);
                 }

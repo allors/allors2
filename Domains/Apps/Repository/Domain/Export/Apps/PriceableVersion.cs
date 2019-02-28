@@ -38,17 +38,6 @@ namespace Allors.Repository
         decimal UnitVat { get; set; }
 
         #region Allors
-        [Id("C89837F1-956A-48D4-95B7-9A8D3826D7CD")]
-        [AssociationId("AE2C9EBF-4A07-473B-930F-FAEE5A87C2A5")]
-        [RoleId("2AC683A9-F1A2-4B5D-9584-ED78FB7AB196")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalVatCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("C087BCE3-6075-48FC-9D71-5EC4B8956E21")]
         [AssociationId("E1E2DC3C-403A-4447-9D12-5A186C14035C")]
         [RoleId("7F8FE276-65BE-4FB1-9FEC-A57A5F0CDEB0")]
@@ -92,17 +81,6 @@ namespace Allors.Repository
         decimal UnitDiscount { get; set; }
 
         #region Allors
-        [Id("434EF354-6DB4-4DAB-AB00-997BA850C1F9")]
-        [AssociationId("6DFE507E-21D0-4A7D-86C9-FEC45D72ED3A")]
-        [RoleId("EAFDE1B2-70E3-4676-A41E-4B6E9496C9D2")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalExVatCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("35034B55-9903-4561-B195-19A7865D09BA")]
         [AssociationId("A4B3F363-3621-46F1-9CA2-E448DB26CCD6")]
         [RoleId("6A142464-A910-4A0F-82BD-C98B8F342378")]
@@ -110,7 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        VatRate DerivedVatRate { get; set; }
+        VatRate VatRate { get; set; }
 
         #region Allors
         [Id("AE5ECB96-912C-49FC-9F99-4EC3D5B86406")]
@@ -119,18 +97,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
-        decimal ActualUnitPrice { get; set; }
-
-        #region Allors
-        [Id("7540D3A9-64A9-4E72-987E-3995DD8E2380")]
-        [AssociationId("C9CA3948-60A3-418E-8544-08DE22D50A44")]
-        [RoleId("9E8B1AA0-A851-4FB3-B655-600DA92D8890")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalIncVatCustomerCurrency { get; set; }
+        decimal AssignedUnitPrice { get; set; }
 
         #region Allors
         [Id("BBA7B69A-7D79-4E6E-B39C-891A8DF36148")]
@@ -155,17 +122,6 @@ namespace Allors.Repository
         decimal CalculatedUnitPrice { get; set; }
 
         #region Allors
-        [Id("7FACF21E-26CF-4577-83EF-971C72390C78")]
-        [AssociationId("D3C2A6D6-F26D-466E-9869-2D71CC415F82")]
-        [RoleId("D1F3FC45-B506-4312-A9E8-E138F53A46E3")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalSurchargeCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("C75F67AF-3875-46F7-9B4D-C569799821E2")]
         [AssociationId("25A56FDC-89E9-4906-A3C0-ECD8E174C2C3")]
         [RoleId("2CD3E284-5D7E-4E18-A607-BB77A3595651")]
@@ -185,17 +141,6 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         decimal TotalSurchargeAsPercentage { get; set; }
-
-        #region Allors
-        [Id("15A1F540-05CA-47E6-9513-C280B745CF14")]
-        [AssociationId("175D7345-319D-4750-BA7D-2111947EFC17")]
-        [RoleId("871E5EDB-EAF9-4598-8680-D60E4B16C077")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalDiscountCustomerCurrency { get; set; }
 
         #region Allors
         [Id("9BA0BE40-56FB-4F50-AA08-B5FDE6D8B36B")]
@@ -249,27 +194,6 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         decimal TotalExVat { get; set; }
-
-        #region Allors
-        [Id("E4C44DB6-4327-4EB0-9CCC-8E0F3B08BB87")]
-        [AssociationId("B2E1ADAF-6199-4D19-AFF6-01B6BF26CBC5")]
-        [RoleId("16B3668F-55F8-4AD3-9A55-286FF6FA6705")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalBasePriceCustomerCurrency { get; set; }
-
-        #region Allors
-        [Id("A3086ECE-0C83-4D2A-9A1D-F0DDEF19684B")]
-        [AssociationId("7936F86F-7438-41FC-96B3-A5DBEA5D4E70")]
-        [RoleId("86ED7531-C95F-4364-B479-23D19FBFBA33")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        PriceComponent[] CurrentPriceComponents { get; set; }
 
         #region Allors
         [Id("1817B33A-C8CD-4F87-BB4F-BFE0ABCCCF24")]

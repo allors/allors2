@@ -87,9 +87,9 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(productItem).Build();
-            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(productItem).Build();
-            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(300M).WithInvoiceItemType(productItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(productItem).Build();
+            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithAssignedUnitPrice(200M).WithInvoiceItemType(productItem).Build();
+            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithAssignedUnitPrice(300M).WithInvoiceItemType(productItem).Build();
 
             invoice.AddSalesInvoiceItem(item1);
             invoice.AddSalesInvoiceItem(item2);
@@ -148,7 +148,7 @@ namespace Allors.Domain
                                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithProduct(this.good)
                                         .WithQuantity(1)
-                                        .WithActualUnitPrice(100M)
+                                        .WithAssignedUnitPrice(100M)
                                         .Build())
                 .Build();
 

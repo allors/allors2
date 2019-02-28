@@ -6,12 +6,12 @@ TemplateVersion() ::= <<1.0.5>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(domain) ::= <<
 <generations>
-$meta.compositeObjectTypes:{type|<generation template="compositeObjectType" input="$type.Id $" output="$type.Namespace.SlashSeparatedLowerCaseLongName$/$type.SingularName$.java"/>}$
+$meta.compositeObjectTypes:{type|<generation template="compositeObjectType" input="$type.Id $" output="src/$type.SingularName$.java"/>}$
 </generations>
 >>
 
 compositeObjectType(meta, objectType) ::= <<
-package $objectType.Namespace.NameForJava$;
+package allors;
 
 $if(objectType.IsInterface)$
 public interface $objectType.SingularName$ $if(objectType.ExistDirectSuperInterfaces)$ $first(objectType.DirectSuperInterfaces):{extends $it.FullNameForJava$}$$rest(objectType.DirectSuperInterfaces):{, $it.FullNameForJava$}$ $endif$

@@ -59,7 +59,7 @@ namespace Allors.Domain
                         .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
                         .WithInternalComment(quoteItem.InternalComment)
                         .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
-                        .WithActualUnitPrice(quoteItem.UnitPrice)
+                        .WithAssignedUnitPrice(quoteItem.UnitPrice)
                         .WithProduct(quoteItem.Product)
                         .WithSerialisedItem(quoteItem.SerialisedItem)
                         .WithProductFeature(quoteItem.ProductFeature)

@@ -25,7 +25,7 @@ namespace Allors.Repository
 
         public string Message { get; set; }
 
-        public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
+        
 
         public decimal AmountPaid { get; set; }
 
@@ -45,7 +45,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        public decimal TotalVatCustomerCurrency { get; set; }
+        
 
         public VatRegime VatRegime { get; set; }
 
@@ -55,25 +55,25 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-        public decimal TotalExVatCustomerCurrency { get; set; }
+        
 
-        public VatRate DerivedVatRate { get; set; }
+        public VatRate VatRate { get; set; }
 
-        public decimal ActualUnitPrice { get; set; }
+        public decimal AssignedUnitPrice { get; set; }
 
-        public decimal TotalIncVatCustomerCurrency { get; set; }
+        
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal CalculatedUnitPrice { get; set; }
 
-        public decimal TotalSurchargeCustomerCurrency { get; set; }
+        
 
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
 
-        public decimal TotalDiscountCustomerCurrency { get; set; }
+        
 
         public decimal TotalDiscount { get; set; }
 
@@ -85,9 +85,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        public decimal TotalBasePriceCustomerCurrency { get; set; }
-
-        public PriceComponent[] CurrentPriceComponents { get; set; }
+        
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -137,6 +135,11 @@ namespace Allors.Repository
         public void OnBuild() { }
 
         public void OnPostBuild() { }
+
+        public void OnInit()
+        {
+            
+        }
 
         public void OnPreDerive() { }
 

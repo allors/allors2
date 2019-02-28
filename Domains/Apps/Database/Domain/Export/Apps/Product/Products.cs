@@ -17,6 +17,8 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
     using Meta;
 
     public partial class Products
@@ -44,14 +46,14 @@ namespace Allors.Domain
                 if (priceComponent.FromDate <= date &&
                     (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= date))
                 {
-                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
-                                                           {
-                                                               PriceComponent = priceComponent,
-                                                               Customer = party,
-                                                               Product = product,
-                                                               SalesOrder = salesOrder,
-                                                               SalesInvoice = salesInvoice,
-                                                           }))
+                    if (PriceComponents.AppsIsApplicable(new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = priceComponent,
+                        Customer = party,
+                        Product = product,
+                        SalesOrder = salesOrder,
+                        SalesInvoice = salesInvoice,
+                    }))
                     {
                         if (priceComponent.ExistPrice)
                         {
@@ -64,7 +66,8 @@ namespace Allors.Domain
                 }
             }
 
-            var priceComponents = GetPriceComponents(product, date);
+            var currentPriceComponents = new PriceComponents(product.Strategy.Session).CurrentPriceComponents(date);
+            var priceComponents = product.GetPriceComponents(currentPriceComponents);
 
             var revenueBreakDiscount = 0M;
             var revenueBreakSurcharge = 0M;
@@ -73,14 +76,14 @@ namespace Allors.Domain
             {
                 if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
                 {
-                    if (PriceComponents.AppsIsEligible(new PriceComponents.IsEligibleParams
-                                                           {
-                                                               PriceComponent = priceComponent,
-                                                               Customer = party,
-                                                               Product = product,
-                                                               SalesOrder = salesOrder,
-                                                               SalesInvoice = salesInvoice,
-                                                           }))
+                    if (PriceComponents.AppsIsApplicable(new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = priceComponent,
+                        Customer = party,
+                        Product = product,
+                        SalesOrder = salesOrder,
+                        SalesInvoice = salesInvoice,
+                    }))
                     {
                         if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
                         {
@@ -123,49 +126,5 @@ namespace Allors.Domain
 
             return productBasePrice - productDiscount + productSurcharge;
         }
-
-        private static List<PriceComponent> GetPriceComponents(Product product, DateTime date)
-        {
-            // TODO: Code duplication ?
-            var priceComponents = new List<PriceComponent>();
-
-            var session = product.Strategy.Session;
-            var extent = new PriceComponents(session).Extent();
-
-            foreach (PriceComponent priceComponent in extent)
-            {
-                if (priceComponent.ExistProduct && priceComponent.Product.Equals(product) && !priceComponent.ExistProductFeature &&
-                    priceComponent.FromDate <= date && (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= date))
-                {
-                    priceComponents.Add(priceComponent);
-                }
-            }
-
-            if (priceComponents.Count == 0 && product.ExistProductWhereVariant)
-            {
-                extent = new PriceComponents(session).Extent();
-                foreach (PriceComponent priceComponent in extent)
-                {
-                    if (priceComponent.ExistProduct && priceComponent.Product.Equals(product.ProductWhereVariant) && !priceComponent.ExistProductFeature &&
-                        priceComponent.FromDate <= date && (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= date))
-                    {
-                        priceComponents.Add(priceComponent);
-                    }
-                }
-            }
-
-            // Discounts and surcharges can be specified without product or product feature, these need te be added to collection of pricecomponents
-            extent = new PriceComponents(session).Extent();
-            foreach (PriceComponent priceComponent in extent)
-            {
-                if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&
-                    priceComponent.FromDate <= date && (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= date))
-                {
-                    priceComponents.Add(priceComponent);
-                }
-            }
-
-            return priceComponents;
-        }
-    } 
+    }
 }

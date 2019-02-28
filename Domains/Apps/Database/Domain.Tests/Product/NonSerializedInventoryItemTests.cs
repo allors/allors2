@@ -444,7 +444,7 @@ namespace Allors.Domain
                 .WithDescription(description)
                 .WithProduct(product)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithActualUnitPrice(unitPrice)
+                .WithAssignedUnitPrice(unitPrice)
                 .Build();
 
         private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part)

@@ -45,7 +45,7 @@ namespace Allors.Domain
                 this.UnitOfMeasure = this.Part?.UnitOfMeasure;
             }
 
-            if (this.ExistPart && this.Part.InventoryItemKind.IsSerialized)
+            if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
             {
                 if (!this.ExistSerialisedInventoryItemState)
                 {
@@ -153,11 +153,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.Part.InventoryItemKind.IsSerialized)
+            if (this.Part.InventoryItemKind.Serialised)
             {
                 if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
                 {
-                    var message = "Serialized Inventory Items only accept Quantities of -1, 0, and 1.";
+                    var message = "Serialised Inventory Items only accept Quantities of -1, 0, and 1.";
                     derivation.Validation.AddError(this, this.Meta.Quantity, message);
                 }
 
@@ -184,7 +184,7 @@ namespace Allors.Domain
                     && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1)
                     && this.Reason.IncreasesQuantityOnHand == true)
                 {
-                    var message = "Serialized item already in inventory";
+                    var message = "Serialised item already in inventory";
                     derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
                 }
             }
@@ -200,13 +200,13 @@ namespace Allors.Domain
             var facility = this.Facility ?? this.Part.DefaultFacility;
             var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
 
-            if (this.Part.InventoryItemKind.IsSerialized && this.Quantity <= 0)
+            if (this.Part.InventoryItemKind.Serialised && this.Quantity <= 0)
             {
                 var message = "Invalid transaction";
                 derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
             }
 
-            if (this.Part.InventoryItemKind.IsSerialized && this.Quantity > 0)
+            if (this.Part.InventoryItemKind.Serialised && this.Quantity > 0)
             {
                 var builder = new SerialisedInventoryItemBuilder(this.Strategy.Session)
                     .WithFacility(facility)
@@ -222,7 +222,7 @@ namespace Allors.Domain
 
                 this.InventoryItem = builder.Build();
             }
-            else if (this.Part.InventoryItemKind.IsNonSerialized)
+            else if (this.Part.InventoryItemKind.NonSerialised)
             {
                 var builder = new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
                     .WithFacility(facility)

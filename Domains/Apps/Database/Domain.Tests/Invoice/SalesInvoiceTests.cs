@@ -625,7 +625,7 @@ namespace Allors.Domain
                 .WithProduct(good)
                 .WithInvoiceItemType(productItem)
                 .WithQuantity(1)
-                .WithActualUnitPrice(8)
+                .WithAssignedUnitPrice(8)
                 .Build();
 
             invoice.AddSalesInvoiceItem(item1);
@@ -640,14 +640,14 @@ namespace Allors.Domain
                 .WithProduct(good)
                 .WithInvoiceItemType(productItem)
                 .WithQuantity(1)
-                .WithActualUnitPrice(8)
+                .WithAssignedUnitPrice(8)
                 .Build();
 
             var item3 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithInvoiceItemType(productItem)
                 .WithQuantity(1)
-                .WithActualUnitPrice(8)
+                .WithAssignedUnitPrice(8)
                 .Build();
 
             invoice.AddSalesInvoiceItem(item2);
@@ -658,7 +658,6 @@ namespace Allors.Domain
             Assert.Equal(24, invoice.TotalExVat);
             Assert.Equal(5.04M, invoice.TotalVat);
             Assert.Equal(29.04M, invoice.TotalIncVat);
-            Assert.Equal(21, invoice.TotalPurchasePrice);
             Assert.Equal(invoice.TotalListPrice, invoice.TotalExVat);
         }
 
@@ -802,7 +801,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
@@ -851,7 +850,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
@@ -985,7 +984,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -1027,7 +1026,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -1069,7 +1068,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -1111,7 +1110,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(15).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
             invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -1268,14 +1267,14 @@ namespace Allors.Domain
                 .WithProduct(good1)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item2 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good2)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             invoice.AddSalesInvoiceItem(item2);
@@ -1317,8 +1316,8 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(2).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(2).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
@@ -1361,7 +1360,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
 
-            invoice.AddSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build());
+            invoice.AddSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build());
 
             this.Session.Derive();
 
@@ -1396,8 +1395,8 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();
@@ -1434,8 +1433,8 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(invoice.BillToCustomer).Build();

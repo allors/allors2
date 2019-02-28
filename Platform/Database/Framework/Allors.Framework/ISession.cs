@@ -143,21 +143,21 @@ namespace Allors
         /// </summary>
         /// <param name="objects">The objects.</param>
         /// <returns>The instantiated objects.</returns>
-        IObject[] Instantiate(IObject[] objects);
+        IObject[] Instantiate(IEnumerable<IObject> objects);
 
         /// <summary>
         /// Instantiates an array of Allors Objects.
         /// </summary>
         /// <param name="objectIds">The object ids.</param>
         /// <returns>The instantiated objects.</returns>
-        IObject[] Instantiate(string[] objectIds);
+        IObject[] Instantiate(IEnumerable<string> objectIds);
 
         /// <summary>
         /// Instantiates an array of Allors Objects.
         /// </summary>
         /// <param name="objectIds">The object ids.</param>
         /// <returns>The instantiated objects.</returns>
-        IObject[] Instantiate(long[] objectIds);
+        IObject[] Instantiate(IEnumerable<long> objectIds);
 
         void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects);
         

@@ -22,6 +22,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml;
 
     using Allors.Meta;
@@ -229,57 +230,19 @@ namespace Allors.Adapters.Memory
             return this.InstantiateMemoryStrategy(objectId);
         }
 
-        public IObject[] Instantiate(string[] objectIdStrings)
+        public IObject[] Instantiate(IEnumerable<string> objectIdStrings)
         {
-            if (objectIdStrings != null)
-            {
-                var objectIds = new long[objectIdStrings.Length];
-                for (var i = 0; i < objectIdStrings.Length; i++)
-                {
-                    objectIds[i] = long.Parse(objectIdStrings[i]);
-                }
-
-                return this.Instantiate(objectIds);
-            }
-
-            return EmptyObjects;
+            return objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
         }
 
-        public IObject[] Instantiate(IObject[] objects)
+        public IObject[] Instantiate(IEnumerable<IObject> objects)
         {
-            if (objects == null || objects.Length == 0)
-            {
-                return EmptyObjects;
-            }
-
-            var objectIds = new long[objects.Length];
-            for (var i = 0; i < objects.Length; i++)
-            {
-                objectIds[i] = objects[i].Id;
-            }
-
-            return this.Instantiate(objectIds);
+            return objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
         }
 
-        public IObject[] Instantiate(long[] objectIds)
+        public IObject[] Instantiate(IEnumerable<long> objectIds)
         {
-            if (objectIds == null || objectIds.Length == 0)
-            {
-                return EmptyObjects;
-            }
-
-            var allorsObjects = new List<IObject>(objectIds.Length);
-
-            foreach (var objectId in objectIds)
-            {
-                var strategy = this.InstantiateMemoryStrategy(objectId);
-                if (strategy != null)
-                {
-                    allorsObjects.Add(strategy.GetObject());
-                }
-            }
-
-            return allorsObjects.ToArray();
+            return objectIds != null ? objectIds.Select(v => this.InstantiateMemoryStrategy(v)?.GetObject()).Where(v => v != null).ToArray() : EmptyObjects;
         }
 
         public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)

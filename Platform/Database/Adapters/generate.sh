@@ -14,6 +14,8 @@ cd ..
 
 read -p "Press enter to continue"
 
+dotnet restore Adapters.sln
+
 dotnet msbuild Adapters.sln /target:Clean /verbosity:minimal
 
 dotnet build Generate/Generate.csproj

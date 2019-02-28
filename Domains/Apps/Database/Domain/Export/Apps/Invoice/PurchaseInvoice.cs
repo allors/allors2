@@ -136,7 +136,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
-                    .WithActualUnitPrice(purchaseInvoiceItem.ActualUnitPrice)
+                    .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
                     .WithProduct(purchaseInvoiceItem.Product)
                     .WithQuantity(purchaseInvoiceItem.Quantity)
                     .WithComment(purchaseInvoiceItem.Comment)

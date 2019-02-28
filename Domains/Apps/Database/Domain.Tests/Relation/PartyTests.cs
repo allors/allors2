@@ -113,7 +113,7 @@ namespace Allors.Domain
             var orderItem1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(10)
+                .WithAssignedUnitPrice(10)
                 .Build();
             salesOrder1.AddSalesOrderItem(orderItem1);
 
@@ -123,7 +123,7 @@ namespace Allors.Domain
             var orderItem2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(10)
+                .WithAssignedUnitPrice(10)
                 .Build();
             salesOrder2.AddSalesOrderItem(orderItem2);
 
@@ -133,7 +133,7 @@ namespace Allors.Domain
             var orderItem3 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(10)
+                .WithAssignedUnitPrice(10)
                 .Build();
             salesOrder3.AddSalesOrderItem(orderItem3);
             salesOrder3.Cancel();

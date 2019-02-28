@@ -28,6 +28,11 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public AccountingPeriod AddNextMonth()
+        {
+            return this.AppsAddNextMonth();
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistActive)

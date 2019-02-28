@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.SalesOrder">
+    <Position X="5.75" Y="9.75" Width="1.5" />
+    <Members>
+      <Property Name="AllVersions" Hidden="true" />
+      <Property Name="BillToContactMechanism" Hidden="true" />
+      <Property Name="BillToContactPerson" Hidden="true" />
+      <Property Name="BillToEndCustomer" Hidden="true" />
+      <Property Name="BillToEndCustomerContactMechanism" Hidden="true" />
+      <Property Name="BillToEndCustomerContactPerson" Hidden="true" />
+      <Property Name="CanInvoice" Hidden="true" />
+      <Property Name="CanShip" Hidden="true" />
+      <Property Name="CurrentVersion" Hidden="true" />
+      <Property Name="Customers" Hidden="true" />
+      <Property Name="InitialMarkupPercentage" Hidden="true" />
+      <Property Name="InitialProfitMargin" Hidden="true" />
+      <Property Name="LastSalesOrderInvoiceState" Hidden="true" />
+      <Property Name="LastSalesOrderPaymentState" Hidden="true" />
+      <Property Name="LastSalesOrderShipmentState" Hidden="true" />
+      <Property Name="LastSalesOrderState" Hidden="true" />
+      <Property Name="MaintainedMarkupPercentage" Hidden="true" />
+      <Property Name="MaintainedProfitMargin" Hidden="true" />
+      <Property Name="OriginFacility" Hidden="true" />
+      <Property Name="PartiallyShip" Hidden="true" />
+      <Property Name="PaymentMethod" Hidden="true" />
+      <Property Name="PlacingCustomer" Hidden="true" />
+      <Property Name="PlacingCustomerContactMechanism" Hidden="true" />
+      <Property Name="PlacingCustomerContactPerson" Hidden="true" />
+      <Property Name="PreviousBillToCustomer" Hidden="true" />
+      <Property Name="PreviousSalesOrderInvoiceState" Hidden="true" />
+      <Property Name="PreviousSalesOrderPaymentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderShipmentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderState" Hidden="true" />
+      <Property Name="PreviousShipToCustomer" Hidden="true" />
+      <Property Name="ProformaInvoice" Hidden="true" />
+      <Property Name="Quote" Hidden="true" />
+      <Property Name="SalesOrderInvoiceState" Hidden="true" />
+      <Property Name="SalesOrderPaymentState" Hidden="true" />
+      <Property Name="SalesOrderShipmentState" Hidden="true" />
+      <Property Name="SalesOrderState" Hidden="true" />
+      <Property Name="SalesReps" Hidden="true" />
+      <Property Name="ShipmentMethod" Hidden="true" />
+      <Property Name="ShipToContactPerson" Hidden="true" />
+      <Property Name="ShipToCustomer" Hidden="true" />
+      <Property Name="ShipToEndCustomer" Hidden="true" />
+      <Property Name="ShipToEndCustomerAddress" Hidden="true" />
+      <Property Name="ShipToEndCustomerContactPerson" Hidden="true" />
+      <Property Name="Store" Hidden="true" />
+      <Property Name="TakenBy" Hidden="true" />
+      <Property Name="TakenByContactMechanism" Hidden="true" />
+      <Property Name="TakenByContactPerson" Hidden="true" />
+      <Property Name="TotalListPrice" Hidden="true" />
+      <Property Name="TotalListPriceCustomerCurrency" Hidden="true" />
+      <Property Name="TotalPurchasePrice" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAuhAQhIAAAIEgwRABEAAgIAkEAYNAiQAAYRESJC0AA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SalesOrderItems" />
+      <Property Name="BillToCustomer" />
+      <Property Name="ShipToAddress" />
+      <Property Name="SalesChannel" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Order">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <Members>
+      <Property Name="CustomerReference" Hidden="true" />
+      <Property Name="DeliveryDate" Hidden="true" />
+      <Property Name="Description" Hidden="true" />
+      <Property Name="DiscountAdjustment" Hidden="true" />
+      <Property Name="EntryDate" Hidden="true" />
+      <Property Name="Fee" Hidden="true" />
+      <Property Name="InternalComment" Hidden="true" />
+      <Property Name="Message" Hidden="true" />
+      <Property Name="OrderDate" Hidden="true" />
+      <Property Name="OrderNumber" Hidden="true" />
+      <Property Name="SalesTerms" Hidden="true" />
+      <Property Name="ShippingAndHandlingCharge" Hidden="true" />
+      <Property Name="SurchargeAdjustment" Hidden="true" />
+      <Property Name="TotalBasePrice" Hidden="true" />
+      <Property Name="TotalBasePriceCustomerCurrency" Hidden="true" />
+      <Property Name="TotalDiscount" Hidden="true" />
+      <Property Name="TotalDiscountCustomerCurrency" Hidden="true" />
+      <Property Name="TotalExVat" Hidden="true" />
+      <Property Name="TotalExVatCustomerCurrency" Hidden="true" />
+      <Property Name="TotalFee" Hidden="true" />
+      <Property Name="TotalFeeCustomerCurrency" Hidden="true" />
+      <Property Name="TotalIncVat" Hidden="true" />
+      <Property Name="TotalIncVatCustomerCurrency" Hidden="true" />
+      <Property Name="TotalShippingAndHandling" Hidden="true" />
+      <Property Name="TotalShippingAndHandlingCustomerCurrency" Hidden="true" />
+      <Property Name="TotalSurcharge" Hidden="true" />
+      <Property Name="TotalSurchargeCustomerCurrency" Hidden="true" />
+      <Property Name="TotalVat" Hidden="true" />
+      <Property Name="TotalVatCustomerCurrency" Hidden="true" />
+      <Property Name="ValidOrderItems" Hidden="true" />
+      <Property Name="VatRegime" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>SABAgAIAEUIgABEoBAAAABCAKDAwACCAQBAAIAQAEBA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="OrderKind" />
+      <Property Name="Currency" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem">
+    <Position X="8.75" Y="10.5" Width="2.25" />
+    <Members>
+      <Property Name="AllVersions" Hidden="true" />
+      <Property Name="AssignedShipToAddress" Hidden="true" />
+      <Property Name="AssignedShipToParty" Hidden="true" />
+      <Property Name="CurrentVersion" Hidden="true" />
+      <Property Name="Details" Hidden="true" />
+      <Property Name="InvoiceItemType" Hidden="true" />
+      <Property Name="LastSalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="LastSalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="LastSalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="LastSalesOrderItemState" Hidden="true" />
+      <Property Name="NewSerialisedItemState" Hidden="true" />
+      <Property Name="PreviousProduct" Hidden="true" />
+      <Property Name="PreviousReservedFromNonSerialisedInventoryItem" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="PreviousSalesOrderItemState" Hidden="true" />
+      <Property Name="QuantityPendingShipment" Hidden="true" />
+      <Property Name="QuantityRequestsShipping" Hidden="true" />
+      <Property Name="QuantityReserved" Hidden="true" />
+      <Property Name="QuantityReturned" Hidden="true" />
+      <Property Name="QuantityShipNow" Hidden="true" />
+      <Property Name="QuantityShipped" Hidden="true" />
+      <Property Name="QuantityShortFalled" Hidden="true" />
+      <Property Name="RequiredMarkupPercentage" Hidden="true" />
+      <Property Name="RequiredProfitMargin" Hidden="true" />
+      <Property Name="ReservedFromNonSerialisedInventoryItem" Hidden="true" />
+      <Property Name="ReservedFromSerialisedInventoryItem" Hidden="true" />
+      <Property Name="SalesOrderItemInvoiceState" Hidden="true" />
+      <Property Name="SalesOrderItemPaymentState" Hidden="true" />
+      <Property Name="SalesOrderItemShipmentState" Hidden="true" />
+      <Property Name="SalesOrderItemState" Hidden="true" />
+      <Property Name="SalesReps" Hidden="true" />
+      <Property Name="SerialisedItem" Hidden="true" />
+      <Property Name="ShipToAddress" Hidden="true" />
+      <Property Name="ShipToParty" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAxGBAkAIQABACIAQEwAAICKEMApAApAAAKAACAE4AE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+      <Property Name="ProductFeature" />
+      <Property Name="OrderedWithFeatures" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderItem">
+    <Position X="8.75" Y="8" Width="2" />
+    <Members>
+      <Property Name="AssignedDeliveryDate" Hidden="true" />
+      <Property Name="Associations" Hidden="true" />
+      <Property Name="BudgetItem" Hidden="true" />
+      <Property Name="CorrespondingPurchaseOrder" Hidden="true" />
+      <Property Name="DeliveryDate" Hidden="true" />
+      <Property Name="Description" Hidden="true" />
+      <Property Name="InternalComment" Hidden="true" />
+      <Property Name="Message" Hidden="true" />
+      <Property Name="PreviousQuantity" Hidden="true" />
+      <Property Name="QuoteItem" Hidden="true" />
+      <Property Name="SalesTerms" Hidden="true" />
+      <Property Name="ShippingInstruction" Hidden="true" />
+      <Property Name="TotalOrderAdjustmentCustomerCurrency" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAAAAAgAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Priceable">
+    <Position X="8.75" Y="3.5" Width="2.25" />
+    <Members>
+      <Property Name="AssignedVatRegime" Hidden="true" />
+      <Property Name="TotalBasePriceCustomerCurrency" Hidden="true" />
+      <Property Name="TotalDiscountCustomerCurrency" Hidden="true" />
+      <Property Name="TotalExVatCustomerCurrency" Hidden="true" />
+      <Property Name="TotalIncVatCustomerCurrency" Hidden="true" />
+      <Property Name="TotalSurchargeCustomerCurrency" Hidden="true" />
+      <Property Name="TotalVatCustomerCurrency" Hidden="true" />
+      <Property Name="VatRegime" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>YABAAAAQAQIAABAAAAAAgBAAIBIyECCAAgAAgAUAEBA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentPriceComponents" />
+      <Property Name="DiscountAdjustment" />
+      <Property Name="SurchargeAdjustment" />
+      <Property Name="DerivedVatRate" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PriceComponent">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <Members>
+      <Property Name="AgreementPricingProgram" Hidden="true" />
+      <Property Name="Currency" Hidden="true" />
+      <Property Name="Description" Hidden="true" />
+      <Property Name="Part" Hidden="true" />
+      <Property Name="Price" Hidden="true" />
+      <Property Name="PricedBy" Hidden="true" />
+      <Property Name="Rate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>QAQCAQAAIQAgAAABABAABAAACKAAAAAAAAAgAAAAEAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+      <Property Name="ProductFeature" />
+      <Property Name="GeographicBoundary" />
+      <Property Name="PartyClassification" />
+      <Property Name="ProductCategory" />
+      <Property Name="OrderKind" />
+      <Property Name="OrderQuantityBreak" />
+      <Property Name="OrderValue" />
+      <Property Name="SalesChannel" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Party">
+    <Position X="5.75" Y="13.75" Width="1.5" />
+    <Members>
+      <Property Name="Agreements" Hidden="true" />
+      <Property Name="BankAccounts" Hidden="true" />
+      <Property Name="BillingAccounts" Hidden="true" />
+      <Property Name="BillingAddress" Hidden="true" />
+      <Property Name="BillingInquiriesFax" Hidden="true" />
+      <Property Name="BillingInquiriesPhone" Hidden="true" />
+      <Property Name="CellPhoneNumber" Hidden="true" />
+      <Property Name="CommunicationEvents" Hidden="true" />
+      <Property Name="Contents" Hidden="true" />
+      <Property Name="CreditCards" Hidden="true" />
+      <Property Name="CurrentContacts" Hidden="true" />
+      <Property Name="CurrentPartyContactMechanisms" Hidden="true" />
+      <Property Name="CurrentPartyRelationships" Hidden="true" />
+      <Property Name="CurrentSalesReps" Hidden="true" />
+      <Property Name="DefaultPaymentMethod" Hidden="true" />
+      <Property Name="DefaultShipmentMethod" Hidden="true" />
+      <Property Name="GeneralCorrespondence" Hidden="true" />
+      <Property Name="GeneralEmail" Hidden="true" />
+      <Property Name="GeneralFaxNumber" Hidden="true" />
+      <Property Name="GeneralPhoneNumber" Hidden="true" />
+      <Property Name="HeadQuarter" Hidden="true" />
+      <Property Name="HomeAddress" Hidden="true" />
+      <Property Name="InactiveContacts" Hidden="true" />
+      <Property Name="InactivePartyContactMechanisms" Hidden="true" />
+      <Property Name="InactivePartyRelationships" Hidden="true" />
+      <Property Name="InternetAddress" Hidden="true" />
+      <Property Name="OrderAddress" Hidden="true" />
+      <Property Name="OrderInquiriesFax" Hidden="true" />
+      <Property Name="OrderInquiriesPhone" Hidden="true" />
+      <Property Name="PartyContactMechanisms" Hidden="true" />
+      <Property Name="PartyName" Hidden="true" />
+      <Property Name="PartyRates" Hidden="true" />
+      <Property Name="PartySkills" Hidden="true" />
+      <Property Name="PersonalEmailAddress" Hidden="true" />
+      <Property Name="Qualifications" Hidden="true" />
+      <Property Name="Resumes" Hidden="true" />
+      <Property Name="SalesOffice" Hidden="true" />
+      <Property Name="ShippingInquiriesFax" Hidden="true" />
+      <Property Name="ShippingInquiriesPhone" Hidden="true" />
+      <Property Name="VatRegime" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AYAIGAABVAAQAoAQIJgGAACgoAkUAAAAAQIFBANAgEI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShippingAddress" />
+      <Property Name="PartyClassifications" />
+      <Property Name="PreferredCurrency" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Product">
+    <Position X="3.5" Y="8.5" Width="1.5" />
+    <Members>
+      <Property Name="BasePrices" Hidden="true" />
+      <Property Name="EstimatedProductCosts" Hidden="true" />
+      <Property Name="IntrastatCode" Hidden="true" />
+      <Property Name="IntroductionDate" Hidden="true" />
+      <Property Name="ProductComplement" Hidden="true" />
+      <Property Name="ProductObsolescences" Hidden="true" />
+      <Property Name="SalesDiscontinuationDate" Hidden="true" />
+      <Property Name="SupportDiscontinuationDate" Hidden="true" />
+      <Property Name="VatRate" Hidden="true" />
+      <Property Name="VirtualProductPriceComponents" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgBABEAAQAAAAAAABAAAAQAABAAAAAAAAAAICAAIgA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Variants" />
+      <Property Name="ProductCategoriesExpanded" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.ProductFeature">
+    <Position X="12.25" Y="11.25" Width="1.75" />
+    <Members>
+      <Property Name="BasePrices" Hidden="true" />
+      <Property Name="DependentFeatures" Hidden="true" />
+      <Property Name="Description" Hidden="true" />
+      <Property Name="EstimatedProductCosts" Hidden="true" />
+      <Property Name="IncompatibleFeatures" Hidden="true" />
+      <Property Name="VatRate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAgAAAAABAAAAAAAAAgAAAAAAAAIAABAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.GeographicBoundary">
+    <Position X="2.75" Y="10.75" Width="1.75" />
+    <Members>
+      <Property Name="Abbreviation" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PostalAddress">
+    <Position X="5.75" Y="11.75" Width="1.5" />
+    <Members>
+      <Property Name="Address1" Hidden="true" />
+      <Property Name="Address2" Hidden="true" />
+      <Property Name="Address3" Hidden="true" />
+      <Property Name="City" Hidden="true" />
+      <Property Name="Country" Hidden="true" />
+      <Property Name="Directions" Hidden="true" />
+      <Property Name="PostalBoundary" Hidden="true" />
+      <Property Name="PostalCode" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAJIAAEAAAAABIAAAAARAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="GeographicBoundaries" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesInvoice">
+    <Position X="2.75" Y="12.75" Width="1.5" />
+    <Members>
+      <Property Name="AdvancePayment" Hidden="true" />
+      <Property Name="AllVersions" Hidden="true" />
+      <Property Name="BilledFrom" Hidden="true" />
+      <Property Name="BilledFromContactMechanism" Hidden="true" />
+      <Property Name="BilledFromContactPerson" Hidden="true" />
+      <Property Name="BillToContactMechanism" Hidden="true" />
+      <Property Name="BillToContactPerson" Hidden="true" />
+      <Property Name="BillToCustomer" Hidden="true" />
+      <Property Name="BillToEndCustomer" Hidden="true" />
+      <Property Name="BillToEndCustomerContactMechanism" Hidden="true" />
+      <Property Name="BillToEndCustomerContactPerson" Hidden="true" />
+      <Property Name="CurrentVersion" Hidden="true" />
+      <Property Name="Customers" Hidden="true" />
+      <Property Name="InitialMarkupPercentage" Hidden="true" />
+      <Property Name="InitialProfitMargin" Hidden="true" />
+      <Property Name="IsRepeatingInvoice" Hidden="true" />
+      <Property Name="LastSalesInvoiceState" Hidden="true" />
+      <Property Name="MaintainedMarkupPercentage" Hidden="true" />
+      <Property Name="MaintainedProfitMargin" Hidden="true" />
+      <Property Name="PaymentMethod" Hidden="true" />
+      <Property Name="PreviousBillToCustomer" Hidden="true" />
+      <Property Name="PreviousSalesInvoiceState" Hidden="true" />
+      <Property Name="PreviousShipToCustomer" Hidden="true" />
+      <Property Name="PurchaseInvoice" Hidden="true" />
+      <Property Name="SalesChannel" Hidden="true" />
+      <Property Name="SalesInvoiceItems" Hidden="true" />
+      <Property Name="SalesInvoiceState" Hidden="true" />
+      <Property Name="SalesInvoiceType" Hidden="true" />
+      <Property Name="SalesOrders" Hidden="true" />
+      <Property Name="SalesReps" Hidden="true" />
+      <Property Name="ShipToContactPerson" Hidden="true" />
+      <Property Name="ShipToCustomer" Hidden="true" />
+      <Property Name="ShipToEndCustomer" Hidden="true" />
+      <Property Name="ShipToEndCustomerAddress" Hidden="true" />
+      <Property Name="ShipToEndCustomerContactPerson" Hidden="true" />
+      <Property Name="Store" Hidden="true" />
+      <Property Name="TotalListPrice" Hidden="true" />
+      <Property Name="TotalListPriceCustomerCurrency" Hidden="true" />
+      <Property Name="TotalPurchasePrice" Hidden="true" />
+      <Property Name="WorkEfforts" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ohkBAQhMAAIAUkwQABAAAAIAmEAAkAgAACY0AQBCQAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipToAddress" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PartyClassification">
+    <Position X="11.75" Y="8.75" Width="1.75" />
+    <Members>
+      <Property Name="Name" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ProductCategory">
+    <Position X="0.5" Y="8" Width="1.75" />
+    <Members>
+      <Property Name="AllNonSerialisedInventoryItemsForSale" Hidden="true" />
+      <Property Name="AllProducts" Hidden="true" />
+      <Property Name="AllSerialisedItemsForSale" Hidden="true" />
+      <Property Name="CategoryImage" Hidden="true" />
+      <Property Name="CatScope" Hidden="true" />
+      <Property Name="Children" Hidden="true" />
+      <Property Name="Code" Hidden="true" />
+      <Property Name="Description" Hidden="true" />
+      <Property Name="InternalOrganisation" Hidden="true" />
+      <Property Name="LocalisedDescriptions" Hidden="true" />
+      <Property Name="LocalisedNames" Hidden="true" />
+      <Property Name="Name" Hidden="true" />
+      <Property Name="Parents" Hidden="true" />
+      <Property Name="Products" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgCAAAAAAkAASAIAAAAACAAAJAAAEIAAw=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SuperJacent" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderKind">
+    <Position X="2.75" Y="5.75" Width="1.75" />
+    <Members>
+      <Property Name="Description" Hidden="true" />
+      <Property Name="ScheduleManually" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderQuantityBreak">
+    <Position X="2.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderValue">
+    <Position X="2.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesChannel">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.BasePrice">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.DiscountAdjustment">
+    <Position X="12.75" Y="5.75" Width="1.75" />
+    <Members>
+      <Property Name="AllVersions" Hidden="true" />
+      <Property Name="CurrentVersion" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderAdjustment">
+    <Position X="14" Y="3.5" Width="1.75" />
+    <Members>
+      <Property Name="VatRate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.SurchargeAdjustment">
+    <Position X="15.25" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.VatRate">
+    <Position X="9" Y="0.75" Width="1.75" />
+    <Members>
+      <Property Name="EuSalesListType" Hidden="true" />
+      <Property Name="PaymentFrequency" Hidden="true" />
+      <Property Name="ReverseCharge" Hidden="true" />
+      <Property Name="TaxAuthority" Hidden="true" />
+      <Property Name="VatCalculationMethod" Hidden="true" />
+      <Property Name="VatPayableAccount" Hidden="true" />
+      <Property Name="VatRatePurchaseKind" Hidden="true" />
+      <Property Name="VatRateUsage" Hidden="true" />
+      <Property Name="VatReceivableAccount" Hidden="true" />
+      <Property Name="VatReturnBoxes" Hidden="true" />
+      <Property Name="VatTariff" Hidden="true" />
+      <Property Name="VatToPayAccount" Hidden="true" />
+      <Property Name="VatToReceiveAccount" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>QBAgQSgAADAAAAAAgAAAAAAAAAAAAAAAgAAIAAAAAEA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Currency">
+    <Position X="8.75" Y="13.75" Width="1.5" />
+    <Members>
+      <Property Name="IsoCode" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

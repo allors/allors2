@@ -41,22 +41,17 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Quantity { get; set; }
 
-        #region Allors
-        [Id("C0A54235-2990-40F9-8A47-856FD6CB877C")]
-        [AssociationId("8FFAA9DF-DC44-43E0-8EF6-79A1E4F3F19F")]
-        [RoleId("E05E6B5E-9EFC-488E-A535-6BD5ABC29FC4")]
-        #endregion
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        public decimal QuantityPicked { get; set; }
-
         #region inherited methods
 
 
         public void OnBuild(){}
 
         public void OnPostBuild(){}
+
+        public void OnInit()
+        {
+            
+        }
 
         public void OnPreDerive(){}
 

@@ -133,7 +133,7 @@ namespace Allors.Domain
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
                 if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Completed) ||
                     salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Finished) ||
-                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
+                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !(order.OrderKind?.ScheduleManually == true))
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
                 }
@@ -216,7 +216,8 @@ namespace Allors.Domain
 
                         extra -= diff;
 
-                        salesOrderItem.AppsOnDeriveAddToShipping(derivation, diff);
+                        salesOrderItem.QuantityRequestsShipping += diff;
+                        salesOrderItem.QuantityShortFalled -= diff;
                         salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
@@ -250,7 +251,13 @@ namespace Allors.Domain
 
                     subtract -= diff;
 
-                    salesOrderItem.AppsOnDeriveSubtractFromShipping(derivation, diff);
+                    salesOrderItem.QuantityRequestsShipping -= diff;
+                    if (salesOrderItem.QuantityRequestsShipping < 0)
+                    {
+                        salesOrderItem.QuantityRequestsShipping = 0;
+                    }
+
+                    salesOrderItem.QuantityShortFalled = salesOrderItem.QuantityOrdered - salesOrderItem.QuantityRequestsShipping;
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }

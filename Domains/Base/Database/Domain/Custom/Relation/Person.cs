@@ -49,6 +49,14 @@ namespace Allors.Domain
             return base.ToString();
         }
 
+        public void CustomOnInit(ObjectOnInit method)
+        {
+            if (this.ExistOrganisationWhereManager)
+            {
+                this.OrganisationWhereManager.AddEmployee(this);
+            }
+        }
+
         public void CustomOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

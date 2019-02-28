@@ -145,6 +145,11 @@ namespace Allors.Repository
 
         public void OnPostBuild() { }
 
+        public void OnInit()
+        {
+            
+        }
+
         public void OnPreDerive() { }
 
         public void OnDerive() { }

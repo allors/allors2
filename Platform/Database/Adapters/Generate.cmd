@@ -23,6 +23,8 @@ cd ../
 @echo Adapters
 @echo ========
 
+dotnet restore Adapters.sln
+
 dotnet msbuild Adapters.sln /target:Clean /verbosity:minimal
 dotnet msbuild Adapters.sln /target:Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal
 

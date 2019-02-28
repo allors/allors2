@@ -126,9 +126,9 @@ namespace Allors.Domain
 
         public void AppsDeriveVatRate(IDerivation derivation)
         {
-            if (!this.ExistDerivedVatRate && this.ExistVatRegime && this.VatRegime.ExistVatRate)
+            if (!this.ExistVatRate && this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
-                this.DerivedVatRate = this.VatRegime.VatRate;
+                this.VatRate = this.VatRegime.VatRate;
             }
         }
 
@@ -208,10 +208,10 @@ namespace Allors.Domain
             this.UnitDiscount = 0;
             this.UnitSurcharge = 0;
 
-            if (this.ActualUnitPrice.HasValue)
+            if (this.AssignedUnitPrice.HasValue)
             {
-                this.UnitBasePrice = this.ActualUnitPrice.Value;
-                this.CalculatedUnitPrice = this.ActualUnitPrice.Value;
+                this.UnitBasePrice = this.AssignedUnitPrice.Value;
+                this.CalculatedUnitPrice = this.AssignedUnitPrice.Value;
             }
             else
             {

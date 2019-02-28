@@ -425,7 +425,7 @@ namespace Allors
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantityOrdered(1)
                     .WithMessage(@"line1
 line2")
@@ -434,14 +434,14 @@ line2")
 
                 var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantityOrdered(2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                     .Build();
 
                 var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantityOrdered(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
@@ -461,7 +461,7 @@ line2")
                 var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
 line2")
@@ -470,14 +470,14 @@ line2")
 
                 var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantity(2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                     .Build();
 
                 var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
@@ -506,7 +506,7 @@ line2")
                 {
                     var salesInvoiceItem = new SalesInvoiceItemBuilder(this.Session)
                         .WithDescription("Extra Charge")
-                        .WithActualUnitPrice(100 + j)
+                        .WithAssignedUnitPrice(100 + j)
                         .WithQuantity(j)
                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).MiscCharge)
                         .Build();
@@ -543,7 +543,7 @@ line2")
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithPart(finishedGood)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
 line2")
@@ -552,7 +552,7 @@ line2")
 
                 var purchaseInvoiceItem2 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantity(2)
                     .WithPart(finishedGood2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).PartItem)
@@ -560,7 +560,7 @@ line2")
 
                 var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();

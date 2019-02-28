@@ -376,7 +376,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
-            Assert.Equal(expected, orderItem.DerivedVatRate);
+            Assert.Equal(expected, orderItem.VatRate);
         }
 
         [Fact]
@@ -397,7 +397,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
-            Assert.Equal(expected, orderItem.DerivedVatRate);
+            Assert.Equal(expected, orderItem.VatRate);
         }
 
         [Fact]
@@ -502,14 +502,14 @@ namespace Allors.Domain
             var productOrderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var productFeatureOrderItem = new SalesOrderItemBuilder(this.Session)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem)
                 .WithProductFeature(this.feature1)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             productOrderItem.AddOrderedWithFeature(productFeatureOrderItem);
@@ -601,13 +601,13 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good2)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -637,7 +637,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -649,7 +649,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(3, item.QuantityOrdered);
-            Assert.Equal(0, item.QuantityPicked);
             Assert.Equal(0, item.QuantityShipped);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -668,7 +667,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(3, item.QuantityOrdered);
-            Assert.Equal(0, item.QuantityPicked);
             Assert.Equal(0, item.QuantityShipped);
             Assert.Equal(3, item.QuantityReserved);
             Assert.Equal(3, item.QuantityShortFalled);
@@ -687,7 +685,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -721,7 +719,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -764,7 +762,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -796,7 +794,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -834,7 +832,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -891,7 +889,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -926,7 +924,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -964,7 +962,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1032,7 +1030,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1070,7 +1068,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1123,7 +1121,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(100)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1135,7 +1133,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
-            Assert.Equal(0, item.QuantityPicked);
             Assert.Equal(0, item.QuantityShipped);
             Assert.Equal(100, item.QuantityPendingShipment);
             Assert.Equal(100, item.QuantityReserved);
@@ -1161,7 +1158,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(120)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -1173,7 +1170,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(120, item1.QuantityOrdered);
-            Assert.Equal(0, item1.QuantityPicked);
             Assert.Equal(0, item1.QuantityShipped);
             Assert.Equal(110, item1.QuantityPendingShipment);
             Assert.Equal(120, item1.QuantityReserved);
@@ -1186,7 +1182,7 @@ namespace Allors.Domain
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item2);
@@ -1198,7 +1194,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(120, item1.QuantityOrdered);
-            Assert.Equal(0, item1.QuantityPicked);
             Assert.Equal(0, item1.QuantityShipped);
             Assert.Equal(110, item1.QuantityPendingShipment);
             Assert.Equal(120, item1.QuantityReserved);
@@ -1206,7 +1201,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.QuantityRequestsShipping);
 
             Assert.Equal(10, item2.QuantityOrdered);
-            Assert.Equal(0, item2.QuantityPicked);
             Assert.Equal(0, item2.QuantityShipped);
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityReserved);
@@ -1232,7 +1226,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(100)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1244,7 +1238,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
-            Assert.Equal(0, item.QuantityPicked);
             Assert.Equal(0, item.QuantityShipped);
             Assert.Equal(100, item.QuantityPendingShipment);
             Assert.Equal(100, item.QuantityReserved);
@@ -1272,7 +1265,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(100)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1288,7 +1281,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(50, item.QuantityOrdered);
-            Assert.Equal(0, item.QuantityPicked);
             Assert.Equal(0, item.QuantityShipped);
             Assert.Equal(50, item.QuantityPendingShipment);
             Assert.Equal(50, item.QuantityReserved);
@@ -1313,7 +1305,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(120)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1323,7 +1315,8 @@ namespace Allors.Domain
             this.order.Confirm();
             this.Session.Derive();
 
-            item.QuantityShipNow = 100;
+            // TODO:
+            //item.QuantityShipNow = 100;
             this.Session.Derive();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
@@ -1398,7 +1391,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(orderItem);
@@ -1443,7 +1436,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(orderItem);
@@ -1493,7 +1486,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(orderItem);
@@ -1515,7 +1508,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1552,7 +1545,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(30)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1609,19 +1602,19 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(2)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item3 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithQuantityOrdered(7)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -1677,7 +1670,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item);
@@ -1721,13 +1714,13 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(2)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -1782,7 +1775,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(5)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order1.AddSalesOrderItem(item1);
@@ -1791,13 +1784,14 @@ namespace Allors.Domain
             order1.Confirm();
             this.Session.Derive();
 
-            item1.QuantityShipNow = 5;
+            //TODO:
+            //item1.QuantityShipNow = 5;
             var derivationLog = this.Session.Derive(false);
 
             Assert.True(derivationLog.HasErrors);
-            Assert.Contains(M.SalesOrderItem.QuantityShipNow, derivationLog.Errors[0].RoleTypes);
+            //Assert.Contains(M.SalesOrderItem.QuantityShipNow, derivationLog.Errors[0].RoleTypes);
 
-            item1.QuantityShipNow = 3;
+            //item1.QuantityShipNow = 3;
             derivationLog = this.Session.Derive();
 
             Assert.False(derivationLog.HasErrors);
@@ -1825,7 +1819,7 @@ namespace Allors.Domain
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(10)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             order1.AddSalesOrderItem(item);
@@ -1836,7 +1830,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            item.QuantityShipNow = 10;
+            //TODO:
+            //item.QuantityShipNow = 10;
 
             this.Session.Derive();
 
@@ -1848,7 +1843,7 @@ namespace Allors.Domain
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
-            item.QuantityShipNow = -7;
+            //item.QuantityShipNow = -7;
             this.Session.Derive();
 
             var negativePickList = order1.ShipToCustomer.PickListsWhereShipToParty[1];

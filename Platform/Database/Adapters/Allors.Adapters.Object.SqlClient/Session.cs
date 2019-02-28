@@ -171,7 +171,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             return insertedObject;
         }
-
+        
         public IObject Instantiate(IObject obj)
         {
             return this.Instantiate(obj.Strategy.ObjectId);
@@ -214,52 +214,36 @@ namespace Allors.Adapters.Object.SqlClient
             return reference.Strategy;
         }
 
-        public IObject[] Instantiate(string[] objectIdStrings)
+        public IObject[] Instantiate(IEnumerable<string> objectIdStrings)
         {
-            if (objectIdStrings == null || objectIdStrings.Length == 0)
-            {
-                return EmptyObjects;
-            }
-
-            var objectIds = new long[objectIdStrings.Length];
-            for (var i = 0; i < objectIdStrings.Length; i++)
-            {
-                objectIds[i] = long.Parse(objectIdStrings[i]);
-            }
-
-            return this.Instantiate(objectIds);
+            return objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
         }
 
-        public IObject[] Instantiate(IObject[] objects)
+        public IObject[] Instantiate(IEnumerable<IObject> objects)
         {
-            if (objects == null || objects.Length == 0)
-            {
-                return EmptyObjects;
-            }
-
-            var objectIds = new long[objects.Length];
-            for (var i = 0; i < objects.Length; i++)
-            {
-                objectIds[i] = objects[i].Strategy.ObjectId;
-            }
-
-            return this.Instantiate(objectIds);
+            return objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
         }
 
-        public IObject[] Instantiate(long[] objectIds)
+        public IObject[] Instantiate(IEnumerable<long> objectIds)
         {
-            if (objectIds == null || objectIds.Length == 0)
+            if (objectIds == null)
             {
                 return EmptyObjects;
             }
 
-            var references = new List<Reference>(objectIds.Length);
+            var objectIdArray = objectIds.ToArray();
+
+            if (objectIdArray.Length == 0)
+            {
+                return EmptyObjects;
+            }
+
+            var references = new List<Reference>(objectIdArray.Length);
 
             List<long> nonCachedObjectIds = null;
-            foreach (var objectId in objectIds)
+            foreach (var objectId in objectIdArray)
             {
-                Reference reference;
-                if (!this.State.ReferenceByObjectId.TryGetValue(objectId, out reference))
+                if (!this.State.ReferenceByObjectId.TryGetValue(objectId, out var reference))
                 {
                     if (nonCachedObjectIds == null)
                     {
@@ -285,9 +269,9 @@ namespace Allors.Adapters.Object.SqlClient
                 // Return objects in the same order as objectIds
                 var referenceById = references.ToDictionary(v => v.ObjectId);
                 references = new List<Reference>();
-                foreach (var objectId in objectIds)
+                foreach (var objectId in objectIdArray)
                 {
-                    if (referenceById.TryGetValue(objectId, out Reference reference))
+                    if (referenceById.TryGetValue(objectId, out var reference))
                     {
                         references.Add(reference);
                     }

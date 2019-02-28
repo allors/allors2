@@ -335,3 +335,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/Domains/Apps/Database/Diagrams.java/nbproject/private/
+/Domains/Apps/Database/Diagrams.java/build/

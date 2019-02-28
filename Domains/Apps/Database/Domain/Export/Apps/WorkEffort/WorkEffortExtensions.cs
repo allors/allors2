@@ -266,7 +266,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(session)
                     .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
-                    .WithActualUnitPrice(timeBillingAmount)
+                    .WithAssignedUnitPrice(timeBillingAmount)
                     .WithQuantity(hours)
                     .Build();
 
@@ -304,7 +304,7 @@ namespace Allors.Domain
                 var invoiceItem = new SalesInvoiceItemBuilder(session)
                     .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
                     .WithPart(part)
-                    .WithActualUnitPrice(basePrice)
+                    .WithAssignedUnitPrice(basePrice)
                     .WithQuantity(workEffortInventoryAssignment.Quantity)
                     .Build();
 

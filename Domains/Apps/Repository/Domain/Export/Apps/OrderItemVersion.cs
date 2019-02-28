@@ -69,18 +69,6 @@ namespace Allors.Repository
         PurchaseOrder CorrespondingPurchaseOrder { get; set; }
 
         #region Allors
-        [Id("D2BF5060-05F3-49EE-BAD2-52C00DD5F48A")]
-        [AssociationId("DD204A8A-FD3B-4DDC-8A62-2A36E2B9B488")]
-        [RoleId("4F69348E-C2EF-438C-B1C3-607212AEBCD2")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalOrderAdjustmentCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("12184E43-0B6B-4DE9-A36F-CDEAA86A7AFF")]
         [AssociationId("6A939144-6E6E-49CA-8AE9-4741F9EE5693")]
         [RoleId("A6A69F1C-0FF5-46D7-AF18-C64DAC4D9AE5")]

@@ -23,7 +23,6 @@ namespace Allors.Domain
 {
     using System;
     using Xunit;
-
     
     public class AccountingPeriodTests : DomainTest
     {

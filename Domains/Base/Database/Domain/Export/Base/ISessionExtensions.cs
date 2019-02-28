@@ -48,10 +48,10 @@ namespace Allors
             var now = DateTime.UtcNow;
 
             var timeService = session.ServiceProvider.GetRequiredService<ITimeService>();
-            var timeshift = timeService.Shift;
-            if (timeshift != null)
+            var timeShift = timeService.Shift;
+            if (timeShift != null)
             {
-                now = now.Add((TimeSpan)timeshift);
+                now = now.Add((TimeSpan)timeShift);
             }
 
             return now;

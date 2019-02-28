@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
@@ -34,7 +32,19 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Derived]
         public decimal QuantityShipped { get; set; }
+
+        #region Allors
+        [Id("A239DCBA-121D-4446-9193-517EBFC7B60F")]
+        [AssociationId("677F13F5-0078-419C-9FF6-E20C786E690A")]
+        [RoleId("B2E1ACD4-AC8A-4D24-A1B6-892511A01D7F")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Derived]
+        public decimal QuantityPicked { get; set; }
 
         #region Allors
         [Id("158f104b-fa5c-425e-8b55-ee4e866820ec")]
@@ -104,6 +114,11 @@ namespace Allors.Repository
         public void OnBuild(){}
 
         public void OnPostBuild(){}
+
+        public void OnInit()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void OnPreDerive(){}
 

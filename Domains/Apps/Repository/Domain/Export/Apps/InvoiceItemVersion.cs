@@ -69,18 +69,6 @@ namespace Allors.Repository
         string Message { get; set; }
 
         #region Allors
-        [Id("A34C9F0C-FD65-4B77-AB61-20442A110E9B")]
-        [AssociationId("BB4F4CD5-CA0F-4C6F-8259-9A30F93305B7")]
-        [RoleId("2872F5C8-0FDE-4780-BF22-0DBFC6A6971A")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("AD28ED60-187C-4722-A41F-2372B274B193")]
         [AssociationId("3C870438-6A7A-44FD-A072-A93E33D10DA2")]
         [RoleId("5F3CAA66-7D01-45F4-B377-65EBFFC10BF8")]

@@ -15,9 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Linq;
-    using System.Text;
-
     using Meta;
 
     public partial class SerialisedInventoryItem

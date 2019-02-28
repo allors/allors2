@@ -289,7 +289,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(salesInvoice.VatRegime, invoiceItem.VatRegime);
-            Assert.Equal(vatRate0, invoiceItem.DerivedVatRate);
+            Assert.Equal(vatRate0, invoiceItem.VatRate);
         }
 
         [Fact]
@@ -328,7 +328,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
-            Assert.Equal(this.goodPurchasePrice.Price * 0.5M, item1.UnitPurchasePrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
@@ -338,17 +337,11 @@ namespace Allors.Domain
 
             var purchasePrice = this.goodPurchasePrice.Price * 0.5M;
 
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / purchasePrice) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / purchasePrice) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - purchasePrice) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - purchasePrice) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
-
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
             Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
-            Assert.Equal(item1.UnitPurchasePrice, this.invoice.TotalPurchasePrice);
         }
 
         [Fact]
@@ -356,7 +349,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).WithActualUnitPrice(15).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).WithAssignedUnitPrice(15).Build();
             this.invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -372,20 +365,13 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(9.45m, item1.TotalVat);
             Assert.Equal(54.45m, item1.TotalIncVat);
-            Assert.Equal(7, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
-
+            
             Assert.Equal(45, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(45, this.invoice.TotalExVat);
             Assert.Equal(9.45m, this.invoice.TotalVat);
             Assert.Equal(54.45m, this.invoice.TotalIncVat);
-            Assert.Equal(7, this.invoice.TotalPurchasePrice);
             Assert.Equal(15, this.invoice.TotalListPrice);
         }
 
@@ -405,7 +391,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
             Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
@@ -413,17 +398,11 @@ namespace Allors.Domain
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
             Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, item1.TotalVat);
 
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
-
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
             Assert.Equal(Math.Round((item1.CalculatedUnitPrice * this.vatRate21.Rate) / 100, 2) * quantity, this.invoice.TotalVat);
-            Assert.Equal(item1.UnitPurchasePrice, this.invoice.TotalPurchasePrice);
         }
 
         [Fact]
@@ -506,12 +485,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -542,12 +515,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -581,12 +548,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -618,12 +579,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -657,12 +612,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -699,12 +648,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -743,12 +686,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -785,12 +722,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -829,12 +760,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -874,12 +799,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -921,12 +840,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -966,12 +879,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1013,12 +920,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1065,12 +966,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1081,23 +976,11 @@ namespace Allors.Domain
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1108,34 +991,16 @@ namespace Allors.Domain
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1182,12 +1047,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1200,23 +1059,11 @@ namespace Allors.Domain
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1229,34 +1076,16 @@ namespace Allors.Domain
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1303,12 +1132,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1319,23 +1142,11 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1346,34 +1157,16 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1420,12 +1213,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1438,23 +1225,11 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1467,34 +1242,16 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1541,12 +1298,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1557,23 +1308,11 @@ namespace Allors.Domain
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1584,34 +1323,16 @@ namespace Allors.Domain
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1658,12 +1379,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1676,23 +1391,11 @@ namespace Allors.Domain
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount1, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1705,34 +1408,16 @@ namespace Allors.Domain
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(amount2, item2.UnitDiscount);
             Assert.Equal(0, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(amount2, item3.UnitDiscount);
             Assert.Equal(0, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1779,12 +1464,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1795,23 +1474,11 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1822,34 +1489,16 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item2.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item2.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item2.UnitBasePrice - this.goodPurchasePrice.Price) / item2.UnitBasePrice) * 100, 2), item2.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item2.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item2.CalculatedUnitPrice) * 100, 2), item2.MaintainedProfitMargin);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item3.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item3.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item3.UnitBasePrice - this.goodPurchasePrice.Price) / item3.UnitBasePrice) * 100, 2), item3.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item3.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item3.CalculatedUnitPrice) * 100, 2), item3.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -1896,7 +1545,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity2).Build();
             this.invoice.AddSalesInvoiceItem(item2);
@@ -1909,13 +1557,11 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount1, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount1, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
             var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity3).Build();
             this.invoice.AddSalesInvoiceItem(item3);
@@ -1928,19 +1574,16 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item2.UnitBasePrice);
             Assert.Equal(0, item2.UnitDiscount);
             Assert.Equal(amount2, item2.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item2.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item2.UnitPurchasePrice);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item3.UnitBasePrice);
             Assert.Equal(0, item3.UnitDiscount);
             Assert.Equal(amount2, item3.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount2, item3.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item3.UnitPurchasePrice);
         }
 
         [Fact]
@@ -1974,12 +1617,6 @@ namespace Allors.Domain
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -2028,12 +1665,6 @@ namespace Allors.Domain
             Assert.Equal(discount, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price - discount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -2067,12 +1698,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -2108,12 +1733,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + amount, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -2162,12 +1781,6 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(surcharge, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price + surcharge, item1.CalculatedUnitPrice);
-            Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
-
-            Assert.Equal(Math.Round(((item1.UnitBasePrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.InitialMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice / this.goodPurchasePrice.Price) - 1) * 100, 2), item1.MaintainedMarkupPercentage);
-            Assert.Equal(Math.Round(((item1.UnitBasePrice - this.goodPurchasePrice.Price) / item1.UnitBasePrice) * 100, 2), item1.InitialProfitMargin);
-            Assert.Equal(Math.Round(((item1.CalculatedUnitPrice - this.goodPurchasePrice.Price) / item1.CalculatedUnitPrice) * 100, 2), item1.MaintainedProfitMargin);
         }
 
         [Fact]
@@ -2207,10 +1820,8 @@ namespace Allors.Domain
 
             Assert.Equal(poundSterling, newInvoice.Currency);
 
-            Assert.Equal(Math.Round(item1.TotalBasePrice * conversionfactor, 2), item1.TotalBasePriceCustomerCurrency);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
-            Assert.Equal(Math.Round(item1.TotalExVat * conversionfactor, 2), item1.TotalExVatCustomerCurrency);
         }
 
         [Fact]
@@ -2257,7 +1868,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(invoiceItem);
@@ -2311,7 +1922,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(invoiceItem);
@@ -2362,7 +1973,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(3)
-                .WithActualUnitPrice(5)
+                .WithAssignedUnitPrice(5)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(invoiceItem);
@@ -2381,7 +1992,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithQuantity(1)
-                .WithActualUnitPrice(100M)
+                .WithAssignedUnitPrice(100M)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);
@@ -2408,7 +2019,7 @@ namespace Allors.Domain
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithProduct(this.good)
                 .WithQuantity(1)
-                .WithActualUnitPrice(100M)
+                .WithAssignedUnitPrice(100M)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);

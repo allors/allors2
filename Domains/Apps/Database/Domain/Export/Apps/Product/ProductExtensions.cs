@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductExtensions.v.cs" company="Allors bvba">
+// <copyright file="ProductExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -81,6 +81,24 @@ namespace Allors.Domain
                     superJacent.AppsDeriveAllNonSerialisedInventoryItemsForSale();
                 }
             }
+        }
+
+        public static PriceComponent[] GetPriceComponents(this Product @this, PriceComponent[] currentPriceComponents)
+        {
+            var genericPriceComponents = currentPriceComponents.Where(priceComponent => !priceComponent.ExistProduct && !priceComponent.ExistPart && !priceComponent.ExistProductFeature).ToArray();
+
+            var exclusiveProductPriceComponents = currentPriceComponents.Where(priceComponent => priceComponent.Product?.Equals(@this) == true && !priceComponent.ExistProductFeature).ToArray();
+            if (exclusiveProductPriceComponents.Length > 0)
+            {
+                return exclusiveProductPriceComponents.Union(genericPriceComponents).ToArray();
+            }
+
+            if (@this.ExistProductWhereVariant)
+            {
+                return currentPriceComponents.Where(priceComponent => priceComponent.Product?.Equals(@this.ProductWhereVariant) == true && !priceComponent.ExistProductFeature).Union(genericPriceComponents).ToArray();
+            }
+
+            return genericPriceComponents;
         }
     }
 }

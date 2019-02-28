@@ -157,13 +157,13 @@ namespace Allors.Domain
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -195,13 +195,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             //// all orderitems have same physical finished good, so there is only one picklist item.
-            Assert.Equal(1, item1.QuantityPicked);
             Assert.Equal(0, item1.QuantityReserved);
             Assert.Equal(0, item1.QuantityRequestsShipping);
-            Assert.Equal(2, item4.QuantityPicked);
             Assert.Equal(0, item4.QuantityReserved);
             Assert.Equal(0, item4.QuantityRequestsShipping);
-            Assert.Equal(4, item5.QuantityPicked);
             Assert.Equal(1, item5.QuantityReserved);
             Assert.Equal(0, item5.QuantityRequestsShipping);
             Assert.Equal(97, good1Inventory.QuantityOnHand);
@@ -267,9 +264,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -370,9 +367,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
 
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
@@ -453,9 +450,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
 
             order1.AddSalesOrderItem(item1);
             order1.AddSalesOrderItem(item2);
@@ -472,8 +469,8 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var itema = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var itemb = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var itema = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var itemb = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             order2.AddSalesOrderItem(itema);
             order2.AddSalesOrderItem(itemb);
 

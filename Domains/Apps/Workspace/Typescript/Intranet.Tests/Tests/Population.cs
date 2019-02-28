@@ -123,7 +123,7 @@ namespace Tests
             var manufacturer = new OrganisationBuilder(this.Session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
 
             var productType = new ProductTypeBuilder(this.Session)
-                .WithName($"Gizmo Serialized")
+                .WithName($"Gizmo Serialised")
                 .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
@@ -364,7 +364,7 @@ namespace Tests
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantityOrdered(1)
                     .WithMessage(@"line1
 line2")
@@ -373,14 +373,14 @@ line2")
 
                 var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantityOrdered(2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                     .Build();
 
                 var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantityOrdered(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
@@ -400,7 +400,7 @@ line2")
                 var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
 line2")
@@ -409,14 +409,14 @@ line2")
 
                 var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantity(2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                     .Build();
 
                 var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
@@ -439,7 +439,7 @@ line2")
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
-                    .WithActualUnitPrice(3000)
+                    .WithAssignedUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
 line2")
@@ -448,14 +448,14 @@ line2")
 
                 var purchaseInvoiceItem2 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("second item")
-                    .WithActualUnitPrice(2000)
+                    .WithAssignedUnitPrice(2000)
                     .WithQuantity(2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                     .Build();
 
                 var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("Fee")
-                    .WithActualUnitPrice(100)
+                    .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();

@@ -15,11 +15,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public partial class PriceComponents
     {
-        public partial class IsEligibleParams
+        public static readonly PriceComponent[] EmptyArray = new PriceComponent[0];
+
+        public partial class IsApplicable
         {
             public PriceComponent PriceComponent;
 
@@ -36,15 +40,22 @@ namespace Allors.Domain
             public SalesInvoice SalesInvoice = null;
         }
 
-        public static bool AppsIsEligible(IsEligibleParams isEligibleParams)
+        public PriceComponent[] CurrentPriceComponents(DateTime date)
         {
-            var priceComponent = isEligibleParams.PriceComponent;
-            var customer = isEligibleParams.Customer;
-            var product = isEligibleParams.Product;
-            var salesOrder = isEligibleParams.SalesOrder;
-            var quantityOrdered = isEligibleParams.QuantityOrdered;
-            var valueOrdered = isEligibleParams.ValueOrdered;
-            var salesInvoice = isEligibleParams.SalesInvoice;
+            return this.Extent()
+                .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date))
+                .ToArray();
+        }
+
+        public static bool AppsIsApplicable(IsApplicable isApplicable)
+        {
+            var priceComponent = isApplicable.PriceComponent;
+            var customer = isApplicable.Customer;
+            var product = isApplicable.Product;
+            var salesOrder = isApplicable.SalesOrder;
+            var quantityOrdered = isApplicable.QuantityOrdered;
+            var valueOrdered = isApplicable.ValueOrdered;
+            var salesInvoice = isApplicable.SalesInvoice;
 
             var withGeographicBoundary = false;
             var geographicBoundaryValid = false;
@@ -149,28 +160,6 @@ namespace Allors.Domain
                 }
             }
 
-            if (priceComponent.ExistOrderQuantityBreak)
-            {
-                withOrderQuantityBreak = true;
-
-                if ((!priceComponent.OrderQuantityBreak.ExistFromAmount || priceComponent.OrderQuantityBreak.FromAmount <= quantityOrdered) &&
-                    (!priceComponent.OrderQuantityBreak.ExistThroughAmount || priceComponent.OrderQuantityBreak.ThroughAmount >= quantityOrdered))
-                {
-                    orderQuantityBreakValid = true;
-                }
-            }
-
-            if (priceComponent.ExistOrderValue)
-            {
-                withOrderValue = true;
-
-                if ((!priceComponent.OrderValue.ExistFromAmount || priceComponent.OrderValue.FromAmount <= valueOrdered) &&
-                    (!priceComponent.OrderValue.ExistThroughAmount || priceComponent.OrderValue.ThroughAmount >= valueOrdered))
-                {
-                    orderValueValid = true;
-                }
-            }
-
             if (priceComponent.ExistSalesChannel)
             {
                 withSalesChannel = true;
@@ -192,85 +181,28 @@ namespace Allors.Domain
                 }
             }
 
-            // TODO: Revenue Value Break
-            //if (priceComponent.ExistRevenueValueBreak)
-            //{
-            //    withRevenueValueBreak = true;
+            if (priceComponent.ExistOrderQuantityBreak)
+            {
+                withOrderQuantityBreak = true;
 
-            //    var revenueValueBreak = priceComponent.RevenueValueBreak;
+                if ((!priceComponent.OrderQuantityBreak.ExistFromAmount || priceComponent.OrderQuantityBreak.FromAmount <= quantityOrdered) &&
+                    (!priceComponent.OrderQuantityBreak.ExistThroughAmount || priceComponent.OrderQuantityBreak.ThroughAmount >= quantityOrdered))
+                {
+                    orderQuantityBreakValid = true;
+                }
+            }
 
-            //    var revenue = 0M;
-            //    if (priceComponent.ExistProductCategory && partyProductCategoryRevenueHistoryByProductCategory != null)
-            //    {
-            //        if (partyProductCategoryRevenueHistoryByProductCategory.ContainsKey(priceComponent.ProductCategory))
-            //        {
-            //            revenue = partyProductCategoryRevenueHistoryByProductCategory[priceComponent.ProductCategory].Revenue;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (partyRevenueHistory != null)
-            //        {
-            //            revenue = partyRevenueHistory.Revenue;
-            //        }
-            //    }
+            if (priceComponent.ExistOrderValue)
+            {
+                withOrderValue = true;
 
-            //    if ((!revenueValueBreak.ExistFromAmount || revenueValueBreak.FromAmount <= revenue) &&
-            //        (!revenueValueBreak.ExistThroughAmount || revenueValueBreak.ThroughAmount >= revenue))
-            //    {
-            //        revenueValueBreakValid = true;
-            //    }
-            //}
-
-            // TODO: Revenue Quantity Break
-            //if (priceComponent.ExistRevenueQuantityBreak)
-            //{
-            //    withRevenueQuantityBreak = true;
-
-            //    var revenueQuantityBreak = priceComponent.RevenueQuantityBreak;
-
-            //    var quantity = 0M;
-            //    if (priceComponent.ExistProductCategory && partyProductCategoryRevenueHistoryByProductCategory != null)
-            //    {
-            //        if (partyProductCategoryRevenueHistoryByProductCategory.ContainsKey(priceComponent.ProductCategory))
-            //        {
-            //            quantity = partyProductCategoryRevenueHistoryByProductCategory[priceComponent.ProductCategory].Quantity;
-            //        }
-            //    }
-
-            //    if ((!revenueQuantityBreak.ExistFrom || revenueQuantityBreak.From <= quantity) &&
-            //        (!revenueQuantityBreak.ExistThrough || revenueQuantityBreak.Through >= quantity))
-            //    {
-            //        revenueQuantityBreakValid = true;
-            //    }
-            //}
-
-            // TODO: Package Quantity Break
-            //if (priceComponent.ExistPackageQuantityBreak)
-            //{
-            //    withPackageQuantityBreak = true;
-
-            //    var packageQuantityBreak = priceComponent.PackageQuantityBreak;
-
-            //    var quantity = 0;
-            //    if (partyPackageRevenueHistoryList != null)
-            //    {
-            //        foreach (var partyPackageRevenueHistory in partyPackageRevenueHistoryList)
-            //        {
-            //            if (partyPackageRevenueHistory.Revenue > 0)
-            //            {
-            //                quantity++;
-            //            }
-            //        }
-            //    }
-
-            //    if ((!packageQuantityBreak.ExistFrom || packageQuantityBreak.From <= quantity) &&
-            //        (!packageQuantityBreak.ExistThrough || packageQuantityBreak.Through >= quantity))
-            //    {
-            //        packageQuantityBreakValid = true;
-            //    }
-            //}
-
+                if ((!priceComponent.OrderValue.ExistFromAmount || priceComponent.OrderValue.FromAmount <= valueOrdered) &&
+                    (!priceComponent.OrderValue.ExistThroughAmount || priceComponent.OrderValue.ThroughAmount >= valueOrdered))
+                {
+                    orderValueValid = true;
+                }
+            }
+            
             if ((withGeographicBoundary && !geographicBoundaryValid) ||
                 (withPartyClassification && !partyClassificationValid) ||
                 (withProductCategory && !productCategoryValid) ||

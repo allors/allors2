@@ -25,6 +25,11 @@
 
         public void OnPostBuild() { }
 
+        public void OnInit()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnPreDerive() { }
 
         public void OnDerive() { }

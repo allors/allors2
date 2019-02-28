@@ -422,7 +422,7 @@ namespace Allors.Domain
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
             Assert.Single(salesInvoice.InvoiceItems);
-            Assert.Equal(162, salesInvoice.InvoiceItems.First().ActualUnitPrice); // (3 * 10) + (4 * 12) + (6 * 14)
+            Assert.Equal(162, salesInvoice.InvoiceItems.First().AssignedUnitPrice); // (3 * 10) + (4 * 12) + (6 * 14)
         }
 
         [Fact]
@@ -492,8 +492,8 @@ namespace Allors.Domain
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
             Assert.Equal(2, salesInvoice.InvoiceItems.Length);
-            Assert.Equal(78, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.ActualUnitPrice); // (3 * 10) + (4 * 12)
-            Assert.Equal(84, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.ActualUnitPrice); // 6 * 14
+            Assert.Equal(78, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice); // (3 * 10) + (4 * 12)
+            Assert.Equal(84, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice); // 6 * 14
         }
 
         [Fact]
@@ -559,7 +559,7 @@ namespace Allors.Domain
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
             Assert.Single(salesInvoice.InvoiceItems);
-            Assert.Equal(130, salesInvoice.InvoiceItems.First().ActualUnitPrice); // (3 * 10) + (4 * 10) + (6 * 10)
+            Assert.Equal(130, salesInvoice.InvoiceItems.First().AssignedUnitPrice); // (3 * 10) + (4 * 10) + (6 * 10)
         }
 
         [Fact]
@@ -646,7 +646,7 @@ namespace Allors.Domain
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
             Assert.Equal(2, salesInvoice.InvoiceItems.Length);
-            Assert.Equal(10, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.ActualUnitPrice);
+            Assert.Equal(10, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.AssignedUnitPrice);
             Assert.Equal(30, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.TotalBasePrice);
         }
 

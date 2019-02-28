@@ -27,10 +27,11 @@ namespace Tests
     public class BuilderTest : DomainTest
     {
         [Fact]
-        public void Default()
+        public void BaseOnPostBuild()
         {
             var person = new PersonBuilder(this.Session).Build();
-            Assert.NotNull(person.ExistUniqueId);
+
+            Assert.True(person.ExistUniqueId);
         }
     }
 }

@@ -73,6 +73,11 @@ namespace Allors.Repository
         {
         }
 
+        public void OnInit()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnPreDerive()
         {
         }

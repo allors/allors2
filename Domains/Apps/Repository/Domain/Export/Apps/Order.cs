@@ -30,42 +30,6 @@ namespace Allors.Repository
         Currency Currency { get; set; }
 
         #region Allors
-        [Id("1e94a270-3780-43fc-9b62-611f259b04fd")]
-        [AssociationId("edabe0af-99a5-4a67-b6e1-66c341ad945d")]
-        [RoleId("8138ed27-5520-458a-bc18-8d684daa4649")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalBasePriceCustomerCurrency { get; set; }
-
-        #region Allors
-        [Id("24520951-4088-4c60-adaa-dd7bf00257de")]
-        [AssociationId("6c4e690b-0f91-4fa6-bfa1-755048304dbb")]
-        [RoleId("ca53ee57-213a-4449-8fc8-f04f2737a8a6")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalIncVatCustomerCurrency { get; set; }
-
-        #region Allors
-        [Id("35451f53-5a0e-443d-a9f7-36620a832b02")]
-        [AssociationId("b93f7956-ffe3-4793-a5d5-ee60bf197e6e")]
-        [RoleId("6b2890e7-f8e2-479d-8155-51adeade6799")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalDiscountCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("45b3b293-b746-4d6d-9da7-e2378694f734")]
         [AssociationId("5e1ba42d-9325-45b5-9c41-cc9b12d0929a")]
         [RoleId("019d8b7a-79db-4100-a690-ae7587e30d8e")]
@@ -153,18 +117,6 @@ namespace Allors.Repository
         string OrderNumber { get; set; }
 
         #region Allors
-        [Id("7f25a14f-c32f-4a86-ae2d-9f087f8b8214")]
-        [AssociationId("5a227b86-4ea3-4ce9-89df-a672337ecd1d")]
-        [RoleId("4ba525e4-7e31-4b9e-9fc4-8a26e9e352a1")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalVatCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("8592f390-a9fb-4275-93c2-b7e73afa2307")]
         [AssociationId("703bf4a7-8949-46ea-b7d3-092ab62c9bdd")]
         [RoleId("1420978d-4e64-434e-926e-e26bbce2dd1f")]
@@ -193,18 +145,6 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Description { get; set; }
-
-        #region Allors
-        [Id("9fd3ea50-280e-4d0d-a9db-450991248a53")]
-        [AssociationId("5c3af601-e6f8-4adc-af83-88058d86975a")]
-        [RoleId("7badb3f0-51a2-4e9b-bdc7-3d3bfbf7865f")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
 
         #region Allors
         [Id("a5875c41-9f08-49d0-9961-19a656c7e0cc")]
@@ -249,18 +189,6 @@ namespace Allors.Repository
         decimal TotalIncVat { get; set; }
 
         #region Allors
-        [Id("c2c10a98-2518-4243-8d58-4bee6316abc5")]
-        [AssociationId("31d26b09-fde7-49b0-b800-718614f216d9")]
-        [RoleId("61b0d93a-a36d-470f-b25d-089a7b209457")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalSurchargeCustomerCurrency { get; set; }
-
-        #region Allors
         [Id("c6f86f31-d254-4001-94fa-273d041df31a")]
         [AssociationId("0716922b-d051-459c-83c9-4390fa7723d0")]
         [RoleId("58d1bcc3-332a-4830-b346-702efedaa010")]
@@ -269,18 +197,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         VatRegime VatRegime { get; set; }
-
-        #region Allors
-        [Id("c80447e8-4fc8-4491-8857-3129a007a267")]
-        [AssociationId("a8210460-e40e-4fab-8adb-bb8d57af0ad6")]
-        [RoleId("21b64676-ffa0-4e8c-9850-89096f7f5eff")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalFeeCustomerCurrency { get; set; }
 
         #region Allors
         [Id("d0730f9e-3217-45b3-a5f8-6ae3a5174050")]
@@ -312,18 +228,6 @@ namespace Allors.Repository
         [Workspace]
         [Required]
         DateTime OrderDate { get; set; }
-
-        #region Allors
-        [Id("e39720f8-2e56-4231-9ce0-fb8b8e0efd7e")]
-        [AssociationId("b58cd94b-59c1-46ca-8c8e-93b3a45ff5dc")]
-        [RoleId("62ca6d9d-6d19-4197-847b-7909faf28295")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        decimal TotalExVatCustomerCurrency { get; set; }
 
         #region Allors
         [Id("f38b3c7d-ac20-49be-a115-d7e83557f49a")]
