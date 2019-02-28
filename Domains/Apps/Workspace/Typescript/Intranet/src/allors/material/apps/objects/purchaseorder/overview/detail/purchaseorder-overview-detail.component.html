@@ -1,0 +1,212 @@
+<div *ngIf="panel.isCollapsed && order" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{order.OrderNumber}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form *ngIf="panel.isExpanded && order" #form="ngForm" (submit)="save()" novalidate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{panel.title}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="container-fluid">
+
+        <div class="row">
+          <a-mat-static class="col" [object]="order" [roleType]="m.PurchaseOrder.PurchaseOrderState" display="Name" label="Status"></a-mat-static>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-autocomplete class="col-md" [object]="order" [roleType]="m.PurchaseOrder.TakenViaSupplier" [filter]="stateService.suppliersFilter.create(allors.context)"
+                display="displayName" (changed)="supplierSelected($event)" label="Supplier"></a-mat-autocomplete>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteTakenViaSupplier" type="button" (click)="addSupplier = !addSupplier">
+                <mat-icon *ngIf="!addSupplier">add</mat-icon>
+                <mat-icon *ngIf="addSupplier">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-card *ngIf="addSupplier">
+              <mat-card-header>Add a new supplier</mat-card-header>
+              <mat-card-content>
+                <organisation-inline (saved)="supplierAdded($event); addSupplier = false" (cancelled)="addSupplier = false">
+                </organisation-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.TakenViaContactMechanism" [options]="takenViaContactMechanisms" display="displayName"
+                 label="Supplier contact mechanism"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.TakenViaSupplier || !order.CanWriteTakenViaContactMechanism"
+                type="button" (click)="addTakenViaContactMechanism = !addTakenViaContactMechanism">
+                <mat-icon *ngIf="!addTakenViaContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addTakenViaContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="order.TakenViaSupplier && addTakenViaContactMechanism">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism (cancelled)="addTakenViaContactMechanism = false" (saved)="takenViaContactMechanismAdded($event); addTakenViaContactMechanism = false">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
+  
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.TakenViaContactPerson" [options]="takenViaContacts"
+                display="displayName" label="Supplier contact person"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.TakenViaSupplier || !order.CanWriteTakenViaContactPerson"
+                type="button" (click)="addTakenViaContactPerson = !addTakenViaContactPerson">
+                <mat-icon *ngIf="!addTakenViaContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addTakenViaContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="addTakenViaContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="addTakenViaContactPerson = false" (saved)="takenViaContactPersonAdded($event); addTakenViaContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.BillToContactMechanism" [options]="billToContactMechanisms"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteBillToContactMechanism"
+                type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
+                <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="addBillToContactMechanism">
+            <mat-card>
+              <mat-card-header>Add a new ContactMechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="addBillToContactMechanism = false">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
+  
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.BillToContactPerson" [options]="billToContacts"
+                display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteBillToContactPerson"
+                type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
+                <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="addBillToContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="addBillToContactPerson = false" (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.ShipToAddress" [options]="shipToAddresses"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteShipToAddress"
+                type="button" (click)="addShipToAddress = !addShipToAddress">
+                <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+                <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="addShipToAddress">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism-postaladdress (saved)="shipToAddressAdded($event); addShipToAddress = false" (cancelled)="addShipToAddress = false">
+                </party-contactmechanism-postaladdress>
+              </mat-card-content>
+            </mat-card>
+          </div>
+  
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.ShipToContactPerson"
+                [options]="shipToContacts" display="displayName" label="Shipping Contact Person"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteShipToContactPerson"
+                type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
+                <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="addShipToContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="addShipToContactPerson = false" (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+  
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="order" [roleType]="m.PurchaseOrder.OrderDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="order" [roleType]="m.PurchaseOrder.EntryDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+          <a-mat-static class="col-md" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Description"></a-mat-textarea>
+        </div>
+
+        <div class="row">
+          <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
+          <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-textarea>
+          <a-mat-textarea  class="col-md-12" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
+        </div>
+
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
+      <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
+    </mat-card-actions>
+  </mat-card>
+
+</form>
+

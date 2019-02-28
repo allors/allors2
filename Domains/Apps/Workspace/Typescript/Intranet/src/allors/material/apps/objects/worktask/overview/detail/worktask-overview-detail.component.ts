@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
-import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../../domain';
+import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -31,6 +31,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
   addContactMechanism: boolean;
 
   private subscription: Subscription;
+  workEfforts: WorkEffort[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -107,6 +108,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
                 Priority: x,
                 WorkEffortPurposes: x,
                 Customer: x,
+                ExecutedBy: x,
                 ContactPerson: x,
                 CreatedBy: x,
               }
@@ -199,11 +201,27 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
         fetch: {
           CurrentContacts: x,
         }
+      }),
+      pull.Party({
+        object: party,
+        fetch: {
+          WorkEffortsWhereCustomer: {
+            include: {
+              WorkEffortState: x
+            }
+          }
+        }
       })
     ];
 
     this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
+        this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
+        const indexMyself = this.workEfforts.indexOf(this.workTask, 0);
+        if (indexMyself > -1) {
+          this.workEfforts.splice(indexMyself, 1);
+        }
+
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
 
         this.contactMechanisms = partyContactMechanisms

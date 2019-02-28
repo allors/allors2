@@ -44,18 +44,18 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
-            var settings = this.strategy.Session.GetSingleton().Settings;
+            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
+            var settings = this.Strategy.Session.GetSingleton().Settings;
 
             var identifications = this.ProductIdentifications;
-            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.strategy.Session).Good);
+            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.Strategy.Session).Good);
             var goodNumber = identifications.FirstOrDefault();
 
             if (goodNumber == null && settings.UseProductNumberCounter)
             {
-                this.AddProductIdentification(new ProductNumberBuilder(this.strategy.Session)
+                this.AddProductIdentification(new ProductNumberBuilder(this.Strategy.Session)
                     .WithIdentification(settings.NextProductNumber())
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.strategy.Session).Good).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Good).Build());
             }
 
             if (!this.ExistProductIdentifications)

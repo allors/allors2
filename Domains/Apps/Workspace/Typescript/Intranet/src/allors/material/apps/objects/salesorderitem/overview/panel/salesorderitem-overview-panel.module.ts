@@ -7,7 +7,6 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 import { AllorsMaterialFileModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../..';
 
 import { SalesOrderItemOverviewPanelComponent as SalesOrderItemOverviewPanelComponent } from './salesorderitem-overview-panel.component';
-export { SalesOrderItemOverviewPanelComponent as RequestItemOverviewPanelComponent } from './salesorderitem-overview-panel.component';
 
 @NgModule({
   declarations: [

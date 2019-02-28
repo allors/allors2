@@ -33,7 +33,7 @@ namespace Allors.Domain
             {
                 if (this.ExistUserWhereNotificationList)
                 {
-                    var singleton = this.strategy.Session.GetSingleton();
+                    var singleton = this.Strategy.Session.GetSingleton();
 
                     this.SecurityTokens = new[] { this.UserWhereNotificationList.OwnerSecurityToken, singleton.DefaultSecurityToken };
                 }

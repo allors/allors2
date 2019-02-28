@@ -98,10 +98,10 @@ namespace Allors.Domain
                     || this.ExistSubContractorRelationshipsWhereContractor
                     || this.ExistSubContractorRelationshipsWhereSubContractor))
             {
-                new TimeSheetBuilder(this.strategy.Session).WithWorker(this).Build();
+                new TimeSheetBuilder(this.Strategy.Session).WithWorker(this).Build();
             }
 
-            var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
                 this.RemoveDeniedPermission(deletePermission);
@@ -112,22 +112,14 @@ namespace Allors.Domain
             }
         }
 
-        public PrefetchPolicy PrefetchPolicy
-        {
-            get
-            {
-                var organisationContactRelationshipPrefetch = new PrefetchPolicyBuilder()
-                    .WithRule(M.OrganisationContactRelationship.Contact)
-                    .Build();
-
-             
-                return new PrefetchPolicyBuilder()
-                    .WithRule(M.Person.OrganisationContactRelationshipsWhereContact)
-                    .WithRule(M.Person.PartyContactMechanisms.RoleType)
-                    .WithRule(M.Person.TimeSheetWhereWorker)
-                    .Build();
-            }
-        }
+        public PrefetchPolicy PrefetchPolicy => new PrefetchPolicyBuilder()
+            .WithRule(M.Person.OrganisationContactRelationshipsWhereContact)
+            .WithRule(M.Person.PartyContactMechanisms.RoleType)
+            .WithRule(M.Person.TimeSheetWhereWorker)
+            .WithRule(M.Person.EmploymentsWhereEmployee)
+            .WithRule(M.Person.SubContractorRelationshipsWhereContractor)
+            .WithRule(M.Person.SubContractorRelationshipsWhereSubContractor)
+            .Build();
 
         private string DerivePartyName()
         {

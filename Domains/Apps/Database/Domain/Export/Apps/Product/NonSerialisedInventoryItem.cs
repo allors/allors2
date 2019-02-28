@@ -41,9 +41,9 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistName && this.ExistPart && this.Part.ExistName)
+            if (!this.ExistName)
             {
-                this.Name = this.Part.Name;
+                this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.NonSerialisedInventoryItemState?.Name}";
             }
 
             this.AppsOnDeriveQuantityOnHand(derivation);
@@ -61,15 +61,16 @@ namespace Allors.Domain
                 this.AppsDepleteSalesOrders(derivation);
             }
 
-            this.AppsOnDeriveName(derivation);
             this.AppsOnDeriveUnitOfMeasure(derivation);
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
+
+            this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
         {
-            var settings = this.strategy.Session.GetSingleton().Settings;
+            var settings = this.Strategy.Session.GetSingleton().Settings;
 
             // TODO: Test for changes in these relations for performance reasons
             this.QuantityOnHand = 0M;
@@ -95,9 +96,9 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.QuantityOnHand -= pickListItem.ActualQuantity.Value;
+                    this.QuantityOnHand -= pickListItem.QuantityPicked;
                 }
             }
 
@@ -121,9 +122,9 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.QuantityCommittedOut -= pickListItem.ActualQuantity.Value;
+                    this.QuantityCommittedOut -= pickListItem.QuantityPicked;
                 }
             }
 
@@ -252,14 +253,6 @@ namespace Allors.Domain
                     salesOrderItem.AppsOnDeriveSubtractFromShipping(derivation, diff);
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
-            }
-        }
-
-        public void AppsOnDeriveName(IDerivation derivation)
-        {
-            if (this.ExistPart)
-            {
-                this.Name = this.Part.Name;
             }
         }
 

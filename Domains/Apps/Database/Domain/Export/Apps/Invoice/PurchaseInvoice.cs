@@ -70,7 +70,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistBilledTo && internalOrganisations.Count() == 1)
             {
@@ -99,7 +99,7 @@ namespace Allors.Domain
         {
             if (this.ExistSalesInvoiceWherePurchaseInvoice)
             {
-                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
             }
         }
 
@@ -149,7 +149,7 @@ namespace Allors.Domain
             var internalOrganisation = (InternalOrganisation)salesInvoice.BilledFrom;
             if (!internalOrganisation.ActiveCustomers.Contains(salesInvoice.BillToCustomer))
             {
-                new CustomerRelationshipBuilder(this.strategy.Session)
+                new CustomerRelationshipBuilder(this.Strategy.Session)
                     .WithCustomer(salesInvoice.BillToCustomer)
                     .WithInternalOrganisation(internalOrganisation)
                     .Build();

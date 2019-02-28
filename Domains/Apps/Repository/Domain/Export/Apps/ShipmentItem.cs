@@ -25,7 +25,17 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
-        
+
+        #region Allors
+        [Id("91C23443-1666-4123-ABEE-53913D26FA3C")]
+        [AssociationId("CA2BB0F7-6331-433F-8377-012DA946AC04")]
+        [RoleId("5B8C975D-FD7A-4254-8FDD-B94694069F3F")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        public decimal QuantityShipped { get; set; }
+
         #region Allors
         [Id("158f104b-fa5c-425e-8b55-ee4e866820ec")]
         [AssociationId("77f01592-48e6-486f-9217-7c9cfc477267")]
@@ -51,18 +61,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         public Document[] Documents { get; set; }
-        
-        #region Allors
-        [Id("92cca1c2-4c7e-49a0-ba4b-88693b87c379")]
-        [AssociationId("d7dca1d7-e678-4b52-9c25-d93f353ca25d")]
-        [RoleId("50dd2c62-6d8f-45bf-a77b-c8e1f7933ad3")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        public decimal QuantityShipped { get; set; }
-        
+      
         #region Allors
         [Id("b5d35e87-f741-4600-9838-4419b127681d")]
         [AssociationId("797743d0-c0e9-4a75-9180-4e05eb55423f")]

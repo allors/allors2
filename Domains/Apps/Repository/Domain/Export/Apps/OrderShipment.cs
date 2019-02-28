@@ -20,15 +20,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public OrderItem OrderItem { get; set; }
-
-        #region Allors
-        [Id("261a25f4-672a-44a0-ad2d-1c62ba383006")]
-        [AssociationId("cfaa2021-233c-4b55-b33d-65b9344adb67")]
-        [RoleId("69f35130-996e-4a55-b6be-90199a2548d0")]
-        #endregion
-        [Required]
-        public bool Picked { get; set; }
-
+        
         #region Allors
         [Id("b55bbdb8-af05-4008-a6a7-b4eea78096bd")]
         [AssociationId("a4d6f79e-c204-44ca-b7db-3a0a3eacff69")]
@@ -48,6 +40,16 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
+
+        #region Allors
+        [Id("C0A54235-2990-40F9-8A47-856FD6CB877C")]
+        [AssociationId("8FFAA9DF-DC44-43E0-8EF6-79A1E4F3F19F")]
+        [RoleId("E05E6B5E-9EFC-488E-A535-6BD5ABC29FC4")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        public decimal QuantityPicked { get; set; }
 
         #region inherited methods
 

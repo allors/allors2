@@ -48,7 +48,7 @@ namespace Allors.Domain
             {
                 if (this.ExistNotificationListWhereNotification && this.NotificationListWhereNotification.ExistUserWhereNotificationList)
                 {
-                    var singleton = this.strategy.Session.GetSingleton();
+                    var singleton = this.Strategy.Session.GetSingleton();
                     var user = this.NotificationListWhereNotification.UserWhereNotificationList;
 
                     this.SecurityTokens = new[] { user.OwnerSecurityToken, singleton.DefaultSecurityToken };

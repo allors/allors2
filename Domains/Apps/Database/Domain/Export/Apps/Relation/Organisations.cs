@@ -33,6 +33,18 @@ namespace Allors.Domain
             setup.AddDependency(this.Meta.ObjectType, M.FacilityType);
         }
 
+        /// <summary>
+        /// Returns an array of Organisations
+        /// </summary>
+        /// <returns></returns>
+        public Organisation[] InternalOrganisations()
+        {
+            var internalOrganisations = this.Extent();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
+            return internalOrganisations.ToArray();
+        }
+
         public static Organisation CreateInternalOrganisation(
             ISession session,
             string name,

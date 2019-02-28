@@ -29,9 +29,8 @@ namespace Allors.Domain
         {
             if (!@this.ExistRecipient)
             {
-                var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
-                internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
-
+                var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
+                
                 if (internalOrganisations.Count() == 1)
                 {
                     @this.Recipient = internalOrganisations.Single();

@@ -13,7 +13,7 @@ interface Row extends TableRow {
   object: SalesOrderItem;
   item: string;
   type: string;
-  status: string;
+  state: string;
   ordered: number;
   shipped: number;
   picked: number;
@@ -155,7 +155,7 @@ export class SalesOrderItemOverviewPanelComponent {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
           type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
-          status: `${v.SalesOrderItemState && v.SalesOrderItemState.Name}`,
+          state: `${v.SalesOrderItemState && v.SalesOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
           shipped: v.QuantityShipped,
           picked: v.QuantityPicked,

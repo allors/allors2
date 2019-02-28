@@ -19,10 +19,13 @@ namespace Allors.Domain
 
     public partial class SalesOrderItemPaymentStates
     {
-        private static readonly Guid PaidId = new Guid("086840CD-F7A6-4c04-A565-1D0AE07FED00");
-        private static readonly Guid PartiallyPaidId = new Guid("110F12F8-8AC6-40fb-8208-7697A36E88D7");
+        internal static readonly Guid NotPaidId = new Guid("2B859188-A3FA-4E53-8841-B316A81CD3BC");
+        internal static readonly Guid PaidId = new Guid("086840CD-F7A6-4c04-A565-1D0AE07FED00");
+        internal static readonly Guid PartiallyPaidId = new Guid("110F12F8-8AC6-40fb-8208-7697A36E88D7");
 
         private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> stateCache;
+
+        public SalesOrderItemPaymentState NotPaid => this.StateCache[NotPaidId];
 
         public SalesOrderItemPaymentState Paid => this.StateCache[PaidId];
 
@@ -33,18 +36,20 @@ namespace Allors.Domain
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
-
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
+            
             new SalesOrderItemPaymentStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
+                .WithUniqueId(NotPaidId)
+                .WithName("Not Paid")
                 .Build();
 
             new SalesOrderItemPaymentStateBuilder(this.Session)
                 .WithUniqueId(PartiallyPaidId)
                 .WithName("Partially Paid")
+                .Build();
+
+            new SalesOrderItemPaymentStateBuilder(this.Session)
+                .WithUniqueId(PaidId)
+                .WithName("Paid")
                 .Build();
         }
     }

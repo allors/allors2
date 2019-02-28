@@ -22,7 +22,17 @@ namespace Allors.Repository
         [RoleId("ee8e4f06-63e8-4281-a010-9f9212244cf1")]
         #endregion
         public DateTime IssuanceDateTime { get; set; }
-        
+
+        #region Allors
+        [Id("83de0bfa-98ca-4299-a529-f8ba8a02cb90")]
+        [AssociationId("467ce53a-969b-4537-b51c-998ac64afbe9")]
+        [RoleId("1766b9c8-436d-427c-8c54-4f10a6accf02")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public ShipmentItem ShipmentItem { get; set; }
+
         #region Allors
         [Id("6d0e1669-1583-4004-a0dd-6481faaa4803")]
         [AssociationId("2deb9c3e-6e3e-462c-88bf-df682a4af6e0")]
@@ -32,6 +42,15 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public InventoryItem InventoryItem { get; set; }
+
+        #region Allors
+        [Id("af4fbe17-bbdc-4f05-bf2e-398ee18598a5")]
+        [AssociationId("6744410c-6f9c-49db-b73c-ed723592fee6")]
+        [RoleId("938bb734-f18c-4756-9c68-54cad2377639")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public PickListItem PickListItem { get; set; }
         
         #region Allors
         [Id("72872b29-69e3-4408-ad61-80201c46421b")]
@@ -42,26 +61,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
-        
-        #region Allors
-        [Id("83de0bfa-98ca-4299-a529-f8ba8a02cb90")]
-        [AssociationId("467ce53a-969b-4537-b51c-998ac64afbe9")]
-        [RoleId("1766b9c8-436d-427c-8c54-4f10a6accf02")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public ShipmentItem ShipmentItem { get; set; }
-        
-        #region Allors
-        [Id("af4fbe17-bbdc-4f05-bf2e-398ee18598a5")]
-        [AssociationId("6744410c-6f9c-49db-b73c-ed723592fee6")]
-        [RoleId("938bb734-f18c-4756-9c68-54cad2377639")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        public PickListItem PickListItem { get; set; }
-        
+       
         #region inherited methods
 
 

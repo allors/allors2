@@ -36,7 +36,7 @@ namespace Allors.Domain
                 using (TextReader reader = new StringReader(this.Content))
                 {
                     var protocolExtent = (Extent)XmlSerializer.Deserialize(reader);
-                    return protocolExtent.Load(this.strategy.Session);
+                    return protocolExtent.Load(this.Strategy.Session);
                 }
             }
 

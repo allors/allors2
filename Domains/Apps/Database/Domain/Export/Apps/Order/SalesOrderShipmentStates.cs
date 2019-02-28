@@ -19,20 +19,29 @@ namespace Allors.Domain
 
     public partial class SalesOrderShipmentStates
     {
-        private static readonly Guid PartiallyShippedId = new Guid("40B4EFB9-42A4-43d9-BCE9-39E55FD9D507");
-        private static readonly Guid ShippedId = new Guid("CBDBFF96-B5DA-4be3-9B8D-EA785D08C85C");
+        internal static readonly Guid NotShippedId = new Guid("28256661-0110-42C8-A97E-A4655EFE7974");
+        internal static readonly Guid ShippedId = new Guid("CBDBFF96-B5DA-4be3-9B8D-EA785D08C85C");
+        internal static readonly Guid PartiallyShippedId = new Guid("40B4EFB9-42A4-43d9-BCE9-39E55FD9D507");
 
         private UniquelyIdentifiableSticky<SalesOrderShipmentState> stateCache;
 
-        public SalesOrderShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
+        public SalesOrderShipmentState NotShipped => this.StateCache[NotShippedId];
 
         public SalesOrderShipmentState Shipped => this.StateCache[ShippedId];
+
+        public SalesOrderShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
+
 
         private UniquelyIdentifiableSticky<SalesOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderShipmentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
+
+            new SalesOrderShipmentStateBuilder(this.Session)
+                .WithUniqueId(NotShippedId)
+                .WithName("Not Shipped")
+                .Build();
 
             new SalesOrderShipmentStateBuilder(this.Session)
                 .WithUniqueId(PartiallyShippedId)

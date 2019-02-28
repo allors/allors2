@@ -676,6 +676,13 @@ line2")
 
             new EmploymentBuilder(this.Session).WithEmployee(person).WithEmployer(organisation).Build();
 
+            new OrganisationContactRelationshipBuilder(this.Session)
+                .WithOrganisation(organisation)
+                .WithContact(person)
+                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
             new UserGroups(this.Session).Administrators.AddMember(person);
             new UserGroups(this.Session).Creators.AddMember(person);
 

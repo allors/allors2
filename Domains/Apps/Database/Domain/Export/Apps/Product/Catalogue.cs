@@ -27,14 +27,14 @@ namespace Allors.Domain
         {
             if (!this.ExistCatScope)
             {
-                this.CatScope = new CatScopes(this.strategy.Session).Public;
+                this.CatScope = new CatScopes(this.Strategy.Session).Public;
             }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
+            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             if (!this.ExistCatalogueImage)
             {
-                this.CatalogueImage = this.strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
+                this.CatalogueImage = this.Strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
         }
     }

@@ -1530,14 +1530,14 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             item.QuantityOrdered = 3;
 
             this.Session.Derive();
 
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(3, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(3, pickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1569,7 +1569,7 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             item.QuantityOrdered = 11;
 
@@ -1578,7 +1578,7 @@ namespace Allors.Domain
             Assert.Equal(1, item.QuantityShortFalled);
 
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             item.QuantityOrdered = 9;
 
@@ -1587,7 +1587,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.QuantityShortFalled);
 
             Assert.Equal(9, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(9, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(9, pickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1640,8 +1640,8 @@ namespace Allors.Domain
             Assert.Equal(7, shipment.ShipmentItems[1].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(5, pickList.PickListItems[0].RequestedQuantity);
-            Assert.Equal(7, pickList.PickListItems[1].RequestedQuantity);
+            Assert.Equal(5, pickList.PickListItems[0].Quantity);
+            Assert.Equal(7, pickList.PickListItems[1].Quantity);
 
             item1.Cancel();
 
@@ -1651,8 +1651,8 @@ namespace Allors.Domain
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(7, shipment.ShipmentItems[1].Quantity);
 
-            Assert.Equal(2, pickList.PickListItems[0].RequestedQuantity);
-            Assert.Equal(7, pickList.PickListItems[1].RequestedQuantity);
+            Assert.Equal(2, pickList.PickListItems[0].Quantity);
+            Assert.Equal(7, pickList.PickListItems[1].Quantity);
 
             item3.Cancel();
 
@@ -1662,7 +1662,7 @@ namespace Allors.Domain
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
 
             Assert.Equal(1, pickList.PickListItems.Count);
-            Assert.Equal(2, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(2, pickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1692,7 +1692,7 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
@@ -1705,8 +1705,8 @@ namespace Allors.Domain
             var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
 
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
-            Assert.Equal(-7, negativePickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
+            Assert.Equal(-7, negativePickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1743,7 +1743,7 @@ namespace Allors.Domain
             Assert.Equal(5, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(5, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(5, pickList.PickListItems[0].Quantity);
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
@@ -1757,8 +1757,8 @@ namespace Allors.Domain
 
             Assert.Equal(1, shipment.ShipmentItems.Count);
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(5, pickList.PickListItems[0].RequestedQuantity);
-            Assert.Equal(-3, negativePickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(5, pickList.PickListItems[0].Quantity);
+            Assert.Equal(-3, negativePickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1844,7 +1844,7 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
@@ -1855,8 +1855,8 @@ namespace Allors.Domain
 
             Assert.Equal(3, item.QuantityPendingShipment);
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
-            Assert.Equal(-7, negativePickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
+            Assert.Equal(-7, negativePickList.PickListItems[0].Quantity);
         }
 
         private void InstantiateObjects(ISession session)

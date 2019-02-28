@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             get
             {
-                var session = this.strategy.Session;
+                var session = this.Strategy.Session;
                 var caches = session.GetCache<TemplateCacheEntry>();
                 caches.TryGetValue(this.Id, out var cache);
                 if (cache == null || !this.Media.Revision.Equals(cache.Revision))

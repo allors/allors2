@@ -70,7 +70,7 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistReceiver && internalOrganisations.Count() == 1)
             {
@@ -98,7 +98,7 @@ namespace Allors.Domain
             }
 
             if (this.ExistPurchaseShipmentState &&
-                this.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.strategy.Session).Completed) &&
+                this.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed) &&
                 !this.PurchaseShipmentState.Equals(this.LastPurchaseShipmentState))
             {
 

@@ -6,7 +6,7 @@
       </div>
       <div class="col-9 col-md-10 p-3">
         <h4>{{panel.title}}</h4>
-        <div>{{objects?.length}} total work effort party assignments</div>
+        <div>{{objects?.length}} total work effort inventory assignments</div>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
   <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
     <div class="row pt-3">
       <div class="col pl-3">
-        <h4>Work Effort Party Assignments</h4>
+        <h4>Work Effort inventory Assignments</h4>
       </div>
       <div class="pr-3">
         <mat-icon>expand_less</mat-icon>
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <a-mat-factory-fab [objectType]="metaService.m.WorkEffortPartyAssignment" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  <a-mat-factory-fab [objectType]="metaService.m.WorkEffortInventoryAssignment" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
   <a-mat-table [table]="table"></a-mat-table>
 </div>

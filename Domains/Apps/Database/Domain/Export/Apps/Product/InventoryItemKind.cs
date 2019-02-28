@@ -19,8 +19,8 @@ namespace Allors.Domain
 
     public partial class InventoryItemKind
     {
-        public bool IsSerialized => this.Equals(new InventoryItemKinds(this.strategy.Session).Serialised);
+        public bool IsSerialized => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);
 
-        public bool IsNonSerialized => this.Equals(new InventoryItemKinds(this.strategy.Session).NonSerialised);
+        public bool IsNonSerialized => this.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised);
     }
 }

@@ -19,13 +19,17 @@ namespace Allors.Domain
 
     public partial class OrderShipment
     {
-        public void AppsOnBuild(ObjectOnBuild method)
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
-            this.Picked = false;
+            var derivation = method.Derivation;
 
-            if (!this.ExistQuantity)
+            if (derivation.IsModified(this))
             {
-                this.Quantity = 0;
+                derivation.MarkAsModified(this.OrderItem);
+                derivation.AddDependency(this, this.OrderItem);
+
+                derivation.MarkAsModified(this.ShipmentItem);
+                derivation.AddDependency(this.ShipmentItem, this);
             }
         }
     }

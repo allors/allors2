@@ -56,56 +56,8 @@ namespace Allors.Domain
             var customerRelationships = party.CustomerRelationshipsWhereCustomer;
             customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
 
-            foreach (CustomerRelationship relationship in customerRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
-
-            foreach (CustomerRelationship relationship in customerRelationships)
-            {
-                if (relationship.FromDate.Date <= date &&
-                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static IEnumerable<CustomerShipment> AppsGetPendingCustomerShipments(this Party party)
-        {
-            var shipments = party.ShipmentsWhereShipToParty;
-
-            var pending = new List<CustomerShipment>();
-            foreach (CustomerShipment shipment in shipments)
-            {
-                if (shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Created) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Picked) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).OnHold) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Packed))
-                {
-                    pending.Add(shipment);
-                }
-            }
-
-            return pending;
+            return customerRelationships.Any(relationship => relationship.FromDate.Date <= date
+                                                             && (!relationship.ExistThroughDate || relationship.ThroughDate >= date));
         }
 
         public static CustomerShipment AppsGetPendingCustomerShipmentForStore(this Party party, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
@@ -281,17 +233,17 @@ namespace Allors.Domain
             @this.CurrentPartyContactMechanisms = @this.PartyContactMechanisms
                 .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
                 .ToArray();
-            
+
             @this.InactivePartyContactMechanisms = @this.PartyContactMechanisms
                 .Except(@this.CurrentPartyContactMechanisms)
                 .ToArray();
 
             var allPartyRelationshipsWhereParty = @this.PartyRelationshipsWhereParty;
-            
+
             @this.CurrentPartyRelationships = allPartyRelationshipsWhereParty
                 .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
                 .ToArray();
-            
+
             @this.InactivePartyRelationships = allPartyRelationshipsWhereParty
                 .Except(@this.CurrentPartyRelationships)
                 .ToArray();
@@ -338,7 +290,7 @@ namespace Allors.Domain
                 partyFinancial.AmountOverDue = 0;
 
                 // Open Order Amount
-                partyFinancial.OpenOrderAmount =  @this.SalesOrdersWhereBillToCustomer
+                partyFinancial.OpenOrderAmount = @this.SalesOrdersWhereBillToCustomer
                     .Where(v =>
                         Equals(v.TakenBy, partyFinancial.InternalOrganisation) &&
                         !v.SalesOrderState.Equals(new SalesOrderStates(@this.Strategy.Session).Finished) &&
@@ -393,8 +345,7 @@ namespace Allors.Domain
 
         public static void AppsOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)
         {
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
-            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+            var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
 
             if (!internalOrganisations.Contains(@this))
             {

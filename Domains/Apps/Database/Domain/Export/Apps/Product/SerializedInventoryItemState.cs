@@ -19,18 +19,18 @@ namespace Allors.Domain
 
     public partial class SerialisedInventoryItemState
     {
-        public bool IsGood => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Good);
+        public bool IsGood => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Good);
 
-        public bool IsBeingRepaired => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).BeingRepaired);
+        public bool IsBeingRepaired => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).BeingRepaired);
 
-        public bool IsSlightlyDamaged => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).SlightlyDamaged);
+        public bool IsSlightlyDamaged => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).SlightlyDamaged);
 
-        public bool IsDefective => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Defective);
+        public bool IsDefective => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Defective);
 
-        public bool IsScrap => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Scrap);
+        public bool IsScrap => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Scrap);
 
-        public bool IsAvailable => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Available);
+        public bool IsAvailable => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Available);
 
-        public bool IsAssigned => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Assigned);
+        public bool IsAssigned => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Assigned);
     }
 }

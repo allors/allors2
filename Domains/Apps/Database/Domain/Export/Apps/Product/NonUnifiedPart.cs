@@ -35,12 +35,12 @@ namespace Allors.Domain
 
             if (!this.ExistUnitOfMeasure)
             {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
             if (!this.ExistDefaultFacility)
             {
-                this.DefaultFacility = this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+                this.DefaultFacility = this.Strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
 
             this.DeriveName();
@@ -66,7 +66,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var setings = this.strategy.Session.GetSingleton().Settings;
+            var setings = this.Strategy.Session.GetSingleton().Settings;
 
             if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
@@ -76,14 +76,14 @@ namespace Allors.Domain
             this.DeriveName();
 
             var identifications = this.ProductIdentifications;
-            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.strategy.Session).Part);
+            identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.Strategy.Session).Part);
             var partNumber = identifications.FirstOrDefault();
 
             if (partNumber == null && setings.UsePartNumberCounter)
             {
-                this.AddProductIdentification(new PartNumberBuilder(this.strategy.Session)
+                this.AddProductIdentification(new PartNumberBuilder(this.Strategy.Session)
                     .WithIdentification(setings.NextPartNumber())
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.strategy.Session).Part).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Part).Build());
             }
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
@@ -145,7 +145,7 @@ namespace Allors.Domain
                     if (characteristic == null)
                     {
                         this.AddSerialisedItemCharacteristic(
-                            new SerialisedItemCharacteristicBuilder(this.strategy.Session)
+                            new SerialisedItemCharacteristicBuilder(this.Strategy.Session)
                                 .WithSerialisedItemCharacteristicType(characteristicType)
                                 .Build());
                     }

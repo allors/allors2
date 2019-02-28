@@ -54,6 +54,8 @@
     <None Include="Products\Overview.cd" />
     <None Include="Relation\Relation.cd" />
     <None Include="Shipment\Overview.cd" />
+    <None Include="Shipment\Picking.cd" />
+    <None Include="Shipment\Quantity.cd" />
     <None Include="Temp.cd" />
     <None Include="Workeffort\WorkEffort.cd" />
     <None Include="Workeffort\WorkEffort Time.cd" />

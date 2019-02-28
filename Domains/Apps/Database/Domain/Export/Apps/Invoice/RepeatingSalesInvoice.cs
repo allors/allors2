@@ -37,22 +37,22 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            if (!this.Frequency.Equals(new TimeFrequencies(this.strategy.Session).Month) && !this.Frequency.Equals(new TimeFrequencies(this.strategy.Session).Week))
+            if (!this.Frequency.Equals(new TimeFrequencies(this.Strategy.Session).Month) && !this.Frequency.Equals(new TimeFrequencies(this.Strategy.Session).Week))
             {
                 derivation.Validation.AddError(this, M.RepeatingSalesInvoice.Frequency, ErrorMessages.FrequencyNotSupported);
             }
 
-            if (this.Frequency.Equals(new TimeFrequencies(this.strategy.Session).Week) && !this.ExistDayOfWeek)
+            if (this.Frequency.Equals(new TimeFrequencies(this.Strategy.Session).Week) && !this.ExistDayOfWeek)
             {
                 derivation.Validation.AssertExists(this, M.RepeatingSalesInvoice.DayOfWeek);
             }
 
-            if (this.Frequency.Equals(new TimeFrequencies(this.strategy.Session).Month) && this.ExistDayOfWeek)
+            if (this.Frequency.Equals(new TimeFrequencies(this.Strategy.Session).Month) && this.ExistDayOfWeek)
             {
                 derivation.Validation.AssertNotExists(this, M.RepeatingSalesInvoice.DayOfWeek);
             }
 
-            if (this.Frequency.Equals(new TimeFrequencies(this.strategy.Session).Week) && this.ExistDayOfWeek && this.ExistNextExecutionDate)
+            if (this.Frequency.Equals(new TimeFrequencies(this.Strategy.Session).Week) && this.ExistDayOfWeek && this.ExistNextExecutionDate)
             {
                 if (!this.NextExecutionDate.DayOfWeek.ToString().Equals(this.DayOfWeek.Name))
                 {
@@ -63,9 +63,9 @@ namespace Allors.Domain
 
         public void Repeat()
         {
-            var now = this.strategy.Session.Now().Date;
-            var monthly = new TimeFrequencies(this.strategy.Session).Month;
-            var weekly = new TimeFrequencies(this.strategy.Session).Week;
+            var now = this.Strategy.Session.Now().Date;
+            var monthly = new TimeFrequencies(this.Strategy.Session).Month;
+            var weekly = new TimeFrequencies(this.Strategy.Session).Week;
 
             if (this.Frequency.Equals(monthly))
             {

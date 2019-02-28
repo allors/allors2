@@ -331,5 +331,12 @@ namespace Allors.Repository
 
         public void Print() { }
         #endregion
+
+        #region Allors
+        [Id("08E9783F-4DEE-428B-ADDD-785775AFAA46")]
+        #endregion
+        [Workspace]
+        public void QuickReceive() { }
+
     }
 }

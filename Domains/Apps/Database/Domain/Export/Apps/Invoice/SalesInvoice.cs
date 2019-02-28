@@ -30,8 +30,8 @@ namespace Allors.Domain
     public partial class SalesInvoice
     {
         private bool IsDeletable =>
-            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.strategy.Session).ReadyForPosting) &&
-            this.AllItemsDeletable() &&
+            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting) &&
+            this.SalesInvoiceItems.All(v => v.IsDeletable) &&
             this.SalesOrders.Count == 0 &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
@@ -90,29 +90,7 @@ namespace Allors.Domain
         }
 
         public InvoiceItem[] InvoiceItems => this.SalesInvoiceItems;
-
-        public void SetActualDiscountAmount(decimal amount)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Amount = amount;
-            this.DiscountAdjustment.RemovePercentage();
-        }
-
-        public void SetActualDiscountPercentage(decimal percentage)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Percentage = percentage;
-            this.DiscountAdjustment.RemoveAmount();
-        }
-
+        
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesInvoiceState)
@@ -171,7 +149,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SalesInvoiceItem invoiceItem in this.InvoiceItems)
+            foreach (SalesInvoiceItem invoiceItem in this.InvoiceItems.OfType<SalesInvoiceItem>())
             {
                 derivation.AddDependency(this, invoiceItem);
             }
@@ -179,6 +157,7 @@ namespace Allors.Domain
             foreach (SalesOrder salesOrder in this.SalesOrders)
             {
                 derivation.AddDependency(salesOrder, this);
+                derivation.MarkAsModified(salesOrder, M.SalesInvoice.SalesOrders);
             }
         }
 
@@ -186,7 +165,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
 
             if (!this.ExistBilledFrom && internalOrganisations.Count() == 1)
             {
@@ -195,11 +174,9 @@ namespace Allors.Domain
 
             if (!this.ExistStore && this.ExistBilledFrom)
             {
-                var store = new Stores(this.strategy.Session).Extent().FirstOrDefault(v => Equals(v.InternalOrganisation, this.BilledFrom));
-                if (store != null)
-                {
-                    this.Store = store;
-                }
+                var stores = new Stores(this.Strategy.Session).Extent();
+                stores.Filter.AddEquals(M.Store.InternalOrganisation, this.BilledFrom);
+                this.Store = stores.FirstOrDefault();
             }
 
             if (!this.ExistInvoiceNumber && this.ExistStore)
@@ -250,6 +227,7 @@ namespace Allors.Domain
             {
                 foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
                 {
+                    //TODO: Why?, Add is not needed here!
                     var salesOrder = orderItemBilling.OrderItem.SalesOrderWhereSalesOrderItem;
                     if (this.SalesOrders.Contains(salesOrder))
                     {
@@ -257,8 +235,10 @@ namespace Allors.Domain
                     }
                 }
 
+
                 foreach (WorkEffortBilling workEffortBilling in salesInvoiceItem.WorkEffortBillingsWhereInvoiceItem)
                 {
+                    //TODO: Why?, workeffort Add is not needed here!
                     if (this.SalesOrders.Contains(workEffortBilling.WorkEffort))
                     {
                         this.SalesOrders.Add(workEffortBilling.WorkEffort);
@@ -266,17 +246,33 @@ namespace Allors.Domain
                 }
             }
 
-            this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.strategy.Session.Now().Date);
+            this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
 
             this.AppsOnDeriveInvoiceItems(derivation);
 
             this.SalesInvoiceItems = this.SalesInvoiceItems.ToArray();
 
-            this.AppsOnDeriveLocale(derivation);
+            if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
+            {
+                this.Locale = this.BillToCustomer.Locale;
+            }
+            else
+            {
+                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
+            }
+
             this.AppsOnDeriveInvoiceTotals(derivation);
             this.AppsOnDeriveCustomers(derivation);
             this.AppsOnDeriveSalesReps(derivation);
-            this.AppsOnDeriveAmountPaid(derivation);
+
+            this.AmountPaid = this.AdvancePayment;
+            this.AmountPaid += this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
+            
+            //// Perhaps payments are recorded at the item level.
+            if (this.AmountPaid == 0)
+            {
+                this.AmountPaid = this.InvoiceItems.Sum(v => v.AmountPaid);
+            }
 
             if (this.ExistBillToCustomer && !this.BillToCustomer.AppsIsActiveCustomer(this.BilledFrom, this.InvoiceDate))
             {
@@ -289,7 +285,6 @@ namespace Allors.Domain
             }
 
             this.DeriveCurrentPaymentStatus(derivation);
-            this.DeriveCurrentObjectState(derivation);
 
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
@@ -348,15 +343,7 @@ namespace Allors.Domain
                 }
             }
         }
-
-        private void DeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
-            {
-                this.AppsOnDeriveSalesOrderPaymentStatus(derivation);
-            }
-        }
-
+        
         public void AppsSend(SalesInvoiceSend method)
         {
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
@@ -492,7 +479,7 @@ namespace Allors.Domain
                 {
                     if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
                     {
-                        salesInvoiceItem.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                        salesInvoiceItem.AddSalesTerm(new IncoTermBuilder(this.Strategy.Session)
                             .WithTermType(salesTerm.TermType)
                             .WithTermValue(salesTerm.TermValue)
                             .WithDescription(salesTerm.Description)
@@ -501,7 +488,7 @@ namespace Allors.Domain
 
                     if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
                     {
-                        salesInvoiceItem.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                        salesInvoiceItem.AddSalesTerm(new InvoiceTermBuilder(this.Strategy.Session)
                             .WithTermType(salesTerm.TermType)
                             .WithTermValue(salesTerm.TermValue)
                             .WithDescription(salesTerm.Description)
@@ -510,7 +497,7 @@ namespace Allors.Domain
 
                     if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
                     {
-                        salesInvoiceItem.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                        salesInvoiceItem.AddSalesTerm(new OrderTermBuilder(this.Strategy.Session)
                             .WithTermType(salesTerm.TermType)
                             .WithTermValue(salesTerm.TermValue)
                             .WithDescription(salesTerm.Description)
@@ -523,7 +510,7 @@ namespace Allors.Domain
             {
                 if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.Strategy.Session)
                                                 .WithTermType(salesTerm.TermType)
                                                 .WithTermValue(salesTerm.TermValue)
                                                 .WithDescription(salesTerm.Description)
@@ -532,7 +519,7 @@ namespace Allors.Domain
 
                 if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.Strategy.Session)
                         .WithTermType(salesTerm.TermType)
                         .WithTermValue(salesTerm.TermValue)
                         .WithDescription(salesTerm.Description)
@@ -541,7 +528,7 @@ namespace Allors.Domain
 
                 if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
                 {
-                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.Strategy.Session)
                         .WithTermType(salesTerm.TermType)
                         .WithTermValue(salesTerm.TermValue)
                         .WithDescription(salesTerm.Description)
@@ -587,12 +574,12 @@ namespace Allors.Domain
 
             if (this.ExistDiscountAdjustment)
             {
-                salesInvoice.DiscountAdjustment = new DiscountAdjustmentBuilder(this.strategy.Session).WithAmount(this.DiscountAdjustment.Amount * -1).Build();
+                salesInvoice.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).WithAmount(this.DiscountAdjustment.Amount * -1).Build();
             }
 
             if (this.ExistSurchargeAdjustment)
             {
-                salesInvoice.SurchargeAdjustment = new SurchargeAdjustmentBuilder(this.strategy.Session).WithAmount(this.SurchargeAdjustment.Amount * -1).Build();
+                salesInvoice.SurchargeAdjustment = new SurchargeAdjustmentBuilder(this.Strategy.Session).WithAmount(this.SurchargeAdjustment.Amount * -1).Build();
             }
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
@@ -618,46 +605,12 @@ namespace Allors.Domain
             return salesInvoice;
         }
 
-        public void AppsOnDeriveLocale(IDerivation derivation)
-        {
-            if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
-            {
-                this.Locale = this.BillToCustomer.Locale;
-            }
-            else
-            {
-                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
-            }
-        }
-
         public void AppsOnDeriveSalesReps(IDerivation derivation)
         {
-            this.RemoveSalesReps();
-            foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
-            {
-                foreach (Person salesRep in item.SalesReps)
-                {
-                    this.AddSalesRep(salesRep);
-                }
-            }
-        }
-
-        public void AppsOnDeriveAmountPaid(IDerivation derivation)
-        {
-            this.AmountPaid = this.AdvancePayment;
-            foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoice)
-            {
-                this.AmountPaid += paymentApplication.AmountApplied;
-            }
-
-            //// Perhaps payments are recorded at the item level.
-            if (this.AmountPaid == 0)
-            {
-                foreach (var invoiceItem in this.InvoiceItems)
-                {
-                    this.AmountPaid += invoiceItem.AmountPaid;
-                }
-            }
+            this.SalesReps = this.SalesInvoiceItems
+                .SelectMany(v => v.SalesReps)
+                .Distinct()
+                .ToArray();
         }
 
         public void AppsOnDeriveInvoiceTotals(IDerivation derivation)
@@ -798,36 +751,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDeriveSalesOrderPaymentStatus(IDerivation derivation)
-        {
-            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
-            {
-                foreach (ShipmentItemBilling shipmentItemBilling in invoiceItem.ShipmentItemBillingsWhereInvoiceItem)
-                {
-                    foreach (OrderShipment orderShipment in shipmentItemBilling.ShipmentItem.OrderShipmentsWhereShipmentItem)
-                    {
-                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
-                        {
-                            salesOrderItem.AppsOnDerivePaymentState(derivation);
-                            salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
-                        }
-                    }
-                }
-
-                foreach (OrderItemBilling orderItemBilling in invoiceItem.OrderItemBillingsWhereInvoiceItem)
-                {
-                    foreach (OrderShipment orderShipment in orderItemBilling.OrderItem.OrderShipmentsWhereOrderItem)
-                    {
-                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
-                        {
-                            salesOrderItem.AppsOnDerivePaymentState(derivation);
-                            salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
-                        }
-                    }
-                }
-            }
-        }
-
         public void AppsOnDeriveCustomers(IDerivation derivation)
         {
             this.RemoveCustomers();
@@ -960,19 +883,6 @@ namespace Allors.Domain
 
                 this.PrintDocument.Media.FileName = $"{this.InvoiceNumber}.odt";
             }
-        }
-
-        private bool AllItemsDeletable()
-        {
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-            {
-                if (!salesInvoiceItem.IsDeletable)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
+            var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {

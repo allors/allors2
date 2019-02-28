@@ -57,7 +57,7 @@ namespace Allors.Domain
 
         private AccountingPeriod AppsAddNextMonth()
         {
-            var allPeriods = new AccountingPeriods(this.strategy.Session).Extent();
+            var allPeriods = new AccountingPeriods(this.Strategy.Session).Extent();
             allPeriods.Filter.AddEquals(this.Meta.Frequency, new TimeFrequencies(this.Strategy.Session).Month);
             allPeriods.AddSort(this.Meta.FromDate.RoleType, SortDirection.Descending);
 

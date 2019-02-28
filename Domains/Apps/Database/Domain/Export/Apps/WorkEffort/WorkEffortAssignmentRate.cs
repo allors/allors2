@@ -21,6 +21,14 @@ namespace Allors.Domain
 {
     public partial class WorkEffortAssignmentRate
     {
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistFrequency)
+            {
+                this.Frequency = new TimeFrequencies(this.Strategy.Session).Hour;
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

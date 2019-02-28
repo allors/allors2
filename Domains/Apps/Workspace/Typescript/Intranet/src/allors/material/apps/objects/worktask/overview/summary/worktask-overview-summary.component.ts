@@ -14,6 +14,7 @@ export class WorkTaskOverviewSummaryComponent {
   m: Meta;
 
   workTask: WorkTask;
+  parent: WorkTask;
 
   constructor(
     @Self() public panel: PanelService,
@@ -25,6 +26,7 @@ export class WorkTaskOverviewSummaryComponent {
     panel.name = 'summary';
 
     const workTaskPullName = `${panel.name}_${this.m.WorkTask.name}`;
+    const parentPullName = `${panel.name}_${this.m.WorkTask.name}_parent`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
@@ -40,11 +42,20 @@ export class WorkTaskOverviewSummaryComponent {
             WorkEffortState: x,
             LastModifiedBy: x,
           }
-        }));
+        }),
+        pull.WorkTask({
+          name: parentPullName,
+          object: id,
+          fetch: {
+            WorkEffortWhereChild: x
+          }
+        })
+      );
     };
 
     panel.onPulled = (loaded) => {
       this.workTask = loaded.objects[workTaskPullName] as WorkTask;
+      this.parent = loaded.objects[parentPullName] as WorkTask;
     };
   }
 }

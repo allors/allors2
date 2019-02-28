@@ -19,15 +19,15 @@ namespace Allors.Domain
 
     public partial class WorkEffortState
     {
-        public bool IsCreated => this.Equals(new WorkEffortStates(this.strategy.Session).Created);
+        public bool IsCreated => this.Equals(new WorkEffortStates(this.Strategy.Session).Created);
 
-        public bool IsInProgress => this.Equals(new WorkEffortStates(this.strategy.Session).InProgress);
+        public bool IsInProgress => this.Equals(new WorkEffortStates(this.Strategy.Session).InProgress);
 
-        public bool IsCompleted => this.Equals(new WorkEffortStates(this.strategy.Session).Completed);
+        public bool IsCompleted => this.Equals(new WorkEffortStates(this.Strategy.Session).Completed);
 
-        public bool IsFinished => this.Equals(new WorkEffortStates(this.strategy.Session).Finished);
+        public bool IsFinished => this.Equals(new WorkEffortStates(this.Strategy.Session).Finished);
 
-        public bool IsCancelled => this.Equals(new WorkEffortStates(this.strategy.Session).Cancelled);
+        public bool IsCancelled => this.Equals(new WorkEffortStates(this.Strategy.Session).Cancelled);
 
     }
 }

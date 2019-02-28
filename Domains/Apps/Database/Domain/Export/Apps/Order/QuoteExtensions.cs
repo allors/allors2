@@ -35,9 +35,8 @@ namespace Allors.Domain
 
             if (!@this.ExistIssuer)
             {
-                var internalOrganisations = new Organisations(@this.Strategy.Session).Extent();
-                internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
-
+                var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
+                
                 if (internalOrganisations.Count() == 1)
                 {
                     @this.Issuer = internalOrganisations.First();
@@ -52,7 +51,7 @@ namespace Allors.Domain
             @this.Price = 0;
             foreach (QuoteItem item in @this.QuoteItems)
             {
-                @this.Price += item.Quantity * item.UnitPrice;
+                @this.Price += item.LineTotal;
             }
         }
 

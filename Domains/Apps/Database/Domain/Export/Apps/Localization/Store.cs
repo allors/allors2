@@ -31,7 +31,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.strategy.Session).Extent();
+                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.Strategy.Session).Extent();
                 fiscalYearInvoiceNumbers.Filter.AddEquals(M.FiscalYearInvoiceNumber.FiscalYear, year);
                 var fiscalYearInvoiceNumber = fiscalYearInvoiceNumbers.First;
 
@@ -84,7 +84,7 @@ namespace Allors.Domain
             }
             else
             {
-                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.strategy.Session).Extent();
+                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.Strategy.Session).Extent();
                 fiscalYearInvoiceNumbers.Filter.AddEquals(M.FiscalYearInvoiceNumber.FiscalYear, year);
                 var fiscalYearInvoiceNumber = fiscalYearInvoiceNumbers.First;
 
@@ -104,32 +104,32 @@ namespace Allors.Domain
         {
             if (!this.ExistSalesOrderCounter)
             {
-                this.SalesOrderCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.SalesOrderCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             if (!this.ExistOutgoingShipmentCounter)
             {
-                this.OutgoingShipmentCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.OutgoingShipmentCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             //if (!this.ExistWorkEffortCounter)
             //{
-            //    this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            //    this.WorkEffortCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             //}
 
             if (!this.ExistBillingProcess)
             {
-                this.BillingProcess = new BillingProcesses(this.strategy.Session).BillingForShipmentItems;
+                this.BillingProcess = new BillingProcesses(this.Strategy.Session).BillingForShipmentItems;
             }
 
             if (!this.ExistSalesInvoiceTemporaryCounter)
             {
-                this.SalesInvoiceTemporaryCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.SalesInvoiceTemporaryCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             if (!this.ExistCreditNoteCounter)
             {
-                this.CreditNoteCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.CreditNoteCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
         }
 
@@ -137,7 +137,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
             {
@@ -166,7 +166,7 @@ namespace Allors.Domain
 
             if (!this.ExistDefaultFacility)
             {
-                this.DefaultFacility = this.strategy.Session.GetSingleton().Settings.DefaultFacility;
+                this.DefaultFacility = this.Strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
 
             derivation.Validation.AssertExistsAtMostOne(this, M.Store.FiscalYearInvoiceNumbers, M.Store.SalesInvoiceCounter);

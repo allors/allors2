@@ -395,7 +395,7 @@ namespace Allors.Domain
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
 
             var pickList1 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(3, pickList1.PickListItems[0].RequestedQuantity);
+            Assert.Equal(3, pickList1.PickListItems[0].Quantity);
 
             pickList1.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
@@ -426,7 +426,7 @@ namespace Allors.Domain
             Assert.Equal(5, shipment.ShipmentItems.First.Quantity);
 
             var pickList2 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[1].PickListItem.PickListWherePickListItem;
-            Assert.Equal(2, pickList2.PickListItems[0].RequestedQuantity);
+            Assert.Equal(2, pickList2.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -482,7 +482,7 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
@@ -493,7 +493,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var negativePickList = order.ShipToCustomer.PickListsWhereShipToParty[1];
-            Assert.Equal(-10, negativePickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(-10, negativePickList.PickListItems[0].Quantity);
 
             Assert.Equal(new CustomerShipmentStates(this.Session).Cancelled, shipment.CustomerShipmentState);
         }
@@ -576,7 +576,7 @@ namespace Allors.Domain
             Assert.Equal(30, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(30, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(30, pickList.PickListItems[0].Quantity);
 
             order1.Cancel();
 
@@ -584,7 +584,7 @@ namespace Allors.Domain
 
             Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
             Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
-            Assert.Equal(20, pickList.PickListItems[0].RequestedQuantity);
+            Assert.Equal(20, pickList.PickListItems[0].Quantity);
 
             order2.Cancel();
 
@@ -1492,7 +1492,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
-
+            
             order.AddSalesOrderItem(new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).WithActualUnitPrice(10).Build());
 
             this.Session.Derive();
