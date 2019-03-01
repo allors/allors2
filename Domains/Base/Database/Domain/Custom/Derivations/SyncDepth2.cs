@@ -28,7 +28,7 @@ namespace Allors.Domain
 
             if (!derivation.IsCreated(this) && derivation.IsModified(this, RelationKind.Regular))
             {
-                derivation.MarkAsModified(this.SyncDepthI1WhereSyncDepth2);
+                derivation.Mark(this.SyncDepthI1WhereSyncDepth2);
                 derivation.AddDependency(this, this.SyncDepthI1WhereSyncDepth2);
             }
         }

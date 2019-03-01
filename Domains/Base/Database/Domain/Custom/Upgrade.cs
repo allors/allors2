@@ -25,7 +25,7 @@ namespace Allors
         private void Derive(Extent extent)
         {
             var derivation = new Domain.NonLogging.Derivation(this.session, new DerivationConfig());
-            derivation.AddDerivables(extent.Cast<Domain.Object>());
+            derivation.Add(extent.Cast<Domain.Object>());
             
             var validation = derivation.Derive();
             if (validation.HasErrors)
