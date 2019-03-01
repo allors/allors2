@@ -24,7 +24,6 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Runtime.CompilerServices;
 
     using Allors;
     using Allors.Meta;
@@ -44,7 +43,9 @@ namespace Allors.Domain
 
         private DerivationGraphBase derivationGraph;
         private HashSet<IObject> addedDerivables;
-        
+
+        private bool isFinalizing;
+
         protected DerivationBase(ISession session, DerivationConfig config)
         {
             this.Config = config ?? new DerivationConfig();
@@ -61,6 +62,8 @@ namespace Allors.Domain
 
             this.ChangeSet = session.Checkpoint();
             this.derivationChangeSet.Add(this.ChangeSet);
+
+            this.isFinalizing = false;
 
             this.generation = 0;
         }
@@ -131,12 +134,12 @@ namespace Allors.Domain
 
         public bool IsModified(Object @object)
         {
-            return this.IsMarkedAsModified(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
+            return this.IsMarked(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
         }
 
         public bool IsModified(Object @object, RelationKind kind)
         {
-            return this.IsMarkedAsModified(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
+            return this.IsMarked(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
         }
 
         public bool IsCreated(Object derivable)
@@ -218,12 +221,12 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool IsMarkedAsModified(Object derivable)
+        public bool IsMarked(Object derivable)
         {
             return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
         }
 
-        public void MarkAsModified(Object derivable, RelationType relationType = null)
+        public void Mark(Object derivable, RelationType relationType = null)
         {
             if (derivable != null)
             {
@@ -245,35 +248,35 @@ namespace Allors.Domain
             }
         }
 
-        public void MarkAsModified(Object derivable, RoleType roleType)
+        public void Mark(Object derivable, RoleType roleType)
         {
-            this.MarkAsModified(derivable, roleType.RelationType);
+            this.Mark(derivable, roleType.RelationType);
         }
 
-        public void MarkAsModified(IEnumerable<Object> derivables)
+        public void Mark(IEnumerable<Object> derivables)
         {
             foreach (var derivable in derivables)
             {
-                this.MarkAsModified(derivable);
+                this.Mark(derivable);
             }
         }
 
-        public ISet<RelationType> MarkedAsModifiedBy(Object markedAsModified)
+        public ISet<RelationType> MarkedBy(Object markedAsModified)
         {
             this.relationsByMarkedAsModified.TryGetValue(markedAsModified.Id, out var relationTypes);
             return relationTypes;
         }
 
-        public void AddDerivable(Object derivable)
+        public void Add(Object derivable)
         {
             if (this.generation == 0)
             {
-                throw new Exception("AddDerivable can only be called during a derivation. Use MarkAsModified() instead.");
+                throw new Exception("Add can only be called during a derivation. Use Mark() instead.");
             }
 
             if (derivable != null)
             {
-                if (this.DerivedObjects.Contains(derivable))
+                if (!this.isFinalizing && this.DerivedObjects.Contains(derivable))
                 {
                     this.OnCycleDetected(derivable);
                     if (this.Config.ThrowExceptionOnCycleDetected)
@@ -289,14 +292,14 @@ namespace Allors.Domain
             }
         }
 
-        public void AddDerivables(IEnumerable<Object> derivables)
+        public void Add(IEnumerable<Object> derivables)
         {
             foreach (var derivable in derivables)
             {
-                this.AddDerivable(derivable);
+                this.Add(derivable);
             }
         }
-
+        
         public void AddDependency(Object dependent, Object dependee)
         {
             if (this.generation == 0)
@@ -324,6 +327,52 @@ namespace Allors.Domain
         }
 
         public IValidation Derive()
+        {
+            this.Derivation();
+
+            this.isFinalizing = true;
+
+            this.Finalization();
+
+            return this.validation;
+        }
+
+        internal void AddDerivedObject(Object derivable)
+        {
+            this.derivedObjects.Add(derivable);
+        }
+
+        protected abstract DerivationGraphBase CreateDerivationGraph(DerivationBase derivation);
+
+        protected abstract void OnAddedDerivable(Object derivable);
+
+        protected abstract void OnAddedDependency(Object dependent, Object dependee);
+
+        protected abstract void OnStartedGeneration(int generation);
+
+        protected abstract void OnStartedPreparation(int preparationRun);
+
+        protected abstract void OnPreDeriving(Object derivable);
+
+        protected abstract void OnPreDerived(Object derivable);
+
+        protected abstract void OnPostDeriving(Object derivable);
+
+        protected abstract void OnPostDerived(Object derivable);
+
+        protected abstract void OnPreFinalizing(Object derivable);
+
+        protected abstract void OnPreFinalized(Object derivable);
+
+        protected abstract void OnPostFinalizing(Object derivable);
+
+        protected abstract void OnPostFinalized(Object derivable);
+
+        protected abstract void OnCycleDetected(Object derivable);
+
+        protected abstract void OnCycleDetected(Object dependent, Object dependee);
+
+        private void Derivation()
         {
             if (this.generation != 0)
             {
@@ -449,37 +498,81 @@ namespace Allors.Domain
 
                 this.derivationGraph = null;
             }
-            
-
-
-            return this.validation;
         }
 
-        internal void AddDerivedObject(Object derivable)
+        private void Finalization()
         {
-            this.derivedObjects.Add(derivable);
+            this.ChangeSet = this.DerivationChangeSet;
+
+            var preparedObjects = new HashSet<IObject>();
+            var changedObjects = new HashSet<IObject>(this.derivedObjects);
+
+            this.addedDerivables = new HashSet<IObject>();
+
+            var preparationRun = 1;
+
+            this.OnStartedPreparation(preparationRun);
+
+            this.derivationGraph = this.CreateDerivationGraph(this);
+            foreach (var changedObject in changedObjects)
+            {
+                if (this.Session.Instantiate(changedObject) is Object derivable)
+                {
+                    this.OnPreFinalizing(derivable);
+
+                    derivable.OnPreFinalize(x => x.WithDerivation(this));
+
+                    this.OnPreFinalized(derivable);
+
+                    preparedObjects.Add(derivable);
+                }
+            }
+
+            while (this.addedDerivables.Count > 0)
+            {
+                preparationRun++;
+                this.OnStartedPreparation(preparationRun);
+
+                var dependencyObjectsToPrepare = new HashSet<IObject>(this.addedDerivables);
+                dependencyObjectsToPrepare.ExceptWith(preparedObjects);
+
+                this.addedDerivables = new HashSet<IObject>();
+
+                foreach (var o in dependencyObjectsToPrepare)
+                {
+                    var dependencyObject = (Object)o;
+
+                    this.OnPreFinalizing(dependencyObject);
+
+                    dependencyObject.OnPreFinalize(x => x.WithDerivation(this));
+
+                    this.OnPreFinalized(dependencyObject);
+
+                    preparedObjects.Add(dependencyObject);
+                }
+            }
+            
+            if (this.derivationGraph.Count != 0)
+            {
+                var postFinalizeObjects = new List<Object>();
+
+                // Finalize
+                this.derivationGraph.Finalize(postFinalizeObjects);
+
+                // PostFinalize
+                foreach (var derivable in postFinalizeObjects)
+                {
+                    if (!derivable.Strategy.IsDeleted)
+                    {
+                        this.OnPostFinalizing(derivable);
+                        derivable.OnPostFinalize(x => x.WithDerivation(this));
+                        this.OnPostFinalized(derivable);
+                    }
+                }
+            }
+
+
+            this.derivationGraph = null;
         }
-
-        protected abstract DerivationGraphBase CreateDerivationGraph(DerivationBase derivation);
-
-        protected abstract void OnAddedDerivable(Object derivable);
-
-        protected abstract void OnAddedDependency(Object dependent, Object dependee);
-
-        protected abstract void OnStartedGeneration(int generation);
-
-        protected abstract void OnStartedPreparation(int preparationRun);
-
-        protected abstract void OnPreDeriving(Object derivable);
-
-        protected abstract void OnPreDerived(Object derivable);
-
-        protected abstract void OnPostDeriving(Object derivable);
-
-        protected abstract void OnPostDerived(Object derivable);
-
-        protected abstract void OnCycleDetected(Object derivable);
-
-        protected abstract void OnCycleDetected(Object dependent, Object dependee);
     }
 }

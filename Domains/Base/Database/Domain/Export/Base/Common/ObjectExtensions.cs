@@ -37,12 +37,21 @@ namespace Allors.Domain
             {
                 if (!derivation.DerivedObjects.Contains(@this))
                 {
-                    derivation.AddDerivable(@this);
+                    derivation.Add(@this);
                 }
             }
         }
 
-        public static void BaseOnPostDerive(this Object @this, ObjectOnPostDerive method)
+        public static void BaseOnPreFinalize(this Object @this, ObjectOnPreFinalize method)
+        {
+            var derivation = method.Derivation;
+            if (derivation.IsModified(@this))
+            {
+                derivation.Add(@this);
+            }
+        }
+
+        public static void BaseOnPostFinalize(this Object @this, ObjectOnPostFinalize method)
         {
             var derivation = method.Derivation;
             var @class = (Class)@this.Strategy.Class;

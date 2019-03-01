@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DerivationGraph.cs" company="Allors bvba">
+// <copyright file="DerivationGraphBase.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -45,7 +45,16 @@ namespace Allors.Domain
                 derivationNode.TopologicalDerive(this.derivation, derivedObjects);
             }
         }
-        
+
+        public void Finalize(List<Object> derivedObjects)
+        {
+            foreach (var dictionaryEntry in this.DerivationNodeByDerivable)
+            {
+                var derivationNode = dictionaryEntry.Value;
+                derivationNode.TopologicalFinalize(this.derivation, derivedObjects);
+            }
+        }
+
         public DerivationNodeBase Add(Object derivable)
         {
             if (!this.DerivationNodeByDerivable.TryGetValue(derivable, out var derivationNode))

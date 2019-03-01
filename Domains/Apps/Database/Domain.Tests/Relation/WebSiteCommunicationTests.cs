@@ -23,13 +23,15 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
     public class WebSiteCommunicationTests : DomainTest
     {
         [Fact]
         public void GivenWebSiteCommunication_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var person = new PersonBuilder(this.Session).WithLastName("person").Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             var builder = new WebSiteCommunicationBuilder(this.Session).WithFromParty(person).WithToParty(person);
             var communication = builder.Build();

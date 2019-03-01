@@ -41,7 +41,7 @@ namespace Allors.Domain
             {
                 foreach (Good product in new Goods(this.Strategy.Session).Extent())
                 {
-                    derivation.AddDerivable(product);
+                    derivation.Add(product);
                 }
             }
         }

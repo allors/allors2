@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DerivationNode.cs" company="Allors bvba">
+// <copyright file="DerivationNodeBase.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -41,6 +41,11 @@ namespace Allors.Domain
             this.TopologicalDerive(derivation, this, derivedObjects);
         }
 
+        public void TopologicalFinalize(DerivationBase derivation, List<Object> derivedObjects)
+        {
+            this.TopologicalFinalize(derivation, this, derivedObjects);
+        }
+        
         public void AddDependency(DerivationNodeBase derivationNode)
         {
             if (this.dependencies == null)
@@ -111,8 +116,50 @@ namespace Allors.Domain
             this.currentRoot = null;
         }
 
+        private void TopologicalFinalize(DerivationBase derivation, DerivationNodeBase root, List<Object> derivedObjects)
+        {
+            if (this.visited)
+            {
+                if (root.Equals(this.currentRoot))
+                {
+                    this.OnCycle(root.derivable, this.derivable);
+                    throw new Exception("This derivation has a cycle. (" + this.currentRoot + " -> " + this + ")");
+                }
+
+                return;
+            }
+
+            this.visited = true;
+            this.currentRoot = root;
+
+            if (this.dependencies != null)
+            {
+                foreach (var dependency in this.dependencies)
+                {
+                    dependency.TopologicalFinalize(derivation, root, derivedObjects);
+                }
+            }
+
+            if (!this.derivable.Strategy.IsDeleted)
+            {
+                this.OnFinalizing(this.derivable);
+                this.derivable.OnFinalize(x => x.WithDerivation(derivation));
+                this.OnFinalized(this.derivable);
+
+                derivedObjects.Add(this.derivable);
+            }
+
+            derivation.AddDerivedObject(this.derivable);
+
+            this.currentRoot = null;
+        }
+
         protected abstract void OnDeriving(Object derivable);
 
         protected abstract void OnDerived(Object derivable);
+
+        protected abstract void OnFinalizing(Object derivable);
+
+        protected abstract void OnFinalized(Object derivable);
     }
 }

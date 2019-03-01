@@ -157,7 +157,7 @@ namespace Allors.Domain
             foreach (SalesOrder salesOrder in this.SalesOrders)
             {
                 derivation.AddDependency(salesOrder, this);
-                derivation.MarkAsModified(salesOrder, M.SalesInvoice.SalesOrders);
+                derivation.Mark(salesOrder, M.SalesInvoice.SalesOrders);
             }
         }
 

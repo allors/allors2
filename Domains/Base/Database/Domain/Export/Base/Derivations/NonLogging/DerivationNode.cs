@@ -38,5 +38,13 @@ namespace Allors.Domain.NonLogging
         protected override void OnDerived(Object derivable)
         {
         }
+
+        protected override void OnFinalizing(Object derivable)
+        {
+        }
+
+        protected override void OnFinalized(Object derivable)
+        {
+        }
     }
 }

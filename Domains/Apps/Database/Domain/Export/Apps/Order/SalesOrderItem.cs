@@ -70,12 +70,12 @@ namespace Allors.Domain
             if (derivation.IsModified(this))
             {
                 var salesOrder = this.SalesOrderWhereSalesOrderItem;
-                derivation.MarkAsModified(salesOrder);
+                derivation.Mark(salesOrder);
                 derivation.AddDependency(salesOrder, this);
 
                 foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
                 {
-                    derivation.MarkAsModified(featureItem);
+                    derivation.Mark(featureItem);
                     derivation.AddDependency(this, featureItem);
                 }
 
@@ -84,7 +84,7 @@ namespace Allors.Domain
                     var orderShipments = this.OrderShipmentsWhereOrderItem;
                     foreach (OrderShipment orderShipment in orderShipments)
                     {
-                        derivation.MarkAsModified(orderShipment);
+                        derivation.Mark(orderShipment);
                         derivation.AddDependency(orderShipment, this);
                     }
                 }

@@ -79,6 +79,26 @@ namespace Allors.Domain.Logging
             this.DerivationLog.PostDerived(derivable);
         }
 
+        protected override void OnPreFinalizing(Object derivable)
+        {
+            this.DerivationLog.PreFinalizing(derivable);
+        }
+
+        protected override void OnPreFinalized(Object derivable)
+        {
+            this.DerivationLog.PreFinalized(derivable);
+        }
+
+        protected override void OnPostFinalizing(Object derivable)
+        {
+            this.DerivationLog.PostFinalizing(derivable);
+        }
+
+        protected override void OnPostFinalized(Object derivable)
+        {
+            this.DerivationLog.PostFinalized(derivable);
+        }
+
         protected override void OnCycleDetected(Object derivable)
         {
             this.DerivationLog.CycleDetected(derivable);

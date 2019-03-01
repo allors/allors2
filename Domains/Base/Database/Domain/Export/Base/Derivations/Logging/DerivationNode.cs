@@ -44,5 +44,15 @@ namespace Allors.Domain.Logging
         {
             this.derivationLog.Derived(derivable);
         }
+
+        protected override void OnFinalizing(Object derivable)
+        {
+            this.derivationLog.Finalizing(derivable);
+        }
+
+        protected override void OnFinalized(Object derivable)
+        {
+            this.derivationLog.Finalized(derivable);
+        }
     }
 }

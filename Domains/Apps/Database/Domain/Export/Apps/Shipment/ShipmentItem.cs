@@ -40,7 +40,7 @@ namespace Allors.Domain
             var orderShipments = this.OrderShipmentsWhereShipmentItem;
             foreach (OrderShipment orderShipment in orderShipments)
             {
-                derivation.MarkAsModified(orderShipment);
+                derivation.Mark(orderShipment);
                 derivation.AddDependency(this, orderShipment);
             }
         }

@@ -33,7 +33,7 @@ namespace Allors.Domain
 
             if (this.ExistBankAccount && derivation.ChangeSet.GetRoleTypes(this.Id).Contains(this.Meta.BankAccount))
             {
-                derivation.AddDerivable(this.BankAccount);
+                derivation.Add(this.BankAccount);
             }
         }
 

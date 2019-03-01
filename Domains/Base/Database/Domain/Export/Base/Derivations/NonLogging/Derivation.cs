@@ -68,6 +68,22 @@ namespace Allors.Domain.NonLogging
         {
         }
 
+        protected override void OnPreFinalizing(Object derivable)
+        {
+        }
+
+        protected override void OnPreFinalized(Object derivable)
+        {
+        }
+
+        protected override void OnPostFinalizing(Object derivable)
+        {
+        }
+
+        protected override void OnPostFinalized(Object derivable)
+        {
+        }
+
         protected override void OnCycleDetected(Object derivable)
         {
         }

@@ -31,7 +31,7 @@ namespace Allors.Domain
             foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
             {
                 derivation.AddDependency(itemIssuance, this);
-                derivation.MarkAsModified(itemIssuance, M.ItemIssuance.PickListItem);
+                derivation.Mark(itemIssuance, M.ItemIssuance.PickListItem);
             }
         }
 

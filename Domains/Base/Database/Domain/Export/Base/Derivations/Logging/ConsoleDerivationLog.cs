@@ -111,5 +111,41 @@ namespace Allors.Domain.Logging
             var message = DerivationLogFormatter.FormatCycleDetected(dependent, dependee);
             Console.WriteLine(message);
         }
+
+        public void PreFinalizing(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatPreFinalizing(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void PreFinalized(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatPreFinalized(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void Finalizing(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatFinalizing(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void Finalized(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatFinalized(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void PostFinalizing(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatPostFinalizing(derivable);
+            Console.WriteLine(message);
+        }
+
+        public void PostFinalized(Object derivable)
+        {
+            var message = DerivationLogFormatter.FormatPostFinalized(derivable);
+            Console.WriteLine(message);
+        }
     }
 }

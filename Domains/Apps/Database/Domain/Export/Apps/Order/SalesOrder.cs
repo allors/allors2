@@ -146,15 +146,15 @@ namespace Allors.Domain
 
             if (derivation.IsModified(this))
             {
-                derivation.MarkAsModified(this.BillToCustomer, M.SalesOrder.BillToCustomer);
+                derivation.Mark(this.BillToCustomer, M.SalesOrder.BillToCustomer);
                 derivation.AddDependency(this.BillToCustomer, this);
 
-                derivation.MarkAsModified(this.ShipToCustomer, M.SalesOrder.ShipToCustomer);
+                derivation.Mark(this.ShipToCustomer, M.SalesOrder.ShipToCustomer);
                 derivation.AddDependency(this.ShipToCustomer, this);
 
                 foreach (SalesOrderItem orderItem in this.SalesOrderItems)
                 {
-                    derivation.MarkAsModified(orderItem);
+                    derivation.Mark(orderItem);
                     derivation.AddDependency(this, orderItem);
                 }
             }

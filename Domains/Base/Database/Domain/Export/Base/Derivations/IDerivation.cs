@@ -49,15 +49,15 @@ namespace Allors.Domain
 
         IValidation Derive();
 
-        void AddDerivable(Object derivable);
+        void Add(Object derivable);
 
-        void AddDerivables(IEnumerable<Object> derivables);
+        void Add(IEnumerable<Object> derivables);
 
         /// <summary>
-        /// The dependee is derived before the dependent object;
+        /// The dependee is derived before the dependent object
         /// </summary>
-        /// <param name="dependent"></param>
-        /// <param name="dependee"></param>
+        /// <param name="dependent">The dependent object</param>
+        /// <param name="dependee">The dependee object</param>
         void AddDependency(Object dependent, Object dependee);
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Allors.Domain
 
         bool IsCreated(Object derivable);
 
-        bool IsMarkedAsModified(Object derivable);
+        bool IsMarked(Object derivable);
 
         bool HasChangedRole(Object derivable, RoleType roleType);
 
@@ -89,13 +89,12 @@ namespace Allors.Domain
 
         bool HasChangedRoles(Object derivable, RelationKind relationKind);
 
-        void MarkAsModified(Object derivable, RelationType relationType = null);
+        void Mark(Object derivable, RelationType relationType = null);
 
-        void MarkAsModified(Object derivable, RoleType roleType);
+        void Mark(Object derivable, RoleType roleType);
 
-        void MarkAsModified(IEnumerable<Object> derivables);
+        void Mark(IEnumerable<Object> derivables);
 
-        ISet<RelationType> MarkedAsModifiedBy(Object markedAsModified);
-
+        ISet<RelationType> MarkedBy(Object markedAsModified);
     }
 }

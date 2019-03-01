@@ -25,10 +25,10 @@ namespace Allors.Domain
 
             if (derivation.IsModified(this))
             {
-                derivation.MarkAsModified(this.OrderItem);
+                derivation.Mark(this.OrderItem);
                 derivation.AddDependency(this, this.OrderItem);
 
-                derivation.MarkAsModified(this.ShipmentItem);
+                derivation.Mark(this.ShipmentItem);
                 derivation.AddDependency(this.ShipmentItem, this);
             }
         }

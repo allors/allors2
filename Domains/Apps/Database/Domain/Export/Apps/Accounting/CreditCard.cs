@@ -25,7 +25,7 @@ namespace Allors.Domain
             {
                 foreach (Object ownCreditCard in this.OwnCreditCardsWhereCreditCard)
                 {
-                    derivation.AddDerivable(ownCreditCard);                    
+                    derivation.Add(ownCreditCard);                    
                 }
             }
         }
