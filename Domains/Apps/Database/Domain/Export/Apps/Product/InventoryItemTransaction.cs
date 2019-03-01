@@ -65,6 +65,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            derivation.AddDependency(this.InventoryItem, this);
+        }
+
+        public void AppsOnInit(ObjectOnInit method)
+        {
             // Match on required properties
             bool matched = false;
             var matchingItems = this.Part.InventoryItemsWherePart.ToArray();
@@ -145,8 +150,6 @@ namespace Allors.Domain
                     nonSerialItem.NonSerialisedInventoryItemState = this.NonSerialisedInventoryItemState;
                 }
             }
-
-            derivation.AddDependency(this.InventoryItem, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
