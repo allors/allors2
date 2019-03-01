@@ -128,16 +128,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         SurchargeAdjustment SurchargeAdjustment { get; set; }
-        
-        #region Allors
-        [Id("575DE1FE-F1DF-40B2-9195-CA25BAFB8972")]
-        [AssociationId("E1DF2BE6-361C-49C5-97FF-476DB1AEC143")]
-        [RoleId("9B52DC88-0660-4AC8-9FF4-8E02ECB157D7")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        PriceComponent[] LocalPriceComponents { get; set; }
 
         #region Allors
         [Id("d0b1e607-07dc-43e2-a003-89559c87a441")]
