@@ -52,7 +52,7 @@
 
         public void OnInit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnPreDerive()
@@ -65,6 +65,21 @@
 
         public void OnPostDerive()
         {
+        }
+
+        public void OnPreFinalize()
+        {
+            
+        }
+
+        public void OnFinalize()
+        {
+            
+        }
+
+        public void OnPostFinalize()
+        {
+            
         }
 
         #endregion

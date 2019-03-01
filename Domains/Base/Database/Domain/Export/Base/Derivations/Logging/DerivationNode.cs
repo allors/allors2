@@ -44,15 +44,5 @@ namespace Allors.Domain.Logging
         {
             this.derivationLog.Derived(derivable);
         }
-
-        protected override void OnPostDeriving(Object derivable)
-        {
-            this.derivationLog.PostDeriving(derivable);
-        }
-
-        protected override void OnPostDerived(Object derivable)
-        {
-            this.derivationLog.PostDerived(derivable);
-        }
     }
 }

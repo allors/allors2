@@ -95,7 +95,7 @@ namespace Allors.Domain
         public void AssertIsUnique(IObject association, RoleType roleType)
         {
             ISet<IRoleType> roleTypes;
-            if (this.Derivation.ChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out roleTypes))
+            if (this.Derivation.DerivationChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out roleTypes))
             {
                 if (roleTypes.Contains(roleType))
                 {
@@ -105,7 +105,7 @@ namespace Allors.Domain
                     if (role != null)
                     {
                         var session = association.Strategy.Session;
-                        var extent = association.Strategy.Session.Extent(objectType);
+                        var extent = session.Extent(objectType);
                         extent.Filter.AddEquals(roleType, role);
                         if (extent.Count != 1)
                         {

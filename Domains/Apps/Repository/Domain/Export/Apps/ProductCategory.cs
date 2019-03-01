@@ -190,6 +190,17 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+
+        public void OnPreFinalize(){} public void OnFinalize()
+        {
+            
+        }
+
+        public void OnPostFinalize()
+        {
+            
+        }
+
         public void Delete() { }
         #endregion
     }

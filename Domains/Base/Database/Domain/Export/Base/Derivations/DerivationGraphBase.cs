@@ -18,6 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable StyleCop.SA1121
 namespace Allors.Domain
 {
     using System.Collections.Generic;
@@ -36,19 +37,18 @@ namespace Allors.Domain
 
         public int Count => this.DerivationNodeByDerivable.Count;
 
-        public void Derive()
+        public void Derive(List<Object> derivedObjects)
         {
             foreach (var dictionaryEntry in this.DerivationNodeByDerivable)
             {
                 var derivationNode = dictionaryEntry.Value;
-                derivationNode.TopologicalDerive(this.derivation);
+                derivationNode.TopologicalDerive(this.derivation, derivedObjects);
             }
         }
-
+        
         public DerivationNodeBase Add(Object derivable)
         {
-            DerivationNodeBase derivationNode;
-            if (!this.DerivationNodeByDerivable.TryGetValue(derivable, out derivationNode))
+            if (!this.DerivationNodeByDerivable.TryGetValue(derivable, out var derivationNode))
             {
                 derivationNode = this.CreateDerivationNode(derivable);
                 this.DerivationNodeByDerivable.Add(derivable, derivationNode);
@@ -60,8 +60,8 @@ namespace Allors.Domain
         public void AddDependency(Object dependent, Object dependee)
         {
             var dependentNode = this.Add(dependent);
-            var dependeeeNode = this.Add(dependee);
-            dependentNode.AddDependency(dependeeeNode);
+            var dependeeNode = this.Add(dependee);
+            dependentNode.AddDependency(dependeeNode);
         }
 
         protected abstract DerivationNodeBase CreateDerivationNode(Object derivable);

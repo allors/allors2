@@ -47,6 +47,15 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
 
+        public void OnPreFinalize(){} public void OnFinalize()
+        {
+            
+        }
+
+        public void OnPostFinalize()
+        {
+            
+        }
 
         #endregion
 

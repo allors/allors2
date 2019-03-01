@@ -69,6 +69,16 @@ namespace Allors.Domain.Logging
             this.DerivationLog.PreDerived(derivable);
         }
 
+        protected override void OnPostDeriving(Object derivable)
+        {
+            this.DerivationLog.PostDeriving(derivable);
+        }
+
+        protected override void OnPostDerived(Object derivable)
+        {
+            this.DerivationLog.PostDerived(derivable);
+        }
+
         protected override void OnCycleDetected(Object derivable)
         {
             this.DerivationLog.CycleDetected(derivable);

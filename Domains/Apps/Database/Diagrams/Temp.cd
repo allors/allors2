@@ -1,4 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.OrderItem" Collapsed="true">
+    <Position X="1" Y="7.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Priceable">
+    <Position X="1.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>YAAAAAAAAQAAABAAAAAAAFAQIAIQEACAAgAAoAUAEAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PriceComponent" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQCAQAAIQAgAAABABAABAAACKAAAAAAAAAgAAAAEAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem" Collapsed="true">
+    <Position X="1" Y="8.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>gARGAAkAIAABACIAQEgAAIAKAMApAApAAACAACAEoAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

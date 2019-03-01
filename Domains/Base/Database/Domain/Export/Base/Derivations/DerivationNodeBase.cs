@@ -36,9 +36,9 @@ namespace Allors.Domain
             this.derivable = derivable;
         }
 
-        public void TopologicalDerive(DerivationBase derivation)
+        public void TopologicalDerive(DerivationBase derivation, List<Object> derivedObjects)
         {
-            this.TopologicalDerive(derivation, this);
+            this.TopologicalDerive(derivation, this, derivedObjects);
         }
 
         public void AddDependency(DerivationNodeBase derivationNode)
@@ -73,7 +73,7 @@ namespace Allors.Domain
 
         protected abstract void OnCycle(Object root, Object derivable);
 
-        private void TopologicalDerive(DerivationBase derivation, DerivationNodeBase root)
+        private void TopologicalDerive(DerivationBase derivation, DerivationNodeBase root, List<Object> derivedObjects)
         {
             if (this.visited)
             {
@@ -93,19 +93,17 @@ namespace Allors.Domain
             {
                 foreach (var dependency in this.dependencies)
                 {
-                    dependency.TopologicalDerive(derivation, root);
+                    dependency.TopologicalDerive(derivation, root, derivedObjects);
                 }
             }
 
             if (!this.derivable.Strategy.IsDeleted)
             {
-                this.OnDeriving(this.derivable);
+                 this.OnDeriving(this.derivable);
                 this.derivable.OnDerive(x => x.WithDerivation(derivation));
                 this.OnDerived(this.derivable);
 
-                this.OnPostDeriving(this.derivable);
-                this.derivable.OnPostDerive(x => x.WithDerivation(derivation));
-                this.OnPostDerived(this.derivable);
+                derivedObjects.Add(this.derivable);
             }
 
             derivation.AddDerivedObject(this.derivable);
@@ -116,9 +114,5 @@ namespace Allors.Domain
         protected abstract void OnDeriving(Object derivable);
 
         protected abstract void OnDerived(Object derivable);
-
-        protected abstract void OnPostDeriving(Object derivable);
-
-        protected abstract void OnPostDerived(Object derivable);
     }
 }

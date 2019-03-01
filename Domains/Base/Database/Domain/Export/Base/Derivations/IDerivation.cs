@@ -18,6 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable StyleCop.SA1121
 namespace Allors.Domain
 {
     using System;
@@ -37,6 +38,8 @@ namespace Allors.Domain
         IValidation Validation { get; }
 
         IChangeSet ChangeSet { get; }
+
+        IChangeSet DerivationChangeSet { get; }
 
         int Generation { get; }
 

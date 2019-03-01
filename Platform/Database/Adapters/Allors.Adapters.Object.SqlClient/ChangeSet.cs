@@ -61,17 +61,7 @@ namespace Allors.Adapters.Object.SqlClient
         public IDictionary<long, ISet<IRoleType>> RoleTypesByAssociation => this.roleTypesByAssociation;
 
         public IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole => this.associationTypesByRole;
-
-        public ISet<IRoleType> GetRoleTypes(long association)
-        {
-            return this.RoleTypesByAssociation.TryGetValue(association, out var roleTypes) ? roleTypes : EmptyRoleTypeSet;
-        }
-
-        public ISet<IAssociationType> GetAssociationTypes(long role)
-        {
-            return this.AssociationTypesByRole.TryGetValue(role, out var associationTypes) ? associationTypes : EmptyAssociationTypeSet;
-        }
-
+        
         internal void OnCreated(long objectId)
         {
             this.created.Add(objectId);

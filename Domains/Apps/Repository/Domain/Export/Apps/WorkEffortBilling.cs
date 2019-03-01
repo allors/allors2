@@ -48,7 +48,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnPreDerive(){}
@@ -56,6 +56,17 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+
+        public void OnPreFinalize(){} public void OnFinalize()
+        {
+            
+        }
+
+        public void OnPostFinalize()
+        {
+            
+        }
+
         #endregion
     }
 }

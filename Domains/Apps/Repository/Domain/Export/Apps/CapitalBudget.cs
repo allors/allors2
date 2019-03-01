@@ -94,6 +94,16 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void OnPreFinalize(){} public void OnFinalize()
+        {
+            
+        }
+
+        public void OnPostFinalize()
+        {
+            
+        }
+
         public string Description { get; set; }
 
         public void Close() { }

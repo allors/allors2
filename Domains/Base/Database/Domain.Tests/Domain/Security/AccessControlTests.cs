@@ -30,7 +30,6 @@ namespace Tests
 
     using Xunit;
 
-    
     public class AccessControlTests : DomainTest
     {
         [Fact]

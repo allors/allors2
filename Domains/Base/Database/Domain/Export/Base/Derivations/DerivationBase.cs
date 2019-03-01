@@ -24,6 +24,7 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     using Allors;
     using Allors.Meta;
@@ -33,15 +34,17 @@ namespace Allors.Domain
     {
         private readonly Dictionary<long, ISet<RelationType>> relationsByMarkedAsModified;
         private readonly HashSet<Object> derivedObjects;
-        
+        private readonly DerivationChangeSet derivationChangeSet;
+
         private Dictionary<string, object> properties;
 
         private IValidation validation;
 
         private int generation;
+
         private DerivationGraphBase derivationGraph;
         private HashSet<IObject> addedDerivables;
-
+        
         protected DerivationBase(ISession session, DerivationConfig config)
         {
             this.Config = config ?? new DerivationConfig();
@@ -54,7 +57,10 @@ namespace Allors.Domain
             this.relationsByMarkedAsModified = new Dictionary<long, ISet<RelationType>>();
             this.derivedObjects = new HashSet<Object>();
 
+            this.derivationChangeSet = new DerivationChangeSet();
+
             this.ChangeSet = session.Checkpoint();
+            this.derivationChangeSet.Add(this.ChangeSet);
 
             this.generation = 0;
         }
@@ -75,6 +81,8 @@ namespace Allors.Domain
         }
 
         public IChangeSet ChangeSet { get; private set; }
+
+        public IChangeSet DerivationChangeSet => this.derivationChangeSet;
 
         public ISet<Object> DerivedObjects => this.derivedObjects;
 
@@ -172,7 +180,7 @@ namespace Allors.Domain
                 case RelationKind.Synced:
                     check = (roleType) => roleType.RelationType.IsSynced;
                     break;
-                
+
                 default:
                     check = (roleType) => true;
                     break;
@@ -209,7 +217,7 @@ namespace Allors.Domain
 
             return false;
         }
-        
+
         public bool IsMarkedAsModified(Object derivable)
         {
             return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
@@ -322,12 +330,6 @@ namespace Allors.Domain
                 throw new Exception("Derive can only be called once. Create a new Derivation object.");
             }
 
-            var newObjects = this.Session.Instantiate(this.ChangeSet.Created);
-            foreach (var newObject in newObjects)
-            {
-                ((Object)newObject).OnInit();
-            }
-
             var changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
             changedObjectIds.UnionWith(this.ChangeSet.Roles);
             changedObjectIds.UnionWith(this.ChangeSet.Created);
@@ -336,8 +338,16 @@ namespace Allors.Domain
             var preparedObjects = new HashSet<IObject>();
             var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
 
+            var postDeriveObjects = new List<Object>();
+
             while (changedObjects.Count > 0)
             {
+                var newObjects = this.Session.Instantiate(this.ChangeSet.Created);
+                foreach (var newObject in newObjects)
+                {
+                    ((Object)newObject).OnInit();
+                }
+
                 this.generation++;
 
                 this.OnStartedGeneration(this.generation);
@@ -392,9 +402,17 @@ namespace Allors.Domain
                     break;
                 }
 
-                this.derivationGraph.Derive();
+                // Derive
+                var generationPostDeriveObjects = new List<Object>();
+
+                this.derivationGraph.Derive(generationPostDeriveObjects);
+
+                // Keep derivation order within a generation,
+                // but post derive generations backwards
+                postDeriveObjects.InsertRange(0, generationPostDeriveObjects);
 
                 this.ChangeSet = this.Session.Checkpoint();
+                this.derivationChangeSet.Add(this.ChangeSet);
 
                 changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
                 changedObjectIds.UnionWith(this.ChangeSet.Roles);
@@ -403,8 +421,36 @@ namespace Allors.Domain
                 changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
                 changedObjects.ExceptWith(this.derivedObjects);
 
+                // PostDerive
+                if (changedObjects.Count == 0)
+                {
+                    foreach (var derivable in postDeriveObjects)
+                    {
+                        if (!derivable.Strategy.IsDeleted)
+                        {
+                            this.OnPostDeriving(derivable);
+                            derivable.OnPostDerive(x => x.WithDerivation(this));
+                            this.OnPostDerived(derivable);
+                        }
+                    }
+
+                    postDeriveObjects = new List<Object>();
+
+                    this.ChangeSet = this.Session.Checkpoint();
+                    this.derivationChangeSet.Add(this.ChangeSet);
+
+                    changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
+                    changedObjectIds.UnionWith(this.ChangeSet.Roles);
+                    changedObjectIds.UnionWith(this.ChangeSet.Created);
+
+                    changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
+                    changedObjects.ExceptWith(this.derivedObjects);
+                }
+
                 this.derivationGraph = null;
             }
+            
+
 
             return this.validation;
         }
@@ -427,6 +473,10 @@ namespace Allors.Domain
         protected abstract void OnPreDeriving(Object derivable);
 
         protected abstract void OnPreDerived(Object derivable);
+
+        protected abstract void OnPostDeriving(Object derivable);
+
+        protected abstract void OnPostDerived(Object derivable);
 
         protected abstract void OnCycleDetected(Object derivable);
 
