@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -94,13 +96,9 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(part)
-                .Build();
-
             this.Session.Derive();
 
-            Assert.Equal(part.Name, item.Name);
+            Assert.Equal("Part 1 at facility with state Good", part.InventoryItemsWherePart.Single().Name);
         }
 
         [Fact]
@@ -115,13 +113,9 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(uom)
                 .Build();
 
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(part)
-                .Build();
-
             this.Session.Derive();
 
-            Assert.Equal(part.UnitOfMeasure, item.UnitOfMeasure);
+            Assert.Equal(part.UnitOfMeasure, part.InventoryItemsWherePart.Single().UnitOfMeasure);
         }
 
         [Fact]

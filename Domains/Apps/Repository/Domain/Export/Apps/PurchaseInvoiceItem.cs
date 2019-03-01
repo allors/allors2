@@ -45,8 +45,6 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
-        public PriceComponent[] LocalPriceComponents { get; set; }
-
         public decimal TotalDiscountAsPercentage { get; set; }
 
         public DiscountAdjustment DiscountAdjustment { get; set; }

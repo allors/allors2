@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -660,9 +662,9 @@ namespace Allors.Domain
             Assert.Equal(0, item.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             var previous = item.ReservedFromNonSerialisedInventoryItem;
-            var current = new NonSerialisedInventoryItemBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).Build();
 
-            item.ReservedFromNonSerialisedInventoryItem = current;
+            var transaction = new InventoryItemTransactionBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
+            var current = transaction.InventoryItem as NonSerialisedInventoryItem;
 
             this.Session.Derive();
 
