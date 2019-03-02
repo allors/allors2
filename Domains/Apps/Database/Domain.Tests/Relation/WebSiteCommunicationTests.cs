@@ -36,14 +36,18 @@ namespace Allors.Domain
             var builder = new WebSiteCommunicationBuilder(this.Session).WithFromParty(person).WithToParty(person);
             var communication = builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            var validation = this.Session.Derive(false);
+
+            Assert.True(validation.HasErrors);
+            
+            this.Session.Rollback();
 
             builder.WithSubject("Website communication");
             communication = builder.Build();
 
-            this.Session.Derive();
+            validation = this.Session.Derive(false);
 
-            Assert.False(this.Session.Derive(false).HasErrors);
+            Assert.False(validation.HasErrors);
 
             Assert.Equal(communication.CommunicationEventState, new CommunicationEventStates(this.Session).Scheduled);
             Assert.Equal(communication.CommunicationEventState, communication.LastCommunicationEventState);
