@@ -40,7 +40,7 @@ namespace Tests
             Assert.Equal(0, first.DerivationCount);
 
             var derivation = new Derivation(this.Session);
-            derivation.MarkAsModified(first);
+            derivation.Mark(first);
             derivation.Derive();
 
             Assert.Equal(1, first.DerivationCount);
