@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, organisation.CurrentSalesReps.Count);
+            Assert.Single(organisation.CurrentSalesReps);
             Assert.Contains(salesRep1, organisation.CurrentSalesReps);
 
             new SalesRepRelationshipBuilder(this.Session)
@@ -67,7 +67,7 @@ namespace Allors.Domain
             
             this.Session.Derive();
 
-            Assert.Equal(1, organisation.CurrentSalesReps.Count);
+            Assert.Single(organisation.CurrentSalesReps);
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
 
             new SalesRepRelationshipBuilder(this.Session)

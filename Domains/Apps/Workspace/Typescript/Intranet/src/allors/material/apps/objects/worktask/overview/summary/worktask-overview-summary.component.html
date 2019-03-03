@@ -42,4 +42,13 @@
     </div>
 
   </mat-card-content>
+
+  <mat-card-actions>
+    <button *ngIf="workTask.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
+    <button *ngIf="workTask.CanExecuteReopen" mat-button (click)="reopen()">Reopen</button>
+    <button *ngIf="workTask.CanExecuteComplete" mat-button (click)="complete()">Complete</button>
+    <button *ngIf="workTask.CanExecuteInvoice" mat-button (click)="invoice()">Invoice</button>
+    <button mat-button type="button" (click)="print.execute(workTask)">Print</button>
+  </mat-card-actions>
+
 </mat-card>

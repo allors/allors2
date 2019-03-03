@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -100,27 +102,15 @@ namespace Allors.Domain
             order.Confirm();
 
             this.Session.Derive();
-            this.Session.Commit();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(part).Build();
-            shipment.AddShipmentItem(shipmentItem);
-
-            var receipt = new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(1M)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item1)
-                .Build();
-
-            shipment.AppsComplete();
+            order.QuickReceive();
 
             this.Session.Derive();
-            this.Session.Commit();
+
+            var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
 
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
             Assert.Equal(part.InventoryItemsWherePart[0], receipt.InventoryItem);
-
-            this.Session.Rollback();
         }
 
         [Fact]
@@ -141,20 +131,13 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
-            shipment.AddShipmentItem(shipmentItem);
+            this.Session.Derive();
 
-            var receipt = new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(1M)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item1)
-                .Build();
+            order.QuickReceive();
 
             this.Session.Derive();
-            this.Session.Commit();
 
-            shipment.AppsComplete();
+            var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
 
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
             Assert.Equal(good1.Part.InventoryItemsWherePart[0], receipt.InventoryItem);
@@ -224,20 +207,7 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
-            shipment.AddShipmentItem(shipmentItem);
-
-            new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(10)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item1)
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            shipment.AppsComplete();
+            order.QuickReceive();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -267,20 +237,11 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
-            shipment.AddShipmentItem(shipmentItem);
+            this.Session.Derive();
 
-            new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(10)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item1)
-                .Build();
-
-            shipment.AppsComplete();
+            order.QuickReceive();
 
             this.Session.Derive();
-            this.Session.Commit();
 
             Assert.Equal(10, item1.QuantityReceived);
 

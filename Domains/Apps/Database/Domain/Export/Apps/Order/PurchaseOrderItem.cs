@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -116,20 +119,8 @@ namespace Allors.Domain
         
         public void AppsDeriveVatRegime(IDerivation derivation)
         {
-            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
-            {
-                this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
-
-                this.AppsDeriveVatRate(derivation);
-            }
-        }
-
-        public void AppsDeriveVatRate(IDerivation derivation)
-        {
-            if (!this.ExistVatRate && this.ExistVatRegime && this.VatRegime.ExistVatRate)
-            {
-                this.VatRate = this.VatRegime.VatRate;
-            }
+            this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
+            this.VatRate = this.VatRegime?.VatRate;
         }
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
@@ -219,12 +210,12 @@ namespace Allors.Domain
                 this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
             }
 
-            this.UnitVat = 0;
+            this.UnitVat = this.ExistVatRate ? Math.Round((this.UnitPrice * this.VatRate.Rate) / 100, 2) : 0;
             this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
             this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
             this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
             this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-            this.TotalVat = 0;
+            this.TotalVat = this.UnitVat * this.QuantityOrdered;
             this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
         }

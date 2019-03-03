@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship, Facility } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -47,6 +47,7 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private fetcher: Fetcher;
+  facilities: Facility[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -71,6 +72,10 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            pull.Facility({
+              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
+              sort: new Sort(m.Facility.Name)
+            }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
@@ -89,6 +94,7 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
+        this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];

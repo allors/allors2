@@ -393,7 +393,7 @@ namespace Allors.Domain
 
         //extent = preparedExtent.Execute(valueByParameter);
 
-        //Assert.Equal(1, extent.Count);
+        //Assert.Single(extent.Count);
         //Assert.Contains(damagedItem, extent);
 
         //valueByParameter.Clear();

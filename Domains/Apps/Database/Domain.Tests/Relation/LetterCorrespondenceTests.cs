@@ -86,7 +86,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<LetterCorrespondence>().Count);
+            Assert.Single(this.Session.Extent<LetterCorrespondence>());
 
             originator.Delete();
             this.Session.Derive();

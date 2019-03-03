@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
             
-            Assert.Equal(1, finishedGood.InventoryItemsWherePart.Count);
+            Assert.Single(finishedGood.InventoryItemsWherePart);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), finishedGood.InventoryItemsWherePart.First.Facility);
         }
     }

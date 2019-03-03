@@ -34,16 +34,16 @@ namespace Allors.Domain
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Single(new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
         //    Assert.Equal(0, this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
         //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Single(chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().First;
         //    Assert.Equal("Kapitaal", generalLedgerAccountGroup.Description);
@@ -81,16 +81,16 @@ namespace Allors.Domain
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Single(new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<ChartOfAccounts>().Count);
         //    Assert.Equal(3, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
         //    Assert.Equal(0, this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
         //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Single(chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroups = this.DatabaseSession.Extent<GeneralLedgerAccountGroup>();
         //    generalLedgerAccountGroups.Filter.AddEquals(GeneralLedgerAccountGroups.Meta.Description, "Verworpen uitgaven");
@@ -138,16 +138,16 @@ namespace Allors.Domain
 
         //    new ChartOfAccountsImport(this.DatabaseSession).ImportChartOfAccounts(filepath);
 
-        //    Assert.Equal(1, new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<ChartOfAccounts>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
-        //    Assert.Equal(1, this.DatabaseSession.Extent<CostCenter>().Count);
+        //    Assert.Single(new GeneralLedgerAccounts(this.DatabaseSession).Extent().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccount>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<ChartOfAccounts>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<GeneralLedgerAccountType>().Count);
+        //    Assert.Single(this.DatabaseSession.Extent<CostCenter>().Count);
 
         //    var chartOfAccounts = (ChartOfAccounts)this.DatabaseSession.Extent<ChartOfAccounts>().First;
         //    Assert.Equal("Minimum Algemeen Rekeningenstelsel", chartOfAccounts.Name);
-        //    Assert.Equal(1, chartOfAccounts.GeneralLedgerAccounts.Count);
+        //    Assert.Single(chartOfAccounts.GeneralLedgerAccounts.Count);
 
         //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)this.DatabaseSession.Extent<GeneralLedgerAccountGroup>().First;
         //    Assert.Equal("Kapitaal", generalLedgerAccountGroup.Description);

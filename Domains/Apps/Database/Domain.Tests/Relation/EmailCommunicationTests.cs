@@ -107,7 +107,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<EmailCommunication>().Count);
+            Assert.Single(this.Session.Extent<EmailCommunication>());
 
             originator.Delete();
             this.Session.Derive();

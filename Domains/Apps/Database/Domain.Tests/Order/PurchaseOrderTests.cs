@@ -201,7 +201,7 @@ namespace Allors.Domain
             Assert.Equal(new PurchaseOrderStates(this.Session).RequestsApproval, order.PurchaseOrderState);
             var acl = new AccessControlList(order, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.QuickReceive));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
         }

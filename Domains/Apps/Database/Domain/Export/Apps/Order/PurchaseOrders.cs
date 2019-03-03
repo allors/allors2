@@ -44,11 +44,12 @@ namespace Allors.Domain
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var confirm = this.Meta.Confirm;
+            var quickReceive = this.Meta.QuickReceive;
 
-            config.Deny(this.ObjectType, created, reject, approve, hold, @continue);
-            config.Deny(this.ObjectType, requestsApproval, confirm, reject, approve, @continue);
+            config.Deny(this.ObjectType, created, quickReceive, approve, @continue);
+            config.Deny(this.ObjectType, requestsApproval, confirm, approve, quickReceive, @continue);
             config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
-            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold);
+            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, quickReceive);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

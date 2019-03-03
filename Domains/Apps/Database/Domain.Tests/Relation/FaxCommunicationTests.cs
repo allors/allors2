@@ -86,7 +86,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<FaxCommunication>().Count);
+            Assert.Single(this.Session.Extent<FaxCommunication>());
 
             originator.Delete();
             this.Session.Derive();

@@ -137,20 +137,7 @@ namespace Allors.Domain
             Assert.Equal(0, inventoryItem.AvailableToPromise);
             Assert.Equal(20, inventoryItem.QuantityExpectedIn);
 
-            //Shipment receipt
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(part).Build();
-            shipment.AddShipmentItem(shipmentItem);
-
-            new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(20)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item1)
-                .Build();
-
-            this.Session.Derive();
-
-            shipment.AppsComplete();
+            order.QuickReceive();
 
             this.Session.Derive();
 

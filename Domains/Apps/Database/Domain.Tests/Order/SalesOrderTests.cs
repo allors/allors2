@@ -2370,11 +2370,11 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(mechelenAddress, shipmentToMechelen.ShipToAddress);
-            Assert.Equal(1, shipmentToMechelen.ShipmentItems.Count);
+            Assert.Single(shipmentToMechelen.ShipmentItems);
             Assert.Equal(3, shipmentToMechelen.ShipmentItems[0].Quantity);
 
             Assert.Equal(baalAddress, shipmentToBaal.ShipToAddress);
-            Assert.Equal(1, shipmentToBaal.ShipmentItems.Count);
+            Assert.Single(shipmentToBaal.ShipmentItems);
             Assert.Equal(good2, shipmentToBaal.ShipmentItems[0].Good);
             Assert.Equal(5, shipmentToBaal.ShipmentItems[0].Quantity);
         }
@@ -2398,7 +2398,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, order.Customers.Count);
+            Assert.Single(order.Customers);
             Assert.Equal(customer, order.Customers.First);
         }
 

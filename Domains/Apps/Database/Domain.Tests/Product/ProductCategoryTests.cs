@@ -220,7 +220,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory1, productCategory12.SuperJacent);
             Assert.Contains(productCategory2, productCategory12.SuperJacent);
 
-            Assert.Equal(1, productCategory13.SuperJacent.Count);
+            Assert.Single(productCategory13.SuperJacent);
             Assert.Contains(productCategory1, productCategory13.SuperJacent);
 
             Assert.Equal(4, productCategory111.SuperJacent.Count);
@@ -308,7 +308,7 @@ namespace Allors.Domain
             Assert.False(productCategory1.ExistSuperJacent);
             Assert.False(productCategory2.ExistSuperJacent);
 
-            Assert.Equal(1, productCategory11.SuperJacent.Count);
+            Assert.Single(productCategory11.SuperJacent);
             Assert.Contains(productCategory1, productCategory11.SuperJacent);
 
             Assert.Equal(2, productCategory12.SuperJacent.Count);
@@ -375,7 +375,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory121, productCategory2.Children);
             Assert.Contains(productCategory122, productCategory2.Children);
 
-            Assert.Equal(1, productCategory11.Children.Count);
+            Assert.Single(productCategory11.Children);
             Assert.Contains(productCategory111, productCategory11.Children);
 
             Assert.Equal(2, productCategory12.Children.Count);
@@ -544,13 +544,13 @@ namespace Allors.Domain
             Assert.Contains(good121, productCategory12.AllProducts);
             Assert.Contains(good122, productCategory12.AllProducts);
 
-            Assert.Equal(1, productCategory111.AllProducts.Count);
+            Assert.Single(productCategory111.AllProducts);
             Assert.Contains(good111, productCategory111.AllProducts);
 
-            Assert.Equal(1, productCategory121.AllProducts.Count);
+            Assert.Single(productCategory121.AllProducts);
             Assert.Contains(good121, productCategory121.AllProducts);
 
-            Assert.Equal(1, productCategory122.AllProducts.Count);
+            Assert.Single(productCategory122.AllProducts);
             Assert.Contains(good122, productCategory122.AllProducts);
         }
 
@@ -744,13 +744,13 @@ namespace Allors.Domain
             Assert.Contains(serialisedItem121, productCategory12.AllSerialisedItemsForSale);
             Assert.Contains(serialisedItem122, productCategory12.AllSerialisedItemsForSale);
 
-            Assert.Equal(1, productCategory111.AllSerialisedItemsForSale.Count);
+            Assert.Single(productCategory111.AllSerialisedItemsForSale);
             Assert.Contains(serialisedItem111, productCategory111.AllSerialisedItemsForSale);
 
-            Assert.Equal(1, productCategory121.AllSerialisedItemsForSale.Count);
+            Assert.Single(productCategory121.AllSerialisedItemsForSale);
             Assert.Contains(serialisedItem121, productCategory121.AllSerialisedItemsForSale);
 
-            Assert.Equal(1, productCategory122.AllSerialisedItemsForSale.Count);
+            Assert.Single(productCategory122.AllSerialisedItemsForSale);
             Assert.Contains(serialisedItem122, productCategory122.AllSerialisedItemsForSale);
         }
 
@@ -934,13 +934,13 @@ namespace Allors.Domain
             Assert.Contains(item121, productCategory12.AllNonSerialisedInventoryItemsForSale);
             Assert.Contains(item122, productCategory12.AllNonSerialisedInventoryItemsForSale);
 
-            Assert.Equal(1, productCategory111.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Single(productCategory111.AllNonSerialisedInventoryItemsForSale);
             Assert.Contains(item111, productCategory111.AllNonSerialisedInventoryItemsForSale);
 
-            Assert.Equal(1, productCategory121.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Single(productCategory121.AllNonSerialisedInventoryItemsForSale);
             Assert.Contains(item121, productCategory121.AllNonSerialisedInventoryItemsForSale);
 
-            Assert.Equal(1, productCategory122.AllNonSerialisedInventoryItemsForSale.Count);
+            Assert.Single(productCategory122.AllNonSerialisedInventoryItemsForSale);
             Assert.Contains(item122, productCategory122.AllNonSerialisedInventoryItemsForSale);
         }
     }
