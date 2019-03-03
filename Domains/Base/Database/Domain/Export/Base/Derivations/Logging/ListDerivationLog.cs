@@ -116,18 +116,6 @@ namespace Allors.Domain.Logging
             this.List.Add(message);
         }
 
-        public void CycleDetected(Object derivable)
-        {
-            var message = DerivationLogFormatter.FormatCycleDetected(derivable);
-            this.List.Add(message);
-        }
-
-        public void CycleDetected(Object dependent, Object dependee)
-        {
-            var message = DerivationLogFormatter.FormatCycleDetected(dependent, dependee);
-            this.List.Add(message);
-        }
-
         public void PreFinalizing(Object derivable)
         {
             var message = DerivationLogFormatter.FormatPreFinalizing(derivable);

@@ -31,9 +31,11 @@ namespace Allors.Domain
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public abstract class DerivationBase : IDerivation
     {
-        private readonly Dictionary<long, ISet<RelationType>> relationsByMarkedAsModified;
         private readonly HashSet<Object> derivedObjects;
-        private readonly DerivationChangeSet derivationChangeSet;
+        private readonly HashSet<Object> finalizedObjects;
+
+        private readonly Dictionary<long, ISet<RelationType>> relationsByMarker;
+        private readonly AccumulatedChangeSet accumulatedChangeSet;
 
         private Dictionary<string, object> properties;
 
@@ -42,7 +44,7 @@ namespace Allors.Domain
         private int generation;
 
         private DerivationGraphBase derivationGraph;
-        private HashSet<IObject> addedDerivables;
+        private HashSet<IObject> added;
 
         private bool isFinalizing;
 
@@ -55,14 +57,13 @@ namespace Allors.Domain
 
             this.Session = session;
 
-            this.relationsByMarkedAsModified = new Dictionary<long, ISet<RelationType>>();
+            this.relationsByMarker = new Dictionary<long, ISet<RelationType>>();
+
             this.derivedObjects = new HashSet<Object>();
+            this.finalizedObjects = new HashSet<Object>();
 
-            this.derivationChangeSet = new DerivationChangeSet();
-
-            this.ChangeSet = session.Checkpoint();
-            this.derivationChangeSet.Add(this.ChangeSet);
-
+            this.accumulatedChangeSet = new AccumulatedChangeSet();
+        
             this.isFinalizing = false;
 
             this.generation = 0;
@@ -83,11 +84,11 @@ namespace Allors.Domain
             protected set => this.validation = value;
         }
 
-        public IChangeSet ChangeSet { get; private set; }
-
-        public IChangeSet DerivationChangeSet => this.derivationChangeSet;
+        public IChangeSet ChangeSet => this.accumulatedChangeSet;
 
         public ISet<Object> DerivedObjects => this.derivedObjects;
+
+        public ISet<Object> FinalizedObjects => this.finalizedObjects;
 
         public int Generation => this.generation;
 
@@ -223,16 +224,16 @@ namespace Allors.Domain
 
         public bool IsMarked(Object derivable)
         {
-            return this.relationsByMarkedAsModified.ContainsKey(derivable.Id);
+            return this.relationsByMarker.ContainsKey(derivable.Id);
         }
 
         public void Mark(Object derivable, RelationType relationType = null)
         {
             if (derivable != null)
             {
-                if (!this.relationsByMarkedAsModified.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
+                if (!this.relationsByMarker.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
                 {
-                    this.relationsByMarkedAsModified.Add(derivable.Id, null);
+                    this.relationsByMarker.Add(derivable.Id, null);
                 }
 
                 if (relationType != null)
@@ -240,7 +241,7 @@ namespace Allors.Domain
                     if (relationTypes == null)
                     {
                         relationTypes = new HashSet<RelationType>();
-                        this.relationsByMarkedAsModified[derivable.Id] = relationTypes;
+                        this.relationsByMarker[derivable.Id] = relationTypes;
                     }
 
                     relationTypes.Add(relationType);
@@ -261,9 +262,9 @@ namespace Allors.Domain
             }
         }
 
-        public ISet<RelationType> MarkedBy(Object markedAsModified)
+        public ISet<RelationType> MarkedBy(Object marker)
         {
-            this.relationsByMarkedAsModified.TryGetValue(markedAsModified.Id, out var relationTypes);
+            this.relationsByMarker.TryGetValue(marker.Id, out var relationTypes);
             return relationTypes;
         }
 
@@ -276,17 +277,23 @@ namespace Allors.Domain
 
             if (derivable != null)
             {
-                if (!this.isFinalizing && this.DerivedObjects.Contains(derivable))
+                if (this.isFinalizing)
                 {
-                    this.OnCycleDetected(derivable);
-                    if (this.Config.ThrowExceptionOnCycleDetected)
+                    if (this.finalizedObjects.Contains(derivable))
                     {
-                        throw new ArgumentException("Object has already been derived.");
+                        return;
+                    }
+                }
+                else
+                {
+                    if (this.derivedObjects.Contains(derivable))
+                    {
+                        return;
                     }
                 }
 
                 this.derivationGraph.Add(derivable);
-                this.addedDerivables.Add(derivable);
+                this.added.Add(derivable);
 
                 this.OnAddedDerivable(derivable);
             }
@@ -299,7 +306,7 @@ namespace Allors.Domain
                 this.Add(derivable);
             }
         }
-        
+
         public void AddDependency(Object dependent, Object dependee)
         {
             if (this.generation == 0)
@@ -309,17 +316,23 @@ namespace Allors.Domain
 
             if (dependent != null && dependee != null)
             {
-                if (this.DerivedObjects.Contains(dependent) || this.DerivedObjects.Contains(dependee))
+                if (this.isFinalizing)
                 {
-                    this.OnCycleDetected(dependent, dependee);
-                    if (this.Config.ThrowExceptionOnCycleDetected)
+                    if (this.finalizedObjects.Contains(dependent) && this.finalizedObjects.Contains(dependee))
                     {
-                        throw new ArgumentException("Object has already been derived.");
+                        return;
+                    }
+                }
+                else
+                {
+                    if (this.derivedObjects.Contains(dependent) && this.derivedObjects.Contains(dependee))
+                    {
+                        return;
                     }
                 }
 
-                this.addedDerivables.Add(dependent);
-                this.addedDerivables.Add(dependee);
+                this.added.Add(dependent);
+                this.added.Add(dependee);
                 this.derivationGraph.AddDependency(dependent, dependee);
 
                 this.OnAddedDependency(dependent, dependee);
@@ -368,10 +381,6 @@ namespace Allors.Domain
 
         protected abstract void OnPostFinalized(Object derivable);
 
-        protected abstract void OnCycleDetected(Object derivable);
-
-        protected abstract void OnCycleDetected(Object dependent, Object dependee);
-
         private void Derivation()
         {
             if (this.generation != 0)
@@ -379,29 +388,31 @@ namespace Allors.Domain
                 throw new Exception("Derive can only be called once. Create a new Derivation object.");
             }
 
-            var changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
-            changedObjectIds.UnionWith(this.ChangeSet.Roles);
-            changedObjectIds.UnionWith(this.ChangeSet.Created);
-            changedObjectIds.UnionWith(this.relationsByMarkedAsModified.Keys);
+            var changeSet = this.Session.Checkpoint();
+            this.accumulatedChangeSet.Add(changeSet);
 
-            var preparedObjects = new HashSet<IObject>();
+            var changedObjectIds = new HashSet<long>(changeSet.Associations);
+            changedObjectIds.UnionWith(changeSet.Roles);
+            changedObjectIds.UnionWith(changeSet.Created);
+            changedObjectIds.UnionWith(this.relationsByMarker.Keys);
+
             var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
+            var preparedObjects = new HashSet<IObject>();
 
             var postDeriveObjects = new List<Object>();
 
             while (changedObjects.Count > 0)
             {
-                var newObjects = this.Session.Instantiate(this.ChangeSet.Created);
+                this.generation++;
+                this.OnStartedGeneration(this.generation);
+
+                var newObjects = this.Session.Instantiate(changeSet.Created);
                 foreach (var newObject in newObjects)
                 {
                     ((Object)newObject).OnInit();
                 }
 
-                this.generation++;
-
-                this.OnStartedGeneration(this.generation);
-
-                this.addedDerivables = new HashSet<IObject>();
+                this.added = new HashSet<IObject>();
 
                 var preparationRun = 1;
 
@@ -422,17 +433,17 @@ namespace Allors.Domain
                     }
                 }
 
-                while (this.addedDerivables.Count > 0)
+                while (this.added.Count > 0)
                 {
                     preparationRun++;
                     this.OnStartedPreparation(preparationRun);
 
-                    var dependencyObjectsToPrepare = new HashSet<IObject>(this.addedDerivables);
-                    dependencyObjectsToPrepare.ExceptWith(preparedObjects);
+                    var objectsToPrepare = new HashSet<IObject>(this.added);
+                    objectsToPrepare.ExceptWith(preparedObjects);
 
-                    this.addedDerivables = new HashSet<IObject>();
+                    this.added = new HashSet<IObject>();
 
-                    foreach (var o in dependencyObjectsToPrepare)
+                    foreach (var o in objectsToPrepare)
                     {
                         var dependencyObject = (Object)o;
 
@@ -460,12 +471,12 @@ namespace Allors.Domain
                 // but post derive generations backwards
                 postDeriveObjects.InsertRange(0, generationPostDeriveObjects);
 
-                this.ChangeSet = this.Session.Checkpoint();
-                this.derivationChangeSet.Add(this.ChangeSet);
+                changeSet = this.Session.Checkpoint();
+                this.accumulatedChangeSet.Add(changeSet);
 
-                changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
-                changedObjectIds.UnionWith(this.ChangeSet.Roles);
-                changedObjectIds.UnionWith(this.ChangeSet.Created);
+                changedObjectIds = new HashSet<long>(changeSet.Associations);
+                changedObjectIds.UnionWith(changeSet.Roles);
+                changedObjectIds.UnionWith(changeSet.Created);
 
                 changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
                 changedObjects.ExceptWith(this.derivedObjects);
@@ -485,12 +496,12 @@ namespace Allors.Domain
 
                     postDeriveObjects = new List<Object>();
 
-                    this.ChangeSet = this.Session.Checkpoint();
-                    this.derivationChangeSet.Add(this.ChangeSet);
+                    changeSet = this.Session.Checkpoint();
+                    this.accumulatedChangeSet.Add(changeSet);
 
-                    changedObjectIds = new HashSet<long>(this.ChangeSet.Associations);
-                    changedObjectIds.UnionWith(this.ChangeSet.Roles);
-                    changedObjectIds.UnionWith(this.ChangeSet.Created);
+                    changedObjectIds = new HashSet<long>(changeSet.Associations);
+                    changedObjectIds.UnionWith(changeSet.Roles);
+                    changedObjectIds.UnionWith(changeSet.Created);
 
                     changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
                     changedObjects.ExceptWith(this.derivedObjects);
@@ -502,12 +513,10 @@ namespace Allors.Domain
 
         private void Finalization()
         {
-            this.ChangeSet = this.DerivationChangeSet;
-
-            var preparedObjects = new HashSet<IObject>();
             var changedObjects = new HashSet<IObject>(this.derivedObjects);
+            var preparedObjects = new HashSet<IObject>();
 
-            this.addedDerivables = new HashSet<IObject>();
+            this.added = new HashSet<IObject>();
 
             var preparationRun = 1;
 
@@ -528,17 +537,17 @@ namespace Allors.Domain
                 }
             }
 
-            while (this.addedDerivables.Count > 0)
+            while (this.added.Count > 0)
             {
                 preparationRun++;
                 this.OnStartedPreparation(preparationRun);
 
-                var dependencyObjectsToPrepare = new HashSet<IObject>(this.addedDerivables);
-                dependencyObjectsToPrepare.ExceptWith(preparedObjects);
+                var objectsToPrepare = new HashSet<IObject>(this.added);
+                objectsToPrepare.ExceptWith(preparedObjects);
 
-                this.addedDerivables = new HashSet<IObject>();
+                this.added = new HashSet<IObject>();
 
-                foreach (var o in dependencyObjectsToPrepare)
+                foreach (var o in objectsToPrepare)
                 {
                     var dependencyObject = (Object)o;
 
@@ -551,7 +560,7 @@ namespace Allors.Domain
                     preparedObjects.Add(dependencyObject);
                 }
             }
-            
+
             if (this.derivationGraph.Count != 0)
             {
                 var postFinalizeObjects = new List<Object>();

@@ -52,10 +52,6 @@ namespace Allors.Domain.Logging
 
         void PostDerived(Object derivable);
 
-        void CycleDetected(Object derivable);
-
-        void CycleDetected(Object dependent, Object dependee);
-
         void PreFinalizing(Object derivable);
 
         void PreFinalized(Object derivable);

@@ -98,15 +98,5 @@ namespace Allors.Domain.Logging
         {
             this.DerivationLog.PostFinalized(derivable);
         }
-
-        protected override void OnCycleDetected(Object derivable)
-        {
-            this.DerivationLog.CycleDetected(derivable);
-        }
-
-        protected override void OnCycleDetected(Object dependent, Object dependee)
-        {
-            this.DerivationLog.CycleDetected(dependent, dependee);
-        }
     }
 }

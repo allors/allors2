@@ -95,7 +95,7 @@ namespace Allors.Domain
         public void AssertIsUnique(IObject association, RoleType roleType)
         {
             ISet<IRoleType> roleTypes;
-            if (this.Derivation.DerivationChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out roleTypes))
+            if (this.Derivation.ChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out roleTypes))
             {
                 if (roleTypes.Contains(roleType))
                 {

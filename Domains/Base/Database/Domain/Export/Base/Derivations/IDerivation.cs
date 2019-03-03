@@ -39,8 +39,6 @@ namespace Allors.Domain
 
         IChangeSet ChangeSet { get; }
 
-        IChangeSet DerivationChangeSet { get; }
-
         int Generation { get; }
 
         ISet<Object> DerivedObjects { get; }
@@ -95,6 +93,6 @@ namespace Allors.Domain
 
         void Mark(IEnumerable<Object> derivables);
 
-        ISet<RelationType> MarkedBy(Object markedAsModified);
+        ISet<RelationType> MarkedBy(Object marker);
     }
 }

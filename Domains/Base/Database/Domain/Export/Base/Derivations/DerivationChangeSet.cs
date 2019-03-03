@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DerivationChangeSet.cs" company="Allors bvba">
+// <copyright file="AccumulatedChangeSet.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -25,9 +25,9 @@ namespace Allors.Domain
     using Allors;
     using Allors.Meta;
 
-    public class DerivationChangeSet : IChangeSet
+    public class AccumulatedChangeSet : IChangeSet
     {
-        internal DerivationChangeSet()
+        internal AccumulatedChangeSet()
         {
             this.Created = new HashSet<long>();
             this.Deleted = new HashSet<long>();

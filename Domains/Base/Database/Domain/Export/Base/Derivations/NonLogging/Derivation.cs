@@ -83,13 +83,5 @@ namespace Allors.Domain.NonLogging
         protected override void OnPostFinalized(Object derivable)
         {
         }
-
-        protected override void OnCycleDetected(Object derivable)
-        {
-        }
-
-        protected override void OnCycleDetected(Object dependent, Object dependee)
-        {
-        }
     }
 }
