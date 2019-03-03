@@ -39,7 +39,7 @@
           [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col-md" [object]="invoiceItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
         <a-mat-input class="col-md" *ngIf="invoiceItem.InvoiceItemType === partItemType" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Quantity"></a-mat-input>
-        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice"></a-mat-input>
+        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedUnitPrice"></a-mat-input>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.UnitVat"></a-mat-static>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.TotalIncVat"></a-mat-static>
       </div>

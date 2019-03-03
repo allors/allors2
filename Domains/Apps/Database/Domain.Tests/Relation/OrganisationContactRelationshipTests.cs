@@ -88,7 +88,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
-            Assert.Equal(1, usergroup.Members.Count);
+            Assert.Single(usergroup.Members);
             Assert.True(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.Session)
@@ -110,7 +110,7 @@ namespace Allors.Domain
 
             var usergroup = this.organisationContactRelationship.Organisation.ContactsUserGroup;
 
-            Assert.Equal(1, usergroup.Members.Count);
+            Assert.Single(usergroup.Members);
             Assert.True(usergroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
@@ -125,7 +125,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, usergroup.Members.Count);
+            Assert.Single(usergroup.Members);
             Assert.True(usergroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);

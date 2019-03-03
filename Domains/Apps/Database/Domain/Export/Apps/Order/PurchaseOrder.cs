@@ -124,6 +124,8 @@ namespace Allors.Domain
                 this.TakenViaContactMechanism = this.TakenViaSupplier.OrderAddress;
             }
 
+            this.VatRegime = this.VatRegime ?? this.TakenViaSupplier?.VatRegime;
+
             this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             this.AppsOnDeriveOrderItems(derivation);
@@ -161,6 +163,41 @@ namespace Allors.Domain
         public void AppsContinue(OrderContinue method)
         {
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
+        }
+
+        public void AppsQuickReceive(PurchaseOrderQuickReceive method)
+        {
+            var session = this.strategy.Session;
+
+            //Shipment receipt
+            var shipment = new PurchaseShipmentBuilder(session)
+                .WithShipmentMethod(new ShipmentMethods(session).Ground)
+                .WithReceiver(this.OrderedBy)
+                .WithShipFromParty(this.TakenViaSupplier)
+                .Build();
+
+            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
+            {
+                var shipmentItem = new ShipmentItemBuilder(session)
+                    .WithPart(orderItem.Part)
+                    .WithQuantity(orderItem.QuantityOrdered)
+                    .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
+                    .Build();
+
+                shipment.AddShipmentItem(shipmentItem);
+
+                new OrderShipmentBuilder(session)
+                    .WithOrderItem(orderItem)
+                    .WithShipmentItem(shipmentItem)
+                    .WithQuantity(orderItem.QuantityOrdered)
+                    .Build();
+
+                new ShipmentReceiptBuilder(session)
+                    .WithQuantityAccepted(orderItem.QuantityOrdered)
+                    .WithShipmentItem(shipmentItem)
+                    .WithOrderItem(orderItem)
+                    .Build();
+            }
         }
 
         public void AppsOnDerivePurchaseOrderState(IDerivation derivation)
@@ -211,8 +248,8 @@ namespace Allors.Domain
                 purchaseOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 purchaseOrderItem.AppsOnDeriveDeliveryDate(derivation);
                 purchaseOrderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
-                purchaseOrderItem.AppsOnDerivePrices();
                 purchaseOrderItem.AppsDeriveVatRegime(derivation);
+                purchaseOrderItem.AppsOnDerivePrices();
 
                 if (purchaseOrderItem.ExistPart)
                 {

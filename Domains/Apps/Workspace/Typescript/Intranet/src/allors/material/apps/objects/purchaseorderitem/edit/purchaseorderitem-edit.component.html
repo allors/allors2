@@ -9,15 +9,13 @@
     </div>
 
     <div class="row">
-      <a-mat-autocomplete class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Part"
-        [options]="parts" display="Name" [filter]="stateService.partsFilter.create(allors.context)"></a-mat-autocomplete>
+      <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Part" [options]="parts" display="Name" (selected)="partSelected($event)"></a-mat-select>
     </div>
 
     <div class="row">
       <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.QuantityOrdered"></a-mat-input>
-      <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
-      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.UnitVat"></a-mat-static>
-      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.TotalIncVat"></a-mat-static>
+      <a-mat-static class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Price" label="Supplier Price"></a-mat-static>
+      <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.AssignedUnitPrice" label="Agreed on Price"></a-mat-input>
     </div>
 
     <div class="row">
@@ -29,6 +27,11 @@
     </div>
 
     <div class="row">
+      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.UnitVat"></a-mat-static>
+      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.TotalIncVat"></a-mat-static>
+    </div>
+
+    <div class="row">
       <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Comment" label="Order Item Comment"></a-mat-textarea>
       <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.PurchaseOrderItem.InternalComment" label="Order Item Internal Comment"></a-mat-textarea>
     </div>
@@ -36,8 +39,9 @@
   </div>
 
   <div mat-dialog-actions>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
   </div>
 
 </form>

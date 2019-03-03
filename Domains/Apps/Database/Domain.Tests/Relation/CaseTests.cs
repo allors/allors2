@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, complaint.AllVersions.Count);
+            Assert.Single(complaint.AllVersions);
             Assert.Equal(new CaseStates(this.Session).Opened, complaint.CaseState);
 
             complaint.AppsClose();

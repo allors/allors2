@@ -97,7 +97,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<WebSiteCommunication>().Count);
+            Assert.Single(this.Session.Extent<WebSiteCommunication>());
 
             originator.Delete();
             this.Session.Derive();

@@ -16,7 +16,6 @@ interface Row extends TableRow {
   state: string;
   ordered: number;
   shipped: number;
-  picked: number;
   reserved: number;
   short: number;
   returned: number;
@@ -95,7 +94,6 @@ export class SalesOrderItemOverviewPanelComponent {
         { name: 'state', sort },
         { name: 'ordered', sort },
         { name: 'shipped', sort },
-        { name: 'picked', sort },
         { name: 'reserved', sort },
         { name: 'short', sort },
         { name: 'returned', sort },
@@ -158,7 +156,6 @@ export class SalesOrderItemOverviewPanelComponent {
           state: `${v.SalesOrderItemState && v.SalesOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
           shipped: v.QuantityShipped,
-          picked: v.QuantityPicked,
           reserved: v.QuantityReserved,
           short: v.QuantityShortFalled,
           returned: v.QuantityReturned,

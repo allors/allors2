@@ -28,8 +28,8 @@ namespace Allors.Domain
                 derivation.Mark(this.OrderItem);
                 derivation.AddDependency(this, this.OrderItem);
 
-                derivation.Mark(this.ShipmentItem);
-                derivation.AddDependency(this.ShipmentItem, this);
+                //derivation.MarkAsModified(this.ShipmentItem);
+                //derivation.AddDependency(this.ShipmentItem, this);
             }
         }
     }

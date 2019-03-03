@@ -37,10 +37,10 @@
           display="Rate" label="VAT % from invoice"></a-mat-static>
         <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedVatRegime" [options]="vatRegimes"
           display="Name" label="Item VAT regime"></a-mat-select>
-        <a-mat-static class="col-md" [object]="invoiceItem.DerivedVatRate" [roleType]="m.VatRate.Rate" display="Rate"
+        <a-mat-static class="col-md" [object]="invoiceItem.VatRate" [roleType]="m.VatRate.Rate" display="Rate"
           label="Rate %"></a-mat-static>
         <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
-        <a-mat-input class="col-md" *ngIf="invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
+        <a-mat-input class="col-md" *ngIf="invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedUnitPrice" label="Unit Price"></a-mat-input>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.UnitVat"></a-mat-static>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.TotalIncVat"></a-mat-static>
       </div>

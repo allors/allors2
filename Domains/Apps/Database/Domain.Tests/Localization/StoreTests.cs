@@ -87,7 +87,7 @@ namespace Allors.Domain
             Assert.Equal(0, store.PaymentGracePeriod);
             Assert.Equal(0, store.ShipmentThreshold);
             Assert.Equal(internalOrganisation.DefaultCollectionMethod, store.DefaultCollectionMethod);
-            Assert.Equal(1, store.CollectionMethods.Count);
+            Assert.Single(store.CollectionMethods);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), store.DefaultFacility);
         }
 
@@ -115,7 +115,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, store.CollectionMethods.Count);
+            Assert.Single(store.CollectionMethods);
             Assert.Equal(ownBankAccount, store.CollectionMethods.First);
         }
 

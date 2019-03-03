@@ -1148,7 +1148,7 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
             
-            Assert.Equal(1, invoice.Customers.Count);
+            Assert.Single(invoice.Customers);
             Assert.Equal(customer, invoice.Customers.First);
         }
 

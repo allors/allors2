@@ -105,7 +105,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, physicalGood.VirtualProductPriceComponents.Count);
+            Assert.Single(physicalGood.VirtualProductPriceComponents);
             Assert.Contains(basePrice, physicalGood.VirtualProductPriceComponents);
             Assert.False(virtualGood.ExistVirtualProductPriceComponents);
         }
@@ -209,7 +209,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
+            Assert.Single(physicalService.VirtualProductPriceComponents);
             Assert.Contains(discount, physicalService.VirtualProductPriceComponents);
             Assert.False(virtualService.ExistVirtualProductPriceComponents);
         }
@@ -313,7 +313,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, physicalService.VirtualProductPriceComponents.Count);
+            Assert.Single(physicalService.VirtualProductPriceComponents);
             Assert.Contains(surcharge, physicalService.VirtualProductPriceComponents);
             Assert.False(virtualService.ExistVirtualProductPriceComponents);
         }

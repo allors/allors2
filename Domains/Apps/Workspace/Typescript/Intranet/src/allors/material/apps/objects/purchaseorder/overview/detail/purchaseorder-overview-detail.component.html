@@ -190,11 +190,15 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Facility" [options]="facilities" display="Name"></a-mat-select>
+          <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
+        </div>
+
+        <div class="row">
           <a-mat-textarea class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Description"></a-mat-textarea>
         </div>
 
         <div class="row">
-          <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
           <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-textarea>
           <a-mat-textarea  class="col-md-12" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
         </div>

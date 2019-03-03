@@ -153,7 +153,7 @@ export class SalesOrderOverviewSummaryComponent {
 
   public cancel(): void {
 
-    this.panel.manager.context.invoke(this.order.Reject)
+    this.panel.manager.context.invoke(this.order.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });

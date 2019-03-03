@@ -107,7 +107,7 @@ namespace Allors.Domain
                 if (shipmentReceipt.ExistShipmentItem)
                 {
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
-                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed))
+                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Delivered))
                     {
                         this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
                     }
@@ -120,14 +120,6 @@ namespace Allors.Domain
             // TODO: Test for changes in these relations for performance reasons
             this.QuantityCommittedOut = 0M;
 
-            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            {
-                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                {
-                    this.QuantityCommittedOut -= pickListItem.QuantityPicked;
-                }
-            }
-
             foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
             {
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
@@ -136,6 +128,14 @@ namespace Allors.Domain
                     salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !(order.OrderKind?.ScheduleManually == true))
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
+                }
+            }
+
+            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+            {
+                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                {
+                    this.QuantityCommittedOut -= pickListItem.QuantityPicked;
                 }
             }
 
@@ -159,17 +159,14 @@ namespace Allors.Domain
             // TODO: Test for changes in these relations for performance reasons
             this.QuantityExpectedIn = 0M;
 
-            if (this.ExistPart)
+            foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
             {
-                foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
+                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
+                if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess)
+                    && this.Facility.Equals(facility))
                 {
-                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Completed) ||
-                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Finished) ||
-                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
-                    {
-                        this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
-                        this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
-                    }
+                    this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
+                    this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
                 }
             }
         }

@@ -113,14 +113,14 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("-=jw").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
 
             this.Session.Rollback();
 
             new BankAccountBuilder(this.Session).WithIban("TR33000610+51978645,841326").Build();
 
             errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("D497888").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -142,21 +142,21 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("TR000006100519786457841326").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
 
             this.Session.Rollback();
 
             new BankAccountBuilder(this.Session).WithIban("TR010006100519786457841326").Build();
 
             errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
 
             this.Session.Rollback();
 
             new BankAccountBuilder(this.Session).WithIban("TR990006100519786457841326").Build();
 
             errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("XX330006100519786457841326").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -178,14 +178,14 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("TR3300061005196457841326").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
 
             this.Session.Rollback();
 
             new BankAccountBuilder(this.Session).WithIban("TR3300061005197864578413268").Build();
 
             errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("LV80B12K0000435195001").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace Allors.Domain
             new BankAccountBuilder(this.Session).WithIban("TR330006100519716457841326").Build();
 
             List<IDerivationError> errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            Assert.Equal(1, errors.FindAll(e => e.Message.Equals(expectedErrorMessage)).Count);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
         }
 
         [Fact]

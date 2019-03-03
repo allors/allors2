@@ -140,7 +140,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<FaceToFaceCommunication>().Count);
+            Assert.Single(this.Session.Extent<FaceToFaceCommunication>());
 
             participant2.Delete();
             this.Session.Derive();

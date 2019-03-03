@@ -50,16 +50,16 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
-                if (this.ExistInventoryItemsWherePart)
-                {
-                    foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
-                    {
-                        derivation.AddDependency(this, inventoryItem);
-                    }
-                }
-            }
+            //if (derivation.ChangeSet.Associations.Contains(this.Id))
+            //{
+            //    if (this.ExistInventoryItemsWherePart)
+            //    {
+            //        foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
+            //        {
+            //            derivation.AddDependency(this, inventoryItem);
+            //        }
+            //    }
+            //}
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

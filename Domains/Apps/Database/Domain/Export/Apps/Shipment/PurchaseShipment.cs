@@ -19,8 +19,6 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-    using System.Collections.Generic;
-
     using Allors.Meta;
 
     public partial class PurchaseShipment
@@ -34,7 +32,14 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            var internalOrganisation = this.ShipToParty as InternalOrganisation;
+            if (!this.ExistReceiver)
+            {
+                var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
+                if (internalOrganisations.Length == 1)
+                {
+                    this.Receiver = internalOrganisations.First();
+                }
+            }
 
             if (!this.ExistPurchaseShipmentState)
             {
@@ -60,6 +65,11 @@ namespace Allors.Domain
                     {
                         derivation.AddDependency(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem, this);
                     }
+
+                    foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                    {
+                        derivation.AddDependency(orderShipment.OrderItem, this);
+                    }
                 }
             }
         }
@@ -70,6 +80,8 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
 
+            this.ShipToAddress = this.ShipToAddress ?? this.Receiver?.ShippingAddress ?? this.Receiver?.GeneralCorrespondence;
+
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistReceiver && internalOrganisations.Count() == 1)
@@ -77,12 +89,7 @@ namespace Allors.Domain
                 this.Receiver = internalOrganisations.First();
             }
 
-            if (!this.ExistShipToAddress)
-            {
-                this.ShipToAddress = this.Receiver.ExistShippingAddress ? this.Receiver.ShippingAddress : this.Receiver.GeneralCorrespondence;
-            }
-
-            if (!this.ExistFacility && this.ExistReceiver && this.Receiver.StoresWhereInternalOrganisation.Count == 1)
+            if (!this.ExistFacility && this.ExistReceiver && this.Receiver?.StoresWhereInternalOrganisation.Count == 1)
             {
                 this.Facility = this.Receiver.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
@@ -97,36 +104,9 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            if (this.ExistPurchaseShipmentState &&
-                this.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed) &&
-                !this.PurchaseShipmentState.Equals(this.LastPurchaseShipmentState))
+            if (this.ShipmentItems.Any() && this.ShipmentItems.All(v => v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered)))
             {
-
-                this.AppsOnDeriveOrderItemQuantityReceived(derivation);
-            }
-
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                shipmentItem.OnDerive(x => x.WithDerivation(derivation));
-            }
-        }
-
-        public void AppsComplete()
-        {
-            this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Completed;
-        }
-
-        public void AppsOnDeriveOrderItemQuantityReceived(IDerivation derivation)
-        {
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                var receipt = shipmentItem.ShipmentReceiptWhereShipmentItem;
-                var orderItem = (PurchaseOrderItem)receipt.OrderItem;
-
-                if (orderItem != null)
-                {
-                    orderItem.AppsOnDeriveCurrentShipmentStatus(derivation);
-                }
+                this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Delivered;
             }
         }
     }

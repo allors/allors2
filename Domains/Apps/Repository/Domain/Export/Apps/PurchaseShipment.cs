@@ -146,6 +146,8 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
         public InternalOrganisation Receiver { get; set; }
 
         #region Allors
@@ -158,16 +160,6 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Facility Facility { get; set; }
-
-        #region Allors
-        [Id("ef34543c-6194-4f27-87d7-a54285bc0a15")]
-        [AssociationId("33b1069f-7be2-4f41-b502-8689256706d9")]
-        [RoleId("33dce90e-2a2a-482b-bee5-fcea55e59160")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public PurchaseOrder PurchaseOrder { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

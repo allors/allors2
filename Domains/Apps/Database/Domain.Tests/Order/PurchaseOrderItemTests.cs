@@ -145,7 +145,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.order.ValidOrderItems.Count);
+            Assert.Single(this.order.ValidOrderItems);
 
             item.Cancel();
 
@@ -366,8 +366,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(order.TakenViaSupplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
@@ -375,10 +375,6 @@ namespace Allors.Domain
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
-
-            this.Session.Derive();
-
-            shipment.AppsComplete();
 
             this.Session.Derive();
 
@@ -486,20 +482,8 @@ namespace Allors.Domain
             
             this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
-            shipment.AddShipmentItem(shipmentItem);
+            this.order.QuickReceive();
 
-            new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(3)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(item)
-                .Build();
-
-            this.Session.Derive();
-
-            shipment.AppsComplete();
-            
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Completed, item.PurchaseOrderItemState);
@@ -560,7 +544,7 @@ namespace Allors.Domain
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
-                .WithQuantityOrdered(3)
+                .WithQuantityOrdered(10)
                 .WithAssignedUnitPrice(5)
                 .Build();
 
@@ -570,20 +554,16 @@ namespace Allors.Domain
             
             this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(order.TakenViaSupplier).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
-                .WithQuantityAccepted(1)
+                .WithQuantityAccepted(3)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
                 .Build();
 
-            this.Session.Derive();
-
-            shipment.AppsComplete();
-            
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);

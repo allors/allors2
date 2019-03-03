@@ -89,16 +89,6 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Facility Facility { get; set; }
-
-        #region Allors
-        [Id("E19B7B87-D820-4654-A712-84DEE73FD0E3")]
-        [AssociationId("FA07F9AD-CA51-4DC3-A586-B793A8DA2C8F")]
-        [RoleId("8B8DE300-F240-488A-AE7B-AAE6A21BE7E5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public PurchaseOrder PurchaseOrder { get; set; }
         
         #region inherited methods
 

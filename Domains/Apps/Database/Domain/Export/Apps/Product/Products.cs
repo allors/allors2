@@ -69,9 +69,6 @@ namespace Allors.Domain
             var currentPriceComponents = new PriceComponents(product.Strategy.Session).CurrentPriceComponents(date);
             var priceComponents = product.GetPriceComponents(currentPriceComponents);
 
-            var revenueBreakDiscount = 0M;
-            var revenueBreakSurcharge = 0M;
-
             foreach (var priceComponent in priceComponents)
             {
                 if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType) || priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))

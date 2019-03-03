@@ -267,7 +267,7 @@ namespace Allors.Domain
         {
             var internalOrganisation = this.InternalOrganisation;
 
-            Assert.Equal(1, this.InternalOrganisation.ActiveCustomers.Count);
+            Assert.Single(this.InternalOrganisation.ActiveCustomers);
 
             var acme = new OrganisationBuilder(this.Session).WithName("Acme").Build();
             var nike = new OrganisationBuilder(this.Session).WithName("Nike").Build();

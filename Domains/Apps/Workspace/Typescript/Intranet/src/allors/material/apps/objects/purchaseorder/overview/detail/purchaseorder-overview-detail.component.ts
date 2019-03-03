@@ -47,6 +47,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private fetcher: Fetcher;
+  facilities: Facility[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -130,6 +131,10 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
                 },
               }
             }),
+            pull.Facility({
+              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
+              sort: new Sort(m.Facility.Name)
+            }),
             pull.VatRate(),
             pull.VatRegime(),
           ];
@@ -143,6 +148,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
 
+        this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 

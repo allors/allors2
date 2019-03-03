@@ -1653,10 +1653,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, shipment.ShipmentItems.Count);
+            Assert.Single(shipment.ShipmentItems);
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
 
-            Assert.Equal(1, pickList.PickListItems.Count);
+            Assert.Single(pickList.PickListItems);
             Assert.Equal(2, pickList.PickListItems[0].Quantity);
         }
 
@@ -1750,7 +1750,7 @@ namespace Allors.Domain
 
             var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
 
-            Assert.Equal(1, shipment.ShipmentItems.Count);
+            Assert.Single(shipment.ShipmentItems);
             Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(5, pickList.PickListItems[0].Quantity);
             Assert.Equal(-3, negativePickList.PickListItems[0].Quantity);

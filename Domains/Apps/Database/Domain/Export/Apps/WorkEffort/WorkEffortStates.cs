@@ -58,7 +58,7 @@ namespace Allors.Domain
 
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
-                .WithName("Completed")
+                .WithName("Delivered")
                 .Build();
 
             new WorkEffortStateBuilder(this.Session)
@@ -78,7 +78,7 @@ namespace Allors.Domain
             // The inprogress state is the initial and re-opened state (Cancel Consumption for Re-Open)
             this.InProgress.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
 
-            // The Completed state should create a Consumption (which Decreases the Reservation)
+            // The Delivered state should create a Consumption (which Decreases the Reservation)
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
             

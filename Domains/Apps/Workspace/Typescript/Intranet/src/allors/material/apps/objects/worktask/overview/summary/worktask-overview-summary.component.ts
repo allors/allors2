@@ -1,7 +1,9 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, RefreshService, Invoked, ErrorService, Action } from '../../../../../../angular';
 import { WorkTask } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
+import { MatSnackBar } from '@angular/material';
+import { PrintService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -16,12 +18,20 @@ export class WorkTaskOverviewSummaryComponent {
   workTask: WorkTask;
   parent: WorkTask;
 
+  print: Action;
+
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
-    public navigation: NavigationService) {
+    public navigation: NavigationService,
+    public refreshService: RefreshService,
+    public printService: PrintService,
+    public snackBar: MatSnackBar,
+    public errorService: ErrorService) {
 
     this.m = this.metaService.m;
+
+    this.print = printService.print();
 
     panel.name = 'summary';
 
@@ -57,5 +67,53 @@ export class WorkTaskOverviewSummaryComponent {
       this.workTask = loaded.objects[workTaskPullName] as WorkTask;
       this.parent = loaded.objects[parentPullName] as WorkTask;
     };
+  }
+
+  public cancel(): void {
+
+    this.panel.manager.context.invoke(this.workTask.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public reopen(): void {
+
+    this.panel.manager.context.invoke(this.workTask.Reopen)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public complete(): void {
+
+    this.panel.manager.context.invoke(this.workTask.Complete)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public invoice(): void {
+
+    this.panel.manager.context.invoke(this.workTask.Invoice)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 }

@@ -79,7 +79,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 QuoteItem: x,
                 DiscountAdjustment: x,
                 SurchargeAdjustment: x,
-                DerivedVatRate: x,
+                VatRate: x,
                 VatRegime: {
                   VatRate: x,
                 }
@@ -167,7 +167,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
           }
 
-          if (this.orderItem.CanWriteActualUnitPrice) {
+          if (this.orderItem.CanWriteAssignedUnitPrice) {
             this.title = 'Edit Sales Order Item';
           } else {
             this.title = 'View Sales Order Item';

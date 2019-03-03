@@ -162,7 +162,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
         }
 
@@ -171,7 +171,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
@@ -186,7 +186,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
             this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
@@ -218,7 +218,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
+            Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
             Assert.False(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(contact2));
         }

@@ -126,7 +126,7 @@ namespace Allors.Domain
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Single(secondFacility.InventoryItemsWhereFacility);
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace Allors.Domain
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
+            Assert.Single(secondFacility.InventoryItemsWhereFacility);
         }
     }
 }

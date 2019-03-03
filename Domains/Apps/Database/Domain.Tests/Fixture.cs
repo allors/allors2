@@ -82,6 +82,7 @@ namespace Allors
                     .WithContactMechanism(postalAddress)
                     .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
                     .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).ShippingAddress)
                     .Build());
 
                 var facility = new FacilityBuilder(session)

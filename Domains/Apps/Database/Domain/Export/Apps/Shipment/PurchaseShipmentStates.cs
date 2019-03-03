@@ -20,13 +20,13 @@ namespace Allors.Domain
     public partial class PurchaseShipmentStates
     {
         private static readonly Guid CreatedId = new Guid("DF78516E-FC7C-48f2-B07B-1C53DA08D9B8");
-        private static readonly Guid CompletedId = new Guid("97776286-4AE6-4aba-BE1B-2F1286E7F28E");
+        private static readonly Guid DeliveredId = new Guid("97776286-4AE6-4aba-BE1B-2F1286E7F28E");
 
         private UniquelyIdentifiableSticky<PurchaseShipmentState> stateCache;
 
         public PurchaseShipmentState Created => this.StateCache[CreatedId];
 
-        public PurchaseShipmentState Completed => this.StateCache[CompletedId];
+        public PurchaseShipmentState Delivered => this.StateCache[DeliveredId];
 
         private UniquelyIdentifiableSticky<PurchaseShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseShipmentState>(this.Session));
 
@@ -40,8 +40,8 @@ namespace Allors.Domain
                 .Build();
 
             new PurchaseShipmentStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
+                .WithUniqueId(DeliveredId)
+                .WithName("Delivered")
                 .Build();
         }
     }

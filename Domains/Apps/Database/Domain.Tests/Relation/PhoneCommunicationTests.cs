@@ -112,7 +112,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, this.Session.Extent<PhoneCommunication>().Count);
+            Assert.Single(this.Session.Extent<PhoneCommunication>());
 
             originator.Delete();
             this.Session.Derive();
