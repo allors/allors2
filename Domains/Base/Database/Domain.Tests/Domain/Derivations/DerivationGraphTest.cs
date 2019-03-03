@@ -218,22 +218,10 @@ namespace Tests
 
             left.CreateMiddle = true;
 
-            var errorThrown = false;
+            this.Session.Derive();
 
-            var derivation = new Derivation(this.Session);
-            try
-            {
-                derivation.Derive();
-            }
-            catch(Exception)
-            {
-                errorThrown = true;
-            }
-
-            Assert.True(errorThrown);
-
-            Assert.Equal(1, left.DerivationCount);
-            Assert.Equal(0, left.Middle.DerivationCount);
+            Assert.Equal(2, left.DerivationCount);
+            Assert.Equal(1, left.Middle.DerivationCount);
         }
 
         [Fact]
