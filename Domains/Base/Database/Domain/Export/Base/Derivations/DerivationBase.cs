@@ -320,14 +320,14 @@ namespace Allors.Domain
                 {
                     if (this.finalizedObjects.Contains(dependent) && this.finalizedObjects.Contains(dependee))
                     {
-                        return;
+                        //return;
                     }
                 }
                 else
                 {
                     if (this.derivedObjects.Contains(dependent) && this.derivedObjects.Contains(dependee))
                     {
-                        return;
+                        //return;
                     }
                 }
 
