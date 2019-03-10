@@ -12,8 +12,6 @@ cd repository
 dotnet ../../../Repository/Generate/bin/Debug/netcoreapp2.2/Generate.dll repository.csproj ../../../../domains/core/repository/templates/meta.cs.stg ../meta/generated
 cd ..
 
-read -p "Press enter to continue"
-
 dotnet restore Adapters.sln
 
 dotnet msbuild Adapters.sln /target:Clean /verbosity:minimal
