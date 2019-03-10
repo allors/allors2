@@ -30,7 +30,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    internal class RemoveCompositeRoleFactory : Sql.Commands.IRemoveCompositeRoleFactory
+    public class RemoveCompositeRoleFactory
     {
         internal readonly Database Database;
         private readonly Dictionary<IRoleType, string> sqlByRoleType;
@@ -41,12 +41,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByRoleType = new Dictionary<IRoleType, string>();
         }
 
-        public Sql.Commands.IRemoveCompositeRole Create(Sql.DatabaseSession session)
+        public RemoveCompositeRole Create(Sql.DatabaseSession session)
         {
             return new RemoveCompositeRole(this, session);
         }
 
-        internal string GetSql(IRoleType roleType)
+        public string GetSql(IRoleType roleType)
         {
             if (!this.sqlByRoleType.ContainsKey(roleType))
             {
@@ -69,7 +69,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return this.sqlByRoleType[roleType];
         }
 
-        private class RemoveCompositeRole : DatabaseCommand, Sql.Commands.IRemoveCompositeRole
+        public class RemoveCompositeRole : DatabaseCommand
         {
             private readonly RemoveCompositeRoleFactory factory;
             private readonly Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;

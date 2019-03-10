@@ -23,7 +23,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Collections.Generic;
     using System.Data;
 
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -31,7 +30,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class SetCompositeRoleFactory : ISetCompositeRoleFactory
+    public class SetCompositeRoleFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IRoleType, string> sqlByRoleType;
@@ -42,7 +41,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByRoleType = new Dictionary<IRoleType, string>();
         }
 
-        public ISetCompositeRole Create(Sql.DatabaseSession session)
+        public SetCompositeRole Create(Sql.DatabaseSession session)
         {
             return new SetCompositeRole(this, session);
         }
@@ -69,7 +68,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return this.sqlByRoleType[roleType];
         }
 
-        private class SetCompositeRole : DatabaseCommand, ISetCompositeRole
+        public class SetCompositeRole : DatabaseCommand
         {
             private readonly SetCompositeRoleFactory factory;
             private readonly Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;

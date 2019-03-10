@@ -24,21 +24,20 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
 
     using DatabaseSession = DatabaseSession;
 
-    internal class InsertObjectFactory : IInsertObjectFactory
+    public class InsertObjectFactory
     {
-        public IInsertObject Create(Sql.DatabaseSession session)
+        public InsertObject Create(Sql.DatabaseSession session)
         {
             return new InsertObject(session);
         }
 
-        private class InsertObject : DatabaseCommand, IInsertObject
+        public class InsertObject : DatabaseCommand
         {
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 

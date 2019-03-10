@@ -27,10 +27,9 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
-    internal class LoadObjectsFactory : ILoadObjectsFactory
+    public class LoadObjectsFactory
     {
         internal readonly Npgsql.ManagementSession ManagementSession;
 
@@ -39,12 +38,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.ManagementSession = session;
         }
 
-        public ILoadObjects Create(IObjectType objectType)
+        public LoadObjects Create(IObjectType objectType)
         {
             return new LoadObjects(this);
         }
 
-        private class LoadObjects : Commands.Command, ILoadObjects
+        public class LoadObjects : Commands.Command
         {
             private readonly LoadObjectsFactory factory;
 

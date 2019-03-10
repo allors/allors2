@@ -28,21 +28,20 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
 
     using DatabaseSession = DatabaseSession;
 
-    internal class CreateObjectFactory : ICreateObjectFactory
+    public class CreateObjectFactory 
     {
-        public ICreateObject Create(Sql.DatabaseSession session)
+        public CreateObject Create(Sql.DatabaseSession session)
         {
             return new CreateObject(session);
         }
 
-        private class CreateObject : DatabaseCommand, ICreateObject
+        public class CreateObject : DatabaseCommand
         {
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 

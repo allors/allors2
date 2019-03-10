@@ -22,7 +22,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
 {
     using System;
 
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -30,7 +29,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class GetObjectTypeFactory : IGetObjectTypeFactory
+    public class GetObjectTypeFactory
     {
         public readonly Database Database;
         public readonly string Sql;
@@ -43,12 +42,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Sql += "WHERE " + database.Schema.ObjectId + "=" + database.Schema.ObjectId.Param.InvocationName + "\n";
         }
 
-        public IGetObjectType Create(Sql.DatabaseSession session)
+        public GetObjectType Create(Sql.DatabaseSession session)
         {
             return new GetObjectType(this, session);
         }
 
-        private class GetObjectType : DatabaseCommand, IGetObjectType
+        public class GetObjectType : DatabaseCommand
         {
             private readonly GetObjectTypeFactory factory;
             private NpgsqlCommand command;

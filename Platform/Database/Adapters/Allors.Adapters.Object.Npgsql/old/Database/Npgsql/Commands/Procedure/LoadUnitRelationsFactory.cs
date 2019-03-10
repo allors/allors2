@@ -25,12 +25,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
 
-    public class LoadUnitRelationsFactory : ILoadUnitRelationsFactory
+    public class LoadUnitRelationsFactory
     {
         public readonly Npgsql.ManagementSession ManagementSession;
         private readonly Dictionary<IObjectType, Dictionary<IRoleType, string>> sqlByRoleTypeByObjectType;
@@ -41,7 +40,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByRoleTypeByObjectType = new Dictionary<IObjectType, Dictionary<IRoleType, string>>();
         }
 
-        public ILoadUnitRelations Create()
+        public LoadUnitRelations Create()
         {
             return new LoadUnitRelations(this);
         }
@@ -64,7 +63,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return sqlByRoleType[roleType];
         }
 
-        private class LoadUnitRelations : Commands.Command, ILoadUnitRelations
+        public class LoadUnitRelations : Commands.Command
         {
             private readonly LoadUnitRelationsFactory factory;
             private readonly Dictionary<IObjectType, Dictionary<IRoleType, NpgsqlCommand>> commandByRoleTypeByObjectType;

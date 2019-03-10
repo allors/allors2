@@ -21,7 +21,6 @@ namespace Allors.Adapters.Database.Npgsql
 
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
-    using Allors.Adapters.Database.Sql.Commands;
 
     using global::Npgsql;
 
@@ -32,9 +31,9 @@ namespace Allors.Adapters.Database.Npgsql
         private NpgsqlTransaction transaction;
         private NpgsqlConnection connection;
        
-        private ILoadObjectsFactory loadObjectsFactory;
-        private ILoadCompositeRelationsFactory loadCompositeRelationsFactory;
-        private ILoadUnitRelationsFactory loadUnitRelationsFactory;
+        private LoadObjectsFactory loadObjectsFactory;
+        private LoadCompositeRelationsFactory loadCompositeRelationsFactory;
+        private LoadUnitRelationsFactory loadUnitRelationsFactory;
 
         public ManagementSession(Database database)
         {
@@ -46,7 +45,7 @@ namespace Allors.Adapters.Database.Npgsql
             this.Dispose();
         }
 
-        public override ILoadObjectsFactory LoadObjectsFactory
+        public override LoadObjectsFactory LoadObjectsFactory
         {
             get
             {
@@ -54,7 +53,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ILoadCompositeRelationsFactory LoadCompositeRelationsFactory
+        public override LoadCompositeRelationsFactory LoadCompositeRelationsFactory
         {
             get
             {
@@ -62,7 +61,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ILoadUnitRelationsFactory LoadUnitRelationsFactory
+        public override LoadUnitRelationsFactory LoadUnitRelationsFactory
         {
             get
             {

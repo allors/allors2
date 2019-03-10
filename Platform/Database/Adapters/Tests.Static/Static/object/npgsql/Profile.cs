@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.Npgsql
 {
     using System.Text;
 
-    using Allors.Adapters.Database.Npgsql.LongId;
+    using Allors.Adapters.Database.Npgsql;
 
     public abstract class Profile : Adapters.Profile
     {

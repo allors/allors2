@@ -18,11 +18,14 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
 
-    using Allors.Adapters.Database.Npgsql.LongId;
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
     using Microsoft.Extensions.DependencyInjection;
+
+    using Configuration = Allors.Adapters.Configuration;
 
     public class Profile : Npgsql.Profile
     {
@@ -52,11 +55,12 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
         
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
-            var configuration = new Adapters.Database.Npgsql.LongId.Configuration
+            var configuration = new Adapters.Database.Npgsql.Configuration
             {
                 ObjectFactory = this.ObjectFactory,
                 Id = Guid.NewGuid(),
-                ConnectionString = this.ConnectionString
+                ConnectionString = this.ConnectionString,
+                IsolationLevel = IsolationLevel.Serializable
             };
 
             var database = new Database(this.ServiceProvider, configuration);
@@ -71,7 +75,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         public override IDatabase CreateDatabase()
         {
-            var configuration = new Adapters.Database.Npgsql.LongId.Configuration
+            var configuration = new Adapters.Database.Npgsql.Configuration
             {
                 ObjectFactory = this.ObjectFactory,
                 Id = Guid.NewGuid(),

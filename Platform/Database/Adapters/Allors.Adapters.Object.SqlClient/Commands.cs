@@ -31,11 +31,7 @@ namespace Allors.Adapters.Object.SqlClient
 
     public sealed class Commands
     {
-        private static readonly long[] EmptyObjectIds = { };
-
-        private readonly Session Session;
-
-        private Database Database => this.Session.Database;
+        private readonly Session session;
 
         private readonly Connection connection;
 
@@ -63,134 +59,46 @@ namespace Allors.Adapters.Object.SqlClient
         private Command updateVersions;
         #endregion
 
-        #region Properties
-        private Dictionary<IClass, Command> GetUnitRolesByClass
-        {
-            get
-            {
-                return this.getUnitRolesByClass ?? (this.getUnitRolesByClass = new Dictionary<IClass, Command>());
-            }
-        }
-
-        private Dictionary<IClass, Dictionary<IRoleType, Command>> SetUnitRoleByRoleTypeByClass
-        {
-            get
-            {
-                return this.setUnitRoleByRoleTypeByClass ?? (this.setUnitRoleByRoleTypeByClass = new Dictionary<IClass, Dictionary<IRoleType, Command>>());
-            }
-        }
-
-        private Dictionary<IClass, Dictionary<IList<IRoleType>, Command>> SetUnitRolesByRoleTypeByClass
-        {
-            get
-            {
-                return this.setUnitRolesByRoleTypeByClass ?? (this.setUnitRolesByRoleTypeByClass = new Dictionary<IClass, Dictionary<IList<IRoleType>, Command>>());
-            }
-        }
-
-        private Dictionary<IRoleType, Command> GetCompositeRoleByRoleType
-        {
-            get
-            {
-                return this.getCompositeRoleByRoleType ?? (this.getCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-        private Dictionary<IRoleType, Command> SetCompositeRoleByRoleType
-        {
-            get
-            {
-                return this.setCompositeRoleByRoleType ?? (this.setCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-        private Dictionary<IRoleType, Command> GetCompositesRoleByRoleType
-        {
-            get
-            {
-                return this.getCompositesRoleByRoleType ?? (this.getCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-
-        private Dictionary<IRoleType, Command> AddCompositeRoleByRoleType
-        {
-            get
-            {
-                return this.addCompositeRoleByRoleType ?? (this.addCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-        private Dictionary<IRoleType, Command> RemoveCompositeRoleByRoleType
-        {
-            get
-            {
-                return this.removeCompositeRoleByRoleType ?? (this.removeCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-        private Dictionary<IRoleType, Command> ClearCompositeAndCompositesRoleByRoleType
-        {
-            get
-            {
-                return this.clearCompositeAndCompositesRoleByRoleType ?? (this.clearCompositeAndCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
-            }
-        }
-
-        private Dictionary<IAssociationType, Command> GetCompositeAssociationByAssociationType
-        {
-            get
-            {
-                return this.getCompositeAssociationByAssociationType ?? (this.getCompositeAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
-            }
-        }
-
-        private Dictionary<IAssociationType, Command> GetCompositesAssociationByAssociationType
-        {
-            get
-            {
-                return this.getCompositesAssociationByAssociationType ?? (this.getCompositesAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
-            }
-        }
-
-        private Dictionary<IClass, Command> CreateObjectByClass
-        {
-            get
-            {
-                return this.createObjectByClass ?? (this.createObjectByClass = new Dictionary<IClass, Command>());
-            }
-        }
-
-        private Dictionary<IClass, Command> CreateObjectsByClass
-        {
-            get
-            {
-                return this.createObjectsByClass ?? (this.createObjectsByClass = new Dictionary<IClass, Command>());
-            }
-        }
-
-        private Dictionary<IClass, Command> DeleteObjectByClass
-        {
-            get
-            {
-                return this.deleteObjectByClass ?? (this.deleteObjectByClass = new Dictionary<IClass, Command>());
-            }
-        }
-
-        private Dictionary<IClass, Command> InsertObjectByClass
-        {
-            get
-            {
-                return this.insertObjectByClass ?? (this.insertObjectByClass = new Dictionary<IClass, Command>());
-            }
-        }
-        #endregion
-
         internal Commands(Session session, Connection connection)
         {
-            this.Session = session;
+            this.session = session;
             this.connection = connection;
         }
+
+        private Database Database => this.session.Database;
+
+        #region Properties
+        private Dictionary<IClass, Command> GetUnitRolesByClass => this.getUnitRolesByClass ?? (this.getUnitRolesByClass = new Dictionary<IClass, Command>());
+
+        private Dictionary<IClass, Dictionary<IRoleType, Command>> SetUnitRoleByRoleTypeByClass => this.setUnitRoleByRoleTypeByClass ?? (this.setUnitRoleByRoleTypeByClass = new Dictionary<IClass, Dictionary<IRoleType, Command>>());
+
+        private Dictionary<IClass, Dictionary<IList<IRoleType>, Command>> SetUnitRolesByRoleTypeByClass => this.setUnitRolesByRoleTypeByClass ?? (this.setUnitRolesByRoleTypeByClass = new Dictionary<IClass, Dictionary<IList<IRoleType>, Command>>());
+
+        private Dictionary<IRoleType, Command> GetCompositeRoleByRoleType => this.getCompositeRoleByRoleType ?? (this.getCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IRoleType, Command> SetCompositeRoleByRoleType => this.setCompositeRoleByRoleType ?? (this.setCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IRoleType, Command> GetCompositesRoleByRoleType => this.getCompositesRoleByRoleType ?? (this.getCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IRoleType, Command> AddCompositeRoleByRoleType => this.addCompositeRoleByRoleType ?? (this.addCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IRoleType, Command> RemoveCompositeRoleByRoleType => this.removeCompositeRoleByRoleType ?? (this.removeCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IRoleType, Command> ClearCompositeAndCompositesRoleByRoleType => this.clearCompositeAndCompositesRoleByRoleType ?? (this.clearCompositeAndCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
+
+        private Dictionary<IAssociationType, Command> GetCompositeAssociationByAssociationType => this.getCompositeAssociationByAssociationType ?? (this.getCompositeAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
+
+        private Dictionary<IAssociationType, Command> GetCompositesAssociationByAssociationType => this.getCompositesAssociationByAssociationType ?? (this.getCompositesAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
+
+        private Dictionary<IClass, Command> CreateObjectByClass => this.createObjectByClass ?? (this.createObjectByClass = new Dictionary<IClass, Command>());
+
+        private Dictionary<IClass, Command> CreateObjectsByClass => this.createObjectsByClass ?? (this.createObjectsByClass = new Dictionary<IClass, Command>());
+
+        private Dictionary<IClass, Command> DeleteObjectByClass => this.deleteObjectByClass ?? (this.deleteObjectByClass = new Dictionary<IClass, Command>());
+
+        private Dictionary<IClass, Command> InsertObjectByClass => this.insertObjectByClass ?? (this.insertObjectByClass = new Dictionary<IClass, Command>());
+
+        #endregion
 
         internal void ResetCommands()
         {
@@ -458,7 +366,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
             else
             {
-                var objectId = this.Session.State.GetObjectIdForExistingObject(result.ToString());
+                var objectId = this.session.State.GetObjectIdForExistingObject(result.ToString());
                 // TODO: Should add to objectsToLoad
                 roles.CachedObject.SetValue(roleType, objectId);
             }
@@ -518,7 +426,7 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 while (reader.Read())
                 {
-                    var id = this.Session.State.GetObjectIdForExistingObject(reader[0].ToString());
+                    var id = this.session.State.GetObjectIdForExistingObject(reader[0].ToString());
                     objectIds.Add(id);
                 }
             }
@@ -607,11 +515,11 @@ namespace Allors.Adapters.Object.SqlClient
 
             if (result != null && result != DBNull.Value)
             {
-                var id = this.Session.State.GetObjectIdForExistingObject(result.ToString());
+                var id = this.session.State.GetObjectIdForExistingObject(result.ToString());
 
                 associationObject = associationType.ObjectType.ExistExclusiveClass ? 
-                                        this.Session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.Session) : 
-                                        this.Session.State.GetOrCreateReferenceForExistingObject(id, this.Session);
+                                        this.session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.session) : 
+                                        this.session.State.GetOrCreateReferenceForExistingObject(id, this.session);
             }
 
             return associationObject;
@@ -639,7 +547,7 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 while (reader.Read())
                 {
-                    var id = this.Session.State.GetObjectIdForExistingObject(reader[0].ToString());
+                    var id = this.session.State.GetObjectIdForExistingObject(reader[0].ToString());
                     objectIds.Add(id);
                 }
             }
@@ -665,7 +573,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             var result = command.ExecuteScalar();
             var objectId = long.Parse(result.ToString());
-            return this.Session.State.CreateReferenceForNewObject(@class, objectId, this.Session);
+            return this.session.State.CreateReferenceForNewObject(@class, objectId, this.session);
         }
 
         internal IList<Reference> CreateObjects(IClass @class, int count)
@@ -702,7 +610,7 @@ namespace Allors.Adapters.Object.SqlClient
             foreach (var id in objectIds)
             {
                 var objectId = long.Parse(id.ToString());
-                var strategySql = this.Session.State.CreateReferenceForNewObject(@class, objectId, this.Session);
+                var strategySql = this.session.State.CreateReferenceForNewObject(@class, objectId, this.session);
                 strategies.Add(strategySql);
             }
 
@@ -762,7 +670,7 @@ namespace Allors.Adapters.Object.SqlClient
                 throw new Exception("Duplicate id error");
             }
 
-            return this.Session.State.CreateReferenceForNewObject(@class, objectId, this.Session);
+            return this.session.State.CreateReferenceForNewObject(@class, objectId, this.session);
         }
 
         internal Reference InstantiateObject(long objectId)
@@ -792,7 +700,7 @@ namespace Allors.Adapters.Object.SqlClient
                     var version = reader.GetInt64(1);
 
                     var type = (IClass)this.Database.MetaPopulation.Find(classId);
-                    return this.Session.State.GetOrCreateReferenceForExistingObject(type, objectId, version, this.Session);
+                    return this.session.State.GetOrCreateReferenceForExistingObject(type, objectId, version, this.session);
                 }
 
                 return null;
@@ -826,7 +734,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                     var objectId = long.Parse(objectIdString);
                     var type = (IClass)this.Database.ObjectFactory.GetObjectTypeForType(classId);
-                    var reference = this.Session.State.GetOrCreateReferenceForExistingObject(type, objectId, version, this.Session);
+                    var reference = this.session.State.GetOrCreateReferenceForExistingObject(type, objectId, version, this.session);
 
                     yield return reference;
                 }
@@ -877,13 +785,13 @@ namespace Allors.Adapters.Object.SqlClient
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectTableParameter(this.Session.State.ModifiedRolesByReference.Keys);
+                command.AddObjectTableParameter(this.session.State.ModifiedRolesByReference.Keys);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(this.Session.State.ModifiedRolesByReference.Keys);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(this.session.State.ModifiedRolesByReference.Keys);
             }
 
             command.ExecuteNonQuery();

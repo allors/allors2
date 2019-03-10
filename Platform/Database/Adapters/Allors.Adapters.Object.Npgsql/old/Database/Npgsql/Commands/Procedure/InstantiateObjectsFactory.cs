@@ -24,14 +24,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
 
     using DatabaseSession = DatabaseSession;
 
-    internal class InstantiateObjectsFactory : IInstantiateObjectsFactory
+    public class InstantiateObjectsFactory
     {
         private readonly Npgsql.Database database;
 
@@ -40,12 +39,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.database = database;
         }
 
-        public IInstantiateObjects Create(Sql.DatabaseSession session)
+        public InstantiateObjects Create(Sql.DatabaseSession session)
         {
             return new InstantiateObjects(this.database, session);
         }
 
-        private class InstantiateObjects : DatabaseCommand, IInstantiateObjects
+        public class InstantiateObjects : DatabaseCommand
         {
             private readonly Npgsql.Database database;
             private NpgsqlCommand command;

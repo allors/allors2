@@ -24,14 +24,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
 
     using global::Npgsql;
 
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class UpdateCacheIdsFactory : IUpdateCacheIdsFactory
+    public class UpdateCacheIdsFactory
     {
         private readonly Database database;
 
@@ -48,12 +47,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             }
         }
 
-        public IUpdateCacheIds Create(Sql.DatabaseSession session)
+        public UpdateCacheIds Create(Sql.DatabaseSession session)
         {
             return new UpdateCacheIds(this, session);
         }
 
-        private class UpdateCacheIds : DatabaseCommand, IUpdateCacheIds
+        public class UpdateCacheIds : DatabaseCommand
         {
             private readonly UpdateCacheIdsFactory factory;
             private NpgsqlCommand command;

@@ -24,7 +24,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Collections.Generic;
     using System.Data;
 
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -32,7 +31,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class SetUnitRoleFactory : ISetUnitRoleFactory
+    public class SetUnitRoleFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IObjectType, Dictionary<IRoleType, string>> sqlByRoleTypeByObjectType;
@@ -43,7 +42,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByRoleTypeByObjectType = new Dictionary<IObjectType, Dictionary<IRoleType, string>>();
         }
 
-        public ISetUnitRole Create(Sql.DatabaseSession session)
+        public SetUnitRole Create(Sql.DatabaseSession session)
         {
             return new SetUnitRole(this, session);
         }
@@ -66,7 +65,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return sqlByRoleType[roleType];
         }
 
-        private class SetUnitRole : DatabaseCommand, ISetUnitRole
+        public class SetUnitRole : DatabaseCommand
         {
             private readonly SetUnitRoleFactory factory;
             private readonly Dictionary<IObjectType, Dictionary<IRoleType, NpgsqlCommand>> commandByRoleTypeByObjectType;

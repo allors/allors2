@@ -25,7 +25,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data.Common;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -33,7 +32,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    internal class CreateObjectsFactory : ICreateObjectsFactory
+    public class CreateObjectsFactory 
     {
         internal readonly Database Database;
 
@@ -42,12 +41,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.Database = database;
         }
 
-        public ICreateObjects Create(Sql.DatabaseSession session)
+        public CreateObjects Create(Sql.DatabaseSession session)
         {
             return new CreateObjects(this, session);
         }
 
-        private class CreateObjects : DatabaseCommand, ICreateObjects
+        public class CreateObjects : DatabaseCommand
         {
             private readonly CreateObjectsFactory factory;
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;

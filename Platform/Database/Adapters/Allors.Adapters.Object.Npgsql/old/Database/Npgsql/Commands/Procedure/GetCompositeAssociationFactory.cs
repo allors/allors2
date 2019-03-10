@@ -25,7 +25,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -33,7 +32,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class GetCompositeAssociationFactory : IGetCompositeAssociationFactory
+    public class GetCompositeAssociationFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IAssociationType, string> sqlByAssociationType;
@@ -44,7 +43,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByAssociationType = new Dictionary<IAssociationType, string>();
         }
 
-        public IGetCompositeAssociation Create(Sql.DatabaseSession session)
+        public GetCompositeAssociation Create(Sql.DatabaseSession session)
         {
             return new GetCompositeAssociation(this, session);
         }
@@ -79,7 +78,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return this.sqlByAssociationType[associationType];
         }
 
-        private class GetCompositeAssociation : DatabaseCommand, IGetCompositeAssociation
+        public class GetCompositeAssociation : DatabaseCommand
         {
             private readonly GetCompositeAssociationFactory factory;
             private readonly Dictionary<IAssociationType, NpgsqlCommand> commandByAssociationType;

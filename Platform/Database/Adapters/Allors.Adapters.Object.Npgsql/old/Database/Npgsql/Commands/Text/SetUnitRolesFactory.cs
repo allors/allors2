@@ -24,7 +24,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Text;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -32,7 +31,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class SetUnitRolesFactory : ISetUnitRolesFactory
+    public class SetUnitRolesFactory
     {
         public readonly Database Database;
 
@@ -41,12 +40,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Database = database;
         }
 
-        public ISetUnitRoles Create(Sql.DatabaseSession session)
+        public SetUnitRoles Create(Sql.DatabaseSession session)
         {
             return new SetUnitRoles(session);
         }
 
-        private class SetUnitRoles : DatabaseCommand, ISetUnitRoles
+        public class SetUnitRoles : DatabaseCommand
         {
             private readonly DatabaseSession session;
 

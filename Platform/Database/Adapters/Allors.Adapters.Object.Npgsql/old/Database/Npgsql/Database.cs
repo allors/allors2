@@ -23,46 +23,53 @@ namespace Allors.Adapters.Database.Npgsql
     using System.Linq;
     using System.Text;
 
+    using Allors.Adapters.Database.Npgsql.Commands;
     using Allors.Adapters.Database.Sql;
 
     using global::Npgsql;
 
     using NpgsqlTypes;
 
-    public abstract class Database : Sql.Database
+    public class Database : Sql.Database
     {
         private readonly CommandFactories commandFactories;
 
-        protected Database(IServiceProvider serviceProvider, Configuration configuration)
+        private Schema schema;
+
+        public Database(IServiceProvider serviceProvider, Configuration configuration)
             : base(serviceProvider, configuration)
         {
             this.commandFactories = new CommandFactories(this);
         }
-
-        public CommandFactories NpgsqlCommandFactories
+        
+        public Schema NpgsqlSchema
         {
             get
             {
-                return this.commandFactories;
+                if (this.ObjectFactory.MetaPopulation != null)
+                {
+                    if (this.schema == null)
+                    {
+                        this.schema = new Schema(this);
+                    }
+                }
+
+                return this.schema;
             }
         }
 
-        public override Sql.Schema Schema
+        public CommandFactories NpgsqlCommandFactories => this.commandFactories;
+
+        public override Sql.Schema Schema => this.NpgsqlSchema;
+
+        public override Sql.CommandFactories CommandFactories => this.commandFactories;
+
+        protected string IdentityType => "bigserial";
+
+        public override void ResetSchema()
         {
-            get
-            {
-                return this.NpgsqlSchema;
-            }
+            this.schema = null;
         }
-
-        public abstract Schema NpgsqlSchema { get; }
-
-        public override Sql.CommandFactories CommandFactories
-        {
-            get { return this.commandFactories; }
-        }
-
-        protected abstract string IdentityType { get; }
 
         public override DbConnection CreateDbConnection()
         {

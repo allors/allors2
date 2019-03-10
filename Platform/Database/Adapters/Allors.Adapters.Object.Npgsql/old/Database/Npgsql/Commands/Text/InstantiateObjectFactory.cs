@@ -21,7 +21,6 @@
 namespace Allors.Adapters.Database.Npgsql.Commands.Text
 {
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -29,7 +28,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class InstantiateObjectFactory : IInstantiateObjectFactory
+    public class InstantiateObjectFactory
     {
         public readonly Database Database;
         public readonly string Sql;
@@ -42,12 +41,12 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Sql += "WHERE " + database.Schema.ObjectId + "=" + database.Schema.ObjectId.Param.InvocationName + "\n";
         }
 
-        public IInstantiateObject Create(Sql.DatabaseSession session)
+        public InstantiateObject Create(Sql.DatabaseSession session)
         {
             return new InstantiateObject(this, session);
         }
 
-        private class InstantiateObject : DatabaseCommand, IInstantiateObject
+        public class InstantiateObject : DatabaseCommand
         {
             private readonly InstantiateObjectFactory factory;
             private NpgsqlCommand command;

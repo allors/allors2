@@ -104,12 +104,12 @@ namespace Allors.Adapters.Database.Npgsql
             try
             {
                 this.sessionCommands = null;
-                transaction?.Commit();
+                this.transaction?.Commit();
             }
             finally
             {
                 this.transaction = null;
-                connection?.Close();
+                this.connection?.Close();
                 this.connection = null;
             }
         }
@@ -119,12 +119,12 @@ namespace Allors.Adapters.Database.Npgsql
             try
             {
                 this.sessionCommands = null;
-                transaction?.Rollback();
+                this.transaction?.Rollback();
             }
             finally
             {
                 this.transaction = null;
-                connection?.Close();
+                this.connection?.Close();
                 this.connection = null;
             }
         }

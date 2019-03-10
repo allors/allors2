@@ -22,7 +22,6 @@ namespace Allors.Adapters.Database.Npgsql
 {
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
-    using Allors.Adapters.Database.Sql.Commands;
 
     using AddCompositeRoleFactory = Allors.Adapters.Database.Npgsql.Commands.Procedure.AddCompositeRoleFactory;
 
@@ -31,33 +30,33 @@ namespace Allors.Adapters.Database.Npgsql
         private readonly Database database;
 
         // Session
-        private IGetObjectTypeFactory getObjectTypeFactory;
-        private IInstantiateObjectsFactory instantiateObjectsFactory;
-        private IAddCompositeRoleFactory addCompositeRoleFactory;
-        private IRemoveCompositeRoleFactory removeCompositeRoleFactory;
-        private ICreateObjectFactory createObjectFactory;
-        private ICreateObjectsFactory createObjectsFactory;
-        private IInsertObjectFactory insertObjectFactory;
-        private IInstantiateObjectFactory instantiateObjectFactory;
-        private IDeleteObjectFactory deleteObjectFactory;
-        private IGetCompositeAssociationFactory getCompositeAssociationFactory;
-        private IGetCompositeAssociationsFactory getCompositeAssociationsFactory;
-        private IGetCompositeRoleFactory getCompositeRoleFactory;
-        private IGetCompositeRolesFactory getCompositeRolesFactory;
-        private IGetUnitRolesFactory getUnitRolesFactory;
-        private IClearCompositeAndCompositesRoleFactory clearCompositeAndCompositesRoleFactory;
-        private ISetCompositeRoleFactory setCompositeRoleFactory;
-        private ISetUnitRoleFactory setUnitRoleFactory;
-        private ISetUnitRolesFactory setUnitRolesFactory;
-        private IGetCacheIdsFactory getCacheIdsFactory;
-        private IUpdateCacheIdsFactory updateCacheIdsFactory;
+        private GetObjectTypeFactory getObjectTypeFactory;
+        private InstantiateObjectsFactory instantiateObjectsFactory;
+        private AddCompositeRoleFactory addCompositeRoleFactory;
+        private RemoveCompositeRoleFactory removeCompositeRoleFactory;
+        private CreateObjectFactory createObjectFactory;
+        private CreateObjectsFactory createObjectsFactory;
+        private InsertObjectFactory insertObjectFactory;
+        private InstantiateObjectFactory instantiateObjectFactory;
+        private DeleteObjectFactory deleteObjectFactory;
+        private GetCompositeAssociationFactory getCompositeAssociationFactory;
+        private GetCompositeAssociationsFactory getCompositeAssociationsFactory;
+        private GetCompositeRoleFactory getCompositeRoleFactory;
+        private GetCompositeRolesFactory getCompositeRolesFactory;
+        private GetUnitRolesFactory getUnitRolesFactory;
+        private ClearCompositeAndCompositesRoleFactory clearCompositeAndCompositesRoleFactory;
+        private SetCompositeRoleFactory setCompositeRoleFactory;
+        private SetUnitRoleFactory setUnitRoleFactory;
+        private SetUnitRolesFactory setUnitRolesFactory;
+        private GetCacheIdsFactory getCacheIdsFactory;
+        private UpdateCacheIdsFactory updateCacheIdsFactory;
         
         public CommandFactories(Database database)
         {
             this.database = database;
         }
 
-        public override IGetObjectTypeFactory GetObjectTypeFactory
+        public override GetObjectTypeFactory GetObjectTypeFactory
         {
             get
             {
@@ -65,7 +64,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ICreateObjectFactory CreateObjectFactory
+        public override CreateObjectFactory CreateObjectFactory
         {
             get
             {
@@ -73,7 +72,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ICreateObjectsFactory CreateObjectsFactory
+        public override CreateObjectsFactory CreateObjectsFactory
         {
             get
             {
@@ -81,7 +80,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IInsertObjectFactory InsertObjectFactory
+        public override InsertObjectFactory InsertObjectFactory
         {
             get
             {
@@ -89,7 +88,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IInstantiateObjectsFactory InstantiateObjectsFactory
+        public override InstantiateObjectsFactory InstantiateObjectsFactory
         {
             get
             {
@@ -97,7 +96,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IAddCompositeRoleFactory AddCompositeRoleFactory
+        public override AddCompositeRoleFactory AddCompositeRoleFactory
         {
             get
             {
@@ -105,7 +104,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IRemoveCompositeRoleFactory RemoveCompositeRoleFactory
+        public override RemoveCompositeRoleFactory RemoveCompositeRoleFactory
         {
             get
             {
@@ -113,7 +112,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IInstantiateObjectFactory InstantiateObjectFactory
+        public override InstantiateObjectFactory InstantiateObjectFactory
         {
             get
             {
@@ -121,7 +120,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IDeleteObjectFactory DeleteObjectFactory
+        public override DeleteObjectFactory DeleteObjectFactory
         {
             get
             {
@@ -129,7 +128,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
         
-        public override IGetCompositeAssociationFactory GetCompositeAssociationFactory
+        public override GetCompositeAssociationFactory GetCompositeAssociationFactory
         {
             get
             {
@@ -137,7 +136,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IGetCompositeAssociationsFactory GetCompositeAssociationsFactory
+        public override GetCompositeAssociationsFactory GetCompositeAssociationsFactory
         {
             get
             {
@@ -145,7 +144,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IGetCompositeRoleFactory GetCompositeRoleFactory
+        public override GetCompositeRoleFactory GetCompositeRoleFactory
         {
             get
             {
@@ -153,7 +152,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IGetCompositeRolesFactory GetCompositeRolesFactory
+        public override GetCompositeRolesFactory GetCompositeRolesFactory
         {
             get
             {
@@ -161,7 +160,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IGetUnitRolesFactory GetUnitRolesFactory
+        public override GetUnitRolesFactory GetUnitRolesFactory
         {
             get
             {
@@ -169,7 +168,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IClearCompositeAndCompositesRoleFactory ClearCompositeAndCompositesRoleFactory
+        public override ClearCompositeAndCompositesRoleFactory ClearCompositeAndCompositesRoleFactory
         {
             get
             {
@@ -177,7 +176,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ISetCompositeRoleFactory SetCompositeRoleFactory
+        public override SetCompositeRoleFactory SetCompositeRoleFactory
         {
             get
             {
@@ -185,7 +184,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ISetUnitRoleFactory SetUnitRoleFactory
+        public override SetUnitRoleFactory SetUnitRoleFactory
         {
             get
             {
@@ -193,7 +192,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ISetUnitRolesFactory SetUnitRolesFactory
+        public override SetUnitRolesFactory SetUnitRolesFactory
         {
             get
             {
@@ -201,7 +200,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IGetCacheIdsFactory GetCacheIdsFactory
+        public override GetCacheIdsFactory GetCacheIdsFactory
         {
             get
             {
@@ -209,7 +208,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override IUpdateCacheIdsFactory UpdateCacheIdsFactory
+        public override UpdateCacheIdsFactory UpdateCacheIdsFactory
         {
             get
             {

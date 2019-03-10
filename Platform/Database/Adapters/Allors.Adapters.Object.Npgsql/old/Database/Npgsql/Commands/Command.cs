@@ -23,11 +23,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands
     using System;
     using System.Collections.Generic;
 
+    using Allors.Adapters.Database.Sql;
+
     using global::Npgsql;
 
     using NpgsqlTypes;
-
-    using SchemaParameter = SchemaParameter;
 
     public abstract class Command
     {
