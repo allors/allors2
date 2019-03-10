@@ -104,19 +104,12 @@ namespace Allors.Adapters.Database.Npgsql
             try
             {
                 this.sessionCommands = null;
-                if (this.transaction != null)
-                {
-                    this.transaction.Commit();
-                }
+                transaction?.Commit();
             }
             finally
             {
                 this.transaction = null;
-                if (this.connection != null)
-                {
-                    this.connection.Close();
-                }
-
+                connection?.Close();
                 this.connection = null;
             }
         }
@@ -126,19 +119,12 @@ namespace Allors.Adapters.Database.Npgsql
             try
             {
                 this.sessionCommands = null;
-                if (this.transaction != null)
-                {
-                    this.transaction.Rollback();
-                }
+                transaction?.Rollback();
             }
             finally
             {
                 this.transaction = null;
-                if (this.connection != null)
-                {
-                    this.connection.Close();
-                }
-
+                connection?.Close();
                 this.connection = null;
             }
         }

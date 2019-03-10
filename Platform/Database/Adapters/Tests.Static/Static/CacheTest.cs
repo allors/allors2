@@ -166,7 +166,7 @@ namespace Allors.Adapters
 
                     session2.Commit();
                 }
-
+                
                 var triggerCache = c1.C1C2one2one;
 
                 var exceptionThrown = false;
@@ -174,7 +174,7 @@ namespace Allors.Adapters
                 {
                     session.Commit();
                 }
-                catch
+                catch(Exception e)
                 {
                     exceptionThrown = true;
                 }
