@@ -75,7 +75,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 if (!commandByKey.TryGetValue(sortedRoleTypes, out command))
                 {
                     command = this.session.CreateNpgsqlCommand();
-                    this.AddInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
 
                     var sql = new StringBuilder();
                     sql.Append("UPDATE " + schema.Table(exclusiveLeafClass) + " SET\n");
@@ -94,7 +94,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                         sql.Append(column + "= " + column.Param.InvocationName);
 
                         var unit = roles.ModifiedRoleByRoleType[roleType];
-                        this.AddInObject(command, column.Param, unit);
+                        Commands.NpgsqlCommandExtensions.AddInObject(command, column.Param, unit);
                     }
 
                     sql.Append("\nWHERE " + schema.ObjectId + "= :" + schema.ObjectId.Param + "\n");
@@ -106,14 +106,14 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 }
                 else
                 {
-                    this.SetInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
                     
                     foreach (var roleType in sortedRoleTypes)
                     {
                         var column = schema.Column(roleType);
 
                         var unit = roles.ModifiedRoleByRoleType[roleType];
-                        this.SetInObject(command, column.Param, unit);
+                        Commands.NpgsqlCommandExtensions.SetInObject(command, column.Param, unit);
                     }
 
                     command.ExecuteNonQuery();

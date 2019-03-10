@@ -71,11 +71,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     this.command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "UC");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    this.AddInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
                 }
                 else
                 {
-                    this.SetInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
                 }
 
                 this.command.ExecuteNonQuery();

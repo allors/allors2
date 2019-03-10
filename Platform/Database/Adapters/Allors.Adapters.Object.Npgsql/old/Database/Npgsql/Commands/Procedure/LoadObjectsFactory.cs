@@ -43,7 +43,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return new LoadObjects(this);
         }
 
-        public class LoadObjects : Commands.Command
+        public class LoadObjects
         {
             private readonly LoadObjectsFactory factory;
 
@@ -64,8 +64,8 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                     using (var command = this.factory.ManagementSession.CreateNpgsqlCommand(Schema.AllorsPrefix + "L_" + exclusiveLeafClass.Name))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        this.AddInObject(command, schema.TypeId.Param, objectType.Id);
-                        this.AddInTable(command, schema.ObjectArrayParam, database.CreateObjectTable(objectIds));
+                        Commands.NpgsqlCommandExtensions.AddInObject(command, schema.TypeId.Param, objectType.Id);
+                        Commands.NpgsqlCommandExtensions.AddInTable(command, schema.ObjectArrayParam, database.CreateObjectTable(objectIds));
                         command.ExecuteNonQuery();
                     }
                 }

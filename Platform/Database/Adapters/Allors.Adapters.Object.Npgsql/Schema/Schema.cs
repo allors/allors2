@@ -161,6 +161,39 @@ namespace Allors.Adapters.Database.Sql
                 }
             }
 
+            this.countParam = this.CreateParameter("COUNT", DbType.Int32);
+            this.matchRoleParam = this.CreateParameter("MR", DbType.Guid);
+
+            this.typeDbType = DbType.Guid;
+            this.cacheDbType = DbType.Int32;
+            this.singletonDbType = DbType.Int32;
+            this.versionDbType = DbType.Guid;
+
+            this.tablesByName = new Dictionary<string, SchemaTable>();
+
+            this.tableByClass = new Dictionary<IClass, SchemaTable>();
+            this.tablesByRelationType = new Dictionary<IRelationType, SchemaTable>();
+            this.columnsByRelationType = new Dictionary<IRelationType, SchemaColumn>();
+
+            this.objectId = new SchemaColumn(this, "O", this.ObjectDbType, false, true, SchemaIndexType.None);
+            this.cacheId = new SchemaColumn(this, "C", this.CacheDbType, false, false, SchemaIndexType.None);
+            this.associationId = new SchemaColumn(this, "A", this.ObjectDbType, false, true, SchemaIndexType.None);
+            this.roleId = new SchemaColumn(this, "R", this.ObjectDbType, false, true, SchemaIndexType.None);
+            this.typeId = new SchemaColumn(this, "T", this.TypeDbType, false, false, SchemaIndexType.None);
+
+            // Objects
+            this.objects = new SchemaTable(this, SchemaTableKind.System, AllorsPrefix + "O");
+            this.objectsObjectId = new SchemaColumn(this, this.ObjectId.Name, this.ObjectDbType, true, true, SchemaIndexType.None);
+            this.objectsCacheId = new SchemaColumn(this, "C", this.CacheDbType, false, false, SchemaIndexType.None);
+            this.objectsTypeId = new SchemaColumn(this, this.TypeId.Name, this.TypeDbType, false, false, SchemaIndexType.None);
+
+            this.Objects.AddColumn(this.ObjectsObjectId);
+            this.Objects.AddColumn(this.ObjectsTypeId);
+            this.Objects.AddColumn(this.ObjectsCacheId);
+            this.tablesByName.Add(this.Objects.Name, this.Objects);
+
+            this.CreateTablesFromMeta();
+
             this.OnConstructed();
         }
 

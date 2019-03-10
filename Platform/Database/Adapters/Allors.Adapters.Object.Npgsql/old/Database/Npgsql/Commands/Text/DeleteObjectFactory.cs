@@ -81,13 +81,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                     }
 
                     command = this.Session.CreateNpgsqlCommand(this.factory.sqlByMetaType[objectType]);
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
                 }
                 
                 command.ExecuteNonQuery();

@@ -20,6 +20,8 @@
 
 namespace Allors.Adapters.Database.Npgsql.Commands.Text
 {
+    using System;
+
     using Allors.Adapters.Database.Sql;
     using Allors.Meta;
 
@@ -62,19 +64,19 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 if (this.command == null)
                 {
                     this.command = this.Session.CreateNpgsqlCommand(this.factory.Sql);
-                    this.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
                 }
                 else
                 {
-                    this.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
                 }
 
                 using (var reader = this.command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        var classId = this.GetClassId(reader, 0);
-                        var cacheId = this.GetCachId(reader, 1);
+                        var classId = reader.GetGuid(0);
+                        var cacheId = reader.GetInt32(1);
 
                         var type = (IClass)this.factory.Database.ObjectFactory.MetaPopulation.Find(classId);
                         return this.Session.GetOrCreateAssociationForExistingObject(type, objectId, cacheId);

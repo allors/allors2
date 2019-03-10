@@ -67,7 +67,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return new LoadCompositeRelations(this, sql);
         }
 
-        public class LoadCompositeRelations : Commands.Command
+        public class LoadCompositeRelations
         {
             private readonly LoadCompositeRelationsFactory factory;
             private readonly string sql;
@@ -84,8 +84,8 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 var command = this.factory.ManagementSession.CreateNpgsqlCommand(this.sql);
                 command.CommandType = CommandType.StoredProcedure;
-                this.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
-                this.AddInTable(command, database.NpgsqlSchema.CompositeRelationArrayParam, database.CreateRoleTable(relations));
+                Commands.NpgsqlCommandExtensions.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
+                Commands.NpgsqlCommandExtensions.AddInTable(command, database.NpgsqlSchema.CompositeRelationArrayParam, database.CreateRoleTable(relations));
 
                 command.ExecuteNonQuery();
             }

@@ -20,7 +20,7 @@
 
 namespace Allors.Adapters.Database.Npgsql.Commands
 {
-    public abstract class DatabaseCommand : Command
+    public abstract class DatabaseCommand
     {
         protected readonly DatabaseSession Session;
         protected readonly Database Database;

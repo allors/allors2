@@ -20,6 +20,7 @@
 
 namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
 
@@ -61,11 +62,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     this.command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "IOS");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    this.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
                 }
                 else
                 {
-                    this.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
                 }
 
                 var objects = new List<Reference>();
@@ -75,8 +76,8 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                     {
                         var idString = reader[0].ToString();
                         var id = long.Parse(idString);
-                        var classId = this.GetClassId(reader, 1);
-                        var cacheId = this.GetCachId(reader, 2);
+                        var classId = reader.GetGuid(1);
+                        var cacheId = reader.GetInt32(2);
 
                         var type = (IClass)this.Session.Database.ObjectFactory.MetaPopulation.Find(classId);
                         var obj = this.Session.GetOrCreateAssociationForExistingObject(type, id, cacheId);

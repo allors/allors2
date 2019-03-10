@@ -88,13 +88,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
 
                     this.commandByAssociationType[associationType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
                 }
 
                 var objectIds = new List<long>();

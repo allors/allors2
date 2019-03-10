@@ -57,15 +57,15 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     command = this.Session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "INS_" + exclusiveLeafClass.Name);
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, schema.ObjectId.Param, objectId);
-                    this.AddInObject(command, schema.TypeId.Param, objectType.Id);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, schema.TypeId.Param, objectType.Id);
 
                     this.commandByObjectType[exclusiveLeafClass] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, schema.ObjectId.Param, objectId);
-                    this.SetInObject(command, schema.TypeId.Param, objectType.Id);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, schema.TypeId.Param, objectType.Id);
                 }
 
                 var result = (bool)command.ExecuteScalar();

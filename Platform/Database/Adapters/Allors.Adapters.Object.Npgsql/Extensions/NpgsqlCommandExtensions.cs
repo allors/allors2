@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Command.cs" company="Allors bvba">
+// <copyright file="NpgsqlCommandExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -21,34 +21,28 @@
 namespace Allors.Adapters.Database.Npgsql.Commands
 {
     using System;
-    using System.Collections.Generic;
-
     using Allors.Adapters.Database.Sql;
-
     using global::Npgsql;
-
     using NpgsqlTypes;
 
-    public abstract class Command
+    public static class NpgsqlCommandExtensions
     {
-        public void AddInObject(NpgsqlCommand command, Sql.SchemaParameter parameter, object value)
+        public static void AddInObject(NpgsqlCommand command, SchemaParameter parameter, object value)
         {
-            var schemaParameter = (SchemaParameter)parameter;
-
             var sqlParameter = command.CreateParameter();
-            sqlParameter.NpgsqlDbType = schemaParameter.NpgsqlDbType;
+            sqlParameter.NpgsqlDbType = parameter.NpgsqlDbType;
             sqlParameter.ParameterName = parameter.Name;
-            sqlParameter.Value = Normalize(value);
-            
+            sqlParameter.Value = value ?? DBNull.Value;
+
             command.Parameters.Add(sqlParameter);
         }
 
-        public void SetInObject(NpgsqlCommand command, Sql.SchemaParameter param, object value)
+        public static void SetInObject(NpgsqlCommand command, SchemaParameter param, object value)
         {
-            command.Parameters[param.Name].Value = Normalize(value);
+            command.Parameters[param.Name].Value = value ?? DBNull.Value;
         }
 
-        public void AddInTable(NpgsqlCommand command, SchemaArrayParameter parameter, object[] array)
+        public static void AddInTable(NpgsqlCommand command, SchemaArrayParameter parameter, object[] array)
         {
             var sqlParameter = command.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | parameter.ElementType;
@@ -58,29 +52,9 @@ namespace Allors.Adapters.Database.Npgsql.Commands
             command.Parameters.Add(sqlParameter);
         }
 
-        public void SetInTable(NpgsqlCommand command, SchemaArrayParameter param, object[] array)
+        public static void SetInTable(NpgsqlCommand command, SchemaArrayParameter param, object[] array)
         {
             command.Parameters[param.Name].Value = array;
-        }
-
-        public int GetCachId(NpgsqlDataReader reader, int i)
-        {
-            return reader.GetInt32(i);
-        }
-
-        public Guid GetClassId(NpgsqlDataReader reader, int i)
-        {
-            return reader.GetGuid(i);
-        }
-
-        private static object Normalize(object value)
-        {
-            if (value == null)
-            {
-                return DBNull.Value;
-            }
-
-            return value;
         }
     }
 }

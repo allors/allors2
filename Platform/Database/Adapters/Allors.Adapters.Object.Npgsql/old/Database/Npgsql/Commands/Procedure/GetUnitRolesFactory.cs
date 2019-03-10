@@ -82,13 +82,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
                 }
 
                 using (DbDataReader reader = command.ExecuteReader())

@@ -63,7 +63,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return sqlByRoleType[roleType];
         }
 
-        public class LoadUnitRelations : Commands.Command
+        public class LoadUnitRelations
         {
             private readonly LoadUnitRelationsFactory factory;
             private readonly Dictionary<IObjectType, Dictionary<IRoleType, NpgsqlCommand>> commandByRoleTypeByObjectType;
@@ -134,13 +134,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                     command = this.factory.ManagementSession.CreateNpgsqlCommand(this.factory.GetSql(exclusiveLeafClass, roleType));
                     command.CommandType = CommandType.StoredProcedure;
 
-                    this.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
-                    this.AddInTable(command, arrayParam, database.CreateRoleTable(relations));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, arrayParam, database.CreateRoleTable(relations));
                 }
                 else
                 {
-                    this.SetInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
-                    this.SetInTable(command, arrayParam, database.CreateRoleTable(relations));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, arrayParam, database.CreateRoleTable(relations));
                 }
 
                 command.ExecuteNonQuery();
