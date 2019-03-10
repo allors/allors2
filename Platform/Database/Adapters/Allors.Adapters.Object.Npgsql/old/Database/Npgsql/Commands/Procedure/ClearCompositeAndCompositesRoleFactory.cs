@@ -41,7 +41,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByRoleType = new Dictionary<IRoleType, string>();
         }
 
-        public ClearCompositeAndCompositesRole Create(Sql.DatabaseSession session)
+        public ClearCompositeAndCompositesRole Create(DatabaseSession session)
         {
             return new ClearCompositeAndCompositesRole(this, session);
         }
@@ -76,15 +76,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return this.sqlByRoleType[roleType];
         }
 
-        public class ClearCompositeAndCompositesRole : DatabaseCommand
+        public class ClearCompositeAndCompositesRole
         {
             private readonly ClearCompositeAndCompositesRoleFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;
 
-            public ClearCompositeAndCompositesRole(ClearCompositeAndCompositesRoleFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public ClearCompositeAndCompositesRole(ClearCompositeAndCompositesRoleFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByRoleType = new Dictionary<IRoleType, NpgsqlCommand>();
             }
 
@@ -95,15 +98,15 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 NpgsqlCommand command;
                 if (!this.commandByRoleType.TryGetValue(roleType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
                     command.CommandType = CommandType.StoredProcedure;
-                    NpgsqlCommandExtensions.AddInTable(command, schema.ObjectArrayParam, this.Database.CreateObjectTable(associations));
+                    NpgsqlCommandExtensions.AddInTable(command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(associations));
 
                     this.commandByRoleType[roleType] = command;
                 }
                 else
                 {
-                    NpgsqlCommandExtensions.SetInTable(command, schema.ObjectArrayParam, this.Database.CreateObjectTable(associations));
+                    NpgsqlCommandExtensions.SetInTable(command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(associations));
                 }
 
                 command.ExecuteNonQuery();

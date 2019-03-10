@@ -43,7 +43,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByRoleType = new Dictionary<IRoleType, string>();
         }
 
-        public GetCompositeRoles Create(Sql.DatabaseSession session)
+        public GetCompositeRoles Create(DatabaseSession session)
         {
             return new GetCompositeRoles(this, session);
         }
@@ -71,15 +71,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return this.sqlByRoleType[roleType];
         }
 
-        public class GetCompositeRoles : DatabaseCommand
+        public class GetCompositeRoles
         {
             private readonly GetCompositeRolesFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;
 
-            public GetCompositeRoles(GetCompositeRolesFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetCompositeRoles(GetCompositeRolesFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByRoleType = new Dictionary<IRoleType, NpgsqlCommand>();
             }
 
@@ -90,15 +93,15 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 NpgsqlCommand command;
                 if (!this.commandByRoleType.TryGetValue(roleType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
                     command.CommandType = CommandType.StoredProcedure;
-                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.AssociationId.Param, reference.ObjectId);
 
                     this.commandByRoleType[roleType] = command;
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.AssociationId.Param, reference.ObjectId);
                 }
 
                 var objectIds = new List<long>();

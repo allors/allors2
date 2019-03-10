@@ -42,32 +42,35 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Sql += "WHERE " + database.Schema.ObjectId + "=" + database.Schema.ObjectId.Param.InvocationName + "\n";
         }
 
-        public GetObjectType Create(Sql.DatabaseSession session)
+        public GetObjectType Create(DatabaseSession session)
         {
             return new GetObjectType(this, session);
         }
 
-        public class GetObjectType : DatabaseCommand
+        public class GetObjectType 
         {
             private readonly GetObjectTypeFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public GetObjectType(GetObjectTypeFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetObjectType(GetObjectTypeFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public IObjectType Execute(long objectId)
             {
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(this.factory.Sql);
-                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    this.command = this.session.CreateNpgsqlCommand(this.factory.Sql);
+                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
 
                 var result = this.command.ExecuteScalar();
@@ -76,7 +79,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                     return null;
                 }
 
-                return this.Session.NpgsqlDatabase.ObjectFactory.GetObjectTypeForType((Guid)result);
+                return this.session.NpgsqlDatabase.ObjectFactory.GetObjectTypeForType((Guid)result);
             }
         }
     }

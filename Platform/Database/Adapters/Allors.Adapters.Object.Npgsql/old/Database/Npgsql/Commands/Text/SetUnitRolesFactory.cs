@@ -40,27 +40,26 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Database = database;
         }
 
-        public SetUnitRoles Create(Sql.DatabaseSession session)
+        public SetUnitRoles Create(DatabaseSession session)
         {
             return new SetUnitRoles(session);
         }
 
-        public class SetUnitRoles : DatabaseCommand
+        public class SetUnitRoles
         {
             private readonly DatabaseSession session;
 
             private readonly Dictionary<IObjectType, Dictionary<IList<IRoleType>, NpgsqlCommand>> commandByKeyByObjectType; 
 
-            public SetUnitRoles(Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public SetUnitRoles(DatabaseSession session)
             {
-                this.session = (DatabaseSession)session;
+                this.session = session;
                 this.commandByKeyByObjectType = new Dictionary<IObjectType, Dictionary<IList<IRoleType>, NpgsqlCommand>>();
             }
 
             public void Execute(Roles roles, IList<IRoleType> sortedRoleTypes)
             {
-                var schema = this.Database.Schema;
+                var schema = this.session.Schema;
 
                 var exclusiveLeafClass = roles.Reference.ObjectType.ExclusiveClass;
 

@@ -43,32 +43,35 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Sql += "WHERE " + database.Schema.ObjectId + "=" + database.Schema.ObjectId.Param.InvocationName + "\n";
         }
 
-        public InstantiateObject Create(Sql.DatabaseSession session)
+        public InstantiateObject Create(DatabaseSession session)
         {
             return new InstantiateObject(this, session);
         }
 
-        public class InstantiateObject : DatabaseCommand
+        public class InstantiateObject
         {
             private readonly InstantiateObjectFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public InstantiateObject(InstantiateObjectFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public InstantiateObject(InstantiateObjectFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public Reference Execute(long objectId)
             {
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(this.factory.Sql);
-                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    this.command = this.session.CreateNpgsqlCommand(this.factory.Sql);
+                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
 
                 using (var reader = this.command.ExecuteReader())
@@ -79,7 +82,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                         var cacheId = reader.GetInt32(1);
 
                         var type = (IClass)this.factory.Database.ObjectFactory.MetaPopulation.Find(classId);
-                        return this.Session.GetOrCreateAssociationForExistingObject(type, objectId, cacheId);
+                        return this.session.GetOrCreateAssociationForExistingObject(type, objectId, cacheId);
                     }
 
                     return null;

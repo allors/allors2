@@ -41,32 +41,35 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.Database = database;
         }
 
-        public CreateObjects Create(Sql.DatabaseSession session)
+        public CreateObjects Create(DatabaseSession session)
         {
             return new CreateObjects(this, session);
         }
 
-        public class CreateObjects : DatabaseCommand
+        public class CreateObjects
         {
             private readonly CreateObjectsFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public CreateObjects(CreateObjectsFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public CreateObjects(CreateObjectsFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
             public IList<Reference> Execute(IClass objectType, int count)
             {
                 IObjectType exclusiveLeafClass = objectType.ExclusiveClass;
-                Sql.Schema schema = this.Database.Schema;
+                Schema schema = this.session.Schema;
 
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(exclusiveLeafClass, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "COS_" + exclusiveLeafClass.SingularName);
+                    command = this.session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "COS_" + exclusiveLeafClass.SingularName);
                     command.CommandType = CommandType.StoredProcedure;
                     Commands.NpgsqlCommandExtensions.AddInObject(command, schema.TypeId.Param, objectType.Id);
                     Commands.NpgsqlCommandExtensions.AddInObject(command, schema.CountParam, count);
@@ -94,7 +97,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 foreach (object id in objectIds)
                 {
                     long objectId = long.Parse(id.ToString());
-                    var strategySql = this.Session.CreateAssociationForNewObject(objectType, objectId);
+                    var strategySql = this.session.CreateAssociationForNewObject(objectType, objectId);
                     strategies.Add(strategySql);
                 }
 

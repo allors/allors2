@@ -40,33 +40,36 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.database = database;
         }
 
-        public InstantiateObjects Create(Sql.DatabaseSession session)
+        public InstantiateObjects Create(DatabaseSession session)
         {
             return new InstantiateObjects(this.database, session);
         }
 
-        public class InstantiateObjects : DatabaseCommand
+        public class InstantiateObjects
         {
             private readonly Npgsql.Database database;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public InstantiateObjects(Npgsql.Database database, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public InstantiateObjects(Npgsql.Database database, DatabaseSession session)
             {
                 this.database = database;
+                this.session = session;
             }
 
             public IList<Reference> Execute(IList<long> objectids)
             {
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "IOS");
+                    this.command = this.session.CreateNpgsqlCommand(Schema.AllorsPrefix + "IOS");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(objectids));
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(objectids));
                 }
 
                 var objects = new List<Reference>();
@@ -79,8 +82,8 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                         var classId = reader.GetGuid(1);
                         var cacheId = reader.GetInt32(2);
 
-                        var type = (IClass)this.Session.Database.ObjectFactory.MetaPopulation.Find(classId);
-                        var obj = this.Session.GetOrCreateAssociationForExistingObject(type, id, cacheId);
+                        var type = (IClass)this.session.Database.ObjectFactory.MetaPopulation.Find(classId);
+                        var obj = this.session.GetOrCreateAssociationForExistingObject(type, id, cacheId);
 
                         objects.Add(obj);
                     }

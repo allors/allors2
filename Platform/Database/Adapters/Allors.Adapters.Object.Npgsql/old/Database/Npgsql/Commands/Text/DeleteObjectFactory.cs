@@ -41,20 +41,23 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByMetaType = new Dictionary<IObjectType, string>();
         }
 
-        public DeleteObject Create(Sql.DatabaseSession session)
+        public DeleteObject Create(DatabaseSession session)
         {
             return new DeleteObject(this, session);
         }
 
-        public class DeleteObject : DatabaseCommand
+        public class DeleteObject 
         {
             private readonly DeleteObjectFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public DeleteObject(DeleteObjectFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public DeleteObject(DeleteObjectFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
@@ -80,14 +83,14 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                         this.factory.sqlByMetaType[objectType] = sql;
                     }
 
-                    command = this.Session.CreateNpgsqlCommand(this.factory.sqlByMetaType[objectType]);
-                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    command = this.session.CreateNpgsqlCommand(this.factory.sqlByMetaType[objectType]);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.ObjectId.Param, strategy.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.ObjectId.Param, strategy.ObjectId);
                 }
                 
                 command.ExecuteNonQuery();

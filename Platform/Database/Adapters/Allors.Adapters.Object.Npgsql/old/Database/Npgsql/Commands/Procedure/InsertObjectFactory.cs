@@ -32,30 +32,32 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
     public class InsertObjectFactory
     {
-        public InsertObject Create(Sql.DatabaseSession session)
+        public InsertObject Create(DatabaseSession session)
         {
             return new InsertObject(session);
         }
 
-        public class InsertObject : DatabaseCommand
+        public class InsertObject
         {
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public InsertObject(Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public InsertObject(DatabaseSession session)
             {
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
             public Reference Execute(IClass objectType, long objectId)
             {
                 var exclusiveLeafClass = objectType.ExclusiveClass;
-                var schema = this.Database.Schema;
+                var schema = this.session.Schema;
 
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(exclusiveLeafClass, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "INS_" + exclusiveLeafClass.Name);
+                    command = this.session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "INS_" + exclusiveLeafClass.Name);
                     command.CommandType = CommandType.StoredProcedure;
                     Commands.NpgsqlCommandExtensions.AddInObject(command, schema.ObjectId.Param, objectId);
                     Commands.NpgsqlCommandExtensions.AddInObject(command, schema.TypeId.Param, objectType.Id);
@@ -69,7 +71,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 }
 
                 var result = (bool)command.ExecuteScalar();
-                return result ? this.Session.CreateAssociationForNewObject(objectType, objectId) : null;
+                return result ? this.session.CreateAssociationForNewObject(objectType, objectId) : null;
             }
         }
     }

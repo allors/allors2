@@ -47,20 +47,23 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             }
         }
 
-        public GetCacheIds Create(Sql.DatabaseSession session)
+        public GetCacheIds Create(DatabaseSession session)
         {
             return new GetCacheIds(this, session);
         }
 
-        public class GetCacheIds : DatabaseCommand
+        public class GetCacheIds
         {
             private readonly GetCacheIdsFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public GetCacheIds(GetCacheIdsFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetCacheIds(GetCacheIdsFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public Dictionary<long, int> Execute(ISet<Reference> strategyReferences)
@@ -69,13 +72,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "GC");
+                    this.command = this.session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "GC");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.Database.CreateObjectTable(strategyReferences));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(strategyReferences));
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.Database.CreateObjectTable(strategyReferences));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(strategyReferences));
                 }
 
                 var cacheIdByObjectId = new Dictionary<long, int>();

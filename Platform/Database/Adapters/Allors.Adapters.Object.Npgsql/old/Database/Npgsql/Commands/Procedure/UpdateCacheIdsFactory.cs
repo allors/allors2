@@ -47,20 +47,23 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             }
         }
 
-        public UpdateCacheIds Create(Sql.DatabaseSession session)
+        public UpdateCacheIds Create(DatabaseSession session)
         {
             return new UpdateCacheIds(this, session);
         }
 
-        public class UpdateCacheIds : DatabaseCommand
+        public class UpdateCacheIds
         {
             private readonly UpdateCacheIdsFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public UpdateCacheIds(UpdateCacheIdsFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public UpdateCacheIds(UpdateCacheIdsFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public void Execute(Dictionary<Reference, Roles> modifiedRolesByReference)
@@ -69,7 +72,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "UC");
+                    this.command = this.session.CreateNpgsqlCommand(Schema.AllorsPrefix + "UC");
                     this.command.CommandType = CommandType.StoredProcedure;
                     Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
                 }
