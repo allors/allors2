@@ -98,7 +98,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     if (reader.Read())
                     {
-                        var sortedUnitRoles = this.session.NpgsqlDatabase.GetSortedUnitRolesByObjectType(reference.ObjectType);
+                        var sortedUnitRoles = this.session.Database.GetSortedUnitRolesByObjectType(reference.ObjectType);
 
                         for (var i = 0; i < sortedUnitRoles.Length; i++)
                         {

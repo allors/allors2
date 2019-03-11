@@ -51,7 +51,7 @@ namespace Allors.Adapters.Database.Sql
             {
                 if (this.cachedObject == null && !this.Reference.IsNew)
                 {
-                    var cache = this.Reference.Session.SqlDatabase.Cache;
+                    var cache = this.Reference.Session.Database.Cache;
                     this.cachedObject = cache.GetOrCreateCachedObject(this.Reference.ObjectType, this.Reference.ObjectId, this.Reference.Version);
                 }
 
@@ -100,7 +100,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (!this.Reference.IsNew)
                     {
-                        this.Reference.Session.SessionCommands.GetUnitRolesCommand.Execute(this);
+                        this.Reference.Session.SessionCommands.GetUnitRoles(this);
                         this.cachedObject.TryGetValue(roleType, out role);
                     }
                 }
@@ -130,7 +130,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (!this.Reference.IsNew)
                     {
-                        this.Reference.Session.SessionCommands.GetCompositeRoleCommand.Execute(this, roleType);
+                        this.Reference.Session.SessionCommands.GetCompositeRole(this, roleType);
                         this.cachedObject.TryGetValue(roleType, out role);
                     }
                 }
@@ -448,7 +448,7 @@ namespace Allors.Adapters.Database.Sql
                     return (long[])roleOut;
                 }
 
-                this.Reference.Session.SessionCommands.GetCompositeRolesCommand.Execute(this, roleType);
+                this.Reference.Session.SessionCommands.GetCompositesRole(this, roleType);
                 this.cachedObject.TryGetValue(roleType, out roleOut);
                 var role = (long[])roleOut;
                 return role;

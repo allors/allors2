@@ -74,11 +74,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     this.command = this.session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "GC");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(strategyReferences));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.session.Database.CreateObjectTable(strategyReferences));
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(strategyReferences));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.session.Database.CreateObjectTable(strategyReferences));
                 }
 
                 var cacheIdByObjectId = new Dictionary<long, int>();

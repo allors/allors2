@@ -79,8 +79,6 @@ namespace Allors.Adapters.Database.Npgsql
             this.sortedUnitRolesByObjectType = new Dictionary<IObjectType, IRoleType[]>();
 
             this.Cache = configuration.CacheFactory.CreateCache(this);
-
-            this.commandFactories = new CommandFactories(this);
         }
 
         public Schema NpgsqlSchema
@@ -457,15 +455,10 @@ namespace Allors.Adapters.Database.Npgsql
 
 
 
-        private readonly CommandFactories commandFactories;
 
         private Schema schema;
 
-        public CommandFactories NpgsqlCommandFactories => this.commandFactories;
-
         public Sql.Schema Schema => this.NpgsqlSchema;
-
-        public CommandFactories CommandFactories => this.commandFactories;
 
         protected string IdentityType => "bigserial";
 

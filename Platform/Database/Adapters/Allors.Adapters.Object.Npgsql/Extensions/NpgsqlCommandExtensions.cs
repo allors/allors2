@@ -27,34 +27,34 @@ namespace Allors.Adapters.Database.Npgsql.Commands
 
     public static class NpgsqlCommandExtensions
     {
-        public static void AddInObject(NpgsqlCommand command, SchemaParameter parameter, object value)
+        public static void AddInObject(this NpgsqlCommand @this, SchemaParameter parameter, object value)
         {
-            var sqlParameter = command.CreateParameter();
+            var sqlParameter = @this.CreateParameter();
             sqlParameter.NpgsqlDbType = parameter.NpgsqlDbType;
             sqlParameter.ParameterName = parameter.Name;
             sqlParameter.Value = value ?? DBNull.Value;
 
-            command.Parameters.Add(sqlParameter);
+            @this.Parameters.Add(sqlParameter);
         }
 
-        public static void SetInObject(NpgsqlCommand command, SchemaParameter param, object value)
+        public static void SetInObject(this NpgsqlCommand @this, SchemaParameter param, object value)
         {
-            command.Parameters[param.Name].Value = value ?? DBNull.Value;
+            @this.Parameters[param.Name].Value = value ?? DBNull.Value;
         }
 
-        public static void AddInTable(NpgsqlCommand command, SchemaArrayParameter parameter, object[] array)
+        public static void AddInTable(this NpgsqlCommand @this, SchemaArrayParameter parameter, object[] array)
         {
-            var sqlParameter = command.CreateParameter();
+            var sqlParameter = @this.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | parameter.ElementType;
             sqlParameter.ParameterName = parameter.Name;
             sqlParameter.Value = array;
 
-            command.Parameters.Add(sqlParameter);
+            @this.Parameters.Add(sqlParameter);
         }
 
-        public static void SetInTable(NpgsqlCommand command, SchemaArrayParameter param, object[] array)
+        public static void SetInTable(this NpgsqlCommand @this, SchemaArrayParameter param, object[] array)
         {
-            command.Parameters[param.Name].Value = array;
+            @this.Parameters[param.Name].Value = array;
         }
     }
 }

@@ -139,13 +139,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                     command = this.session.CreateNpgsqlCommand(this.factory.GetSql(exclusiveLeafClass, roleType));
                     command.CommandType = CommandType.StoredProcedure;
 
-                    Commands.NpgsqlCommandExtensions.AddInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relation));
-                    Commands.NpgsqlCommandExtensions.AddInTable(command, arrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relation));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, this.session.Schema.ObjectArrayParam, this.session.Database.CreateAssociationTable(relation));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, arrayParam, this.session.Database.CreateRoleTable(relation));
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relation));
-                    Commands.NpgsqlCommandExtensions.SetInTable(command, arrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relation));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, this.session.Schema.ObjectArrayParam, this.session.Database.CreateAssociationTable(relation));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, arrayParam, this.session.Database.CreateRoleTable(relation));
                 }
 
                 command.ExecuteNonQuery();
