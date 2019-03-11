@@ -28,7 +28,7 @@ namespace Allors.Domain
 
     public static partial class VersionedExtensions
     {
-        public static void BaseOnPostFinalize(this Versioned @this, ObjectOnPostFinalize method)
+        public static void BaseOnPostDerive(this Versioned @this, ObjectOnPostDerive method)
         {
             // TODO: move parts to Meta
             var derivation = method.Derivation;

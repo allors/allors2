@@ -46,15 +46,6 @@ namespace Allors.Domain
             }
         }
 
-        public void Finalize(List<Object> derivedObjects)
-        {
-            foreach (var dictionaryEntry in this.DerivationNodeByDerivable)
-            {
-                var derivationNode = dictionaryEntry.Value;
-                derivationNode.TopologicalFinalize(this.derivation, derivedObjects);
-            }
-        }
-
         public DerivationNodeBase Add(Object derivable)
         {
             if (!this.DerivationNodeByDerivable.TryGetValue(derivable, out var derivationNode))

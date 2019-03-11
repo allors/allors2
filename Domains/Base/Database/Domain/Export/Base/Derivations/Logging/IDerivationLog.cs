@@ -51,17 +51,5 @@ namespace Allors.Domain.Logging
         void PostDeriving(Object derivable);
 
         void PostDerived(Object derivable);
-
-        void PreFinalizing(Object derivable);
-
-        void PreFinalized(Object derivable);
-
-        void Finalizing(Object derivable);
-
-        void Finalized(Object derivable);
-        
-        void PostFinalizing(Object derivable);
-
-        void PostFinalized(Object derivable);
     }
 }

@@ -24,7 +24,7 @@ namespace Allors.Domain
 
     public static partial class TransitionalExtensions
     {
-        public static void BaseOnPostFinalize(this Transitional @this, ObjectOnPostFinalize method)
+        public static void BaseOnPostDerive(this Transitional @this, ObjectOnPostDerive method)
         {
             // Update PreviousObjectState and LastObjectState
             foreach (var transitionalConfiguration in @this.TransitionalConfigurations)

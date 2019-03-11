@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -70,21 +68,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-        public void OnPreFinalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnFinalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnPostFinalize()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 
