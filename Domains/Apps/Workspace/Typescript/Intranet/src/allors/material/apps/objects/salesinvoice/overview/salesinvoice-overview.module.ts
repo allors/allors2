@@ -18,6 +18,7 @@ import { RepeatingSalesInvoiceOverviewPanelModule } from '../../repeatingsalesin
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
+import { PaymentOverviewPanelModule } from '../../payment/overview/panel/payment-overview-panel.module';
 import { SalesInvoiceOverviewSummaryModule } from './summary/salesinvoice-overview-summary.module';
 import { SalesInvoiceOverviewDetailModule } from './detail/salesinvoice-overview-detail.module';
 import { SalesInvoiceItemOverviewPanelModule } from '../../salesinvoiceitem/overview/panel/salesinvoiceitem-overview-panel.module';
@@ -41,6 +42,7 @@ import { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component
 
     CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
+    PaymentOverviewPanelModule,
     RepeatingSalesInvoiceOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

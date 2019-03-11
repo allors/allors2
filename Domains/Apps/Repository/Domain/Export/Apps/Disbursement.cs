@@ -17,13 +17,13 @@ namespace Allors.Repository
 
         public DateTime EffectiveDate { get; set; }
 
-        public Party SendingParty { get; set; }
+        public Party Sender { get; set; }
 
         public PaymentApplication[] PaymentApplications { get; set; }
 
         public string ReferenceNumber { get; set; }
 
-        public Party ReceivingParty { get; set; }
+        public Party Receiver { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
