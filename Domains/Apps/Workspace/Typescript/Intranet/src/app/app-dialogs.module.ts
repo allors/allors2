@@ -30,14 +30,15 @@ import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/m
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import { RepeatingSalesInvoiceEditComponent, RepeatingSalesInvoiceEditModule } from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
-import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
-import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
-import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/apps/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
+import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
+import { ReceiptEditComponent, ReceiptEditModule } from '../allors/material/apps/objects/receipt/edit/receipt-edit.module';
+import { RepeatingSalesInvoiceEditComponent, RepeatingSalesInvoiceEditModule } from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
+import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
+import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 import { SalesInvoiceCreateComponent, SalesInvoiceCreateModule } from '../allors/material/apps/objects/salesinvoice/create/salesinvoice-create.module';
 import { SalesInvoiceItemEditComponent, SalesInvoiceItemEditModule } from '../allors/material/apps/objects/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
@@ -98,6 +99,7 @@ export const create = {
   [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
+  [ids.Receipt]: ReceiptEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
@@ -153,6 +155,7 @@ export const edit = {
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
+  [ids.Receipt]: ReceiptEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
@@ -208,6 +211,7 @@ export const edit = {
     PurchaseOrderCreateModule,
     PurchaseOrderItemEditModule,
     QuoteItemEditModule,
+    ReceiptEditModule,
     RepeatingSalesInvoiceEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
@@ -263,6 +267,7 @@ export const edit = {
     PurchaseInvoiceItemEditComponent,
     PurchaseOrderCreateComponent,
     PurchaseOrderItemEditComponent,
+    ReceiptEditComponent,
     RepeatingSalesInvoiceEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
