@@ -120,7 +120,6 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
-
             //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
             //derivation.Derive();
 

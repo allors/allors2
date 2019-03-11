@@ -530,58 +530,60 @@ namespace Allors.Domain
             }
 
             // SalesOrder Shipment State
-            if (validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
+            if (validOrderItems.Any())
             {
-                this.SalesOrderShipmentState = salesOrderShipmentStates.Shipped;
-            }
-            else if (!validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
-            {
-                this.SalesOrderShipmentState = salesOrderShipmentStates.NotShipped;
-            }
-            else
-            {
-                this.SalesOrderShipmentState = salesOrderShipmentStates.PartiallyShipped;
-            }
+                if (validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.Shipped;
+                }
+                else if (!validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.NotShipped;
+                }
+                else
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.PartiallyShipped;
+                }
 
-            // SalesOrder Payment State
-            if (validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
-            {
-                this.SalesOrderPaymentState = salesOrderPaymentStates.Paid;
-            }
-            else if (!validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
-            {
-                this.SalesOrderPaymentState = salesOrderPaymentStates.NotPaid;
-            }
-            else
-            {
-                this.SalesOrderPaymentState = salesOrderPaymentStates.PartiallyPaid;
-            }
+                // SalesOrder Payment State
+                if (validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.Paid;
+                }
+                else if (!validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.NotPaid;
+                }
+                else
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.PartiallyPaid;
+                }
 
-            // SalesOrder Invoice State
-            if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
-            {
-                this.SalesOrderInvoiceState = salesOrderInvoiceStates.Invoiced;
-            }
-            else if (!validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
-            {
-                this.SalesOrderInvoiceState = salesOrderInvoiceStates.NotInvoiced;
-            }
-            else
-            {
-                this.SalesOrderInvoiceState = salesOrderInvoiceStates.PartiallyInvoiced;
-            }
+                // SalesOrder Invoice State
+                if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.Invoiced;
+                }
+                else if (!validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.NotInvoiced;
+                }
+                else
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.PartiallyInvoiced;
+                }
 
-            // SalesOrder OrderState
-            if (this.SalesOrderShipmentState.Shipped && this.SalesOrderInvoiceState.Invoiced)
-            {
-                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-            }
+                // SalesOrder OrderState
+                if (this.SalesOrderShipmentState.Shipped && this.SalesOrderInvoiceState.Invoiced)
+                {
+                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
+                }
 
-            if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
-            {
-                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
+                if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
+                {
+                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
+                }
             }
-
 
             // SalesOrderItem States
             foreach (var salesOrderItem in validOrderItems)
@@ -635,7 +637,7 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
+                        if (!salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
                         {
                             var inventoryItems = salesOrderItem.Part.InventoryItemsWherePart;
                             inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.OriginFacility);
@@ -686,7 +688,7 @@ namespace Allors.Domain
             // Shipments
             foreach (var salesOrderItem in validOrderItems)
             {
-                if (!salesOrderItem.SalesOrderItemShipmentState.Shipped)
+                if (salesOrderItem.SalesOrderItemShipmentState.Shipped)
                 {
                     foreach (OrderShipment orderShipment in salesOrderItem.OrderShipmentsWhereOrderItem)
                     {
@@ -750,6 +752,11 @@ namespace Allors.Domain
             else
             {
                 this.CanInvoice = false;
+            }
+
+            if (this.CanShip)
+            {
+                this.Ship();
             }
 
             // TODO: Move to versioning
@@ -905,6 +912,8 @@ namespace Allors.Domain
                                 {
                                     orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
                                 }
+
+                                orderItem.QuantityRequestsShipping = 0;
                             }
                         }
 
