@@ -35,7 +35,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         private readonly Connection connection;
 
-        #region Fields
         private Dictionary<IClass, Command> getUnitRolesByClass;
         private Dictionary<IClass, Dictionary<IRoleType, Command>> setUnitRoleByRoleTypeByClass;
         private Dictionary<IClass, Dictionary<IList<IRoleType>, Command>> setUnitRolesByRoleTypeByClass;
@@ -50,6 +49,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Command instantiateObject;
         private Command instantiateObjects;
+
         private Dictionary<IClass, Command> createObjectByClass;
         private Dictionary<IClass, Command> createObjectsByClass;
         private Dictionary<IClass, Command> deleteObjectByClass;
@@ -57,8 +57,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Command getVersion;
         private Command updateVersions;
-        #endregion
-
+        
         internal Commands(Session session, Connection connection)
         {
             this.session = session;
@@ -66,39 +65,6 @@ namespace Allors.Adapters.Object.SqlClient
         }
 
         private Database Database => this.session.Database;
-
-        #region Properties
-        private Dictionary<IClass, Command> GetUnitRolesByClass => this.getUnitRolesByClass ?? (this.getUnitRolesByClass = new Dictionary<IClass, Command>());
-
-        private Dictionary<IClass, Dictionary<IRoleType, Command>> SetUnitRoleByRoleTypeByClass => this.setUnitRoleByRoleTypeByClass ?? (this.setUnitRoleByRoleTypeByClass = new Dictionary<IClass, Dictionary<IRoleType, Command>>());
-
-        private Dictionary<IClass, Dictionary<IList<IRoleType>, Command>> SetUnitRolesByRoleTypeByClass => this.setUnitRolesByRoleTypeByClass ?? (this.setUnitRolesByRoleTypeByClass = new Dictionary<IClass, Dictionary<IList<IRoleType>, Command>>());
-
-        private Dictionary<IRoleType, Command> GetCompositeRoleByRoleType => this.getCompositeRoleByRoleType ?? (this.getCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IRoleType, Command> SetCompositeRoleByRoleType => this.setCompositeRoleByRoleType ?? (this.setCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IRoleType, Command> GetCompositesRoleByRoleType => this.getCompositesRoleByRoleType ?? (this.getCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IRoleType, Command> AddCompositeRoleByRoleType => this.addCompositeRoleByRoleType ?? (this.addCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IRoleType, Command> RemoveCompositeRoleByRoleType => this.removeCompositeRoleByRoleType ?? (this.removeCompositeRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IRoleType, Command> ClearCompositeAndCompositesRoleByRoleType => this.clearCompositeAndCompositesRoleByRoleType ?? (this.clearCompositeAndCompositesRoleByRoleType = new Dictionary<IRoleType, Command>());
-
-        private Dictionary<IAssociationType, Command> GetCompositeAssociationByAssociationType => this.getCompositeAssociationByAssociationType ?? (this.getCompositeAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
-
-        private Dictionary<IAssociationType, Command> GetCompositesAssociationByAssociationType => this.getCompositesAssociationByAssociationType ?? (this.getCompositesAssociationByAssociationType = new Dictionary<IAssociationType, Command>());
-
-        private Dictionary<IClass, Command> CreateObjectByClass => this.createObjectByClass ?? (this.createObjectByClass = new Dictionary<IClass, Command>());
-
-        private Dictionary<IClass, Command> CreateObjectsByClass => this.createObjectsByClass ?? (this.createObjectsByClass = new Dictionary<IClass, Command>());
-
-        private Dictionary<IClass, Command> DeleteObjectByClass => this.deleteObjectByClass ?? (this.deleteObjectByClass = new Dictionary<IClass, Command>());
-
-        private Dictionary<IClass, Command> InsertObjectByClass => this.insertObjectByClass ?? (this.insertObjectByClass = new Dictionary<IClass, Command>());
-
-        #endregion
 
         internal void ResetCommands()
         {
@@ -132,8 +98,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             var @class = strategy.Class;
 
-            Command command;
-            if (!this.DeleteObjectByClass.TryGetValue(@class, out command))
+            if (!this.deleteObjectByClass.TryGetValue(@class, out var command))
             {
                 var sql = "BEGIN\n";
 
@@ -161,11 +126,12 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void GetUnitRoles(Roles roles)
         {
+            this.getUnitRolesByClass = this.getUnitRolesByClass ?? new Dictionary<IClass, Command>();
+
             var reference = roles.Reference;
             var @class = reference.Class;
 
-            Command command;
-            if (!this.GetUnitRolesByClass.TryGetValue(@class, out command))
+            if (!this.getUnitRolesByClass.TryGetValue(@class, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForGetUnitRolesByClass[@class];
                 command = this.connection.CreateCommand();
@@ -242,19 +208,19 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void SetUnitRole(List<UnitRelation> relations, IClass exclusiveRootClass, IRoleType roleType)
         {
+            this.setUnitRoleByRoleTypeByClass = this.setUnitRoleByRoleTypeByClass ?? new Dictionary<IClass, Dictionary<IRoleType, Command>>();
+
             var schema = this.Database.Mapping;
 
-            Dictionary<IRoleType, Command> commandByRoleType;
-            if (!this.SetUnitRoleByRoleTypeByClass.TryGetValue(exclusiveRootClass, out commandByRoleType))
+            if (!this.setUnitRoleByRoleTypeByClass.TryGetValue(exclusiveRootClass, out var commandByRoleType))
             {
                 commandByRoleType = new Dictionary<IRoleType, Command>();
                 this.setUnitRoleByRoleTypeByClass.Add(exclusiveRootClass, commandByRoleType);
             }
 
             var tableTypeName = schema.GetTableTypeName(roleType);
-            
-            Command command;
-            if (!commandByRoleType.TryGetValue(roleType, out command))
+
+            if (!commandByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForSetUnitRoleByRelationTypeByClass[exclusiveRootClass][roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -279,17 +245,17 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void SetUnitRoles(Roles roles, List<IRoleType> sortedRoleTypes)
         {
+            this.setUnitRolesByRoleTypeByClass = this.setUnitRolesByRoleTypeByClass ?? new Dictionary<IClass, Dictionary<IList<IRoleType>, Command>>();
+
             var exclusiveRootClass = roles.Reference.Class.ExclusiveClass;
 
-            Dictionary<IList<IRoleType>, Command> setUnitRoleByRoleType;
-            if (!this.SetUnitRolesByRoleTypeByClass.TryGetValue(exclusiveRootClass, out setUnitRoleByRoleType))
+            if (!this.setUnitRolesByRoleTypeByClass.TryGetValue(exclusiveRootClass, out var setUnitRoleByRoleType))
             {
                 setUnitRoleByRoleType = new Dictionary<IList<IRoleType>, Command>(new SortedRoleTypeComparer());
                 this.setUnitRolesByRoleTypeByClass.Add(exclusiveRootClass, setUnitRoleByRoleType);
             }
 
-            Command command;
-            if (!setUnitRoleByRoleType.TryGetValue(sortedRoleTypes, out command))
+            if (!setUnitRoleByRoleType.TryGetValue(sortedRoleTypes, out var command))
             {
                 command = this.connection.CreateCommand();
                 command.AddObjectParameter(roles.Reference.ObjectId);
@@ -342,10 +308,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void GetCompositeRole(Roles roles, IRoleType roleType)
         {
+            this.getCompositeRoleByRoleType = this.getCompositeRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
             var reference = roles.Reference;
 
-            Command command;
-            if (!this.GetCompositeRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.getCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForGetRoleByRelationType[roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -374,7 +341,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void SetCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            if (!this.SetCompositeRoleByRoleType.TryGetValue(roleType, out var command))
+            this.setCompositeRoleByRoleType = this.setCompositeRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
+            if (!this.setCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForSetRoleByRelationType[roleType.RelationType];
 
@@ -394,9 +363,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void GetCompositesRole(Roles roles, IRoleType roleType)
         {
+            this.getCompositesRoleByRoleType = this.getCompositesRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
             var reference = roles.Reference;
 
-            if (!this.GetCompositesRoleByRoleType.TryGetValue(roleType, out var command))
+            if (!this.getCompositesRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var associationType = roleType.AssociationType;
 
@@ -436,7 +407,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void AddCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            if (!this.AddCompositeRoleByRoleType.TryGetValue(roleType, out var command))
+            this.addCompositeRoleByRoleType = this.addCompositeRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
+            if (!this.addCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForAddRoleByRelationType[roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -455,7 +428,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void RemoveCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            if (!this.RemoveCompositeRoleByRoleType.TryGetValue(roleType, out var command))
+            this.removeCompositeRoleByRoleType = this.removeCompositeRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
+            if (!this.removeCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForRemoveRoleByRelationType[roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -474,9 +449,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void ClearCompositeAndCompositesRole(IList<long> associations, IRoleType roleType)
         {
+            this.clearCompositeAndCompositesRoleByRoleType = this.clearCompositeAndCompositesRoleByRoleType ?? new Dictionary<IRoleType, Command>();
+
             var sql = this.Database.Mapping.ProcedureNameForClearRoleByRelationType[roleType.RelationType];
 
-            if (!this.ClearCompositeAndCompositesRoleByRoleType.TryGetValue(roleType, out var command))
+            if (!this.clearCompositeAndCompositesRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
@@ -494,9 +471,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference GetCompositeAssociation(Reference role, IAssociationType associationType)
         {
+            this.getCompositeAssociationByAssociationType = this.getCompositeAssociationByAssociationType ?? new Dictionary<IAssociationType, Command>();
+
             Reference associationObject = null;
 
-            if (!this.GetCompositeAssociationByAssociationType.TryGetValue(associationType, out var command))
+            if (!this.getCompositeAssociationByAssociationType.TryGetValue(associationType, out var command))
             {
                 var roleType = associationType.RoleType;
                 var sql = this.Database.Mapping.ProcedureNameForGetAssociationByRelationType[roleType.RelationType];
@@ -511,7 +490,7 @@ namespace Allors.Adapters.Object.SqlClient
                 command.Parameters[Mapping.ParamNameForCompositeRole].Value = role.ObjectId;
             }
 
-            object result = command.ExecuteScalar();
+            var result = command.ExecuteScalar();
 
             if (result != null && result != DBNull.Value)
             {
@@ -527,7 +506,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal long[] GetCompositesAssociation(Strategy role, IAssociationType associationType)
         {
-            if (!this.GetCompositesAssociationByAssociationType.TryGetValue(associationType, out var command))
+            this.getCompositesAssociationByAssociationType = this.getCompositesAssociationByAssociationType ?? new Dictionary<IAssociationType, Command>();
+
+            if (!this.getCompositesAssociationByAssociationType.TryGetValue(associationType, out var command))
             {
                 var roleType = associationType.RoleType;
                 var sql = this.Database.Mapping.ProcedureNameForGetAssociationByRelationType[roleType.RelationType];
@@ -557,7 +538,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference CreateObject(IClass @class)
         {
-            if (!this.CreateObjectByClass.TryGetValue(@class, out var command))
+            this.createObjectByClass = this.createObjectByClass ?? new Dictionary<IClass, Command>();
+
+            if (!this.createObjectByClass.TryGetValue(@class, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForCreateObjectByClass[@class];
                 command = this.connection.CreateCommand();
@@ -578,7 +561,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal IList<Reference> CreateObjects(IClass @class, int count)
         {
-            if (!this.CreateObjectsByClass.TryGetValue(@class, out var command))
+            this.createObjectsByClass = this.createObjectsByClass ?? new Dictionary<IClass, Command>();
+
+            if (!this.createObjectsByClass.TryGetValue(@class, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForCreateObjectsByClass[@class];
                 command = this.connection.CreateCommand();
@@ -619,7 +604,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference InsertObject(IClass @class, long objectId)
         {
-            if (!this.InsertObjectByClass.TryGetValue(@class, out var command))
+            this.insertObjectByClass = this.insertObjectByClass ?? new Dictionary<IClass, Command>();
+
+            if (!this.insertObjectByClass.TryGetValue(@class, out var command))
             {
                 var schema = this.Database.Mapping;
 
