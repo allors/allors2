@@ -79,7 +79,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                     return null;
                 }
 
-                return this.session.NpgsqlDatabase.ObjectFactory.GetObjectTypeForType((Guid)result);
+                return this.session.Database.ObjectFactory.GetObjectTypeForType((Guid)result);
             }
         }
     }

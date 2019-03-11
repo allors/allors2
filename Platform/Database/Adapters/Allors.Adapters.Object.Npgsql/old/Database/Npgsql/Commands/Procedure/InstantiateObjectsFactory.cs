@@ -59,17 +59,17 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 this.session = session;
             }
 
-            public IList<Reference> Execute(IList<long> objectids)
+            public IList<Reference> Execute(IEnumerable<long> objectids)
             {
                 if (this.command == null)
                 {
                     this.command = this.session.CreateNpgsqlCommand(Schema.AllorsPrefix + "IOS");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.Database.CreateObjectTable(objectids));
                 }
                 else
                 {
-                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateObjectTable(objectids));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, this.database.NpgsqlSchema.ObjectArrayParam, this.session.Database.CreateObjectTable(objectids));
                 }
 
                 var objects = new List<Reference>();

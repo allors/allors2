@@ -66,7 +66,7 @@ namespace Allors.Adapters.Database.Sql
 
         public Schema Schema
         {
-            get { return this.session.SqlDatabase.Schema; }
+            get { return this.session.Database.Schema; }
         }
 
         public override DatabaseSession Session

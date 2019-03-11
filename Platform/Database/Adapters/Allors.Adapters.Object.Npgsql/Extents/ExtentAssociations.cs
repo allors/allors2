@@ -139,7 +139,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.ToArray();
             }
             
-            var clrType = this.strategy.SqlSession.SqlDatabase.GetDomainType(this.ObjectType);
+            var clrType = this.strategy.SqlSession.Database.GetDomainType(this.ObjectType);
             return this.ToArray(clrType);
         }
 

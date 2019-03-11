@@ -76,7 +76,7 @@ namespace Allors.Adapters.Database.Sql
                     statement.Append("\nINTERSECT\n");
                     break;
                 case ExtentOperations.Except:
-                    statement.Append("\n" + this.Session.SqlDatabase.Except + "\n");
+                    statement.Append("\n" + this.Session.Database.Except + "\n");
                     break;
             }
 

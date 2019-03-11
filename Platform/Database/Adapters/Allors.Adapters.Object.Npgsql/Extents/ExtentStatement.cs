@@ -54,7 +54,7 @@ namespace Allors.Adapters.Database.Sql
 
         public Schema Schema
         {
-            get { return this.Session.SqlDatabase.Schema; }
+            get { return this.Session.Database.Schema; }
         }
 
         public ExtentSort Sorter

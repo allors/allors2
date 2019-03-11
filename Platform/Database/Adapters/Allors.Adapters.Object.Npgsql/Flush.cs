@@ -61,7 +61,7 @@ namespace Allors.Adapters.Database.Npgsql
                         var relations = secondDictionaryEntry.Value;
                         if (relations.Count > 0)
                         {
-                            this.session.SessionCommands.SetUnitRoleCommand.Execute(relations, exclusiveLeafClass, roleType);
+                            this.session.SessionCommands.SetUnitRole(relations, (IClass)exclusiveLeafClass, roleType);
                         }
                     }
                 }
@@ -77,7 +77,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.SetCompositeRoleCommand.Execute(relations, roleType);
+                        this.session.SessionCommands.SetCompositeRole(relations, roleType);
                     }
                 }
             }
@@ -92,7 +92,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.AddCompositeRoleCommand.Execute(relations, roleType);
+                        this.session.SessionCommands.AddCompositeRole(relations, roleType);
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.RemoveCompositeRoleCommand.Execute(relations, roleType);
+                        this.session.SessionCommands.RemoveCompositeRole(relations, roleType);
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.ClearCompositeAndCompositesRoleCommand.Execute(relations, roleType);
+                        this.session.SessionCommands.ClearCompositeAndCompositesRole(relations, roleType);
                     }
                 }
             }
@@ -132,7 +132,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         public void SetUnitRoles(Roles roles, List<IRoleType> unitRoles)
         {
-            roles.Reference.Session.SessionCommands.SetUnitRolesCommand.Execute(roles, unitRoles);
+            roles.Reference.Session.SessionCommands.SetUnitRoles(roles, unitRoles);
         }
 
         public void SetUnitRole(Reference association, IRoleType roleType, object role)
@@ -163,7 +163,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.SetUnitRoleCommand.Execute(relations, exclusiveLeafClass, roleType);
+                this.session.SessionCommands.SetUnitRole(relations, exclusiveLeafClass, roleType);
                 relations.Clear();
             }
         }
@@ -186,7 +186,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.SetCompositeRoleCommand.Execute(relations, roleType);
+                this.session.SessionCommands.SetCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
@@ -212,7 +212,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.AddCompositeRoleCommand.Execute(relations, roleType);
+                this.session.SessionCommands.AddCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
@@ -238,7 +238,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.RemoveCompositeRoleCommand.Execute(relations, roleType);
+                this.session.SessionCommands.RemoveCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
@@ -261,7 +261,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.ClearCompositeAndCompositesRoleCommand.Execute(relations, roleType);
+                this.session.SessionCommands.ClearCompositeAndCompositesRole(relations, roleType);
                 relations.Clear();
             }
         }

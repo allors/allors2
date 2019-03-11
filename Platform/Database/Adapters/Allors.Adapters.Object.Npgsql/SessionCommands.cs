@@ -20,13 +20,39 @@
 
 namespace Allors.Adapters.Database.Npgsql
 {
+    using System.Collections.Generic;
+
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
+    using Allors.Adapters.Database.Sql;
+    using Allors.Meta;
 
     public sealed class SessionCommands
     {
+        private readonly Database database;
+
+        private GetObjectTypeFactory getObjectTypeFactory;
+        private InstantiateObjectsFactory instantiateObjectsFactory;
+        private AddCompositeRoleFactory addCompositeRoleFactory;
+        private RemoveCompositeRoleFactory removeCompositeRoleFactory;
+        private CreateObjectFactory createObjectFactory;
+        private CreateObjectsFactory createObjectsFactory;
+        private InsertObjectFactory insertObjectFactory;
+        private InstantiateObjectFactory instantiateObjectFactory;
+        private DeleteObjectFactory deleteObjectFactory;
+        private GetCompositeAssociationFactory getCompositeAssociationFactory;
+        private GetCompositeAssociationsFactory getCompositeAssociationsFactory;
+        private GetCompositeRoleFactory getCompositeRoleFactory;
+        private GetCompositeRolesFactory getCompositeRolesFactory;
+        private GetUnitRolesFactory getUnitRolesFactory;
+        private ClearCompositeAndCompositesRoleFactory clearCompositeAndCompositesRoleFactory;
+        private SetCompositeRoleFactory setCompositeRoleFactory;
+        private SetUnitRoleFactory setUnitRoleFactory;
+        private SetUnitRolesFactory setUnitRolesFactory;
+        private GetCacheIdsFactory getCacheIdsFactory;
+        private UpdateCacheIdsFactory updateCacheIdsFactory;
+
         private readonly DatabaseSession session;
-        private readonly CommandFactories commandFactories;
 
         private GetObjectTypeFactory.GetObjectType getObjectType;
         private CreateObjectFactory.CreateObject createObjectCommand;
@@ -52,167 +78,128 @@ namespace Allors.Adapters.Database.Npgsql
         internal SessionCommands(DatabaseSession session)
         {
             this.session = session;
-            this.commandFactories = this.session.NpgsqlDatabase.NpgsqlCommandFactories;
+            this.database = session.Database;
         }
 
-        public GetObjectTypeFactory.GetObjectType GetObjectType
+        internal void DeleteObject(Strategy strategy)
         {
-            get
-            {
-                return this.getObjectType ?? (this.getObjectType = this.commandFactories.GetObjectTypeFactory.Create(this.session));
-            }
+            this.deleteObjectFactory = this.deleteObjectFactory ?? new DeleteObjectFactory(this.database);
+            (this.deleteObject = this.deleteObject = this.deleteObjectFactory.Create(this.session)).Execute(strategy);
         }
 
-        public CreateObjectFactory.CreateObject CreateObjectCommand
+        internal void GetUnitRoles(Roles roles)
         {
-            get
-            {
-                return this.createObjectCommand ?? (this.createObjectCommand = this.commandFactories.CreateObjectFactory.Create(this.session));
-            }
+            this.getUnitRolesFactory = this.getUnitRolesFactory ?? new GetUnitRolesFactory(this.database);
+            (this.getUnitRoles = this.getUnitRoles ?? this.getUnitRolesFactory.Create(this.session)).Execute(roles);
         }
 
-        public CreateObjectsFactory.CreateObjects CreateObjectsCommand
+        internal void SetUnitRole(List<UnitRelation> relations, IClass exclusiveRootClass, IRoleType roleType)
         {
-            get
-            {
-                return this.createObjects ?? (this.createObjects = this.commandFactories.CreateObjectsFactory.Create(this.session));
-            }
+            this.setUnitRoleFactory = this.setUnitRoleFactory ?? (this.setUnitRoleFactory = new SetUnitRoleFactory(this.database));
+            (this.setUnitRole = this.setUnitRole ?? this.setUnitRoleFactory.Create(this.session)).Execute(relations, exclusiveRootClass, roleType);
         }
 
-        public InsertObjectFactory.InsertObject InsertObjectCommand
+        internal void SetUnitRoles(Roles roles, List<IRoleType> sortedRoleTypes)
         {
-            get
-            {
-                return this.insertObject ?? (this.insertObject = this.commandFactories.InsertObjectFactory.Create(this.session));
-            }
+            this.setUnitRolesFactory = this.setUnitRolesFactory ?? (this.setUnitRolesFactory = new SetUnitRolesFactory(this.database));
+            (this.setUnitRoles = this.setUnitRoles ?? this.setUnitRolesFactory.Create(this.session)).Execute(roles, sortedRoleTypes);
         }
 
-        public DeleteObjectFactory.DeleteObject DeleteObjectCommand
+        internal void GetCompositeRole(Roles roles, IRoleType roleType)
         {
-            get
-            {
-                return this.deleteObject ?? (this.deleteObject = this.commandFactories.DeleteObjectFactory.Create(this.session));
-            }
+            this.getCompositeRoleFactory = this.getCompositeRoleFactory ?? (this.getCompositeRoleFactory = new GetCompositeRoleFactory(this.database));
+            (this.getCompositeRole = this.getCompositeRole ?? this.getCompositeRoleFactory.Create(this.session)).Execute(roles, roleType);
         }
 
-        public InstantiateObjectFactory.InstantiateObject InstantiateObjectCommand
+        internal void SetCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            get
-            {
-                return this.instantiateObject ?? (this.instantiateObject = this.commandFactories.InstantiateObjectFactory.Create(this.session));
-            }
+            this.setCompositeRoleFactory = this.setCompositeRoleFactory ?? (this.setCompositeRoleFactory = new SetCompositeRoleFactory(this.database));
+            (this.setCompositeRole = this.setCompositeRole ?? this.setCompositeRoleFactory.Create(this.session)).Execute(relations, roleType);
         }
 
-        public InstantiateObjectsFactory.InstantiateObjects InstantiateObjectsCommand
+        internal void GetCompositesRole(Roles roles, IRoleType roleType)
         {
-            get
-            {
-                return this.instantiateObjects ?? (this.instantiateObjects = this.commandFactories.InstantiateObjectsFactory.Create(this.session));
-            }
+            this.getCompositeRolesFactory = this.getCompositeRolesFactory ?? new GetCompositeRolesFactory(this.database);
+            (this.getCompositeRoles = this.getCompositeRoles ?? this.getCompositeRolesFactory.Create(this.session)).Execute(roles, roleType);
         }
 
-        public GetUnitRolesFactory.GetUnitRoles GetUnitRolesCommand
+        internal void AddCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            get
-            {
-                return this.getUnitRoles ?? (this.getUnitRoles = this.commandFactories.GetUnitRolesFactory.Create(this.session));
-            }
+            this.addCompositeRoleFactory = this.addCompositeRoleFactory ?? new AddCompositeRoleFactory(this.database);
+            (this.addCompositeRole = (this.addCompositeRole ?? this.addCompositeRoleFactory.Create(this.session))).Execute(relations, roleType);
         }
 
-        public SetUnitRoleFactory.SetUnitRole SetUnitRoleCommand
+        internal void RemoveCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            get
-            {
-                return this.setUnitRole ?? (this.setUnitRole = this.commandFactories.SetUnitRoleFactory.Create(this.session));
-            }
+            this.removeCompositeRoleFactory = this.removeCompositeRoleFactory ?? new RemoveCompositeRoleFactory(this.database);
+            (this.removeCompositeRole = this.removeCompositeRole ?? this.removeCompositeRoleFactory.Create(this.session)).Execute(relations, roleType);
         }
 
-        public SetUnitRolesFactory.SetUnitRoles SetUnitRolesCommand
+        internal void ClearCompositeAndCompositesRole(IList<long> associations, IRoleType roleType)
         {
-            get
-            {
-                return this.setUnitRoles ?? (this.setUnitRoles = this.commandFactories.SetUnitRolesFactory.Create(this.session));
-            }
+            this.clearCompositeAndCompositesRoleFactory = this.clearCompositeAndCompositesRoleFactory ?? new ClearCompositeAndCompositesRoleFactory(this.database);
+            (this.clearCompositeAndCompoisitesRole = this.clearCompositeAndCompoisitesRole ?? this.clearCompositeAndCompositesRoleFactory.Create(this.session)).Execute(associations, roleType);
         }
 
-        public GetCompositeRoleFactory.GetCompositeRole GetCompositeRoleCommand
+        internal Reference GetCompositeAssociation(Reference role, IAssociationType associationType)
         {
-            get
-            {
-                return this.getCompositeRole ?? (this.getCompositeRole = this.commandFactories.GetCompositeRoleFactory.Create(this.session));
-            }
+            this.getCompositeAssociationFactory = this.getCompositeAssociationFactory ?? new GetCompositeAssociationFactory(this.database);
+            return (this.getCompositeAssociation = this.getCompositeAssociation ?? this.getCompositeAssociationFactory.Create(this.session)).Execute(role, associationType);
         }
 
-        public SetCompositeRoleFactory.SetCompositeRole SetCompositeRoleCommand
+        internal long[] GetCompositesAssociation(Strategy role, IAssociationType associationType)
         {
-            get
-            {
-                return this.setCompositeRole ?? (this.setCompositeRole = this.commandFactories.SetCompositeRoleFactory.Create(this.session));
-            }
+            this.getCompositeAssociationsFactory = this.getCompositeAssociationsFactory ?? new GetCompositeAssociationsFactory(this.database);
+            return (this.getCompositeAssociations = this.getCompositeAssociations ?? this.getCompositeAssociationsFactory.Create(this.session)).Execute(role, associationType);
         }
 
-        public ClearCompositeAndCompositesRoleFactory.ClearCompositeAndCompositesRole ClearCompositeAndCompositesRoleCommand
+        internal Reference CreateObject(IClass @class)
         {
-            get
-            {
-                return this.clearCompositeAndCompoisitesRole ?? (this.clearCompositeAndCompoisitesRole = this.commandFactories.ClearCompositeAndCompositesRoleFactory.Create(this.session));
-            }
+            this.createObjectFactory = this.createObjectFactory ?? (this.createObjectFactory = new CreateObjectFactory());
+            return (this.createObjectCommand = this.createObjectCommand ?? this.createObjectFactory.Create(this.session)).Execute(@class);
         }
 
-        public GetCompositeAssociationFactory.GetCompositeAssociation GetCompositeAssociationCommand
+        internal IList<Reference> CreateObjects(IClass @class, int count)
         {
-            get
-            {
-                return this.getCompositeAssociation ?? (this.getCompositeAssociation = this.commandFactories.GetCompositeAssociationFactory.Create(this.session));
-            }
+            this.createObjectsFactory = this.createObjectsFactory = new CreateObjectsFactory(this.database);
+            return (this.createObjects = this.createObjects ?? this.createObjectsFactory.Create(this.session)).Execute(@class, count);
         }
 
-        public GetCompositeRolesFactory.GetCompositeRoles GetCompositeRolesCommand
+        internal Reference InsertObject(IClass @class, long objectId)
         {
-            get
-            {
-                return this.getCompositeRoles ?? (this.getCompositeRoles = this.commandFactories.GetCompositeRolesFactory.Create(this.session));
-            }
+            var objectFactory = this.insertObjectFactory ?? new InsertObjectFactory();
+            return (this.insertObject = this.insertObject ?? objectFactory.Create(this.session)).Execute(@class, objectId);
         }
 
-        public AddCompositeRoleFactory.AddCompositeRole AddCompositeRoleCommand
+        internal Reference InstantiateObject(long objectId)
         {
-            get
-            {
-                return this.addCompositeRole ?? (this.addCompositeRole = this.commandFactories.AddCompositeRoleFactory.Create(this.session));
-            }
+            this.instantiateObjectFactory = this.instantiateObjectFactory ?? new InstantiateObjectFactory(this.database);
+            return (this.instantiateObject = (this.instantiateObject ?? this.instantiateObjectFactory.Create(this.session))).Execute(objectId);
         }
 
-        public RemoveCompositeRoleFactory.RemoveCompositeRole RemoveCompositeRoleCommand
+        internal IEnumerable<Reference> InstantiateReferences(IEnumerable<long> objectIds)
         {
-            get
-            {
-                return this.removeCompositeRole ?? (this.removeCompositeRole = this.commandFactories.RemoveCompositeRoleFactory.Create(this.session));
-            }
+            this.instantiateObjectsFactory = this.instantiateObjectsFactory ?? new InstantiateObjectsFactory(this.database);
+            return (this.instantiateObjects = this.instantiateObjects ?? this.instantiateObjectsFactory.Create(this.session)).Execute(objectIds);
         }
 
-        public GetCompositeAssociationsFactory.GetCompositeAssociations GetCompositeAssociationsCommand
+        internal Dictionary<long, int> GetVersions(ISet<Reference> references)
         {
-            get
-            {
-                return this.getCompositeAssociations ?? (this.getCompositeAssociations = this.commandFactories.GetCompositeAssociationsFactory.Create(this.session));
-            }
+            this.getCacheIdsFactory = this.getCacheIdsFactory ?? new GetCacheIdsFactory(this.database);
+            return (this.getCacheIds = this.getCacheIds ?? this.getCacheIdsFactory.Create(this.session)).Execute(references);
         }
 
-        public UpdateCacheIdsFactory.UpdateCacheIds UpdateCacheIdsCommand
+        internal void UpdateVersion(Dictionary<Reference, Roles> modifiedRolesByReference)
         {
-            get
-            {
-                return this.updateCacheIds ?? (this.updateCacheIds = this.commandFactories.UpdateCacheIdsFactory.Create(this.session));
-            }
+            this.updateCacheIdsFactory = this.updateCacheIdsFactory ?? new UpdateCacheIdsFactory(this.database);
+            (this.updateCacheIds = this.updateCacheIds ?? this.updateCacheIdsFactory.Create(this.session)).Execute(modifiedRolesByReference);
         }
 
-        public GetCacheIdsFactory.GetCacheIds GetCacheIdsCommand
+
+        internal IObjectType GetObjectType(long objectId)
         {
-            get
-            {
-                return this.getCacheIds ?? (this.getCacheIds = this.commandFactories.GetCacheIdsFactory.Create(this.session));
-            }
+            this.getObjectTypeFactory = this.getObjectTypeFactory ?? new GetObjectTypeFactory(this.database);
+            return (this.getObjectType = this.getObjectType ?? this.getObjectTypeFactory.Create(this.session)).Execute(objectId);
         }
     }
 }

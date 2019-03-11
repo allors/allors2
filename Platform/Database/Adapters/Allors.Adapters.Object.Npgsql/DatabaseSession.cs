@@ -36,14 +36,12 @@ namespace Allors.Adapters.Database.Npgsql
 
     public class DatabaseSession : Allors.ISession, ICommandFactory
     {
-        private readonly Database database;
+        private static readonly IObject[] EmptyObjects = { };
 
         private NpgsqlConnection connection;
         private NpgsqlTransaction transaction;
 
         private SessionCommands sessionCommands;
-
-        private static readonly IObject[] EmptyObjects = { };
 
         private ChangeSet changeSet;
 
@@ -63,7 +61,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         public DatabaseSession(Database database)
         {
-            this.database = database;
+            this.Database = database;
 
             var serviceScopeFactory = database.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             var scope = serviceScopeFactory.CreateScope();
@@ -79,6 +77,11 @@ namespace Allors.Adapters.Database.Npgsql
         }
 
         public IServiceProvider ServiceProvider { get; }
+
+        IDatabase ISession.Database => this.Database;
+
+        public Database Database { get; }
+        
 
         public object this[string name]
         {
@@ -120,25 +123,17 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public IChangeSet Changes
-        {
-            get
-            {
-                return this.SqlChangeSet;
-            }
-        }
-
         public Schema Schema
         {
-            get { return this.SqlDatabase.Schema; }
+            get { return this.Database.Schema; }
         }
 
         public virtual IObject Create(IClass objectType)
         {
-            var strategyReference = this.SessionCommands.CreateObjectCommand.Execute(objectType);
+            var strategyReference = this.SessionCommands.CreateObject(objectType);
             this.referenceByObjectId[strategyReference.ObjectId] = strategyReference;
 
-            this.SqlDatabase.Cache.SetObjectType(strategyReference.ObjectId, objectType);
+            this.Database.Cache.SetObjectType(strategyReference.ObjectId, objectType);
 
             this.changeSet.OnCreated(strategyReference.ObjectId);
 
@@ -147,9 +142,9 @@ namespace Allors.Adapters.Database.Npgsql
 
         public virtual IObject[] Create(IClass objectType, int count)
         {
-            var strategyReferences = this.SessionCommands.CreateObjectsCommand.Execute(objectType, count);
+            var strategyReferences = this.SessionCommands.CreateObjects(objectType, count);
 
-            var arrayType = this.SqlDatabase.ObjectFactory.GetTypeForObjectType(objectType);
+            var arrayType = this.Database.ObjectFactory.GetTypeForObjectType(objectType);
             var domainObjects = (IObject[])Array.CreateInstance(arrayType, count);
 
             for (var i = 0; i < strategyReferences.Count; i++)
@@ -186,7 +181,7 @@ namespace Allors.Adapters.Database.Npgsql
                 }
             }
 
-            var strategyReference = this.SessionCommands.InsertObjectCommand.Execute(domainType, objectId);
+            var strategyReference = this.SessionCommands.InsertObject(domainType, objectId);
             this.referenceByObjectId[objectId] = strategyReference;
             var insertedObject = strategyReference.Strategy.GetObject();
 
@@ -262,7 +257,7 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (nonCachedObjectIds.Count > 0)
             {
-                var nonCachedReferences = this.SessionCommands.InstantiateObjectsCommand.Execute(nonCachedObjectIds);
+                var nonCachedReferences = this.SessionCommands.InstantiateReferences(nonCachedObjectIds);
                 references.AddRange(nonCachedReferences);
 
                 var objectByObjectId = references.ToDictionary(strategyReference => strategyReference.ObjectId, strategyReference => strategyReference.Strategy.GetObject());
@@ -324,7 +319,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         public virtual Extent<T> Extent<T>() where T : IObject
         {
-            var compositeType = this.SqlDatabase.ObjectFactory.GetObjectTypeForType(typeof(T)) as IComposite;
+            var compositeType = this.Database.ObjectFactory.GetObjectTypeForType(typeof(T)) as IComposite;
 
             if (compositeType == null)
             {
@@ -399,7 +394,7 @@ namespace Allors.Adapters.Database.Npgsql
 
                     this.busyCommittingOrRollingBack = false;
 
-                    this.SqlDatabase.Cache.OnCommit(accessed, changed);
+                    this.Database.Cache.OnCommit(accessed, changed);
                 }
                 finally
                 {
@@ -443,7 +438,7 @@ namespace Allors.Adapters.Database.Npgsql
 
                     this.changeSet = new ChangeSet();
 
-                    this.SqlDatabase.Cache.OnRollback(accessed);
+                    this.Database.Cache.OnRollback(accessed);
                 }
                 finally
                 {
@@ -459,7 +454,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         public virtual T Create<T>() where T : IObject
         {
-            var objectType = this.SqlDatabase.ObjectFactory.GetObjectTypeForType(typeof(T));
+            var objectType = this.Database.ObjectFactory.GetObjectTypeForType(typeof(T));
             var @class = objectType as IClass;
             if (@class == null)
             {
@@ -477,7 +472,7 @@ namespace Allors.Adapters.Database.Npgsql
             if (!associationByRole.TryGetValue(roleStrategy.Reference, out association))
             {
                 this.FlushConditionally(roleStrategy, associationType);
-                association = this.SessionCommands.GetCompositeAssociationCommand.Execute(roleStrategy.Reference, associationType);
+                association = this.SessionCommands.GetCompositeAssociation(roleStrategy.Reference, associationType);
                 associationByRole[roleStrategy.Reference] = association;
             }
 
@@ -498,7 +493,7 @@ namespace Allors.Adapters.Database.Npgsql
             if (!associationsByRole.TryGetValue(roleStrategy.Reference, out associations))
             {
                 this.FlushConditionally(roleStrategy, associationType);
-                associations = this.SessionCommands.GetCompositeAssociationsCommand.Execute(roleStrategy, associationType);
+                associations = this.SessionCommands.GetCompositesAssociation(roleStrategy, associationType);
                 associationsByRole[roleStrategy.Reference] = associations;
             }
 
@@ -543,11 +538,11 @@ namespace Allors.Adapters.Database.Npgsql
             Reference association;
             if (!this.referenceByObjectId.TryGetValue(objectId, out association))
             {
-                var objectType = this.SqlDatabase.Cache.GetObjectType(objectId);
+                var objectType = this.Database.Cache.GetObjectType(objectId);
                 if (objectType == null)
                 {
-                    objectType = this.SessionCommands.GetObjectType.Execute(objectId);
-                    this.SqlDatabase.Cache.SetObjectType(objectId, objectType);
+                    objectType = this.SessionCommands.GetObjectType(objectId);
+                    this.Database.Cache.SetObjectType(objectId, objectType);
                 }
 
                 var @class = objectType as IClass;
@@ -649,7 +644,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         protected internal virtual void GetCacheIdsAndExists()
         {
-            var cacheIdByObjectId = this.SessionCommands.GetCacheIdsCommand.Execute(this.referencesWithoutCacheId);
+            var cacheIdByObjectId = this.SessionCommands.GetVersions(this.referencesWithoutCacheId);
             foreach (var association in this.referencesWithoutCacheId)
             {
                 int cacheId;
@@ -703,7 +698,7 @@ namespace Allors.Adapters.Database.Npgsql
 
         protected virtual void UpdateCacheIds()
         {
-            this.SessionCommands.UpdateCacheIdsCommand.Execute(this.modifiedRolesByReference);
+            this.SessionCommands.UpdateVersion(this.modifiedRolesByReference);
         }
 
         protected virtual Reference CreateReference(IClass objectType, long objectId, bool isNew)
@@ -721,7 +716,7 @@ namespace Allors.Adapters.Database.Npgsql
             Reference strategyReference;
             if (!this.referenceByObjectId.TryGetValue(objectId, out strategyReference))
             {
-                strategyReference = this.SessionCommands.InstantiateObjectCommand.Execute(objectId);
+                strategyReference = this.SessionCommands.InstantiateObject(objectId);
                 if (strategyReference != null)
                 {
                     this.referenceByObjectId[objectId] = strategyReference;
@@ -788,26 +783,11 @@ namespace Allors.Adapters.Database.Npgsql
 
 
 
-        public IDatabase Database
-        {
-            get { return this.database; }
-        }
-
-        public Database SqlDatabase
-        {
-            get { return this.database; }
-        }
-
-        public Database NpgsqlDatabase
-        {
-            get { return this.database; }
-        }
-
         public SessionCommands SessionCommands
         {
             get
             {
-                return this.sessionCommands ?? (this.sessionCommands = new SessionCommands(this));
+                return this.sessionCommands = this.sessionCommands ?? new SessionCommands(this);
             }
         }
 
@@ -822,14 +802,14 @@ namespace Allors.Adapters.Database.Npgsql
         {
             if (this.connection == null)
             {
-                this.connection = new NpgsqlConnection(this.SqlDatabase.ConnectionString);
+                this.connection = new NpgsqlConnection(this.Database.ConnectionString);
                 this.connection.Open();
-                this.transaction = this.connection.BeginTransaction(this.SqlDatabase.IsolationLevel);
+                this.transaction = this.connection.BeginTransaction(this.Database.IsolationLevel);
             }
 
             var command = this.connection.CreateCommand();
             command.Transaction = this.transaction;
-            command.CommandTimeout = this.SqlDatabase.CommandTimeout;
+            command.CommandTimeout = this.Database.CommandTimeout;
             return command;
         }
 
