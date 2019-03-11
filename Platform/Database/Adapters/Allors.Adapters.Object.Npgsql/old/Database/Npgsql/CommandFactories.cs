@@ -23,9 +23,9 @@ namespace Allors.Adapters.Database.Npgsql
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
 
-    using AddCompositeRoleFactory = Allors.Adapters.Database.Npgsql.Commands.Procedure.AddCompositeRoleFactory;
+    using AddCompositeRoleFactory = Commands.Procedure.AddCompositeRoleFactory;
 
-    public sealed class CommandFactories : Sql.CommandFactories
+    public sealed class CommandFactories
     {
         private readonly Database database;
 
@@ -56,7 +56,7 @@ namespace Allors.Adapters.Database.Npgsql
             this.database = database;
         }
 
-        public override GetObjectTypeFactory GetObjectTypeFactory
+        public GetObjectTypeFactory GetObjectTypeFactory
         {
             get
             {
@@ -64,7 +64,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override CreateObjectFactory CreateObjectFactory
+        public CreateObjectFactory CreateObjectFactory
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override CreateObjectsFactory CreateObjectsFactory
+        public CreateObjectsFactory CreateObjectsFactory
         {
             get
             {
@@ -80,7 +80,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override InsertObjectFactory InsertObjectFactory
+        public InsertObjectFactory InsertObjectFactory
         {
             get
             {
@@ -88,7 +88,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override InstantiateObjectsFactory InstantiateObjectsFactory
+        public InstantiateObjectsFactory InstantiateObjectsFactory
         {
             get
             {
@@ -96,7 +96,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override AddCompositeRoleFactory AddCompositeRoleFactory
+        public AddCompositeRoleFactory AddCompositeRoleFactory
         {
             get
             {
@@ -104,7 +104,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override RemoveCompositeRoleFactory RemoveCompositeRoleFactory
+        public RemoveCompositeRoleFactory RemoveCompositeRoleFactory
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override InstantiateObjectFactory InstantiateObjectFactory
+        public InstantiateObjectFactory InstantiateObjectFactory
         {
             get
             {
@@ -120,7 +120,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override DeleteObjectFactory DeleteObjectFactory
+        public DeleteObjectFactory DeleteObjectFactory
         {
             get
             {
@@ -128,7 +128,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
         
-        public override GetCompositeAssociationFactory GetCompositeAssociationFactory
+        public GetCompositeAssociationFactory GetCompositeAssociationFactory
         {
             get
             {
@@ -136,7 +136,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override GetCompositeAssociationsFactory GetCompositeAssociationsFactory
+        public GetCompositeAssociationsFactory GetCompositeAssociationsFactory
         {
             get
             {
@@ -144,7 +144,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override GetCompositeRoleFactory GetCompositeRoleFactory
+        public GetCompositeRoleFactory GetCompositeRoleFactory
         {
             get
             {
@@ -152,7 +152,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override GetCompositeRolesFactory GetCompositeRolesFactory
+        public GetCompositeRolesFactory GetCompositeRolesFactory
         {
             get
             {
@@ -160,7 +160,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override GetUnitRolesFactory GetUnitRolesFactory
+        public GetUnitRolesFactory GetUnitRolesFactory
         {
             get
             {
@@ -168,7 +168,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override ClearCompositeAndCompositesRoleFactory ClearCompositeAndCompositesRoleFactory
+        public ClearCompositeAndCompositesRoleFactory ClearCompositeAndCompositesRoleFactory
         {
             get
             {
@@ -176,7 +176,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override SetCompositeRoleFactory SetCompositeRoleFactory
+        public SetCompositeRoleFactory SetCompositeRoleFactory
         {
             get
             {
@@ -184,7 +184,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override SetUnitRoleFactory SetUnitRoleFactory
+        public SetUnitRoleFactory SetUnitRoleFactory
         {
             get
             {
@@ -192,7 +192,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override SetUnitRolesFactory SetUnitRolesFactory
+        public SetUnitRolesFactory SetUnitRolesFactory
         {
             get
             {
@@ -200,7 +200,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override GetCacheIdsFactory GetCacheIdsFactory
+        public GetCacheIdsFactory GetCacheIdsFactory
         {
             get
             {
@@ -208,7 +208,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public override UpdateCacheIdsFactory UpdateCacheIdsFactory
+        public UpdateCacheIdsFactory UpdateCacheIdsFactory
         {
             get
             {
@@ -216,7 +216,7 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        protected override Sql.Database Database
+        protected Database Database
         {
             get { return this.NpgsqlDatabase; }
         }

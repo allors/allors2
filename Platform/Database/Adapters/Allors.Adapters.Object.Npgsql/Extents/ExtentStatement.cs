@@ -22,6 +22,7 @@ namespace Allors.Adapters.Database.Sql
 {
     using System.Collections;
 
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
     public abstract class ExtentStatement

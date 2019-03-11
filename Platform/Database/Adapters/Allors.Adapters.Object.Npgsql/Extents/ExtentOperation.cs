@@ -23,6 +23,8 @@ namespace Allors.Adapters.Database.Sql
     using System;
     using System.Collections.Generic;
 
+    using Allors.Adapters.Database.Npgsql;
+
     using Meta;
 
     public class ExtentOperation : SqlExtent

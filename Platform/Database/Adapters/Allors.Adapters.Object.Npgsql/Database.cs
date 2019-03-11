@@ -1,24 +1,20 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="database.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
-// 
+// <copyright file="Database.cs" company="Allors bvba">
+//   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
-// 
 // The LGPL License is included in the file lgpl.txt.
 // The Allors License is an addendum to your contract.
-// 
 // Allors Platform is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Database.Npgsql
 {
     using System;
     using System.Collections.Generic;
@@ -29,14 +25,14 @@ namespace Allors.Adapters.Database.Sql
     using System.Xml;
 
     using Allors.Adapters.Database.Caching;
-    using Allors.Adapters.Database.Npgsql;
-    using Allors.Adapters.Database.Npgsql.Commands;
+    using Allors.Adapters.Database.Sql;
+    using Allors.Meta;
 
     using global::Npgsql;
 
-    using Meta;
+    using NpgsqlTypes;
 
-    public abstract class Database : IDatabase
+    public class Database : Allors.IDatabase
     {
         public static readonly long[] EmptyObjectIds = { };
 
@@ -51,8 +47,9 @@ namespace Allors.Adapters.Database.Sql
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
 
         protected Dictionary<string, object> Properties;
-        
-        protected Database(IServiceProvider serviceProvider, Configuration configuration)
+
+
+        public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
             this.objectFactory = configuration.ObjectFactory;
             this.concreteClassesByObjectType = new Dictionary<IObjectType, HashSet<IObjectType>>();
@@ -82,6 +79,24 @@ namespace Allors.Adapters.Database.Sql
             this.sortedUnitRolesByObjectType = new Dictionary<IObjectType, IRoleType[]>();
 
             this.Cache = configuration.CacheFactory.CreateCache(this);
+
+            this.commandFactories = new CommandFactories(this);
+        }
+
+        public Schema NpgsqlSchema
+        {
+            get
+            {
+                if (this.ObjectFactory.MetaPopulation != null)
+                {
+                    if (this.schema == null)
+                    {
+                        this.schema = new Schema(this);
+                    }
+                }
+
+                return this.schema;
+            }
         }
 
         public IObjectFactory ObjectFactory => this.objectFactory;
@@ -158,11 +173,7 @@ namespace Allors.Adapters.Database.Sql
         public virtual string DescendingSortAppendix => null;
 
         public virtual string Except => "EXCEPT";
-
-        public abstract Schema Schema { get; }
-
-        public abstract CommandFactories CommandFactories { get; }
-
+        
         public ICache Cache { get; }
 
         public string ConnectionString { get; }
@@ -349,15 +360,7 @@ namespace Allors.Adapters.Database.Sql
 
             return sortedUnitRoles;
         }
-
-        public abstract void DropIndex(ManagementSession session, SchemaTable table, SchemaColumn column);
-
-        public abstract void ResetSchema();
-
-        public abstract DbConnection CreateDbConnection();
-
-        protected internal abstract ManagementSession CreateManagementSession();
-
+        
         protected virtual void TruncateTables(ManagementSession session)
         {
             this.ResetSequence(session);
@@ -374,17 +377,7 @@ namespace Allors.Adapters.Database.Sql
                 }
             }
         }
-
-        protected abstract void TruncateTables(ManagementSession session, SchemaTable table);
-
-        protected abstract void CreateTable(ManagementSession session, SchemaTable table);
-
-        protected abstract void DropTable(ManagementSession session, SchemaTable table);
-
-        protected abstract void CreateProcedure(ManagementSession session, SchemaProcedure procedure);
-
-        protected abstract void CreateIndex(ManagementSession session, SchemaTable table, SchemaColumn column);
-
+        
         protected virtual void CreateUserDefinedTypes(ManagementSession session)
         {
         }
@@ -429,8 +422,6 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        protected abstract ISession CreateSqlSession();
-
         protected virtual void CreateTables(ManagementSession session)
         {
             foreach (SchemaTable table in Schema)
@@ -447,14 +438,6 @@ namespace Allors.Adapters.Database.Sql
         {
         }
 
-        protected virtual void DropUserDefinedTypes(ManagementSession session)
-        {
-        }
-
-        protected virtual void DropProcedures(ManagementSession session)
-        {
-        }
-
         protected virtual void DropTables(ManagementSession session)
         {
             foreach (SchemaTable table in Schema)
@@ -467,12 +450,304 @@ namespace Allors.Adapters.Database.Sql
         {
         }
 
-        protected virtual void ResetSequence(ManagementSession session)
+
+
+
+
+
+
+
+        private readonly CommandFactories commandFactories;
+
+        private Schema schema;
+
+        public CommandFactories NpgsqlCommandFactories => this.commandFactories;
+
+        public Sql.Schema Schema => this.NpgsqlSchema;
+
+        public CommandFactories CommandFactories => this.commandFactories;
+
+        protected string IdentityType => "bigserial";
+
+        public void ResetSchema()
+        {
+            this.schema = null;
+        }
+
+        public DbConnection CreateDbConnection()
+        {
+            return new NpgsqlConnection(this.ConnectionString);
+        }
+
+        public void DropIndex(ManagementSession session, SchemaTable table, SchemaColumn column)
+        {
+            var indexName = Sql.Schema.AllorsPrefix + table.Name + "_" + column.Name;
+
+            try
+            {
+                var sql = new StringBuilder();
+                sql.Append("DROP INDEX IF EXISTS " + indexName);
+                session.ExecuteSql(sql.ToString());
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not drop index " + indexName, e);
+            }
+        }
+
+        internal object[] CreateObjectTable(IEnumerable<long> objectIds)
+        {
+            return objectIds.Cast<object>().ToArray();
+        }
+
+        internal object[] CreateObjectTable(IEnumerable<Reference> strategies)
+        {
+            return strategies.Select(strategy => strategy.ObjectId).Cast<object>().ToArray();
+        }
+
+        internal object[] CreateObjectTable(Dictionary<Reference, Roles> rolesByReference)
+        {
+            return rolesByReference
+                .Select(dictionaryEntry => dictionaryEntry.Key)
+                .Select(strategy => strategy.ObjectId)
+                .Cast<object>()
+                .ToArray();
+        }
+
+        internal object[] CreateAssociationTable(IEnumerable<CompositeRelation> relations)
+        {
+            return relations.Select(relation => relation.Association).Cast<object>().ToArray();
+        }
+        
+        internal object[] CreateAssociationTable(IEnumerable<UnitRelation> relations)
+        {
+            return relations.Select(relation => relation.Association).Cast<object>().ToArray(); 
+        }
+        
+        internal object[] CreateRoleTable(IEnumerable<CompositeRelation> relations)
+        {
+            return relations.Select(relation => relation.Role).Cast<object>().ToArray();
+        }
+
+        internal object[] CreateRoleTable(IEnumerable<UnitRelation> relations)
+        {
+            var roleArray = relations.Select(relation => relation.Role).ToArray();
+            return roleArray;
+        }
+        
+        internal string GetSqlType(SchemaColumn column)
+        {
+            if (column.IsIdentity)
+            {
+                return this.IdentityType;
+            }
+
+            switch (column.DbType)
+            {
+                case DbType.String:
+                    if (column.Size == -1)
+                    {
+                        return "text";
+                    }
+
+                    return "VARCHAR(" + column.Size + ") ";
+                case DbType.Int32:
+                    return "INTEGER ";
+                case DbType.Int64:
+                    return "BIGINT  ";
+                case DbType.Decimal:
+                    return "NUMERIC(" + column.Precision + "," + column.Scale + ") ";
+                case DbType.Double:
+                    return "DOUBLE PRECISION ";
+                case DbType.Boolean:
+                    return "BOOLEAN ";
+                case DbType.Date:
+                case DbType.DateTime:
+                    return "TIMESTAMP ";
+                case DbType.Guid:
+                    return "UUID ";
+                case DbType.Binary:
+                    return "BYTEA ";
+                default:
+                    return "!UNKNOWN VALUE TYPE!";
+            }
+        }
+
+        internal string GetSqlType(DbType type)
+        {
+            switch (type)
+            {
+                case DbType.String:
+                    return "VARCHAR";
+                case DbType.Int32:
+                    return "INTEGER";
+                case DbType.Int64:
+                    return "BIGINT";
+                case DbType.Decimal:
+                    return "NUMERIC";
+                case DbType.Double:
+                    return "DOUBLE PRECISION";
+                case DbType.Boolean:
+                    return "BOOLEAN";
+                case DbType.Date:
+                case DbType.DateTime:
+                    return "TIMESTAMP";
+                case DbType.Guid:
+                    return "UUID";
+                case DbType.Binary:
+                    return "BYTEA";
+                default:
+                    return "!UNKNOWN VALUE TYPE!";
+            }
+        }
+
+        internal string GetSqlType(NpgsqlDbType type)
+        {
+            switch (type)
+            {
+                case NpgsqlDbType.Varchar:
+                    return "VARCHAR";
+                case NpgsqlDbType.Text:
+                    return "TEXT";
+                case NpgsqlDbType.Integer:
+                    return "INTEGER";
+                case NpgsqlDbType.Bigint:
+                    return "BIGINT";
+                case NpgsqlDbType.Numeric:
+                    return "NUMERIC";
+                case NpgsqlDbType.Double:
+                    return "DOUBLE PRECISION";
+                case NpgsqlDbType.Boolean:
+                    return "BOOLEAN";
+                case NpgsqlDbType.Date:
+                    return "DATE";
+                case NpgsqlDbType.Timestamp:
+                    return "TIMESTAMP";
+                case NpgsqlDbType.Uuid:
+                    return "UUID";
+                case NpgsqlDbType.Bytea:
+                    return "BYTEA";
+                default:
+                    return "!UNKNOWN VALUE TYPE!";
+            }
+        }
+
+        internal ManagementSession CreateNpgsqlManagementSession()
+        {
+            return new ManagementSession(this);
+        }
+
+        protected internal ManagementSession CreateManagementSession()
+        {
+            return this.CreateNpgsqlManagementSession();
+        }
+
+        protected ISession CreateSqlSession()
+        {
+            return new DatabaseSession(this);
+        }
+
+        protected void ResetSequence(ManagementSession session)
+        {
+            //var sql = new StringBuilder();
+            //sql.Append("DROP SEQUENCE IF EXISTS " + this.Schema.Objects.Name + "_SEQ");
+            //session.ExecuteSql(sql.ToString());
+
+            //sql = new StringBuilder();
+            //sql.Append("CREATE SEQUENCE " + this.Schema.Objects.Name + "_SEQ");
+            //session.ExecuteSql(sql.ToString());
+        }
+
+        protected void DropUserDefinedTypes(ManagementSession session)
         {
         }
 
-        protected abstract Load CreateLoad(ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, XmlReader reader);
+        protected void DropTable(ManagementSession session, SchemaTable schemaTable)
+        {
+            var sql = new StringBuilder();
+            sql.Append(
+@"DROP TABLE IF EXISTS " + schemaTable + " CASCADE;");
+            session.ExecuteSql(sql.ToString());
+        }
 
-        protected abstract Save CreateSave(XmlWriter writer);
+        protected void CreateTable(ManagementSession session, SchemaTable schemaTable)
+        {
+            var keys = new List<SchemaColumn>();
+
+            var sql = new StringBuilder();
+            sql.Append("CREATE TABLE " + schemaTable.StatementName);
+            sql.Append("(");
+            foreach (SchemaColumn column in schemaTable)
+            {
+                sql.Append(column.StatementName + " " + this.GetSqlType(column));
+                if (column.IsKey)
+                {
+                    keys.Add(column);
+                }
+
+                sql.Append(",\n");
+            }
+
+            sql.Append("CONSTRAINT " + schemaTable.Name + "_pk PRIMARY KEY ( ");
+            for (int i = 0; i < keys.Count; i++)
+            {
+                if (i > 0)
+                {
+                    sql.Append(", ");
+                }
+
+                sql.Append(keys[i].Name);
+            }
+
+            sql.Append(" )\n");
+            sql.Append(")");
+            session.ExecuteSql(sql.ToString());
+        }
+
+        protected void DropProcedures(ManagementSession session)
+        {
+        }
+
+        protected void CreateProcedure(ManagementSession session, SchemaProcedure storedProcedure)
+        {
+            session.ExecuteSql(storedProcedure.Definition);
+        }
+
+        protected void CreateIndex(ManagementSession session, SchemaTable table, SchemaColumn column)
+        {
+            var indexName = Sql.Schema.AllorsPrefix + table.Name + "_" + column.Name;
+
+            if (column.IndexType == SchemaIndexType.Single)
+            {
+                var sql = new StringBuilder();
+                sql.Append("CREATE INDEX " + indexName + "\n");
+                sql.Append("ON " + table + " (" + column + ")");
+                session.ExecuteSql(sql.ToString());
+            }
+            else
+            {
+                var sql = new StringBuilder();
+                sql.Append("CREATE INDEX " + indexName + "\n");
+                sql.Append("ON " + table + " (" + column + ", " + table.FirstKeyColumn + ")");
+                session.ExecuteSql(sql.ToString());
+            }
+        }
+
+        protected void TruncateTables(ManagementSession session, SchemaTable table)
+        {
+            var sql = new StringBuilder();
+            sql.Append("TRUNCATE TABLE " + table.StatementName);
+            session.ExecuteSql(sql.ToString());
+        }
+
+        protected Sql.Load CreateLoad(ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, System.Xml.XmlReader reader)
+        {
+            return new Load(this, objectNotLoaded, relationNotLoaded, reader);
+        }
+
+        protected Sql.Save CreateSave(System.Xml.XmlWriter writer)
+        {
+            return new Save(this, writer);
+        }
     }
 }

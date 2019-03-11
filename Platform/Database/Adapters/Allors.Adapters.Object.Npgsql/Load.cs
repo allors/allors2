@@ -25,9 +25,10 @@ namespace Allors.Adapters.Database.Sql
     using System.Text;
     using System.Xml;
 
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
-    public abstract class Load
+    public class Load
     {
         private static readonly byte[] EmptyByteArray = new byte[0];
 
@@ -38,7 +39,7 @@ namespace Allors.Adapters.Database.Sql
 
         private readonly Dictionary<long, IClass> objectTypeByObjectId;
 
-        protected Load(Database database, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, XmlReader reader)
+        public Load(Database database, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, XmlReader reader)
         {
             this.database = database;
             this.objectNotLoaded = objectNotLoaded;

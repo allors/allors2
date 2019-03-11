@@ -24,6 +24,8 @@ namespace Allors.Adapters.Database.Sql
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Adapters.Database.Npgsql;
+
     using Meta;
 
     public class ExtentFiltered : SqlExtent

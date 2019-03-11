@@ -21,23 +21,109 @@
 namespace Allors.Adapters.Database.Sql
 {
     using System;
+    using System.Data;
     using System.Data.Common;
 
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
-    public abstract class Command : IDisposable
+    using global::Npgsql;
+
+    using NpgsqlTypes;
+
+    public class Command : IDisposable
     {
-        protected abstract DbCommand DbCommand { get; }
+        private readonly NpgsqlCommand command;
 
-        public abstract void Dispose();
+        public Command(ICommandFactory commandFactory, string commandText)
+        {
+            this.command = commandFactory.CreateNpgsqlCommand(commandText);
+        }
 
-        public abstract void AddInParameter(string parameter, object value);
+        protected DbCommand DbCommand
+        {
+            get { return this.command; }
+        }
 
-        public abstract void AddInParameter(SchemaParameter parameter, object value);
+        public void AddInParameter(string parameterName, object value)
+        {
+            var sqlParameter = this.command.Parameters.Contains(parameterName) ? this.command.Parameters[parameterName] : null;
+            if (sqlParameter == null)
+            {
+                sqlParameter = this.command.CreateParameter();
+                sqlParameter.ParameterName = parameterName;
 
-        public abstract void AddInParameter(DbParameter parameter);
+                if (value is DateTime)
+                {
+                    sqlParameter.NpgsqlDbType = NpgsqlDbType.Timestamp;
+                }
 
-        public abstract void AddOutParameter(SchemaParameter parameter);
+                this.command.Parameters.Add(sqlParameter);
+            }
+
+            this.SetParameterValue(parameterName, value);
+        }
+
+        public void AddInParameter(Sql.SchemaParameter parameter, object value)
+        {
+            var sqlParameter = this.command.Parameters.Contains(parameter.Name) ? this.command.Parameters[parameter.Name] : null;
+            if (sqlParameter == null)
+            {
+                sqlParameter = this.command.CreateParameter();
+                sqlParameter.DbType = parameter.DbType;
+                sqlParameter.ParameterName = parameter.Name;
+                this.command.Parameters.Add(sqlParameter);
+            }
+
+            this.SetParameterValue(parameter.Name, value);
+        }
+
+        public void AddInParameter(DbParameter parameter)
+        {
+            if (this.command.Parameters.Contains(parameter.ParameterName))
+            {
+                this.command.Parameters.Remove(this.command.Parameters[parameter.ParameterName]);
+            }
+
+            this.command.Parameters.Add(parameter);
+        }
+
+        public void AddOutParameter(Sql.SchemaParameter parameter)
+        {
+            var sqlParameter = this.command.Parameters.Contains(parameter.Name) ? this.command.Parameters[parameter.Name] : null;
+            if (sqlParameter == null)
+            {
+                sqlParameter = this.command.CreateParameter();
+                sqlParameter.ParameterName = parameter.Name;
+                sqlParameter.DbType = parameter.DbType;
+                sqlParameter.Direction = ParameterDirection.Output;
+                this.command.Parameters.Add(sqlParameter);
+            }
+
+            this.command.Parameters.Add(sqlParameter);
+        }
+
+        public void SetParameterValue(Sql.SchemaParameter parameter, object value)
+        {
+            this.SetParameterValue(parameter.Name, value);
+        }
+
+        public void Dispose()
+        {
+            this.command.Dispose();
+        }
+
+        private void SetParameterValue(string parameterName, object value)
+        {
+            if (value == null || value == DBNull.Value)
+            {
+                this.command.Parameters[parameterName].Value = DBNull.Value;
+            }
+            else
+            {
+                this.command.Parameters[parameterName].Value = value;
+            }
+        }
 
         public virtual byte[] GetBinary(DbDataReader reader, int i)
         {
@@ -118,8 +204,6 @@ namespace Allors.Adapters.Database.Sql
                     throw new ArgumentException("Unknown Unit IObjectType: " + unitTypeTag);
             }
         }
-
-        public abstract void SetParameterValue(SchemaParameter parameter, object value);
 
         public virtual void ExecuteNonQuery()
         {

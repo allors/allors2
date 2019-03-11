@@ -24,6 +24,7 @@ namespace Allors.Adapters.Database.Sql
     using System.Collections.Generic;
     using System.Collections.Specialized;
 
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
     public class Reference

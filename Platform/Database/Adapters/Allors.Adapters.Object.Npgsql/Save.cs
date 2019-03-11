@@ -23,14 +23,15 @@ namespace Allors.Adapters.Database.Sql
     using System.Collections.Generic;
     using System.Xml;
 
+    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
-    public abstract class Save
+    public class Save
     {
         private readonly Database database;
         private readonly XmlWriter writer;
 
-        protected Save(Database database, XmlWriter writer)
+        public Save(Database database, XmlWriter writer)
         {
             this.database = database;
             this.writer = writer;

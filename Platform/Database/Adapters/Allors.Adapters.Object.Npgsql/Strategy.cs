@@ -26,6 +26,9 @@ namespace Allors.Adapters.Database.Sql
     using System;
     using System.Collections;
     using System.Collections.Generic;
+
+    using Allors.Adapters.Database.Npgsql;
+
     using Meta;
 
     public class Strategy : IStrategy

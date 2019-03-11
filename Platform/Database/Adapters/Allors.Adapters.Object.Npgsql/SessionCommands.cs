@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SessionCommands.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,51 +18,201 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Database.Npgsql
 {
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
 
-    public abstract class SessionCommands
+    public sealed class SessionCommands
     {
-        public abstract GetObjectTypeFactory.GetObjectType GetObjectType { get; }
+        private readonly DatabaseSession session;
+        private readonly CommandFactories commandFactories;
 
-        public abstract CreateObjectFactory.CreateObject CreateObjectCommand { get; }
+        private GetObjectTypeFactory.GetObjectType getObjectType;
+        private CreateObjectFactory.CreateObject createObjectCommand;
+        private CreateObjectsFactory.CreateObjects createObjects;
+        private InsertObjectFactory.InsertObject insertObject;
+        private DeleteObjectFactory.DeleteObject deleteObject;
+        private InstantiateObjectFactory.InstantiateObject instantiateObject;
+        private InstantiateObjectsFactory.InstantiateObjects instantiateObjects;
+        private GetCompositeRoleFactory.GetCompositeRole getCompositeRole;
+        private SetCompositeRoleFactory.SetCompositeRole setCompositeRole;
+        private ClearCompositeAndCompositesRoleFactory.ClearCompositeAndCompositesRole clearCompositeAndCompoisitesRole;
+        private GetCompositeAssociationFactory.GetCompositeAssociation getCompositeAssociation;
+        private GetCompositeRolesFactory.GetCompositeRoles getCompositeRoles;
+        private AddCompositeRoleFactory.AddCompositeRole addCompositeRole;
+        private RemoveCompositeRoleFactory.RemoveCompositeRole removeCompositeRole;
+        private GetCompositeAssociationsFactory.GetCompositeAssociations getCompositeAssociations;
+        private UpdateCacheIdsFactory.UpdateCacheIds updateCacheIds;
+        private GetUnitRolesFactory.GetUnitRoles getUnitRoles;
+        private SetUnitRoleFactory.SetUnitRole setUnitRole;
+        private SetUnitRolesFactory.SetUnitRoles setUnitRoles;
+        private GetCacheIdsFactory.GetCacheIds getCacheIds;
 
-        public abstract CreateObjectsFactory.CreateObjects CreateObjectsCommand { get; }
+        internal SessionCommands(DatabaseSession session)
+        {
+            this.session = session;
+            this.commandFactories = this.session.NpgsqlDatabase.NpgsqlCommandFactories;
+        }
 
-        public abstract InsertObjectFactory.InsertObject InsertObjectCommand { get; }
+        public GetObjectTypeFactory.GetObjectType GetObjectType
+        {
+            get
+            {
+                return this.getObjectType ?? (this.getObjectType = this.commandFactories.GetObjectTypeFactory.Create(this.session));
+            }
+        }
 
-        public abstract DeleteObjectFactory.DeleteObject DeleteObjectCommand { get; }
+        public CreateObjectFactory.CreateObject CreateObjectCommand
+        {
+            get
+            {
+                return this.createObjectCommand ?? (this.createObjectCommand = this.commandFactories.CreateObjectFactory.Create(this.session));
+            }
+        }
 
-        public abstract InstantiateObjectFactory.InstantiateObject InstantiateObjectCommand { get; }
+        public CreateObjectsFactory.CreateObjects CreateObjectsCommand
+        {
+            get
+            {
+                return this.createObjects ?? (this.createObjects = this.commandFactories.CreateObjectsFactory.Create(this.session));
+            }
+        }
 
-        public abstract InstantiateObjectsFactory.InstantiateObjects InstantiateObjectsCommand { get; }
+        public InsertObjectFactory.InsertObject InsertObjectCommand
+        {
+            get
+            {
+                return this.insertObject ?? (this.insertObject = this.commandFactories.InsertObjectFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetUnitRolesFactory.GetUnitRoles GetUnitRolesCommand { get; }
+        public DeleteObjectFactory.DeleteObject DeleteObjectCommand
+        {
+            get
+            {
+                return this.deleteObject ?? (this.deleteObject = this.commandFactories.DeleteObjectFactory.Create(this.session));
+            }
+        }
 
-        public abstract SetUnitRoleFactory.SetUnitRole SetUnitRoleCommand { get; }
+        public InstantiateObjectFactory.InstantiateObject InstantiateObjectCommand
+        {
+            get
+            {
+                return this.instantiateObject ?? (this.instantiateObject = this.commandFactories.InstantiateObjectFactory.Create(this.session));
+            }
+        }
 
-        public abstract SetUnitRolesFactory.SetUnitRoles SetUnitRolesCommand { get; }
+        public InstantiateObjectsFactory.InstantiateObjects InstantiateObjectsCommand
+        {
+            get
+            {
+                return this.instantiateObjects ?? (this.instantiateObjects = this.commandFactories.InstantiateObjectsFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetCompositeRoleFactory.GetCompositeRole GetCompositeRoleCommand { get; }
+        public GetUnitRolesFactory.GetUnitRoles GetUnitRolesCommand
+        {
+            get
+            {
+                return this.getUnitRoles ?? (this.getUnitRoles = this.commandFactories.GetUnitRolesFactory.Create(this.session));
+            }
+        }
 
-        public abstract SetCompositeRoleFactory.SetCompositeRole SetCompositeRoleCommand { get; }
+        public SetUnitRoleFactory.SetUnitRole SetUnitRoleCommand
+        {
+            get
+            {
+                return this.setUnitRole ?? (this.setUnitRole = this.commandFactories.SetUnitRoleFactory.Create(this.session));
+            }
+        }
 
-        public abstract ClearCompositeAndCompositesRoleFactory.ClearCompositeAndCompositesRole ClearCompositeAndCompositesRoleCommand { get; }
+        public SetUnitRolesFactory.SetUnitRoles SetUnitRolesCommand
+        {
+            get
+            {
+                return this.setUnitRoles ?? (this.setUnitRoles = this.commandFactories.SetUnitRolesFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetCompositeAssociationFactory.GetCompositeAssociation GetCompositeAssociationCommand { get; }
+        public GetCompositeRoleFactory.GetCompositeRole GetCompositeRoleCommand
+        {
+            get
+            {
+                return this.getCompositeRole ?? (this.getCompositeRole = this.commandFactories.GetCompositeRoleFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetCompositeRolesFactory.GetCompositeRoles GetCompositeRolesCommand { get; }
+        public SetCompositeRoleFactory.SetCompositeRole SetCompositeRoleCommand
+        {
+            get
+            {
+                return this.setCompositeRole ?? (this.setCompositeRole = this.commandFactories.SetCompositeRoleFactory.Create(this.session));
+            }
+        }
 
-        public abstract AddCompositeRoleFactory.AddCompositeRole AddCompositeRoleCommand { get; }
+        public ClearCompositeAndCompositesRoleFactory.ClearCompositeAndCompositesRole ClearCompositeAndCompositesRoleCommand
+        {
+            get
+            {
+                return this.clearCompositeAndCompoisitesRole ?? (this.clearCompositeAndCompoisitesRole = this.commandFactories.ClearCompositeAndCompositesRoleFactory.Create(this.session));
+            }
+        }
 
-        public abstract RemoveCompositeRoleFactory.RemoveCompositeRole RemoveCompositeRoleCommand { get; }
+        public GetCompositeAssociationFactory.GetCompositeAssociation GetCompositeAssociationCommand
+        {
+            get
+            {
+                return this.getCompositeAssociation ?? (this.getCompositeAssociation = this.commandFactories.GetCompositeAssociationFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetCompositeAssociationsFactory.GetCompositeAssociations GetCompositeAssociationsCommand { get; }
+        public GetCompositeRolesFactory.GetCompositeRoles GetCompositeRolesCommand
+        {
+            get
+            {
+                return this.getCompositeRoles ?? (this.getCompositeRoles = this.commandFactories.GetCompositeRolesFactory.Create(this.session));
+            }
+        }
 
-        public abstract UpdateCacheIdsFactory.UpdateCacheIds UpdateCacheIdsCommand { get; }
+        public AddCompositeRoleFactory.AddCompositeRole AddCompositeRoleCommand
+        {
+            get
+            {
+                return this.addCompositeRole ?? (this.addCompositeRole = this.commandFactories.AddCompositeRoleFactory.Create(this.session));
+            }
+        }
 
-        public abstract GetCacheIdsFactory.GetCacheIds GetCacheIdsCommand { get; }
+        public RemoveCompositeRoleFactory.RemoveCompositeRole RemoveCompositeRoleCommand
+        {
+            get
+            {
+                return this.removeCompositeRole ?? (this.removeCompositeRole = this.commandFactories.RemoveCompositeRoleFactory.Create(this.session));
+            }
+        }
+
+        public GetCompositeAssociationsFactory.GetCompositeAssociations GetCompositeAssociationsCommand
+        {
+            get
+            {
+                return this.getCompositeAssociations ?? (this.getCompositeAssociations = this.commandFactories.GetCompositeAssociationsFactory.Create(this.session));
+            }
+        }
+
+        public UpdateCacheIdsFactory.UpdateCacheIds UpdateCacheIdsCommand
+        {
+            get
+            {
+                return this.updateCacheIds ?? (this.updateCacheIds = this.commandFactories.UpdateCacheIdsFactory.Create(this.session));
+            }
+        }
+
+        public GetCacheIdsFactory.GetCacheIds GetCacheIdsCommand
+        {
+            get
+            {
+                return this.getCacheIds ?? (this.getCacheIds = this.commandFactories.GetCacheIdsFactory.Create(this.session));
+            }
+        }
     }
 }

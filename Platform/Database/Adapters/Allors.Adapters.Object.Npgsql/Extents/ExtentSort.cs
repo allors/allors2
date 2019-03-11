@@ -20,6 +20,8 @@
 
 namespace Allors.Adapters.Database.Sql
 {
+    using Allors.Adapters.Database.Npgsql;
+
     using Meta;
 
     public class ExtentSort

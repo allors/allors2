@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------- 
 // <copyright file="DatabaseSession.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+// Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -16,21 +16,33 @@
 // 
 // For more information visit http://www.allors.com/legal
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+// <summary>Defines the Session type.</summary>
+//-------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Database.Npgsql
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors;
+    using Allors.Adapters.Database.Sql;
     using Allors.Meta;
+
+    using global::Npgsql;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public abstract class DatabaseSession : ISession
+    using IDatabase = Allors.IDatabase;
+
+    public class DatabaseSession : Allors.ISession, ICommandFactory
     {
+        private readonly Database database;
+
+        private NpgsqlConnection connection;
+        private NpgsqlTransaction transaction;
+
+        private SessionCommands sessionCommands;
+
         private static readonly IObject[] EmptyObjects = { };
 
         private ChangeSet changeSet;
@@ -44,13 +56,15 @@ namespace Allors.Adapters.Database.Sql
 
         private Dictionary<IAssociationType, Dictionary<Reference, Reference>> associationByRoleByAssociationType;
         private Dictionary<IAssociationType, Dictionary<Reference, long[]>> associationsByRoleByAssociationType;
-        
+
         private bool busyCommittingOrRollingBack;
 
         private Dictionary<string, object> properties;
 
-        protected DatabaseSession(Database database)
+        public DatabaseSession(Database database)
         {
+            this.database = database;
+
             var serviceScopeFactory = database.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             var scope = serviceScopeFactory.CreateScope();
             this.ServiceProvider = scope.ServiceProvider;
@@ -63,7 +77,7 @@ namespace Allors.Adapters.Database.Sql
 
             this.changeSet = new ChangeSet();
         }
-        
+
         public IServiceProvider ServiceProvider { get; }
 
         public object this[string name]
@@ -114,12 +128,6 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public abstract Allors.IDatabase Database { get; }
-
-        public abstract Database SqlDatabase { get; }
-
-        public abstract SessionCommands SessionCommands { get; }
-
         public Schema Schema
         {
             get { return this.SqlDatabase.Schema; }
@@ -136,7 +144,7 @@ namespace Allors.Adapters.Database.Sql
 
             return strategyReference.Strategy.GetObject();
         }
-        
+
         public virtual IObject[] Create(IClass objectType, int count)
         {
             var strategyReferences = this.SessionCommands.CreateObjectsCommand.Execute(objectType, count);
@@ -325,7 +333,7 @@ namespace Allors.Adapters.Database.Sql
 
             return this.Extent(compositeType);
         }
-        
+
         public virtual Allors.Extent Extent(IComposite type)
         {
             return new ExtentFiltered(this, type);
@@ -390,7 +398,7 @@ namespace Allors.Adapters.Database.Sql
                     this.changeSet = new ChangeSet();
 
                     this.busyCommittingOrRollingBack = false;
-                    
+
                     this.SqlDatabase.Cache.OnCommit(accessed, changed);
                 }
                 finally
@@ -607,8 +615,6 @@ namespace Allors.Adapters.Database.Sql
             return "Session[id=" + this.GetHashCode() + "] " + this.Database;
         }
 
-        public abstract Command CreateCommand(string commandText);
-
         public virtual void Flush()
         {
             if (this.unflushedRolesByReference != null)
@@ -674,7 +680,7 @@ namespace Allors.Adapters.Database.Sql
             {
                 this.modifiedRolesByReference = new Dictionary<Reference, Roles>();
             }
-            
+
             this.modifiedRolesByReference[association] = roles;
         }
 
@@ -682,7 +688,7 @@ namespace Allors.Adapters.Database.Sql
         {
             if (this.triggersFlushRolesByAssociationType == null)
             {
-                this.triggersFlushRolesByAssociationType = new Dictionary<IAssociationType, HashSet<long>>();    
+                this.triggersFlushRolesByAssociationType = new Dictionary<IAssociationType, HashSet<long>>();
             }
 
             HashSet<long> associations;
@@ -695,16 +701,10 @@ namespace Allors.Adapters.Database.Sql
             associations.Add(role);
         }
 
-        protected abstract IFlush CreateFlush(Dictionary<Reference, Roles> unsyncedRolesByReference);
-
         protected virtual void UpdateCacheIds()
         {
             this.SessionCommands.UpdateCacheIdsCommand.Execute(this.modifiedRolesByReference);
         }
-
-        protected abstract void SqlCommit();
-
-        protected abstract void SqlRollback();
 
         protected virtual Reference CreateReference(IClass objectType, long objectId, bool isNew)
         {
@@ -758,6 +758,119 @@ namespace Allors.Adapters.Database.Sql
             }
 
             return associationsByRole;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public IDatabase Database
+        {
+            get { return this.database; }
+        }
+
+        public Database SqlDatabase
+        {
+            get { return this.database; }
+        }
+
+        public Database NpgsqlDatabase
+        {
+            get { return this.database; }
+        }
+
+        public SessionCommands SessionCommands
+        {
+            get
+            {
+                return this.sessionCommands ?? (this.sessionCommands = new SessionCommands(this));
+            }
+        }
+
+        public virtual NpgsqlCommand CreateNpgsqlCommand(string commandText)
+        {
+            var command = this.CreateNpgsqlCommand();
+            command.CommandText = commandText;
+            return command;
+        }
+
+        public virtual NpgsqlCommand CreateNpgsqlCommand()
+        {
+            if (this.connection == null)
+            {
+                this.connection = new NpgsqlConnection(this.SqlDatabase.ConnectionString);
+                this.connection.Open();
+                this.transaction = this.connection.BeginTransaction(this.SqlDatabase.IsolationLevel);
+            }
+
+            var command = this.connection.CreateCommand();
+            command.Transaction = this.transaction;
+            command.CommandTimeout = this.SqlDatabase.CommandTimeout;
+            return command;
+        }
+
+        public Sql.Command CreateCommand(string commandText)
+        {
+            return new Command(this, commandText);
+        }
+
+        protected IFlush CreateFlush(Dictionary<Reference, Roles> unsyncedRolesByReference)
+        {
+            return new Flush(this, unsyncedRolesByReference);
+        }
+
+        protected void SqlCommit()
+        {
+            try
+            {
+                this.sessionCommands = null;
+                this.transaction?.Commit();
+            }
+            finally
+            {
+                this.transaction = null;
+                this.connection?.Close();
+                this.connection = null;
+            }
+        }
+
+        protected void SqlRollback()
+        {
+            try
+            {
+                this.sessionCommands = null;
+                this.transaction?.Rollback();
+            }
+            finally
+            {
+                this.transaction = null;
+                this.connection?.Close();
+                this.connection = null;
+            }
         }
     }
 }
