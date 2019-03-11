@@ -22,14 +22,24 @@ namespace Allors.Adapters.Database.Npgsql
 {
     using System.Collections.Generic;
 
+    using Allors.Adapters.Database.Npgsql.Commands;
     using Allors.Adapters.Database.Npgsql.Commands.Procedure;
     using Allors.Adapters.Database.Npgsql.Commands.Text;
     using Allors.Adapters.Database.Sql;
     using Allors.Meta;
 
+    using global::Npgsql;
+
     public sealed class SessionCommands
     {
         private readonly Database database;
+        private readonly DatabaseSession session;
+
+        private Dictionary<IClass, NpgsqlCommand> deleteObjectByClass;
+
+
+
+
 
         private GetObjectTypeFactory getObjectTypeFactory;
         private InstantiateObjectsFactory instantiateObjectsFactory;
@@ -39,7 +49,6 @@ namespace Allors.Adapters.Database.Npgsql
         private CreateObjectsFactory createObjectsFactory;
         private InsertObjectFactory insertObjectFactory;
         private InstantiateObjectFactory instantiateObjectFactory;
-        private DeleteObjectFactory deleteObjectFactory;
         private GetCompositeAssociationFactory getCompositeAssociationFactory;
         private GetCompositeAssociationsFactory getCompositeAssociationsFactory;
         private GetCompositeRoleFactory getCompositeRoleFactory;
@@ -52,13 +61,11 @@ namespace Allors.Adapters.Database.Npgsql
         private GetCacheIdsFactory getCacheIdsFactory;
         private UpdateCacheIdsFactory updateCacheIdsFactory;
 
-        private readonly DatabaseSession session;
 
         private GetObjectTypeFactory.GetObjectType getObjectType;
         private CreateObjectFactory.CreateObject createObjectCommand;
         private CreateObjectsFactory.CreateObjects createObjects;
         private InsertObjectFactory.InsertObject insertObject;
-        private DeleteObjectFactory.DeleteObject deleteObject;
         private InstantiateObjectFactory.InstantiateObject instantiateObject;
         private InstantiateObjectsFactory.InstantiateObjects instantiateObjects;
         private GetCompositeRoleFactory.GetCompositeRole getCompositeRole;
@@ -83,8 +90,33 @@ namespace Allors.Adapters.Database.Npgsql
 
         internal void DeleteObject(Strategy strategy)
         {
-            this.deleteObjectFactory = this.deleteObjectFactory ?? new DeleteObjectFactory(this.database);
-            (this.deleteObject = this.deleteObject = this.deleteObjectFactory.Create(this.session)).Execute(strategy);
+            this.deleteObjectByClass = this.deleteObjectByClass ?? new Dictionary<IClass, NpgsqlCommand>();
+
+            var @class = strategy.Class;
+
+            if (!this.deleteObjectByClass.TryGetValue(@class, out var command))
+            {
+                var schema = this.session.Schema;
+
+                var sql = $@"
+DELETE FROM {schema.Objects}
+WHERE {schema.ObjectId}={schema.ObjectId.Param.InvocationName};
+DELETE FROM {schema.Table(strategy.Class.ExclusiveClass)}
+WHERE {schema.ObjectId}={schema.ObjectId.Param.InvocationName};
+";
+
+                command = this.session.CreateNpgsqlCommand();
+                command.CommandText = sql;
+                command.AddInObject(this.session.Schema.ObjectId.Param, strategy.ObjectId);
+
+                this.deleteObjectByClass[@class] = command;
+            }
+            else
+            {
+                command.SetInObject(this.session.Schema.ObjectId.Param, strategy.ObjectId);
+            }
+
+            command.ExecuteNonQuery();
         }
 
         internal void GetUnitRoles(Roles roles)
@@ -194,7 +226,6 @@ namespace Allors.Adapters.Database.Npgsql
             this.updateCacheIdsFactory = this.updateCacheIdsFactory ?? new UpdateCacheIdsFactory(this.database);
             (this.updateCacheIds = this.updateCacheIds ?? this.updateCacheIdsFactory.Create(this.session)).Execute(modifiedRolesByReference);
         }
-
 
         internal IObjectType GetObjectType(long objectId)
         {
