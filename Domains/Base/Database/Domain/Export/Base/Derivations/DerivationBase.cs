@@ -26,11 +26,14 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors;
+    using Allors.Adapters;
     using Allors.Meta;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public abstract class DerivationBase : IDerivation
     {
+        private static readonly EmptySet<IObject> EmptyObjectSet = new EmptySet<IObject>();
+
         private readonly HashSet<Object> derivedObjects;
         private readonly HashSet<Object> finalizedObjects;
 
@@ -396,7 +399,7 @@ namespace Allors.Domain
             changedObjectIds.UnionWith(changeSet.Created);
             changedObjectIds.UnionWith(this.relationsByMarker.Keys);
 
-            var changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
+            ISet<IObject> changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
             var preparedObjects = new HashSet<IObject>();
 
             var postDeriveObjects = new List<Object>();
@@ -459,27 +462,29 @@ namespace Allors.Domain
 
                 if (this.derivationGraph.Count == 0)
                 {
-                    break;
+                    changedObjects = EmptyObjectSet;
                 }
+                else
+                {
+                    // Derive
+                    var generationPostDeriveObjects = new List<Object>();
 
-                // Derive
-                var generationPostDeriveObjects = new List<Object>();
+                    this.derivationGraph.Derive(generationPostDeriveObjects);
 
-                this.derivationGraph.Derive(generationPostDeriveObjects);
+                    // Keep derivation order within a generation,
+                    // but post derive generations backwards
+                    postDeriveObjects.InsertRange(0, generationPostDeriveObjects);
 
-                // Keep derivation order within a generation,
-                // but post derive generations backwards
-                postDeriveObjects.InsertRange(0, generationPostDeriveObjects);
+                    changeSet = this.Session.Checkpoint();
+                    this.accumulatedChangeSet.Add(changeSet);
 
-                changeSet = this.Session.Checkpoint();
-                this.accumulatedChangeSet.Add(changeSet);
+                    changedObjectIds = new HashSet<long>(changeSet.Associations);
+                    changedObjectIds.UnionWith(changeSet.Roles);
+                    changedObjectIds.UnionWith(changeSet.Created);
 
-                changedObjectIds = new HashSet<long>(changeSet.Associations);
-                changedObjectIds.UnionWith(changeSet.Roles);
-                changedObjectIds.UnionWith(changeSet.Created);
-
-                changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
-                changedObjects.ExceptWith(this.derivedObjects);
+                    changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
+                    changedObjects.ExceptWith(this.derivedObjects);
+                }
 
                 // PostDerive
                 if (changedObjects.Count == 0)

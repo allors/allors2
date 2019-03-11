@@ -349,10 +349,9 @@ namespace Allors.Domain
 
             if (!internalOrganisations.Contains(@this))
             {
-                foreach (Organisation internalOrganisation in internalOrganisations)
+                foreach (var internalOrganisation in internalOrganisations)
                 {
-                    var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v =>
-                            Equals(v.InternalOrganisation, internalOrganisation));
+                    var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, internalOrganisation));
 
                     if (partyFinancial == null)
                     {

@@ -41,7 +41,7 @@ namespace Allors.Domain
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             this.Session.Derive();
-
+            
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
             Assert.Equal(0, partyFinancial.AmountDue);
         }
