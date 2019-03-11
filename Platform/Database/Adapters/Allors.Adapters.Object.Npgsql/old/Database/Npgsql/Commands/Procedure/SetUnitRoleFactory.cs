@@ -24,7 +24,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Collections.Generic;
     using System.Data;
 
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -32,7 +31,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class SetUnitRoleFactory : ISetUnitRoleFactory
+    public class SetUnitRoleFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IObjectType, Dictionary<IRoleType, string>> sqlByRoleTypeByObjectType;
@@ -43,7 +42,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByRoleTypeByObjectType = new Dictionary<IObjectType, Dictionary<IRoleType, string>>();
         }
 
-        public ISetUnitRole Create(Sql.DatabaseSession session)
+        public SetUnitRole Create(DatabaseSession session)
         {
             return new SetUnitRole(this, session);
         }
@@ -66,21 +65,24 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return sqlByRoleType[roleType];
         }
 
-        private class SetUnitRole : DatabaseCommand, ISetUnitRole
+        public class SetUnitRole
         {
             private readonly SetUnitRoleFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, Dictionary<IRoleType, NpgsqlCommand>> commandByRoleTypeByObjectType;
 
-            public SetUnitRole(SetUnitRoleFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public SetUnitRole(SetUnitRoleFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByRoleTypeByObjectType = new Dictionary<IObjectType, Dictionary<IRoleType, NpgsqlCommand>>();
             }
 
             public void Execute(IList<UnitRelation> relation, IObjectType exclusiveLeafClass, IRoleType roleType)
             {
-                var schema = this.Database.NpgsqlSchema;
+                var schema = this.session.Schema;
 
                 Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;
                 if (!this.commandByRoleTypeByObjectType.TryGetValue(exclusiveLeafClass, out commandByRoleType))
@@ -134,16 +136,16 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 NpgsqlCommand command;
                 if (!commandByRoleType.TryGetValue(roleType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(exclusiveLeafClass, roleType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(exclusiveLeafClass, roleType));
                     command.CommandType = CommandType.StoredProcedure;
 
-                    this.AddInTable(command, this.Database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateAssociationTable(relation));
-                    this.AddInTable(command, arrayParam, this.Database.CreateRoleTable(relation));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relation));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, arrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relation));
                 }
                 else
                 {
-                    this.SetInTable(command, this.Database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateAssociationTable(relation));
-                    this.SetInTable(command, arrayParam, this.Database.CreateRoleTable(relation));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relation));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, arrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relation));
                 }
 
                 command.ExecuteNonQuery();

@@ -42,16 +42,7 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseOnPreFinalize(this Object @this, ObjectOnPreFinalize method)
-        {
-            var derivation = method.Derivation;
-            if (derivation.IsModified(@this))
-            {
-                derivation.Add(@this);
-            }
-        }
-
-        public static void BaseOnPostFinalize(this Object @this, ObjectOnPostFinalize method)
+        public static void BaseOnPostDerive(this Object @this, ObjectOnPostDerive method)
         {
             var derivation = method.Derivation;
             var @class = (Class)@this.Strategy.Class;

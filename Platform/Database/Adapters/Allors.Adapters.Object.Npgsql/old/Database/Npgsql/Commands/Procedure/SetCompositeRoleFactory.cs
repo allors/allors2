@@ -23,7 +23,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Collections.Generic;
     using System.Data;
 
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -31,7 +30,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class SetCompositeRoleFactory : ISetCompositeRoleFactory
+    public class SetCompositeRoleFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IRoleType, string> sqlByRoleType;
@@ -42,7 +41,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByRoleType = new Dictionary<IRoleType, string>();
         }
 
-        public ISetCompositeRole Create(Sql.DatabaseSession session)
+        public SetCompositeRole Create(DatabaseSession session)
         {
             return new SetCompositeRole(this, session);
         }
@@ -69,15 +68,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return this.sqlByRoleType[roleType];
         }
 
-        private class SetCompositeRole : DatabaseCommand, ISetCompositeRole
+        public class SetCompositeRole
         {
             private readonly SetCompositeRoleFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IRoleType, NpgsqlCommand> commandByRoleType;
 
-            public SetCompositeRole(SetCompositeRoleFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public SetCompositeRole(SetCompositeRoleFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByRoleType = new Dictionary<IRoleType, NpgsqlCommand>();
             }
 
@@ -86,17 +88,17 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 NpgsqlCommand command;
                 if (!this.commandByRoleType.TryGetValue(roleType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
                     command.CommandType = CommandType.StoredProcedure;
                     this.commandByRoleType[roleType] = command;
 
-                    this.AddInTable(command, this.Database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateAssociationTable(relations));
-                    this.AddInTable(command, this.Database.NpgsqlSchema.CompositeRelationArrayParam, this.Database.CreateRoleTable(relations));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relations));
+                    Commands.NpgsqlCommandExtensions.AddInTable(command, this.session.Schema.CompositeRelationArrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relations));
                 }
                 else
                 {
-                    this.SetInTable(command, this.Database.NpgsqlSchema.ObjectArrayParam, this.Database.CreateAssociationTable(relations));
-                    this.SetInTable(command, this.Database.NpgsqlSchema.CompositeRelationArrayParam, this.Database.CreateRoleTable(relations));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, this.session.Schema.ObjectArrayParam, this.session.NpgsqlDatabase.CreateAssociationTable(relations));
+                    Commands.NpgsqlCommandExtensions.SetInTable(command, this.session.Schema.CompositeRelationArrayParam, this.session.NpgsqlDatabase.CreateRoleTable(relations));
                 }
 
                 command.ExecuteNonQuery();

@@ -439,21 +439,6 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
-        public void OnPreFinalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnFinalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnPostFinalize()
-        {
-            throw new NotImplementedException();
-        }
-
         public void InterfaceMethod() { }
 
 

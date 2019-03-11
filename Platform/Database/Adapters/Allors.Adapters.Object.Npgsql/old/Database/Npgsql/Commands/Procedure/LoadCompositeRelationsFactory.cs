@@ -24,10 +24,9 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
-    internal class LoadCompositeRelationsFactory : ILoadCompositeRelationsFactory
+    public class LoadCompositeRelationsFactory
     {
         internal readonly Npgsql.ManagementSession ManagementSession;
         
@@ -36,7 +35,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.ManagementSession = session;
         }
 
-        public ILoadCompositeRelations Create(IRoleType roleType)
+        public LoadCompositeRelations Create(IRoleType roleType)
         {
             var associationType = roleType.AssociationType;
 
@@ -68,7 +67,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return new LoadCompositeRelations(this, sql);
         }
 
-        private class LoadCompositeRelations : Commands.Command, ILoadCompositeRelations
+        public class LoadCompositeRelations
         {
             private readonly LoadCompositeRelationsFactory factory;
             private readonly string sql;
@@ -85,8 +84,8 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 var command = this.factory.ManagementSession.CreateNpgsqlCommand(this.sql);
                 command.CommandType = CommandType.StoredProcedure;
-                this.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
-                this.AddInTable(command, database.NpgsqlSchema.CompositeRelationArrayParam, database.CreateRoleTable(relations));
+                Commands.NpgsqlCommandExtensions.AddInTable(command, database.NpgsqlSchema.ObjectArrayParam, database.CreateAssociationTable(relations));
+                Commands.NpgsqlCommandExtensions.AddInTable(command, database.NpgsqlSchema.CompositeRelationArrayParam, database.CreateRoleTable(relations));
 
                 command.ExecuteNonQuery();
             }

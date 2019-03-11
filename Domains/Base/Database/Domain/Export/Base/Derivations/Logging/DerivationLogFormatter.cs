@@ -89,36 +89,6 @@ namespace Allors.Domain.Logging
             return $"{"PostDerive¶",-TabWith} " + FormatDerivable(derivable);
         }
 
-        public static string FormatPreFinalizing(Object derivable)
-        {
-            return $"{"PreFinalize",-TabWith} " + FormatDerivable(derivable);
-        }
-
-        public static string FormatPreFinalized(Object derivable)
-        {
-            return $"{"PreFinalize¶",-TabWith} " + FormatDerivable(derivable);
-        }
-
-        public static string FormatFinalizing(Object derivable)
-        {
-            return $"{"Finalize",-TabWith} " + FormatDerivable(derivable);
-        }
-
-        public static string FormatFinalized(Object derivable)
-        {
-            return $"{"Finalize¶",-TabWith} " + FormatDerivable(derivable);
-        }
-        
-        public static string FormatPostFinalizing(Object derivable)
-        {
-            return $"{"PostFinalize",-TabWith} " + FormatDerivable(derivable);
-        }
-
-        public static string FormatPostFinalized(Object derivable)
-        {
-            return $"{"PostFinalize¶",-TabWith} " + FormatDerivable(derivable);
-        }
-
         private static object FormatDerivable(Object derivable)
         {
             return $"'{derivable,-40}' [{derivable.Strategy.Class.Name,20}#{derivable.Id,-10}]";

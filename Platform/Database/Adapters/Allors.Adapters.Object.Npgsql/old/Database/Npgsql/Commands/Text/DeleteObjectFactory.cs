@@ -23,7 +23,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Collections.Generic;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -31,7 +30,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class DeleteObjectFactory : IDeleteObjectFactory
+    public class DeleteObjectFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IObjectType, string> sqlByMetaType;
@@ -42,40 +41,23 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByMetaType = new Dictionary<IObjectType, string>();
         }
 
-        public IDeleteObject Create(Sql.DatabaseSession session)
+        public DeleteObject Create(DatabaseSession session)
         {
             return new DeleteObject(this, session);
         }
 
-        public string GetSql(IClass objectType)
-        {
-            if (!this.sqlByMetaType.ContainsKey(objectType))
-            {
-                Schema schema = this.Database.Schema;
-
-                string sql = string.Empty;
-
-                sql += "DELETE FROM " + schema.Objects + "\n";
-                sql += "WHERE " + schema.ObjectId + "=" + schema.ObjectId.Param.InvocationName + ";\n";
-
-                sql += "DELETE FROM " + schema.Table(objectType.ExclusiveClass) + "\n";
-                sql += "WHERE " + schema.ObjectId + "=" + schema.ObjectId.Param.InvocationName + ";\n";
-
-                this.sqlByMetaType[objectType] = sql;
-            }
-
-            return this.sqlByMetaType[objectType];
-        }
-
-        private class DeleteObject : DatabaseCommand, IDeleteObject
+        public class DeleteObject 
         {
             private readonly DeleteObjectFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public DeleteObject(DeleteObjectFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public DeleteObject(DeleteObjectFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
@@ -86,14 +68,29 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(objectType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    if (!this.factory.sqlByMetaType.ContainsKey(objectType))
+                    {
+                        Schema schema = this.factory.Database.Schema;
+
+                        string sql = string.Empty;
+
+                        sql += "DELETE FROM " + schema.Objects + "\n";
+                        sql += "WHERE " + schema.ObjectId + "=" + schema.ObjectId.Param.InvocationName + ";\n";
+
+                        sql += "DELETE FROM " + schema.Table(objectType.ExclusiveClass) + "\n";
+                        sql += "WHERE " + schema.ObjectId + "=" + schema.ObjectId.Param.InvocationName + ";\n";
+
+                        this.factory.sqlByMetaType[objectType] = sql;
+                    }
+
+                    command = this.session.CreateNpgsqlCommand(this.factory.sqlByMetaType[objectType]);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.ObjectId.Param, strategy.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.ObjectId.Param, strategy.ObjectId);
                 }
                 
                 command.ExecuteNonQuery();

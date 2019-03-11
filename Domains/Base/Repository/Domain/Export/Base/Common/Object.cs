@@ -42,14 +42,5 @@ namespace Allors.Repository
 
         [Id("07AFF35D-F4CB-48FE-A39A-176B1931FAB7")]
         void OnPostDerive();
-
-        [Id("B60F1CCC-CF44-4664-A538-15B7143BB262")]
-        void OnPreFinalize();
-
-        [Id("C53C2E53-5D83-41EB-B6F4-7F6CECADB10C")]
-        void OnFinalize();
-
-        [Id("95186A7F-B011-4167-A0FE-18FC53EFEA62")]
-        void OnPostFinalize();
     }
 }

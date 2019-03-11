@@ -20,8 +20,9 @@
 
 namespace Allors.Adapters.Database.Npgsql.Commands.Text
 {
+    using System;
+
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -29,7 +30,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class InstantiateObjectFactory : IInstantiateObjectFactory
+    public class InstantiateObjectFactory
     {
         public readonly Database Database;
         public readonly string Sql;
@@ -42,43 +43,46 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.Sql += "WHERE " + database.Schema.ObjectId + "=" + database.Schema.ObjectId.Param.InvocationName + "\n";
         }
 
-        public IInstantiateObject Create(Sql.DatabaseSession session)
+        public InstantiateObject Create(DatabaseSession session)
         {
             return new InstantiateObject(this, session);
         }
 
-        private class InstantiateObject : DatabaseCommand, IInstantiateObject
+        public class InstantiateObject
         {
             private readonly InstantiateObjectFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public InstantiateObject(InstantiateObjectFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public InstantiateObject(InstantiateObjectFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public Reference Execute(long objectId)
             {
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(this.factory.Sql);
-                    this.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    this.command = this.session.CreateNpgsqlCommand(this.factory.Sql);
+                    Commands.NpgsqlCommandExtensions.AddInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
                 else
                 {
-                    this.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(this.command, this.session.Schema.ObjectId.Param, objectId);
                 }
 
                 using (var reader = this.command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        var classId = this.GetClassId(reader, 0);
-                        var cacheId = this.GetCachId(reader, 1);
+                        var classId = reader.GetGuid(0);
+                        var cacheId = reader.GetInt32(1);
 
                         var type = (IClass)this.factory.Database.ObjectFactory.MetaPopulation.Find(classId);
-                        return this.Session.GetOrCreateAssociationForExistingObject(type, objectId, cacheId);
+                        return this.session.GetOrCreateAssociationForExistingObject(type, objectId, cacheId);
                     }
 
                     return null;

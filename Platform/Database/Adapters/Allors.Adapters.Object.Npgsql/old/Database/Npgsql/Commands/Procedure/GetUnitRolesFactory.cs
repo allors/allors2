@@ -26,7 +26,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data.Common;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -34,7 +33,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class GetUnitRolesFactory : IGetUnitRolesFactory
+    public class GetUnitRolesFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IObjectType, string> sqlByObjectType;
@@ -45,7 +44,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByObjectType = new Dictionary<IObjectType, string>();
         }
 
-        public IGetUnitRoles Create(Sql.DatabaseSession session)
+        public GetUnitRoles Create(DatabaseSession session)
         {
             return new GetUnitRoles(this, session);
         }
@@ -61,15 +60,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return this.sqlByObjectType[objectType];
         }
 
-        public class GetUnitRoles : DatabaseCommand, IGetUnitRoles
+        public class GetUnitRoles
         {
             private readonly GetUnitRolesFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public GetUnitRoles(GetUnitRolesFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetUnitRoles(GetUnitRolesFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
@@ -81,22 +83,22 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(objectType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.ObjectId.Param, reference.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.ObjectId.Param, reference.ObjectId);
                 }
 
                 using (DbDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        var sortedUnitRoles = this.Database.GetSortedUnitRolesByObjectType(reference.ObjectType);
+                        var sortedUnitRoles = this.session.NpgsqlDatabase.GetSortedUnitRolesByObjectType(reference.ObjectType);
 
                         for (var i = 0; i < sortedUnitRoles.Length; i++)
                         {

@@ -25,7 +25,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -33,7 +32,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class GetCompositeAssociationFactory : IGetCompositeAssociationFactory
+    public class GetCompositeAssociationFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IAssociationType, string> sqlByAssociationType;
@@ -44,7 +43,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             this.sqlByAssociationType = new Dictionary<IAssociationType, string>();
         }
 
-        public IGetCompositeAssociation Create(Sql.DatabaseSession session)
+        public GetCompositeAssociation Create(DatabaseSession session)
         {
             return new GetCompositeAssociation(this, session);
         }
@@ -79,15 +78,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             return this.sqlByAssociationType[associationType];
         }
 
-        private class GetCompositeAssociation : DatabaseCommand, IGetCompositeAssociation
+        public class GetCompositeAssociation
         {
             private readonly GetCompositeAssociationFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IAssociationType, NpgsqlCommand> commandByAssociationType;
 
-            public GetCompositeAssociation(GetCompositeAssociationFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetCompositeAssociation(GetCompositeAssociationFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByAssociationType = new Dictionary<IAssociationType, NpgsqlCommand>();
             }
 
@@ -98,15 +100,15 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 NpgsqlCommand command;
                 if (!this.commandByAssociationType.TryGetValue(associationType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.RoleId.Param, role.ObjectId);
 
                     this.commandByAssociationType[associationType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.RoleId.Param, role.ObjectId);
                 }
 
                 object result = command.ExecuteScalar();
@@ -117,11 +119,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                     if (associationType.ObjectType.ExistExclusiveClass)
                     {
-                        associationObject = this.Session.GetOrCreateAssociationForExistingObject(associationType.ObjectType.ExclusiveClass.ExclusiveClass, id);
+                        associationObject = this.session.GetOrCreateAssociationForExistingObject(associationType.ObjectType.ExclusiveClass.ExclusiveClass, id);
                     }
                     else
                     {
-                        associationObject = this.Session.GetOrCreateAssociationForExistingObject(id);
+                        associationObject = this.session.GetOrCreateAssociationForExistingObject(id);
                     }
                 }
 

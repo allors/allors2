@@ -6470,7 +6470,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6509,7 +6509,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6550,7 +6550,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6589,7 +6589,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);

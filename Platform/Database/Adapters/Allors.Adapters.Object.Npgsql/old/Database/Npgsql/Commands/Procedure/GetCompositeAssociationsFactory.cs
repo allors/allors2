@@ -24,7 +24,6 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
@@ -32,7 +31,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class GetCompositeAssociationsFactory : IGetCompositeAssociationsFactory
+    public class GetCompositeAssociationsFactory
     {
         public readonly Database Database;
         private readonly Dictionary<IAssociationType, string> sqlByAssociationType;
@@ -43,7 +42,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             this.sqlByAssociationType = new Dictionary<IAssociationType, string>();
         }
 
-        public IGetCompositeAssociations Create(Sql.DatabaseSession session)
+        public GetCompositeAssociations Create(DatabaseSession session)
         {
             return new GetCompositeAssociations(this, session);
         }
@@ -70,15 +69,18 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
             return this.sqlByAssociationType[associationType];
         }
 
-        public class GetCompositeAssociations : DatabaseCommand, IGetCompositeAssociations
+        public class GetCompositeAssociations
         {
             private readonly GetCompositeAssociationsFactory factory;
+
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IAssociationType, NpgsqlCommand> commandByAssociationType;
 
-            public GetCompositeAssociations(GetCompositeAssociationsFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public GetCompositeAssociations(GetCompositeAssociationsFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
                 this.commandByAssociationType = new Dictionary<IAssociationType, NpgsqlCommand>();
             }
 
@@ -87,15 +89,15 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 NpgsqlCommand command;
                 if (!this.commandByAssociationType.TryGetValue(associationType, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
+                    command = this.session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, this.session.Schema.RoleId.Param, role.ObjectId);
 
                     this.commandByAssociationType[associationType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, this.session.Schema.RoleId.Param, role.ObjectId);
                 }
 
                 var objectIds = new List<long>();

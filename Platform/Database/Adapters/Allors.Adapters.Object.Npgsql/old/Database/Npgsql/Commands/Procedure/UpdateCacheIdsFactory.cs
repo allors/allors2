@@ -24,14 +24,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
 
     using global::Npgsql;
 
     using Database = Database;
     using DatabaseSession = DatabaseSession;
 
-    public class UpdateCacheIdsFactory : IUpdateCacheIdsFactory
+    public class UpdateCacheIdsFactory
     {
         private readonly Database database;
 
@@ -48,20 +47,23 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
             }
         }
 
-        public IUpdateCacheIds Create(Sql.DatabaseSession session)
+        public UpdateCacheIds Create(DatabaseSession session)
         {
             return new UpdateCacheIds(this, session);
         }
 
-        private class UpdateCacheIds : DatabaseCommand, IUpdateCacheIds
+        public class UpdateCacheIds
         {
             private readonly UpdateCacheIdsFactory factory;
+
+            private readonly DatabaseSession session;
+
             private NpgsqlCommand command;
 
-            public UpdateCacheIds(UpdateCacheIdsFactory factory, Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public UpdateCacheIds(UpdateCacheIdsFactory factory, DatabaseSession session)
             {
                 this.factory = factory;
+                this.session = session;
             }
 
             public void Execute(Dictionary<Reference, Roles> modifiedRolesByReference)
@@ -70,13 +72,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 if (this.command == null)
                 {
-                    this.command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "UC");
+                    this.command = this.session.CreateNpgsqlCommand(Schema.AllorsPrefix + "UC");
                     this.command.CommandType = CommandType.StoredProcedure;
-                    this.AddInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
+                    Commands.NpgsqlCommandExtensions.AddInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
                 }
                 else
                 {
-                    this.SetInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
+                    Commands.NpgsqlCommandExtensions.SetInTable(this.command, schema.ObjectArrayParam, this.factory.Database.CreateObjectTable(modifiedRolesByReference.Keys));
                 }
 
                 this.command.ExecuteNonQuery();

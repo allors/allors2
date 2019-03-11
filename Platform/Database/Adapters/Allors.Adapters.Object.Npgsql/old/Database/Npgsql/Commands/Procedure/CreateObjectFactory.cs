@@ -28,52 +28,53 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
     using System.Data;
 
     using Allors.Adapters.Database.Sql;
-    using Allors.Adapters.Database.Sql.Commands;
     using Allors.Meta;
 
     using global::Npgsql;
 
     using DatabaseSession = DatabaseSession;
 
-    internal class CreateObjectFactory : ICreateObjectFactory
+    public class CreateObjectFactory 
     {
-        public ICreateObject Create(Sql.DatabaseSession session)
+        public CreateObject Create(DatabaseSession session)
         {
             return new CreateObject(session);
         }
 
-        private class CreateObject : DatabaseCommand, ICreateObject
+        public class CreateObject
         {
+            private readonly DatabaseSession session;
+
             private readonly Dictionary<IObjectType, NpgsqlCommand> commandByObjectType;
 
-            public CreateObject(Sql.DatabaseSession session)
-                : base((DatabaseSession)session)
+            public CreateObject(DatabaseSession session)
             {
+                this.session = session;
                 this.commandByObjectType = new Dictionary<IObjectType, NpgsqlCommand>();
             }
 
             public Reference Execute(IClass objectType)
             {
                 var exclusiveLeafClass = objectType.ExclusiveClass;
-                var schema = this.Database.Schema;
+                var schema = this.session.Schema;
 
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(exclusiveLeafClass, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "CO_" + exclusiveLeafClass.Name);
+                    command = this.session.CreateNpgsqlCommand(Schema.AllorsPrefix + "CO_" + exclusiveLeafClass.Name);
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, schema.TypeId.Param, objectType.Id);
+                    Commands.NpgsqlCommandExtensions.AddInObject(command, schema.TypeId.Param, objectType.Id);
 
                     this.commandByObjectType[exclusiveLeafClass] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, schema.TypeId.Param, objectType.Id);
+                    Commands.NpgsqlCommandExtensions.SetInObject(command, schema.TypeId.Param, objectType.Id);
                 }
 
                 var result = command.ExecuteScalar();
                 var objectId = long.Parse(result.ToString());
-                return this.Session.CreateAssociationForNewObject(objectType, objectId);
+                return this.session.CreateAssociationForNewObject(objectType, objectId);
             }
         }
     }

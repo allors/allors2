@@ -89,16 +89,6 @@ namespace Allors.Repository
         {
         }
 
-        public void OnPreFinalize(){} public void OnFinalize()
-        {
-            
-        }
-
-        public void OnPostFinalize()
-        {
-            
-        }
-
         public void Delete()
         {
         }
