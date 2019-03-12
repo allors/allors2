@@ -28,10 +28,15 @@ namespace Allors.Domain
         
         bool CanRead(IPropertyType propertyType);
 
+        bool CanRead(ConcreteRoleType propertyType);
+
         bool CanWrite(IRoleType roleType);
+
+        bool CanWrite(ConcreteRoleType propertyType);
 
         bool CanExecute(IMethodType methodType);
 
         bool IsPermitted(IOperandType operandType, Operations operation);
+
     }
 }

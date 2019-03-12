@@ -59,8 +59,8 @@ namespace Allors.Domain
         {
             this.User = user;
             this.session = this.User.Strategy.Session;
-            this.@object = (AccessControlledObject)obj;
-            this.classId = obj.Strategy.Class.Id;
+            this.@object = obj as AccessControlledObject;
+            this.classId = this.@object?.Strategy.Class.Id ?? Guid.Empty;
 
             this.lazyLoaded = false;
         }
@@ -97,6 +97,11 @@ namespace Allors.Domain
 
         public bool IsPermitted(IOperandType operandType, Operations operation)
         {
+            if (this.@object == null)
+            {
+                return operation == Operations.Read;
+            }
+
             this.LazyLoad();
 
             if (this.deniedPermissions.Length > 0)

@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             var securityTokens = new HashSet<SecurityToken>();
 
-            foreach (var @object in objects.Cast<AccessControlledObject>())
+            foreach (var @object in objects.OfType<AccessControlledObject>())
             {
                 SecurityToken[] objectSecurityTokens;
                 Permission[] objectDeniedPermissions;
@@ -123,10 +123,10 @@ namespace Allors.Domain
             {
                 this.accessControlLists = accessControlLists;
 
-                this.deniedPermissions = accessControlLists.deniedPermissionsByObject[@object];
-                this.permissionIdByOperationByOperandTypeId = accessControlLists.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[@object.Strategy.Class.Id];
+                this.accessControlLists.accessControlCacheEntriesByObject.TryGetValue(@object, out this.accessControlCacheEntries);
+                this.accessControlLists.deniedPermissionsByObject.TryGetValue(@object, out this.deniedPermissions);
 
-                this.accessControlCacheEntries = this.accessControlLists.accessControlCacheEntriesByObject[@object];
+                this.permissionIdByOperationByOperandTypeId = accessControlLists.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[@object.Strategy.Class.Id];
             }
 
             public User User => this.accessControlLists.user;
@@ -158,6 +158,16 @@ namespace Allors.Domain
 
             public bool IsPermitted(IOperandType operandType, Operations operation)
             {
+                if (this.accessControlCacheEntries == null)
+                {
+                    return operation == Operations.Read;
+                }
+
+                if (this.accessControlCacheEntries.Length == 0)
+                {
+                    return false;
+                }
+
                 if (this.deniedPermissions.Length > 0)
                 {
                     if (this.deniedPermissions.Any(deniedPermission => deniedPermission.OperandTypePointer.Equals(operandType.Id) && deniedPermission.Operation.Equals(operation)))
