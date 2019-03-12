@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AssociationEquals.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class AssociationEquals : Predicate
+    internal sealed class AssociationEquals : Predicate
     {
         private readonly IObject allorsObject;
         private readonly IAssociationType association;
 
-        public AssociationEquals(ExtentFiltered extent, IAssociationType association, IObject allorsObject)
+        internal AssociationEquals(ExtentFiltered extent, IAssociationType association, IObject allorsObject)
         {
             extent.CheckAssociation(association);
             PredicateAssertions.AssertAssociationEquals(association, allorsObject);
@@ -35,32 +36,32 @@ namespace Allors.Adapters.Database.Sql
             this.allorsObject = allorsObject;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
             if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.association.SingularFullName + "_A." + schema.AssociationId + " IS NOT NULL AND ");
-                statement.Append(" " + this.association.SingularFullName + "_A." + schema.AssociationId + "=" + this.allorsObject.Strategy.ObjectId + ")");
+                statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IS NOT NULL AND ");
+                statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + "=" + this.allorsObject.Strategy.ObjectId + ")");
             }
             else
             {
                 if (this.association.RelationType.RoleType.IsMany)
                 {
-                    statement.Append(" (" + alias + "." + schema.Column(this.association) + " IS NOT NULL AND ");
-                    statement.Append(" " + alias + "." + schema.Column(this.association) + "=" + this.allorsObject.Strategy.ObjectId + ")");
+                    statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + " IS NOT NULL AND ");
+                    statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + "=" + this.allorsObject.Strategy.ObjectId + ")");
                 }
                 else
                 {
-                    statement.Append(" (" + this.association.SingularFullName + "_A." + schema.ObjectId + " IS NOT NULL AND ");
-                    statement.Append(" " + this.association.SingularFullName + "_A." + schema.ObjectId + " =" + this.allorsObject.Strategy.ObjectId + ")");
+                    statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForObject + " IS NOT NULL AND ");
+                    statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForObject + " =" + this.allorsObject.Strategy.ObjectId + ")");
                 }
             }
 
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseAssociation(this.association);
         }

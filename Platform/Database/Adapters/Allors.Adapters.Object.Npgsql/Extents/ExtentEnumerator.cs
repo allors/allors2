@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentEnumerator.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections;
     using System.Collections.Generic;
 
-    public class ExtentEnumerator : IEnumerator
+    internal class ExtentEnumerator : IEnumerator
     {
         private readonly IEnumerator enumerator;
 
-        public ExtentEnumerator(IEnumerable<Reference> references)
+        internal ExtentEnumerator(IEnumerable<Reference> references)
         {
             this.enumerator = references.GetEnumerator();
         }

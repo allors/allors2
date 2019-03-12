@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ICache.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Caching
+namespace Allors.Adapters.Object.Npgsql.Caching
 {
     using System.Collections.Generic;
 
@@ -29,15 +29,15 @@ namespace Allors.Adapters.Database.Caching
     /// </summary>
     public interface ICache
     {
-        ICachedObject GetOrCreateCachedObject(IObjectType concreteClass, long objectId, long localCacheId);
+        ICachedObject GetOrCreateCachedObject(IClass concreteClass, long objectId, long version);
 
-        IObjectType GetObjectType(long objectId);
+        IClass GetObjectType(long objectId);
 
-        void SetObjectType(long objectId, IObjectType objectType);
+        void SetObjectType(long objectId, IClass objectType);
 
         void OnCommit(IList<long> accessedObjectIds, IList<long> changedObjectIds);
 
-        void OnRollback(IList<long> accessedObjectIds);
+        void OnRollback(List<long> accessedObjectIds);
 
         /// <summary>
         /// Invalidates the Cache.

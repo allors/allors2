@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleContainedInEnumerable.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,29 +18,31 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
     using System.Text;
 
+    using Adapters;
+
     using Meta;
 
-    public sealed class RoleContainedInEnumerable : In
+    internal sealed class RoleContainedInEnumerable : In
     {
         private readonly IEnumerable<IObject> enumerable;
         private readonly IRoleType role;
 
-        public RoleContainedInEnumerable(ExtentFiltered extent, IRoleType role, IEnumerable<IObject> enumerable)
+        internal RoleContainedInEnumerable(ExtentFiltered extent, IRoleType role, IEnumerable<IObject> enumerable)
         {
             extent.CheckRole(role);
-            PredicateAssertions.ValidateRoleContainedIn(role, this.enumerable);
+            PredicateAssertions.ValidateRoleContainedIn(role, enumerable);
             this.role = role;
             this.enumerable = enumerable;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
 
             var inStatement = new StringBuilder("0");
             foreach (var inObject in this.enumerable)
@@ -48,11 +50,12 @@ namespace Allors.Adapters.Database.Sql
                 inStatement.Append(",");
                 inStatement.Append(inObject.Id);
             }
-
+            
             if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.role.SingularPropertyName + "_R." + schema.RoleId + " IS NOT NULL AND ");
-                statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.AssociationId + " IN (");
+                // TODO: in combination with NOT gives error
+                statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IS NOT NULL AND ");
+                statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IN (");
                 statement.Append(inStatement.ToString());
                 statement.Append(" ))");
             }
@@ -60,15 +63,15 @@ namespace Allors.Adapters.Database.Sql
             {
                 if (this.role.IsMany)
                 {
-                    statement.Append(" (" + this.role.SingularPropertyName + "_R." + schema.ObjectId + " IS NOT NULL AND ");
-                    statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.ObjectId + " IN (");
+                    statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IS NOT NULL AND ");
+                    statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IN (");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))");
                 }
                 else
                 {
-                    statement.Append(" (" + schema.Column(this.role) + " IS NOT NULL AND ");
-                    statement.Append(" " + schema.Column(this.role) + " IN (");
+                    statement.Append(" (" + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NOT NULL AND ");
+                    statement.Append(" " + schema.ColumnNameByRelationType[this.role.RelationType] + " IN (");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))");
                 }
@@ -77,7 +80,7 @@ namespace Allors.Adapters.Database.Sql
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
         }

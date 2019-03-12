@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompositePredicate.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
     using Meta;
 
-    public abstract class CompositePredicate : Predicate, ICompositePredicate
+    internal abstract class CompositePredicate : Predicate, ICompositePredicate
     {
         private readonly ExtentFiltered extent;
         private readonly List<Predicate> filters;
@@ -67,7 +66,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public override bool Include
+        internal override bool Include
         {
             get
             {
@@ -97,17 +96,6 @@ namespace Allors.Adapters.Database.Sql
             {
                 return this.filters;
             }
-        }
-
-        public static IClass[] GetConcreteSubClasses(IComposite type)
-        {
-            var @interface = type as IInterface;
-            if (@interface != null)
-            {
-                return @interface.Subclasses.ToArray();
-            }
-
-            return new[] { (IClass)type };
         }
 
         public ICompositePredicate AddAnd()
@@ -318,7 +306,19 @@ namespace Allors.Adapters.Database.Sql
             return anyFilter;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal static IObjectType[] GetConcreteSubClasses(IObjectType type)
+        {
+            if (type.IsInterface)
+            {
+                return ((IInterface)type).Subclasses.ToArray();
+            }
+
+            var concreteSubclasses = new IObjectType[1];
+            concreteSubclasses[0] = type;
+            return concreteSubclasses;
+        }
+
+        internal override void Setup(ExtentStatement statement)
         {
             foreach (var filter in this.Filters)
             {

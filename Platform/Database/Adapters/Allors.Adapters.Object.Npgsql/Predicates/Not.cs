@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Not.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,22 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
 
     using Meta;
 
-    public sealed class Not : Predicate, ICompositePredicate
+    internal sealed class Not : Predicate, ICompositePredicate
     {
         private readonly ExtentFiltered extent;
         private Predicate filter;
 
-        public Not(ExtentFiltered extent)
+        internal Not(ExtentFiltered extent)
         {
             this.extent = extent;
-
             if (extent.Strategy != null)
             {
                 var allorsObject = extent.Strategy.GetObject();
@@ -64,7 +63,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public override bool Include
+        internal override bool Include
         {
             get { return this.filter != null && this.filter.Include; }
         }
@@ -113,7 +112,7 @@ namespace Allors.Adapters.Database.Sql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new RoleContainedInEnumerable(this.extent, role, containingEnumerable);
+            this.filter = new NotRoleContainedInEnumerable(this.extent, role, containingEnumerable);
             return this;
         }
 
@@ -121,7 +120,7 @@ namespace Allors.Adapters.Database.Sql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new AssociationContainedInExtent(this.extent, association, containingExtent);
+            this.filter = new NotAssociationContainedInExtent(this.extent, association, containingExtent);
             return this;
         }
 
@@ -129,7 +128,7 @@ namespace Allors.Adapters.Database.Sql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            this.filter = new AssociationContainedInEnumerable(this.extent, association, containingEnumerable);
+            this.filter = new NotAssociationContainedInEnumerable(this.extent, association, containingEnumerable);
             return this;
         }
 
@@ -295,19 +294,26 @@ namespace Allors.Adapters.Database.Sql
             return (ICompositePredicate)this.filter;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
             if (this.Include)
             {
-                statement.Append(" NOT (");
-                this.filter.BuildWhere(statement, alias);
-                statement.Append(")");
+                if (this.filter.IsNotFilter)
+                {
+                    this.filter.BuildWhere(statement, alias);
+                }
+                else
+                {
+                    statement.Append(" NOT (");
+                    this.filter.BuildWhere(statement, alias);
+                    statement.Append(")");
+                }
             }
 
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             if (this.filter != null)
             {

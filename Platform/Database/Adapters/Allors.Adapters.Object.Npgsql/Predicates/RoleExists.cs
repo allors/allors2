@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleExists.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,43 +18,44 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleExists : Predicate
+    internal sealed class RoleExists : Predicate
     {
         private readonly IRoleType role;
 
-        public RoleExists(ExtentFiltered extent, IRoleType role)
+        internal RoleExists(ExtentFiltered extent, IRoleType role)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleExists(role);
             this.role = role;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            if (this.role.ObjectType is IUnit)
+            var schema = statement.Mapping;
+            if (this.role.ObjectType.IsUnit)
             {
-                statement.Append(" " + alias + "." + schema.Column(this.role) + " IS NOT NULL");
+                statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NOT NULL");
             }
             else
             {
                 if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
                 {
-                    statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.RoleId + " IS NOT NULL");
+                    statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IS NOT NULL");
                 }
                 else
                 {
                     if (this.role.IsMany)
                     {
-                        statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.ObjectId + " IS NOT NULL");
+                        statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IS NOT NULL");
                     }
                     else
                     {
-                        statement.Append(" " + alias + "." + schema.Column(this.role) + " IS NOT NULL");
+                        statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NOT NULL");
                     }
                 }
             }
@@ -62,7 +63,7 @@ namespace Allors.Adapters.Database.Sql
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
         }

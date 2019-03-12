@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleContains.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -21,16 +21,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleContains : Predicate
+    internal sealed class RoleContains : Predicate
     {
         private readonly IObject allorsObject;
         private readonly IRoleType role;
 
-        public RoleContains(ExtentFiltered extent, IRoleType role, IObject allorsObject)
+        internal RoleContains(ExtentFiltered extent, IRoleType role, IObject allorsObject)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleContains(role, allorsObject);
@@ -38,42 +39,40 @@ namespace Allors.Adapters.Database.Sql
             this.allorsObject = allorsObject;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
             if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
             {
                 statement.Append("\n");
                 statement.Append("EXISTS(\n");
-                statement.Append("SELECT " + alias + "." + schema.ObjectId + "\n");
-                statement.Append("FROM " + schema.Table(this.role) + "\n");
-                statement.Append("WHERE   " + schema.AssociationId + "=" + alias + "." + schema.ObjectId + "\n");
-                statement.Append("AND " + schema.RoleId + "=" + this.allorsObject.Strategy.ObjectId + "\n");
+                statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject + "\n");
+                statement.Append("FROM " + schema.TableNameForRelationByRelationType[this.role.RelationType] + "\n");
+                statement.Append("WHERE   " + Mapping.ColumnNameForAssociation + "=" + alias + "." + Mapping.ColumnNameForObject + "\n");
+                statement.Append("AND " + Mapping.ColumnNameForRole + "=" + this.allorsObject.Strategy.ObjectId + "\n");
                 statement.Append(")\n");
             }
             else
             {
-                var compositeType = (IComposite)this.role.ObjectType;
-
                 // This join is not possible because of the 3VL (Three Valued Logic).
                 // It should work for normal queries, but it fails when wrapped in a NOT( ... ) predicate.
                 // The rows with NULL values should then return TRUE and not UNKNOWN.
                 //
-                // statement.sql.Append(" " + role.SingularPropertyName + "_R." + schema.O + " = " + allorsObject.ObjectId);
+                // statement.sql.Append(" " + role.SingularFullName + "_R." + schema.O + " = " + allorsObject.ObjectId);
 
                 statement.Append("\n");
                 statement.Append("EXISTS(\n");
-                statement.Append("SELECT " + schema.ObjectId + "\n");
-                statement.Append("FROM " + schema.Table(compositeType.ExclusiveClass) + "\n");
-                statement.Append("WHERE " + schema.ObjectId + "=" + this.allorsObject.Strategy.ObjectId + "\n");
-                statement.Append("AND " + schema.Column(this.role.AssociationType) + "=" + alias + ".O\n");
+                statement.Append("SELECT " + Mapping.ColumnNameForObject + "\n");
+                statement.Append("FROM " + schema.TableNameForObjectByClass[((IComposite)this.role.ObjectType).ExclusiveClass] + "\n");
+                statement.Append("WHERE " + Mapping.ColumnNameForObject + "=" + this.allorsObject.Strategy.ObjectId + "\n");
+                statement.Append("AND " + schema.ColumnNameByRelationType[this.role.RelationType] + "=" + alias + ".O\n");
                 statement.Append(")\n");
             }
 
-            return Include;
+            return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             //extent.UseRole(role);
         }

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleGreaterThanRole.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleGreaterThanRole : Predicate
+    internal sealed class RoleGreaterThanRole : Predicate
     {
         private readonly IRoleType greaterThanRole;
         private readonly IRoleType role;
 
-        public RoleGreaterThanRole(ExtentFiltered extent, IRoleType role, IRoleType greaterThanRole)
+        internal RoleGreaterThanRole(ExtentFiltered extent, IRoleType role, IRoleType greaterThanRole)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleGreaterThan(role, greaterThanRole);
@@ -35,14 +36,14 @@ namespace Allors.Adapters.Database.Sql
             this.greaterThanRole = greaterThanRole;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" " + alias + "." + schema.Column(this.role) + ">" + alias + "." + schema.Column(this.greaterThanRole));
+            var schema = statement.Mapping;
+            statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + ">" + alias + "." + schema.ColumnNameByRelationType[this.greaterThanRole.RelationType]);
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
             statement.UseRole(this.greaterThanRole);

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ICacheFactory.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,13 +18,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Caching
+namespace Allors.Adapters.Object.Npgsql.Caching
 {
     /// <summary>
-    /// The cache factory is a factory for cache objects.
+    /// The cache factory creates a new Cache.
     /// </summary>
     public interface ICacheFactory
     {
-        ICache CreateCache(IDatabase database);
+        ICache CreateCache();
     }
 }

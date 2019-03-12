@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentStatementRoot.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,14 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
     using System.Text;
 
     using Allors.Meta;
 
-    public class ExtentStatementRoot : ExtentStatement
+    internal class ExtentStatementRoot : ExtentStatement
     {
         private readonly Dictionary<object, string> paramNameByParamValue;
         private readonly StringBuilder sql;
@@ -33,7 +33,7 @@ namespace Allors.Adapters.Database.Sql
         private Command command;
         private int parameterIndex;
 
-        public ExtentStatementRoot(SqlExtent extent) : base(extent)
+        internal ExtentStatementRoot(SqlExtent extent) : base(extent)
         {
             this.parameterIndex = 0;
             this.aliasIndex = 0;
@@ -41,21 +41,18 @@ namespace Allors.Adapters.Database.Sql
             this.paramNameByParamValue = new Dictionary<object, string>();
         }
 
-        public override bool IsRoot
-        {
-            get { return true; }
-        }
+        internal override bool IsRoot => true;
 
         public override string ToString()
         {
             return this.sql.ToString();
         }
 
-        public override string AddParameter(object obj)
+        internal override string AddParameter(object obj)
         {
             if (!this.paramNameByParamValue.ContainsKey(obj))
             {
-                var param = string.Format(this.Session.Schema.ParamInvocationFormat, "p" + (this.parameterIndex++));
+                var param = string.Format(Mapping.ParamFormat, "p" + (this.parameterIndex++));
                 this.paramNameByParamValue[obj] = param;
                 return param;
             }
@@ -63,27 +60,27 @@ namespace Allors.Adapters.Database.Sql
             return this.paramNameByParamValue[obj];
         }
 
-        public override void Append(string part)
+        internal override void Append(string part)
         {
             this.sql.Append(part);
         }
 
-        public override string CreateAlias()
+        internal override string CreateAlias()
         {
             return "alias" + (this.aliasIndex++);
         }
 
-        public override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association)
+        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association)
         {
             return new ExtentStatementChild(this, extent, association);
         }
 
-        public override ExtentStatement CreateChild(SqlExtent extent, IRoleType role)
+        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role)
         {
             return new ExtentStatementChild(this, extent, role);
         }
 
-        public Command CreateDbCommand(string alias)
+        internal Command CreateDbCommand(string alias)
         {
             if (this.sql.Length == 0)
             {
@@ -101,8 +98,9 @@ namespace Allors.Adapters.Database.Sql
                     this.Sorter.BuildOrder(this, alias);
                 }
             }
-            
-            this.command = this.Session.CreateCommand(this.sql.ToString());
+
+            this.command = this.Session.Connection.CreateCommand();
+            this.command.CommandText = this.sql.ToString();
 
             foreach (var paramNameByParamValuePair in this.paramNameByParamValue)
             {

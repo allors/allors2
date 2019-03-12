@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompositeRelation.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,14 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Adapters.Object.Npgsql
 {
-    public class CompositeRelation
+    internal class CompositeRelation
     {
-        public readonly long Association;
-        public readonly long Role;
+        internal readonly long Association;
+        internal readonly long Role;
 
-        public CompositeRelation(long association, long role)
+        internal CompositeRelation(long association, long role)
         {
             this.Association = association;
             this.Role = role;

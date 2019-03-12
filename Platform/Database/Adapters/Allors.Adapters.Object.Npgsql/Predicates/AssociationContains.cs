@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AssociationContains.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class AssociationContains : Predicate
+    internal sealed class AssociationContains : Predicate
     {
         private readonly IObject allorsObject;
         private readonly IAssociationType association;
 
-        public AssociationContains(ExtentFiltered extent, IAssociationType association, IObject allorsObject)
+        internal AssociationContains(ExtentFiltered extent, IAssociationType association, IObject allorsObject)
         {
             extent.CheckAssociation(association);
             PredicateAssertions.AssertAssociationContains(association, allorsObject);
@@ -35,28 +36,28 @@ namespace Allors.Adapters.Database.Sql
             this.allorsObject = allorsObject;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
             if ((this.association.IsMany && this.association.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
                 statement.Append("\n");
                 statement.Append("EXISTS(\n");
-                statement.Append("SELECT " + alias + "." + schema.ObjectId + "\n");
-                statement.Append("FROM " + schema.Table(this.association) + "\n");
-                statement.Append("WHERE " + schema.AssociationId + "=" + this.allorsObject.Strategy.ObjectId + "\n");
-                statement.Append("AND " + schema.RoleId + "=" + alias + "." + schema.ObjectId + "\n");
+                statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject + "\n");
+                statement.Append("FROM " + schema.TableNameForRelationByRelationType[this.association.RelationType] + "\n");
+                statement.Append("WHERE " + Mapping.ColumnNameForAssociation + "=" + this.allorsObject.Strategy.ObjectId + "\n");
+                statement.Append("AND " + Mapping.ColumnNameForRole + "=" + alias + "." + Mapping.ColumnNameForObject + "\n");
                 statement.Append(")");
             }
             else
             {
-                statement.Append(" " + this.association.SingularFullName + "_A." + schema.ObjectId + " = " + this.allorsObject.Strategy.ObjectId);
+                statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForObject + " = " + this.allorsObject.Strategy.ObjectId);
             }
 
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseAssociation(this.association);
         }

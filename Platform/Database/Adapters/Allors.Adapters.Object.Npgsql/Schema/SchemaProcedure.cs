@@ -1,34 +1,47 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SchemaProcedure.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
-    public sealed class SchemaProcedure
-    {
-        public string Name;
+    using System.Linq;
 
-        public string Definition;
+    public class SchemaProcedure
+    {
+        private readonly string name;
+        private readonly string definition;
+
+        public SchemaProcedure(Schema schema, string name, string definition)
+        {
+            this.name = name;
+            this.definition = definition;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+        }
+
+        public string Definition
+        {
+            get
+            {
+                return this.definition;
+            }
+        }
 
         public override string ToString()
         {
-            return Name;
+            return this.Name;
+        }
+
+        public bool IsDefinitionCompatible(string existingDefinition)
+        {
+            return this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(existingDefinition));
+        }
+
+        private string RemoveWhitespace(string input)
+        {
+            return new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
         }
     }
 }

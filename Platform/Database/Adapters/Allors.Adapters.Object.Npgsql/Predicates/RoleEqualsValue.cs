@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleEqualsValue.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,46 +18,46 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
 
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleEqualsValue : Predicate
+    internal sealed class RoleEqualsValue : Predicate
     {
         private readonly object obj;
         private readonly IRoleType roleType;
 
-        public RoleEqualsValue(ExtentFiltered extent, IRoleType roleType, object obj)
+        internal RoleEqualsValue(ExtentFiltered extent, IRoleType roleType, object obj)
         {
             extent.CheckRole(roleType);
             PredicateAssertions.ValidateRoleEquals(roleType, obj);
             this.roleType = roleType;
             if (obj is Enum)
             {
-                var unitType = roleType.ObjectType as IUnit;
-                if (unitType != null && unitType.IsInteger)
+                if (((IUnit)roleType.ObjectType).IsInteger)
                 {
-                    this.obj = (int)obj;
+                    this.obj = obj;
                 }
                 else
                 {
-                    throw new Exception("Role Object Type " + roleType.ObjectType.SingularName + " doesn't support enumerations.");
+                    throw new Exception("Role Object Type " + roleType.ObjectType.Name + " doesn't support enumerations.");
                 }
             }
             else
             {
-                this.obj = roleType.ObjectType is IUnit ? roleType.Normalize(obj) : obj;
+                this.obj = roleType.ObjectType.IsUnit ? roleType.Normalize(obj) : obj;
             }
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            if (this.roleType.ObjectType is IUnit)
+            var schema = statement.Mapping;
+            if (this.roleType.ObjectType.IsUnit)
             {
-                statement.Append(" " + alias + "." + schema.Column(this.roleType) + "=" + statement.AddParameter(this.obj));
+                statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.roleType.RelationType] + "=" + statement.AddParameter(this.obj));
             }
             else
             {
@@ -65,20 +65,20 @@ namespace Allors.Adapters.Database.Sql
 
                 if (this.roleType.RelationType.ExistExclusiveClasses)
                 {
-                    statement.Append(" (" + alias + "." + schema.Column(this.roleType) + " IS NOT NULL AND ");
-                    statement.Append(" " + alias + "." + schema.Column(this.roleType) + "=" + allorsObject.Strategy.ObjectId + ")");
+                    statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.roleType.RelationType] + " IS NOT NULL AND ");
+                    statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.roleType.RelationType] + "=" + allorsObject.Strategy.ObjectId + ")");
                 }
                 else
                 {
-                    statement.Append(" (" + this.roleType.SingularPropertyName + "_R." + schema.RoleId + " IS NOT NULL AND ");
-                    statement.Append(" " + this.roleType.SingularPropertyName + "_R." + schema.RoleId + "=" + allorsObject.Strategy.ObjectId + ")");
+                    statement.Append(" (" + this.roleType.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IS NOT NULL AND ");
+                    statement.Append(" " + this.roleType.SingularFullName + "_R." + Mapping.ColumnNameForRole + "=" + allorsObject.Strategy.ObjectId + ")");
                 }
             }
 
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.roleType);
         }

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SqlExtent.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,69 +18,34 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using Allors.Adapters.Database.Npgsql;
+    using System.Linq;
 
     using Meta;
 
-    public abstract class SqlExtent : Extent
+    internal abstract class SqlExtent : Extent
     {
         private IList<long> objectIds;
 
-        private ExtentSort sorter;
+        internal override SqlExtent ContainedInExtent => this;
 
-        public override SqlExtent ContainedInExtent
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public override int Count => this.ObjectIds.Count;
 
-        public override int Count
-        {
-            get { return this.ObjectIds.Count; }
-        }
+        public override IObject First => this.ObjectIds.Count > 0 ? this.Session.State.GetOrCreateReferenceForExistingObject(this.ObjectIds[0], this.Session).Strategy.GetObject() : null;
 
-        public override IObject First
-        {
-            get
-            {
-                if (this.ObjectIds.Count > 0)
-                {
-                    return this.Session.GetOrCreateAssociationForExistingObject(this.ObjectIds[0]).Strategy.GetObject();
-                }
+        internal ExtentOperation ParentOperationExtent { get; set; }
 
-                return null;
-            }
-        }
+        internal abstract Session Session { get; }
 
-        public virtual ExtentOperation ParentOperationExtent { get; set; }
+        internal ExtentSort Sorter { get; private set; }
 
-        public abstract DatabaseSession Session { get; }
+        private IList<long> ObjectIds => this.objectIds ?? (this.objectIds = this.GetObjectIds());
 
-        public virtual ExtentSort Sorter
-        {
-            get { return this.sorter; }
-        }
-
-        private IList<long> ObjectIds
-        {
-            get
-            {
-                return this.objectIds ?? (this.objectIds = this.GetObjectIds());
-            }
-        }
-
-        public new IObject this[int index]
-        {
-            get { return this.GetItem(index); }
-        }
+        internal new IObject this[int index] => this.GetItem(index);
 
         public override Allors.Extent AddSort(IRoleType roleType)
         {
@@ -91,13 +56,13 @@ namespace Allors.Adapters.Database.Sql
         {
             this.LazyLoadFilter();
             this.FlushCache();
-            if (this.sorter == null)
+            if (this.Sorter == null)
             {
-                this.sorter = new ExtentSort(this.Session, roleType, direction);
+                this.Sorter = new ExtentSort(this.Session, roleType, direction);
             }
             else
             {
-                this.sorter.AddSort(roleType, direction);
+                this.Sorter.AddSort(roleType, direction);
             }
 
             return this;
@@ -120,7 +85,7 @@ namespace Allors.Adapters.Database.Sql
 
         public override IEnumerator GetEnumerator()
         {
-            var references = this.Session.GetOrCreateAssociationsForExistingObjects(this.ObjectIds);
+            var references = this.Session.GetOrCreateReferencesForExistingObjects(this.ObjectIds);
             return new ExtentEnumerator(references);
         }
 
@@ -142,25 +107,18 @@ namespace Allors.Adapters.Database.Sql
 
         public override IObject[] ToArray(Type type)
         {
-            var array = Array.CreateInstance(type, this.ObjectIds.Count);
-            for (var i = 0; i < this.ObjectIds.Count; i++)
-            {
-                var allorsObject = this.Session.GetOrCreateAssociationForExistingObject(this.ObjectIds[i]).Strategy.GetObject();
-                array.SetValue(allorsObject, i);
-            }
-
+            var objects = this.Session.Instantiate(this.ObjectIds);
+            var array = Array.CreateInstance(type, objects.Length);
+            Array.Copy(objects, array, objects.Length);
             return (IObject[])array;
         }
 
-        public abstract string BuildSql(ExtentStatement statement);
+        internal abstract string BuildSql(ExtentStatement statement);
 
-        public virtual void FlushCache()
+        internal void FlushCache()
         {
             this.objectIds = null;
-            if (this.ParentOperationExtent != null)
-            {
-                this.ParentOperationExtent.FlushCache();
-            }
+            this.ParentOperationExtent?.FlushCache();
         }
 
         internal IObject InternalGetItem(int index)
@@ -171,7 +129,7 @@ namespace Allors.Adapters.Database.Sql
         protected override IObject GetItem(int index)
         {
             var objectId = this.ObjectIds[index];
-            return this.Session.GetOrCreateAssociationForExistingObject(objectId).Strategy.GetObject();
+            return this.Session.State.GetOrCreateReferenceForExistingObject(objectId, this.Session).Strategy.GetObject();
         }
 
         protected abstract IList<long> GetObjectIds();

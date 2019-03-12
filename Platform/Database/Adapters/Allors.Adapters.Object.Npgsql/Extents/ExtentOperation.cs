@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentOperation.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,22 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
 
-    using Allors.Adapters.Database.Npgsql;
-
     using Meta;
 
-    public class ExtentOperation : SqlExtent
+    internal class ExtentOperation : SqlExtent
     {
         private readonly SqlExtent first;
         private readonly ExtentOperations operationType;
         private readonly SqlExtent second;
 
-        public ExtentOperation(SqlExtent first, SqlExtent second, ExtentOperations operationType)
+        internal ExtentOperation(SqlExtent first, SqlExtent second, ExtentOperations operationType)
         {
             if (!first.ObjectType.Equals(second.ObjectType))
             {
@@ -53,7 +51,7 @@ namespace Allors.Adapters.Database.Sql
             get { return null; }
         }
 
-        public override DatabaseSession Session
+        internal override Session Session
         {
             get { return this.first.Session; }
         }
@@ -63,7 +61,7 @@ namespace Allors.Adapters.Database.Sql
             get { return this.first.ObjectType; }
         }
 
-        public override string BuildSql(ExtentStatement statement)
+        internal override string BuildSql(ExtentStatement statement)
         {
             this.first.BuildSql(statement);
 
@@ -101,11 +99,9 @@ namespace Allors.Adapters.Database.Sql
                 {
                     while (reader.Read())
                     {
-                        var objectId = long.Parse(reader.GetValue(0).ToString());
+                        var objectId = this.Session.State.GetObjectIdForExistingObject(reader.GetValue(0).ToString());
                         objectIds.Add(objectId);
                     }
-
-                    reader.Close();
                 }
             }
 

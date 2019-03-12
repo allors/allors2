@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleBetweenValue.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,17 +18,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
+    using Adapters;
+
     using Meta;
 
-    public sealed class RoleBetweenValue : Predicate
+    internal sealed class RoleBetweenValue : Predicate
     {
         private readonly IRoleType roleType;
         private readonly object first;
         private readonly object second;
 
-        public RoleBetweenValue(ExtentFiltered extent, IRoleType roleType, object first, object second)
+        internal RoleBetweenValue(ExtentFiltered extent, IRoleType roleType, object first, object second)
         {
             extent.CheckRole(roleType);
             PredicateAssertions.ValidateRoleBetween(roleType, first, second);
@@ -37,14 +39,14 @@ namespace Allors.Adapters.Database.Sql
             this.second = roleType.Normalize(second);
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" (" + alias + "." + schema.Column(this.roleType) + " BETWEEN " + statement.AddParameter(this.first) + " AND " + statement.AddParameter(this.second) + ")");
+            var schema = statement.Mapping;
+            statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.roleType.RelationType] + " BETWEEN " + statement.AddParameter(this.first) + " AND " + statement.AddParameter(this.second) + ")");
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.roleType);
         }

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleBetweenRole.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,17 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleBetweenRole : Predicate
+    internal sealed class RoleBetweenRole : Predicate
     {
         private readonly IRoleType first;
         private readonly IRoleType role;
         private readonly IRoleType second;
 
-        public RoleBetweenRole(ExtentFiltered extent, IRoleType role, IRoleType first, IRoleType second)
+        internal RoleBetweenRole(ExtentFiltered extent, IRoleType role, IRoleType first, IRoleType second)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleBetween(role, first, second);
@@ -37,14 +38,14 @@ namespace Allors.Adapters.Database.Sql
             this.second = second;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" (" + alias + "." + schema.Column(this.role) + " BETWEEN " + alias + "." + schema.Column(this.first) + " AND " + alias + "." + schema.Column(this.second) + ")");
+            var schema = statement.Mapping;
+            statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + " BETWEEN " + alias + "." + schema.ColumnNameByRelationType[this.first.RelationType] + " AND " + alias + "." + schema.ColumnNameByRelationType[this.second.RelationType] + ")");
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
             statement.UseRole(this.first);

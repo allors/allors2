@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ChangeSet.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
@@ -17,13 +17,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
 
+    using Adapters;
+
     using Allors.Meta;
 
-    public sealed class ChangeSet : IChangeSet
+    internal sealed class ChangeSet : IChangeSet
     {
         private static readonly EmptySet<IRoleType> EmptyRoleTypeSet = new EmptySet<IRoleType>();
         private static readonly EmptySet<IAssociationType> EmptyAssociationTypeSet = new EmptySet<IAssociationType>();
@@ -59,17 +61,7 @@ namespace Allors.Adapters.Database.Sql
         public IDictionary<long, ISet<IRoleType>> RoleTypesByAssociation => this.roleTypesByAssociation;
 
         public IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole => this.associationTypesByRole;
-
-        public ISet<IRoleType> GetRoleTypes(long association)
-        {
-            return this.RoleTypesByAssociation.TryGetValue(association, out var roleTypes) ? roleTypes : EmptyRoleTypeSet;
-        }
-
-        public ISet<IAssociationType> GetAssociationTypes(long role)
-        {
-            return this.AssociationTypesByRole.TryGetValue(role, out var associationTypes) ? associationTypes : EmptyAssociationTypeSet;
-        }
-
+        
         internal void OnCreated(long objectId)
         {
             this.created.Add(objectId);

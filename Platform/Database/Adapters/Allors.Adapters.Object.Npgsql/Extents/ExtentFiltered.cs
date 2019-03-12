@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentFiltered.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,38 +18,35 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Allors.Adapters.Database.Npgsql;
-
     using Meta;
 
-    public class ExtentFiltered : SqlExtent
+    internal class ExtentFiltered : SqlExtent
     {
-        private readonly DatabaseSession session;
+        private readonly Session session;
         private readonly IComposite objectType;
 
         private AndPredicate filter;
 
-        public ExtentFiltered(DatabaseSession session, Strategy strategy, IRoleType roleType)
+        internal ExtentFiltered(Session session, Strategy strategy, IRoleType roleType)
             : this(session, (IComposite)roleType.ObjectType)
         {
             this.Strategy = strategy;
             this.RoleType = roleType;
         }
 
-        public ExtentFiltered(DatabaseSession session, Strategy strategy, IAssociationType associationType)
+        internal ExtentFiltered(Session session, Strategy strategy, IAssociationType associationType)
             : this(session, associationType.ObjectType)
         {
             this.Strategy = strategy;
             this.AssociationType = associationType;
         }
 
-        public ExtentFiltered(DatabaseSession session, IComposite objectType)
+        internal ExtentFiltered(Session session, IComposite objectType)
         {
             this.session = session;
             this.objectType = objectType;
@@ -64,12 +61,12 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public Schema Schema
+        internal Mapping Mapping
         {
-            get { return this.session.Database.Schema; }
+            get { return this.session.Database.Mapping; }
         }
 
-        public override DatabaseSession Session
+        internal override Session Session
         {
             get { return this.session; }
         }
@@ -79,13 +76,13 @@ namespace Allors.Adapters.Database.Sql
             get { return this.objectType; }
         }
 
-        public IAssociationType AssociationType { get; private set; }
+        internal IAssociationType AssociationType { get; private set; }
 
-        public IRoleType RoleType { get; private set; }
+        internal IRoleType RoleType { get; private set; }
 
-        public Strategy Strategy { get; private set; }
+        internal Strategy Strategy { get; private set; }
 
-        public override string BuildSql(ExtentStatement statement)
+        internal override string BuildSql(ExtentStatement statement)
         {
             this.LazyLoadFilter();
             this.filter.Setup(statement);
@@ -94,38 +91,44 @@ namespace Allors.Adapters.Database.Sql
             {
                 if (this.objectType.ExistExclusiveClass)
                 {
-                    return this.BuildSqlWithExclusiveLeafClass(statement);
+                    return this.BuildSqlWithExclusiveClass(statement);
                 }
 
-                return this.BuildSqlWithExclusiveLeafClasses(statement);
+                return this.BuildSqlWithClasses(statement);
             }
 
             return null;
         }
 
-        public void CheckAssociation(IAssociationType association)
+        internal void CheckAssociation(IAssociationType associationType)
         {
-            // TODO: Optimize
-            if (!new List<IAssociationType>(this.objectType.AssociationTypes).Contains(association))
+            if (!this.objectType.ExistAssociationType(associationType))
             {
-                throw new ArgumentException("Extent does not implement association " + association);
+                throw new ArgumentException("Extent does not have association " + associationType);
             }
         }
 
-        public void CheckRole(IRoleType role)
+        internal void CheckRole(IRoleType roleType)
         {
-            // TODO: Optimize
-            if (!new List<IRoleType>(this.objectType.RoleTypes).Contains(role))
+            if (!this.objectType.ExistRoleType(roleType))
             {
-                throw new ArgumentException("Extent does not implement role " + role);
+                throw new ArgumentException("Extent does not have role " + roleType.SingularName);
             }
         }
+
 
         protected override IList<long> GetObjectIds()
         {
             if (this.Strategy != null)
             {
-                return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType.RelationType);
+                if (this.AssociationType != null)
+                {
+                    return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType);
+                }
+                else
+                {
+                    return this.Strategy.Roles.GetCompositesRole(this.RoleType).ToList();
+                }
             }
 
             this.session.Flush();
@@ -143,12 +146,10 @@ namespace Allors.Adapters.Database.Sql
                     {
                         while (reader.Read())
                         {
-                            var objectId = long.Parse(reader.GetValue(0).ToString());
+                            var objectId = this.session.State.GetObjectIdForExistingObject(reader.GetValue(0).ToString());
                             objectIds.Add(objectId);
                         }
-
-                        reader.Close();
-                    }
+}
                 }
             }
 
@@ -171,26 +172,20 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        private string BuildSqlWithExclusiveLeafClass(ExtentStatement statement)
+        private string BuildSqlWithExclusiveClass(ExtentStatement statement)
         {
             var alias = statement.CreateAlias();
-            var exclusiveLeafClass = this.objectType.ExclusiveClass;
+            var rootClass = this.objectType.ExclusiveClass;
 
             if (statement.IsRoot)
             {
-                statement.Append("SELECT DISTINCT " + alias + "." + this.Schema.ObjectId);
-                if (statement.Sorter != null)
-                {
-                    statement.Sorter.BuildSelect(statement, alias);
-                }
+                statement.Append("SELECT DISTINCT " + alias + "." + Mapping.ColumnNameForObject);
+                statement.Sorter?.BuildSelect(statement, alias);
 
-                statement.Append(" FROM " + this.Schema.Table(exclusiveLeafClass) + " " + alias);
-                statement.AddJoins(exclusiveLeafClass, alias);
-                statement.AddWhere(exclusiveLeafClass, alias);
-                if (this.filter != null)
-                {
-                    this.filter.BuildWhere(statement, alias);
-                }
+                statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
+                statement.AddJoins(rootClass, alias);
+                statement.AddWhere(rootClass, alias);
+                this.filter?.BuildWhere(statement, alias);
             }
             else
             {
@@ -200,27 +195,27 @@ namespace Allors.Adapters.Database.Sql
                 if (inStatement.RoleType != null)
                 {
                     var inRole = inStatement.RoleType;
-                    var inRelationType = inRole.RelationType;
-                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
+                    var inIRelationType = inRole.RelationType;
+                    if (inIRelationType.Multiplicity == Multiplicity.ManyToMany || !inIRelationType.ExistExclusiveClasses)
                     {
-                        statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId);
+                        statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + Mapping.ColumnNameForAssociation);
                     }
                     else
                     {
                         if (inRole.IsMany)
                         {
-                            statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                            statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                         }
                         else
                         {
-                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType));
+                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Mapping.ColumnNameByRelationType[inRole.RelationType]);
                         }
                     }
 
-                    statement.Append(" FROM " + this.Schema.Table(exclusiveLeafClass) + " " + alias);
-                    statement.AddJoins(exclusiveLeafClass, alias);
+                    statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
+                    statement.AddJoins(rootClass, alias);
 
-                    var wherePresent = statement.AddWhere(exclusiveLeafClass, alias);
+                    var wherePresent = statement.AddWhere(rootClass, alias);
                     var filterUsed = false;
                     if (this.filter != null)
                     {
@@ -236,20 +231,19 @@ namespace Allors.Adapters.Database.Sql
                         statement.Append(" WHERE ");
                     }
 
-                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
+                    if (inIRelationType.Multiplicity == Multiplicity.ManyToMany || !inIRelationType.ExistExclusiveClasses)
                     {
-                        statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
+                        statement.Append(inRole.AssociationType.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IS NOT NULL ");
                     }
                     else
                     {
                         if (inRole.IsMany)
                         {
-                            statement.Append(alias + "." + this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
+                            statement.Append(alias + "." + this.Mapping.ColumnNameByRelationType[inRole.RelationType] + " IS NOT NULL ");
                         }
                         else
                         {
-                            statement.Append(inRole.AssociationType.SingularFullName + "_A." +
-                                             this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
+                            statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Mapping.ColumnNameByRelationType[inRole.RelationType] + " IS NOT NULL ");
                         }
                     }
                 }
@@ -257,7 +251,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (statement.IsRoot)
                     {
-                        statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                        statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                         if (statement.Sorter != null)
                         {
                             statement.Sorter.BuildSelect(statement);
@@ -265,13 +259,13 @@ namespace Allors.Adapters.Database.Sql
                     }
                     else
                     {
-                        statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                        statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                     }
 
-                    statement.Append(" FROM " + this.Schema.Table(exclusiveLeafClass) + " " + alias);
+                    statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
 
-                    statement.AddJoins(exclusiveLeafClass, alias);
-                    statement.AddWhere(exclusiveLeafClass, alias);
+                    statement.AddJoins(rootClass, alias);
+                    statement.AddWhere(rootClass, alias);
 
                     if (this.filter != null)
                     {
@@ -283,33 +277,32 @@ namespace Allors.Adapters.Database.Sql
             return alias;
         }
 
-        private string BuildSqlWithExclusiveLeafClasses(ExtentStatement statement)
+        private string BuildSqlWithClasses(ExtentStatement statement)
         {
             if (statement.IsRoot)
             {
-                var leafClasses = this.objectType.Classes.ToArray();
-                for (var i = 0; i < leafClasses.Length; i++)
+                for (var i = 0; i < this.objectType.Classes.Count(); i++)
                 {
                     var alias = statement.CreateAlias();
-                    var leafClass = leafClasses[i];
+                    var rootClass = this.objectType.Classes.ToArray()[i];
 
-                    statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                    statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                     if (statement.Sorter != null)
                     {
                         statement.Sorter.BuildSelect(statement);
                     }
 
-                    statement.Append(" FROM " + this.Schema.Table(leafClass) + " " + alias);
+                    statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
 
-                    statement.AddJoins(leafClass, alias);
-                    statement.AddWhere(leafClass, alias);
+                    statement.AddJoins(rootClass, alias);
+                    statement.AddWhere(rootClass, alias);
 
                     if (this.filter != null)
                     {
                         this.filter.BuildWhere(statement, alias);
                     }
 
-                    if (i < leafClasses.Length - 1)
+                    if (i < this.objectType.Classes.Count() - 1)
                     {
                         statement.Append("\nUNION\n");
                     }
@@ -322,12 +315,12 @@ namespace Allors.Adapters.Database.Sql
                 if (inStatement.RoleType != null)
                 {
                     var useUnion = false;
-                    foreach (var leafClass in this.objectType.Classes)
+                    foreach (var rootClass in this.objectType.Classes)
                     {
                         var inRole = inStatement.RoleType;
-                        var inRelationType = inRole.RelationType;
+                        var inIRelationType = inRole.RelationType;
 
-                        if (!((IComposite)inRole.ObjectType).Classes.Contains(leafClass))
+                        if (!((IComposite)inRole.ObjectType).Classes.Contains(rootClass))
                         {
                             continue;
                         }
@@ -343,27 +336,27 @@ namespace Allors.Adapters.Database.Sql
 
                         var alias = statement.CreateAlias();
 
-                        if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
+                        if (inIRelationType.Multiplicity == Multiplicity.ManyToMany || !inIRelationType.ExistExclusiveClasses)
                         {
-                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId);
+                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + Mapping.ColumnNameForAssociation);
                         }
                         else
                         {
                             if (inRole.IsMany)
                             {
-                                statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                                statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                             }
                             else
                             {
-                                statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType));
+                                statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Mapping.ColumnNameByRelationType[inRole.RelationType]);
                             }
                         }
 
-                        statement.Append(" FROM " + this.Schema.Table(leafClass) + " " + alias);
+                        statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
 
-                        statement.AddJoins(leafClass, alias);
+                        statement.AddJoins(rootClass, alias);
 
-                        var wherePresent = statement.AddWhere(leafClass, alias);
+                        var wherePresent = statement.AddWhere(rootClass, alias);
                         var filterUsed = false;
                         if (this.filter != null)
                         {
@@ -379,34 +372,33 @@ namespace Allors.Adapters.Database.Sql
                             statement.Append(" WHERE ");
                         }
 
-                        if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
+                        if (inIRelationType.Multiplicity == Multiplicity.ManyToMany || !inIRelationType.ExistExclusiveClasses)
                         {
-                            statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
+                            statement.Append(inRole.AssociationType.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IS NOT NULL ");
                         }
                         else
                         {
                             if (inRole.IsMany)
                             {
-                                statement.Append(alias + "." + this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
+                                statement.Append(alias + "." + this.Mapping.ColumnNameByRelationType[inRole.RelationType] + " IS NOT NULL ");
                             }
                             else
                             {
-                                statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
+                                statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Mapping.ColumnNameByRelationType[inRole.RelationType] + " IS NOT NULL ");
                             }
                         }
                     }
                 }
                 else
                 {
-                    var leafClasses = this.objectType.Classes.ToArray();
-                    for (var i = 0; i < leafClasses.Length; i++)
+                    for (var i = 0; i < this.objectType.Classes.Count(); i++)
                     {
                         var alias = statement.CreateAlias();
-                        var leafClass = leafClasses[i];
+                        var rootClass = this.objectType.Classes.ToArray()[i];
 
                         if (statement.IsRoot)
                         {
-                            statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                            statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                             if (statement.Sorter != null)
                             {
                                 statement.Sorter.BuildSelect(statement);
@@ -414,20 +406,20 @@ namespace Allors.Adapters.Database.Sql
                         }
                         else
                         {
-                            statement.Append("SELECT " + alias + "." + this.Schema.ObjectId);
+                            statement.Append("SELECT " + alias + "." + Mapping.ColumnNameForObject);
                         }
 
-                        statement.Append(" FROM " + this.Schema.Table(leafClass) + " " + alias);
+                        statement.Append(" FROM " + this.Mapping.TableNameForObjectByClass[rootClass] + " " + alias);
 
-                        statement.AddJoins(leafClass, alias);
-                        statement.AddWhere(leafClass, alias);
+                        statement.AddJoins(rootClass, alias);
+                        statement.AddWhere(rootClass, alias);
 
                         if (this.filter != null)
                         {
                             this.filter.BuildWhere(statement, alias);
                         }
 
-                        if (i < leafClasses.Length - 1)
+                        if (i < this.objectType.Classes.Count() - 1)
                         {
                             statement.Append("\nUNION\n");
                         }

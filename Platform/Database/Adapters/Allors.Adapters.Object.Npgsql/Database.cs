@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Database.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
@@ -14,123 +14,286 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Npgsql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.Common;
-    using System.Linq;
-    using System.Text;
-    using System.Xml;
-
-    using Allors.Adapters.Database.Caching;
-    using Allors.Adapters.Database.Sql;
-    using Allors.Meta;
-
     using global::Npgsql;
+    using System.Linq;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using Adapters.Object.Npgsql.Caching;
+
+    using Allors;
+    using Allors.Adapters.Schema;
+    using Allors.Meta;
 
     using NpgsqlTypes;
 
-    public class Database : Allors.IDatabase
+    public class Database : IDatabase
     {
         public static readonly long[] EmptyObjectIds = { };
 
-        private const string ConnectionStringsKey = "allors";
-
-        private readonly string id;
-
-        private readonly Dictionary<IObjectType, IRoleType[]> sortedUnitRolesByObjectType;
+        private readonly object lockObject = new object();
 
         private readonly IObjectFactory objectFactory;
 
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
 
-        protected Dictionary<string, object> Properties;
+        private readonly Dictionary<IObjectType, IRoleType[]> sortedUnitRolesByObjectType;
 
+        private Mapping mapping;
+
+        private bool? isValid;
+
+        private string validationMessage;
+
+        private IConnectionFactory connectionFactory;
+
+        private IConnectionFactory managementConnectionFactory;
+
+        private ICacheFactory cacheFactory;
 
         public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
-            this.objectFactory = configuration.ObjectFactory;
-            this.concreteClassesByObjectType = new Dictionary<IObjectType, HashSet<IObjectType>>();
-
             this.ServiceProvider = serviceProvider;
-            this.Serializable = configuration.Serializable;
+            this.objectFactory = configuration.ObjectFactory;
+            if (!this.objectFactory.MetaPopulation.IsValid)
+            {
+                throw new ArgumentException("Domain is invalid");
+            }
 
             this.ConnectionString = configuration.ConnectionString;
+            this.ConnectionFactory = configuration.ConnectionFactory;
+            this.ManagementConnectionFactory = configuration.ManagementConnectionFactory;
+
+            this.concreteClassesByObjectType = new Dictionary<IObjectType, HashSet<IObjectType>>();
+
             this.CommandTimeout = configuration.CommandTimeout;
             this.IsolationLevel = configuration.IsolationLevel;
 
-            var connectionStringBuilder = new NpgsqlConnectionStringBuilder(this.ConnectionString);
-            var applicationName = connectionStringBuilder.ApplicationName?.Trim();
-            if (!string.IsNullOrWhiteSpace(applicationName))
-            {
-                this.id = applicationName;
-            }
-            else
-            {
-                using (var connection = new NpgsqlConnection(this.ConnectionString))
-                {
-                    connection.Open();
-                    this.id = connection.Database?.ToLowerInvariant() ?? this.ConnectionString;
-                }
-            }
+            this.Serializable = configuration.Serializable;
 
             this.sortedUnitRolesByObjectType = new Dictionary<IObjectType, IRoleType[]>();
 
-            this.Cache = configuration.CacheFactory.CreateCache(this);
-        }
+            this.CacheFactory = configuration.CacheFactory;
+            this.Cache = this.CacheFactory.CreateCache();
 
-        public Schema NpgsqlSchema
-        {
-            get
+            var connectionStringBuilder = new NpgsqlConnectionStringBuilder(this.ConnectionString);
+            var applicationName = connectionStringBuilder.ApplicationName.Trim();
+            if (!string.IsNullOrWhiteSpace(applicationName))
             {
-                if (this.ObjectFactory.MetaPopulation != null)
+                this.Id = applicationName;
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(connectionStringBuilder.Database))
                 {
-                    if (this.schema == null)
+                    this.Id = connectionStringBuilder.Database.ToLowerInvariant();
+                }
+                else
+                {
+                    using (var connection = new NpgsqlConnection(this.ConnectionString))
                     {
-                        this.schema = new Schema(this);
+                        connection.Open();
+                        this.Id = connection.Database.ToLowerInvariant();
                     }
                 }
-
-                return this.schema;
             }
+
+            this.SchemaName = (configuration.SchemaName ?? "allors").ToLowerInvariant();
         }
+
+        public event ObjectNotLoadedEventHandler ObjectNotLoaded;
+
+        public event RelationNotLoadedEventHandler RelationNotLoaded;
+        
+        public IServiceProvider ServiceProvider { get; }
+
+        public IConnectionFactory ConnectionFactory
+        {
+            get => this.connectionFactory ?? (this.connectionFactory = new DefaultConnectionFactory());
+
+            set => this.connectionFactory = value;
+        }
+
+        public IConnectionFactory ManagementConnectionFactory
+        {
+            get => this.managementConnectionFactory ?? (this.managementConnectionFactory = new DefaultConnectionFactory());
+
+            set => this.managementConnectionFactory = value;
+        }
+
+        public ICacheFactory CacheFactory
+        {
+            get => this.cacheFactory;
+
+            set => this.cacheFactory = value ?? (this.cacheFactory = new DefaultCacheFactory());
+        }
+
+        public string Id { get; }
+
+        public string SchemaName { get; }
 
         public IObjectFactory ObjectFactory => this.objectFactory;
 
         public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
 
-        public object this[string name]
+        public IDatabase Serializable { get; }
+
+        public bool IsDatabase => true;
+
+        public bool IsWorkspace => false;
+
+        public bool IsShared => true;
+
+        public bool IsValid
         {
             get
             {
-                if (this.Properties == null)
+                if (!this.isValid.HasValue)
                 {
-                    return null;
+                    lock (this.lockObject)
+                    {
+                        if (!this.isValid.HasValue)
+                        {
+                            var validate = this.Validate();
+                            this.validationMessage = validate.Message;
+                            return validate.IsValid;
+                        }
+                    }
                 }
 
-                object value;
-                this.Properties.TryGetValue(name, out value);
-                return value;
+                return this.isValid.Value;
             }
+        }
 
-            set
+        internal string ConnectionString { get; set; }
+
+        internal string AscendingSortAppendix => null;
+
+        internal string DescendingSortAppendix => null;
+
+        internal string Except => "EXCEPT";
+
+        internal ICache Cache { get; }
+
+        internal int CommandTimeout { get; }
+
+        internal IsolationLevel IsolationLevel { get; }
+
+        internal Mapping Mapping
+        {
+            get
             {
-                if (this.Properties == null)
+                if (this.ObjectFactory.MetaPopulation != null)
                 {
-                    this.Properties = new Dictionary<string, object>();
+                    if (this.mapping == null)
+                    {
+                        this.mapping = new Mapping(this);
+                    }
                 }
 
-                if (value == null)
+                return this.mapping;
+            }
+        }
+
+        public ISession CreateSession()
+        {
+            var connection = this.ConnectionFactory.Create(this);
+            return this.CreateSession(connection);
+        }
+
+        public ISession CreateSession(Connection connection)
+        {
+            if (!this.IsValid)
+            {
+                throw new Exception(this.validationMessage);
+            }
+
+            return new Session(this, connection);
+        }
+
+        public void Init()
+        {
+            try
+            {
+                new Initialization(this).Execute();
+            }
+            finally
+            {
+                this.ResetSchema();
+                this.Cache.Invalidate();
+            }
+        }
+
+        public void Load(XmlReader reader)
+        {
+            lock (this)
+            {
+                this.Init();
+
+                using (var connection = new NpgsqlConnection(this.ConnectionString))
                 {
-                    this.Properties.Remove(name);
-                }
-                else
-                {
-                    this.Properties[name] = value;
+                    try
+                    {
+                        connection.Open();
+
+                        var load = new Load2(this, connection, this.ObjectNotLoaded, this.RelationNotLoaded);
+                        load.Execute(reader);
+
+                        connection.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        try
+                        {
+                            connection.Close();
+                        }
+                        finally
+                        {
+                            this.Init();
+                            throw e;
+                        }
+                    }
                 }
             }
+        }
+
+        public void Save(XmlWriter writer)
+        {
+            lock (this)
+            {
+                var session = new ManagementSession(this, this.ManagementConnectionFactory);
+                try
+                {
+                    var save = new Save(this, writer);
+                    save.Execute(session);
+                }
+                finally
+                {
+                    session.Rollback();
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
+        }
+
+        public Validation Validate()
+        {
+            var validateResult = new Validation(this);
+            this.isValid = validateResult.IsValid;
+            return validateResult;
+        }
+
+        ISession IDatabase.CreateSession()
+        {
+            return this.CreateSession();
         }
 
         internal bool ContainsConcreteClass(IObjectType container, IObjectType containee)
@@ -149,208 +312,17 @@ namespace Allors.Adapters.Database.Npgsql
 
             return concreteClasses.Contains(containee);
         }
-
-        public event ObjectNotLoadedEventHandler ObjectNotLoaded;
-
-        public event RelationNotLoadedEventHandler RelationNotLoaded;
-
-        public Allors.IDatabase Serializable { get; }
-
-        public IServiceProvider ServiceProvider { get; }
-
-        public bool IsDatabase => true;
-
-        public bool IsWorkspace => false;
-
-        public string Id => this.id;
-
-        public bool IsShared => true;
-
-        public virtual string AscendingSortAppendix => null;
-
-        public virtual string DescendingSortAppendix => null;
-
-        public virtual string Except => "EXCEPT";
         
-        public ICache Cache { get; }
-
-        public string ConnectionString { get; }
-
-        public int CommandTimeout { get; }
-
-        public IsolationLevel IsolationLevel { get; }
-
-        public ISession CreateSession()
-        {
-            return this.CreateDatabaseSession();
-        }
-
-        public void Recover()
-        {
-            if (!ObjectFactory.MetaPopulation.IsValid)
-            {
-                throw new ArgumentException("Domain is invalid");
-            }
-
-            var session = this.CreateManagementSession();
-            try
-            {
-                this.DropIndexes(session);
-                this.DropTriggers(session);
-                this.DropProcedures(session);
-                this.DropFunctions(session);
-                this.DropUserDefinedTypes(session);
-
-                this.CreateUserDefinedTypes(session);
-                this.CreateFunctions(session);
-                this.CreateProcedures(session);
-                this.CreateTriggers(session);
-                this.CreateIndexes(session);
-
-                session.Commit();
-            }
-            catch
-            {
-                session.Rollback();
-                throw;
-            }
-            finally
-            {
-                this.ResetSchema();
-                this.Cache.Invalidate();
-            }
-        }
-
-        ISession Allors.IDatabase.CreateSession()
-        {
-            return this.CreateDatabaseSession();
-        }
-
-        public virtual ISession CreateDatabaseSession()
-        {
-            if (Schema.SchemaValidationErrors.HasErrors)
-            {
-                var errors = new StringBuilder();
-                foreach (var error in Schema.SchemaValidationErrors.Errors)
-                {
-                    errors.Append("\n");
-                    errors.Append(error.Message);
-                }
-
-                throw new SchemaValidationException(Schema.SchemaValidationErrors, "Database schema is not compatible with domain.\nUpgrade manually or use Save & Load.\n" + errors);
-            }
-
-            var session = this.CreateSqlSession();
-
-            return session;
-        }
-
-        public void Init()
-        {
-            this.Init(true);
-        }
-
-        public void Init(bool allowTruncate)
-        {
-            if (!ObjectFactory.MetaPopulation.IsValid)
-            {
-                throw new ArgumentException("Domain is invalid");
-            }
-
-            var session = this.CreateManagementSession();
-            try
-            {
-                if (allowTruncate && !this.Schema.SchemaValidationErrors.HasErrors)
-                {
-                    this.TruncateTables(session);
-                }
-                else
-                {
-                    this.DropTriggers(session);
-                    this.DropProcedures(session);
-                    this.DropFunctions(session);
-                    this.DropUserDefinedTypes(session);
-                    this.ResetSequence(session);
-                    this.DropTables(session);
-                    this.CreateTables(session);
-                    this.CreateUserDefinedTypes(session);
-                    this.CreateFunctions(session);
-                    this.CreateProcedures(session);
-                    this.CreateTriggers(session);
-                    this.CreateIndexes(session);
-                }
-
-                session.Commit();
-            }
-            catch
-            {
-                try
-                {
-                    session.Rollback();
-                }
-                catch
-                {
-                }
-
-                throw;
-            }
-            finally
-            {
-                this.Properties = null;
-                this.ResetSchema();
-                this.Cache.Invalidate();
-            }
-        }
-
-        public void Load(XmlReader reader)
-        {
-            this.Init();
-
-            var session = this.CreateManagementSession();
-            try
-            {
-                var load = this.CreateLoad(this.ObjectNotLoaded, this.RelationNotLoaded, reader);
-                load.Execute(session);
-                session.Commit();
-            }
-            catch
-            {
-                session.Rollback();
-                this.Init();
-                throw;
-            }
-        }
-
-        public void Save(XmlWriter writer)
-        {
-            var session = this.CreateManagementSession();
-            try
-            {
-                var save = this.CreateSave(writer);
-                save.Execute(session);
-            }
-            finally
-            {
-                session.Rollback();
-            }
-        }
-
-        public override string ToString()
-        {
-            return "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
-        }
-
-        public Type GetDomainType(IObjectType objectType)
+        internal Type GetDomainType(IObjectType objectType)
         {
             return this.ObjectFactory.GetTypeForObjectType(objectType);
         }
 
-        public IRoleType[] GetSortedUnitRolesByObjectType(IComposite objectType)
+        internal IRoleType[] GetSortedUnitRolesByObjectType(IObjectType objectType)
         {
-            IRoleType[] sortedUnitRoles;
-            if (!this.sortedUnitRolesByObjectType.TryGetValue(objectType, out sortedUnitRoles))
+            if (!this.sortedUnitRolesByObjectType.TryGetValue(objectType, out var sortedUnitRoles))
             {
-                var sortedUnitRoleList = new List<IRoleType>(objectType.RoleTypes.Where(roleType => roleType.ObjectType is IUnit));
+                var sortedUnitRoleList = new List<IRoleType>(((IComposite)objectType).RoleTypes.Where(r => r.ObjectType.IsUnit));
                 sortedUnitRoleList.Sort();
                 sortedUnitRoles = sortedUnitRoleList.ToArray();
                 this.sortedUnitRolesByObjectType[objectType] = sortedUnitRoles;
@@ -358,389 +330,41 @@ namespace Allors.Adapters.Database.Npgsql
 
             return sortedUnitRoles;
         }
-        
-        protected virtual void TruncateTables(ManagementSession session)
-        {
-            this.ResetSequence(session);
 
-            foreach (SchemaTable table in Schema)
+        internal NpgsqlDbType GetNpgsqlDbType(IRoleType roleType)
+        {
+            var unit = (IUnit)roleType.ObjectType;
+            switch (unit.UnitTag)
             {
-                switch (table.Kind)
-                {
-                    case SchemaTableKind.System:
-                    case SchemaTableKind.Object:
-                    case SchemaTableKind.Relation:
-                        this.TruncateTables(session, table);
-                        break;
-                }
-            }
-        }
-        
-        protected virtual void CreateUserDefinedTypes(ManagementSession session)
-        {
-        }
-
-        protected virtual void CreateFunctions(ManagementSession session)
-        {
-        }
-
-        protected virtual void CreateIndexes(ManagementSession session)
-        {
-            foreach (SchemaTable table in Schema)
-            {
-                foreach (SchemaColumn column in table)
-                {
-                    if (column.IndexType != SchemaIndexType.None)
+                case UnitTags.String:
+                    if (roleType.Size == -1 || roleType.Size > 4000)
                     {
-                        this.CreateIndex(session, table, column);
-                    }
-                }
-            }
-        }
-
-        protected virtual void DropIndexes(ManagementSession session)
-        {
-            foreach (SchemaTable table in Schema)
-            {
-                foreach (SchemaColumn column in table)
-                {
-                    if (column.IndexType != SchemaIndexType.None)
-                    {
-                        this.DropIndex(session, table, column);
-                    }
-                }
-            }
-        }
-
-        protected virtual void CreateProcedures(ManagementSession session)
-        {
-            foreach (var procedure in Schema.Procedures)
-            {
-                this.CreateProcedure(session, procedure);
-            }
-        }
-
-        protected virtual void CreateTables(ManagementSession session)
-        {
-            foreach (SchemaTable table in Schema)
-            {
-                this.CreateTable(session, table);
-            }
-        }
-
-        protected virtual void CreateTriggers(ManagementSession session)
-        {
-        }
-
-        protected virtual void DropFunctions(ManagementSession session)
-        {
-        }
-
-        protected virtual void DropTables(ManagementSession session)
-        {
-            foreach (SchemaTable table in Schema)
-            {
-                this.DropTable(session, table);
-            }
-        }
-
-        protected virtual void DropTriggers(ManagementSession session)
-        {
-        }
-
-
-
-
-
-
-
-
-
-        private Schema schema;
-
-        public Sql.Schema Schema => this.NpgsqlSchema;
-
-        protected string IdentityType => "bigserial";
-
-        public void ResetSchema()
-        {
-            this.schema = null;
-        }
-
-        public DbConnection CreateDbConnection()
-        {
-            return new NpgsqlConnection(this.ConnectionString);
-        }
-
-        public void DropIndex(ManagementSession session, SchemaTable table, SchemaColumn column)
-        {
-            var indexName = Sql.Schema.AllorsPrefix + table.Name + "_" + column.Name;
-
-            try
-            {
-                var sql = new StringBuilder();
-                sql.Append("DROP INDEX IF EXISTS " + indexName);
-                session.ExecuteSql(sql.ToString());
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not drop index " + indexName, e);
-            }
-        }
-
-        internal object[] CreateObjectTable(IEnumerable<long> objectIds)
-        {
-            return objectIds.Cast<object>().ToArray();
-        }
-
-        internal object[] CreateObjectTable(IEnumerable<Reference> strategies)
-        {
-            return strategies.Select(strategy => strategy.ObjectId).Cast<object>().ToArray();
-        }
-
-        internal object[] CreateObjectTable(Dictionary<Reference, Roles> rolesByReference)
-        {
-            return rolesByReference
-                .Select(dictionaryEntry => dictionaryEntry.Key)
-                .Select(strategy => strategy.ObjectId)
-                .Cast<object>()
-                .ToArray();
-        }
-
-        internal object[] CreateAssociationTable(IEnumerable<CompositeRelation> relations)
-        {
-            return relations.Select(relation => relation.Association).Cast<object>().ToArray();
-        }
-        
-        internal object[] CreateAssociationTable(IEnumerable<UnitRelation> relations)
-        {
-            return relations.Select(relation => relation.Association).Cast<object>().ToArray(); 
-        }
-        
-        internal object[] CreateRoleTable(IEnumerable<CompositeRelation> relations)
-        {
-            return relations.Select(relation => relation.Role).Cast<object>().ToArray();
-        }
-
-        internal object[] CreateRoleTable(IEnumerable<UnitRelation> relations)
-        {
-            var roleArray = relations.Select(relation => relation.Role).ToArray();
-            return roleArray;
-        }
-        
-        internal string GetSqlType(SchemaColumn column)
-        {
-            if (column.IsIdentity)
-            {
-                return this.IdentityType;
-            }
-
-            switch (column.DbType)
-            {
-                case DbType.String:
-                    if (column.Size == -1)
-                    {
-                        return "text";
+                        return NpgsqlDbType.Text;
                     }
 
-                    return "VARCHAR(" + column.Size + ") ";
-                case DbType.Int32:
-                    return "INTEGER ";
-                case DbType.Int64:
-                    return "BIGINT  ";
-                case DbType.Decimal:
-                    return "NUMERIC(" + column.Precision + "," + column.Scale + ") ";
-                case DbType.Double:
-                    return "DOUBLE PRECISION ";
-                case DbType.Boolean:
-                    return "BOOLEAN ";
-                case DbType.Date:
-                case DbType.DateTime:
-                    return "TIMESTAMP ";
-                case DbType.Guid:
-                    return "UUID ";
-                case DbType.Binary:
-                    return "BYTEA ";
+                    return NpgsqlDbType.Varchar;
+                case UnitTags.Integer:
+                    return NpgsqlDbType.Integer;
+                case UnitTags.Decimal:
+                    return NpgsqlDbType.Numeric;
+                case UnitTags.Float:
+                    return NpgsqlDbType.Double;
+                case UnitTags.Boolean:
+                    return NpgsqlDbType.Bit;
+                case UnitTags.DateTime:
+                    return NpgsqlDbType.Timestamp;
+                case UnitTags.Unique:
+                    return NpgsqlDbType.Uuid;
+                case UnitTags.Binary:
+                    return NpgsqlDbType.Bytea;
                 default:
-                    return "!UNKNOWN VALUE TYPE!";
+                    throw new Exception("!UNKNOWN VALUE TYPE!");
             }
         }
 
-        internal string GetSqlType(DbType type)
+        private void ResetSchema()
         {
-            switch (type)
-            {
-                case DbType.String:
-                    return "VARCHAR";
-                case DbType.Int32:
-                    return "INTEGER";
-                case DbType.Int64:
-                    return "BIGINT";
-                case DbType.Decimal:
-                    return "NUMERIC";
-                case DbType.Double:
-                    return "DOUBLE PRECISION";
-                case DbType.Boolean:
-                    return "BOOLEAN";
-                case DbType.Date:
-                case DbType.DateTime:
-                    return "TIMESTAMP";
-                case DbType.Guid:
-                    return "UUID";
-                case DbType.Binary:
-                    return "BYTEA";
-                default:
-                    return "!UNKNOWN VALUE TYPE!";
-            }
-        }
-
-        internal string GetSqlType(NpgsqlDbType type)
-        {
-            switch (type)
-            {
-                case NpgsqlDbType.Varchar:
-                    return "VARCHAR";
-                case NpgsqlDbType.Text:
-                    return "TEXT";
-                case NpgsqlDbType.Integer:
-                    return "INTEGER";
-                case NpgsqlDbType.Bigint:
-                    return "BIGINT";
-                case NpgsqlDbType.Numeric:
-                    return "NUMERIC";
-                case NpgsqlDbType.Double:
-                    return "DOUBLE PRECISION";
-                case NpgsqlDbType.Boolean:
-                    return "BOOLEAN";
-                case NpgsqlDbType.Date:
-                    return "DATE";
-                case NpgsqlDbType.Timestamp:
-                    return "TIMESTAMP";
-                case NpgsqlDbType.Uuid:
-                    return "UUID";
-                case NpgsqlDbType.Bytea:
-                    return "BYTEA";
-                default:
-                    return "!UNKNOWN VALUE TYPE!";
-            }
-        }
-
-        internal ManagementSession CreateNpgsqlManagementSession()
-        {
-            return new ManagementSession(this);
-        }
-
-        protected internal ManagementSession CreateManagementSession()
-        {
-            return this.CreateNpgsqlManagementSession();
-        }
-
-        protected ISession CreateSqlSession()
-        {
-            return new DatabaseSession(this);
-        }
-
-        protected void ResetSequence(ManagementSession session)
-        {
-            //var sql = new StringBuilder();
-            //sql.Append("DROP SEQUENCE IF EXISTS " + this.Schema.Objects.Name + "_SEQ");
-            //session.ExecuteSql(sql.ToString());
-
-            //sql = new StringBuilder();
-            //sql.Append("CREATE SEQUENCE " + this.Schema.Objects.Name + "_SEQ");
-            //session.ExecuteSql(sql.ToString());
-        }
-
-        protected void DropUserDefinedTypes(ManagementSession session)
-        {
-        }
-
-        protected void DropTable(ManagementSession session, SchemaTable schemaTable)
-        {
-            var sql = new StringBuilder();
-            sql.Append(
-@"DROP TABLE IF EXISTS " + schemaTable + " CASCADE;");
-            session.ExecuteSql(sql.ToString());
-        }
-
-        protected void CreateTable(ManagementSession session, SchemaTable schemaTable)
-        {
-            var keys = new List<SchemaColumn>();
-
-            var sql = new StringBuilder();
-            sql.Append("CREATE TABLE " + schemaTable.StatementName);
-            sql.Append("(");
-            foreach (SchemaColumn column in schemaTable)
-            {
-                sql.Append(column.StatementName + " " + this.GetSqlType(column));
-                if (column.IsKey)
-                {
-                    keys.Add(column);
-                }
-
-                sql.Append(",\n");
-            }
-
-            sql.Append("CONSTRAINT " + schemaTable.Name + "_pk PRIMARY KEY ( ");
-            for (int i = 0; i < keys.Count; i++)
-            {
-                if (i > 0)
-                {
-                    sql.Append(", ");
-                }
-
-                sql.Append(keys[i].Name);
-            }
-
-            sql.Append(" )\n");
-            sql.Append(")");
-            session.ExecuteSql(sql.ToString());
-        }
-
-        protected void DropProcedures(ManagementSession session)
-        {
-        }
-
-        protected void CreateProcedure(ManagementSession session, SchemaProcedure storedProcedure)
-        {
-            session.ExecuteSql(storedProcedure.Definition);
-        }
-
-        protected void CreateIndex(ManagementSession session, SchemaTable table, SchemaColumn column)
-        {
-            var indexName = Sql.Schema.AllorsPrefix + table.Name + "_" + column.Name;
-
-            if (column.IndexType == SchemaIndexType.Single)
-            {
-                var sql = new StringBuilder();
-                sql.Append("CREATE INDEX " + indexName + "\n");
-                sql.Append("ON " + table + " (" + column + ")");
-                session.ExecuteSql(sql.ToString());
-            }
-            else
-            {
-                var sql = new StringBuilder();
-                sql.Append("CREATE INDEX " + indexName + "\n");
-                sql.Append("ON " + table + " (" + column + ", " + table.FirstKeyColumn + ")");
-                session.ExecuteSql(sql.ToString());
-            }
-        }
-
-        protected void TruncateTables(ManagementSession session, SchemaTable table)
-        {
-            var sql = new StringBuilder();
-            sql.Append("TRUNCATE TABLE " + table.StatementName);
-            session.ExecuteSql(sql.ToString());
-        }
-
-        protected Sql.Load CreateLoad(ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded, System.Xml.XmlReader reader)
-        {
-            return new Load(this, objectNotLoaded, relationNotLoaded, reader);
-        }
-
-        protected Sql.Save CreateSave(System.Xml.XmlWriter writer)
-        {
-            return new Save(this, writer);
+            this.mapping = null;
         }
     }
 }

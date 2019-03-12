@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="UnitRelation.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,14 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Adapters.Object.Npgsql
 {
-    public class UnitRelation
+    internal class UnitRelation
     {
-        public readonly long Association;
-        public readonly object Role;
+        internal readonly long Association;
+        internal readonly object Role;
 
-        public UnitRelation(long association, object role)
+        internal UnitRelation(long association, object role)
         {
             this.Association = association;
             this.Role = role;

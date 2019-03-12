@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleLessThanRole.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleLessThanRole : Predicate
+    internal sealed class RoleLessThanRole : Predicate
     {
         private readonly IRoleType lessThanRole;
         private readonly IRoleType role;
 
-        public RoleLessThanRole(ExtentFiltered extent, IRoleType role, IRoleType lessThanRole)
+        internal RoleLessThanRole(ExtentFiltered extent, IRoleType role, IRoleType lessThanRole)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleLessThan(role, lessThanRole);
@@ -35,14 +36,14 @@ namespace Allors.Adapters.Database.Sql
             this.lessThanRole = lessThanRole;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" " + alias + "." + schema.Column(this.role) + " < " + alias + "." + schema.Column(this.lessThanRole));
+            var schema = statement.Mapping;
+            statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + " < " + alias + "." + schema.ColumnNameByRelationType[this.lessThanRole.RelationType]);
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
             statement.UseRole(this.lessThanRole);

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ReservedWords.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,18 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
 
     /// <summary>
     /// As of Sql Server 2008 R2
     /// </summary>
-    public static class ReservedWords
+    internal static class ReservedWords
     {
-        public static readonly HashSet<string> Names;
+        internal static readonly HashSet<string> Names;
 
-        public static readonly string[] Current = 
+        internal static readonly string[] Current = 
         {
                                              "ADD", "ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUTHORIZATION", "BACKUP",
                                              "BEGIN", "BETWEEN", "BREAK", "BROWSE", "BULK", "BY", "CASCADE", "CASE",
@@ -59,7 +59,7 @@ namespace Allors.Adapters.Database.Sql
                                              "WITH", "WRITETEXT"
                                          };
 
-        public static readonly string[] Future = 
+        internal static readonly string[] Future = 
         {
                                                      "ABSOLUTE", "ACTION", "ADMIN", "AFTER", "AGGREGATE", "ALIAS",
                                                      "ALLOCATE", "ARE", "ARRAY", "ASENSITIVE", "ASSERTION", "ASYMMETRIC",

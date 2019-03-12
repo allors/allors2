@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleGreaterThanValue.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleGreaterThanValue : Predicate
+    internal sealed class RoleGreaterThanValue : Predicate
     {
         private readonly object obj;
         private readonly IRoleType roleType;
 
-        public RoleGreaterThanValue(ExtentFiltered extent, IRoleType roleType, object obj)
+        internal RoleGreaterThanValue(ExtentFiltered extent, IRoleType roleType, object obj)
         {
             extent.CheckRole(roleType);
             PredicateAssertions.ValidateRoleGreaterThan(roleType, obj);
@@ -35,14 +36,14 @@ namespace Allors.Adapters.Database.Sql
             this.obj = roleType.Normalize(obj);
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" " + alias + "." + schema.Column(this.roleType) + ">" + statement.AddParameter(this.obj));
+            var schema = statement.Mapping;
+            statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.roleType.RelationType] + ">" + statement.AddParameter(this.obj));
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.roleType);
         }

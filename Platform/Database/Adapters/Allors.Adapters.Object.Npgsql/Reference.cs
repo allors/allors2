@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Reference.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,56 +18,76 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
 
-    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
 
     public class Reference
     {
-        public const int InitialVersion = 0;
-        public const int UnknownVersion = -1;
+        internal const long InitialVersion = 0;
+        private const long UnknownVersion = -1;
 
-        private static readonly int MaskIsNew = BitVector32.CreateMask();
-        private static readonly int MaskExists = BitVector32.CreateMask(MaskIsNew);
-        private static readonly int MaskExistsKnown = BitVector32.CreateMask(MaskExists);
+        [FlagsAttribute]
+        public enum Flags: byte
+        {
+            MaskIsNew  = 1,
+            MaskExists = 2,
+            MaskExistsKnown = 4,
+        }
 
-        private readonly DatabaseSession session;
-        private readonly IClass objectType;
-        private readonly long objectId;
         private long version;
 
-        private BitVector32 flags;
+        private Flags flags;
 
-        private WeakReference weakReference;
+        private WeakReference<Strategy> weakReference;
 
-        public Reference(DatabaseSession session, IClass objectType, long objectId, bool isNew)
+        private bool FlagIsNew
         {
-            this.session = session;
-            this.objectType = objectType;
-            this.objectId = objectId;
+            get { return flags.HasFlag(Flags.MaskIsNew); }
 
-            this.flags[MaskIsNew] = isNew;
+            set { flags = value ? flags | Flags.MaskIsNew : flags & ~Flags.MaskIsNew; }
+        }
+
+        private bool FlagExists
+        {
+            get { return flags.HasFlag(Flags.MaskExists); }
+
+            set { flags = value ? flags | Flags.MaskExists : flags & ~Flags.MaskExists; }
+        }
+
+        private bool FlagExistsKnown
+        {
+            get { return flags.HasFlag(Flags.MaskExistsKnown); }
+
+            set { flags = value ? flags | Flags.MaskExistsKnown : flags & ~Flags.MaskExistsKnown; }
+        }
+
+        internal Reference(Session session, IClass @class, long objectId, bool isNew)
+        {
+            this.Session = session;
+            this.Class = @class;
+            this.ObjectId = objectId;
+
+            this.FlagIsNew = isNew;
             if (isNew)
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = true;
+                this.FlagExistsKnown = true;
+                this.FlagExists = true;
             }
         }
 
-        public Reference(DatabaseSession session, IClass objectType, long objectId, long version)
-            : this(session, objectType, objectId, false)
+        internal Reference(Session session, IClass @class, long objectId, long version)
+            : this(session, @class, objectId, false)
         {
             this.version = version;
-            this.flags[MaskExistsKnown] = true;
-            this.flags[MaskExists] = true;
+            this.FlagExistsKnown = true;
+            this.FlagExists = true;
         }
 
-        public virtual Strategy Strategy
+        internal virtual Strategy Strategy
         {
             get
             {
@@ -76,44 +96,27 @@ namespace Allors.Adapters.Database.Sql
                 if (strategy == null)
                 {
                     strategy = this.CreateStrategy();
-                    this.weakReference = new WeakReference(strategy);
+                    this.weakReference = new WeakReference<Strategy>(strategy);
                 }
 
                 return strategy;
             }
         }
 
-        public DatabaseSession Session
-        {
-            get
-            {
-                return this.session;
-            }
-        }
+        internal Session Session { get; }
 
-        public IClass ObjectType
-        {
-            get
-            {
-                return this.objectType;
-            }
-        }
+        internal IClass Class { get; }
 
-        public long ObjectId
-        {
-            get
-            {
-                return this.objectId;
-            }
-        }
+        internal long ObjectId { get; }
 
-        public long Version
+        internal long Version
         {
             get
             {
                 if (!this.IsNew && this.version == UnknownVersion)
                 {
-                    this.Session.GetCacheIdsAndExists();
+                    this.Session.AddReferenceWithoutVersionOrExistsKnown(this);
+                    this.Session.GetVersionAndExists();
                 }
 
                 return this.version;
@@ -125,63 +128,77 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public bool IsNew
+        internal bool IsNew => this.FlagIsNew;
+
+        internal bool IsUnknownVersion
         {
             get
             {
-                return this.flags[MaskIsNew];
+                var isUnknown = this.version == UnknownVersion; 
+                return isUnknown;
             }
         }
 
-        public bool Exists
+        internal bool Exists
         {
             get
             {
-                var flagsExistsKnown = this.flags[MaskExistsKnown];
+                var flagsExistsKnown = this.FlagExistsKnown;
                 if (!flagsExistsKnown)
                 {
-                    this.Session.AddReferenceWithoutCacheId(this);
-                    this.Session.GetCacheIdsAndExists();
+                    this.Session.AddReferenceWithoutVersionOrExistsKnown(this);
+                    this.Session.GetVersionAndExists();
                 }
 
-                return this.flags[MaskExists];
+                return this.FlagExists;
             }
 
             set
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = value;
+                this.FlagExistsKnown = true;
+                this.FlagExists = value;
             }
         }
-
-        public Strategy Target
+        
+        internal bool ExistsKnown
         {
             get
             {
-                return (this.weakReference == null) ? null : (Strategy)this.weakReference.Target;
+                var existsKnown = this.FlagExistsKnown;
+                return existsKnown;
+            }
+        }
+
+        private Strategy Target
+        {
+            get
+            {
+                Strategy strategy = null;
+                this.weakReference?.TryGetTarget(out strategy);
+                return strategy;
             }
         }
 
         public override int GetHashCode()
         {
-            return this.objectId.GetHashCode();
+            return this.ObjectId.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             var that = (Reference)obj;
-            return that != null && that.objectId.Equals(this.objectId);
+            return that != null && that.ObjectId.Equals(this.ObjectId);
         }
 
         public override string ToString()
         {
-            return "[" + this.objectType + ":" + this.ObjectId + "]";
+            return "[" + this.Class + ":" + this.ObjectId + "]";
         }
 
-        public virtual void Commit(HashSet<Reference> referencesWithStrategy)
+        internal virtual void Commit(HashSet<Reference> referencesWithStrategy)
         {
-            this.flags[MaskExistsKnown] = false;
-            this.flags[MaskIsNew] = false;
+            this.FlagExistsKnown = false;
+            this.FlagIsNew = false;
             this.version = UnknownVersion;
 
             var strategy = this.Target;
@@ -192,16 +209,16 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public virtual void Rollback(HashSet<Reference> referencesWithStrategy)
+        internal virtual void Rollback(HashSet<Reference> referencesWithStrategy)
         {
-            if (this.flags[MaskIsNew])
+            if (this.FlagIsNew)
             {
-                this.flags[MaskExistsKnown] = true;
-                this.flags[MaskExists] = false;
+                this.FlagExistsKnown = true;
+                this.FlagExists = false;
             }
             else
             {
-                this.flags[MaskExistsKnown] = false;
+                this.FlagExistsKnown = false;
             }
 
             this.version = UnknownVersion;
@@ -214,7 +231,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
       
-        protected virtual Strategy CreateStrategy()
+        public virtual Strategy CreateStrategy()
         {
             return new Strategy(this);
         }

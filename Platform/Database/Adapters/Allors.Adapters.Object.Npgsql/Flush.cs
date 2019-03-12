@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Flush.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,25 +18,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Npgsql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
 
-    using Allors.Adapters.Database.Sql;
     using Allors.Meta;
 
-    public class Flush : IFlush
+    internal class Flush
     {
         private const int BatchSize = 1000;
-        private readonly DatabaseSession session;
+        private readonly Session session;
 
-        private Dictionary<IObjectType, Dictionary<IRoleType, List<UnitRelation>>> setUnitRoleRelationsByRoleTypeByExclusiveLeafClass;
+        private Dictionary<IClass, Dictionary<IRoleType, List<UnitRelation>>> setUnitRoleRelationsByRoleTypeByExclusiveClass;
         private Dictionary<IRoleType, List<CompositeRelation>> setCompositeRoleRelationsByRoleType;
         private Dictionary<IRoleType, List<CompositeRelation>> addCompositeRoleRelationsByRoleType;
         private Dictionary<IRoleType, List<CompositeRelation>> removeCompositeRoleRelationsByRoleType;
-        private Dictionary<IRoleType, IList<long>> clearCompositeRoleRelationsByRoleType;
+        private Dictionary<IRoleType, IList<long>> clearCompositeAndCompositesRoleRelationsByRoleType;
 
-        public Flush(DatabaseSession session, Dictionary<Reference, Roles> unsyncedRolesByReference)
+        internal Flush(Session session, Dictionary<Reference, Roles> unsyncedRolesByReference)
         {
             this.session = session;
 
@@ -47,13 +46,13 @@ namespace Allors.Adapters.Database.Npgsql
             }
         }
 
-        public void Execute()
+        internal void Execute()
         {
-            if (this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass != null)
+            if (this.setUnitRoleRelationsByRoleTypeByExclusiveClass != null)
             {
-                foreach (var firstDictionaryEntry in this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass)
+                foreach (var firstDictionaryEntry in this.setUnitRoleRelationsByRoleTypeByExclusiveClass)
                 {
-                    var exclusiveLeafClass = firstDictionaryEntry.Key;
+                    var exclusiveRootClass = firstDictionaryEntry.Key;
                     var setUnitRoleRelationsByRoleType = firstDictionaryEntry.Value;
                     foreach (var secondDictionaryEntry in setUnitRoleRelationsByRoleType)
                     {
@@ -61,13 +60,13 @@ namespace Allors.Adapters.Database.Npgsql
                         var relations = secondDictionaryEntry.Value;
                         if (relations.Count > 0)
                         {
-                            this.session.SessionCommands.SetUnitRole(relations, (IClass)exclusiveLeafClass, roleType);
+                            this.session.Commands.SetUnitRole(relations, exclusiveRootClass, roleType);
                         }
                     }
                 }
             }
 
-            this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass = null;
+            this.setUnitRoleRelationsByRoleTypeByExclusiveClass = null;
 
             if (this.setCompositeRoleRelationsByRoleType != null)
             {
@@ -77,7 +76,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.SetCompositeRole(relations, roleType);
+                        this.session.Commands.SetCompositeRole(relations, roleType);
                     }
                 }
             }
@@ -92,7 +91,7 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.AddCompositeRole(relations, roleType);
+                        this.session.Commands.AddCompositeRole(relations, roleType);
                     }
                 }
             }
@@ -107,48 +106,43 @@ namespace Allors.Adapters.Database.Npgsql
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.RemoveCompositeRole(relations, roleType);
+                        this.session.Commands.RemoveCompositeRole(relations, roleType);
                     }
                 }
             }
 
             this.removeCompositeRoleRelationsByRoleType = null;
 
-            if (this.clearCompositeRoleRelationsByRoleType != null)
+            if (this.clearCompositeAndCompositesRoleRelationsByRoleType != null)
             {
-                foreach (var dictionaryEntry in this.clearCompositeRoleRelationsByRoleType)
+                foreach (var dictionaryEntry in this.clearCompositeAndCompositesRoleRelationsByRoleType)
                 {
                     var roleType = dictionaryEntry.Key;
                     var relations = dictionaryEntry.Value;
                     if (relations.Count > 0)
                     {
-                        this.session.SessionCommands.ClearCompositeAndCompositesRole(relations, roleType);
+                        this.session.Commands.ClearCompositeAndCompositesRole(relations, roleType);
                     }
                 }
             }
 
-            this.clearCompositeRoleRelationsByRoleType = null;
+            this.clearCompositeAndCompositesRoleRelationsByRoleType = null;
         }
 
-        public void SetUnitRoles(Roles roles, List<IRoleType> unitRoles)
+        internal void SetUnitRole(Reference association, IRoleType roleType, object role)
         {
-            roles.Reference.Session.SessionCommands.SetUnitRoles(roles, unitRoles);
-        }
-
-        public void SetUnitRole(Reference association, IRoleType roleType, object role)
-        {
-            if (this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass == null)
+            if (this.setUnitRoleRelationsByRoleTypeByExclusiveClass == null)
             {
-                this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass = new Dictionary<IObjectType, Dictionary<IRoleType, List<UnitRelation>>>();
+                this.setUnitRoleRelationsByRoleTypeByExclusiveClass = new Dictionary<IClass, Dictionary<IRoleType, List<UnitRelation>>>();
             }
 
-            var exclusiveLeafClass = association.ObjectType.ExclusiveClass;
+            var exclusiveClass = association.Class.ExclusiveClass;
 
             Dictionary<IRoleType, List<UnitRelation>> setUnitRoleRelationsByRoleType;
-            if (!this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass.TryGetValue(exclusiveLeafClass, out setUnitRoleRelationsByRoleType))
+            if (!this.setUnitRoleRelationsByRoleTypeByExclusiveClass.TryGetValue(exclusiveClass, out setUnitRoleRelationsByRoleType))
             {
                 setUnitRoleRelationsByRoleType = new Dictionary<IRoleType, List<UnitRelation>>();
-                this.setUnitRoleRelationsByRoleTypeByExclusiveLeafClass[exclusiveLeafClass] = setUnitRoleRelationsByRoleType;
+                this.setUnitRoleRelationsByRoleTypeByExclusiveClass[exclusiveClass] = setUnitRoleRelationsByRoleType;
             }
 
             List<UnitRelation> relations;
@@ -163,12 +157,12 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.SetUnitRole(relations, exclusiveLeafClass, roleType);
+                this.session.Commands.SetUnitRole(relations, exclusiveClass, roleType);
                 relations.Clear();
             }
         }
 
-        public void SetCompositeRole(Reference association, IRoleType roleType, long role)
+        internal void SetCompositeRole(Reference association, IRoleType roleType, long role)
         {
             if (this.setCompositeRoleRelationsByRoleType == null)
             {
@@ -186,12 +180,12 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.SetCompositeRole(relations, roleType);
+                this.session.Commands.SetCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
 
-        public void AddCompositeRole(Reference association, IRoleType roleType, HashSet<long> added)
+        internal void AddCompositeRole(Reference association, IRoleType roleType, HashSet<long> added)
         {
             if (this.addCompositeRoleRelationsByRoleType == null)
             {
@@ -212,12 +206,12 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.AddCompositeRole(relations, roleType);
+                this.session.Commands.AddCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
 
-        public void RemoveCompositeRole(Reference association, IRoleType roleType, HashSet<long> removed)
+        internal void RemoveCompositeRole(Reference association, IRoleType roleType, HashSet<long> removed)
         {
             if (this.removeCompositeRoleRelationsByRoleType == null)
             {
@@ -238,30 +232,30 @@ namespace Allors.Adapters.Database.Npgsql
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.RemoveCompositeRole(relations, roleType);
+                this.session.Commands.RemoveCompositeRole(relations, roleType);
                 relations.Clear();
             }
         }
 
-        public void ClearCompositeAndCompositesRole(Reference association, IRoleType roleType)
+        internal void ClearCompositeAndCompositesRole(Reference association, IRoleType roleType)
         {
-            if (this.clearCompositeRoleRelationsByRoleType == null)
+            if (this.clearCompositeAndCompositesRoleRelationsByRoleType == null)
             {
-                this.clearCompositeRoleRelationsByRoleType = new Dictionary<IRoleType, IList<long>>();
+                this.clearCompositeAndCompositesRoleRelationsByRoleType = new Dictionary<IRoleType, IList<long>>();
             }
 
             IList<long> relations;
-            if (!this.clearCompositeRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!this.clearCompositeAndCompositesRoleRelationsByRoleType.TryGetValue(roleType, out relations))
             {
                 relations = new List<long>();
-                this.clearCompositeRoleRelationsByRoleType[roleType] = relations;
+                this.clearCompositeAndCompositesRoleRelationsByRoleType[roleType] = relations;
             }
 
             relations.Add(association.ObjectId);
 
             if (relations.Count > BatchSize)
             {
-                this.session.SessionCommands.ClearCompositeAndCompositesRole(relations, roleType);
+                this.session.Commands.ClearCompositeAndCompositesRole(relations, roleType);
                 relations.Clear();
             }
         }

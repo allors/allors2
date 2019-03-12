@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleContainedInExtent.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
+    using Adapters;
+
     using Meta;
 
-    public sealed class RoleContainedInExtent : In
+    internal sealed class RoleContainedInExtent : In
     {
         private readonly SqlExtent inExtent;
         private readonly IRoleType role;
 
-        public RoleContainedInExtent(ExtentFiltered extent, IRoleType role, Allors.Extent inExtent)
+        internal RoleContainedInExtent(ExtentFiltered extent, IRoleType role, Allors.Extent inExtent)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleContainedIn(role, inExtent);
@@ -35,17 +37,17 @@ namespace Allors.Adapters.Database.Sql
             this.inExtent = ((Extent)inExtent).ContainedInExtent;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
             var inStatement = statement.CreateChild(this.inExtent, this.role);
 
             inStatement.UseAssociation(this.role.AssociationType);
 
             if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.role.SingularPropertyName + "_R." + schema.RoleId + " IS NOT NULL AND ");
-                statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.AssociationId + " IN (");
+                statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForRole + " IS NOT NULL AND ");
+                statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForAssociation + " IN (");
                 this.inExtent.BuildSql(inStatement);
                 statement.Append(" ))");
             }
@@ -53,15 +55,15 @@ namespace Allors.Adapters.Database.Sql
             {
                 if (this.role.IsMany)
                 {
-                    statement.Append(" (" + this.role.SingularPropertyName + "_R." + schema.ObjectId + " IS NOT NULL AND ");
-                    statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.ObjectId + " IN (");
+                    statement.Append(" (" + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IS NOT NULL AND ");
+                    statement.Append(" " + this.role.SingularFullName + "_R." + Mapping.ColumnNameForObject + " IN (");
                     this.inExtent.BuildSql(inStatement);
                     statement.Append(" ))");
                 }
                 else
                 {
-                    statement.Append(" (" + schema.Column(this.role) + " IS NOT NULL AND ");
-                    statement.Append(" " + schema.Column(this.role) + " IN (");
+                    statement.Append(" (" + schema.ColumnNameByRelationType[this.role.RelationType] + " IS NOT NULL AND ");
+                    statement.Append(" " + schema.ColumnNameByRelationType[this.role.RelationType] + " IN (");
                     this.inExtent.BuildSql(inStatement);
                     statement.Append(" ))");
                 }
@@ -70,7 +72,7 @@ namespace Allors.Adapters.Database.Sql
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
         }

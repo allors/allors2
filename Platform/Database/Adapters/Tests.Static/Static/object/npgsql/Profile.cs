@@ -20,15 +20,16 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
+    using System;
     using System.Text;
 
-    using Allors.Adapters.Database.Npgsql;
+    using global::Npgsql;
 
     public abstract class Profile : Adapters.Profile
     {
         public void DropTable(string tableName)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -43,7 +44,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public bool ExistIndex(string table, string column)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -68,7 +69,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public bool ExistProcedure(string procedure)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -88,7 +89,7 @@ WHERE lower(ROUTINE_NAME) = '" + procedure.ToLower() + @"'";
 
         public bool ExistPrimaryKey(string table, string column)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -108,7 +109,7 @@ where lower(table_name) = '" + table.ToLowerInvariant() + "' and lower(constrain
 
         public bool IsInteger(string table, string column)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -130,7 +131,7 @@ AND data_type = 'integer'";
 
         public bool IsLong(string table, string column)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -152,7 +153,7 @@ AND data_type = 'bigint'";
 
         public bool IsUnique(string table, string column)
         {
-            using (var connection = ((Database)this.CreateDatabase()).CreateDbConnection())
+            using (var connection = this.CreateDbConnection())
             {
                 connection.Open();
                 using (var command = connection.CreateCommand())
@@ -171,5 +172,7 @@ AND data_type = 'uuid'";
                 }
             }
         }
+
+        protected abstract NpgsqlConnection CreateDbConnection();
     }
 }

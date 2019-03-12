@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Equals.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,26 +18,28 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
-    public sealed class Equals : Predicate
+    using Adapters;
+
+    internal sealed class Equals : Predicate
     {
         private readonly IObject obj;
 
-        public Equals(IObject obj)
+        internal Equals(IObject obj)
         {
             PredicateAssertions.ValidateEquals(obj);
             this.obj = obj;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" (" + alias + "." + schema.ObjectId + "=" + statement.AddParameter(this.obj) + ") ");
+            var schema = statement.Mapping;
+            statement.Append(" (" + alias + "." + Mapping.ColumnNameForObject + "=" + statement.AddParameter(this.obj) + ") ");
             return this.Include;
         }
     }

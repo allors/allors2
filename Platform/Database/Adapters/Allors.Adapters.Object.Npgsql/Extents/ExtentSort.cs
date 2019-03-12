@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentSort.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,47 +18,45 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
-    using Allors.Adapters.Database.Npgsql;
-
     using Meta;
 
-    public class ExtentSort
+    internal class ExtentSort
     {
         private readonly SortDirection direction;
         private readonly IRoleType roleType;
-        private readonly DatabaseSession session;
+        private readonly Session session;
         private ExtentSort subSorter;
 
-        public ExtentSort(DatabaseSession session, IRoleType roleType, SortDirection direction)
+        internal ExtentSort(Session session, IRoleType roleType, SortDirection direction)
         {
             this.session = session;
             this.roleType = roleType;
             this.direction = direction;
         }
 
-        public void AddSort(IRoleType subSortRoleType, SortDirection subSortDirection)
+        internal void AddSort(IRoleType subSortIRoleType, SortDirection subSortDirection)
         {
             if (this.subSorter == null)
             {
-                this.subSorter = new ExtentSort(this.session, subSortRoleType, subSortDirection);
+                this.subSorter = new ExtentSort(this.session, subSortIRoleType, subSortDirection);
             }
             else
             {
-                this.subSorter.AddSort(subSortRoleType, subSortDirection);
+                this.subSorter.AddSort(subSortIRoleType, subSortDirection);
             }
         }
 
-        public void BuildOrder(ExtentStatement statement)
+        internal void BuildOrder(ExtentStatement statement)
         {
             if (statement.Sorter.Equals(this))
             {
-                statement.Append(" ORDER BY " + statement.Schema.Column(this.roleType));
+                statement.Append(" ORDER BY " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
             }
             else
             {
-                statement.Append(" , " + statement.Schema.Column(this.roleType));
+                statement.Append(" , " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
             }
 
             statement.Append(this.direction == SortDirection.Ascending ? " ASC " : " DESC ");
@@ -78,15 +76,15 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public void BuildOrder(ExtentStatement statement, string alias)
+        internal void BuildOrder(ExtentStatement statement, string alias)
         {
             if (statement.Sorter.Equals(this))
             {
-                statement.Append(" ORDER BY " + alias + "." + statement.Schema.Column(this.roleType));
+                statement.Append(" ORDER BY " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
             }
             else
             {
-                statement.Append(" , " + alias + "." + statement.Schema.Column(this.roleType));
+                statement.Append(" , " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
             }
 
             if (this.direction == SortDirection.Ascending)
@@ -106,18 +104,18 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public void BuildSelect(ExtentStatement statement)
+        internal void BuildSelect(ExtentStatement statement)
         {
-            statement.Append(" , " + statement.Schema.Column(this.roleType) + " ");
+            statement.Append(" , " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType] + " ");
             if (this.subSorter != null)
             {
                 this.subSorter.BuildSelect(statement);
             }
         }
 
-        public void BuildSelect(ExtentStatement statement, string alias)
+        internal void BuildSelect(ExtentStatement statement, string alias)
         {
-            statement.Append(" , " + alias + "." + statement.Schema.Column(this.roleType) + " ");
+            statement.Append(" , " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType] + " ");
             if (this.subSorter != null)
             {
                 this.subSorter.BuildSelect(statement, alias);

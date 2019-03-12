@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AssociationContainedInEnumerable.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,19 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
     using System.Text;
 
+    using Adapters;
+
     using Meta;
 
-    public sealed class AssociationContainedInEnumerable : In
+    internal sealed class AssociationContainedInEnumerable : In
     {
         private readonly IAssociationType association;
         private readonly IEnumerable<IObject> enumerable;
 
-        public AssociationContainedInEnumerable(ExtentFiltered extent, IAssociationType association, IEnumerable<IObject> enumerable)
+        internal AssociationContainedInEnumerable(ExtentFiltered extent, IAssociationType association, IEnumerable<IObject> enumerable)
         {
             extent.CheckAssociation(association);
             PredicateAssertions.AssertAssociationContainedIn(association, this.enumerable);
@@ -38,9 +40,9 @@ namespace Allors.Adapters.Database.Sql
             this.enumerable = enumerable;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
+            var schema = statement.Mapping;
 
             var inStatement = new StringBuilder("0");
             foreach (var inObject in this.enumerable)
@@ -51,8 +53,8 @@ namespace Allors.Adapters.Database.Sql
 
             if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
-                statement.Append(" (" + this.association.SingularFullName + "_A." + schema.AssociationId + " IS NOT NULL AND ");
-                statement.Append(" " + this.association.SingularFullName + "_A." + schema.AssociationId + " IN (\n");
+                statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IS NOT NULL AND ");
+                statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForAssociation + " IN (\n");
                 statement.Append(inStatement.ToString());
                 statement.Append(" ))\n");
             }
@@ -60,15 +62,15 @@ namespace Allors.Adapters.Database.Sql
             {
                 if (this.association.RelationType.RoleType.IsMany)
                 {
-                    statement.Append(" (" + alias + "." + schema.Column(this.association) + " IS NOT NULL AND ");
-                    statement.Append(" " + alias + "." + schema.Column(this.association) + " IN (\n");
+                    statement.Append(" (" + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + " IS NOT NULL AND ");
+                    statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.association.RelationType] + " IN (\n");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))\n");
                 }
                 else
                 {
-                    statement.Append(" (" + this.association.SingularFullName + "_A." + schema.ObjectId + " IS NOT NULL AND ");
-                    statement.Append(" " + this.association.SingularFullName + "_A." + schema.ObjectId + " IN (\n");
+                    statement.Append(" (" + this.association.SingularFullName + "_A." + Mapping.ColumnNameForObject + " IS NOT NULL AND ");
+                    statement.Append(" " + this.association.SingularFullName + "_A." + Mapping.ColumnNameForObject + " IN (\n");
                     statement.Append(inStatement.ToString());
                     statement.Append(" ))\n");
                 }
@@ -77,7 +79,7 @@ namespace Allors.Adapters.Database.Sql
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseAssociation(this.association);
         }

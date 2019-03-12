@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ICachedObject.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,12 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Caching
+namespace Allors.Adapters.Object.Npgsql.Caching
 {
     using Allors.Meta;
 
     public interface ICachedObject
     {
+        long Version { get; }
+
         bool TryGetValue(IRoleType roleType, out object value);
 
         void SetValue(IRoleType roleType, object value);

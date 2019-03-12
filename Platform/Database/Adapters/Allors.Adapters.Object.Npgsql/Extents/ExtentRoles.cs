@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentRoles.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,27 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections;
 
     using Meta;
 
-    public class ExtentRoles : Extent
+    internal class ExtentRoles : Extent
     {
         private readonly Strategy strategy;
         private readonly IRoleType roleType;
 
         private ExtentFiltered upgrade;
 
-        public ExtentRoles(Strategy strategy, IRoleType roleType)
+        internal ExtentRoles(Strategy strategy, IRoleType roleType)
         {
             this.strategy = strategy;
             this.roleType = roleType;
         }
 
-        public override SqlExtent ContainedInExtent
+        internal override SqlExtent ContainedInExtent
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.Count;
                 }
 
-                return this.strategy.ExtentRolesGetCount(this.roleType.RelationType);
+                return this.strategy.ExtentRolesGetCount(this.roleType);
             }
         }
 
@@ -80,26 +80,26 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.First;
                 }
 
-                return this.strategy.ExtentRolesFirst(this.roleType.RelationType);
+                return this.strategy.ExtentRolesFirst(this.roleType);
             }
         }
 
-        public override IComposite ObjectType
+        public override IComposite ObjectType => this.strategy.Class;
+
+        private Reference[] References
         {
             get
             {
-                return this.strategy.Class;
+                var roles = this.strategy.Roles.GetCompositesRole(this.roleType);
+                return this.strategy.Session.GetOrCreateReferencesForExistingObjects(roles);
             }
         }
 
         public override void CopyTo(Array array, int index)
         {
-            if (this.upgrade != null)
-            {
-                this.upgrade.CopyTo(array, index);
-            }
+            this.upgrade?.CopyTo(array, index);
 
-            this.strategy.ExtentRolesCopyTo(this.roleType.RelationType, array, index);
+            this.strategy.ExtentRolesCopyTo(this.roleType, array, index);
         }
 
         public override IEnumerator GetEnumerator()
@@ -109,8 +109,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.GetEnumerator();
             }
 
-            var roles = this.strategy.Roles.GetCompositeRoles(this.roleType);
-            var references = this.strategy.SqlSession.GetOrCreateAssociationsForExistingObjects(roles);
+            var references = this.References;
             return new ExtentEnumerator(references);
         }
 
@@ -126,7 +125,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.IndexOf(value);
             }
 
-            return this.strategy.ExtentIndexOf(this.roleType.RelationType, (IObject)value);
+            return this.strategy.ExtentIndexOf(this.roleType, (IObject)value);
         }
 
         public override IObject[] ToArray()
@@ -136,7 +135,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.ToArray();
             }
             
-            var clrType = this.strategy.SqlSession.Database.GetDomainType(this.roleType.ObjectType);
+            var clrType = this.strategy.Session.Database.GetDomainType(this.roleType.ObjectType);
             return this.ToArray(clrType);
         }
 
@@ -145,10 +144,16 @@ namespace Allors.Adapters.Database.Sql
             if (this.upgrade != null)
             {
                 return this.upgrade.ToArray(type);
-            } 
-            
-            var objects = new ArrayList(this);
-            return (IObject[])objects.ToArray(type);
+            }
+
+            var references = this.References;
+            var objects = (IObject[])Array.CreateInstance(type, references.Length);
+            for (var i = 0; i < references.Length; i++)
+            {
+                objects[i] = references[i].Strategy.GetObject();
+            }
+
+            return objects;
         }
 
         public override Allors.Extent AddSort(IRoleType sort)
@@ -176,7 +181,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.Contains(value);
             }
 
-            return this.strategy.ExtentRolesContains(this.roleType.RelationType, (IObject)value);
+            return this.strategy.ExtentRolesContains(this.roleType, (IObject)value);
         }
 
         protected override IObject GetItem(int index)
@@ -186,14 +191,14 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.InternalGetItem(index);
             }
 
-            return this.strategy.ExtentGetItem(this.roleType.RelationType, index);
+            return this.strategy.ExtentGetItem(this.roleType, index);
         }
 
         private void LazyUpgrade()
         {
             if (this.upgrade == null)
             {
-                this.upgrade = new ExtentFiltered(this.strategy.SqlSession, this.strategy, this.roleType);
+                this.upgrade = new ExtentFiltered(this.strategy.Session, this.strategy, this.roleType);
             }
         }
     }

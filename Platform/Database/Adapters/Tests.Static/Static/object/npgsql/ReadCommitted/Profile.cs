@@ -20,8 +20,9 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     using System.Collections.Generic;
     using System.Data;
 
-    using Allors.Adapters.Database.Npgsql;
     using Allors.Meta;
+
+    using global::Npgsql;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -55,10 +56,9 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
         
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
-            var configuration = new Adapters.Database.Npgsql.Configuration
+            var configuration = new Npgsql.Configuration
             {
                 ObjectFactory = this.ObjectFactory,
-                Id = Guid.NewGuid(),
                 ConnectionString = this.ConnectionString,
                 IsolationLevel = IsolationLevel.Serializable
             };
@@ -75,10 +75,9 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         public override IDatabase CreateDatabase()
         {
-            var configuration = new Adapters.Database.Npgsql.Configuration
+            var configuration = new Npgsql.Configuration
             {
                 ObjectFactory = this.ObjectFactory,
-                Id = Guid.NewGuid(),
                 ConnectionString = this.ConnectionString
             };
 
@@ -90,6 +89,11 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
         public override IDatabase CreatePopulation()
         {
             return new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
+        }
+
+        protected override NpgsqlConnection CreateDbConnection()
+        {
+            return new NpgsqlConnection(this.ConnectionString);
         }
     }
 }

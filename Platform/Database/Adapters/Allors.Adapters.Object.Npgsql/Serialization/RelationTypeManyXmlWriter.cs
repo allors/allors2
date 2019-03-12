@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------- 
 // <copyright file="RelationTypeManyXmlWriter.cs" company="Allors bvba">
-// Copyright 2002-2013 Allors bvba.
+// Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -17,18 +17,22 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 //-------------------------------------------------------------------------------------------------
-namespace Allors.Adapters
+
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Text;
     using System.Xml;
-    using Allors.Meta;
+
+    using Adapters;
+
+    using Meta;
 
     /// <summary>
-    /// Writes all relations from a <see cref="RelationType"/> with a <see cref="RoleType"/> with multiplicity of many 
+    /// Writes all relations from a <see cref="IRelationType"/> with a <see cref="IRoleType"/> with multiplicity of many 
     /// to the <see cref="XmlWriter"/> during a <see cref="IDatabase#Save"/>.
     /// </summary>
-    public class RelationTypeManyXmlWriter : IDisposable
+    internal class RelationTypeManyXmlWriter : IDisposable
     {
         /// <summary>
         /// The <see cref="relationType"/>.
@@ -65,7 +69,7 @@ namespace Allors.Adapters
         /// </summary>
         /// <param name="relationType">The relation type.</param>
         /// <param name="xmlWriter">The XML writer.</param>
-        public RelationTypeManyXmlWriter(IRelationType relationType, XmlWriter xmlWriter)
+        internal RelationTypeManyXmlWriter(IRelationType relationType, XmlWriter xmlWriter)
         {
             this.relationType = relationType;
             this.xmlWriter = xmlWriter;
@@ -77,7 +81,7 @@ namespace Allors.Adapters
         /// <summary>
         /// Closes this "<see cref="RelationTypeManyXmlWriter"/>.
         /// </summary>
-        public void Close()
+        internal void Close()
         {
             if (!this.isClosed)
             {
@@ -105,12 +109,12 @@ namespace Allors.Adapters
         /// </summary>
         /// <param name="associationId">The association id.</param>
         /// <param name="roleId">The role id.</param>
-        public void Write(long associationId, long roleId)
+        internal void Write(long associationId, long roleId)
         {
             if (!this.isInUse)
             {
                 this.isInUse = true;
-                if (this.relationType.RoleType.ObjectType is IUnit)
+                if (this.relationType.RoleType.ObjectType.IsUnit)
                 {
                     this.xmlWriter.WriteStartElement(Serialization.RelationTypeUnit);
                 }

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ManagementSession.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
@@ -14,31 +14,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Npgsql
+namespace Allors.Adapters.Object.Npgsql
 {
     using System;
-    using System.Data.Common;
-
-    using Allors.Adapters.Database.Npgsql.Commands.Procedure;
-    using Allors.Adapters.Database.Npgsql.Commands.Text;
-    using Allors.Adapters.Database.Sql;
-
-    using global::Npgsql;
-
-    public class ManagementSession : IDisposable, ICommandFactory
+   
+    internal class ManagementSession : IDisposable
     {
-        private readonly Database database;
-
-        private NpgsqlTransaction transaction;
-        private NpgsqlConnection connection;
-       
-        private LoadObjectsFactory loadObjectsFactory;
-        private LoadCompositeRelationsFactory loadCompositeRelationsFactory;
-        private LoadUnitRelationsFactory loadUnitRelationsFactory;
-
-        public ManagementSession(Database database)
+        internal ManagementSession(Database database, IConnectionFactory connectionFactory)
         {
-            this.database = database;
+            this.Database = database;
+            this.Connection = connectionFactory.Create(database);
         }
         
         ~ManagementSession()
@@ -46,137 +31,23 @@ namespace Allors.Adapters.Database.Npgsql
             this.Dispose();
         }
 
+        public Database Database { get; }
+
+        public Connection Connection { get; }
+
         public void Dispose()
         {
             this.Rollback();
         }
-
-        public LoadObjectsFactory LoadObjectsFactory
+        
+        internal void Commit()
         {
-            get
-            {
-                return this.loadObjectsFactory ?? (this.loadObjectsFactory = new LoadObjectsFactory(this));
-            }
+            this.Connection.Commit();
         }
 
-        public LoadCompositeRelationsFactory LoadCompositeRelationsFactory
+        internal void Rollback()
         {
-            get
-            {
-                return this.loadCompositeRelationsFactory ?? (this.loadCompositeRelationsFactory = new LoadCompositeRelationsFactory(this));
-            }
-        }
-
-        public LoadUnitRelationsFactory LoadUnitRelationsFactory
-        {
-            get
-            {
-                return this.loadUnitRelationsFactory ?? (this.loadUnitRelationsFactory = new LoadUnitRelationsFactory(this));
-            }
-        }
-
-        public Database Database
-        {
-            get
-            {
-                return this.database;
-            }
-        }
-
-        public Database NpgsqlDatabase
-        {
-            get
-            {
-                return this.database;
-            }
-        }
-
-        public void ExecuteSql(string sql)
-        {
-            this.LazyConnect();
-            using (DbCommand command = this.CreateNpgsqlCommand(sql))
-            {
-                try
-                {
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine(e.Message + "\n-----" + sql + "\n-----");
-                    throw;
-                }
-            }
-        }
-
-        public Sql.Command CreateCommand(string commandText)
-        {
-            return new Command(this, commandText);
-        }
-
-        public NpgsqlCommand CreateNpgsqlCommand(string sql)
-        {
-            this.LazyConnect();
-            var command = this.connection.CreateCommand();
-            command.Transaction = this.transaction;
-            command.CommandTimeout = this.Database.CommandTimeout;
-            command.CommandText = sql;
-            return command;
-        }
-
-        public void Commit()
-        {
-            try
-            {
-                if (this.transaction != null)
-                {
-                    this.transaction.Commit();
-                }
-            }
-            finally
-            {
-                this.LazyDisconnect();
-            }
-        }
-
-        public void Rollback()
-        {
-            try
-            {
-                if (this.transaction != null)
-                {
-                    this.transaction.Rollback();
-                }
-            }
-            finally
-            {
-                this.LazyDisconnect();
-            }
-        }
-
-        private void LazyConnect()
-        {
-            if (this.connection == null)
-            {
-                this.connection = new NpgsqlConnection(this.Database.ConnectionString);
-                this.connection.Open();
-                this.transaction = this.connection.BeginTransaction();
-            }
-        }
-
-        private void LazyDisconnect()
-        {
-            try
-            {
-                if (this.connection != null)
-                {
-                    this.connection.Close();
-                }
-            }
-            finally
-            {
-                this.connection = null;
-                this.transaction = null;
-            }
+            this.Connection.Rollback();
         }
     }
 }

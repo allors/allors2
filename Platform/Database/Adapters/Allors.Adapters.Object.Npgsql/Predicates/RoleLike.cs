@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RoleLike.cs" company="Allors bvba">
-//   Copyright 2002-2013 Allors bvba.
+//   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,16 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Database.Sql
+namespace Allors.Adapters.Object.Npgsql
 {
     using Allors.Meta;
+    using Adapters;
 
-    public sealed class RoleLike : Predicate
+    internal sealed class RoleLike : Predicate
     {
         private readonly IRoleType role;
         private readonly string like;
 
-        public RoleLike(ExtentFiltered extent, IRoleType role, string like)
+        internal RoleLike(ExtentFiltered extent, IRoleType role, string like)
         {
             extent.CheckRole(role);
             PredicateAssertions.ValidateRoleLikeFilter(role, like);
@@ -35,14 +36,14 @@ namespace Allors.Adapters.Database.Sql
             this.like = like;
         }
 
-        public override bool BuildWhere(ExtentStatement statement, string alias)
+        internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
-            var schema = statement.Schema;
-            statement.Append(" " + alias + "." + schema.Column(this.role) + " LIKE " + statement.AddParameter(this.like));
+            var schema = statement.Mapping;
+            statement.Append(" " + alias + "." + schema.ColumnNameByRelationType[this.role.RelationType] + " LIKE " + statement.AddParameter(this.like));
             return this.Include;
         }
 
-        public override void Setup(ExtentStatement statement)
+        internal override void Setup(ExtentStatement statement)
         {
             statement.UseRole(this.role);
         }
