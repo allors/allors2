@@ -688,16 +688,14 @@ namespace Allors.Domain
             // Shipments
             foreach (var salesOrderItem in validOrderItems)
             {
-                if (salesOrderItem.SalesOrderItemShipmentState.Shipped)
+                if (!salesOrderItem.SalesOrderItemShipmentState.Equals(salesOrderItem.ExistLastSalesOrderItemShipmentState) 
+                    && salesOrderItem.SalesOrderItemShipmentState.Shipped)
                 {
                     foreach (OrderShipment orderShipment in salesOrderItem.OrderShipmentsWhereOrderItem)
                     {
-                        if (!salesOrderItem.ExistSalesOrderItemShipmentState || !salesOrderItem.SalesOrderItemShipmentState.Shipped)
-                        {
-                            decimal quantity = orderShipment.Quantity;
-                            salesOrderItem.QuantityPendingShipment -= quantity;
-                            salesOrderItem.QuantityShipped += quantity;
-                        }
+                        decimal quantity = orderShipment.Quantity;
+                        salesOrderItem.QuantityPendingShipment -= quantity;
+                        salesOrderItem.QuantityShipped += quantity;
                     }
                 }
             }

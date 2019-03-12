@@ -27,7 +27,7 @@ namespace Allors
     {
         private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
 
-        private static readonly PrefetchPolicy SecuritTokenPrefetchPolicy;
+        private static readonly PrefetchPolicy SecurityTokenPrefetchPolicy;
 
         static PrefetchPolicyBuilderExtensions()
         {
@@ -35,7 +35,7 @@ namespace Allors
                 .WithRule(MetaAccessControl.Instance.CacheId.RoleType)
                 .Build();
 
-            SecuritTokenPrefetchPolicy = new PrefetchPolicyBuilder()
+            SecurityTokenPrefetchPolicy = new PrefetchPolicyBuilder()
                 .WithRule(MetaSecurityToken.Instance.AccessControls, AccessControlPrefetchPolicy)
                 .Build();
         }
@@ -48,9 +48,20 @@ namespace Allors
             }
         }
 
-        public static void WithSecurityRules(this PrefetchPolicyBuilder @this)
+        public static void WithSecurityRules(this PrefetchPolicyBuilder @this, Class @class)
         {
-            @this.WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecuritTokenPrefetchPolicy);
+            if (@class.DelegatedAccess != null)
+            {
+                var builder = new PrefetchPolicyBuilder()
+                    .WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy)
+                    .WithRule(MetaAccessControlledObject.Instance.DeniedPermissions)
+                    .Build();
+
+                var delegated = @class.DelegatedAccess;
+                @this.WithRule(delegated, builder);
+            }
+
+            @this.WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy);
             @this.WithRule(MetaAccessControlledObject.Instance.DeniedPermissions);
         }
     }
