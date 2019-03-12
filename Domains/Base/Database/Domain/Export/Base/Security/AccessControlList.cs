@@ -32,7 +32,7 @@ namespace Allors.Domain
     /// </summary>
     public class AccessControlList : IAccessControlList
     {
-        private static readonly PrefetchPolicy PrefetchPolicy;
+        internal static readonly PrefetchPolicy PrefetchPolicy;
 
         private readonly AccessControlledObject @object;
         private readonly ISession session;
@@ -44,7 +44,7 @@ namespace Allors.Domain
 
         private bool lazyLoaded;
 
-        private Dictionary<Guid, Dictionary<Operations, long>> PermissionIdByOperationByOperandTypeId;
+        private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
         static AccessControlList()
         {
@@ -107,7 +107,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.PermissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
+            if (this.permissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
             {
                 if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
                 {
@@ -152,7 +152,7 @@ namespace Allors.Domain
                 this.permissionIds = new HashSet<long>(this.Caches(securityTokens).SelectMany(v => v.EffectivePermissionIds));
 
                 var permissionCache = this.session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(this.session));
-                this.PermissionIdByOperationByOperandTypeId = permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
+                this.permissionIdByOperationByOperandTypeId = permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
 
                 this.lazyLoaded = true;
             }

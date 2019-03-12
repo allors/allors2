@@ -27,7 +27,7 @@ namespace Tests
 
     using Xunit;
 
-    public class AccessControlListTests : DomainTest
+    public class AccessControlListsTests : DomainTest
     {
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
@@ -50,7 +50,8 @@ namespace Tests
                 foreach (AccessControlledObject aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
-                    var accessList = new AccessControlList(aco, guest);
+                    var accessLists = new AccessControlLists(new IObject[] { aco }, guest);
+                    var accessList = accessLists[aco];
 
                     // Then
                     Assert.False(accessList.CanExecute(M.Organisation.JustDoIt));
@@ -88,7 +89,8 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var accessList = new AccessControlList(organisation, person);
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
 
                 Assert.True(accessList.CanRead(M.Organisation.Name));
 
@@ -124,7 +126,8 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var accessList = new AccessControlList(organisation, person);
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
 
                 Assert.True(accessList.CanRead(M.Organisation.Name));
 
@@ -165,7 +168,8 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var accessList = new AccessControlList(organisation, person);
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
 
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
@@ -206,14 +210,15 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var accessList = new AccessControlList(organisation, person);
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
 
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
                 session.Rollback();
             }
         }
-        
+
         [Fact]
         public void DeniedPermissions()
         {
@@ -241,14 +246,16 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var accessList = new AccessControlList(organisation, person);
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
 
                 Assert.True(accessList.CanRead(M.Organisation.Name));
 
                 organisation.AddDeniedPermission(readOrganisationName);
 
-                accessList = new AccessControlList(organisation, person);
-
+                accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                accessList = accessLists[organisation];
+                
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
                 session.Rollback();
