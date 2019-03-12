@@ -61,6 +61,8 @@ namespace Allors.Server
                 this.session.Prefetch(prefetcher, prefetchObjects);
             }
 
+            var accessControlLists = new AccessControlLists(objects, this.user);
+
             return new SyncResponse
             {
                 UserSecurityHash = this.user.SecurityHash(),
@@ -69,24 +71,20 @@ namespace Allors.Server
                     I = x.Id.ToString(),
                     V = x.Strategy.ObjectVersion.ToString(),
                     T = x.Strategy.Class.Name,
-                    Roles = this.GetRoles(x),
-                    Methods = this.GetMethods(x),
+                    Roles = this.GetRoles(x, accessControlLists),
+                    Methods = this.GetMethods(x, accessControlLists),
                 }).ToArray() 
             };
         }
 
-        private object[][] GetRoles(IObject obj)
+        private object[][] GetRoles(IObject obj, AccessControlLists accessControlLists)
         {
             var composite = (Composite)obj.Strategy.Class;
 
             IList<RoleType> roleTypes = composite.WorkspaceRoleTypes.ToArray();
             if (roleTypes.Count > 0)
             {
-                AccessControlList acl = null;
-                if (obj is AccessControlledObject)
-                {
-                    acl = new AccessControlList(obj, this.user);
-                }
+                var acl = accessControlLists[obj];
 
                 var roles = new List<object[]>();
                 foreach (var roleType in roleTypes)
@@ -152,7 +150,7 @@ namespace Allors.Server
             return EmptyRoles;
         }
 
-        private string[][] GetMethods(IObject obj)
+        private string[][] GetMethods(IObject obj, AccessControlLists accessControlLists)
         {
             var composite = (Composite)obj.Strategy.Class;
 
@@ -160,11 +158,7 @@ namespace Allors.Server
             IList<MethodType> methodTypes = composite.WorkspaceMethodTypes.ToArray();
             if (methodTypes.Count > 0)
             {
-                AccessControlList acl = null;
-                if (obj is AccessControlledObject)
-                {
-                    acl = new AccessControlList(obj, this.user);
-                }
+                var acl = accessControlLists[obj];
 
                 var methods = new List<string[]>();
                 foreach (var methodType in methodTypes)
