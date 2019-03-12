@@ -55,7 +55,7 @@ namespace Allors.Server
 
                 var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
                 prefetchPolicyBuilder.WithWorkspaceRules(prefetchClass);
-                prefetchPolicyBuilder.WithSecurityRules();
+                prefetchPolicyBuilder.WithSecurityRules(prefetchClass);
                 var prefetcher = prefetchPolicyBuilder.Build();
 
                 this.session.Prefetch(prefetcher, prefetchObjects);
