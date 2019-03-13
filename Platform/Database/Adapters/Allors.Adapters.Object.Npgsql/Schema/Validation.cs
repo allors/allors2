@@ -217,49 +217,7 @@ namespace Allors.Adapters.Object.Npgsql
                     }
                 }
             }
-
-            // TableTypes
-            {
-                // Object TableType
-                var tableType = this.Schema.GetTableType(this.mapping.TableTypeNameForObject);
-                if (tableType == null)
-                {
-                    this.MissingTableTypeNames.Add(this.mapping.TableTypeNameForObject);
-                }
-                else
-                {
-                    if (tableType.ColumnByLowercaseColumnName.Count != 1)
-                    {
-                        this.InvalidTableTypes.Add(tableType);
-                    }
-
-                    this.ValidateColumn(tableType, this.mapping.TableTypeColumnNameForObject, Mapping.SqlTypeForObject);
-                }
-            }
-
-            this.ValidateTableType(this.mapping.TableTypeNameForCompositeRelation, Mapping.SqlTypeForObject);
-            this.ValidateTableType(this.mapping.TableTypeNameForStringRelation, "nvarchar(max)");
-            this.ValidateTableType(this.mapping.TableTypeNameForIntegerRelation, "int");
-            this.ValidateTableType(this.mapping.TableTypeNameForFloatRelation, "float");
-            this.ValidateTableType(this.mapping.TableTypeNameForDateTimeRelation, "datetime2");
-            this.ValidateTableType(this.mapping.TableTypeNameForBooleanRelation, "bit");
-            this.ValidateTableType(this.mapping.TableTypeNameForUniqueRelation, "uniqueidentifier");
-            this.ValidateTableType(this.mapping.TableTypeNameForBinaryRelation, "varbinary(max)");
-            this.ValidateTableType(this.mapping.TableTypeNameForBinaryRelation, "varbinary(max)");
-
-            // Decimal TableType
-            foreach (var precisionEntry in this.mapping.TableTypeNameForDecimalRelationByScaleByPrecision)
-            {
-                foreach (var scaleEntry in precisionEntry.Value)
-                {
-                    var name = scaleEntry.Value;
-                    var precision = precisionEntry.Key;
-                    var scale = scaleEntry.Key;
-
-                    this.ValidateTableType(name, "decimal(" + precision + "," + scale + ")");
-                }
-            }
-
+            
             // Procedures Tables
             foreach (var dictionaryEntry in this.mapping.ProcedureDefinitionByName)
             {
@@ -283,26 +241,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // TODO: Primary Keys and Indeces
         }
-
-        private void ValidateTableType(string name, string columnType)
-        {
-            var tableType = this.Schema.GetTableType(name);
-            if (tableType == null)
-            {
-                this.MissingTableTypeNames.Add(name);
-            }
-            else
-            {
-                if (tableType.ColumnByLowercaseColumnName.Count != 2)
-                {
-                    this.InvalidTableTypes.Add(tableType);
-                }
-
-                this.ValidateColumn(tableType, this.mapping.TableTypeColumnNameForAssociation, Mapping.SqlTypeForObject);
-                this.ValidateColumn(tableType, this.mapping.TableTypeColumnNameForRole, columnType);
-            }
-        }
-
+        
         private void ValidateColumn(SchemaTable table, string columnName, string sqlType)
         {
             var objectColumn = table.GetColumn(columnName);

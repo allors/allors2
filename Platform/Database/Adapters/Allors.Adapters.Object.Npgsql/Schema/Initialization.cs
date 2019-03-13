@@ -38,8 +38,6 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.validation = new Validation(this.database);
 
-            this.AllowSnapshotIsolation();
-
             if (this.validation.IsValid)
             {
                 this.TruncateTables();
@@ -54,39 +52,12 @@ namespace Allors.Adapters.Object.Npgsql
 
                 this.CreateTables();
 
-                this.DropTableTypes();
-
-                this.CreateTableTypes();
-
                 this.CreateProcedures();
 
                 this.CreateIndeces();
             }
         }
-
-        private void AllowSnapshotIsolation()
-        {
-            using (var connection = new NpgsqlConnection(this.database.ConnectionString))
-            {
-                connection.Open();
-                try
-                {
-                    var cmdText = @"
-IF ((SELECT SNAPSHOT_ISOLATION_STATE FROM SYS.DATABASES WHERE NAME = '" + connection.Database + @"') = 0)
-alter Database " + connection.Database + @"
-set allow_snapshot_isolation on";
-                    using (var command = new NpgsqlCommand(cmdText, connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-        }
-
+        
         private void CreateSchema()
         {
             if (!this.validation.Schema.Exists)
@@ -121,7 +92,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                 {
                     foreach (var name in this.validation.Schema.ProcedureByName.Keys)
                     {
-                        using (var command = new NpgsqlCommand("DROP PROCEDURE " + name, connection))
+                        using (var command = new NpgsqlCommand("DROP FUNCTION " + name, connection))
                         {
                             command.ExecuteNonQuery();
                         }
@@ -133,53 +104,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                 }
             }
         }
-
-        private void DropTableTypes()
-        {
-            using (var connection = new NpgsqlConnection(this.database.ConnectionString))
-            {
-                connection.Open();
-                try
-                {
-                    foreach (var name in this.validation.Schema.TableTypeByName.Keys)
-                    {
-                        using (var command = new NpgsqlCommand("DROP TYPE " + name, connection))
-                        {
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-        }
-
-        private void CreateTableTypes()
-        {
-            using (var connection = new NpgsqlConnection(this.database.ConnectionString))
-            {
-                connection.Open();
-                try
-                {
-                    foreach (var dictionaryEntry in this.mapping.TableTypeDefinitionByName)
-                    {
-                        var definition = dictionaryEntry.Value;
-                        
-                        using (var command = new NpgsqlCommand(definition, connection))
-                        {
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-        }
-
+        
         private void TruncateTables()
         {
             using (var connection = new NpgsqlConnection(this.database.ConnectionString))
@@ -261,7 +186,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                         var sql = new StringBuilder();
                         sql.Append("CREATE TABLE " + this.mapping.TableNameForObjects + "\n");
                         sql.Append("(\n");
-                        sql.Append(Mapping.ColumnNameForObject + " " + Mapping.SqlTypeForObject + " IDENTITY(1,1) PRIMARY KEY,\n");
+                        sql.Append(Mapping.ColumnNameForObject + " BIGSERIAL PRIMARY KEY,\n");
                         sql.Append(Mapping.ColumnNameForClass + " " + Mapping.SqlTypeForClass + ",\n");
                         sql.Append(Mapping.ColumnNameForVersion + " " + Mapping.SqlTypeForVersion + "\n");
                         sql.Append(")\n");

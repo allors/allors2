@@ -82,7 +82,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.Cache = this.CacheFactory.CreateCache();
 
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder(this.ConnectionString);
-            var applicationName = connectionStringBuilder.ApplicationName.Trim();
+            var applicationName = connectionStringBuilder.ApplicationName?.Trim();
             if (!string.IsNullOrWhiteSpace(applicationName))
             {
                 this.Id = applicationName;
@@ -350,7 +350,7 @@ namespace Allors.Adapters.Object.Npgsql
                 case UnitTags.Float:
                     return NpgsqlDbType.Double;
                 case UnitTags.Boolean:
-                    return NpgsqlDbType.Bit;
+                    return NpgsqlDbType.Boolean;
                 case UnitTags.DateTime:
                     return NpgsqlDbType.Timestamp;
                 case UnitTags.Unique:
@@ -359,6 +359,37 @@ namespace Allors.Adapters.Object.Npgsql
                     return NpgsqlDbType.Bytea;
                 default:
                     throw new Exception("!UNKNOWN VALUE TYPE!");
+            }
+        }
+
+        internal string GetSqlType(NpgsqlDbType type)
+        {
+            switch (type)
+            {
+                case NpgsqlDbType.Varchar:
+                    return "VARCHAR";
+                case NpgsqlDbType.Text:
+                    return "TEXT";
+                case NpgsqlDbType.Integer:
+                    return "INTEGER";
+                case NpgsqlDbType.Bigint:
+                    return "BIGINT";
+                case NpgsqlDbType.Numeric:
+                    return "NUMERIC";
+                case NpgsqlDbType.Double:
+                    return "DOUBLE PRECISION";
+                case NpgsqlDbType.Boolean:
+                    return "BOOLEAN";
+                case NpgsqlDbType.Date:
+                    return "DATE";
+                case NpgsqlDbType.Timestamp:
+                    return "TIMESTAMP";
+                case NpgsqlDbType.Uuid:
+                    return "UUID";
+                case NpgsqlDbType.Bytea:
+                    return "BYTEA";
+                default:
+                    return "!UNKNOWN VALUE TYPE!";
             }
         }
 

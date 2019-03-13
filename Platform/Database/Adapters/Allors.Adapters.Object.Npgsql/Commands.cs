@@ -221,8 +221,6 @@ namespace Allors.Adapters.Object.Npgsql
                 this.setUnitRoleByRoleTypeByClass.Add(exclusiveRootClass, commandByRoleType);
             }
 
-            var tableTypeName = schema.GetTableTypeName(roleType);
-
             if (!commandByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForSetUnitRoleByRelationTypeByClass[exclusiveRootClass][roleType.RelationType];

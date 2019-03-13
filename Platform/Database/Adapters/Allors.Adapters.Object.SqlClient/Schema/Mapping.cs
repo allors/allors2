@@ -90,7 +90,6 @@ namespace Allors.Adapters.Object.SqlClient
         internal readonly string ProcedureNameForInstantiate;
 
         internal readonly string ProcedureNameForGetVersion;
-        internal readonly string ProcedureNameForSetVersion;
         internal readonly string ProcedureNameForUpdateVersion;
         
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
@@ -393,20 +392,6 @@ AS
     FROM " + this.TableNameForObjects + @"
     WHERE " + ColumnNameForObject + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
             this.procedureDefinitionByName.Add(this.ProcedureNameForGetVersion, definition);
-
-            // Set Version Ids
-            this.ProcedureNameForSetVersion = this.Database.SchemaName + "." + ProcedurePrefixForSetVersion;
-            definition = 
-@"CREATE PROCEDURE " + this.ProcedureNameForSetVersion + @"
-    " + ParamNameForTableType + @" " + this.TableTypeNameForVersionedObject + @" READONLY
-AS 
-    UPDATE " + this.TableNameForObjects + @"
-    SET " + ColumnNameForVersion + " = r." + this.TableTypeColumnNameForVersion + @"
-    FROM " + this.TableNameForObjects + @"
-    INNER JOIN " + ParamNameForTableType + @" AS r
-    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForObject + @"
-";
-            this.procedureDefinitionByName.Add(this.ProcedureNameForSetVersion, definition);
 
             // Update Version Ids
             this.ProcedureNameForUpdateVersion = this.Database.SchemaName + "." + ProcedurePrefixForUpdateVersion;

@@ -9,17 +9,18 @@ namespace Allors.Adapters.Object.Npgsql
 
     public class Schema
     {
+        public Database Database { get; }
+
         public readonly bool Exists;
-        
+
         private readonly Dictionary<string, SchemaTable> tableByName;
-        private readonly Dictionary<string, SchemaTableType> tableTypeByName;
         private readonly Dictionary<string, SchemaProcedure> procedureByName;
         private readonly Dictionary<string, Dictionary<string, SchemaIndex>> indexByIndexNameByTableName;
 
         public Schema(Database database)
         {
+            this.Database = database;
             this.tableByName = new Dictionary<string, SchemaTable>();
-            this.tableTypeByName = new Dictionary<string, SchemaTableType>();
             this.procedureByName = new Dictionary<string, SchemaProcedure>();
             this.indexByIndexNameByTableName = new Dictionary<string, Dictionary<string, SchemaIndex>>();
 
@@ -36,7 +37,7 @@ WHERE   schema_name = @schemaName";
                     using (var command = new NpgsqlCommand(cmdText, connection))
                     {
                         command.Parameters.Add("@schemaName", NpgsqlDbType.Varchar).Value = database.SchemaName;
-                        var schemaCount = (int)command.ExecuteScalar();
+                        var schemaCount = (long)command.ExecuteScalar();
                         this.Exists = schemaCount != 0;
                     }
 
@@ -98,54 +99,6 @@ AND C.table_schema = @tableSchema";
                         }
                     }
 
-                    // Table Types
-                    cmdText = @"
-select tt.name as table_name, c.name as column_name, t.name AS data_type, c.max_length, c.precision, c.scale
-from sys.table_types tt
-inner join sys.columns c on c.object_id = tt.type_table_object_id
-INNER JOIN sys.types AS t ON t.user_type_id = c.user_type_id
-where tt.schema_id = SCHEMA_ID(@domainSchema)";
-
-                    using (var command = new NpgsqlCommand(cmdText, connection))
-                    {
-                        command.Parameters.Add("@domainSchema", NpgsqlDbType.Varchar).Value = database.SchemaName;
-                        using (var reader = command.ExecuteReader())
-                        {
-                            var tableNameOrdinal = reader.GetOrdinal("table_name");
-                            var columnNameOrdinal = reader.GetOrdinal("column_name");
-                            var dataTypeOrdinal = reader.GetOrdinal("data_type");
-                            var maximumLengthOrdinal = reader.GetOrdinal("max_length");
-                            var precisionOrdinal = reader.GetOrdinal("precision");
-                            var scaleOrdinal = reader.GetOrdinal("scale");
-
-                            while (reader.Read())
-                            {
-                                var tableName = reader.GetString(tableNameOrdinal);
-                                var columnName = reader.GetString(columnNameOrdinal);
-                                var dataType = reader.GetString(dataTypeOrdinal).Trim().ToLowerInvariant();
-                                var maximumLength = reader.IsDBNull(maximumLengthOrdinal) ? (int?)null : Convert.ToInt32(reader.GetValue(maximumLengthOrdinal));
-                                var precision = reader.IsDBNull(precisionOrdinal) ? (int?)null : Convert.ToInt32(reader.GetValue(precisionOrdinal));
-                                var scale = reader.IsDBNull(scaleOrdinal) ? (int?)null : Convert.ToInt32(reader.GetValue(scaleOrdinal));
-
-                                tableName = tableName.Trim().ToLowerInvariant();
-                                var fullyQualifiedTableName = database.SchemaName + "." + tableName;
-
-                                SchemaTableType tableType;
-                                if (!this.tableTypeByName.TryGetValue(fullyQualifiedTableName, out tableType))
-                                {
-                                    tableType = new SchemaTableType(this, fullyQualifiedTableName);
-                                    this.tableTypeByName[fullyQualifiedTableName] = tableType;
-                                }
-
-                                if (!reader.IsDBNull(columnNameOrdinal))
-                                {
-                                    var column = new SchemaTableTypeColumn(tableType, columnName, dataType, maximumLength, precision, scale);
-                                    tableType.ColumnByLowercaseColumnName[column.Name] = column;
-                                }
-                            }
-                        }
-                    }
-
                     // Procedures
                     cmdText = @"
 SELECT routine_name, routine_definition
@@ -163,57 +116,57 @@ WHERE routine_schema = @routineSchema";
                                 var routineDefinition = (string)reader["routine_definition"];
                                 var lowercaseRoutineName = routineName.Trim().ToLowerInvariant();
                                 var fullyQualifiedName = database.SchemaName + "." + lowercaseRoutineName;
-                                this.procedureByName[fullyQualifiedName] = new SchemaProcedure(this, routineName, routineDefinition);
+                                this.procedureByName[fullyQualifiedName] = new SchemaProcedure(routineName, routineDefinition);
                             }
                         }
                     }
 
-                    // Indeces
-                    cmdText = @"
-SELECT	o.name AS table_name,
-		i.name AS index_name
-FROM		
-		sys.indexes i
-		INNER JOIN sys.objects o ON i.object_id = o.object_id
-		INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
-WHERE 
-	i.name IS NOT NULL
-	AND o.type = 'U'
-	AND i.type = 2
-	AND s.name = @tableSchema";
+//                    // Indeces
+//                    cmdText = @"
+//SELECT	o.name AS table_name,
+//		i.name AS index_name
+//FROM		
+//		sys.indexes i
+//		INNER JOIN sys.objects o ON i.object_id = o.object_id
+//		INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+//WHERE 
+//	i.name IS NOT NULL
+//	AND o.type = 'U'
+//	AND i.type = 2
+//	AND s.name = @tableSchema";
 
-                    using (var command = new NpgsqlCommand(cmdText, connection))
-                    {
-                        command.Parameters.Add("@tableSchema", NpgsqlDbType.Varchar).Value = database.SchemaName;
-                        using (var reader = command.ExecuteReader())
-                        {
-                            var tableNameOrdinal = reader.GetOrdinal("table_name");
-                            var indexNameOrdinal = reader.GetOrdinal("index_name");
+//                    using (var command = new NpgsqlCommand(cmdText, connection))
+//                    {
+//                        command.Parameters.Add("@tableSchema", NpgsqlDbType.Varchar).Value = database.SchemaName;
+//                        using (var reader = command.ExecuteReader())
+//                        {
+//                            var tableNameOrdinal = reader.GetOrdinal("table_name");
+//                            var indexNameOrdinal = reader.GetOrdinal("index_name");
 
-                            while (reader.Read())
-                            {
-                                var tableName = reader.GetString(tableNameOrdinal);
-                                var indexName = reader.GetString(indexNameOrdinal);
+//                            while (reader.Read())
+//                            {
+//                                var tableName = reader.GetString(tableNameOrdinal);
+//                                var indexName = reader.GetString(indexNameOrdinal);
 
-                                tableName = tableName.Trim().ToLowerInvariant();
-                                indexName = indexName.Trim().ToLowerInvariant();
+//                                tableName = tableName.Trim().ToLowerInvariant();
+//                                indexName = indexName.Trim().ToLowerInvariant();
 
-                                Dictionary<string, SchemaIndex> indexByLowercaseIndexName;
-                                if (!this.indexByIndexNameByTableName.TryGetValue(tableName, out indexByLowercaseIndexName))
-                                {
-                                    indexByLowercaseIndexName = new Dictionary<string, SchemaIndex>();
-                                    this.indexByIndexNameByTableName[tableName] = indexByLowercaseIndexName;
-                                }
+//                                Dictionary<string, SchemaIndex> indexByLowercaseIndexName;
+//                                if (!this.indexByIndexNameByTableName.TryGetValue(tableName, out indexByLowercaseIndexName))
+//                                {
+//                                    indexByLowercaseIndexName = new Dictionary<string, SchemaIndex>();
+//                                    this.indexByIndexNameByTableName[tableName] = indexByLowercaseIndexName;
+//                                }
 
-                                SchemaIndex index;
-                                if (!indexByLowercaseIndexName.TryGetValue(indexName, out index))
-                                {
-                                    index = new SchemaIndex(this, indexName);
-                                    indexByLowercaseIndexName[indexName] = index;
-                                }
-                            }
-                        }
-                    }
+//                                SchemaIndex index;
+//                                if (!indexByLowercaseIndexName.TryGetValue(indexName, out index))
+//                                {
+//                                    index = new SchemaIndex(this, indexName);
+//                                    indexByLowercaseIndexName[indexName] = index;
+//                                }
+//                            }
+//                        }
+//                    }
                 }
                 finally
                 {
@@ -227,14 +180,6 @@ WHERE
             get
             {
                 return this.tableByName;
-            }
-        }
-
-        public Dictionary<string, SchemaTableType> TableTypeByName
-        {
-            get
-            {
-                return this.tableTypeByName;
             }
         }
 
@@ -260,14 +205,7 @@ WHERE
             this.tableByName.TryGetValue(tableName.ToLowerInvariant(), out table);
             return table;
         }
-
-        public SchemaTableType GetTableType(string tableTypeName)
-        {
-            SchemaTableType tableType;
-            this.tableTypeByName.TryGetValue(tableTypeName, out tableType);
-            return tableType;
-        }
-
+        
         public SchemaProcedure GetProcedure(string procedureName)
         {
             SchemaProcedure procedure;

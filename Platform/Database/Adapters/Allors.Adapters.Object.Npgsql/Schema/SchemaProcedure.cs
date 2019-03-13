@@ -1,33 +1,21 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public class SchemaProcedure
     {
-        private readonly string name;
-        private readonly string definition;
+        private static readonly Regex BodyRegex = new Regex(@"\$\$([\s\S]*)\$\$", RegexOptions.Compiled);
 
-        public SchemaProcedure(Schema schema, string name, string definition)
+        public SchemaProcedure(string name, string definition)
         {
-            this.name = name;
-            this.definition = definition;
+            this.Name = name;
+            this.Definition = definition;
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name { get; }
 
-        public string Definition
-        {
-            get
-            {
-                return this.definition;
-            }
-        }
+        public string Definition { get; }
 
         public override string ToString()
         {
@@ -36,7 +24,14 @@ namespace Allors.Adapters.Object.Npgsql
 
         public bool IsDefinitionCompatible(string existingDefinition)
         {
-            return this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(existingDefinition));
+            var match = BodyRegex.Match(existingDefinition);
+            if (!match.Success)
+            {
+                return false;
+            }
+
+            var body = match.Groups[1].Value;
+            return this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(body));
         }
 
         private string RemoveWhitespace(string input)
