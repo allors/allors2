@@ -89,11 +89,11 @@ namespace Allors.Domain
         {
             if (!@this.CanInvoice)
             {
-                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get(@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
+                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
             }
             else
             {
-                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get(@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
+                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
             }
         }
 
