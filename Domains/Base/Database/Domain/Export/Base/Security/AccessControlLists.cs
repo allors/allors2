@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         private readonly User user;
 
-        private readonly Dictionary<IObject, Permission[]> deniedPermissionsByObject;
+        private readonly Dictionary<IObject, HashSet<long>> deniedPermissionIdsByObject;
         private readonly Dictionary<IObject, AccessControlCacheEntry[]> accessControlCacheEntriesByObject;
 
         public AccessControlLists(IEnumerable<IObject> objects, User user)
@@ -47,28 +47,39 @@ namespace Allors.Domain
             var defaultNewSecurityTokens = new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken };
 
             var securityTokensByObject = new Dictionary<IObject, SecurityToken[]>();
-            this.deniedPermissionsByObject = new Dictionary<IObject, Permission[]>();
+            this.deniedPermissionIdsByObject = new Dictionary<IObject, HashSet<long>>();
 
             var securityTokens = new HashSet<SecurityToken>();
 
             foreach (var @object in objects.OfType<AccessControlledObject>())
             {
                 SecurityToken[] objectSecurityTokens;
-                Permission[] objectDeniedPermissions;
+                HashSet<long> objectDeniedPermissions = null;
                 if (@object is DelegatedAccessControlledObject controlledObject)
                 {
                     var delegatedAccess = controlledObject.DelegateAccess();
                     objectSecurityTokens = delegatedAccess.SecurityTokens;
 
                     var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
-                    objectDeniedPermissions = @object.DeniedPermissions.Any() ?
-                                            delegatedAccessDeniedPermissions.Union(@object.DeniedPermissions).ToArray() :
-                                            delegatedAccessDeniedPermissions.ToArray();
+                    if (delegatedAccessDeniedPermissions != null && delegatedAccessDeniedPermissions.Length > 0)
+                    {
+                        objectDeniedPermissions = @object.DeniedPermissions.Count > 0 ?
+                                                     new HashSet<long>(@object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Select(v => v.Id)) :
+                                                     new HashSet<long>(delegatedAccessDeniedPermissions.Select(v => v.Id));
+                    }
+                    else if (@object.DeniedPermissions.Count > 0)
+                    {
+                        objectDeniedPermissions = new HashSet<long>(@object.DeniedPermissions.Select(v => v.Id));
+                    }
                 }
                 else
                 {
                     objectSecurityTokens = @object.SecurityTokens;
-                    objectDeniedPermissions = @object.DeniedPermissions.ToArray();
+
+                    if (@object.DeniedPermissions.Count > 0)
+                    {
+                        objectDeniedPermissions = new HashSet<long>(@object.DeniedPermissions.Select(v => v.Id));
+                    }
                 }
 
                 if (objectSecurityTokens == null || objectSecurityTokens.Length == 0)
@@ -79,7 +90,7 @@ namespace Allors.Domain
                 securityTokens.UnionWith(objectSecurityTokens);
 
                 securityTokensByObject[@object] = objectSecurityTokens;
-                this.deniedPermissionsByObject[@object] = objectDeniedPermissions;
+                this.deniedPermissionIdsByObject[@object] = objectDeniedPermissions;
             }
 
             var caches = session.GetCache<AccessControlCacheEntry>();
@@ -95,7 +106,7 @@ namespace Allors.Domain
                 }
             }
 
-            var accessControlCacheEntryByAccessControl = securityTokens.SelectMany(v => v.AccessControls).ToDictionary(v => v, v => caches[v.Id]);
+            var accessControlCacheEntryByAccessControl = securityTokens.SelectMany(v => v.AccessControls).Distinct().ToDictionary(v => v, v => caches[v.Id]);
 
             this.accessControlCacheEntriesByObject = new Dictionary<IObject, AccessControlCacheEntry[]>();
             foreach (var kvp in securityTokensByObject)
@@ -114,7 +125,7 @@ namespace Allors.Domain
         {
             private readonly AccessControlLists accessControlLists;
 
-            private readonly Permission[] deniedPermissions;
+            private readonly HashSet<long> deniedPermissions;
             private readonly Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
             private readonly AccessControlCacheEntry[] accessControlCacheEntries;
@@ -124,7 +135,7 @@ namespace Allors.Domain
                 this.accessControlLists = accessControlLists;
 
                 this.accessControlLists.accessControlCacheEntriesByObject.TryGetValue(@object, out this.accessControlCacheEntries);
-                this.accessControlLists.deniedPermissionsByObject.TryGetValue(@object, out this.deniedPermissions);
+                this.accessControlLists.deniedPermissionIdsByObject.TryGetValue(@object, out this.deniedPermissions);
 
                 this.permissionIdByOperationByOperandTypeId = accessControlLists.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[@object.Strategy.Class.Id];
             }
@@ -167,21 +178,18 @@ namespace Allors.Domain
                 {
                     return false;
                 }
-
-                if (this.deniedPermissions.Length > 0)
-                {
-                    if (this.deniedPermissions.Any(deniedPermission => deniedPermission.OperandTypePointer.Equals(operandType.Id) && deniedPermission.Operation.Equals(operation)))
-                    {
-                        return false;
-                    }
-                }
-
+                
                 if (this.permissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
                 {
                     if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
                     {
                         if (this.accessControlCacheEntries.Any(v => v.EffectivePermissionIds.Contains(permissionId)))
                         {
+                            if (this.deniedPermissions?.Contains(permissionId) == true)
+                            {
+                                return false;
+                            }
+
                             return true;
                         }
                     }

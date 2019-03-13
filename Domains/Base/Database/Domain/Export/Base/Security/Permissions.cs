@@ -29,7 +29,7 @@ namespace Allors.Domain
     public partial class Permissions
     {
         // TODO: Cache permissions
-        public Permission Get(IClass @class, OperandType operand, Operations operation)
+        public Permission Get(Class @class, OperandType operand, Operations operation)
         {
             var extent = this.Extent();
             extent.Filter.AddEquals(this.Meta.ConcreteClassPointer, @class.Id);

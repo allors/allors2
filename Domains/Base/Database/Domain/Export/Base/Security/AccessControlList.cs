@@ -40,7 +40,7 @@ namespace Allors.Domain
         private readonly Guid classId;
 
         private HashSet<long> permissionIds;
-        private Permission[] deniedPermissions;
+        private HashSet<long> deniedPermissions;
 
         private bool lazyLoaded;
 
@@ -104,18 +104,15 @@ namespace Allors.Domain
 
             this.LazyLoad();
 
-            if (this.deniedPermissions.Length > 0)
-            {
-                if (this.deniedPermissions.Any(deniedPermission => deniedPermission.OperandTypePointer.Equals(operandType.Id) && deniedPermission.Operation.Equals(operation)))
-                {
-                    return false;
-                }
-            }
-
             if (this.permissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
             {
                 if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
                 {
+                    if (this.deniedPermissions?.Contains(permissionId) == true)
+                    {
+                        return false;
+                    }
+
                     return this.permissionIds.Contains(permissionId);
                 }
             }
@@ -127,8 +124,6 @@ namespace Allors.Domain
         {
             if (!this.lazyLoaded)
             {
-                this.deniedPermissions = this.@object.DeniedPermissions.ToArray();
-
                 SecurityToken[] securityTokens;
                 if (this.@object is DelegatedAccessControlledObject controlledObject)
                 {
@@ -136,14 +131,25 @@ namespace Allors.Domain
                     securityTokens = delegatedAccess.SecurityTokens;
 
                     var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
-                    if (delegatedAccessDeniedPermissions != null)
+                    if (delegatedAccessDeniedPermissions != null && delegatedAccessDeniedPermissions.Length > 0)
                     {
-                        this.deniedPermissions = this.deniedPermissions.Union(delegatedAccessDeniedPermissions).ToArray();
+                        this.deniedPermissions = this.@object.DeniedPermissions.Count > 0 ?
+                                                     new HashSet<long>(this.@object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Select(v => v.Id)) :
+                                                     new HashSet<long>(delegatedAccessDeniedPermissions.Select(v => v.Id));
+                    }
+                    else if (this.@object.DeniedPermissions.Count > 0)
+                    {
+                        this.deniedPermissions = new HashSet<long>(this.@object.DeniedPermissions.Select(v => v.Id));
                     }
                 }
                 else
                 {
                     securityTokens = this.@object.SecurityTokens;
+
+                    if (this.@object.DeniedPermissions.Count > 0)
+                    {
+                        this.deniedPermissions = new HashSet<long>(this.@object.DeniedPermissions.Select(v => v.Id));
+                    }
                 }
 
                 if (securityTokens == null || securityTokens.Length == 0)
