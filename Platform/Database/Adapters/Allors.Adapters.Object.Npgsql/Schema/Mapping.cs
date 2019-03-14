@@ -22,8 +22,6 @@ namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Text;
 
     using Allors.Meta;
 
@@ -49,7 +47,7 @@ namespace Allors.Adapters.Object.Npgsql
         public const NpgsqlDbType NpgsqlDbTypeForObject = NpgsqlDbType.Bigint;
         public const NpgsqlDbType NpgsqlDbTypeForVersion = NpgsqlDbType.Bigint;
         public const NpgsqlDbType NpgsqlDbTypeForCount = NpgsqlDbType.Integer;
-        
+
         public readonly MappingArrayParameter ObjectArrayParam;
         public readonly MappingArrayParameter CompositeRelationArrayParam;
         public readonly MappingArrayParameter StringRelationArrayParam;
@@ -80,7 +78,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal readonly Dictionary<IRelationType, string> ColumnNameByRelationType;
         internal readonly Dictionary<IRelationType, string> UnescapedColumnNameByRelationType;
         internal readonly Dictionary<IRelationType, string> TableNameForRelationByRelationType;
-        
+
         internal readonly string ProcedureNameForInstantiate;
 
         internal readonly string ProcedureNameForGetVersion;
@@ -144,10 +142,10 @@ namespace Allors.Adapters.Object.Npgsql
             this.DoubleRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Double);
             this.BooleanRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Boolean);
             this.DateRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Date);
-            this.DateTimeRelationArrayParam = new MappingArrayParameter(database,  "arr_r", NpgsqlDbType.Timestamp);
+            this.DateTimeRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Timestamp);
             this.UniqueRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Uuid);
             this.BinaryRelationArrayParam = new MappingArrayParameter(database, "arr_r", NpgsqlDbType.Bytea);
-            
+
             // Tables
             // ------
             this.TableNameForObjects = database.SchemaName + "." + "_o";
@@ -228,38 +226,39 @@ namespace Allors.Adapters.Object.Npgsql
 
             // Instantiate
             this.ProcedureNameForInstantiate = this.Database.SchemaName + "." + ProcedurePrefixForInstantiate;
-            var definition = 
+            var definition =
 $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForInstantiate}({this.ObjectArrayParam.TypeName});
 CREATE FUNCTION {this.ProcedureNameForInstantiate}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
-RETURNS TABLE 
-(
-     {ColumnNameForObject} {SqlTypeForObject},
-     {ColumnNameForClass} {SqlTypeForClass},
-     {ColumnNameForVersion} {SqlTypeForVersion}
-) 
+    RETURNS TABLE 
+    (
+         {ColumnNameForObject} {SqlTypeForObject},
+         {ColumnNameForClass} {SqlTypeForClass},
+         {ColumnNameForVersion} {SqlTypeForVersion}
+    )
+    LANGUAGE plpgsql
 AS $$
 BEGIN
 
-RETURN QUERY
-SELECT {ColumnNameForObject}, {ColumnNameForClass}, {ColumnNameForVersion}
-FROM {this.TableNameForObjects}
-WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
+    RETURN QUERY
+    SELECT {ColumnNameForObject}, {ColumnNameForClass}, {ColumnNameForVersion}
+    FROM {this.TableNameForObjects}
+    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
 
 END
-$$ language plpgsql;
-";
+$$;";
             this.procedureDefinitionByName.Add(this.ProcedureNameForInstantiate, definition);
 
             // Get Version Ids
             this.ProcedureNameForGetVersion = this.Database.SchemaName + "." + ProcedurePrefixForGetVersion;
-            definition = 
+            definition =
 $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetVersion}({this.ObjectArrayParam.TypeName});
 CREATE FUNCTION {this.ProcedureNameForGetVersion}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
-RETURNS TABLE 
-(
-     {ColumnNameForObject} {SqlTypeForObject},
-     {ColumnNameForVersion} {SqlTypeForVersion}
-) 
+    RETURNS TABLE 
+    (
+         {ColumnNameForObject} {SqlTypeForObject},
+         {ColumnNameForVersion} {SqlTypeForVersion}
+    ) 
+    LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
@@ -267,615 +266,767 @@ BEGIN
     FROM {this.TableNameForObjects}
     WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
 END
-$$ language plpgsql;
-";
+$$;";
             this.procedureDefinitionByName.Add(this.ProcedureNameForGetVersion, definition);
 
-            //            // Update Version Ids
-            //            this.ProcedureNameForUpdateVersion = this.Database.SchemaName + "." + ProcedurePrefixForUpdateVersion;
-            //            definition =
-            //@"CREATE PROCEDURE " + this.ProcedureNameForUpdateVersion + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    UPDATE " + this.TableNameForObjects + @"
-            //    SET " + ColumnNameForVersion + " = " + ColumnNameForVersion + @" + 1
-            //    FROM " + this.TableNameForObjects + @"
-            //    WHERE " + ColumnNameForObject + " IN ( SELECT " + this.TableTypeColumnNameForObject + " FROM " + ParamNameForTableType + ");\n\n";
-            //            this.procedureDefinitionByName.Add(this.ProcedureNameForUpdateVersion, definition);
-
-            //            foreach (var @class in this.Database.MetaPopulation.Classes)
-            //            {
-            //                var className = @class.Name.ToLowerInvariant();
-            //                var table = this.TableNameForObjectByClass[@class];
-
-            //                // Load Objects
-            //                this.ProcedureNameForLoadObjectByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForLoad + className);
-            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForLoadObjectByClass[@class] + @"
-            //    " + ParamNameForClass + @" " + SqlTypeForClass + @",
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    INSERT INTO " + table + " (" + ColumnNameForClass + ", " + ColumnNameForObject + @")
-            //    SELECT " + ParamNameForClass + @", " + this.TableTypeColumnNameForObject + @"
-            //    FROM " + ParamNameForTableType + "\n";
-            //                this.procedureDefinitionByName.Add(this.ProcedureNameForLoadObjectByClass[@class], definition);
-
-            //                // CreateObject
-            //                this.ProcedureNameForCreateObjectByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForCreateObject + className);
-            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForCreateObjectByClass[@class] + @"
-            //" + ParamNameForClass + @" " + SqlTypeForClass + @"
-            //AS 
-            //DECLARE  " + ParamNameForObject + " AS " + SqlTypeForObject + @"
-
-            //INSERT INTO " + this.TableNameForObjects + " (" + ColumnNameForClass + ", " + ColumnNameForVersion + @")
-            //VALUES (" + ParamNameForClass + ", " + Reference.InitialVersion + @");
-
-            //SELECT " + ParamNameForObject + @" = SCOPE_IDENTITY();
-
-            //INSERT INTO " + table + " (" + ColumnNameForObject + "," + ColumnNameForClass + @")
-            //VALUES (" + ParamNameForObject + "," + ParamNameForClass + @");
-
-            //SELECT " + ParamNameForObject + @";";
-            //                this.procedureDefinitionByName.Add(this.ProcedureNameForCreateObjectByClass[@class], definition);
-
-            //                // CreateObjects
-            //                this.ProcedureNameForCreateObjectsByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForCreateObjects + className);
-            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForCreateObjectsByClass[@class] + @"
-            //" + ParamNameForClass + @" " + SqlTypeForClass + @",
-            //" + ParamNameForCount + @" " + SqlTypeForCount + @"
-            //AS 
-            //BEGIN
-            //DECLARE @IDS TABLE (id INT);
-            //DECLARE @O INT, @COUNTER INT
-
-            //SET @COUNTER = 0
-            //WHILE @COUNTER < " + ParamNameForCount + @"
-            //    BEGIN
-
-            //    INSERT INTO " + this.TableNameForObjects + " (" + ColumnNameForClass + ", " + ColumnNameForVersion + @")
-            //    VALUES (" + ParamNameForClass + ", " + Reference.InitialVersion + @" );
-
-            //    INSERT INTO @IDS(id)
-            //    VALUES (SCOPE_IDENTITY());
-
-            //    SET @COUNTER = @COUNTER+1;
-            //    END
-
-            //INSERT INTO " + this.TableNameForObjectByClass[@class.ExclusiveClass] + " (" + ColumnNameForObject + "," + ColumnNameForClass + @")
-            //SELECT ID," + ParamNameForClass + @" FROM @IDS;
-
-            //SELECT id FROM @IDS;
-            //END";
-            //                this.procedureDefinitionByName.Add(this.ProcedureNameForCreateObjectsByClass[@class], definition);
-
-            //                var sortedUnitRoleTypes = this.Database.GetSortedUnitRolesByObjectType(@class);
-            //                if (sortedUnitRoleTypes.Length > 0)
-            //                {
-            //                    {
-            //                        // Get Unit Roles
-            //                        this.ProcedureNameForGetUnitRolesByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForGetUnits + className);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetUnitRolesByClass[@class] + @"
-            //" + ParamNameForObject + " AS " + SqlTypeForObject + @"
-            //AS 
-            //    SELECT ";
-            //                        var first = true;
-            //                        foreach (var role in sortedUnitRoleTypes)
-            //                        {
-            //                            if (first)
-            //                            {
-            //                                first = false;
-            //                            }
-            //                            else
-            //                            {
-            //                                definition += ", ";
-            //                            }
-
-            //                            definition += this.ColumnNameByRelationType[role.RelationType];
-            //                        }
-
-            //                        definition += @"
-            //    FROM " + this.TableNameForObjectByClass[@class.ExclusiveClass] + @"
-            //    WHERE " + ColumnNameForObject + "=" + ParamNameForObject;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetUnitRolesByClass[@class], definition);
-            //                    }
-
-            //                    {
-            //                        // Prefetch Unit Roles
-            //                        this.ProcedureNameForPrefetchUnitRolesByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchUnits + className);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchUnitRolesByClass[@class] + @"
-            //" + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    SELECT " + ColumnNameForObject + ", ";
-            //                        var first = true;
-            //                        foreach (var role in sortedUnitRoleTypes)
-            //                        {
-            //                            if (first)
-            //                            {
-            //                                first = false;
-            //                            }
-            //                            else
-            //                            {
-            //                                definition += ", ";
-            //                            }
-
-            //                            definition += this.ColumnNameByRelationType[role.RelationType];
-            //                        }
-
-            //                        definition += @"
-            //FROM " + this.TableNameForObjectByClass[@class.ExclusiveClass] + @"
-            //WHERE " + ColumnNameForObject + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchUnitRolesByClass[@class], definition);
-            //                    }
-            //                }
-
-            //                foreach (var associationType in @class.AssociationTypes)
-            //                {
-            //                    var relationType = associationType.RelationType;
-            //                    var roleType = relationType.RoleType;
-            //                    var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
-
-            //                    if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && roleType.IsMany)
-            //                    {
-            //                        // Get Composites Role (1-*) [object table]
-            //                        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + ColumnNameForObject + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + "=" + ParamNameForAssociation;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
-
-            //                        // Prefetch Composites Role (1-*) [object table]
-            //                        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-
-            //    SELECT " + this.ColumnNameByRelationType[relationType] + ", " + ColumnNameForObject + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
-
-            //                        if (associationType.IsOne)
-            //                        {
-            //                            // Get Composite Association (1-*) [object table]
-            //                            this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + this.ColumnNameByRelationType[relationType] + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForObject + "=" + ParamNameForCompositeRole;
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
-
-            //                            // Prefetch Composite Association (1-*) [object table]
-            //                            this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    SELECT " + this.ColumnNameByRelationType[relationType] + ", " + ColumnNameForObject + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForObject + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
-            //                        }
-
-            //                        // Add Composite Role (1-*) [object table]
-            //                        this.ProcedureNameForAddRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForAddRole + className + "_" + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForAddRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForRole;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForAddRoleByRelationType[relationType], definition);
-
-            //                        // Remove Composite Role (1-*) [object table]
-            //                        this.ProcedureNameForRemoveRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForRemoveRole + className + "_" + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForRemoveRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + @" = null
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForAssociation + @" AND
-            //    " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForRole;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForRemoveRoleByRelationType[relationType], definition);
-
-            //                        // Clear Composites Role (1-*) [object table]
-            //                        this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + className + "_" + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForClearRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + @" = null
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS a
-            //    ON " + this.ColumnNameByRelationType[relationType] + " = a." + this.TableTypeColumnNameForObject;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
-            //                    }
-            //                }
-
-            //                var procedureNameForSetUnitRoleByRelationType = new Dictionary<IRelationType, string>();
-            //                this.ProcedureNameForSetUnitRoleByRelationTypeByClass.Add(@class, procedureNameForSetUnitRoleByRelationType);
-
-            //                foreach (var roleType in @class.RoleTypes)
-            //                {
-            //                    var relationType = roleType.RelationType;
-            //                    var associationType = relationType.AssociationType;
-            //                    var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
-
-            //                    if (roleType.ObjectType.IsUnit)
-            //                    {
-            //                        procedureNameForSetUnitRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + className + "_" + relationTypeName);
-
-            //                        var unitTypeTag = ((IUnit)relationType.RoleType.ObjectType).UnitTag;
-            //                        switch (unitTypeTag)
-            //                        {
-            //                            case UnitTags.String:
-            //                                // Set String Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForStringRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Integer:
-            //                                // Set Integer Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForIntegerRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Float:
-            //                                // Set Double Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForFloatRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Decimal:
-            //                                // Set Decimal Role
-            //                                var decimalRelationTable = this.TableTypeNameForDecimalRelationByScaleByPrecision[roleType.Precision.Value][roleType.Scale.Value];
-
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //" + ParamNameForTableType + @" " + decimalRelationTable + @" READONLY
-            //AS 
-            //UPDATE " + table + @"
-            //SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //FROM " + table + @"
-            //INNER JOIN " + ParamNameForTableType + @" AS r
-            //ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Boolean:
-            //                                // Set Boolean Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForBooleanRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.DateTime:
-            //                                // Set DateTime Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForDateTimeRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Unique:
-            //                                // Set Unique Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForUniqueRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            case UnitTags.Binary:
-            //                                // Set Binary Role
-            //                                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForBinaryRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                                break;
-
-            //                            default:
-            //                                throw new ArgumentException("Unknown Unit ObjectType: " + roleType.ObjectType.SingularName);
-            //                        }
-
-            //                        this.procedureDefinitionByName.Add(procedureNameForSetUnitRoleByRelationType[relationType], definition);
-            //                    }
-            //                    else
-            //                    {
-            //                        if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && roleType.IsOne)
-            //                        {
-            //                            // Get Composite Role (1-1 and *-1) [object table]
-            //                            this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
-            //AS 
-            //    SELECT " + this.ColumnNameByRelationType[relationType] + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForObject + "=" + ParamNameForAssociation;
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
-
-            //                            // Prefetch Composite Role (1-1 and *-1) [object table]
-            //                            this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    SELECT  " + ColumnNameForObject + ", " + this.ColumnNameByRelationType[relationType] + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForObject + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
-
-            //                            if (associationType.IsOne)
-            //                            {
-            //                                // Get Composite Association (1-1) [object table]
-            //                                this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
-            //                                definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
-            //AS 
-            //    SELECT " + ColumnNameForObject + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + "=" + ParamNameForCompositeRole;
-            //                                this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
-
-            //                                // Prefetch Composite Association (1-1) [object table]
-            //                                this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
-            //                                definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    SELECT " + ColumnNameForObject + ", " + this.ColumnNameByRelationType[relationType] + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                                this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
-            //                            }
-            //                            else
-            //                            {
-            //                                // Get Composite Association (*-1) [object table]
-            //                                this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
-            //                                definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
-            //AS 
-            //    SELECT " + ColumnNameForObject + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + "=" + ParamNameForCompositeRole;
-            //                                this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
-
-            //                                // Prefetch Composite Association (*-1) [object table]
-            //                                this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
-            //                                definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    SELECT " + ColumnNameForObject + ", " + this.ColumnNameByRelationType[relationType] + @"
-            //    FROM " + table + @"
-            //    WHERE " + this.ColumnNameByRelationType[relationType] + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                                this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
-            //                            }
-
-            //                            // Set Composite Role (1-1 and *-1) [object table]
-            //                            this.ProcedureNameForSetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + className + "_" + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForSetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS r
-            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
-            //";
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForSetRoleByRelationType[relationType], definition);
-
-            //                            // Clear Composite Role (1-1 and *-1) [object table]
-            //                            this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + className + "_" + relationTypeName);
-            //                            definition = @"CREATE PROCEDURE " + this.ProcedureNameForClearRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    UPDATE " + table + @"
-            //    SET " + this.ColumnNameByRelationType[relationType] + @" = null
-            //    FROM " + table + @"
-            //    INNER JOIN " + ParamNameForTableType + @" AS a
-            //    ON " + ColumnNameForObject + " = a." + this.TableTypeColumnNameForObject;
-            //                            this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
-            //                        }
-            //                    }
-            //                }
-            //            }
-
-            //            foreach (var relationType in this.Database.MetaPopulation.RelationTypes)
-            //            {
-            //                var associationType = relationType.AssociationType;
-            //                var roleType = relationType.RoleType;
-            //                var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
-
-            //                if (!roleType.ObjectType.IsUnit && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
-            //                {
-            //                    var table = this.TableNameForRelationByRelationType[relationType];
-
-            //                    this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + relationTypeName);
-            //                    this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + relationTypeName);
-
-            //                    if (roleType.IsMany)
-            //                    {
-            //                        // Get Composites Role (1-* and *-*) [relation table]
-            //                        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForAssociation + "=" + ParamNameForAssociation;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
-
-            //                        // Prefetch Composites Role (1-* and *-*) [relation table]
-            //                        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    SELECT " + ColumnNameForAssociation + ", " + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForAssociation + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
-
-            //                        // Add Composite Role (1-* and *-*) [relation table]
-            //                        this.ProcedureNameForAddRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForAddRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForAddRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS
-            //    INSERT INTO " + table + " (" + ColumnNameForAssociation + "," + ColumnNameForRole + @")
-            //    SELECT " + this.TableTypeColumnNameForAssociation + @", " + this.TableTypeColumnNameForRole + @"
-            //    FROM " + ParamNameForTableType + "\n";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForAddRoleByRelationType[relationType], definition);
-
-            //                        // Remove Composite Role (1-* and *-*) [relation table]
-            //                        this.ProcedureNameForRemoveRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForRemoveRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForRemoveRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS
-            //    DELETE T 
-            //    FROM " + table + @" T
-            //    INNER JOIN " + ParamNameForTableType + @" R
-            //    ON T." + ColumnNameForAssociation + " = R." + this.TableTypeColumnNameForAssociation + @"
-            //    AND T." + ColumnNameForRole + " = R." + this.TableTypeColumnNameForRole + @";";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForRemoveRoleByRelationType[relationType], definition);
-            //                    }
-            //                    else
-            //                    {
-            //                        // Get Composite Role (1-1 and *-1) [relation table]
-            //                        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForAssociation + "=" + ParamNameForAssociation;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
-
-            //                        // Prefetch Composite Role (1-1 and *-1) [relation table]
-            //                        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    SELECT " + ColumnNameForAssociation + ", " + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForAssociation + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
-
-            //                        // Set Composite Role (1-1 and *-1) [relation table]
-            //                        this.ProcedureNameForSetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForSetRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
-            //AS
-            //    MERGE " + table + @" T
-            //    USING " + ParamNameForTableType + @" AS r
-            //    ON T." + ColumnNameForAssociation + @" = r." + this.TableTypeColumnNameForAssociation + @"
-
-            //    WHEN MATCHED THEN
-            //    UPDATE SET " + ColumnNameForRole + @"= r." + this.TableTypeColumnNameForRole + @"
-
-            //    WHEN NOT MATCHED THEN
-            //    INSERT (" + ColumnNameForAssociation + "," + ColumnNameForRole + @")
-            //    VALUES (r." + this.TableTypeColumnNameForAssociation + ", r." + this.TableTypeColumnNameForRole + @");";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForSetRoleByRelationType[relationType], definition);
-            //                    }
-
-            //                    if (associationType.IsOne)
-            //                    {
-            //                        // Get Composite Association (1-1) [relation table]
-            //                        this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + ColumnNameForAssociation + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForRole + "=" + ParamNameForCompositeRole;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
-
-            //                        // Prefetch Composite Association (1-1) [relation table]
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    SELECT " + ColumnNameForAssociation + "," + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForRole + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
-            //                    }
-            //                    else
-            //                    {
-            //                        // Get Composite Association (*-1) [relation table]
-            //                        this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + relationTypeName);
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
-            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
-            //AS
-            //    SELECT " + ColumnNameForAssociation + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForRole + "=" + ParamNameForCompositeRole;
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
-
-            //                        // Prefetch Composite Association (*-1) [relation table]
-            //                        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
-            //   " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS
-            //    SELECT " + ColumnNameForAssociation + "," + ColumnNameForRole + @"
-            //    FROM " + table + @"
-            //    WHERE " + ColumnNameForRole + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
-            //                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
-            //                    }
-
-            //                    // Clear Composite Role (1-1 and *-1) [relation table]
-            //                    definition = @"CREATE PROCEDURE " + this.ProcedureNameForClearRoleByRelationType[relationType] + @"
-            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
-            //AS 
-            //    DELETE T 
-            //    FROM " + table + @" T
-            //    INNER JOIN " + ParamNameForTableType + @" A
-            //    ON T." + ColumnNameForAssociation + " = A." + this.TableTypeColumnNameForObject;
-            //                    this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
-            //                }
-            //            }
+            // Update Version Ids
+            this.ProcedureNameForUpdateVersion = this.Database.SchemaName + "." + ProcedurePrefixForUpdateVersion;
+
+            definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForUpdateVersion}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForUpdateVersion}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+    UPDATE {this.TableNameForObjects}
+    SET {ColumnNameForVersion} = {ColumnNameForVersion} + 1
+    WHERE {ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM unnest({this.ObjectArrayParam}) as t({ColumnNameForObject}));
+$$;";
+
+            this.procedureDefinitionByName.Add(this.ProcedureNameForUpdateVersion, definition);
+
+
+
+            foreach (var @class in this.Database.MetaPopulation.Classes)
+            {
+                var className = @class.Name.ToLowerInvariant();
+                var table = this.TableNameForObjectByClass[@class];
+
+                // Load Objects
+                this.ProcedureNameForLoadObjectByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForLoad + className);
+                definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForLoadObjectByClass[@class]}({SqlTypeForClass},{this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForLoadObjectByClass[@class]}(
+	{ParamNameForClass} {SqlTypeForClass},
+	{this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+    INSERT INTO allors.c1 (c, o)
+    SELECT p_c, o
+    FROM unnest(p_arr_o) AS t(o)
+$$;";
+
+                this.procedureDefinitionByName.Add(this.ProcedureNameForLoadObjectByClass[@class], definition);
+
+                // CreateObject
+                this.ProcedureNameForCreateObjectByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForCreateObject + className);
+                definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForCreateObjectByClass[@class]}({SqlTypeForClass});
+CREATE FUNCTION {this.ProcedureNameForCreateObjectByClass[@class]}({ParamNameForClass} {SqlTypeForClass})
+    RETURNS {SqlTypeForObject}
+    LANGUAGE plpgsql
+AS $$
+    DECLARE  {ParamNameForObject} {SqlTypeForObject};
+    BEGIN
+
+    INSERT INTO {this.TableNameForObjects} ({ColumnNameForClass}, {ColumnNameForVersion})
+    VALUES ({ParamNameForClass}, {Reference.InitialVersion})
+    RETURNING {ColumnNameForObject} INTO {ParamNameForObject};
+
+    INSERT INTO {table} ({ColumnNameForObject},{ColumnNameForClass})
+    VALUES ({ParamNameForObject},{ParamNameForClass});
+
+    RETURN {ParamNameForObject};
+    END
+$$;
+";
+
+                this.procedureDefinitionByName.Add(this.ProcedureNameForCreateObjectByClass[@class], definition);
+
+                // CreateObjects
+                this.ProcedureNameForCreateObjectsByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForCreateObjects + className);
+                definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForCreateObjectsByClass[@class]}({SqlTypeForClass}, {SqlTypeForCount});
+CREATE FUNCTION {this.ProcedureNameForCreateObjectsByClass[@class]}({ParamNameForClass} {SqlTypeForClass}, {ParamNameForCount} {SqlTypeForCount})
+    RETURNS SETOF {SqlTypeForObject}
+    LANGUAGE plpgsql
+AS $$
+DECLARE ID integer; 
+DECLARE COUNTER integer := 0;
+
+BEGIN
+
+    WHILE COUNTER < {ParamNameForCount} LOOP
+
+        INSERT INTO {this.TableNameForObjects} ({ColumnNameForClass}, {ColumnNameForVersion})
+        VALUES ({ParamNameForClass}, {Reference.InitialVersion} )
+        RETURNING {ColumnNameForObject} INTO ID;
+
+        INSERT INTO {this.TableNameForObjectByClass[@class.ExclusiveClass]} ({ColumnNameForObject},{ColumnNameForClass})
+        VALUES (ID,{ParamNameForClass});
+       
+        COUNTER := COUNTER+1;
+
+        RETURN NEXT ID;
+
+    END LOOP;
+
+END
+$$;";
+
+                this.procedureDefinitionByName.Add(this.ProcedureNameForCreateObjectsByClass[@class], definition);
+
+                var sortedUnitRoleTypes = this.Database.GetSortedUnitRolesByObjectType(@class);
+                if (sortedUnitRoleTypes.Length > 0)
+                {
+                    {
+                        // Get Unit Roles
+                        this.ProcedureNameForGetUnitRolesByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForGetUnits + className);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetUnitRolesByClass[@class]}({SqlTypeForObject});
+CREATE FUNCTION {this.ProcedureNameForGetUnitRolesByClass[@class]}({ParamNameForObject} {SqlTypeForObject})
+    RETURNS TABLE 
+    (";
+                        var first = true;
+                        foreach (var role in sortedUnitRoleTypes)
+                        {
+                            if (first)
+                            {
+                                first = false;
+                            }
+                            else
+                            {
+                                definition += ", ";
+                            }
+
+                            definition += this.ColumnNameByRelationType[role.RelationType] + " " + this.GetSqlType(role);
+                        }
+
+                        definition += @")
+     LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT ";
+                        first = true;
+                        foreach (var role in sortedUnitRoleTypes)
+                        {
+                            if (first)
+                            {
+                                first = false;
+                            }
+                            else
+                            {
+                                definition += ", ";
+                            }
+
+                            definition += this.ColumnNameByRelationType[role.RelationType];
+                        }
+
+                        definition += $@"
+    FROM {this.TableNameForObjectByClass[@class.ExclusiveClass]}
+    WHERE {ColumnNameForObject}={ParamNameForObject};
+END
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetUnitRolesByClass[@class], definition);
+                    }
+
+                    {
+                        // Prefetch Unit Roles
+                        this.ProcedureNameForPrefetchUnitRolesByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchUnits + className);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForPrefetchUnitRolesByClass[@class]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForPrefetchUnitRolesByClass[@class]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS TABLE 
+    (";
+                        var first = true;
+                        foreach (var role in sortedUnitRoleTypes)
+                        {
+                            if (first)
+                            {
+                                first = false;
+                            }
+                            else
+                            {
+                                definition += ", ";
+                            }
+
+                            definition += this.ColumnNameByRelationType[role.RelationType] + " " + this.GetSqlType(role);
+                        }
+
+                        definition += @")
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT ";
+                        first = true;
+                        foreach (var role in sortedUnitRoleTypes)
+                        {
+                            if (first)
+                            {
+                                first = false;
+                            }
+                            else
+                            {
+                                definition += ", ";
+                            }
+
+                            definition += this.ColumnNameByRelationType[role.RelationType];
+                        }
+
+                        definition += $@"
+    FROM {this.TableNameForObjectByClass[@class.ExclusiveClass]}
+    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
+END
+$$;";
+
+
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchUnitRolesByClass[@class], definition);
+                    }
+                }
+
+                foreach (var associationType in @class.AssociationTypes)
+                {
+                    var relationType = associationType.RelationType;
+                    var roleType = relationType.RoleType;
+                    var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
+
+                    if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && roleType.IsMany)
+                    {
+                        // Get Composites Role (1-*) [object table]
+                        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetRoleByRelationType[relationType]}({SqlTypeForObject});
+CREATE FUNCTION {this.ProcedureNameForGetRoleByRelationType[relationType]}({ParamNameForAssociation} {SqlTypeForObject})
+    RETURNS SETOF {SqlTypeForObject}
+    LANGUAGE plpgsql
+AS $$
+DECLARE {ParamNameForCompositeRole} {SqlTypeForObject};
+BEGIN
+    RETURN QUERY
+    SELECT {ColumnNameForObject}
+    FROM {table}
+    WHERE {this.ColumnNameByRelationType[relationType]}={ParamNameForAssociation};
+END
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
+
+                        // Prefetch Composites Role (1-*) [object table]
+                        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForPrefetchRoleByRelationType[relationType]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForPrefetchRoleByRelationType[relationType]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS TABLE 
+    (
+         {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
+         {ColumnNameForObject} {SqlTypeForObject}
+    )
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT {this.ColumnNameByRelationType[relationType]}, {ColumnNameForObject}
+    FROM {table}
+    WHERE {this.ColumnNameByRelationType[relationType]} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
+END
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
+
+                        if (associationType.IsOne)
+                        {
+                            // Get Composite Association (1-*) [object table]
+                            this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
+                            definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetAssociationByRelationType[relationType]}({SqlTypeForObject});
+CREATE FUNCTION {this.ProcedureNameForGetAssociationByRelationType[relationType]}({ParamNameForCompositeRole} {SqlTypeForObject})
+    RETURNS {SqlTypeForObject}
+    LANGUAGE plpgsql
+AS $$
+DECLARE {ParamNameForAssociation} {SqlTypeForObject};
+BEGIN
+    SELECT {this.ColumnNameByRelationType[relationType]}
+    FROM {table}
+    WHERE {ColumnNameForObject}={ParamNameForCompositeRole}
+    INTO {ParamNameForAssociation};
+
+    RETURN {ParamNameForAssociation};
+END
+$$;";
+                            this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
+
+                            // Prefetch Composite Association (1-*) [object table]
+                            this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
+                            definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForPrefetchAssociationByRelationType[relationType]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForPrefetchAssociationByRelationType[relationType]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS TABLE 
+    (
+         {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
+         {ColumnNameForObject} {SqlTypeForObject}
+    )
+    LANGUAGE plpgsql
+AS $$
+DECLARE {ParamNameForAssociation} {SqlTypeForObject};
+BEGIN
+    RETURN QUERY
+    SELECT {this.ColumnNameByRelationType[relationType]}, {ColumnNameForObject}
+    FROM {table}
+    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
+END
+$$;";
+                            this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
+                        }
+
+                        // Add Composite Role (1-*) [object table]
+                        this.ProcedureNameForAddRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForAddRole + className + "_" + relationTypeName);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForAddRoleByRelationType[relationType]}({this.ObjectArrayParam.TypeName}, {this.CompositeRelationArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForAddRoleByRelationType[relationType]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName}, {this.CompositeRelationArrayParam} {this.CompositeRelationArrayParam.TypeName})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+
+    UPDATE {table}
+    SET {this.ColumnNameByRelationType[relationType]} = r.{ColumnNameForAssociation}
+    FROM {table}
+    INNER JOIN {ParamNameForTableType} AS r
+    ON {ColumnNameForObject} = r.{ColumnNameForRole}
+
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForAddRoleByRelationType[relationType], definition);
+
+                        //SELECT UNNEST(...), UNNEST(...) as t(a,r);
+
+                        // Remove Composite Role (1-*) [object table]
+                        this.ProcedureNameForRemoveRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForRemoveRole + className + "_" + relationTypeName);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForRemoveRoleByRelationType[relationType]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForRemoveRoleByRelationType[relationType]} {this.ObjectArrayParam.TypeName})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+
+    UPDATE {table}
+    SET {this.ColumnNameByRelationType[relationType]} = null
+    FROM {table}
+    INNER JOIN {ParamNameForTableType} AS r
+    ON {this.ColumnNameByRelationType[relationType]} = r.{ColumnNameForAssociation} AND
+    {ColumnNameForObject} = r.{ColumnNameForRole}
+
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForRemoveRoleByRelationType[relationType], definition);
+
+                        // Clear Composites Role (1-*) [object table]
+                        this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + className + "_" + relationTypeName);
+                        definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForClearRoleByRelationType[relationType]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForClearRoleByRelationType[relationType]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+
+    UPDATE {table}
+    SET {this.ColumnNameByRelationType[relationType]} = null
+    FROM {table}
+    INNER JOIN {ParamNameForTableType} AS a
+    ON {this.ColumnNameByRelationType[relationType]} = a.{ColumnNameForObject}
+
+$$;";
+                        this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
+                    }
+                }
+
+                var procedureNameForSetUnitRoleByRelationType = new Dictionary<IRelationType, string>();
+                this.ProcedureNameForSetUnitRoleByRelationTypeByClass.Add(@class, procedureNameForSetUnitRoleByRelationType);
+
+                foreach (var roleType in @class.RoleTypes)
+                {
+                    var relationType = roleType.RelationType;
+                    var associationType = relationType.AssociationType;
+                    var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
+
+                    if (roleType.ObjectType.IsUnit)
+                    {
+                //        procedureNameForSetUnitRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + className + "_" + relationTypeName);
+
+                //        var unitTypeTag = ((IUnit)relationType.RoleType.ObjectType).UnitTag;
+                //        switch (unitTypeTag)
+                //        {
+                //            case UnitTags.String:
+                //                // Set String Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForStringRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Integer:
+                //                // Set Integer Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForIntegerRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Float:
+                //                // Set Double Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForFloatRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Decimal:
+                //                // Set Decimal Role
+                //                var decimalRelationTable = this.TableTypeNameForDecimalRelationByScaleByPrecision[roleType.Precision.Value][roleType.Scale.Value];
+
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //" + ParamNameForTableType + @" " + decimalRelationTable + @" READONLY
+                //AS 
+                //UPDATE " + table + @"
+                //SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //FROM " + table + @"
+                //INNER JOIN " + ParamNameForTableType + @" AS r
+                //ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Boolean:
+                //                // Set Boolean Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForBooleanRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.DateTime:
+                //                // Set DateTime Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForDateTimeRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Unique:
+                //                // Set Unique Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForUniqueRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            case UnitTags.Binary:
+                //                // Set Binary Role
+                //                definition = "CREATE PROCEDURE " + procedureNameForSetUnitRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForBinaryRelation + @" READONLY
+                //AS 
+                //    UPDATE " + table + @"
+                //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    INNER JOIN " + ParamNameForTableType + @" AS r
+                //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                //";
+                //                break;
+
+                //            default:
+                //                throw new ArgumentException("Unknown Unit ObjectType: " + roleType.ObjectType.SingularName);
+                //        }
+
+                //        this.procedureDefinitionByName.Add(procedureNameForSetUnitRoleByRelationType[relationType], definition);
+                    }
+                    else
+                    {
+                        if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && roleType.IsOne)
+                        {
+                            // Get Composite Role (1-1 and *-1) [object table]
+                            this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
+                            definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetRoleByRelationType[relationType]}({SqlTypeForObject});
+CREATE FUNCTION {this.ProcedureNameForGetRoleByRelationType[relationType]}({ParamNameForAssociation} {SqlTypeForObject})
+    RETURNS {SqlTypeForObject}
+    LANGUAGE plpgsql
+AS $$
+DECLARE {ParamNameForCompositeRole} {SqlTypeForObject};
+BEGIN
+    SELECT {this.ColumnNameByRelationType[relationType]}
+    FROM {table}
+    WHERE {ColumnNameForObject}={ParamNameForAssociation}
+    INTO {ParamNameForCompositeRole};
+
+    RETURN {ParamNameForCompositeRole};
+END
+$$;";
+                            this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
+
+
+                            // Prefetch Composite Role (1-1 and *-1) [object table]
+                            this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
+                            definition =
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForPrefetchRoleByRelationType[relationType]}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {this.ProcedureNameForPrefetchRoleByRelationType[relationType]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+    RETURNS TABLE 
+    (
+         {ColumnNameForObject} {SqlTypeForObject},
+         {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject}
+    )
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT {ColumnNameForObject}, {this.ColumnNameByRelationType[relationType]}
+    FROM {table}
+    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}))
+END
+$$;";
+                            this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
+
+                            //            if (associationType.IsOne)
+                            //            {
+                            //                // Get Composite Association (1-1) [object table]
+                            //                this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
+                            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
+                            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
+                            //AS 
+                            //    SELECT " + ColumnNameForObject + @"
+                            //    FROM " + table + @"
+                            //    WHERE " + this.ColumnNameByRelationType[relationType] + "=" + ParamNameForCompositeRole;
+                            //                this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
+
+                            //                // Prefetch Composite Association (1-1) [object table]
+                            //                this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
+                            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
+                            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                            //AS 
+                            //    SELECT " + ColumnNameForObject + ", " + this.ColumnNameByRelationType[relationType] + @"
+                            //    FROM " + table + @"
+                            //    WHERE " + this.ColumnNameByRelationType[relationType] + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                            //                this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
+                            //            }
+                            //            else
+                            //            {
+                            //                // Get Composite Association (*-1) [object table]
+                            //                this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + className + "_" + relationTypeName);
+                            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
+                            //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
+                            //AS 
+                            //    SELECT " + ColumnNameForObject + @"
+                            //    FROM " + table + @"
+                            //    WHERE " + this.ColumnNameByRelationType[relationType] + "=" + ParamNameForCompositeRole;
+                            //                this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
+
+                            //                // Prefetch Composite Association (*-1) [object table]
+                            //                this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + className + "_" + relationTypeName);
+                            //                definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
+                            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                            //AS 
+                            //    SELECT " + ColumnNameForObject + ", " + this.ColumnNameByRelationType[relationType] + @"
+                            //    FROM " + table + @"
+                            //    WHERE " + this.ColumnNameByRelationType[relationType] + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                            //                this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
+                            //            }
+
+                            //            // Set Composite Role (1-1 and *-1) [object table]
+                            //            this.ProcedureNameForSetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + className + "_" + relationTypeName);
+                            //            definition = @"CREATE PROCEDURE " + this.ProcedureNameForSetRoleByRelationType[relationType] + @"
+                            //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
+                            //AS 
+                            //    UPDATE " + table + @"
+                            //    SET " + this.ColumnNameByRelationType[relationType] + " = r." + this.TableTypeColumnNameForRole + @"
+                            //    FROM " + table + @"
+                            //    INNER JOIN " + ParamNameForTableType + @" AS r
+                            //    ON " + ColumnNameForObject + " = r." + this.TableTypeColumnNameForAssociation + @"
+                            //";
+                            //            this.procedureDefinitionByName.Add(this.ProcedureNameForSetRoleByRelationType[relationType], definition);
+
+                            //            // Clear Composite Role (1-1 and *-1) [object table]
+                            //            this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + className + "_" + relationTypeName);
+                            //            definition = @"CREATE PROCEDURE " + this.ProcedureNameForClearRoleByRelationType[relationType] + @"
+                            //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                            //AS 
+                            //    UPDATE " + table + @"
+                            //    SET " + this.ColumnNameByRelationType[relationType] + @" = null
+                            //    FROM " + table + @"
+                            //    INNER JOIN " + ParamNameForTableType + @" AS a
+                            //    ON " + ColumnNameForObject + " = a." + this.TableTypeColumnNameForObject;
+                            //            this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
+                        }
+                    }
+                }
+            }
+
+            foreach (var relationType in this.Database.MetaPopulation.RelationTypes)
+            {
+                //var associationType = relationType.AssociationType;
+                //var roleType = relationType.RoleType;
+                //var relationTypeName = roleType.SingularFullName.ToLowerInvariant();
+
+                //if (!roleType.ObjectType.IsUnit && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
+                //{
+                //    var table = this.TableNameForRelationByRelationType[relationType];
+
+                //    this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + relationTypeName);
+                //    this.ProcedureNameForClearRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForClearRole + relationTypeName);
+
+                //    if (roleType.IsMany)
+                //    {
+                //        // Get Composites Role (1-* and *-*) [relation table]
+                //        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
+                //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
+                //AS
+                //    SELECT " + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForAssociation + "=" + ParamNameForAssociation;
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
+
+                //        // Prefetch Composites Role (1-* and *-*) [relation table]
+                //        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                //AS
+                //    SELECT " + ColumnNameForAssociation + ", " + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForAssociation + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
+
+                //        // Add Composite Role (1-* and *-*) [relation table]
+                //        this.ProcedureNameForAddRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForAddRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForAddRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
+                //AS
+                //    INSERT INTO " + table + " (" + ColumnNameForAssociation + "," + ColumnNameForRole + @")
+                //    SELECT " + this.TableTypeColumnNameForAssociation + @", " + this.TableTypeColumnNameForRole + @"
+                //    FROM " + ParamNameForTableType + "\n";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForAddRoleByRelationType[relationType], definition);
+
+                //        // Remove Composite Role (1-* and *-*) [relation table]
+                //        this.ProcedureNameForRemoveRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForRemoveRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForRemoveRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
+                //AS
+                //    DELETE T 
+                //    FROM " + table + @" T
+                //    INNER JOIN " + ParamNameForTableType + @" R
+                //    ON T." + ColumnNameForAssociation + " = R." + this.TableTypeColumnNameForAssociation + @"
+                //    AND T." + ColumnNameForRole + " = R." + this.TableTypeColumnNameForRole + @";";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForRemoveRoleByRelationType[relationType], definition);
+                //    }
+                //    else
+                //    {
+                //        // Get Composite Role (1-1 and *-1) [relation table]
+                //        this.ProcedureNameForGetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetRoleByRelationType[relationType] + @"
+                //    " + ParamNameForAssociation + @" " + SqlTypeForObject + @"
+                //AS
+                //    SELECT " + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForAssociation + "=" + ParamNameForAssociation;
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
+
+                //        // Prefetch Composite Role (1-1 and *-1) [relation table]
+                //        this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForPrefetchRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                //AS
+                //    SELECT " + ColumnNameForAssociation + ", " + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForAssociation + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchRoleByRelationType[relationType], definition);
+
+                //        // Set Composite Role (1-1 and *-1) [relation table]
+                //        this.ProcedureNameForSetRoleByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForSetRole + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForSetRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForCompositeRelation + @" READONLY
+                //AS
+                //    MERGE " + table + @" T
+                //    USING " + ParamNameForTableType + @" AS r
+                //    ON T." + ColumnNameForAssociation + @" = r." + this.TableTypeColumnNameForAssociation + @"
+
+                //    WHEN MATCHED THEN
+                //    UPDATE SET " + ColumnNameForRole + @"= r." + this.TableTypeColumnNameForRole + @"
+
+                //    WHEN NOT MATCHED THEN
+                //    INSERT (" + ColumnNameForAssociation + "," + ColumnNameForRole + @")
+                //    VALUES (r." + this.TableTypeColumnNameForAssociation + ", r." + this.TableTypeColumnNameForRole + @");";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForSetRoleByRelationType[relationType], definition);
+                //    }
+
+                //    if (associationType.IsOne)
+                //    {
+                //        // Get Composite Association (1-1) [relation table]
+                //        this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
+                //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
+                //AS
+                //    SELECT " + ColumnNameForAssociation + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForRole + "=" + ParamNameForCompositeRole;
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
+
+                //        // Prefetch Composite Association (1-1) [relation table]
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                //AS
+                //    SELECT " + ColumnNameForAssociation + "," + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForRole + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
+                //    }
+                //    else
+                //    {
+                //        // Get Composite Association (*-1) [relation table]
+                //        this.ProcedureNameForGetAssociationByRelationType.Add(relationType, this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + relationTypeName);
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForGetAssociationByRelationType[relationType] + @"
+                //    " + ParamNameForCompositeRole + @" " + SqlTypeForObject + @"
+                //AS
+                //    SELECT " + ColumnNameForAssociation + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForRole + "=" + ParamNameForCompositeRole;
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForGetAssociationByRelationType[relationType], definition);
+
+                //        // Prefetch Composite Association (*-1) [relation table]
+                //        definition = @"CREATE PROCEDURE " + this.ProcedureNameForPrefetchAssociationByRelationType[relationType] + @"
+                //   " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                //AS
+                //    SELECT " + ColumnNameForAssociation + "," + ColumnNameForRole + @"
+                //    FROM " + table + @"
+                //    WHERE " + ColumnNameForRole + " IN (SELECT " + this.TableTypeColumnNameForObject + @" FROM " + ParamNameForTableType + ")";
+                //        this.procedureDefinitionByName.Add(this.ProcedureNameForPrefetchAssociationByRelationType[relationType], definition);
+                //    }
+
+                //    // Clear Composite Role (1-1 and *-1) [relation table]
+                //    definition = @"CREATE PROCEDURE " + this.ProcedureNameForClearRoleByRelationType[relationType] + @"
+                //    " + ParamNameForTableType + @" " + this.TableTypeNameForObject + @" READONLY
+                //AS 
+                //    DELETE T 
+                //    FROM " + table + @" T
+                //    INNER JOIN " + ParamNameForTableType + @" A
+                //    ON T." + ColumnNameForAssociation + " = A." + this.TableTypeColumnNameForObject;
+                //    this.procedureDefinitionByName.Add(this.ProcedureNameForClearRoleByRelationType[relationType], definition);
+                //}
+            }
         }
 
         public Dictionary<string, string> ProcedureDefinitionByName => this.procedureDefinitionByName;

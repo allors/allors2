@@ -16,6 +16,8 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
+    using System;
+
     using global::Npgsql;
     using System.Text;
 
@@ -287,7 +289,14 @@ CREATE SCHEMA " + this.database.SchemaName;
                         var definition = dictionaryEntry.Value;
                         using (var command = new NpgsqlCommand(definition, connection))
                         {
-                            command.ExecuteNonQuery();
+                            try
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                            catch (Exception e)
+                            {
+                                throw;
+                            }
                         }
                     }
                 }
