@@ -295,7 +295,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e);
+                                throw;
                             }
                         }
                     }
