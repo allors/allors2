@@ -121,9 +121,10 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             this.AppsOnDeriveAmountPaid(derivation);
+            this.AppsOnDeriveVatRegime(derivation);
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
 
             if (this.ExistInvoiceItemType && this.Quantity == 0)
             {
@@ -230,104 +231,12 @@ namespace Allors.Domain
 
         public void AppsOnDeriveVatRate(IDerivation derivation)
         {
-            if (this.ExistProduct || this.ExistProductFeature)
-            {
-                this.VatRate = this.ExistProduct ? this.Product.VatRate : this.ProductFeature.VatRate;
-            }
+            this.VatRate = this.Product?.VatRate;
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
                 this.VatRate = this.VatRegime.VatRate;
             }
-        }
-
-        public void AppsOnDerivePrices(IDerivation derivation, decimal quantityInvoiced, decimal totalBasePrice)
-        {
-            this.UnitBasePrice = 0;
-            this.UnitDiscount = 0;
-            this.UnitSurcharge = 0;
-            this.UnitPrice = 0;
-            decimal discountAdjustmentAmount = 0;
-            decimal surchargeAdjustmentAmount = 0;
-
-            var internalOrganisation = this.Strategy.Session.GetSingleton();
-            var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
-            var salesInvoice = this.SalesInvoiceWhereSalesInvoiceItem;
-
-            var baseprices = new PriceComponent[0];
-            if (this.ExistProduct && this.Product.ExistBasePrices)
-            {
-                baseprices = this.Product.BasePrices;
-            }
-
-            if (this.ExistProductFeature && this.ProductFeature.ExistBasePrices)
-            {
-                baseprices = this.ProductFeature.BasePrices;
-            }
-
-            foreach (BasePrice priceComponent in baseprices)
-            {
-                if (priceComponent.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                    (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
-                {
-                    if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
-                    {
-                        if (PriceComponents.AppsIsApplicable(new PriceComponents.IsApplicable
-                        {
-                            PriceComponent = priceComponent,
-                            Customer = customer,
-                            Product = this.Product,
-                            SalesInvoice = salesInvoice,
-                            QuantityOrdered = quantityInvoiced,
-                            ValueOrdered = totalBasePrice
-                        }))
-                        {
-                            if (priceComponent.ExistPrice)
-                            {
-                                if (priceComponent.Price.HasValue && (this.UnitBasePrice == 0 || priceComponent.Price < this.UnitBasePrice))
-                                {
-                                    this.UnitBasePrice = priceComponent.Price.Value;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-               var price = this.AssignedUnitPrice.HasValue ? this.AssignedUnitPrice.Value : this.UnitBasePrice;
-
-            decimal vat = 0;
-            if (this.ExistVatRate)
-            {
-                var vatRate = this.VatRate.Rate;
-                var vatBase = price - this.UnitDiscount + this.UnitSurcharge;
-                vat = Math.Round((vatBase * vatRate) / 100, 2);
-            }
-
-            this.UnitVat = vat;
-            this.TotalBasePrice = price * this.Quantity;
-            this.TotalDiscount = this.UnitDiscount * this.Quantity;
-            this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
-            this.TotalInvoiceAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * this.Quantity;
-
-            if (this.TotalBasePrice > 0)
-            {
-                this.TotalDiscountAsPercentage = Math.Round((this.TotalDiscount / this.TotalBasePrice) * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round((this.TotalSurcharge / this.TotalBasePrice) * 100, 2);
-            }
-
-            if (this.AssignedUnitPrice.HasValue)
-            {
-                this.UnitPrice = this.AssignedUnitPrice.Value;
-            }
-            else
-            {
-                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-            }
-
-            this.TotalVat = this.UnitVat * this.Quantity;
-            this.TotalExVat = this.UnitPrice * this.Quantity;
-            this.TotalIncVat = this.TotalExVat + this.TotalVat;
         }
 
         public void AppsOnDeriveSalesRep(IDerivation derivation)

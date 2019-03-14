@@ -248,8 +248,6 @@ namespace Allors.Domain
 
             this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
 
-            this.AppsOnDeriveInvoiceItems(derivation);
-
             this.SalesInvoiceItems = this.SalesInvoiceItems.ToArray();
 
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
@@ -261,7 +259,156 @@ namespace Allors.Domain
                 this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
             }
 
-            this.AppsOnDeriveInvoiceTotals(derivation);
+            #region Pricing
+            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.InvoiceDate);
+
+            var quantityByProduct = this.SalesInvoiceItems
+                .Where(v => v.ExistProduct)
+                .GroupBy(v => v.Product)
+                .ToDictionary(v => v.Key, v => v.Sum(w => w.Quantity));
+
+            // First run to calculate price
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                decimal quantityOrdered = 0;
+
+                if (salesInvoiceItem.ExistProduct)
+                {
+                    quantityByProduct.TryGetValue(salesInvoiceItem.Product, out quantityOrdered);
+                }
+
+                this.CalculatePrices(derivation, salesInvoiceItem, currentPriceComponents, quantityOrdered, 0);
+            }
+
+            var totalBasePriceByProduct = this.SalesInvoiceItems
+                .Where(v => v.ExistProduct)
+                .GroupBy(v => v.Product)
+                .ToDictionary(v => v.Key, v => v.Sum(w => w.TotalBasePrice));
+
+            // Second run to calculate price (because of order value break)
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                decimal quantityOrdered = 0;
+                decimal totalBasePrice = 0;
+
+                if (salesInvoiceItem.ExistProduct)
+                {
+                    quantityByProduct.TryGetValue(salesInvoiceItem.Product, out quantityOrdered);
+                    totalBasePriceByProduct.TryGetValue(salesInvoiceItem.Product, out totalBasePrice);
+                }
+
+                this.CalculatePrices(derivation, salesInvoiceItem, currentPriceComponents, quantityOrdered, totalBasePrice);
+            }
+
+            // Calculate Totals
+            if (this.ExistSalesInvoiceItems)
+            {
+                this.TotalBasePrice = 0;
+                this.TotalDiscount = 0;
+                this.TotalSurcharge = 0;
+                this.TotalExVat = 0;
+                this.TotalFee = 0;
+                this.TotalShippingAndHandling = 0;
+                this.TotalVat = 0;
+                this.TotalIncVat = 0;
+                this.TotalListPrice = 0;
+
+                foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
+                {
+                    this.TotalBasePrice += item.TotalBasePrice;
+                    this.TotalDiscount += item.TotalDiscount;
+                    this.TotalSurcharge += item.TotalSurcharge;
+                    this.TotalExVat += item.TotalExVat;
+                    this.TotalVat += item.TotalVat;
+                    this.TotalIncVat += item.TotalIncVat;
+                    this.TotalListPrice += item.UnitPrice;
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    var discount = this.DiscountAdjustment.Percentage.HasValue ?
+                                           Math.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                                           this.DiscountAdjustment.Amount ?? 0;
+
+                    this.TotalDiscount += discount;
+                    this.TotalExVat -= discount;
+
+                    if (this.ExistVatRegime)
+                    {
+                        decimal vat = Math.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
+
+                        this.TotalVat -= vat;
+                        this.TotalIncVat -= discount + vat;
+                    }
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
+                                            Math.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                                            this.SurchargeAdjustment.Amount ?? 0;
+
+                    this.TotalSurcharge += surcharge;
+                    this.TotalExVat += surcharge;
+
+                    if (this.ExistVatRegime)
+                    {
+                        decimal vat = Math.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
+                        this.TotalVat += vat;
+                        this.TotalIncVat += surcharge + vat;
+                    }
+                }
+
+                if (this.ExistFee)
+                {
+                    decimal fee = this.Fee.Percentage.HasValue ?
+                                      Math.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) :
+                                      this.Fee.Amount ?? 0;
+
+                    this.TotalFee += fee;
+                    this.TotalExVat += fee;
+
+                    if (this.Fee.ExistVatRate)
+                    {
+                        decimal vat1 = Math.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
+                        this.TotalVat += vat1;
+                        this.TotalIncVat += fee + vat1;
+                    }
+                }
+
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
+                                           Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) :
+                                           this.ShippingAndHandlingCharge.Amount ?? 0;
+
+                    this.TotalShippingAndHandling += shipping;
+                    this.TotalExVat += shipping;
+
+                    if (this.ShippingAndHandlingCharge.ExistVatRate)
+                    {
+                        decimal vat2 = Math.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
+                        this.TotalVat += vat2;
+                        this.TotalIncVat += shipping + vat2;
+                    }
+                }
+
+                //// Only take into account items for which there is data at the item level.
+                //// Skip negative sales.
+                decimal totalUnitBasePrice = 0;
+                decimal totalListPrice = 0;
+
+                foreach (SalesInvoiceItem item1 in this.SalesInvoiceItems)
+                {
+                    if (item1.TotalExVat > 0)
+                    {
+                        totalUnitBasePrice += item1.UnitBasePrice;
+                        totalListPrice += item1.UnitPrice;
+                    }
+                }
+            }
+            #endregion
+
             this.AppsOnDeriveCustomers(derivation);
             this.AppsOnDeriveSalesReps(derivation);
 
@@ -462,7 +609,6 @@ namespace Allors.Domain
                     .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
                     .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                     .WithProduct(salesInvoiceItem.Product)
-                    .WithProductFeature(salesInvoiceItem.ProductFeature)
                     .WithQuantity(salesInvoiceItem.Quantity)
                     .WithDescription(salesInvoiceItem.Description)
                     .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
@@ -473,6 +619,7 @@ namespace Allors.Domain
                     .WithFacility(salesInvoiceItem.Facility)
                     .Build();
 
+                invoiceItem.ProductFeatures = salesInvoiceItem.ProductFeatures;
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
                 foreach (SalesTerm salesTerm in salesInvoiceItem.SalesTerms)
@@ -588,7 +735,6 @@ namespace Allors.Domain
                     .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
                     .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice * -1)
                     .WithProduct(salesInvoiceItem.Product)
-                    .WithProductFeature(salesInvoiceItem.ProductFeature)
                     .WithQuantity(salesInvoiceItem.Quantity)
                     .WithDescription(salesInvoiceItem.Description)
                     .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
@@ -599,6 +745,7 @@ namespace Allors.Domain
                     .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
                     .Build();
 
+                invoiceItem.ProductFeatures = salesInvoiceItem.ProductFeatures;
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
             }
 
@@ -613,127 +760,6 @@ namespace Allors.Domain
                 .ToArray();
         }
 
-        public void AppsOnDeriveInvoiceTotals(IDerivation derivation)
-        {
-            this.TotalBasePrice = 0;
-            this.TotalDiscount = 0;
-            this.TotalSurcharge = 0;
-            this.TotalFee = 0;
-            this.TotalShippingAndHandling = 0;
-            this.TotalVat = 0;
-            this.TotalExVat = 0;
-            this.TotalIncVat = 0;
-            this.TotalListPrice = 0;
-
-            foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
-            {
-                this.TotalBasePrice += item.TotalBasePrice;
-                this.TotalDiscount += item.TotalDiscount;
-                this.TotalSurcharge += item.TotalSurcharge;
-                this.TotalVat += item.TotalVat;
-                this.TotalExVat += item.TotalExVat;
-                this.TotalIncVat += item.TotalIncVat;
-                this.TotalListPrice += item.UnitPrice;
-            }
-
-            this.DeriveDiscountAdjustments(derivation);
-            this.DeriveSurchargeAdjustments(derivation);
-            this.DeriveTotalFee(derivation);
-            this.DeriveTotalShippingAndHandling(derivation);
-            this.AppsOnDeriveMarkupAndProfitMargin(derivation);
-        }
-
-        private void DeriveDiscountAdjustments(IDerivation derivation)
-        {
-            if (this.DiscountAdjustment != null)
-            {
-                decimal discount = this.DiscountAdjustment.Percentage.HasValue ? Math.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) : this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
-
-                this.TotalDiscount += discount;
-                this.TotalExVat -= discount;
-
-                if (this.ExistVatRegime)
-                {
-                    decimal vat = Math.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
-                    this.TotalVat -= vat;
-                    this.TotalIncVat -= discount + vat;
-                }
-            }
-        }
-
-        private void DeriveSurchargeAdjustments(IDerivation derivation)
-        {
-            if (this.ExistSurchargeAdjustment)
-            {
-                decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ? Math.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) : this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
-
-                this.TotalSurcharge += surcharge;
-                this.TotalExVat += surcharge;
-
-                if (this.ExistVatRegime)
-                {
-                    decimal vat = Math.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
-                    this.TotalVat += vat;
-                    this.TotalIncVat += surcharge + vat;
-                }
-            }
-        }
-
-        private void DeriveTotalFee(IDerivation derivation)
-        {
-            if (this.ExistFee)
-            {
-                decimal fee = this.Fee.Percentage.HasValue ? Math.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) : this.Fee.Amount.HasValue ? this.Fee.Amount.Value : 0;
-
-                this.TotalFee += fee;
-                this.TotalExVat += fee;
-
-                if (this.Fee.ExistVatRate)
-                {
-                    decimal vat = Math.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
-                    this.TotalVat += vat;
-                    this.TotalIncVat += fee + vat;
-                }
-            }
-        }
-
-        private void DeriveTotalShippingAndHandling(IDerivation derivation)
-        {
-            if (this.ExistShippingAndHandlingCharge)
-            {
-                decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
-                    Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) : this.ShippingAndHandlingCharge.Amount.HasValue ? this.ShippingAndHandlingCharge.Amount.Value : 0;
-
-                this.TotalShippingAndHandling += shipping;
-                this.TotalExVat += shipping;
-
-                if (this.ShippingAndHandlingCharge.ExistVatRate)
-                {
-                    decimal vat = Math.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
-
-                    this.TotalVat += vat;
-                    this.TotalIncVat += shipping + vat;
-                }
-            }
-        }
-
-        public void AppsOnDeriveMarkupAndProfitMargin(IDerivation derivation)
-        {
-            //// Only take into account items for which there is data at the item level.
-            //// Skip negative sales.
-            decimal totalUnitBasePrice = 0;
-            decimal totalListPrice = 0;
-
-            foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
-            {
-                if (item.TotalExVat > 0)
-                {
-                    totalUnitBasePrice += item.UnitBasePrice;
-                    totalListPrice += item.UnitPrice;
-                }
-            }
-        }
-
         public void AppsOnDeriveCustomers(IDerivation derivation)
         {
             this.RemoveCustomers();
@@ -745,61 +771,6 @@ namespace Allors.Domain
             if (this.ExistShipToCustomer && !this.Customers.Contains(this.ShipToCustomer))
             {
                 this.AddCustomer(this.ShipToCustomer);
-            }
-        }
-
-        public void AppsOnDeriveInvoiceItems(IDerivation derivation)
-        {
-            var quantityInvoicedByProduct = new Dictionary<Product, decimal>();
-            var totalBasePriceByProduct = new Dictionary<Product, decimal>();
-
-            var invoiceFromOrder = true;
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-            {
-                salesInvoiceItem.AppsOnDeriveVatRegime(derivation);
-                salesInvoiceItem.AppsOnDeriveSalesRep(derivation);
-                salesInvoiceItem.AppsOnDeriveCurrentObjectState(derivation);
-                salesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
-
-                if (!salesInvoiceItem.ExistShipmentItemBillingsWhereInvoiceItem &&
-                    !salesInvoiceItem.ExistOrderItemBillingsWhereInvoiceItem)
-                {
-                    invoiceFromOrder = false;
-                    salesInvoiceItem.AppsOnDerivePrices(derivation, 0, 0);
-                    salesInvoiceItem.AppsOnDeriveCurrentPaymentStatus(derivation);
-
-                    if (salesInvoiceItem.ExistProduct)
-                    {
-                        if (!quantityInvoicedByProduct.ContainsKey(salesInvoiceItem.Product))
-                        {
-                            quantityInvoicedByProduct.Add(salesInvoiceItem.Product, salesInvoiceItem.Quantity);
-                            totalBasePriceByProduct.Add(salesInvoiceItem.Product, salesInvoiceItem.TotalBasePrice);
-                        }
-                        else
-                        {
-                            quantityInvoicedByProduct[salesInvoiceItem.Product] += salesInvoiceItem.Quantity;
-                            totalBasePriceByProduct[salesInvoiceItem.Product] += salesInvoiceItem.TotalBasePrice;
-                        }
-                    }
-                }
-            }
-
-            if (!invoiceFromOrder)
-            {
-                foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-                {
-                    decimal quantity = 0;
-                    decimal totalBasePrice = 0;
-
-                    if (salesInvoiceItem.ExistProduct)
-                    {
-                        quantityInvoicedByProduct.TryGetValue(salesInvoiceItem.Product, out quantity);
-                        totalBasePriceByProduct.TryGetValue(salesInvoiceItem.Product, out totalBasePrice);
-                    }
-
-                    salesInvoiceItem.AppsOnDerivePrices(derivation, quantity, totalBasePrice);
-                    salesInvoiceItem.AppsOnDeriveCurrentPaymentStatus(derivation);
-                }
             }
         }
 
@@ -866,6 +837,110 @@ namespace Allors.Domain
 
                 this.PrintDocument.Media.FileName = $"{this.InvoiceNumber}.odt";
             }
+        }
+
+        public void CalculatePrices(
+            IDerivation derivation,
+            SalesInvoiceItem salesInvoiceItem,
+            PriceComponent[] currentPriceComponents,
+            decimal quantityOrdered,
+            decimal totalBasePrice)
+        {
+            var currentGenericOrProductOrFeaturePriceComponents = new List<PriceComponent>();
+            if (salesInvoiceItem.ExistProduct)
+            {
+                currentGenericOrProductOrFeaturePriceComponents.AddRange(salesInvoiceItem.Product.GetPriceComponents(currentPriceComponents));
+            }
+
+            foreach (ProductFeature productFeature in salesInvoiceItem.ProductFeatures)
+            {
+                currentGenericOrProductOrFeaturePriceComponents.AddRange(productFeature.GetPriceComponents(salesInvoiceItem.Product, currentPriceComponents));
+
+            }
+
+            var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(
+                v => PriceComponents.AppsIsApplicable(
+                    new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = v,
+                        Customer = this.BillToCustomer,
+                        Product = salesInvoiceItem.Product,
+                        SalesInvoice = this,
+                        QuantityOrdered = quantityOrdered,
+                        ValueOrdered = totalBasePrice,
+                    })).ToArray();
+
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Max(v => v.Price);
+
+            // Calculate Unit Price (with Discounts and Surcharges)
+            if (salesInvoiceItem.AssignedUnitPrice.HasValue)
+            {
+                salesInvoiceItem.UnitBasePrice = unitBasePrice ?? 0M;
+                salesInvoiceItem.UnitDiscount = 0;
+                salesInvoiceItem.UnitSurcharge = 0;
+                salesInvoiceItem.UnitPrice = salesInvoiceItem.AssignedUnitPrice.Value;
+            }
+            else
+            {
+                if (!unitBasePrice.HasValue)
+                {
+                    derivation.Validation.AddError(salesInvoiceItem, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
+                    return;
+                }
+
+                salesInvoiceItem.UnitBasePrice = unitBasePrice.Value;
+
+                salesInvoiceItem.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(salesInvoiceItem.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+                salesInvoiceItem.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(salesInvoiceItem.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+
+                salesInvoiceItem.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
+
+                if (salesInvoiceItem.ExistDiscountAdjustment)
+                {
+                    salesInvoiceItem.UnitDiscount += salesInvoiceItem.DiscountAdjustment.Percentage.HasValue ?
+                        Math.Round((salesInvoiceItem.UnitPrice * salesInvoiceItem.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                        salesInvoiceItem.DiscountAdjustment.Amount ?? 0;
+                }
+
+                if (salesInvoiceItem.ExistSurchargeAdjustment)
+                {
+                    salesInvoiceItem.UnitSurcharge += salesInvoiceItem.SurchargeAdjustment.Percentage.HasValue ?
+                        Math.Round((salesInvoiceItem.UnitPrice * salesInvoiceItem.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                        salesInvoiceItem.SurchargeAdjustment.Amount ?? 0;
+                }
+
+                salesInvoiceItem.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
+            }
+
+            salesInvoiceItem.UnitVat = salesInvoiceItem.ExistVatRate ? Math.Round((salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate) / 100, 2) : 0;
+
+            // Calculate Totals
+            salesInvoiceItem.TotalBasePrice = salesInvoiceItem.UnitBasePrice * salesInvoiceItem.Quantity;
+            salesInvoiceItem.TotalDiscount = salesInvoiceItem.UnitDiscount * salesInvoiceItem.Quantity;
+            salesInvoiceItem.TotalSurcharge = salesInvoiceItem.UnitSurcharge * salesInvoiceItem.Quantity;
+
+            if (salesInvoiceItem.TotalBasePrice > 0)
+            {
+                salesInvoiceItem.TotalDiscountAsPercentage = Math.Round((salesInvoiceItem.TotalDiscount / salesInvoiceItem.TotalBasePrice) * 100, 2);
+                salesInvoiceItem.TotalSurchargeAsPercentage = Math.Round((salesInvoiceItem.TotalSurcharge / salesInvoiceItem.TotalBasePrice) * 100, 2);
+            }
+            else
+            {
+                salesInvoiceItem.TotalDiscountAsPercentage = 0;
+                salesInvoiceItem.TotalSurchargeAsPercentage = 0;
+            }
+
+            salesInvoiceItem.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
+            salesInvoiceItem.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
+            salesInvoiceItem.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
         }
     }
 }

@@ -195,10 +195,10 @@ namespace Allors.Repository
         [AssociationId("cebb5430-809a-4d46-bc7b-563ee72f0848")]
         [RoleId("f1f68b89-b95f-43c9-82d5-cb9eec635869")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public ProductFeature ProductFeature { get; set; }
+        public ProductFeature[] ProductFeatures { get; set; }
        
         #region Allors
         [Id("6dd4e8ee-48ed-400d-a129-99a3a651586a")]
