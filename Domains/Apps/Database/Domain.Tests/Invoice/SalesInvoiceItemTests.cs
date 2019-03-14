@@ -250,7 +250,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInvoiceItemWithoutVatRegime_WhenDeriving_ThenDerivedVatRegimeIsFromOrder()
+        public void GivenInvoiceItemWithoutVatRegime_WhenDeriving_ThenDerivedVatRegimeIsFromInvoice()
         {
             this.InstantiateObjects(this.Session);
 
@@ -359,14 +359,14 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(15, item1.UnitPrice);
             Assert.Equal(3.15m, item1.UnitVat);
-            Assert.Equal(45, item1.TotalBasePrice);
+            Assert.Equal(30, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(9.45m, item1.TotalVat);
             Assert.Equal(54.45m, item1.TotalIncVat);
             
-            Assert.Equal(45, this.invoice.TotalBasePrice);
+            Assert.Equal(30, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(45, this.invoice.TotalExVat);

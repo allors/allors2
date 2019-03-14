@@ -205,7 +205,7 @@ namespace Allors.Domain
                 salesOrderItem.VatRegime = salesOrderItem.AssignedVatRegime ?? this.VatRegime;
                 salesOrderItem.VatRate = salesOrderItem.VatRegime?.VatRate ?? salesOrderItem.Product?.VatRate ?? salesOrderItem.ProductFeature?.VatRate;
                 salesOrderItem.SalesReps = salesOrderItem.Product?.ProductCategoriesWhereAllProduct.Select(v => SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, v, this.OrderDate)).ToArray();
-                salesOrderItem.QuantityShipped = salesOrderItem.OrderShipmentsWhereOrderItem.Sum(v => v.Quantity);
+                salesOrderItem.QuantityShipped = salesOrderItem.OrderShipmentsWhereOrderItem.Where(v => ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 
                 // TODO: Use versioning
                 if (salesOrderItem.ExistPreviousProduct && !salesOrderItem.PreviousProduct.Equals(salesOrderItem.Product))
@@ -911,6 +911,7 @@ namespace Allors.Domain
                                     orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
                                 }
 
+                                orderItem.QuantityPendingShipment += orderItem.QuantityRequestsShipping;
                                 orderItem.QuantityRequestsShipping = 0;
                             }
                         }
@@ -1075,17 +1076,18 @@ namespace Allors.Domain
                         ValueOrdered = totalBasePrice,
                     })).ToArray();
 
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Max(v => v.Price);
+            
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesOrderItem.AssignedUnitPrice.HasValue)
             {
-                salesOrderItem.UnitBasePrice = salesOrderItem.AssignedUnitPrice.Value;
+                salesOrderItem.UnitBasePrice = unitBasePrice ?? 0M;
                 salesOrderItem.UnitDiscount = 0;
                 salesOrderItem.UnitSurcharge = 0;
-                salesOrderItem.UnitPrice = salesOrderItem.UnitBasePrice;
+                salesOrderItem.UnitPrice = salesOrderItem.AssignedUnitPrice.Value;
             }
             else
             {
-                var unitBasePrice = priceComponents.OfType<BasePrice>().Max(v => v.Price);
                 if (!unitBasePrice.HasValue)
                 {
                     derivation.Validation.AddError(salesOrderItem, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
@@ -1105,6 +1107,22 @@ namespace Allors.Domain
                              : v.Price ?? 0);
 
                 salesOrderItem.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+
+                if (salesOrderItem.ExistDiscountAdjustment)
+                {
+                    salesOrderItem.UnitDiscount += salesOrderItem.DiscountAdjustment.Percentage.HasValue ?
+                        Math.Round((salesOrderItem.UnitPrice * salesOrderItem.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                        salesOrderItem.DiscountAdjustment.Amount ?? 0;
+                }
+
+                if (salesOrderItem.ExistSurchargeAdjustment)
+                {
+                    salesOrderItem.UnitSurcharge += salesOrderItem.SurchargeAdjustment.Percentage.HasValue ?
+                        Math.Round((salesOrderItem.UnitPrice * salesOrderItem.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                        salesOrderItem.SurchargeAdjustment.Amount ?? 0;
+                }
+
+                salesOrderItem.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
             }
 
             foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
@@ -1117,10 +1135,10 @@ namespace Allors.Domain
             salesOrderItem.UnitVat = salesOrderItem.ExistVatRate ? Math.Round((salesOrderItem.UnitPrice * salesOrderItem.VatRate.Rate) / 100, 2) : 0;
 
             // Calculate Totals
-            salesOrderItem.TotalBasePrice = salesOrderItem.UnitPrice * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalBasePrice = salesOrderItem.UnitBasePrice * salesOrderItem.QuantityOrdered;
             salesOrderItem.TotalDiscount = salesOrderItem.UnitDiscount * salesOrderItem.QuantityOrdered;
             salesOrderItem.TotalSurcharge = salesOrderItem.UnitSurcharge * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalOrderAdjustment = (salesOrderItem.TotalSurcharge - salesOrderItem.TotalDiscount) * salesOrderItem.QuantityOrdered;
+            salesOrderItem.TotalOrderAdjustment = salesOrderItem.TotalSurcharge - salesOrderItem.TotalDiscount;
 
             if (salesOrderItem.TotalBasePrice > 0)
             {
