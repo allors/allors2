@@ -94,7 +94,7 @@ namespace Allors.Domain
             }
 
             var caches = session.GetCache<AccessControlCacheEntry>();
-            var misses = securityTokens.SelectMany(v => v.AccessControls).Where(v => !caches.ContainsKey(v.Id)).Distinct().ToArray();
+            var misses = securityTokens.SelectMany(v => v.AccessControls).Distinct().Where(v => !caches.ContainsKey(v.Id) || !caches[v.Id].CacheId.Equals(v.CacheId)).Distinct().ToArray();
 
             if (misses.Length > 0)
             {
@@ -183,13 +183,13 @@ namespace Allors.Domain
                 {
                     if (permissionIdByOperation.TryGetValue(operation, out var permissionId))
                     {
+                        if (this.deniedPermissions?.Contains(permissionId) == true)
+                        {
+                            return false;
+                        }
+
                         if (this.accessControlCacheEntries.Any(v => v.EffectivePermissionIds.Contains(permissionId)))
                         {
-                            if (this.deniedPermissions?.Contains(permissionId) == true)
-                            {
-                                return false;
-                            }
-
                             return true;
                         }
                     }

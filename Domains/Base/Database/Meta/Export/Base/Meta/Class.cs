@@ -22,6 +22,6 @@ namespace Allors.Meta
 {
    public partial class Class
     {
-        public RoleType DelegatedAccess { get; set; }
+        public RoleType[] DelegatedAccessRoleTypes { get; set; }
     }
 }

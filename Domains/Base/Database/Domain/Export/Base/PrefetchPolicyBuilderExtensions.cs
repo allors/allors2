@@ -50,15 +50,18 @@ namespace Allors
 
         public static void WithSecurityRules(this PrefetchPolicyBuilder @this, Class @class)
         {
-            if (@class.DelegatedAccess != null)
+            if (@class.DelegatedAccessRoleTypes != null)
             {
                 var builder = new PrefetchPolicyBuilder()
                     .WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy)
                     .WithRule(MetaAccessControlledObject.Instance.DeniedPermissions)
                     .Build();
 
-                var delegated = @class.DelegatedAccess;
-                @this.WithRule(delegated, builder);
+                var delegatedAccessRoleTypes = @class.DelegatedAccessRoleTypes;
+                foreach (var delegatedAccessRoleType in delegatedAccessRoleTypes)
+                {
+                    @this.WithRule(delegatedAccessRoleType, builder);
+                }
             }
 
             @this.WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy);

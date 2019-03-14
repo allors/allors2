@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControlListTests.cs" company="Allors bvba">
+// <copyright file="AccessControlListsTests.cs" company="Allors bvba">
 // Copyright 2002-2019 Allors bvba.
 // 
 // Dual Licensed under
@@ -246,6 +246,50 @@ namespace Tests
                 var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
                 var accessList = accessLists[organisation];
 
+                Assert.False(accessList.CanRead(M.Organisation.Name));
+
+                session.Rollback();
+            }
+        }
+
+         [Fact]
+        public void GivenAnAccessListWhenRemovingUserFromACLThenUserHasNoAccessToThePermissionsInTheRole()
+        {
+            var permission = this.FindPermission(M.Organisation.Name, Operations.Read);
+            var role = new RoleBuilder(this.Session).WithName("Role").WithPermission(permission).Build();
+            var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
+            var person2 = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").Build();
+            new AccessControlBuilder(this.Session).WithSubject(person).WithRole(role).Build();
+
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            var sessions = new ISession[] { this.Session };
+            foreach (var session in sessions)
+            {
+                session.Commit();
+
+                var organisation = new OrganisationBuilder(session).WithName("Organisation").Build();
+
+                var token = new SecurityTokenBuilder(session).Build();
+                organisation.AddSecurityToken(token);
+
+                var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
+                token.AddAccessControl(accessControl);
+
+                this.Session.Derive(true);
+
+                var accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                var accessList = accessLists[organisation];
+
+                accessControl.RemoveSubject(person);
+                accessControl.AddSubject(person2);
+
+                this.Session.Derive(true);
+
+                accessLists = new AccessControlLists(new IObject[] { organisation }, person);
+                accessList = accessLists[organisation];
+                
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
                 session.Rollback();
