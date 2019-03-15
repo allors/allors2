@@ -192,5 +192,25 @@ namespace Allors.Adapters
                 Assert.Equal("pString", predicate.Parameter);
             }
         }
+        
+        [Fact]
+        public void ScratchPad()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var c1 = this.Session.Create<C1>();
+                var c2a = this.Session.Create<C2>();
+                var c2b = this.Session.Create<C2>();
+
+                c1.C1C2one2manies = new[] {c2a, c2b};
+                
+                this.Session.Commit();
+                
+                Assert.Equal(2, c1.C1C2one2manies.Count);           
+            }
+        }
+
     }
 }

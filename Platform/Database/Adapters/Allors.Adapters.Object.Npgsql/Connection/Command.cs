@@ -152,7 +152,7 @@ namespace Allors.Adapters.Object.Npgsql
             var sqlParameter = this.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
             sqlParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
-            sqlParameter.Value = references.Select(v => v.ObjectId);
+            sqlParameter.Value = references.Select(v => v.ObjectId).ToArray();
 
             this.Parameters.Add(sqlParameter);
         }
@@ -160,7 +160,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal void SetObjectArrayParameter(IEnumerable<Reference> references)
         {
             var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
-            objectParameter.Value = references.Select(v => v.ObjectId);
+            objectParameter.Value = references.Select(v => v.ObjectId).ToArray();
         }
 
         internal void AddObjectArrayParameter(IEnumerable<long> objectIds)
@@ -168,7 +168,7 @@ namespace Allors.Adapters.Object.Npgsql
             var sqlParameter = this.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
             sqlParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
-            sqlParameter.Value = objectIds;
+            sqlParameter.Value = objectIds.ToArray();
 
             this.Parameters.Add(sqlParameter);
         }
@@ -176,7 +176,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal void SetObjectArrayParameter(IEnumerable<long> objectIds)
         {
             var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
-            objectParameter.Value = objectIds;
+            objectParameter.Value = objectIds.ToArray();
         }
         
         internal void AddUnitRoleArrayParameter(IRoleType roleType, ICollection<UnitRelation> relations)
@@ -189,9 +189,10 @@ namespace Allors.Adapters.Object.Npgsql
             roleParameter.NpgsqlDbType = NpgsqlDbType.Array | this.Mapping.GetNpgsqlDbType(roleType);
             roleParameter.ParameterName = this.Mapping.StringRoleArrayParam.InvocationName; // TODO: should be a shared name
 
-            objectParameter.Value = relations.Select(v => v.Association);
-            roleParameter.Value = relations.Select(v => v.Role);
+            objectParameter.Value = relations.Select(v => v.Association).ToArray();
+            roleParameter.Value = relations.Select(v => v.Role).ToArray();
 
+            this.Parameters.Add(objectParameter);
             this.Parameters.Add(roleParameter);
         }
 
@@ -200,8 +201,8 @@ namespace Allors.Adapters.Object.Npgsql
             var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
             var roleParameter = this.GetParameter(this.Mapping.StringRoleArrayParam.InvocationName); // TODO: should be a shared name
 
-            objectParameter.Value = relations.Select(v => v.Association);
-            roleParameter.Value = relations.Select(v => v.Role);
+            objectParameter.Value = relations.Select(v => v.Association).ToArray();
+            roleParameter.Value = relations.Select(v => v.Role).ToArray();
         }
 
         internal void AddCompositeRoleArrayParameter(ICollection<CompositeRelation> relations)
@@ -214,9 +215,10 @@ namespace Allors.Adapters.Object.Npgsql
             roleParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
             roleParameter.ParameterName = this.Mapping.StringRoleArrayParam.InvocationName; // TODO: should be a shared name
 
-            objectParameter.Value = relations.Select(v => v.Association);
-            roleParameter.Value = relations.Select(v => v.Role);
+            objectParameter.Value = relations.Select(v => v.Association).ToArray();
+            roleParameter.Value = relations.Select(v => v.Role).ToArray();
 
+            this.Parameters.Add(objectParameter);
             this.Parameters.Add(roleParameter);
         }
 
@@ -225,8 +227,8 @@ namespace Allors.Adapters.Object.Npgsql
             var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
             var roleParameter = this.GetParameter(this.Mapping.StringRoleArrayParam.InvocationName); // TODO: should be a shared name
 
-            objectParameter.Value = relations.Select(v => v.Association);
-            roleParameter.Value = relations.Select(v => v.Role);
+            objectParameter.Value = relations.Select(v => v.Association).ToArray();
+            roleParameter.Value = relations.Select(v => v.Role).ToArray();
         }
 
         internal object ExecuteScalar()
