@@ -344,14 +344,16 @@ where c = '{@class.Id}'";
                     command.CommandText = sql;
                     command.CommandType = CommandType.StoredProcedure;
 
-                    var sqlParameter = command.CreateParameter();
-                    sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | this.database.GetNpgsqlDbType(relationType.RoleType);
-                    sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-                    sqlParameter.Value = unitRelations.Select(v => v.Role);
+                    // TODO:
 
-                    command.Parameters.Add(sqlParameter);
+                    //var sqlParameter = command.CreateParameter();
+                    //sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | this.database.GetNpgsqlDbType(relationType.RoleType);
+                    //sqlParameter.ParameterName = Mapping.ParamNameForTableType;
+                    //sqlParameter.Value = unitRelations.Select(v => v.Role);
 
-                    command.ExecuteNonQuery();
+                    //command.Parameters.Add(sqlParameter);
+
+                    //command.ExecuteNonQuery();
                 }
 
                 con.Commit();
@@ -382,7 +384,10 @@ where c = '{@class.Id}'";
                 var command = con.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddCompositeRoleTableParameter(relations);
+                
+                // TODO:
+                
+                //command.AddCompositeRoleTableParameter(relations);
                 command.ExecuteNonQuery();
 
                 con.Commit();

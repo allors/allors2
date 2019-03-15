@@ -228,16 +228,11 @@ namespace Allors.Adapters.Object.Npgsql
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
 
-                var sqlParameter = command.CreateParameter();
-                sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | this.Database.GetNpgsqlDbType(roleType);
-                sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-                sqlParameter.Value = relations.Select(v => v.Role);
-
-                command.Parameters.Add(sqlParameter);
+                command.AddUnitRoleArrayParameter(roleType, relations);
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = relations.Select(v => v.Role);
+                command.SetUnitRoleArrayParameter(roleType, relations);
             }
 
             command.ExecuteNonQuery();
@@ -318,7 +313,7 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddAssociationTableParameter(reference.ObjectId);
+                command.AddAssociationParameter(reference.ObjectId);
                 this.getCompositeRoleByRoleType[roleType] = command;
             }
             else
@@ -350,12 +345,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddCompositeRoleTableParameter(relations);
+                command.AddCompositeRoleArrayParameter(relations);
                 this.setCompositeRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = relations.Select(v => v.Role);
+                command.SetCompositeRoleArrayParameter(relations);
             }
 
             command.ExecuteNonQuery();
@@ -415,12 +410,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddCompositeRoleTableParameter(relations);
+                command.AddCompositeRoleArrayParameter(relations);
                 this.addCompositeRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = relations.Select(v => v.Role);
+                command.SetCompositeRoleArrayParameter(relations);
             }
 
             command.ExecuteNonQuery();
@@ -436,12 +431,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddCompositeRoleTableParameter(relations);
+                command.AddCompositeRoleArrayParameter(relations);
                 this.removeCompositeRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = relations.Select(v => v.Role);
+                command.SetCompositeRoleArrayParameter(relations);
             }
 
             command.ExecuteNonQuery();
@@ -458,12 +453,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(associations);
+                command.AddObjectArrayParameter(associations);
                 this.clearCompositeAndCompositesRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = ((IEnumerable<Reference>)associations).Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(associations);
             }
 
             command.ExecuteNonQuery();
@@ -703,12 +698,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(objectIds);
+                command.AddObjectArrayParameter(objectIds);
                 this.instantiateObjects = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = ((IEnumerable<Reference>)objectIds).Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(objectIds);
             }
 
             using (var reader = command.ExecuteReader())
@@ -738,12 +733,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.getVersion = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var versionByObjectId = new Dictionary<long, long>();
@@ -772,13 +767,13 @@ namespace Allors.Adapters.Object.Npgsql
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectTableParameter(this.session.State.ModifiedRolesByReference.Keys);
+                command.AddObjectArrayParameter(this.session.State.ModifiedRolesByReference.Keys);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.session.State.ModifiedRolesByReference.Keys.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(this.session.State.ModifiedRolesByReference.Keys);
             }
 
             command.ExecuteNonQuery();

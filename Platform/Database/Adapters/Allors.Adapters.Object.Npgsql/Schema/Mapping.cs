@@ -70,7 +70,6 @@ namespace Allors.Adapters.Object.Npgsql
         internal static readonly string ParamNameForAssociation = string.Format(ParamFormat, ColumnNameForAssociation);
         internal static readonly string ParamNameForCompositeRole = string.Format(ParamFormat, ColumnNameForRole);
         internal static readonly string ParamNameForCount = string.Format(ParamFormat, "count");
-        internal static readonly string ParamNameForTableType = string.Format(ParamFormat, "table");
 
         internal readonly string TableNameForObjects;
 
@@ -329,10 +328,11 @@ namespace Allors.Adapters.Object.Npgsql
 
         private void LoadObjects(IClass @class)
         {
-            this.ProcedureNameForLoadObjectByClass.Add(@class, this.Database.SchemaName + "." + ProcedurePrefixForLoad + @class.Name.ToLowerInvariant());
+            var name = this.Database.SchemaName + "." + ProcedurePrefixForLoad + @class.Name.ToLowerInvariant();
+
             var definition =
-                $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForLoadObjectByClass[@class]}({SqlTypeForClass},{this.ObjectArrayParam.TypeName});
-CREATE FUNCTION {this.ProcedureNameForLoadObjectByClass[@class]}(
+$@"DROP FUNCTION IF EXISTS {name}({SqlTypeForClass},{this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {name}(
 	{ParamNameForClass} {SqlTypeForClass},
 	{this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
     RETURNS void
@@ -343,7 +343,8 @@ AS $$
     FROM unnest(p_arr_o) AS t(o)
 $$;";
 
-            this.ProcedureDefinitionByName.Add(this.ProcedureNameForLoadObjectByClass[@class], definition);
+            this.ProcedureNameForLoadObjectByClass.Add(@class, name);
+            this.ProcedureDefinitionByName.Add(name, definition);
         }
 
         private void CreateObject(IClass @class)

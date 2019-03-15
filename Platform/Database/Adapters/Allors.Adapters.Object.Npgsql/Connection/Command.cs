@@ -47,28 +47,14 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal CommandType CommandType
         {
-            get
-            {
-                return this.NpgsqlCommand.CommandType;
-            }
-
-            set
-            {
-                this.NpgsqlCommand.CommandType = value;
-            }
+            get => this.NpgsqlCommand.CommandType;
+            set => this.NpgsqlCommand.CommandType = value;
         }
 
         internal string CommandText
         {
-            get
-            {
-                return this.NpgsqlCommand.CommandText;
-            }
-
-            set
-            {
-                this.NpgsqlCommand.CommandText = value;
-            }
+            get => this.NpgsqlCommand.CommandText;
+            set => this.NpgsqlCommand.CommandText = value;
         }
 
         public void Dispose()
@@ -79,6 +65,11 @@ namespace Allors.Adapters.Object.Npgsql
         internal NpgsqlParameter CreateParameter()
         {
             return this.NpgsqlCommand.CreateParameter();
+        }
+
+        internal NpgsqlParameter GetParameter(string name)
+        {
+            return this.NpgsqlCommand.Parameters[name];
         }
 
         internal void AddInParameter(string parameterName, object value)
@@ -156,44 +147,86 @@ namespace Allors.Adapters.Object.Npgsql
             this.Parameters.Add(sqlParameter);
         }
 
-        internal void AddObjectTableParameter(IEnumerable<Reference> references)
+        internal void AddObjectArrayParameter(IEnumerable<Reference> references)
         {
             var sqlParameter = this.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
-            sqlParameter.ParameterName = Mapping.ParamNameForTableType;
+            sqlParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
             sqlParameter.Value = references.Select(v => v.ObjectId);
 
             this.Parameters.Add(sqlParameter);
         }
 
-        internal void AddObjectTableParameter(IEnumerable<long> objectIds)
+        internal void SetObjectArrayParameter(IEnumerable<Reference> references)
+        {
+            var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
+            objectParameter.Value = references.Select(v => v.ObjectId);
+        }
+
+        internal void AddObjectArrayParameter(IEnumerable<long> objectIds)
         {
             var sqlParameter = this.CreateParameter();
             sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
-            sqlParameter.ParameterName = Mapping.ParamNameForTableType;
+            sqlParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
             sqlParameter.Value = objectIds;
 
             this.Parameters.Add(sqlParameter);
         }
 
-        internal void AddCompositeRoleTableParameter(IEnumerable<CompositeRelation> relations)
+        internal void SetObjectArrayParameter(IEnumerable<long> objectIds)
         {
-            var sqlParameter = this.CreateParameter();
-            sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
-            sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-            sqlParameter.Value = relations.Select(v => v.Role);
+            var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
+            objectParameter.Value = objectIds;
+        }
+        
+        internal void AddUnitRoleArrayParameter(IRoleType roleType, ICollection<UnitRelation> relations)
+        {
+            var objectParameter = this.CreateParameter();
+            objectParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
+            objectParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
 
-            this.Parameters.Add(sqlParameter);
+            var roleParameter = this.CreateParameter();
+            roleParameter.NpgsqlDbType = NpgsqlDbType.Array | this.Mapping.GetNpgsqlDbType(roleType);
+            roleParameter.ParameterName = this.Mapping.StringRoleArrayParam.InvocationName; // TODO: should be a shared name
+
+            objectParameter.Value = relations.Select(v => v.Association);
+            roleParameter.Value = relations.Select(v => v.Role);
+
+            this.Parameters.Add(roleParameter);
         }
 
-        internal void AddAssociationTableParameter(long objectId)
+        internal void SetUnitRoleArrayParameter(IRoleType roleType, ICollection<UnitRelation> relations)
         {
-            var sqlParameter = this.CreateParameter();
-            sqlParameter.ParameterName = Mapping.ParamNameForAssociation;
-            sqlParameter.NpgsqlDbType = Mapping.NpgsqlDbTypeForObject;
-            sqlParameter.Value = objectId;
+            var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
+            var roleParameter = this.GetParameter(this.Mapping.StringRoleArrayParam.InvocationName); // TODO: should be a shared name
 
-            this.Parameters.Add(sqlParameter);
+            objectParameter.Value = relations.Select(v => v.Association);
+            roleParameter.Value = relations.Select(v => v.Role);
+        }
+
+        internal void AddCompositeRoleArrayParameter(ICollection<CompositeRelation> relations)
+        {
+            var objectParameter = this.CreateParameter();
+            objectParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
+            objectParameter.ParameterName = this.Mapping.ObjectArrayParam.InvocationName;
+
+            var roleParameter = this.CreateParameter();
+            roleParameter.NpgsqlDbType = NpgsqlDbType.Array | Mapping.NpgsqlDbTypeForObject;
+            roleParameter.ParameterName = this.Mapping.StringRoleArrayParam.InvocationName; // TODO: should be a shared name
+
+            objectParameter.Value = relations.Select(v => v.Association);
+            roleParameter.Value = relations.Select(v => v.Role);
+
+            this.Parameters.Add(roleParameter);
+        }
+
+        internal void SetCompositeRoleArrayParameter(ICollection<CompositeRelation> relations)
+        {
+            var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
+            var roleParameter = this.GetParameter(this.Mapping.StringRoleArrayParam.InvocationName); // TODO: should be a shared name
+
+            objectParameter.Value = relations.Select(v => v.Association);
+            roleParameter.Value = relations.Select(v => v.Role);
         }
 
         internal object ExecuteScalar()

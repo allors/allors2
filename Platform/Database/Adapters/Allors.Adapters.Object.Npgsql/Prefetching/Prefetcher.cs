@@ -114,15 +114,17 @@ namespace Allors.Adapters.Object.Npgsql
                 }
 
                 var sql = this.Database.Mapping.ProcedureNameForPrefetchUnitRolesByClass[@class];
+
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchUnitRolesByClass[@class] = command;
+
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             using (DbDataReader reader = command.ExecuteReader())
@@ -212,12 +214,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = this.Database.Mapping.ProcedureNameForPrefetchRoleByRelationType[roleType.RelationType];
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchCompositeRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             using (DbDataReader reader = command.ExecuteReader())
@@ -266,12 +268,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchCompositeRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var roleByAssociation = new Dictionary<Reference, long>();
@@ -321,12 +323,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchCompositesRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var rolesByAssociation = new Dictionary<Reference, List<long>>();
@@ -390,12 +392,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchCompositesRoleByRoleType[roleType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var rolesByAssociation = new Dictionary<Reference, List<long>>();
@@ -460,12 +462,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(references);
+                command.AddObjectArrayParameter(references);
                 this.prefetchCompositeAssociationByAssociationType[associationType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = references.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             using (DbDataReader reader = command.ExecuteReader())
@@ -517,12 +519,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(roles);
+                command.AddObjectArrayParameter(roles);
                 this.prefetchCompositeAssociationByAssociationType[associationType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = roles.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var prefetchedAssociationByRole = new Dictionary<Reference, long>();
@@ -579,12 +581,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(roles);
+                command.AddObjectArrayParameter(roles);
                 this.prefetchCompositeAssociationByAssociationType[associationType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = roles.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var prefetchedAssociationByRole = new Dictionary<Reference, List<long>>();
@@ -659,12 +661,12 @@ namespace Allors.Adapters.Object.Npgsql
                 command = this.Session.Connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.AddObjectTableParameter(roles);
+                command.AddObjectArrayParameter(roles);
                 this.prefetchCompositeAssociationByAssociationType[associationType] = command;
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = roles.Select(v => v.ObjectId);
+                command.SetObjectArrayParameter(references);
             }
 
             var prefetchedAssociations = new HashSet<long>();
