@@ -1411,8 +1411,13 @@ $$;";
         private void GetVersionIds()
         {
             this.ProcedureNameForGetVersion = this.Database.SchemaName + "." + ProcedurePrefixForGetVersion;
-            var definition = $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetVersion}({this.ObjectArrayParam.TypeName});
-CREATE FUNCTION {this.ProcedureNameForGetVersion}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+
+            var objects = this.ObjectArrayParam;
+            var objectsType = objects.TypeName;
+
+            var definition = 
+$@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetVersion}({objectsType});
+CREATE FUNCTION {this.ProcedureNameForGetVersion}({objects} {objectsType})
     RETURNS TABLE 
     (
          {ColumnNameForObject} {SqlTypeForObject},
@@ -1422,9 +1427,12 @@ CREATE FUNCTION {this.ProcedureNameForGetVersion}({this.ObjectArrayParam} {this.
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT {ColumnNameForObject}, {ColumnNameForVersion}
+
+    WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
+
+    SELECT {this.TableNameForObjects}.{ColumnNameForObject}, {this.TableNameForObjects}.{ColumnNameForVersion}
     FROM {this.TableNameForObjects}
-    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
+    WHERE {this.TableNameForObjects}.{ColumnNameForObject} IN (SELECT objects.{ColumnNameForObject} FROM objects);
 END
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForGetVersion, definition);

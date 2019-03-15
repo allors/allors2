@@ -207,8 +207,14 @@ namespace Allors.Adapters
                 c1.C1C2one2manies = new[] {c2a, c2b};
                 
                 this.Session.Commit();
-                
-                Assert.Equal(2, c1.C1C2one2manies.Count);           
+
+                Assert.Equal(2, c1.C1C2one2manies.Count);
+
+                c1.C1C2one2manies = new[] { c2a };
+
+                this.Session.Commit();
+
+                Assert.Single(c1.C1C2one2manies);           
             }
         }
 
