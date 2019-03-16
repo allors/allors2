@@ -248,7 +248,7 @@ namespace Allors.Adapters.Object.Npgsql
 
                         if (associationType.IsOne)
                         {
-                            this.GetCompositesAssociationObjectTable(@class, associationType);
+                            this.GetCompositeAssociationObjectTable(@class, associationType);
                             this.PrefetchCompositeAssociationObjectTable(@class, associationType);
                         }
 
@@ -349,16 +349,15 @@ $$;";
 
         private void CreateObject(IClass @class)
         {
-            this.ProcedureNameForCreateObjectByClass.Add(
-                @class,
-                this.Database.SchemaName + "." + ProcedurePrefixForCreateObject + @class.Name.ToLowerInvariant());
-            var definition = $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForCreateObjectByClass[@class]}({SqlTypeForClass});
-CREATE FUNCTION {this.ProcedureNameForCreateObjectByClass[@class]}({ParamNameForClass} {SqlTypeForClass})
+            var name = this.Database.SchemaName + "." + ProcedurePrefixForCreateObject + @class.Name.ToLowerInvariant();
+
+            var definition = $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForClass});
+CREATE FUNCTION {name}({ParamNameForClass} {SqlTypeForClass})
     RETURNS {SqlTypeForObject}
     LANGUAGE plpgsql
 AS $$
-    DECLARE  {ParamNameForObject} {SqlTypeForObject};
-    BEGIN
+DECLARE {ParamNameForObject} {SqlTypeForObject};
+BEGIN
 
     INSERT INTO {this.TableNameForObjects} ({ColumnNameForClass}, {ColumnNameForVersion})
     VALUES ({ParamNameForClass}, {Reference.InitialVersion})
@@ -368,11 +367,12 @@ AS $$
     VALUES ({ParamNameForObject},{ParamNameForClass});
 
     RETURN {ParamNameForObject};
-    END
+END
 $$;
 ";
 
-            this.ProcedureDefinitionByName.Add(this.ProcedureNameForCreateObjectByClass[@class], definition);
+            this.ProcedureNameForCreateObjectByClass.Add(@class, name);
+            this.ProcedureDefinitionByName.Add(name, definition);
         }
 
         private void CreateObjects(IClass @class)
@@ -386,9 +386,7 @@ CREATE FUNCTION {this.ProcedureNameForCreateObjectsByClass[@class]}({ParamNameFo
 AS $$
 DECLARE ID integer; 
 DECLARE COUNTER integer := 0;
-
 BEGIN
-
     WHILE COUNTER < {ParamNameForCount} LOOP
 
         INSERT INTO {this.TableNameForObjects} ({ColumnNameForClass}, {ColumnNameForVersion})
@@ -401,9 +399,7 @@ BEGIN
         COUNTER := COUNTER+1;
 
         RETURN NEXT ID;
-
     END LOOP;
-
 END
 $$;";
 
@@ -437,10 +433,8 @@ CREATE FUNCTION {this.ProcedureNameForGetUnitRolesByClass[@class]}({ParamNameFor
             }
 
             definition += @")
-     LANGUAGE plpgsql
+     LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
     SELECT ";
             first = true;
             foreach (var role in sortedUnitRoleTypes)
@@ -460,7 +454,6 @@ BEGIN
             definition += $@"
     FROM {this.TableNameForObjectByClass[@class.ExclusiveClass]}
     WHERE {ColumnNameForObject}={ParamNameForObject};
-END
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForGetUnitRolesByClass[@class], definition);
         }
@@ -493,10 +486,8 @@ CREATE FUNCTION {this.ProcedureNameForPrefetchUnitRolesByClass[@class]}({this.Ob
             }
 
             definition += @")
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
     SELECT ";
             first = true;
             foreach (var role in sortedUnitRoleTypes)
@@ -516,7 +507,6 @@ BEGIN
             definition += $@"
     FROM {this.TableNameForObjectByClass[@class.ExclusiveClass]}
     WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
-END
 $$;";
 
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForPrefetchUnitRolesByClass[@class], definition);
@@ -534,15 +524,11 @@ $$;";
 $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetRoleByRelationType[relationType]}({SqlTypeForObject});
 CREATE FUNCTION {this.ProcedureNameForGetRoleByRelationType[relationType]}({ParamNameForAssociation} {SqlTypeForObject})
     RETURNS SETOF {SqlTypeForObject}
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-DECLARE {ParamNameForCompositeRole} {SqlTypeForObject};
-BEGIN
-    RETURN QUERY
     SELECT {ColumnNameForObject}
     FROM {this.TableNameForObjectByClass[@class]}
     WHERE {this.ColumnNameByRelationType[relationType]}={ParamNameForAssociation};
-END
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForGetRoleByRelationType[relationType], definition);
         }
@@ -561,26 +547,22 @@ CREATE FUNCTION {name}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
     SELECT {this.ColumnNameByRelationType[relationType]}, {ColumnNameForObject}
     FROM {this.TableNameForObjectByClass[@class]}
     WHERE {this.ColumnNameByRelationType[relationType]} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
-END
 $$;";
             this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, name);
             this.ProcedureDefinitionByName.Add(name, definition);
         }
 
-        private void GetCompositesAssociationObjectTable(IClass @class, IAssociationType associationType)
+        private void GetCompositeAssociationObjectTable(IClass @class, IAssociationType associationType)
         {
             var relationType = associationType.RelationType;
             var name = this.Database.SchemaName + "." + ProcedurePrefixForGetAssociation + @class.Name.ToLowerInvariant() + "_" + relationType.RoleType.SingularFullName.ToLowerInvariant();
 
             // Get Composite Association (1-*) [object table]
-            this.ProcedureNameForGetAssociationByRelationType.Add(relationType, name);
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
 CREATE FUNCTION {name}({ParamNameForCompositeRole} {SqlTypeForObject})
@@ -597,6 +579,8 @@ BEGIN
     RETURN {ParamNameForAssociation};
 END
 $$;";
+
+            this.ProcedureNameForGetAssociationByRelationType.Add(relationType, name);
             this.ProcedureDefinitionByName.Add(name, definition);
         }
 
@@ -649,14 +633,12 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForAssociation}
     FROM relations
     WHERE {table}.{ColumnNameForObject} = relations.{ColumnNameForRole}
-
 $$;";
             this.ProcedureDefinitionByName.Add(name, definition);
             this.ProcedureNameForAddRoleByRelationType.Add(relationType, name);
@@ -679,9 +661,7 @@ $@"DROP FUNCTION IF EXISTS {name}({objectsType}, {rolesType});
 CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
-
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     UPDATE {table}
@@ -689,7 +669,6 @@ AS $$
     FROM relations
     WHERE {table}.{this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForAssociation} AND 
           {table}.{ColumnNameForObject} = relations.{ColumnNameForRole}
-
 $$;";
             this.ProcedureNameForRemoveRoleByRelationType.Add(relationType, name);
             this.ProcedureDefinitionByName.Add(name, definition);
@@ -710,14 +689,12 @@ CREATE FUNCTION {name}({objects} {objectsType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = null
     FROM objects
     WHERE {table}.{this.ColumnNameByRelationType[relationType]} = objects.{ColumnNameForObject}
-
 $$;";
 
             this.ProcedureNameForClearRoleByRelationType.Add(relationType, name);
@@ -787,14 +764,12 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForRole}
     FROM relations
     WHERE {ColumnNameForObject} = relations.{ColumnNameForAssociation}
-
 $$;";
             procedureNameForSetUnitRoleByRelationType.Add(relationType, name);
             this.ProcedureDefinitionByName.Add(procedureNameForSetUnitRoleByRelationType[relationType], definition);
@@ -933,14 +908,11 @@ $$;";
 $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
 CREATE FUNCTION {name}({ParamNameForCompositeRole} {SqlTypeForObject})
     RETURNS SETOF {SqlTypeForObject}
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
     SELECT {ColumnNameForObject}
     FROM {table}
     WHERE {this.ColumnNameByRelationType[relationType]}={ParamNameForCompositeRole};
-END
 $$;";
 
             this.ProcedureNameForGetAssociationByRelationType.Add(relationType, name);
@@ -998,14 +970,12 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForRole}
     FROM relations
     WHERE {ColumnNameForObject} = relations.{ColumnNameForAssociation}
-
 $$;";
 
             this.ProcedureNameForSetRoleByRelationType.Add(relationType, name);
@@ -1027,14 +997,12 @@ CREATE FUNCTION {name}({objects} {objectsType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     UPDATE {table} 
     SET {this.ColumnNameByRelationType[relationType]} = null
     FROM objects
     WHERE {table}.{ColumnNameForObject} = objects.{ColumnNameForObject}
-
 $$;";
 
             this.ProcedureNameForClearRoleByRelationType.Add(relationType, name);
@@ -1051,15 +1019,11 @@ $$;";
 $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
 CREATE FUNCTION {name}({ParamNameForAssociation} {SqlTypeForObject})
     RETURNS SETOF {SqlTypeForObject}
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     SELECT {ColumnNameForRole}
     FROM {table}
     WHERE {ColumnNameForAssociation}={ParamNameForAssociation};
-END
 $$;";
 
             this.ProcedureNameForGetRoleByRelationType.Add(relationType, name);
@@ -1113,13 +1077,11 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     INSERT INTO {table} ({ColumnNameForAssociation},{ColumnNameForRole})
     SELECT {ColumnNameForAssociation}, {ColumnNameForRole}
     FROM relations
-
 $$;";
 
             this.ProcedureNameForAddRoleByRelationType.Add(relationType, name);
@@ -1143,13 +1105,11 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     DELETE FROM {table}
     USING relations
     WHERE {table}.{ColumnNameForAssociation}=relations.{ColumnNameForAssociation} AND {table}.{ColumnNameForRole}=relations.{ColumnNameForRole}
-
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForRemoveRoleByRelationType[relationType], definition);
         }
@@ -1230,7 +1190,6 @@ CREATE FUNCTION {name}({objects} {objectsType}, {roles} {rolesType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     INSERT INTO {table}
@@ -1239,7 +1198,6 @@ AS $$
     ON CONFLICT ({ColumnNameForAssociation},{ColumnNameForRole})
     DO UPDATE
         SET {ColumnNameForRole} = excluded.{ColumnNameForRole}
-
 $$;";
 
 
@@ -1316,19 +1274,12 @@ $$;";
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
 CREATE FUNCTION {name}({ParamNameForCompositeRole} {SqlTypeForObject})
-    RETURNS {SqlTypeForObject}
-    LANGUAGE plpgsql
+    RETURNS SETOF {SqlTypeForObject}
+    LANGUAGE sql
 AS $$
-DECLARE {ParamNameForAssociation} {SqlTypeForObject};
-BEGIN
-
     SELECT {ColumnNameForAssociation}
     FROM {table}
     WHERE {ColumnNameForRole}={ParamNameForCompositeRole}
-    INTO {ParamNameForAssociation};
-
-    RETURN {ParamNameForAssociation};
-END
 $$;";
 
             this.ProcedureDefinitionByName.Add(name, definition);
@@ -1379,13 +1330,11 @@ CREATE FUNCTION {name}({objects} {objectsType})
     RETURNS void
     LANGUAGE sql
 AS $$
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     DELETE FROM {table}
     USING objects
     WHERE {ColumnNameForAssociation}=objects.{ColumnNameForObject}
-
 $$;";
 
             this.ProcedureDefinitionByName.Add(name, definition);
