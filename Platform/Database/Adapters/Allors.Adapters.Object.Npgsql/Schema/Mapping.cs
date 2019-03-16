@@ -63,6 +63,7 @@ namespace Allors.Adapters.Object.Npgsql
         public readonly MappingArrayParameter BinaryRoleArrayParam;
 
         public readonly Dictionary<IRoleType, string> ParamNameByRoleType;
+        public readonly Dictionary<IRoleType, string> ParamInvocationNameByRoleType;
 
         internal static readonly string ParamNameForObject = string.Format(ParamFormat, ColumnNameForObject);
         internal static readonly string ParamNameForClass = string.Format(ParamFormat, ColumnNameForClass);
@@ -70,6 +71,14 @@ namespace Allors.Adapters.Object.Npgsql
         internal static readonly string ParamNameForAssociation = string.Format(ParamFormat, ColumnNameForAssociation);
         internal static readonly string ParamNameForCompositeRole = string.Format(ParamFormat, ColumnNameForRole);
         internal static readonly string ParamNameForCount = string.Format(ParamFormat, "count");
+
+        internal static readonly string ParamInvocationNameForObject = string.Format(ParamInvocationFormat, ColumnNameForObject);
+        internal static readonly string ParamInvocationNameForClass = string.Format(ParamInvocationFormat, ColumnNameForClass);
+        internal static readonly string ParamInvocationNameForVersion = string.Format(ParamInvocationFormat, ColumnNameForVersion);
+        internal static readonly string ParamInvocationNameForAssociation = string.Format(ParamInvocationFormat, ColumnNameForAssociation);
+        internal static readonly string ParamInvocationNameForCompositeRole = string.Format(ParamInvocationFormat, ColumnNameForRole);
+        internal static readonly string ParamInvocationNameForCount = string.Format(ParamInvocationFormat, "count");
+
 
         internal readonly string TableNameForObjects;
 
@@ -152,6 +161,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.ColumnNameByRelationType = new Dictionary<IRelationType, string>();
             this.UnescapedColumnNameByRelationType = new Dictionary<IRelationType, string>();
             this.ParamNameByRoleType = new Dictionary<IRoleType, string>();
+            this.ParamInvocationNameByRoleType = new Dictionary<IRoleType, string>();
 
             foreach (var @class in this.Database.MetaPopulation.Classes)
             {
@@ -177,6 +187,7 @@ namespace Allors.Adapters.Object.Npgsql
                         this.ColumnNameByRelationType[relationType] = this.NormalizeName(roleType.SingularName);
                         this.UnescapedColumnNameByRelationType[relationType] = roleType.SingularName;
                         this.ParamNameByRoleType[roleType] = string.Format(ParamFormat, roleType.SingularFullName);
+                        this.ParamInvocationNameByRoleType[roleType] = string.Format(ParamInvocationFormat, roleType.SingularFullName);
                     }
                     else
                     {

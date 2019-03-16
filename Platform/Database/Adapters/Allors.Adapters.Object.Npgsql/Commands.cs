@@ -106,10 +106,10 @@ namespace Allors.Adapters.Object.Npgsql
                 var sql = "BEGIN\n";
 
                 sql += "DELETE FROM " + this.Database.Mapping.TableNameForObjects + "\n";
-                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + ";\n";
+                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + ";\n";
 
                 sql += "DELETE FROM " + this.Database.Mapping.TableNameForObjectByClass[@class.ExclusiveClass] + "\n";
-                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + ";\n";
+                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + ";\n";
 
                 sql += "END;";
 
@@ -269,18 +269,18 @@ namespace Allors.Adapters.Object.Npgsql
                     ++count;
 
                     var column = this.Database.Mapping.ColumnNameByRelationType[roleType.RelationType];
-                    sql.Append(column + "=" + this.Database.Mapping.ParamNameByRoleType[roleType]);
+                    sql.Append(column + "=" + this.Database.Mapping.ParamInvocationNameByRoleType[roleType]);
 
                     var unit = roles.ModifiedRoleByRoleType[roleType];
-                    var sqlParameter1 = command.CreateParameter();
-                    sqlParameter1.ParameterName = this.Database.Mapping.ParamNameByRoleType[roleType];
-                    sqlParameter1.NpgsqlDbType = this.Database.Mapping.GetNpgsqlDbType(roleType);
-                    sqlParameter1.Value = unit ?? DBNull.Value;
+                    var sqlParameter = command.CreateParameter();
+                    sqlParameter.ParameterName = this.Database.Mapping.ParamNameByRoleType[roleType];
+                    sqlParameter.NpgsqlDbType = this.Database.Mapping.GetNpgsqlDbType(roleType);
+                    sqlParameter.Value = unit ?? DBNull.Value;
 
-                    command.Parameters.Add(sqlParameter1);
+                    command.Parameters.Add(sqlParameter);
                 }
 
-                sql.Append("\nWHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + "\n");
+                sql.Append("\nWHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + "\n");
 
                 command.CommandText = sql.ToString();
                 command.ExecuteNonQuery();
@@ -609,7 +609,7 @@ namespace Allors.Adapters.Object.Npgsql
                 var sql = "IF EXISTS (\n";
                 sql += "    SELECT " + Mapping.ColumnNameForObject + "\n";
                 sql += "    FROM " + schema.TableNameForObjectByClass[@class.ExclusiveClass] + "\n";
-                sql += "    WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + "\n";
+                sql += "    WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + "\n";
                 sql += ")\n";
                 sql += "    SELECT 1\n";
                 sql += "ELSE\n";
@@ -618,12 +618,12 @@ namespace Allors.Adapters.Object.Npgsql
                 sql += "    SET IDENTITY_INSERT " + schema.TableNameForObjects + " ON\n";
 
                 sql += "    INSERT INTO " + schema.TableNameForObjects + " (" + Mapping.ColumnNameForObject + "," + Mapping.ColumnNameForClass + "," + Mapping.ColumnNameForVersion + ")\n";
-                sql += "    VALUES (" + Mapping.ParamNameForObject + "," + Mapping.ParamNameForClass + ", " + Reference.InitialVersion + ");\n";
+                sql += "    VALUES (" + Mapping.ParamInvocationNameForObject + "," + Mapping.ParamInvocationNameForClass + ", " + Reference.InitialVersion + ");\n";
 
                 sql += "    SET IDENTITY_INSERT " + schema.TableNameForObjects + " OFF;\n";
 
                 sql += "    INSERT INTO " + schema.TableNameForObjectByClass[@class.ExclusiveClass] + " (" + Mapping.ColumnNameForObject + "," + Mapping.ColumnNameForClass + ")\n";
-                sql += "    VALUES (" + Mapping.ParamNameForObject + "," + Mapping.ParamNameForClass + ");\n";
+                sql += "    VALUES (" + Mapping.ParamInvocationNameForObject + "," + Mapping.ParamInvocationNameForClass + ");\n";
 
                 sql += "    SELECT 0;\n";
                 sql += "    END";
@@ -662,7 +662,7 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 var sql = "SELECT " + Mapping.ColumnNameForClass + ", " + Mapping.ColumnNameForVersion + "\n";
                 sql += "FROM " + this.Database.Mapping.TableNameForObjects + "\n";
-                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + "\n";
+                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + "\n";
 
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
