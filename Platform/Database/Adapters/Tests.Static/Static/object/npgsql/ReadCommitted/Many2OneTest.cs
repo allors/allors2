@@ -24,7 +24,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
     public class Many2OneTest : Adapters.Many2OneTest, IDisposable
     {
-        private readonly SqlClient.ReadCommitted.Profile profile = new SqlClient.ReadCommitted.Profile();
+        private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 

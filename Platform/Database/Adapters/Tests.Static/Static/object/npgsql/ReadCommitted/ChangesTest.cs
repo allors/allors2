@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
     public class ChangesTest : Adapters.ChangesTest, IDisposable
     {
-        private readonly SqlClient.ReadCommitted.Profile profile = new SqlClient.ReadCommitted.Profile();
+        private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
