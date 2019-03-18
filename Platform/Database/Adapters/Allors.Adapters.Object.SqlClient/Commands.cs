@@ -53,7 +53,6 @@ namespace Allors.Adapters.Object.SqlClient
         private Dictionary<IClass, Command> createObjectByClass;
         private Dictionary<IClass, Command> createObjectsByClass;
         private Dictionary<IClass, Command> deleteObjectByClass;
-        private Dictionary<IClass, Command> insertObjectByClass;
 
         private Command getVersion;
         private Command updateVersions;
@@ -85,7 +84,6 @@ namespace Allors.Adapters.Object.SqlClient
             this.setUnitRolesByRoleTypeByClass = null;
             this.createObjectByClass = null;
             this.createObjectsByClass = null;
-            this.insertObjectByClass = null;
             this.deleteObjectByClass = null;
 
             this.getVersion = null;
@@ -600,64 +598,6 @@ namespace Allors.Adapters.Object.SqlClient
             }
 
             return strategies;
-        }
-
-        internal Reference InsertObject(IClass @class, long objectId)
-        {
-            this.insertObjectByClass = this.insertObjectByClass ?? new Dictionary<IClass, Command>();
-
-            if (!this.insertObjectByClass.TryGetValue(@class, out var command))
-            {
-                var schema = this.Database.Mapping;
-
-                // TODO: Make this a single pass Query.
-                var sql = "IF EXISTS (\n";
-                sql += "    SELECT " + Mapping.ColumnNameForObject + "\n";
-                sql += "    FROM " + schema.TableNameForObjectByClass[@class.ExclusiveClass] + "\n";
-                sql += "    WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + "\n";
-                sql += ")\n";
-                sql += "    SELECT 1\n";
-                sql += "ELSE\n";
-                sql += "    BEGIN\n";
-
-                sql += "    SET IDENTITY_INSERT " + schema.TableNameForObjects + " ON\n";
-
-                sql += "    INSERT INTO " + schema.TableNameForObjects + " (" + Mapping.ColumnNameForObject + "," + Mapping.ColumnNameForClass + "," + Mapping.ColumnNameForVersion + ")\n";
-                sql += "    VALUES (" + Mapping.ParamNameForObject + "," + Mapping.ParamNameForClass + ", " + Reference.InitialVersion + ");\n";
-
-                sql += "    SET IDENTITY_INSERT " + schema.TableNameForObjects + " OFF;\n";
-
-                sql += "    INSERT INTO " + schema.TableNameForObjectByClass[@class.ExclusiveClass] + " (" + Mapping.ColumnNameForObject + "," + Mapping.ColumnNameForClass + ")\n";
-                sql += "    VALUES (" + Mapping.ParamNameForObject + "," + Mapping.ParamNameForClass + ");\n";
-
-                sql += "    SELECT 0;\n";
-                sql += "    END";
-
-                command = this.connection.CreateCommand();
-                command.CommandText = sql;
-                command.AddObjectParameter(objectId);
-                command.AddTypeParameter(@class);
-
-                this.insertObjectByClass[@class] = command;
-            }
-            else
-            {
-                command.Parameters[Mapping.ParamNameForObject].Value = objectId;
-                command.Parameters[Mapping.ParamNameForClass].Value = (object)@class.Id ?? DBNull.Value;
-            }
-
-            var result = command.ExecuteScalar();
-            if (result == null)
-            {
-                throw new Exception("Reader returned no rows");
-            }
-
-            if (long.Parse(result.ToString()) > 0)
-            {
-                throw new Exception("Duplicate id error");
-            }
-
-            return this.session.State.CreateReferenceForNewObject(@class, objectId, this.session);
         }
 
         internal Reference InstantiateObject(long objectId)

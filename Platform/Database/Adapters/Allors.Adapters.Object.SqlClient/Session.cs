@@ -142,36 +142,6 @@ namespace Allors.Adapters.Object.SqlClient
             return domainObjects;
         }
 
-        public IObject Insert(IClass @class, string objectIdString)
-        {
-            var objectId = long.Parse(objectIdString);
-            var insertedObject = this.Insert(@class, objectId);
-
-            this.State.ChangeSet.OnCreated(objectId);
-
-            return insertedObject;
-        }
-
-        public IObject Insert(IClass @class, long objectId)
-        {
-            if (this.State.ReferenceByObjectId.ContainsKey(objectId))
-            {
-                var oldStrategy = this.State.ReferenceByObjectId[objectId].Strategy;
-                if (!oldStrategy.IsDeleted)
-                {
-                    throw new Exception("Duplicate object id " + objectId);
-                }
-            }
-
-            var reference = this.Commands.InsertObject(@class, objectId);
-            this.State.ReferenceByObjectId[objectId] = reference;
-            var insertedObject = reference.Strategy.GetObject();
-
-            this.State.ChangeSet.OnCreated(objectId);
-
-            return insertedObject;
-        }
-        
         public IObject Instantiate(IObject obj)
         {
             return this.Instantiate(obj.Strategy.ObjectId);

@@ -175,22 +175,6 @@ namespace Allors
         IDatabase Database { get; }
 
         /// <summary>
-        /// Inserts an Allors Object with the specified id.
-        /// </summary>
-        /// <param name="class">The IObjectType.</param>
-        /// <param name="objectId">The object id.</param>
-        /// <returns>The inserted object.</returns>
-        IObject Insert(IClass @class, string objectId);
-
-        /// <summary>
-        /// Inserts an Allors Object with the specified id.
-        /// </summary>
-        /// <param name="class">The <see cref="IObjectType"/>.</param>
-        /// <param name="objectId">The object id.</param>
-        /// <returns>The inserted object.</returns>
-        IObject Insert(IClass @class, long objectId);
-
-        /// <summary>
         /// Instantiate a strategy.
         /// This method is primarily used by <see cref="IWorkspace"/>s.
         /// </summary>

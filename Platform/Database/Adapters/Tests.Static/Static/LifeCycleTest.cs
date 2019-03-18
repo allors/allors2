@@ -3151,58 +3151,6 @@ namespace Allors.Adapters
         }
 
         [Fact]
-        public void Insert()
-        {
-            foreach (var init in this.Inits)
-            {
-                init();
-
-                var session = this.Session as ISession;
-                if (session != null)
-                {
-                    C1 a = C1.Create(this.Session);
-                    C1 b;
-
-                    long aLongId = long.Parse(a.Strategy.ObjectId.ToString());
-                    if (a.Strategy.IsNewInSession)
-                    {
-                        b = (C1)session.Insert(MetaC1.Instance.ObjectType, (aLongId - 1).ToString());
-                    }
-                    else
-                    {
-                        b = (C1)session.Insert(MetaC1.Instance.ObjectType, (aLongId + 1).ToString());
-                    }
-
-                    C1 c = C1.Create(this.Session);
-
-                    Assert.NotEqual(a.Strategy.ObjectId, b.Strategy.ObjectId);
-                    Assert.NotEqual(a.Strategy.ObjectId, c.Strategy.ObjectId);
-                    Assert.NotEqual(c.Strategy.ObjectId, b.Strategy.ObjectId);
-
-                    long[] ids = { a.Strategy.ObjectId, b.Strategy.ObjectId, c.Strategy.ObjectId };
-                    foreach (long id in ids)
-                    {
-                        var exceptionThrown = false;
-                        try
-                        {
-                            session.Insert(MetaC1.Instance.ObjectType, id);
-                        }
-                        catch
-                        {
-                            exceptionThrown = true;
-                        }
-
-                        Assert.True(exceptionThrown);
-                    }
-
-                    Assert.NotEqual(a.Strategy.ObjectId, b.Strategy.ObjectId);
-                    Assert.NotEqual(a.Strategy.ObjectId, c.Strategy.ObjectId);
-                    Assert.NotEqual(c.Strategy.ObjectId, b.Strategy.ObjectId);
-                }
-            }
-        }
-
-        [Fact]
         public void Instantiate()
         {
             foreach (var init in this.Inits)

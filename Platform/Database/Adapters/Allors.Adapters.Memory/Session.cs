@@ -185,19 +185,7 @@ namespace Allors.Adapters.Memory
 
             return allorsObjects;
         }
-
-        public IObject Insert(IClass @class, string objectId)
-        {
-            var id = long.Parse(objectId);
-            return this.Insert(@class, id);
-        }
-
-        public IObject Insert(IClass @class, long objectId)
-        {
-            var strategy = this.InsertStrategy(@class, objectId, Memory.Database.IntialVersion);
-            return strategy.GetObject();
-        }
-
+        
         public IObject Instantiate(string objectIdString)
         {
             if (objectIdString == null)
