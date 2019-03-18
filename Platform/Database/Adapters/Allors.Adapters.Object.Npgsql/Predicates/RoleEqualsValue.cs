@@ -39,7 +39,7 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 if (((IUnit)roleType.ObjectType).IsInteger)
                 {
-                    this.obj = obj;
+                    this.obj = (Int32)obj;
                 }
                 else
                 {

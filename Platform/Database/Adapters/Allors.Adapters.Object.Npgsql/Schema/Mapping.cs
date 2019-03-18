@@ -18,6 +18,8 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
@@ -471,56 +473,32 @@ $$;";
 
         private void PrefetchUnitRoles(IClass @class)
         {
-            IRoleType[] sortedUnitRoleTypes = this.Database.GetSortedUnitRolesByObjectType(@class);
+            var name = this.Database.SchemaName + "." + ProcedurePrefixForPrefetchUnits + @class.Name.ToLowerInvariant();
+            this.ProcedureNameForPrefetchUnitRolesByClass.Add(@class, name);
+            
+            var sortedUnitRoleTypes = this.Database.GetSortedUnitRolesByObjectType(@class);
+            var table = this.ProcedureNameForPrefetchUnitRolesByClass[@class];
 
-            this.ProcedureNameForPrefetchUnitRolesByClass.Add(
-                @class,
-                this.Database.SchemaName + "." + ProcedurePrefixForPrefetchUnits + @class.Name.ToLowerInvariant());
             var definition =
-                $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForPrefetchUnitRolesByClass[@class]}({this.ObjectArrayParam.TypeName});
-CREATE FUNCTION {this.ProcedureNameForPrefetchUnitRolesByClass[@class]}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+$@"DROP FUNCTION IF EXISTS {table}({this.ObjectArrayParam.TypeName});
+CREATE FUNCTION {table}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
     RETURNS TABLE 
-    (";
-            var first = true;
-            foreach (var role in sortedUnitRoleTypes)
-            {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    definition += ", ";
-                }
-
-                definition += this.ColumnNameByRelationType[role.RelationType] + " " + this.GetSqlType(role);
-            }
-
-            definition += @")
-    LANGUAGE sql
+    ( 
+        {ColumnNameForObject} {SqlTypeForObject} ";
+        definition = sortedUnitRoleTypes.Aggregate(definition, (current, role) => $"{current}, {this.ColumnNameByRelationType[role.RelationType]} {this.GetSqlType(role)}");
+        definition += $@"
+    )
+LANGUAGE sql
 AS $$
-    SELECT ";
-            first = true;
-            foreach (var role in sortedUnitRoleTypes)
-            {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    definition += ", ";
-                }
-
-                definition += this.ColumnNameByRelationType[role.RelationType];
-            }
-
+    SELECT {ColumnNameForObject} ";
+            definition = sortedUnitRoleTypes.Aggregate(definition, (current, role) => $"{current}, {this.ColumnNameByRelationType[role.RelationType]}");
             definition += $@"
     FROM {this.TableNameForObjectByClass[@class.ExclusiveClass]}
     WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
 $$;";
 
-            this.ProcedureDefinitionByName.Add(this.ProcedureNameForPrefetchUnitRolesByClass[@class], definition);
+
+            this.ProcedureDefinitionByName.Add(table, definition);
         }
 
         private void GetCompositesRoleObjectTable(IClass @class, IAssociationType associationType)
