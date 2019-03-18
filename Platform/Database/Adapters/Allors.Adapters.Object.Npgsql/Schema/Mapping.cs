@@ -1382,17 +1382,13 @@ CREATE FUNCTION {this.ProcedureNameForGetVersion}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForVersion} {SqlTypeForVersion}
     ) 
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {this.TableNameForObjects}.{ColumnNameForObject}, {this.TableNameForObjects}.{ColumnNameForVersion}
     FROM {this.TableNameForObjects}
-    WHERE {this.TableNameForObjects}.{ColumnNameForObject} IN (SELECT objects.{ColumnNameForObject} FROM objects);
-END
+    WHERE {this.TableNameForObjects}.{ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM objects);
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForGetVersion, definition);
         }

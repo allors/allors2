@@ -27,7 +27,8 @@ namespace Allors.Adapters.Object.Npgsql
 
     internal class ExtentStatementRoot : ExtentStatement
     {
-        private readonly Dictionary<object, string> paramNameByParamValue;
+        private readonly Dictionary<object, string> paramInvocationNameByParamValue;
+        private readonly Dictionary<string, string> paramNameByParamInvocationName;
         private readonly StringBuilder sql;
         private int aliasIndex;
         private Command command;
@@ -38,7 +39,8 @@ namespace Allors.Adapters.Object.Npgsql
             this.parameterIndex = 0;
             this.aliasIndex = 0;
             this.sql = new StringBuilder();
-            this.paramNameByParamValue = new Dictionary<object, string>();
+            this.paramInvocationNameByParamValue = new Dictionary<object, string>();
+            this.paramNameByParamInvocationName = new Dictionary<string, string>();
         }
 
         internal override bool IsRoot => true;
@@ -50,14 +52,20 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal override string AddParameter(object obj)
         {
-            if (!this.paramNameByParamValue.ContainsKey(obj))
+            if (!this.paramInvocationNameByParamValue.ContainsKey(obj))
             {
-                var param = string.Format(Mapping.ParamFormat, "p" + (this.parameterIndex++));
-                this.paramNameByParamValue[obj] = param;
-                return param;
+                var name = $"p{this.parameterIndex++}";
+
+                var paramInvocationName = string.Format(Mapping.ParamInvocationFormat, name);
+                this.paramInvocationNameByParamValue[obj] = paramInvocationName;
+
+                var paramName = string.Format(Mapping.ParamFormat, name);
+                this.paramNameByParamInvocationName[paramInvocationName] = paramName;
+
+                return paramInvocationName;
             }
 
-            return this.paramNameByParamValue[obj];
+            return this.paramInvocationNameByParamValue[obj];
         }
 
         internal override void Append(string part)
@@ -102,19 +110,16 @@ namespace Allors.Adapters.Object.Npgsql
             this.command = this.Session.Connection.CreateCommand();
             this.command.CommandText = this.sql.ToString();
 
-            foreach (var paramNameByParamValuePair in this.paramNameByParamValue)
+            foreach (var paramInvocationNameByParamValuePair in this.paramInvocationNameByParamValue)
             {
-                var paramName = paramNameByParamValuePair.Value;
-                var paramValue = paramNameByParamValuePair.Key;
+                var paramInvocationName = paramInvocationNameByParamValuePair.Value;
+                var paramValue = paramInvocationNameByParamValuePair.Key;
 
-                if (paramValue is IObject)
-                {
-                    this.command.AddInParameter(paramName, ((IObject)paramValue).Strategy.ObjectId);
-                }
-                else
-                {
-                    this.command.AddInParameter(paramName, paramValue);
-                }
+                var paramName = this.paramNameByParamInvocationName[paramInvocationName];
+
+                this.command.AddInParameter(
+                    paramName,
+                    paramValue is IObject @object ? @object.Strategy.ObjectId : paramValue);
             }
 
             return this.command;

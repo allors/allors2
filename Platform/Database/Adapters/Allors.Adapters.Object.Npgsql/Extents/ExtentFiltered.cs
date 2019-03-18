@@ -61,20 +61,11 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        internal Mapping Mapping
-        {
-            get { return this.session.Database.Mapping; }
-        }
+        internal Mapping Mapping => this.session.Database.Mapping;
 
-        internal override Session Session
-        {
-            get { return this.session; }
-        }
+        internal override Session Session => this.session;
 
-        public override IComposite ObjectType
-        {
-            get { return this.objectType; }
-        }
+        public override IComposite ObjectType => this.objectType;
 
         internal IAssociationType AssociationType { get; private set; }
 

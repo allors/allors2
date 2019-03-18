@@ -44,36 +44,21 @@ namespace Allors.Adapters.Object.Npgsql
             this.referenceAssociationInstances = new List<IAssociationType>();
         }
 
-        internal SqlExtent Extent
-        {
-            get { return this.extent; }
-        }
+        internal SqlExtent Extent => this.extent;
 
         internal abstract bool IsRoot { get; }
 
-        internal Mapping Mapping
-        {
-            get { return this.Session.Database.Mapping; }
-        }
+        internal Mapping Mapping => this.Session.Database.Mapping;
 
-        internal ExtentSort Sorter
-        {
-            get { return this.extent.Sorter; }
-        }
+        internal ExtentSort Sorter => this.extent.Sorter;
 
-        protected Session Session
-        {
-            get { return this.extent.Session; }
-        }
+        protected Session Session => this.extent.Session;
 
-        protected IObjectType Type
-        {
-            get { return this.extent.ObjectType; }
-        }
+        protected IObjectType Type => this.extent.ObjectType;
 
         internal void AddJoins(IObjectType rootClass, string alias)
         {
-            foreach (IRoleType role in this.referenceRoles)
+            foreach (var role in this.referenceRoles)
             {
                 var relationType = role.RelationType;
                 var association = relationType.AssociationType;
@@ -96,7 +81,7 @@ namespace Allors.Adapters.Object.Npgsql
                 }
             }
 
-            foreach (IRoleType role in this.referenceRoleInstances)
+            foreach (var role in this.referenceRoleInstances)
             {
                 var relationType = role.RelationType;
 
@@ -115,7 +100,7 @@ namespace Allors.Adapters.Object.Npgsql
                 }
             }
 
-            foreach (IAssociationType association in this.referenceAssociations)
+            foreach (var association in this.referenceAssociations)
             {
                 var relationType = association.RelationType;
                 var role = relationType.RoleType;
@@ -135,7 +120,7 @@ namespace Allors.Adapters.Object.Npgsql
                 }
             }
 
-            foreach (IAssociationType association in this.referenceAssociationInstances)
+            foreach (var association in this.referenceAssociationInstances)
             {
                 var relationType = association.RelationType;
                 var role = relationType.RoleType;
