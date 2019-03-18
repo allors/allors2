@@ -1101,19 +1101,19 @@ namespace Allors.Adapters
             }
             else
             {
-                Assert.Equal(this.c1A.C1AllorsString, string.Empty);
+                Assert.Equal(string.Empty, c1ACopy.C1AllorsString);
             }
 
-            Assert.Equal(this.c1A.C1AllorsInteger, -1);
-            Assert.Equal(1.1m, this.c1A.C1AllorsDecimal);
-            Assert.Equal(1.1d, this.c1A.C1AllorsDouble);
-            Assert.True(this.c1A.C1AllorsBoolean);
-            Assert.Equal(this.c1A.C1AllorsDateTime, new DateTime(1973, 3, 27, 12, 1, 2, 3, DateTimeKind.Utc));
-            Assert.Equal(this.c1A.C1AllorsUnique, new Guid(GuidString));
+            Assert.Equal(-1, c1ACopy.C1AllorsInteger);
+            Assert.Equal(1.1m, c1ACopy.C1AllorsDecimal);
+            Assert.Equal(1.1d, c1ACopy.C1AllorsDouble);
+            Assert.True(c1ACopy.C1AllorsBoolean);
+            Assert.Equal(new DateTime(1973, 3, 27, 12, 1, 2, 3, DateTimeKind.Utc), c1ACopy.C1AllorsDateTime);
+            Assert.Equal(new Guid(GuidString), c1ACopy.C1AllorsUnique);
 
-            Assert.Equal(this.c1A.C1AllorsBinary, new byte[0]);
-            Assert.Equal(this.c1B.C1AllorsBinary, new byte[] { 0, 1, 2, 3 });
-            Assert.Null(this.c1C.C1AllorsBinary);
+            Assert.Equal(new byte[0], c1ACopy.C1AllorsBinary);
+            Assert.Equal(new byte[] { 0, 1, 2, 3 }, c1BCopy.C1AllorsBinary);
+            Assert.Null(c1CCopy.C1AllorsBinary);
 
             Assert.Equal("a1", c2ACopy.C1WhereC1C2one2one.C1AllorsString);
             Assert.Equal("a1", c2ACopy.C1WhereC1C2one2many.C1AllorsString);

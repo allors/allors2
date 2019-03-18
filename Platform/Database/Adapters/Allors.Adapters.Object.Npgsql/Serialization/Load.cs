@@ -31,7 +31,7 @@ namespace Allors.Adapters.Object.Npgsql
 
     using NpgsqlTypes;
 
-    public class Load2
+    public class Load
     {
         public const long InitialVersion = 0;
 
@@ -44,7 +44,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         private readonly Dictionary<long, IClass> classByObjectId;
 
-        public Load2(Database database, NpgsqlConnection connection, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded)
+        public Load(Database database, NpgsqlConnection connection, ObjectNotLoadedEventHandler objectNotLoaded, RelationNotLoadedEventHandler relationNotLoaded)
         {
             this.database = database;
             this.connection = connection;
@@ -343,17 +343,8 @@ where c = '{@class.Id}'";
                     var command = con.CreateCommand();
                     command.CommandText = sql;
                     command.CommandType = CommandType.StoredProcedure;
-
-                    // TODO:
-
-                    //var sqlParameter = command.CreateParameter();
-                    //sqlParameter.NpgsqlDbType = NpgsqlDbType.Array | this.database.GetNpgsqlDbType(relationType.RoleType);
-                    //sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-                    //sqlParameter.Value = unitRelations.Select(v => v.Role);
-
-                    //command.Parameters.Add(sqlParameter);
-
-                    //command.ExecuteNonQuery();
+                    command.AddUnitRoleArrayParameter(relationType.RoleType, unitRelations);
+                    command.ExecuteNonQuery();
                 }
 
                 con.Commit();
@@ -384,10 +375,7 @@ where c = '{@class.Id}'";
                 var command = con.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                
-                // TODO:
-                
-                //command.AddCompositeRoleTableParameter(relations);
+                command.AddCompositeRoleArrayParameter(relations.ToArray());
                 command.ExecuteNonQuery();
 
                 con.Commit();

@@ -241,7 +241,7 @@ namespace Allors.Adapters.Object.Npgsql
                     {
                         connection.Open();
 
-                        var load = new Load2(this, connection, this.ObjectNotLoaded, this.RelationNotLoaded);
+                        var load = new Load(this, connection, this.ObjectNotLoaded, this.RelationNotLoaded);
                         load.Execute(reader);
 
                         connection.Close();

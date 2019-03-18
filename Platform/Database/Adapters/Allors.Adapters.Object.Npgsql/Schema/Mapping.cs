@@ -1396,24 +1396,24 @@ $$;";
         private void Instantiate()
         {
             this.ProcedureNameForInstantiate = this.Database.SchemaName + "." + ProcedurePrefixForInstantiate;
-            var definition = $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForInstantiate}({this.ObjectArrayParam.TypeName});
-CREATE FUNCTION {this.ProcedureNameForInstantiate}({this.ObjectArrayParam} {this.ObjectArrayParam.TypeName})
+            var objects = this.ObjectArrayParam;
+            var objectsType = objects.TypeName;
+
+            var definition = $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForInstantiate}({objectsType});
+CREATE FUNCTION {this.ProcedureNameForInstantiate}({objects} {objectsType})
     RETURNS TABLE 
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForClass} {SqlTypeForClass},
          {ColumnNameForVersion} {SqlTypeForVersion}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
+    WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
-    RETURN QUERY
     SELECT {ColumnNameForObject}, {ColumnNameForClass}, {ColumnNameForVersion}
     FROM {this.TableNameForObjects}
-    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({this.ObjectArrayParam}));
-
-END
+    WHERE {this.TableNameForObjects}.{ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM objects);
 $$;";
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForInstantiate, definition);
         }
