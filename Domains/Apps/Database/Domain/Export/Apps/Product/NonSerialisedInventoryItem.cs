@@ -37,6 +37,25 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityOnHand) 
+                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityCommittedOut) 
+                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityExpectedIn) 
+                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.AvailableToPromise))
+            {
+                foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
+                {
+                    if (salesOrderItem.SalesOrderItemState.InProcess)
+                    {
+                        derivation.AddDependency(salesOrderItem, this);
+                    }
+                }
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -125,7 +144,7 @@ namespace Allors.Domain
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
                 if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Completed) ||
                     salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Finished) ||
-                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !(order.OrderKind?.ScheduleManually == true))
+                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && (!order.ExistOrderKind || order.OrderKind.ScheduleManually == false))
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
                 }
@@ -133,6 +152,18 @@ namespace Allors.Domain
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
+                foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                {
+                    foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
+                    {
+                        var orderKind = orderShipment.OrderItem?.OrderWhereValidOrderItem?.OrderKind;
+                        if (orderKind?.ScheduleManually == true)
+                        {
+                            this.QuantityCommittedOut += pickListItem.Quantity;
+                        }
+                    }
+                }
+
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
                     this.QuantityCommittedOut -= pickListItem.QuantityPicked;

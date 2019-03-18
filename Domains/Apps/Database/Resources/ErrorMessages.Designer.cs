@@ -358,7 +358,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to product change not allowed, user cancel orderitem instead.
+        ///   Looks up a localized string similar to product change not allowed, user cancel order item instead.
         /// </summary>
         public static string SalesOrderItemProductChangeNotAllowed {
             get {
@@ -367,7 +367,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship immediately is larger than the quantity that is ordered.
+        ///   Looks up a localized string similar to The requested quantity to ship is larger than the quantity that is ordered.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered {
             get {
@@ -376,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship immediately is larger than the quantity remaining to ship.
+        ///   Looks up a localized string similar to The requested quantity to ship is larger than the quantity remaining to ship.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining {
             get {
@@ -385,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship immediately is not available.
+        ///   Looks up a localized string similar to The requested quantity to ship is not available.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowNotAvailable {
             get {

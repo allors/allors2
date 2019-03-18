@@ -989,7 +989,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
             Assert.Equal(0, invoice.TotalSurcharge);
             Assert.Equal(7.5m, invoice.TotalShippingAndHandling);
@@ -1031,7 +1031,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
             Assert.Equal(0, invoice.TotalSurcharge);
             Assert.Equal(2.25m, invoice.TotalShippingAndHandling);
@@ -1073,7 +1073,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
             Assert.Equal(0, invoice.TotalSurcharge);
             Assert.Equal(0, invoice.TotalShippingAndHandling);
@@ -1115,7 +1115,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, invoice.TotalBasePrice);
+            Assert.Equal(0, invoice.TotalBasePrice);
             Assert.Equal(0, invoice.TotalDiscount);
             Assert.Equal(0, invoice.TotalSurcharge);
             Assert.Equal(0, invoice.TotalShippingAndHandling);

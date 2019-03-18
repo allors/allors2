@@ -413,7 +413,7 @@ namespace Allors.Domain
             var expectedTotalExVat = this.currentGoodBasePrice.Price * quantityOrdered;
             expectedTotalExVat += this.currentGood1Feature1BasePrice.Price * quantityOrdered;
 
-            Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
+            Assert.Equal(expectedCalculatedUnitPrice, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(expectedCalculatedUnitPrice, item1.UnitPrice);
@@ -460,7 +460,7 @@ namespace Allors.Domain
             var expectedTotalExVat = this.currentGoodBasePrice.Price * quantityOrdered;
             expectedTotalExVat += this.currentFeature2BasePrice.Price * quantityOrdered;
 
-            Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
+            Assert.Equal(expectedCalculatedUnitPrice, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(expectedCalculatedUnitPrice, item1.UnitPrice);
@@ -583,13 +583,13 @@ namespace Allors.Domain
         public void GivenOrderItemWithSurchargeAdjustment_WhenDeriving_ThenCalculateSellingPriceUsingItemSurchargeAdjustment()
         {
             const decimal quantityOrdered = 3;
-            const decimal amount = 1;
-            const decimal adjustmentPercentage = 5;
+            const decimal discountAmount = 1;
+            const decimal surchargePercentage = 5;
 
             new DiscountComponentBuilder(this.Session)
                 .WithDescription("discount good for geo boundary")
                 .WithGeographicBoundary(this.kiev)
-                .WithPrice(amount)
+                .WithPrice(discountAmount)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .Build();
@@ -602,7 +602,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered)
-                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.Session).WithPercentage(adjustmentPercentage).Build())
+                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.Session).WithPercentage(surchargePercentage).Build())
                 .Build();
 
             this.order.AddSalesOrderItem(item1);
@@ -610,12 +610,13 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var adjustmentAmount = Math.Round(((price - amount) * adjustmentPercentage) / 100, 2);
+            var surcharge= Math.Round(((price - discountAmount) * surchargePercentage) / 100, 2);
+            var adjustmentAmount = Math.Round(0 - discountAmount + surcharge, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
-            Assert.Equal(amount, item1.UnitDiscount);
-            Assert.Equal(adjustmentAmount, item1.UnitSurcharge);
-            Assert.Equal(this.currentGoodBasePrice.Price - amount + adjustmentAmount, item1.UnitPrice);
+            Assert.Equal(discountAmount, item1.UnitDiscount);
+            Assert.Equal(surcharge, item1.UnitSurcharge);
+            Assert.Equal(this.currentGoodBasePrice.Price + adjustmentAmount, item1.UnitPrice);
             Assert.Equal(adjustmentAmount * quantityOrdered, item1.TotalOrderAdjustment);
         }
 

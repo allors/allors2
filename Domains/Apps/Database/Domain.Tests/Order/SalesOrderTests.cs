@@ -1884,7 +1884,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, order.TotalBasePrice);
+            Assert.Equal(0, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(7.5m, order.TotalShippingAndHandling);
@@ -1935,7 +1935,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, order.TotalBasePrice);
+            Assert.Equal(0, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(2.25m, order.TotalShippingAndHandling);
@@ -1986,7 +1986,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, order.TotalBasePrice);
+            Assert.Equal(0, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(0, order.TotalShippingAndHandling);
@@ -2037,7 +2037,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(45, order.TotalBasePrice);
+            Assert.Equal(0, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(0, order.TotalShippingAndHandling);
@@ -2131,16 +2131,14 @@ namespace Allors.Domain
 
             item4.QuantityOrdered = 0;
 
-            this.Session.Derive();
+            var derivationLog = this.Session.Derive(false);
 
-            Assert.Equal(3, order.ValidOrderItems.Count);
-            Assert.Contains(item1, order.ValidOrderItems);
-            Assert.Contains(item2, order.ValidOrderItems);
-            Assert.Contains(item3, order.ValidOrderItems);
+            Assert.True(derivationLog.HasErrors);
+            Assert.Contains(M.SalesOrderItem.QuantityOrdered, derivationLog.Errors[0].RoleTypes);
         }
 
         [Fact]
-        public void GivenSalesOrder_WhenOrderItemIsWithoutBasePrice_ThenItemIsInvalid()
+        public void GivenSalesOrder_WhenOrderItemIsWithoutBasePrice_ThenExceptionIsThrown()
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
@@ -2179,10 +2177,12 @@ namespace Allors.Domain
 
             item4.RemoveAssignedUnitPrice();
 
-            this.Session.Derive();
+            var derivationLog = this.Session.Derive(false);
+
+            Assert.True(derivationLog.HasErrors);
+            Assert.Contains(M.Priceable.UnitBasePrice, derivationLog.Errors[0].RoleTypes);
 
             Assert.Equal(0, item4.UnitBasePrice);
-            Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
@@ -2498,6 +2498,23 @@ namespace Allors.Domain
 
             parentProductCategory.AddProduct(good2);
 
+            var good3 = new NonUnifiedGoodBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("2")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithName("good2")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("2")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .Build();
+
+            var firstCategory = this.Session.Extent<ProductCategory>().First;
+            firstCategory.AddProduct(good3);
+
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -2507,7 +2524,7 @@ namespace Allors.Domain
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good2)
+                .WithProduct(good1)
                 .WithQuantityOrdered(3)
                 .WithAssignedUnitPrice(5)
                 .Build();
@@ -2516,17 +2533,30 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(2, order.SalesReps.Count);
-            Assert.Contains(salesrep2, order.SalesReps);
-            Assert.Contains(salesrep3, order.SalesReps);
+            Assert.Equal(1, order.SalesReps.Count);
+            Assert.Contains(salesrep1, order.SalesReps);
 
             var item2 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good1)
+                .WithProduct(good2)
                 .WithQuantityOrdered(3)
                 .WithAssignedUnitPrice(5)
                 .Build();
 
             order.AddSalesOrderItem(item2);
+
+            this.Session.Derive();
+
+            Assert.Equal(2, order.SalesReps.Count);
+            Assert.Contains(salesrep1, order.SalesReps);
+            Assert.Contains(salesrep2, order.SalesReps);
+
+            var item3 = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(good3)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            order.AddSalesOrderItem(item3);
 
             this.Session.Derive();
 

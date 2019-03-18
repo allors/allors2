@@ -870,7 +870,7 @@ namespace Allors.Domain
                         ValueOrdered = totalBasePrice,
                     })).ToArray();
 
-            var unitBasePrice = priceComponents.OfType<BasePrice>().Max(v => v.Price);
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
 
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesInvoiceItem.AssignedUnitPrice.HasValue)

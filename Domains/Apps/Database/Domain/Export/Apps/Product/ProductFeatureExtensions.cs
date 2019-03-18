@@ -24,7 +24,13 @@ namespace Allors.Domain
         {
             var genericPriceComponents = currentPriceComponents.Where(priceComponent => !priceComponent.ExistProduct && !priceComponent.ExistPart && !priceComponent.ExistProductFeature).ToArray();
 
-            var exclusiveProductPriceComponents = currentPriceComponents.Where(priceComponent => priceComponent.ProductFeature?.Equals(@this) == true && !priceComponent.ExistProduct).ToArray();
+            var exclusiveProductPriceComponents = currentPriceComponents.Where(priceComponent => priceComponent.ProductFeature?.Equals(@this) == true && priceComponent.Product?.Equals(product) == true).ToArray();
+
+            if (exclusiveProductPriceComponents.Length == 0)
+            {
+                exclusiveProductPriceComponents = currentPriceComponents.Where(priceComponent => priceComponent.ProductFeature?.Equals(@this) == true && !priceComponent.ExistProduct).ToArray();
+            }
+
             if (exclusiveProductPriceComponents.Length > 0)
             {
                 return exclusiveProductPriceComponents.Union(genericPriceComponents).ToArray();

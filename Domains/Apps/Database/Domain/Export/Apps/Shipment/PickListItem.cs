@@ -39,7 +39,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.QuantityPicked > this.Quantity)
+            // exclude negative picklist
+            if (this.Quantity > 0 && this.QuantityPicked > this.Quantity)
             {
                 derivation.Validation.AddError(this, M.PickListItem.QuantityPicked, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }

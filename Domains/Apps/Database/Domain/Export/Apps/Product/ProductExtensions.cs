@@ -88,6 +88,7 @@ namespace Allors.Domain
             var genericPriceComponents = currentPriceComponents.Where(priceComponent => !priceComponent.ExistProduct && !priceComponent.ExistPart && !priceComponent.ExistProductFeature).ToArray();
 
             var exclusiveProductPriceComponents = currentPriceComponents.Where(priceComponent => priceComponent.Product?.Equals(@this) == true && !priceComponent.ExistProductFeature).ToArray();
+
             if (exclusiveProductPriceComponents.Length > 0)
             {
                 return exclusiveProductPriceComponents.Union(genericPriceComponents).ToArray();

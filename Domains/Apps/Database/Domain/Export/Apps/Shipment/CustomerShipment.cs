@@ -18,12 +18,10 @@ using System.Linq;
 
 namespace Allors.Domain
 {
+    using Allors.Domain.NonLogging;
+    using Meta;
     using System;
     using System.Collections.Generic;
-
-    using Allors.Domain.NonLogging;
-
-    using Meta;
 
     public partial class CustomerShipment
     {
@@ -373,6 +371,11 @@ namespace Allors.Domain
                                 .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
                                 .WithProduct(salesOrderItem.Product)
                                 .WithQuantity(orderShipment.Quantity)
+                                .WithAssignedUnitPrice(salesOrderItem.UnitPrice)
+                                .WithDetails(salesOrderItem.Details)
+                                .WithDescription(salesOrderItem.Description)
+                                .WithInternalComment(salesOrderItem.InternalComment)
+                                .WithMessage(salesOrderItem.Message)
                                 .Build();
 
                             salesInvoice.AddSalesInvoiceItem(invoiceItem);
@@ -497,7 +500,7 @@ namespace Allors.Domain
             }
         }
 
-        private void CreateNegativePickList(IDerivation derivation, CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
+        private void CreateNegativePickList(CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
         {
             if (this.ExistShipToParty)
             {
@@ -542,7 +545,7 @@ namespace Allors.Domain
             return charges;
         }
         
-        public void AppsOnDeriveQuantityDecreased(IDerivation derivation, ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
+        public void AppsOnDeriveQuantityDecreased(ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
         {
             var remainingCorrection = correction;
 
@@ -609,7 +612,7 @@ namespace Allors.Domain
             if (this.PendingPickList == null)
             {
                 var shipment = (CustomerShipment)shipmentItem.ShipmentWhereShipmentItem;
-                this.CreateNegativePickList(derivation, shipment, orderItem, correction);
+                this.CreateNegativePickList(shipment, orderItem, correction);
             }
 
             if (shipmentItem.Quantity == 0)
