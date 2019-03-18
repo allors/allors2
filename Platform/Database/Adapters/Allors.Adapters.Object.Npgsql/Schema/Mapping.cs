@@ -603,7 +603,6 @@ $$;";
             var name = this.Database.SchemaName + "." + ProcedurePrefixForPrefetchAssociation + @class.Name.ToLowerInvariant() + "_" + relationType.RoleType.SingularFullName.ToLowerInvariant();
 
             // Prefetch Composite Association (1-*) [object table]
-            this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, name);
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
@@ -612,19 +611,17 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-DECLARE {ParamNameForAssociation} {SqlTypeForObject};
-BEGIN
-    RETURN QUERY
+    WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
+
     SELECT {this.ColumnNameByRelationType[relationType]}, {ColumnNameForObject}
     FROM {this.TableNameForObjectByClass[@class]}
-    WHERE {ColumnNameForObject} IN ( SELECT * FROM unnest({objects}));
-END
+    WHERE {ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM objects);
 $$;";
-            this.ProcedureDefinitionByName.Add(
-                name,
-                definition);
+
+            this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, name);
+            this.ProcedureDefinitionByName.Add(name, definition);
         }
 
         private void AddCompositeRoleObjectTable(IClass @class, IAssociationType associationType)
@@ -891,17 +888,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForObject}, {this.ColumnNameByRelationType[relationType]}
     FROM {table}
     WHERE {this.ColumnNameByRelationType[relationType]} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
 
             this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, name);
@@ -947,17 +940,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForObject}, {this.ColumnNameByRelationType[relationType]}
     FROM {table}
     WHERE {this.ColumnNameByRelationType[relationType]} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
 
             this.ProcedureNameForPrefetchAssociationByRelationType.Add(relationType, name);
@@ -1258,18 +1247,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForAssociation} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-DECLARE {ParamNameForAssociation} {SqlTypeForObject};
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForAssociation},{ColumnNameForRole}
     FROM {table}
-    WHERE {ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM objects);
-END
+    WHERE {ColumnNameForRole} IN (SELECT {ColumnNameForObject} FROM objects);
 $$;";
             
             this.ProcedureDefinitionByName.Add(name,definition);
@@ -1311,17 +1295,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE SQL
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForAssociation},{ColumnNameForRole}
     FROM {table}
     WHERE {ColumnNameForRole} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
 
             this.ProcedureDefinitionByName.Add(name, definition);
