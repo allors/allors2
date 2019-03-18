@@ -826,17 +826,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForObject}, {this.ColumnNameByRelationType[relationType]}
     FROM {this.TableNameForObjectByClass[@class]}
     WHERE {ColumnNameForObject} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
 
             this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, name);
@@ -1045,17 +1041,13 @@ CREATE FUNCTION {name}({objectsArray} {objectsArrayType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForRole} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objectsArray}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForAssociation}, {ColumnNameForRole}
     FROM {this.TableNameForRelationByRelationType[relationType]}
     WHERE {ColumnNameForAssociation} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
             this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, name);
             this.ProcedureDefinitionByName.Add(name, definition);
@@ -1157,17 +1149,13 @@ CREATE FUNCTION {name}({objects} {objectsType})
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForRole} {SqlTypeForObject}
     )
-    LANGUAGE plpgsql
+    LANGUAGE sql
 AS $$
-BEGIN
-    RETURN QUERY
-
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     SELECT {ColumnNameForAssociation}, {ColumnNameForRole}
     FROM {table}
     WHERE {ColumnNameForAssociation} IN (SELECT {ColumnNameForObject} FROM objects);
-END
 $$;";
 
             this.ProcedureNameForPrefetchRoleByRelationType.Add(relationType, name);
