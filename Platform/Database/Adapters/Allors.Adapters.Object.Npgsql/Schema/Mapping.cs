@@ -1204,11 +1204,11 @@ AS $$
     WITH relations AS (SELECT UNNEST({objects}) AS {ColumnNameForAssociation}, UNNEST({roles}) AS {ColumnNameForRole})
 
     INSERT INTO {table}
-    SELECT * from relations
+    SELECT {ColumnNameForAssociation}, {ColumnNameForRole} from relations
 
-    ON CONFLICT ({ColumnNameForAssociation},{ColumnNameForRole})
+    ON CONFLICT ({ColumnNameForAssociation})
     DO UPDATE
-        SET {ColumnNameForRole} = excluded.{ColumnNameForRole}
+        SET {ColumnNameForRole} = excluded.{ColumnNameForRole};
 $$;";
 
 
@@ -1344,8 +1344,7 @@ AS $$
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
     DELETE FROM {table}
-    USING objects
-    WHERE {ColumnNameForAssociation}=objects.{ColumnNameForObject}
+    WHERE {ColumnNameForAssociation} IN (SELECT {ColumnNameForObject} FROM objects)
 $$;";
 
             this.ProcedureDefinitionByName.Add(name, definition);

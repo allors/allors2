@@ -17,6 +17,7 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
+    using System.Security.Cryptography;
 
     using global::Npgsql;
     using System.Text;
@@ -27,7 +28,7 @@ namespace Allors.Adapters.Object.Npgsql
     {
         private readonly Database database;
         private readonly Mapping mapping;
-        
+
         private Validation validation;
 
         internal Initialization(Database database)
@@ -59,7 +60,7 @@ namespace Allors.Adapters.Object.Npgsql
                 this.CreateIndeces();
             }
         }
-        
+
         private void CreateSchema()
         {
             if (!this.validation.Schema.Exists)
@@ -106,7 +107,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                 }
             }
         }
-        
+
         private void TruncateTables()
         {
             using (var connection = new NpgsqlConnection(this.database.ConnectionString))
@@ -198,7 +199,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                             command.ExecuteNonQuery();
                         }
                     }
-                    
+
                     foreach (var @class in this.mapping.Database.MetaPopulation.Classes)
                     {
                         var tableName = this.mapping.TableNameForObjectByClass[@class];
@@ -253,15 +254,17 @@ CREATE SCHEMA " + this.database.SchemaName;
                         {
                             var tableName = this.mapping.TableNameForRelationByRelationType[relationType];
 
-                            var primaryKeyName = "pk_" + relationType.RoleType.SingularFullName.ToLowerInvariant();
+                            var primaryKeyName = $"pk_{relationType.RoleType.SingularFullName.ToLowerInvariant()}";
 
-                            var sql = new StringBuilder();
-                            sql.Append("CREATE TABLE " + tableName + "\n");
-                            sql.Append("(\n");
-                            sql.Append(Mapping.ColumnNameForAssociation + " " + Mapping.SqlTypeForObject + ",\n");
-                            sql.Append(Mapping.ColumnNameForRole + " " + Mapping.SqlTypeForObject + ",\n");
-                            sql.Append("CONSTRAINT " + primaryKeyName + " PRIMARY KEY (" + Mapping.ColumnNameForAssociation + ", " + Mapping.ColumnNameForRole + ")\n");
-                            sql.Append(")\n");
+                            var sql =
+$@"CREATE TABLE {tableName}(
+    {Mapping.ColumnNameForAssociation} {Mapping.SqlTypeForObject},
+    {Mapping.ColumnNameForRole} {Mapping.SqlTypeForObject},
+    {(relationType.RoleType.IsOne
+          ? $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation})\n"
+          : $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation}, {Mapping.ColumnNameForRole})\n")}
+)";
+
 
                             using (var command = new NpgsqlCommand(sql.ToString(), connection))
                             {
@@ -276,7 +279,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                 }
             }
         }
-        
+
         private void CreateProcedures()
         {
             using (var connection = new NpgsqlConnection(this.database.ConnectionString))
@@ -289,14 +292,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                         var definition = dictionaryEntry.Value;
                         using (var command = new NpgsqlCommand(definition, connection))
                         {
-                            try
-                            {
-                                command.ExecuteNonQuery();
-                            }
-                            catch (Exception e)
-                            {
-                                throw;
-                            }
+                            command.ExecuteNonQuery();
                         }
                     }
                 }
@@ -348,7 +344,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                                         }
                                     }
                                 }
-                                
+
                                 var associationType = relationType.AssociationType;
                                 if (roleType.ObjectType.IsUnit)
                                 {

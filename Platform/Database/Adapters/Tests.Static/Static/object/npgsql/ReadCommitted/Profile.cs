@@ -26,8 +26,6 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using Configuration = Allors.Adapters.Configuration;
-
     public class Profile : Npgsql.Profile
     {
         public Profile()

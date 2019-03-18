@@ -326,15 +326,17 @@ CREATE SCHEMA " + this.database.SchemaName;
                         {
                             var tableName = this.mapping.TableNameForRelationByRelationType[relationType];
 
-                            var primaryKeyName = "pk_" + relationType.RoleType.SingularFullName.ToLowerInvariant();
+                            var primaryKeyName = $"pk_{relationType.RoleType.SingularFullName.ToLowerInvariant()}";
 
-                            var sql = new StringBuilder();
-                            sql.Append("CREATE TABLE " + tableName + "\n");
-                            sql.Append("(\n");
-                            sql.Append(Mapping.ColumnNameForAssociation + " " + Mapping.SqlTypeForObject + ",\n");
-                            sql.Append(Mapping.ColumnNameForRole + " " + Mapping.SqlTypeForObject + ",\n");
-                            sql.Append("CONSTRAINT " + primaryKeyName + " PRIMARY KEY (" + Mapping.ColumnNameForAssociation + ", " + Mapping.ColumnNameForRole + ")\n");
-                            sql.Append(")\n");
+                            var sql =
+$@"CREATE TABLE {tableName}(
+    {Mapping.ColumnNameForAssociation} {Mapping.SqlTypeForObject},
+    {Mapping.ColumnNameForRole} {Mapping.SqlTypeForObject},
+    {(relationType.RoleType.IsOne
+          ? $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation})\n"
+          : $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation}, {Mapping.ColumnNameForRole})\n")}
+)";
+
 
                             using (var command = new SqlCommand(sql.ToString(), connection))
                             {

@@ -204,17 +204,16 @@ namespace Allors.Adapters
                 var c2a = this.Session.Create<C2>();
                 var c2b = this.Session.Create<C2>();
 
-                c1.C1C2one2manies = new[] {c2a, c2b};
-                
-                this.Session.Commit();
-
-                Assert.Equal(2, c1.C1C2one2manies.Count);
-
-                c1.C1C2one2manies = new[] { c2a };
+                c1.I1I12one2one = c2a;
 
                 this.Session.Commit();
 
-                Assert.Single(c1.C1C2one2manies);           
+                c1.I1I12one2one = c2b;
+
+                this.Session.Commit();
+
+                Assert.Null(c2a.I1WhereI1I12one2one);
+                Assert.Equal(c1, c2b.I1WhereI1I12one2one);
             }
         }
 

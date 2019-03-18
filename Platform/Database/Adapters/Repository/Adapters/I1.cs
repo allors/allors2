@@ -142,6 +142,7 @@ namespace Allors.Repository
         [RoleId("3cfdc695-8713-426a-8050-87de8e608f44")]
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
+        [Indexed]
         I12 I1I12one2one { get; set; }
 
 
