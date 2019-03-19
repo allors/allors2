@@ -56,6 +56,7 @@ namespace Allors.Domain
             var goodOrderItem = new SalesOrderItemBuilder(this.Session)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithProduct(good)
+                .WithAssignedUnitPrice(1)
                 .WithQuantityOrdered(1)
                 .Build();
 

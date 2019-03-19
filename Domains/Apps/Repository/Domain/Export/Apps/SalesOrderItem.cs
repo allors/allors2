@@ -230,18 +230,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("1e1ed439-ae25-4446-83e6-295d8627a7b5")]
-        [AssociationId("67bc37d9-0d6f-4227-81c9-8f03a1e0da47")]
-        [RoleId("d8ab230a-92d2-44cb-8e45-502285dd9a5e")]
-        #endregion
-        [Workspace]
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        public decimal QuantityShortFalled { get; set; }
-
-        #region Allors
         [Id("1ea02a2c-280a-4a48-9ffb-1517789c56f1")]
         [AssociationId("851f33e4-6c43-468d-ab0d-0f5f83bdb179")]
         [RoleId("213d2b36-dbfd-4e2d-a854-82ba271f0d94")]
@@ -291,18 +279,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public SerialisedItemState NewSerialisedItemState { get; set; }
-       
-        #region Allors
-        [Id("545eb094-63d8-4d25-a069-7c3e91f26eb7")]
-        [AssociationId("686d5956-c2dc-46d5-b812-52020d392f0f")]
-        [RoleId("3a8adaf6-82e6-45a6-bd5f-61860125d77b")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal QuantityShipped { get; set; }
 
         #region Allors
         [Id("5cc50f26-361b-46d7-a8e6-a9f53f7d2722")]
@@ -347,6 +323,18 @@ namespace Allors.Repository
         public PostalAddress AssignedShipToAddress { get; set; }
 
         #region Allors
+        [Id("545eb094-63d8-4d25-a069-7c3e91f26eb7")]
+        [AssociationId("686d5956-c2dc-46d5-b812-52020d392f0f")]
+        [RoleId("3a8adaf6-82e6-45a6-bd5f-61860125d77b")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityShipped { get; set; }
+
+        #region Allors
         [Id("8145fbd3-a30f-44a0-9520-6b72ac20a82d")]
         [AssociationId("59383e9d-690e-46aa-9cc0-1dd39db14f60")]
         [RoleId("31087f2f-10e8-4558-9e0a-a5dbceb3204a")]
@@ -370,6 +358,42 @@ namespace Allors.Repository
         public decimal QuantityReserved { get; set; }
 
         #region Allors
+        [Id("1e1ed439-ae25-4446-83e6-295d8627a7b5")]
+        [AssociationId("67bc37d9-0d6f-4227-81c9-8f03a1e0da47")]
+        [RoleId("d8ab230a-92d2-44cb-8e45-502285dd9a5e")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        public decimal QuantityShortFalled { get; set; }
+
+        #region Allors
+        [Id("b2f7dabb-8b87-41bc-8903-166d77bba1c5")]
+        [AssociationId("ad7dfb12-d00d-4a93-a011-7cb09c1e9aa9")]
+        [RoleId("ba9a9c6c-4df0-4488-b5fa-6181e45c6f18")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityPendingShipment { get; set; }
+
+        #region Allors
+        [Id("DA03C8C6-84F1-44B1-8007-2011D092D2C2")]
+        [AssociationId("E5A80C53-7545-4492-BD6E-3AA47650D271")]
+        [RoleId("DE5B3C7B-383F-40D3-ABAC-D7661D257D9D")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityCommittedOut{ get; set; }
+
+        #region Allors
         [Id("911abda0-2eb0-477e-80be-e9e7d358205e")]
         [AssociationId("23af5657-ed05-43c2-aeed-d268204528d2")]
         [RoleId("42a88fb9-84bc-4e35-83ff-6cb5c0cf3c96")]
@@ -389,18 +413,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Party AssignedShipToParty { get; set; }
-
-        #region Allors
-        [Id("b2f7dabb-8b87-41bc-8903-166d77bba1c5")]
-        [AssociationId("ad7dfb12-d00d-4a93-a011-7cb09c1e9aa9")]
-        [RoleId("ba9a9c6c-4df0-4488-b5fa-6181e45c6f18")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal QuantityPendingShipment { get; set; }
         
         #region Allors
         [Id("e8980105-2c4d-41de-bd67-802a8c0720f1")]

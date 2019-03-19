@@ -644,6 +644,7 @@ namespace Allors.Domain
 
             Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
+            Assert.Equal(0, item.QuantityRequestsShipping);
             Assert.Equal(10, item.QuantityShortFalled);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
@@ -741,9 +742,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
-
-            this.Session.Derive();
-
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
 
             this.Session.Derive();
@@ -1147,6 +1145,8 @@ namespace Allors.Domain
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -1173,18 +1173,22 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(3, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(7, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(97, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             order.Reject();
 
             this.Session.Derive();
 
             Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
         }
 
         [Fact]
@@ -1202,6 +1206,8 @@ namespace Allors.Domain
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -1228,18 +1234,22 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(3, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(7, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(97, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             order.Cancel();
 
             this.Session.Derive();
 
             Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(100, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
         }
 
         [Fact]
@@ -2533,8 +2543,9 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, order.SalesReps.Count);
+            Assert.Equal(2, order.SalesReps.Count);
             Assert.Contains(salesrep1, order.SalesReps);
+            Assert.Contains(salesrep3, order.SalesReps);
 
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good2)
@@ -2546,9 +2557,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(2, order.SalesReps.Count);
+            Assert.Equal(3, order.SalesReps.Count);
             Assert.Contains(salesrep1, order.SalesReps);
             Assert.Contains(salesrep2, order.SalesReps);
+            Assert.Contains(salesrep3, order.SalesReps);
 
             var item3 = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good3)

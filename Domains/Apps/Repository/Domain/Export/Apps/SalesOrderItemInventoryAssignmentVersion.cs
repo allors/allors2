@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7CF1B3F8-46B1-4DDE-92F9-455D6E30D37F")]
     #endregion
-    public partial class OrderItemInventoryAssignmentVersion : Version
+    public partial class SalesOrderItemInventoryAssignmentVersion : Version
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -30,7 +30,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public OrderItem OrderItem { get; set; }
+        public SalesOrderItem SalesOrderItem { get; set; }
 
         #region Allors
         [Id("5CE3E9F4-BBD1-4134-A187-6570D1D7E52A")]
@@ -50,7 +50,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         #region Allors
         [Id("B05C8F82-ABA9-464A-852B-885F6C89AEEB")]

@@ -134,9 +134,12 @@ namespace Allors.Domain
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+
+            this.Session.Derive();
+
             CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -144,7 +147,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var order1 = CreateSalesOrder(customer, customer, DateTime.UtcNow);
@@ -161,7 +164,7 @@ namespace Allors.Domain
             order2.AddSalesOrderItem(salesitem3);
             order2.AddSalesOrderItem(salesItem4);
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             // Act
@@ -273,9 +276,12 @@ namespace Allors.Domain
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+
+            this.Session.Derive();
+
             CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -284,17 +290,17 @@ namespace Allors.Domain
             var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
             
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var order = CreateSalesOrder(customer, customer, DateTime.UtcNow, false);
             var salesItem = CreateSalesOrderItem("item1", good, 10, 15);
 
             // Act
             order.AddSalesOrderItem(salesItem);
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             order.Confirm();
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             // Assert
             Assert.Equal(5, salesItem.QuantityRequestsShipping);

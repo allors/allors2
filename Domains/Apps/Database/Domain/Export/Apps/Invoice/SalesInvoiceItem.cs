@@ -120,11 +120,16 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.AppsOnDeriveAmountPaid(derivation);
-            this.AppsOnDeriveVatRegime(derivation);
-
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
+
+            this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.VatRegime;
+            this.VatRate = this.Product?.VatRate;
+
+            if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
+            {
+                this.VatRate = this.VatRegime.VatRate;
+            }
 
             if (this.ExistInvoiceItemType && this.Quantity == 0)
             {
@@ -135,125 +140,27 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }
-        }
 
-        public void AppsWriteOff(IDerivation derivation)
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
-        }
-
-        public void AppsCancel(IDerivation derivation)
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
-        }
-
-        public void AppsSend(IDerivation derivation)
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Sent;
-        }
-
-        public void AppsPaymentReceived(IDerivation derivation)
-        {
-            if (this.AmountPaid < this.TotalIncVat)
-            {
-                this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).PartiallyPaid;
-            }
-            else
-            {
-                this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Paid;
-            }
-        }
-
-        public void AppsOnDeriveCurrentPaymentStatus(IDerivation derivation)
-        {
-            if (!this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).Cancelled) &&
-                !this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff))
-            {
-                if (this.ExistAmountPaid && this.AmountPaid > 0 && this.AmountPaid < this.TotalIncVat)
-                {
-                    if (!this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).PartiallyPaid))
-                    {
-                        this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).PartiallyPaid;
-                        this.AppsOnDeriveCurrentObjectState(derivation);
-                    }
-                }
-
-                if (this.ExistAmountPaid && this.AmountPaid > 0 && this.AmountPaid >= this.TotalIncVat)
-                {
-                    if (!this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).Paid))
-                    {
-                        this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Paid;
-                        this.AppsOnDeriveCurrentObjectState(derivation);
-                    }
-                }
-            }
-        }
-
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistSalesInvoiceWhereSalesInvoiceItem)
-            {
-                var invoice = this.SalesInvoiceWhereSalesInvoiceItem;
-
-                if (invoice.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Cancelled))
-                {
-                    this.AppsCancel(derivation);
-                }
-
-                if (invoice.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).WrittenOff))
-                {
-                    this.AppsWriteOff(derivation);
-                }
-
-                if (invoice.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Sent))
-                {
-                    this.AppsSend(derivation);
-                }
-            }
-        }
-
-        public void AppsOnDeriveAmountPaid(IDerivation derivation)
-        {
             this.AmountPaid = 0;
             foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
             {
                 this.AmountPaid += paymentApplication.AmountApplied;
-                this.AppsPaymentReceived(derivation);
             }
         }
 
-        public void AppsOnDeriveVatRegime(IDerivation derivation)
+        public void AppsWriteOff()
         {
-            this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem.VatRegime;
-
-            this.AppsOnDeriveVatRate(derivation);
+            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
         }
 
-        public void AppsOnDeriveVatRate(IDerivation derivation)
+        public void AppsCancel()
         {
-            this.VatRate = this.Product?.VatRate;
-
-            if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
-            {
-                this.VatRate = this.VatRegime.VatRate;
-            }
+            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
         }
 
-        public void AppsOnDeriveSalesRep(IDerivation derivation)
+        public void AppsSend()
         {
-            var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer;
-
-            this.RemoveSalesReps();
-
-            if (this.ExistProduct)
-            {
-                foreach (ProductCategory productCategory in this.Product.ProductCategoriesWhereAllProduct)
-                {
-                    this.AddSalesRep(SalesRepRelationships.SalesRep(customer, productCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
-                }
-            }
-
-            this.AddSalesRep(SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate));
+            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Sent;
         }
 
         public void AppsDelete(DeletableDelete method)

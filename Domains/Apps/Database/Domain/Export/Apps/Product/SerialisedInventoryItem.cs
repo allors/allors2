@@ -74,11 +74,11 @@ namespace Allors.Domain
 
                 if (reason.IncreasesQuantityOnHand == true)
                 {
-                    this.Quantity += inventoryTransaction.Quantity;
+                    this.Quantity += (int)inventoryTransaction.Quantity;
                 }
                 else if (reason.IncreasesQuantityOnHand == false)
                 {
-                    this.Quantity -= inventoryTransaction.Quantity;
+                    this.Quantity -= (int)inventoryTransaction.Quantity;
                 }
             }
 

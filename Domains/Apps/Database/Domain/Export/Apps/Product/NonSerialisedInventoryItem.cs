@@ -139,17 +139,6 @@ namespace Allors.Domain
             // TODO: Test for changes in these relations for performance reasons
             this.QuantityCommittedOut = 0M;
 
-            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
-            {
-                var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
-                if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Completed) ||
-                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Finished) ||
-                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && (!order.ExistOrderKind || order.OrderKind.ScheduleManually == false))
-                {
-                    this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
-                }
-            }
-
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
                 foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)

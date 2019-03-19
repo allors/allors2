@@ -23,6 +23,8 @@ namespace Allors.Domain
 
         public bool Paid => this.UniqueId == SalesInvoiceItemStates.PaidId;
 
+        public bool NotPaid => this.UniqueId == SalesInvoiceItemStates.NotPaidId;
+
         public bool PartiallyPaid => this.UniqueId == SalesInvoiceItemStates.PartiallyPaidId;
 
         public bool ReadyForPosting => this.UniqueId == SalesInvoiceItemStates.ReadyForPostingId;

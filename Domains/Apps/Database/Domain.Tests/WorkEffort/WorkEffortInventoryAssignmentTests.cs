@@ -73,7 +73,7 @@ namespace Allors.Domain
             Assert.Equal(reasons.Reservation, transaction.Reason);
 
             Assert.Equal(10, part.QuantityCommittedOut);
-            Assert.Equal(0, part.QuantityOnHand);
+            Assert.Equal(11, part.QuantityOnHand);
         }
 
         [Fact]

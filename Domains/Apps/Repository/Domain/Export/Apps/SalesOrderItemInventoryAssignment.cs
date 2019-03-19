@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7975E28B-4707-44E2-8B56-0EAA8D7F9EFD")]
     #endregion
-    public partial class OrderItemInventoryAssignment : AccessControlledObject, Versioned
+    public partial class SalesOrderItemInventoryAssignment : Versioned
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -30,9 +30,10 @@ namespace Allors.Repository
         [RoleId("DF90990C-77C3-4E5D-949B-419824BB9FFF")]
         [Indexed]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public OrderItem OrderItem { get; set; }
+        public SalesOrderItem SalesOrderItem { get; set; }
 
         #region Allors
         [Id("BDE5FF54-505B-4241-88A8-334999E43C0B")]
@@ -52,7 +53,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         #region Allors
         [Id("063A2F35-2CC0-4ACA-935D-31BBEDC0A2C6")]
@@ -74,7 +75,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        public OrderItemInventoryAssignmentVersion CurrentVersion { get; set; }
+        public SalesOrderItemInventoryAssignmentVersion CurrentVersion { get; set; }
 
         #region Allors
         [Id("FE0F0C2F-1198-46E8-9423-09A736BDF24A")]
@@ -84,7 +85,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
-        public OrderItemInventoryAssignmentVersion[] AllVersions { get; set; }
+        public SalesOrderItemInventoryAssignmentVersion[] AllVersions { get; set; }
         #endregion
 
         #region inherited methods

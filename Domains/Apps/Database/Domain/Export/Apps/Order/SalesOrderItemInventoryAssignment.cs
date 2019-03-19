@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MaterialsUsage.cs" company="Allors bvba">
+// <copyright file="SalesOrderItemInventoryAssignment.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,11 +17,18 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    public partial class WorkEffortInventoryAssignment
+    public partial class SalesOrderItemInventoryAssignment
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+            derivation.AddDependency(this.InventoryItem, this);
+            derivation.AddDependency(this.SalesOrderItem.SalesOrderWhereSalesOrderItem, this);
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            var state = this.Assignment.WorkEffortState;
+            var state = this.SalesOrderItem.SalesOrderItemState;
             var inventoryItemChanged = this.ExistCurrentVersion && (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
@@ -39,7 +46,7 @@ namespace Allors.Domain
                 // CurrentVersion is Previous Version until PostDerive
                 var previousInventoryItem = this.CurrentVersion.InventoryItem;
                 var previousQuantity = this.CurrentVersion.Quantity;
-                state = this.CurrentVersion.Assignment.PreviousWorkEffortState ?? this.CurrentVersion.Assignment.WorkEffortState;
+                state = this.CurrentVersion.SalesOrderItem.PreviousSalesOrderItemState ?? this.CurrentVersion.SalesOrderItem.SalesOrderItemState;
 
                 foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {
@@ -53,11 +60,11 @@ namespace Allors.Domain
             }
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, int initialQuantity, InventoryTransactionReason reason, bool isCancellation)
+        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
             var existingQuantity = 0M;
-            var matchingTransactions = this.InventoryItemTransactions.Where(t => t.Reason.Equals(reason) && t.Part.Equals(inventoryItem.Part)).ToArray();
+            var matchingTransactions = this.InventoryItemTransactions.Where(t => t.Reason.Equals(reason) && t.Part.Equals(inventoryItem.Part) && t.InventoryItem.Equals(inventoryItem)).ToArray();
 
             if (matchingTransactions.Length > 0)
             {
@@ -75,11 +82,15 @@ namespace Allors.Domain
 
             if (adjustmentQuantity != 0)
             {
-                this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.strategy.Session)
+                var newTransaction = new InventoryItemTransactionBuilder(this.strategy.Session)
                     .WithPart(inventoryItem.Part)
                     .WithQuantity(adjustmentQuantity)
                     .WithReason(reason)
-                    .Build());
+                    .WithFacility(inventoryItem.Facility)
+                    .Build();
+
+                newTransaction.InventoryItem = inventoryItem;
+                this.AddInventoryItemTransaction(newTransaction);
             }
         }
     }

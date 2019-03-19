@@ -64,7 +64,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         /// <summary>
         /// The TransactionDate and Time when this InventoryItemTransaction occurred.

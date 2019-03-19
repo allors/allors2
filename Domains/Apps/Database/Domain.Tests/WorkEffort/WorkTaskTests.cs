@@ -647,7 +647,7 @@ namespace Allors.Domain
 
             Assert.Equal(2, salesInvoice.InvoiceItems.Length);
             Assert.Equal(10, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.AssignedUnitPrice);
-            Assert.Equal(30, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.TotalBasePrice);
+            Assert.Equal(30, workOrder.WorkEffortBillingsWhereWorkEffort.First.InvoiceItem.TotalExVat);
         }
 
         private Part CreatePart(string id) =>
@@ -708,6 +708,7 @@ namespace Allors.Domain
             .WithTakenBy(takenBy)
             .WithSalesOrderItem(new SalesOrderItemBuilder(this.Session)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).MiscCharge)
+                .WithAssignedUnitPrice(1)
                 .Build())
             .WithSalesTerm(new OrderTermBuilder(this.Session)
                 .WithDescription("Net 30")

@@ -225,6 +225,9 @@ namespace Allors.Domain
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
+                salesInvoiceItem.SalesReps = salesInvoiceItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(this.BillToCustomer, v, this.InvoiceDate)).ToArray();
+                salesInvoiceItem.AddSalesRep(SalesRepRelationships.SalesRep(this.BillToCustomer, null, this.InvoiceDate));
+
                 foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
                 {
                     //TODO: Why?, Add is not needed here!
@@ -409,8 +412,58 @@ namespace Allors.Domain
             }
             #endregion
 
+            #region States
+
+            var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
+            var salesInvoiceStates = new SalesInvoiceStates(derivation.Session);
+
+            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+            {
+                if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
+                    !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
+                {
+                    if (!invoiceItem.ExistAmountPaid)
+                    {
+                        invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.NotPaid;
+                    }
+                    else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid > 0 && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
+                    {
+                        invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
+                    }
+                    else
+                    {
+                        invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.PartiallyPaid;
+                    }
+                }
+            }
+
+            if (this.SalesInvoiceItems.Any()
+                && !this.SalesInvoiceState.Equals(salesInvoiceStates.Cancelled) 
+                && !this.SalesInvoiceState.Equals(salesInvoiceStates.WrittenOff))
+            {
+                if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.Paid))
+                {
+                    this.SalesInvoiceState = salesInvoiceStates.Paid;
+                }
+                else if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.NotPaid))
+                {
+                    this.SalesInvoiceState = salesInvoiceStates.NotPaid;
+                }
+                else
+                {
+                    this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
+                }
+
+            }
+            #endregion
+
+            this.SalesReps = this.InvoiceItems
+                .Cast<SalesInvoiceItem>()
+                .SelectMany(v => v.SalesReps)
+                .Distinct()
+                .ToArray();
+
             this.AppsOnDeriveCustomers(derivation);
-            this.AppsOnDeriveSalesReps(derivation);
 
             this.AmountPaid = this.AdvancePayment;
             this.AmountPaid += this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
@@ -431,64 +484,12 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
-            this.DeriveCurrentPaymentStatus(derivation);
-
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
             //this.AppsOnDeriveRevenues(derivation);
 
             this.ResetPrintDocument();
-        }
-
-        private void DeriveCurrentPaymentStatus(IDerivation derivation)
-        {
-            var itemsPaid = false;
-            var itemsPartiallyPaid = false;
-            var itemsNotPaid = false;
-
-            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
-            {
-                if (invoiceItem.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).PartiallyPaid))
-                {
-                    itemsPartiallyPaid = true;
-                }
-
-                if (invoiceItem.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).Paid))
-                {
-                    itemsPaid = true;
-                }
-
-                if (invoiceItem.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).Sent))
-                {
-                    itemsNotPaid = true;
-                }
-            }
-
-            if (itemsPaid && !itemsNotPaid && !itemsPartiallyPaid && (!this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid)))
-            {
-                this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Paid;
-            }
-
-            if ((itemsPartiallyPaid || (itemsPaid && itemsNotPaid)) && (!this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid)))
-            {
-                this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid;
-            }
-
-            if (this.ExistAmountPaid)
-            {
-                if (this.AmountPaid > 0 && this.AmountPaid < this.TotalIncVat
-                    && (!this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid)))
-                {
-                    this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid;
-                }
-
-                if (this.AmountPaid > 0 && this.AmountPaid == this.TotalIncVat
-                    && (!this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid)))
-                {
-                    this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Paid;
-                }
-            }
         }
         
         public void AppsSend(SalesInvoiceSend method)
@@ -504,6 +505,10 @@ namespace Allors.Domain
             }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                salesInvoiceItem.AppsSend();
+            }
 
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
             {
@@ -554,6 +559,10 @@ namespace Allors.Domain
         public void AppsWriteOff(SalesInvoiceWriteOff method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).WrittenOff;
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                salesInvoiceItem.AppsWriteOff();
+            }
         }
 
         public void AppsReopen(SalesInvoiceReopen method)
@@ -564,6 +573,10 @@ namespace Allors.Domain
         public void AppsCancelInvoice(SalesInvoiceCancelInvoice method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Cancelled;
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                salesInvoiceItem.AppsCancel();
+            }
         }
 
         public SalesInvoice AppsCopy(SalesInvoiceCopy method)
@@ -750,14 +763,6 @@ namespace Allors.Domain
             }
 
             return salesInvoice;
-        }
-
-        public void AppsOnDeriveSalesReps(IDerivation derivation)
-        {
-            this.SalesReps = this.SalesInvoiceItems
-                .SelectMany(v => v.SalesReps)
-                .Distinct()
-                .ToArray();
         }
 
         public void AppsOnDeriveCustomers(IDerivation derivation)

@@ -49,8 +49,7 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
+            var reasons = new InventoryTransactionReasons(this.Session);
 
             new SalesOrderItemStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
@@ -86,6 +85,16 @@ namespace Allors.Domain
                 .WithUniqueId(FinishedId)
                 .WithName("Finished")
                 .Build();
+
+            this.Created.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+
+            this.InProcess.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+
+            this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+
+            this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+
+            this.Rejected.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
         }
     }
 }

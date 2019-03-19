@@ -388,7 +388,7 @@ namespace Allors.Domain
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee).WithAssignedUnitPrice(1).Build())
                 .Build();
 
             this.Session.Derive(); 

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -142,8 +144,14 @@ namespace Allors.Domain
 
         private void OnCancelOrReject()
         {
-            if (this.ExistReservedFromNonSerialisedInventoryItem && this.ExistQuantityPendingShipment)
+            if (this.ExistReservedFromNonSerialisedInventoryItem && this.ExistQuantityCommittedOut)
             {
+                var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                if (inventoryAssignment != null)
+                {
+                    inventoryAssignment.Quantity = 0 - this.QuantityCommittedOut;
+                }
+
                 this.DecreasePendingShipmentQuantity(this.QuantityPendingShipment);
             }
 
