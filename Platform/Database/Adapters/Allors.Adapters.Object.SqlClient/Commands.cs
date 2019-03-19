@@ -98,18 +98,10 @@ namespace Allors.Adapters.Object.SqlClient
 
             if (!this.deleteObjectByClass.TryGetValue(@class, out var command))
             {
-                var sql = "BEGIN\n";
-
-                sql += "DELETE FROM " + this.Database.Mapping.TableNameForObjects + "\n";
-                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + ";\n";
-
-                sql += "DELETE FROM " + this.Database.Mapping.TableNameForObjectByClass[@class.ExclusiveClass] + "\n";
-                sql += "WHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamNameForObject + ";\n";
-
-                sql += "END;";
-
+                var sql = this.Database.Mapping.ProcedureNameForDeleteObjectByClass[@class];
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
+                command.CommandType = CommandType.StoredProcedure;
                 command.AddObjectParameter(strategy.ObjectId);
 
                 this.deleteObjectByClass[@class] = command;

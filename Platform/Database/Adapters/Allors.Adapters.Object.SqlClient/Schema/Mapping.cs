@@ -95,6 +95,7 @@ namespace Allors.Adapters.Object.SqlClient
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectsByClass;
+        internal readonly Dictionary<IClass, string> ProcedureNameForDeleteObjectByClass;
 
         internal readonly Dictionary<IClass, string> ProcedureNameForGetUnitRolesByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForPrefetchUnitRolesByClass;
@@ -117,6 +118,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private const string ProcedurePrefixForCreateObject = "co_";
         private const string ProcedurePrefixForCreateObjects = "cos_";
+        private const string ProcedurePrefixForDeleteObject = "do_";
         private const string ProcedurePrefixForLoad = "l_";
 
         private const string ProcedurePrefixForGetUnits = "gu_";
@@ -306,6 +308,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.ProcedureNameForLoadObjectByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForCreateObjectByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForCreateObjectsByClass = new Dictionary<IClass, string>();
+            this.ProcedureNameForDeleteObjectByClass = new Dictionary<IClass, string>();
 
             this.ProcedureNameForGetUnitRolesByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForPrefetchUnitRolesByClass = new Dictionary<IClass, string>();
@@ -329,6 +332,7 @@ namespace Allors.Adapters.Object.SqlClient
                 this.LoadObjects(@class);
                 this.CreateObject(@class);
                 this.CreateObjects(@class);
+                this.DeleteObject(@class);
 
                 if (this.Database.GetSortedUnitRolesByObjectType(@class).Length > 0)
                 {
@@ -536,7 +540,7 @@ namespace Allors.Adapters.Object.SqlClient
         public Dictionary<string, string> ProcedureDefinitionByName { get; }
 
         public Dictionary<string, string> TableTypeDefinitionByName { get; }
-        
+
         private void LoadObjects(IClass @class)
         {
             var table = this.TableNameForObjectByClass[@class];
@@ -619,6 +623,27 @@ BEGIN
     SELECT ID, {ParamNameForClass} FROM @IDS;
 
     SELECT id FROM @IDS;
+END";
+
+            this.ProcedureDefinitionByName.Add(name, definition);
+        }
+
+        private void DeleteObject(IClass @class)
+        {
+            var table = this.TableNameForObjectByClass[@class.ExclusiveClass];
+            var name = this.Database.SchemaName + "." + ProcedurePrefixForDeleteObject + @class.Name.ToLowerInvariant();
+            this.ProcedureNameForDeleteObjectByClass.Add(@class, name);
+
+            var definition = $@"
+CREATE PROCEDURE {name}
+    {ParamNameForObject} {SqlTypeForObject}
+AS 
+BEGIN
+    DELETE FROM {this.TableNameForObjects}
+    WHERE {ColumnNameForObject}={ParamNameForObject};
+
+    DELETE FROM {table}
+    WHERE {ColumnNameForObject}={ParamNameForObject};
 END";
 
             this.ProcedureDefinitionByName.Add(name, definition);
