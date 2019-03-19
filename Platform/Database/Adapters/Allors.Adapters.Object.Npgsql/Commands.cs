@@ -96,23 +96,15 @@ namespace Allors.Adapters.Object.Npgsql
         internal void DeleteObject(Strategy strategy)
         {
             this.deleteObjectByClass = this.deleteObjectByClass ?? new Dictionary<IClass, Command>();
-
             var @class = strategy.Class;
 
             if (!this.deleteObjectByClass.TryGetValue(@class, out var command))
             {
-                // TODO: to stored procedure
-                var sql = $@"
-DELETE FROM {this.Database.Mapping.TableNameForObjects}
-WHERE {Mapping.ColumnNameForObject}={Mapping.ParamInvocationNameForObject};
-
-DELETE FROM {this.Database.Mapping.TableNameForObjectByClass[@class.ExclusiveClass]}
-WHERE {Mapping.ColumnNameForObject}={Mapping.ParamInvocationNameForObject};
-";
-
+                var sql = this.Database.Mapping.ProcedureNameForDeleteObjectByClass[@class];
 
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
+                command.CommandType = CommandType.StoredProcedure;
                 command.AddObjectParameter(strategy.ObjectId);
 
                 this.deleteObjectByClass[@class] = command;
@@ -281,6 +273,7 @@ WHERE {Mapping.ColumnNameForObject}={Mapping.ParamInvocationNameForObject};
                 sql.Append("\nWHERE " + Mapping.ColumnNameForObject + "=" + Mapping.ParamInvocationNameForObject + "\n");
 
                 command.CommandText = sql.ToString();
+                command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
 
                 setUnitRoleByRoleType.Add(sortedRoleTypes, command);
@@ -562,7 +555,6 @@ WHERE {Mapping.ColumnNameForObject}={Mapping.ParamInvocationNameForObject};
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandType = CommandType.StoredProcedure;
                 command.AddTypeParameter(@class);
                 command.AddCountParameter(count);
                 this.createObjectsByClass[@class] = command;
@@ -606,6 +598,7 @@ WHERE {Mapping.ColumnNameForObject}={Mapping.ParamInvocationNameForObject};
 
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
+                command.CommandType = CommandType.Text;
                 command.AddObjectParameter(objectId);
                 this.instantiateObject = command;
             }

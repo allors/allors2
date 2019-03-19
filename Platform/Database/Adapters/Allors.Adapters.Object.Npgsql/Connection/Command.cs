@@ -33,10 +33,6 @@ namespace Allors.Adapters.Object.Npgsql
 
     public abstract class Command : IDisposable
     {
-        protected Mapping Mapping { get; }
-
-        protected NpgsqlCommand NpgsqlCommand { get; }
-
         protected internal Command(Mapping mapping, NpgsqlCommand command)
         {
             this.Mapping = mapping;
@@ -56,6 +52,10 @@ namespace Allors.Adapters.Object.Npgsql
             get => this.NpgsqlCommand.CommandText;
             set => this.NpgsqlCommand.CommandText = value;
         }
+
+        protected Mapping Mapping { get; }
+
+        protected NpgsqlCommand NpgsqlCommand { get; }
 
         public void Dispose()
         {

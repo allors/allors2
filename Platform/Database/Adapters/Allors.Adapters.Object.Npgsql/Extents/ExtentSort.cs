@@ -50,21 +50,14 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal void BuildOrder(ExtentStatement statement)
         {
-            if (statement.Sorter.Equals(this))
-            {
-                statement.Append(" ORDER BY " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
-            }
-            else
-            {
-                statement.Append(" , " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
-            }
+            statement.Append(
+                statement.Sorter.Equals(this)
+                    ? $" ORDER BY {statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]}"
+                    : $" , {statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]}");
 
-            statement.Append(this.direction == SortDirection.Ascending ? " ASC " : " DESC ");
+            statement.Append(this.direction == SortDirection.Ascending ? " ASC NULLS FIRST " : " DESC NULLS LAST ");
 
-            if (this.subSorter != null)
-            {
-                this.subSorter.BuildOrder(statement);
-            }
+            this.subSorter?.BuildOrder(statement);
 
             if (this.direction == SortDirection.Ascending)
             {
@@ -78,48 +71,35 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal void BuildOrder(ExtentStatement statement, string alias)
         {
-            if (statement.Sorter.Equals(this))
-            {
-                statement.Append(" ORDER BY " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
-            }
-            else
-            {
-                statement.Append(" , " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]);
-            }
+            statement.Append(
+                statement.Sorter.Equals(this)
+                    ? $" ORDER BY {alias}.{statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]}"
+                    : $" , {alias}.{statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]}");
 
             if (this.direction == SortDirection.Ascending)
             {
-                statement.Append(" ASC ");
+                statement.Append(" ASC NULLS FIRST ");
                 this.AddAscendingAppendix(statement);
             }
             else
             {
-                statement.Append(" DESC ");
+                statement.Append(" DESC NULLS LAST ");
                 this.AddDescendingAppendix(statement);
             }
 
-            if (this.subSorter != null)
-            {
-                this.subSorter.BuildOrder(statement, alias);
-            }
+            this.subSorter?.BuildOrder(statement, alias);
         }
 
         internal void BuildSelect(ExtentStatement statement)
         {
-            statement.Append(" , " + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType] + " ");
-            if (this.subSorter != null)
-            {
-                this.subSorter.BuildSelect(statement);
-            }
+            statement.Append($" , {statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]} ");
+            this.subSorter?.BuildSelect(statement);
         }
 
         internal void BuildSelect(ExtentStatement statement, string alias)
         {
-            statement.Append(" , " + alias + "." + statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType] + " ");
-            if (this.subSorter != null)
-            {
-                this.subSorter.BuildSelect(statement, alias);
-            }
+            statement.Append($" , {alias}.{statement.Mapping.ColumnNameByRelationType[this.roleType.RelationType]} ");
+            this.subSorter?.BuildSelect(statement, alias);
         }
 
         private void AddAscendingAppendix(ExtentStatement statement)

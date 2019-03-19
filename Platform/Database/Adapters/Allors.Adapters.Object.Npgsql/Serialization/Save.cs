@@ -17,6 +17,7 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Xml;
 
     using Allors.Meta;
@@ -83,6 +84,7 @@ namespace Allors.Adapters.Object.Npgsql
                 using (var command = session.Connection.CreateCommand())
                 {
                     command.CommandText = sql;
+                    command.CommandType = CommandType.Text;
                     command.AddInParameter(Mapping.ParamNameForClass, type.Id);
 
                     using (var reader = command.ExecuteReader())
@@ -197,6 +199,7 @@ namespace Allors.Adapters.Object.Npgsql
                     using (var command = session.Connection.CreateCommand())
                     {
                         command.CommandText = sql;
+                        command.CommandType = CommandType.Text;
                         using (var reader = command.ExecuteReader())
                         {
                             if (roleType.IsMany)

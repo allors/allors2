@@ -99,6 +99,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectsByClass;
+        internal readonly Dictionary<IClass, string> ProcedureNameForDeleteObjectByClass;
 
         internal readonly Dictionary<IClass, string> ProcedureNameForGetUnitRolesByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForPrefetchUnitRolesByClass;
@@ -121,6 +122,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         private const string ProcedurePrefixForCreateObject = "co_";
         private const string ProcedurePrefixForCreateObjects = "cos_";
+        private const string ProcedurePrefixForDeleteObject = "do_";
         private const string ProcedurePrefixForLoad = "l_";
 
         private const string ProcedurePrefixForGetUnits = "gu_";
@@ -222,6 +224,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.ProcedureNameForLoadObjectByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForCreateObjectByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForCreateObjectsByClass = new Dictionary<IClass, string>();
+            this.ProcedureNameForDeleteObjectByClass = new Dictionary<IClass, string>();
 
             this.ProcedureNameForGetUnitRolesByClass = new Dictionary<IClass, string>();
             this.ProcedureNameForPrefetchUnitRolesByClass = new Dictionary<IClass, string>();
@@ -245,6 +248,7 @@ namespace Allors.Adapters.Object.Npgsql
                 this.LoadObjects(@class);
                 this.CreateObject(@class);
                 this.CreateObjects(@class);
+                this.DeleteObject(@class);
 
                 if (this.Database.GetSortedUnitRolesByObjectType(@class).Length > 0)
                 {
@@ -418,6 +422,29 @@ $$;";
 
             this.ProcedureDefinitionByName.Add(this.ProcedureNameForCreateObjectsByClass[@class], definition);
         }
+
+        private void DeleteObject(IClass @class)
+        {
+            var name = this.Database.SchemaName + "." + ProcedurePrefixForDeleteObject + @class.Name.ToLowerInvariant();
+
+            var definition = $@"DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
+CREATE FUNCTION {name}({ParamNameForObject} {SqlTypeForObject})
+    RETURNS void
+    LANGUAGE sql
+AS $$
+
+    DELETE FROM {this.TableNameForObjects}
+    WHERE {ColumnNameForObject}={ParamNameForObject};
+
+    DELETE FROM {this.TableNameForObjectByClass[@class]}
+    WHERE {ColumnNameForObject}={ParamNameForObject};
+$$;
+";
+
+            this.ProcedureNameForDeleteObjectByClass.Add(@class, name);
+            this.ProcedureDefinitionByName.Add(name, definition);
+        }
+
 
         private void GetUnitRoles(IClass @class)
         {

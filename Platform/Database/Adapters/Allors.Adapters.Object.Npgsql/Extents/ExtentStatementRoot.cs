@@ -21,6 +21,7 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Text;
 
     using Allors.Meta;
@@ -109,6 +110,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             this.command = this.Session.Connection.CreateCommand();
             this.command.CommandText = this.sql.ToString();
+            this.command.CommandType = CommandType.Text;
 
             foreach (var paramInvocationNameByParamValuePair in this.paramInvocationNameByParamValue)
             {
