@@ -17,6 +17,9 @@ namespace Allors.Domain
 {
     public partial class ProductQuote
     {
-        public new string ToString() => this.QuoteNumber ?? this.Description;
+        public override string ToString()
+        {
+            return this.QuoteNumber ?? this.Description;
+        }
     }
 }

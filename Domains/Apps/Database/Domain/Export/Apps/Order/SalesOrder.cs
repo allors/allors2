@@ -158,18 +158,6 @@ namespace Allors.Domain
                     derivation.AddDependency(this, orderItem);
                 }
 
-                foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
-                {
-                    if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
-                    {
-                        derivation.AddDependency(salesOrderItem.ReservedFromNonSerialisedInventoryItem, this);
-
-                        if (!salesOrderItem.ReservedFromNonSerialisedInventoryItem.Equals(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem))
-                        {
-                            derivation.AddDependency(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem, this);
-                        }
-                    }
-                }
             }
         }
 

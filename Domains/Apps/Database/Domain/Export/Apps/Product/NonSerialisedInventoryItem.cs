@@ -44,12 +44,14 @@ namespace Allors.Domain
             if (derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityOnHand) 
                 || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityCommittedOut) 
                 || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityExpectedIn) 
-                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.AvailableToPromise))
+                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.AvailableToPromise)
+                || derivation.IsMarked(this))
             {
                 foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
                 {
                     if (salesOrderItem.SalesOrderItemState.InProcess)
                     {
+                        derivation.Mark(salesOrderItem);
                         derivation.AddDependency(salesOrderItem, this);
                     }
                 }
@@ -92,7 +94,7 @@ namespace Allors.Domain
             var settings = this.Strategy.Session.GetSingleton().Settings;
 
             // TODO: Test for changes in these relations for performance reasons
-            this.QuantityOnHand = 0M;
+            var quantityOnHand = 0M;
 
             if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
             {
@@ -105,11 +107,11 @@ namespace Allors.Domain
 
                 if (reason.IncreasesQuantityOnHand == true)
                 {
-                    this.QuantityOnHand += inventoryTransaction.Quantity;
+                    quantityOnHand += inventoryTransaction.Quantity;
                 }
                 else if (reason.IncreasesQuantityOnHand == false)
                 {
-                    this.QuantityOnHand -= inventoryTransaction.Quantity;
+                    quantityOnHand -= inventoryTransaction.Quantity;
                 }
             }
 
@@ -117,7 +119,7 @@ namespace Allors.Domain
             {
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.QuantityOnHand -= pickListItem.QuantityPicked;
+                    quantityOnHand -= pickListItem.QuantityPicked;
                 }
             }
 
@@ -128,16 +130,18 @@ namespace Allors.Domain
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
                     if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Delivered))
                     {
-                        this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
+                        quantityOnHand += shipmentReceipt.QuantityAccepted;
                     }
                 }
             }
+
+            this.QuantityOnHand = quantityOnHand;
         }
 
         public void AppsOnDeriveQuantityCommittedOut(IDerivation derivation)
         {
             // TODO: Test for changes in these relations for performance reasons
-            this.QuantityCommittedOut = 0M;
+            var quantityCommittedOut = 0M;
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
             {
@@ -148,14 +152,14 @@ namespace Allors.Domain
                         var orderKind = orderShipment.OrderItem?.OrderWhereValidOrderItem?.OrderKind;
                         if (orderKind?.ScheduleManually == true)
                         {
-                            this.QuantityCommittedOut += pickListItem.Quantity;
+                            quantityCommittedOut += pickListItem.Quantity;
                         }
                     }
                 }
 
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.QuantityCommittedOut -= pickListItem.QuantityPicked;
+                    quantityCommittedOut -= pickListItem.QuantityPicked;
                 }
             }
 
@@ -165,13 +169,15 @@ namespace Allors.Domain
 
                 if (reason.IncreasesQuantityCommittedOut == true)
                 {
-                    this.QuantityCommittedOut += inventoryTransaction.Quantity;
+                    quantityCommittedOut += inventoryTransaction.Quantity;
                 }
                 else if (reason.IncreasesQuantityCommittedOut == false)
                 {
-                    this.QuantityCommittedOut -= inventoryTransaction.Quantity;
+                    quantityCommittedOut -= inventoryTransaction.Quantity;
                 }
             }
+
+            this.QuantityCommittedOut = quantityCommittedOut;
         }
 
         public void AppsOnDeriveQuantityExpectedIn(IDerivation derivation)

@@ -22,8 +22,12 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
+
+            derivation.Mark(this.InventoryItem);
             derivation.AddDependency(this.InventoryItem, this);
-            derivation.AddDependency(this.SalesOrderItem.SalesOrderWhereSalesOrderItem, this);
+
+            derivation.Mark(this.SalesOrderItem);
+            derivation.AddDependency(this.SalesOrderItem, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

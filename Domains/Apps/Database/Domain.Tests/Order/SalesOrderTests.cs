@@ -788,9 +788,15 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            this.Session.Derive();
+            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
+                {
+                    DerivationLogFunc = () => new CustomListDerivationLog()
+                }
+            );
 
-            Assert.False(customer.ExistShipmentsWhereShipToParty);
+            derivation.Derive();
+
+           Assert.False(customer.ExistShipmentsWhereShipToParty);
 
             Assert.Equal(10, item1.QuantityRequestsShipping);
             Assert.Equal(0, item1.QuantityPendingShipment);
@@ -2074,6 +2080,11 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
+
+            this.Session.Derive();
+
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
@@ -2095,9 +2106,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(6, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(4, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(3, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(7, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
         }
 
         [Fact]
@@ -2577,5 +2588,8 @@ namespace Allors.Domain
             Assert.Contains(salesrep2, order.SalesReps);
             Assert.Contains(salesrep3, order.SalesReps);
         }
+
+      
+
     }
 }

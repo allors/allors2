@@ -18,6 +18,9 @@ namespace Allors.Domain
 {
     public partial class SalesInvoice
     {
-        public new string ToString() => this.InvoiceNumber ?? this.Description;
+        public override string ToString()
+        {
+            return this.InvoiceNumber ?? this.Description;
+        }
     }
 }

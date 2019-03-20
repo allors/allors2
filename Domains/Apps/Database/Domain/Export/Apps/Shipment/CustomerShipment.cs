@@ -598,7 +598,7 @@ namespace Allors.Domain
                     {
                         foreach (ItemIssuance itemIssuance in orderShipment.ShipmentItem.ItemIssuancesWhereShipmentItem)
                         {
-                            if (!itemIssuance.PickListItem.PickListWherePickListItem.ExistPicker)
+                            if (!itemIssuance.PickListItem.PickListWherePickListItem.ExistPicker && itemIssuance.Quantity == 0)
                             {
                                 itemIssuance.Delete();
                             }

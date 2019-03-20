@@ -141,12 +141,12 @@ namespace Allors.Domain
 
         public void AppsSetPicked(PickListSetPicked method)
         {
-            this.PickListState = new PickListStates(this.Strategy.Session).Picked;
-
             foreach (PickListItem pickListItem in this.PickListItems)
             {
                 pickListItem.QuantityPicked = pickListItem.Quantity;
             }
+
+            this.PickListState = new PickListStates(this.Strategy.Session).Picked;
         }
     }
 }

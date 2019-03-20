@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkTask.cs" company="Allors bvba">
+// <copyright file="AccountingPeriod.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,13 +13,15 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Allors.Domain
 {
-    public partial class WorkTask
+    public partial class TimeFrequency
     {
         public override string ToString()
         {
-            return this.WorkEffortNumber ?? this.Name;
+            return this.Name;
+
         }
     }
 }

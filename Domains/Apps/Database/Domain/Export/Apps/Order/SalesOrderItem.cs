@@ -80,6 +80,18 @@ namespace Allors.Domain
                     derivation.Mark(featureItem);
                     derivation.AddDependency(this, featureItem);
                 }
+
+                if (this.ExistReservedFromNonSerialisedInventoryItem)
+                {
+                    derivation.Mark(this.ReservedFromNonSerialisedInventoryItem);
+                    derivation.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
+
+                    if (!this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
+                    {
+                        derivation.Mark(this.PreviousReservedFromNonSerialisedInventoryItem);
+                        derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
+                    }
+                }
             }
         }
 

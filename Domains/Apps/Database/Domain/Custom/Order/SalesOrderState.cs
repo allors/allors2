@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkTask.cs" company="Allors bvba">
+// <copyright file="SalesOrderStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,11 +15,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    public partial class WorkTask
+    using System;
+
+    public partial class SalesOrderState
     {
         public override string ToString()
         {
-            return this.WorkEffortNumber ?? this.Name;
+            return $"{this.Name}";
         }
     }
 }

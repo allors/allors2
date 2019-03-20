@@ -23,11 +23,6 @@ namespace Allors.Domain
 
     public partial class Organisation
     {
-        public override string ToString()
-        {
-            return $"Organisation: {this.Id} {this.Name}";
-        }
-
         private bool IsDeletable => !this.ExistCurrentContacts;
 
         public void AppsOnBuild(ObjectOnBuild method)

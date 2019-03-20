@@ -51,7 +51,7 @@ namespace Allors.Domain.Logging
 
         public static string FormatAddedDependency(Object dependent, Object dependee)
         {
-            return $"{"Dependency",-TabWith} " + FormatDerivable(dependent) + " -> " + FormatDerivable(dependee);
+            return $"{"Dependency",-TabWith} " + FormatDerivable(dependent) + " <- " + FormatDerivable(dependee);
         }
 
         public static string FormatAddedError(IDerivationError derivationError)
@@ -91,7 +91,8 @@ namespace Allors.Domain.Logging
 
         private static object FormatDerivable(Object derivable)
         {
-            return $"'{derivable,-40}' [{derivable.Strategy.Class.Name,20}#{derivable.Id,-10}]";
+            var info =  $"{derivable.Strategy.Class.Name}: {derivable}";
+            return $"[{info, 80}]";
         }
     }
 }

@@ -24,8 +24,6 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        public new string ToString() => $"Person {this.Id} {this.PartyName}";
-
         private bool IsDeletable =>
             !this.ExistCurrentOrganisationContactRelationships
             && !this.ExistEmploymentsWhereEmployee

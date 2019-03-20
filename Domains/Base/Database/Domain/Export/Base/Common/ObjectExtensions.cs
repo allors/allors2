@@ -35,10 +35,7 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             if (derivation.IsModified(@this))
             {
-                if (!derivation.DerivedObjects.Contains(@this))
-                {
-                    derivation.Add(@this);
-                }
+                derivation.Add(@this);
             }
         }
 

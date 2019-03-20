@@ -24,8 +24,6 @@ namespace Allors.Domain
 
     public partial class NonUnifiedPart
     {
-        public new string ToString() => this.Name ?? this.Id.ToString();
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistInventoryItemKind)

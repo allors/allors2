@@ -20,8 +20,6 @@ namespace Allors.Domain
 {
     public partial class TimeFrequency
     {
-        public new string ToString() => this.Name;
-
         public decimal? GetConvertToFactor(TimeFrequency timeFrquency)
             => this.UnitOfMeasureConversions?.FirstOrDefault(c => c.ToUnitOfMeasure.Equals(timeFrquency)).ConversionFactor;
 

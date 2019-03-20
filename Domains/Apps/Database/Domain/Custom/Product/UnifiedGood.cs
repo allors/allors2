@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Facilities.cs" company="Allors bvba">
+// <copyright file="NonUnifiedPart.v.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,12 +13,14 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
-    public partial class Facility
+    public partial class UnifiedGood
     {
-        public new string ToString() => this.Name;
+        public override string ToString()
+        {
+            return $"{this.Name}";
+        }
     }
 }
