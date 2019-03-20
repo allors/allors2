@@ -788,15 +788,9 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
-                {
-                    DerivationLogFunc = () => new CustomListDerivationLog()
-                }
-            );
+            this.Session.Derive();
 
-            derivation.Derive();
-
-           Assert.False(customer.ExistShipmentsWhereShipToParty);
+            Assert.False(customer.ExistShipmentsWhereShipToParty);
 
             Assert.Equal(10, item1.QuantityRequestsShipping);
             Assert.Equal(0, item1.QuantityPendingShipment);
@@ -808,7 +802,14 @@ namespace Allors.Domain
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
-            this.Session.Derive();
+
+            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
+                {
+                    DerivationLogFunc = () => new CustomListDerivationLog()
+                }
+            );
+
+            derivation.Derive();
 
             Assert.False(customer.ExistShipmentsWhereShipToParty);
 

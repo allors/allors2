@@ -245,10 +245,6 @@ namespace Allors.Domain
                         {
                             inventoryAssignment.Quantity = diff;
                         }
-
-                        //salesOrderItem.QuantityRequestsShipping += diff;
-                        //salesOrderItem.QuantityShortFalled -= diff;
-                        //salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
             }
@@ -281,14 +277,11 @@ namespace Allors.Domain
 
                     subtract -= diff;
 
-                    salesOrderItem.QuantityRequestsShipping -= diff;
-                    if (salesOrderItem.QuantityRequestsShipping < 0)
+                    var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                    if (inventoryAssignment != null)
                     {
-                        salesOrderItem.QuantityRequestsShipping = 0;
+                        inventoryAssignment.Quantity = diff;
                     }
-
-                    salesOrderItem.QuantityShortFalled = salesOrderItem.QuantityOrdered - salesOrderItem.QuantityRequestsShipping;
-                    salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
         }

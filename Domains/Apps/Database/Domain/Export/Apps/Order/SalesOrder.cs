@@ -973,6 +973,8 @@ namespace Allors.Domain
                                 {
                                     orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
                                 }
+
+                                orderItem.QuantityRequestsShipping = 0;
                             }
                         }
 

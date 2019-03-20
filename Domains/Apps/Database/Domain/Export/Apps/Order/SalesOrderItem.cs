@@ -69,28 +69,25 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.IsModified(this))
+            var salesOrder = this.SalesOrderWhereSalesOrderItem;
+            derivation.Mark(salesOrder);
+            derivation.AddDependency(salesOrder, this);
+
+            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
             {
-                var salesOrder = this.SalesOrderWhereSalesOrderItem;
-                derivation.Mark(salesOrder);
-                derivation.AddDependency(salesOrder, this);
+                derivation.Mark(featureItem);
+                derivation.AddDependency(this, featureItem);
+            }
 
-                foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+            if (this.ExistReservedFromNonSerialisedInventoryItem)
+            {
+                derivation.Mark(this.ReservedFromNonSerialisedInventoryItem);
+                derivation.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
+
+                if (!this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
                 {
-                    derivation.Mark(featureItem);
-                    derivation.AddDependency(this, featureItem);
-                }
-
-                if (this.ExistReservedFromNonSerialisedInventoryItem)
-                {
-                    derivation.Mark(this.ReservedFromNonSerialisedInventoryItem);
-                    derivation.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
-
-                    if (!this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
-                    {
-                        derivation.Mark(this.PreviousReservedFromNonSerialisedInventoryItem);
-                        derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
-                    }
+                    derivation.Mark(this.PreviousReservedFromNonSerialisedInventoryItem);
+                    derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
                 }
             }
         }

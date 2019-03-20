@@ -65,6 +65,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            derivation.Mark(this.InventoryItem);
             derivation.AddDependency(this.InventoryItem, this);
         }
 
