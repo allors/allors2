@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 
 namespace Allors.Domain
 {
@@ -239,9 +240,15 @@ namespace Allors.Domain
 
                         extra -= diff;
 
-                        salesOrderItem.QuantityRequestsShipping += diff;
-                        salesOrderItem.QuantityShortFalled -= diff;
-                        salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                        var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                        if (inventoryAssignment != null)
+                        {
+                            inventoryAssignment.Quantity = diff;
+                        }
+
+                        //salesOrderItem.QuantityRequestsShipping += diff;
+                        //salesOrderItem.QuantityShortFalled -= diff;
+                        //salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
             }
