@@ -340,9 +340,7 @@ namespace Allors.Domain
                     // Derive
                     var generationPostDeriveObjects = new List<Object>();
 
-                    //this.derivationGraph.Derive(generationPostDeriveObjects);
-
-                    this.derivationGraph.Derive2(this.dependees, generationPostDeriveObjects);
+                    this.derivationGraph.Derive(this.dependees, generationPostDeriveObjects);
 
                     // Keep derivation order within a generation,
                     // but post derive generations backwards

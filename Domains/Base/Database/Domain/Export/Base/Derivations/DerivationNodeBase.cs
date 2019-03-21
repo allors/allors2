@@ -28,9 +28,6 @@ namespace Allors.Domain
     public abstract class DerivationNodeBase : IEquatable<DerivationNodeBase>
     {
         private readonly Object derivable;
-
-        private bool visited;
-        private DerivationNodeBase currentRoot;
         private HashSet<DerivationNodeBase> dependencies;
 
         protected DerivationNodeBase(Object derivable)
@@ -38,11 +35,28 @@ namespace Allors.Domain
             this.derivable = derivable;
         }
 
-        public void TopologicalDerive(DerivationBase derivation, List<Object> derivedObjects)
+        public void Derive(DerivationBase derivation, List<Object> derivedObjects)
         {
-            this.TopologicalDerive(derivation, this, derivedObjects);
+            if (this.dependencies != null)
+            {
+                foreach (var dependency in this.dependencies)
+                {
+                    dependency.Derive(derivation, derivedObjects);
+                }
+            }
+
+            if (!this.derivable.Strategy.IsDeleted)
+            {
+                this.OnDeriving(this.derivable);
+                this.derivable.OnDerive(x => x.WithDerivation(derivation));
+                this.OnDerived(this.derivable);
+
+                derivedObjects.Add(this.derivable);
+            }
+
+            derivation.AddDerivedObject(this.derivable);
         }
-        
+
         public void AddDependency(DerivationNodeBase derivationNode)
         {
             if (this.dependencies == null)
@@ -78,65 +92,5 @@ namespace Allors.Domain
         protected abstract void OnDeriving(Object derivable);
 
         protected abstract void OnDerived(Object derivable);
-
-        private void TopologicalDerive(DerivationBase derivation, DerivationNodeBase root, List<Object> derivedObjects)
-        {
-            if (this.visited)
-            {
-                if (root.Equals(this.currentRoot))
-                {
-                    this.OnCycle(root.derivable, this.derivable);
-                    throw new Exception("This derivation has a cycle. (" + this.currentRoot + " -> " + this + ")");
-                }
-
-                return;
-            }
-
-            this.visited = true;
-            this.currentRoot = root;
-
-            if (this.dependencies != null)
-            {
-                foreach (var dependency in this.dependencies)
-                {
-                    dependency.TopologicalDerive(derivation, root, derivedObjects);
-                }
-            }
-
-            if (!this.derivable.Strategy.IsDeleted)
-            {
-                this.OnDeriving(this.derivable);
-                this.derivable.OnDerive(x => x.WithDerivation(derivation));
-                this.OnDerived(this.derivable);
-
-                derivedObjects.Add(this.derivable);
-            }
-
-            derivation.AddDerivedObject(this.derivable);
-
-            this.currentRoot = null;
-        }
-
-        public void Derive2(DerivationBase derivation, List<Object> derivedObjects)
-        {
-            if (this.dependencies != null)
-            {
-                foreach (var dependency in this.dependencies)
-                {
-                    dependency.Derive2(derivation, derivedObjects);
-                }
-            }
-
-            if (!this.derivable.Strategy.IsDeleted)
-            {
-                this.OnDeriving(this.derivable);
-                this.derivable.OnDerive(x => x.WithDerivation(derivation));
-                this.OnDerived(this.derivable);
-
-                derivedObjects.Add(this.derivable);
-            }
-
-            derivation.AddDerivedObject(this.derivable);
-        }
     }
 }
