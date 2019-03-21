@@ -30,7 +30,6 @@ namespace Allors.Domain
 
             if (derivation.IsModified(this))
             {
-                derivation.Mark(this.OrderItem);
                 derivation.AddDependency(this.OrderItem.OrderWhereValidOrderItem, this);
             }
         }

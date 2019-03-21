@@ -64,7 +64,6 @@ namespace Allors.Domain
         /// <ul>
         /// <li>it has been created</li>
         /// <li>it has changed roles</li>
-        /// <li>it is marked as modified</li>
         /// </ul>
         /// </summary>
         /// <param name="derivable">The derivable object.</param>
@@ -75,7 +74,7 @@ namespace Allors.Domain
 
         bool IsCreated(Object derivable);
 
-        bool IsMarked(Object derivable);
+        bool InDependency(Object derivable);
 
         bool HasChangedRole(Object derivable, RoleType roleType);
 
@@ -86,13 +85,5 @@ namespace Allors.Domain
         bool HasChangedAssociations(Object derivable, params AssociationType[] associationTypes);
 
         bool HasChangedRoles(Object derivable, RelationKind relationKind);
-
-        void Mark(Object derivable, RelationType relationType = null);
-
-        void Mark(Object derivable, RoleType roleType);
-
-        void Mark(IEnumerable<Object> derivables);
-
-        ISet<RelationType> MarkedBy(Object marker);
     }
 }

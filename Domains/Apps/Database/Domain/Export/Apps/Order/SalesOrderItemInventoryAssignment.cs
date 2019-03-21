@@ -23,10 +23,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Mark(this.InventoryItem);
             derivation.AddDependency(this.InventoryItem, this);
-
-            derivation.Mark(this.SalesOrderItem);
             derivation.AddDependency(this.SalesOrderItem, this);
         }
 

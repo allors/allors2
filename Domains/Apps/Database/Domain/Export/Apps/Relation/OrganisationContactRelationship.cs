@@ -27,8 +27,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.AddDependency(this.Organisation, this);
-            derivation.Mark(this.Organisation, M.OrganisationContactRelationship.Organisation);
-
             derivation.AddDependency(this.Contact, this);
         }
 
