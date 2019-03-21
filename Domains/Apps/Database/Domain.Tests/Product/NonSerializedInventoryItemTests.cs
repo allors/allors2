@@ -158,10 +158,10 @@ namespace Allors.Domain
             order1.AddSalesOrderItem(salesItem2);
 
             var order2 = CreateSalesOrder(customer, customer, DateTime.UtcNow.AddDays(1));
-            var salesitem3 = CreateSalesOrderItem("item3", good, 10, 15);
+            var salesItem3 = CreateSalesOrderItem("item3", good, 10, 15);
             var salesItem4 = CreateSalesOrderItem("item4", good, 20, 15);
 
-            order2.AddSalesOrderItem(salesitem3);
+            order2.AddSalesOrderItem(salesItem3);
             order2.AddSalesOrderItem(salesItem4);
 
             this.Session.Derive();
@@ -169,6 +169,13 @@ namespace Allors.Domain
 
             // Act
             order1.Confirm();
+
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+
             order2.Confirm();
 
             this.Session.Derive(true);
@@ -185,10 +192,10 @@ namespace Allors.Domain
             Assert.Equal(20, salesItem2.QuantityReserved);
             Assert.Equal(20, salesItem2.QuantityShortFalled);
 
-            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
-            Assert.Equal(0, salesitem3.QuantityPendingShipment);
-            Assert.Equal(10, salesitem3.QuantityReserved);
-            Assert.Equal(10, salesitem3.QuantityShortFalled);
+            Assert.Equal(0, salesItem3.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem3.QuantityPendingShipment);
+            Assert.Equal(10, salesItem3.QuantityReserved);
+            Assert.Equal(10, salesItem3.QuantityShortFalled);
 
             Assert.Equal(0, salesItem4.QuantityRequestsShipping);
             Assert.Equal(0, salesItem4.QuantityPendingShipment);
@@ -217,10 +224,10 @@ namespace Allors.Domain
             Assert.Equal(20, salesItem2.QuantityReserved);
             Assert.Equal(10, salesItem2.QuantityShortFalled);
 
-            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
-            Assert.Equal(0, salesitem3.QuantityPendingShipment);
-            Assert.Equal(10, salesitem3.QuantityReserved);
-            Assert.Equal(10, salesitem3.QuantityShortFalled);
+            Assert.Equal(0, salesItem3.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem3.QuantityPendingShipment);
+            Assert.Equal(10, salesItem3.QuantityReserved);
+            Assert.Equal(10, salesItem3.QuantityShortFalled);
 
             Assert.Equal(0, salesItem4.QuantityRequestsShipping);
             Assert.Equal(0, salesItem4.QuantityPendingShipment);
@@ -249,10 +256,10 @@ namespace Allors.Domain
             Assert.Equal(20, salesItem2.QuantityReserved);
             Assert.Equal(0, salesItem2.QuantityShortFalled);
 
-            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
-            Assert.Equal(10, salesitem3.QuantityPendingShipment);
-            Assert.Equal(10, salesitem3.QuantityReserved);
-            Assert.Equal(0, salesitem3.QuantityShortFalled);
+            Assert.Equal(0, salesItem3.QuantityRequestsShipping);
+            Assert.Equal(10, salesItem3.QuantityPendingShipment);
+            Assert.Equal(10, salesItem3.QuantityReserved);
+            Assert.Equal(0, salesItem3.QuantityShortFalled);
 
             Assert.Equal(0, salesItem4.QuantityRequestsShipping);
             Assert.Equal(20, salesItem4.QuantityPendingShipment);

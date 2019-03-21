@@ -143,7 +143,10 @@ namespace Allors.Domain
         {
             foreach (PickListItem pickListItem in this.PickListItems)
             {
-                pickListItem.QuantityPicked = pickListItem.Quantity;
+                if (pickListItem.QuantityPicked == 0)
+                {
+                    pickListItem.QuantityPicked = pickListItem.Quantity;
+                }
             }
 
             this.PickListState = new PickListStates(this.Strategy.Session).Picked;

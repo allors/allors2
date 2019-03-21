@@ -136,7 +136,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.True(salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Single(salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
+            Assert.Equal(2, salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.Count);
 
             var previousInventoryItem = (NonSerialisedInventoryItem) this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
             var currentInventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;

@@ -637,6 +637,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+
             this.Session.Derive();
 
             var secondWarehouse = new FacilityBuilder(this.Session)
@@ -645,17 +647,23 @@ namespace Allors.Domain
                 .WithOwner(this.InternalOrganisation)
                 .Build();
 
+            var order1 = new SalesOrderBuilder(this.Session)
+                .WithShipToCustomer(this.shipToCustomer)
+                .WithBillToCustomer(this.billToCustomer)
+                .WithPartiallyShip(false)
+                .Build();
+
             var salesOrderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(3)
                 .WithAssignedUnitPrice(5)
                 .Build();
 
-            this.order.AddSalesOrderItem(salesOrderItem);
+            order1.AddSalesOrderItem(salesOrderItem);
 
             this.Session.Derive();
 
-            this.order.Confirm();
+            order1.Confirm();
 
             this.Session.Derive();
 
@@ -663,15 +671,15 @@ namespace Allors.Domain
             Assert.Equal(0, salesOrderItem.QuantityShipped);
             Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
             Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(3, salesOrderItem.QuantityShortFalled);
-            Assert.Equal(0, salesOrderItem.QuantityRequestsShipping);
-            Assert.Equal(0, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(2, salesOrderItem.QuantityShortFalled);
+            Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
+            Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(0, salesOrderItem.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(0, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+            Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             var previous = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
 
-            var transaction = new InventoryItemTransactionBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
+            var transaction = new InventoryItemTransactionBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             this.Session.Derive();
 
@@ -683,16 +691,16 @@ namespace Allors.Domain
 
             Assert.Equal(3, salesOrderItem.QuantityOrdered);
             Assert.Equal(0, salesOrderItem.QuantityShipped);
-            Assert.Equal(3, salesOrderItem.QuantityPendingShipment);
+            Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
             Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(0, salesOrderItem.QuantityShortFalled);
-            Assert.Equal(0, salesOrderItem.QuantityRequestsShipping);
+            Assert.Equal(1, salesOrderItem.QuantityShortFalled);
+            Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
             Assert.Equal(0, previous.QuantityCommittedOut);
-            Assert.Equal(0, previous.AvailableToPromise);
-            Assert.Equal(0, previous.QuantityOnHand);
-            Assert.Equal(3, current.QuantityCommittedOut);
-            Assert.Equal(107, current.AvailableToPromise);
-            Assert.Equal(110, current.QuantityOnHand);
+            Assert.Equal(1, previous.AvailableToPromise);
+            Assert.Equal(1, previous.QuantityOnHand);
+            Assert.Equal(1, current.QuantityCommittedOut);
+            Assert.Equal(0, current.AvailableToPromise);
+            Assert.Equal(1, current.QuantityOnHand);
         }
 
         [Fact]

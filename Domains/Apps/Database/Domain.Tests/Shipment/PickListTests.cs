@@ -203,8 +203,8 @@ namespace Allors.Domain
             Assert.Equal(0, item5.QuantityRequestsShipping);
             Assert.Equal(97, good1Inventory.QuantityOnHand);
             Assert.Equal(0, good1Inventory.QuantityCommittedOut);
-            Assert.Equal(95, good2Inventory.QuantityOnHand);
-            Assert.Equal(0, good2Inventory.QuantityCommittedOut);
+            Assert.Equal(96, good2Inventory.QuantityOnHand);
+            Assert.Equal(1, good2Inventory.QuantityCommittedOut);
         }
 
         [Fact]
@@ -295,6 +295,7 @@ namespace Allors.Domain
 
             Assert.Equal(5, itemIssuance.Quantity);
             Assert.Equal(5, shipmentItem.Quantity);
+            Assert.Equal(5, item3.QuantityPendingShipment);
 
             adjustedPicklistItem.QuantityPicked = 4;
 
@@ -304,6 +305,7 @@ namespace Allors.Domain
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);
+            Assert.Equal(4, item3.QuantityPendingShipment);
         }
 
         [Fact]

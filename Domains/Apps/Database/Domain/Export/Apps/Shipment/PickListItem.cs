@@ -38,10 +38,47 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // exclude negative picklist
             if (this.Quantity > 0 && this.QuantityPicked > this.Quantity)
             {
                 derivation.Validation.AddError(this, M.PickListItem.QuantityPicked, ErrorMessages.PickListItemQuantityMoreThanAllowed);
+            }
+
+            this.AppsOnDeriveOrderItemAdjustment(derivation);
+        }
+
+        public void AppsOnDeriveOrderItemAdjustment(IDerivation derivation)
+        {
+            if (this.QuantityPicked > 0 && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked))
+            {
+                var diff = this.Quantity - this.QuantityPicked;
+
+                foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
+                {
+                    itemIssuance.IssuanceDateTime = DateTime.UtcNow;
+                    foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
+                    {
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
+                        {
+                            if (diff > 0)
+                            {
+                                if (orderShipment.Quantity >= diff)
+                                {
+                                    orderShipment.Quantity -= diff;
+                                    orderShipment.ShipmentItem.Quantity -= diff;
+                                    itemIssuance.Quantity -= diff;
+                                    diff = 0;
+                                }
+                                else
+                                {
+                                    orderShipment.ShipmentItem.Quantity -= orderShipment.Quantity;
+                                    itemIssuance.Quantity -= orderShipment.Quantity;
+                                    diff -= orderShipment.Quantity;
+                                    orderShipment.Quantity = 0;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
