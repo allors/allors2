@@ -50,5 +50,9 @@ namespace Allors.Domain
             method.result = method.a + method.b;
         }
 
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

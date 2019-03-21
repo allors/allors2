@@ -63,10 +63,10 @@ namespace Tests
         [Fact]
         public void SortDiamond()
         {
-            var a = new C1Builder(this.Session).Build();
-            var b = new C1Builder(this.Session).Build();
-            var c = new C1Builder(this.Session).Build();
-            var d = new C1Builder(this.Session).Build();
+            var a = new C1Builder(this.Session).WithName("a").Build();
+            var b = new C1Builder(this.Session).WithName("b").Build();
+            var c = new C1Builder(this.Session).WithName("c").Build();
+            var d = new C1Builder(this.Session).WithName("d").Build();
 
             a.AddDependency(b);
             a.AddDependency(c);
@@ -82,12 +82,12 @@ namespace Tests
             derivation.Derive();
 
             Assert.Equal(d, sequence[0]);
-            Assert.Equal(a, sequence[3]);
+            Assert.Equal(a, sequence[4]);
 
             Assert.Equal(1, a.DerivationCount);
             Assert.Equal(1, b.DerivationCount);
             Assert.Equal(1, c.DerivationCount);
-            Assert.Equal(1, d.DerivationCount);
+            Assert.Equal(2, d.DerivationCount);
         }
 
         [Fact]
