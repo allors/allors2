@@ -36,7 +36,6 @@ namespace Allors.Domain
 
         private readonly HashSet<Object> derivedObjects;
 
-        private readonly Dictionary<long, ISet<RelationType>> relationsByMarker;
         private readonly AccumulatedChangeSet accumulatedChangeSet;
 
         private Dictionary<string, object> properties;
@@ -46,6 +45,7 @@ namespace Allors.Domain
         private int generation;
 
         private DerivationGraphBase derivationGraph;
+        private HashSet<IObject> inDependencies;
         private HashSet<IObject> added;
 
         protected DerivationBase(ISession session, DerivationConfig config)
@@ -56,8 +56,6 @@ namespace Allors.Domain
             this.TimeStamp = session.Now();
 
             this.Session = session;
-
-            this.relationsByMarker = new Dictionary<long, ISet<RelationType>>();
 
             this.derivedObjects = new HashSet<Object>();
 
@@ -130,12 +128,12 @@ namespace Allors.Domain
 
         public bool IsModified(Object @object)
         {
-            return this.IsMarked(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
+            return this.InDependency(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
         }
 
         public bool IsModified(Object @object, RelationKind kind)
         {
-            return this.IsMarked(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
+            return this.InDependency(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
         }
 
         public bool IsCreated(Object derivable)
@@ -217,50 +215,9 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool IsMarked(Object derivable)
+        public bool InDependency(Object derivable)
         {
-            return this.relationsByMarker.ContainsKey(derivable.Id);
-        }
-
-        public void Mark(Object derivable, RelationType relationType = null)
-        {
-            if (derivable != null)
-            {
-                if (!this.relationsByMarker.TryGetValue(derivable.Id, out var relationTypes) && relationType == null)
-                {
-                    this.relationsByMarker.Add(derivable.Id, null);
-                }
-
-                if (relationType != null)
-                {
-                    if (relationTypes == null)
-                    {
-                        relationTypes = new HashSet<RelationType>();
-                        this.relationsByMarker[derivable.Id] = relationTypes;
-                    }
-
-                    relationTypes.Add(relationType);
-                }
-            }
-        }
-
-        public void Mark(Object derivable, RoleType roleType)
-        {
-            this.Mark(derivable, roleType.RelationType);
-        }
-
-        public void Mark(IEnumerable<Object> derivables)
-        {
-            foreach (var derivable in derivables)
-            {
-                this.Mark(derivable);
-            }
-        }
-
-        public ISet<RelationType> MarkedBy(Object marker)
-        {
-            this.relationsByMarker.TryGetValue(marker.Id, out var relationTypes);
-            return relationTypes;
+            return this.inDependencies.Contains(derivable);
         }
 
         public void Add(Object derivable)
@@ -308,6 +265,8 @@ namespace Allors.Domain
 
                 this.added.Add(dependent);
                 this.added.Add(dependee);
+                this.inDependencies.Add(dependent);
+                this.inDependencies.Add(dependee);
                 this.derivationGraph.AddDependency(dependent, dependee);
 
                 this.OnAddedDependency(dependent, dependee);
@@ -327,7 +286,6 @@ namespace Allors.Domain
             var changedObjectIds = new HashSet<long>(changeSet.Associations);
             changedObjectIds.UnionWith(changeSet.Roles);
             changedObjectIds.UnionWith(changeSet.Created);
-            changedObjectIds.UnionWith(this.relationsByMarker.Keys);
 
             ISet<IObject> changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
             var preparedObjects = new HashSet<IObject>();
@@ -345,26 +303,11 @@ namespace Allors.Domain
                     ((Object)newObject).OnInit();
                 }
 
-                this.added = new HashSet<IObject>();
-
-                var preparationRun = 1;
-
-                this.OnStartedPreparation(preparationRun);
+                this.added = new HashSet<IObject>(changedObjects);
+                this.inDependencies = new HashSet<IObject>();
 
                 this.derivationGraph = this.CreateDerivationGraph(this);
-                foreach (var changedObject in changedObjects)
-                {
-                    if (this.Session.Instantiate(changedObject) is Object derivable)
-                    {
-                        this.OnPreDeriving(derivable);
-
-                        derivable.OnPreDerive(x => x.WithDerivation(this));
-
-                        this.OnPreDerived(derivable);
-
-                        preparedObjects.Add(derivable);
-                    }
-                }
+                var preparationRun = 1;
 
                 while (this.added.Count > 0)
                 {

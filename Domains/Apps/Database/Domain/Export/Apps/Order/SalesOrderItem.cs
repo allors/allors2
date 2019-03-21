@@ -70,23 +70,19 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
-            derivation.Mark(salesOrder);
             derivation.AddDependency(salesOrder, this);
 
             foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
             {
-                derivation.Mark(featureItem);
                 derivation.AddDependency(this, featureItem);
             }
 
             if (this.ExistReservedFromNonSerialisedInventoryItem)
             {
-                derivation.Mark(this.ReservedFromNonSerialisedInventoryItem);
                 derivation.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
 
                 if (!this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
                 {
-                    derivation.Mark(this.PreviousReservedFromNonSerialisedInventoryItem);
                     derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
                 }
             }

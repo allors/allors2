@@ -46,13 +46,12 @@ namespace Allors.Domain
                 || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityCommittedOut) 
                 || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityExpectedIn) 
                 || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.AvailableToPromise)
-                || derivation.IsMarked(this))
+                || derivation.InDependency(this))
             {
                 foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
                 {
                     if (salesOrderItem.SalesOrderItemState.InProcess)
                     {
-                        derivation.Mark(salesOrderItem);
                         derivation.AddDependency(salesOrderItem, this);
                     }
                 }

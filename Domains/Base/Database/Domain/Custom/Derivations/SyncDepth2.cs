@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SyncDepthC1.cs" company="Allors bvba">
+// <copyright file="SyncDepth2.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -28,7 +28,6 @@ namespace Allors.Domain
 
             if (!derivation.IsCreated(this) && derivation.IsModified(this, RelationKind.Regular))
             {
-                derivation.Mark(this.SyncDepthI1WhereSyncDepth2);
                 derivation.AddDependency(this, this.SyncDepthI1WhereSyncDepth2);
             }
         }

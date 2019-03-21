@@ -148,7 +148,6 @@ namespace Allors.Domain
                     if (orderShipment.ExistOrderItem && !orderShipment.OrderItem.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(this, orderShipment.OrderItem);
-                        derivation.Mark(orderShipment.OrderItem, M.OrderShipment.OrderItem);
                     }
                 }
             }

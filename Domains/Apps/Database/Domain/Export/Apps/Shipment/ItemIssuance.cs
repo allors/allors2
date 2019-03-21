@@ -30,7 +30,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.AddDependency(this.ShipmentItem, this);
-            derivation.Mark(this.ShipmentItem, M.ItemIssuance.ShipmentItem);
         }
 
         public void AppsOnPostBuild(ObjectOnPostBuild method)

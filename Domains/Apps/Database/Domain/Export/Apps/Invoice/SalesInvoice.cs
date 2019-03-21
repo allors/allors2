@@ -149,7 +149,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SalesInvoiceItem invoiceItem in this.InvoiceItems.OfType<SalesInvoiceItem>())
+            foreach (var invoiceItem in this.InvoiceItems.OfType<SalesInvoiceItem>())
             {
                 derivation.AddDependency(this, invoiceItem);
             }
@@ -157,7 +157,6 @@ namespace Allors.Domain
             foreach (SalesOrder salesOrder in this.SalesOrders)
             {
                 derivation.AddDependency(salesOrder, this);
-                derivation.Mark(salesOrder, M.SalesInvoice.SalesOrders);
             }
         }
 
