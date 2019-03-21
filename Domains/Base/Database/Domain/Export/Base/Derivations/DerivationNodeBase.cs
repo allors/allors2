@@ -22,7 +22,9 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
     public abstract class DerivationNodeBase : IEquatable<DerivationNodeBase>
     {
         private readonly Object derivable;
@@ -72,6 +74,10 @@ namespace Allors.Domain
         }
 
         protected abstract void OnCycle(Object root, Object derivable);
+        
+        protected abstract void OnDeriving(Object derivable);
+
+        protected abstract void OnDerived(Object derivable);
 
         private void TopologicalDerive(DerivationBase derivation, DerivationNodeBase root, List<Object> derivedObjects)
         {
@@ -99,7 +105,7 @@ namespace Allors.Domain
 
             if (!this.derivable.Strategy.IsDeleted)
             {
-                 this.OnDeriving(this.derivable);
+                this.OnDeriving(this.derivable);
                 this.derivable.OnDerive(x => x.WithDerivation(derivation));
                 this.OnDerived(this.derivable);
 
@@ -110,9 +116,27 @@ namespace Allors.Domain
 
             this.currentRoot = null;
         }
-        
-        protected abstract void OnDeriving(Object derivable);
 
-        protected abstract void OnDerived(Object derivable);
+        public void Derive2(DerivationBase derivation, List<Object> derivedObjects)
+        {
+            if (this.dependencies != null)
+            {
+                foreach (var dependency in this.dependencies)
+                {
+                    dependency.Derive2(derivation, derivedObjects);
+                }
+            }
+
+            if (!this.derivable.Strategy.IsDeleted)
+            {
+                this.OnDeriving(this.derivable);
+                this.derivable.OnDerive(x => x.WithDerivation(derivation));
+                this.OnDerived(this.derivable);
+
+                derivedObjects.Add(this.derivable);
+            }
+
+            derivation.AddDerivedObject(this.derivable);
+        }
     }
 }

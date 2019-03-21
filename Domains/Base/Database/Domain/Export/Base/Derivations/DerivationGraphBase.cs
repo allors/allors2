@@ -37,6 +37,18 @@ namespace Allors.Domain
 
         public int Count => this.DerivationNodeByDerivable.Count;
 
+        public void Derive2(ISet<IObject> dependees, List<Object> derivedObjects)
+        {
+            var roots = new HashSet<IObject>(this.DerivationNodeByDerivable.Keys);
+            roots.ExceptWith(dependees);
+
+            foreach (var root in roots)
+            {
+                var node = this.DerivationNodeByDerivable[(Object)root];
+                node.Derive2(this.derivation, derivedObjects);
+            }  
+        }
+
         public void Derive(List<Object> derivedObjects)
         {
             foreach (var dictionaryEntry in this.DerivationNodeByDerivable)

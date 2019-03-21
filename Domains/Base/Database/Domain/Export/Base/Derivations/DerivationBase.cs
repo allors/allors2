@@ -45,8 +45,9 @@ namespace Allors.Domain
         private int generation;
 
         private DerivationGraphBase derivationGraph;
-        private HashSet<IObject> inDependencies;
         private HashSet<IObject> added;
+        private HashSet<IObject> inDependencies;
+        private HashSet<IObject> dependees;
 
         protected DerivationBase(ISession session, DerivationConfig config)
         {
@@ -60,7 +61,7 @@ namespace Allors.Domain
             this.derivedObjects = new HashSet<Object>();
 
             this.accumulatedChangeSet = new AccumulatedChangeSet();
-        
+
             this.generation = 0;
         }
 
@@ -258,13 +259,9 @@ namespace Allors.Domain
 
             if (dependent != null && dependee != null)
             {
-                if (this.derivedObjects.Contains(dependent) && this.derivedObjects.Contains(dependee))
-                {
-                    //return;
-                }
-
                 this.added.Add(dependent);
                 this.added.Add(dependee);
+                this.dependees.Add(dependee);
                 this.inDependencies.Add(dependent);
                 this.inDependencies.Add(dependee);
                 this.derivationGraph.AddDependency(dependent, dependee);
@@ -305,6 +302,7 @@ namespace Allors.Domain
 
                 this.added = new HashSet<IObject>(changedObjects);
                 this.inDependencies = new HashSet<IObject>();
+                this.dependees = new HashSet<IObject>();
 
                 this.derivationGraph = this.CreateDerivationGraph(this);
                 var preparationRun = 1;
@@ -342,7 +340,9 @@ namespace Allors.Domain
                     // Derive
                     var generationPostDeriveObjects = new List<Object>();
 
-                    this.derivationGraph.Derive(generationPostDeriveObjects);
+                    //this.derivationGraph.Derive(generationPostDeriveObjects);
+
+                    this.derivationGraph.Derive2(this.dependees, generationPostDeriveObjects);
 
                     // Keep derivation order within a generation,
                     // but post derive generations backwards

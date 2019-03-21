@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Domain.DerivationGraphBase">
+    <Position X="4.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAABIAAAAAAEAAQAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Export\Base\Derivations\DerivationGraphBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="derivation" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="DerivationNodeByDerivable" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Domain.DerivationBase" Collapsed="true">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMCCACQIgAIYSBBSCCAAggigEAIAAAIEASAFAAIABE=</HashCode>
+      <FileName>Export\Base\Derivations\DerivationBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Domain.DerivationNodeBase">
+    <Position X="8.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAMAAIAAEoEAAAAAAAAAAAIAAAIAQAAAAAAA=</HashCode>
+      <FileName>Export\Base\Derivations\DerivationNodeBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="currentRoot" />
+      <Field Name="derivable" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="dependencies" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Allors.Domain.Object" Collapsed="true">
+    <Position X="12.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAIAAAAAAAAAkAAAQAAAAAAAIAAAA=</HashCode>
+      <FileName>Export\Base\Object.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
