@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Allors.Domain
@@ -86,6 +87,268 @@ namespace Allors.Domain
                     derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
                 }
             }
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+            var salesOrder = this.SalesOrderWhereSalesOrderItem;
+
+            #region States
+            var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
+            var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
+            var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
+            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
+
+            // SalesOrderItem States
+            if (this.IsValid)
+            {
+                // ShipmentState
+                if (this.QuantityShipped == 0)
+                {
+                    this.SalesOrderItemShipmentState = salesOrderItemShipmentStates.NotShipped;
+                }
+                else
+                {
+                    this.SalesOrderItemShipmentState = this.QuantityShipped < this.QuantityOrdered ?
+                                                                     salesOrderItemShipmentStates.PartiallyShipped :
+                                                                     salesOrderItemShipmentStates.Shipped;
+                }
+
+                // PaymentState
+                var orderBilling = this.OrderItemBillingsWhereOrderItem.Select(v => v.InvoiceItem).OfType<SalesInvoiceItem>().ToArray();
+
+                if (orderBilling.Any())
+                {
+                    if (orderBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    {
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
+                    }
+                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    {
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
+                    }
+                    else
+                    {
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
+                    }
+                }
+                else
+                {
+                    var shipmentBilling = this.OrderShipmentsWhereOrderItem.SelectMany(v => v.ShipmentItem.ShipmentItemBillingsWhereShipmentItem).Select(v => v.InvoiceItem).OfType<SalesInvoiceItem>().ToArray();
+                    if (shipmentBilling.Any())
+                    {
+                        if (shipmentBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                        {
+                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
+                        }
+                        else if (shipmentBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                        {
+                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
+                        }
+                        else
+                        {
+                            this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.PartiallyPaid;
+                        }
+                    }
+                    else
+                    {
+                        this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
+                    }
+                }
+
+                // InvoiceState
+                var amountAlreadyInvoiced = this.OrderItemBillingsWhereOrderItem?.Sum(v => v.Amount);
+                if (amountAlreadyInvoiced == 0)
+                {
+                    amountAlreadyInvoiced = this.OrderShipmentsWhereOrderItem
+                        .SelectMany(orderShipment => orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
+                        .Aggregate(amountAlreadyInvoiced, (current, shipmentItemBilling) => current + shipmentItemBilling.Amount);
+                }
+
+                var leftToInvoice = this.TotalExVat - amountAlreadyInvoiced;
+
+                if (amountAlreadyInvoiced == 0)
+                {
+                    this.SalesOrderItemInvoiceState = salesOrderItemInvoiceStates.NotInvoiced;
+                }
+                else if (amountAlreadyInvoiced > 0 && leftToInvoice > 0)
+                {
+                    this.SalesOrderItemInvoiceState = salesOrderItemInvoiceStates.PartiallyInvoiced;
+                }
+                else
+                {
+                    this.SalesOrderItemInvoiceState = salesOrderItemInvoiceStates.Invoiced;
+                }
+
+                // SalesOrderItem States
+                if (salesOrder.SalesOrderState.InProcess && this.SalesOrderItemState.Created)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.InProcess;
+                }
+
+                if (salesOrder.SalesOrderState.Cancelled)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Cancelled;
+                }
+
+                if (salesOrder.SalesOrderState.Rejected)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Rejected;
+                }
+
+                if (this.SalesOrderItemShipmentState.Shipped && this.SalesOrderItemInvoiceState.Invoiced)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Completed;
+                }
+
+                if (this.SalesOrderItemState.Completed && this.SalesOrderItemPaymentState.Paid)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Finished;
+                }
+            }
+            #endregion
+
+            #region Reserve from inventory
+            if (this.IsValid)
+            {
+                if (this.Part != null && salesOrder.TakenBy != null)
+                {
+                    if (this.Part.InventoryItemKind.Serialised)
+                    {
+                        if (!this.ExistReservedFromSerialisedInventoryItem)
+                        {
+                            if (this.ExistSerialisedItem)
+                            {
+                                if (this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem)
+                                {
+                                    this.ReservedFromSerialisedInventoryItem = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.FirstOrDefault(v => v.Quantity == 1);
+                                }
+                            }
+                            else
+                            {
+                                var inventoryItems = this.Part.InventoryItemsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, salesOrder.OriginFacility);
+                                this.ReservedFromSerialisedInventoryItem = inventoryItems.FirstOrDefault() as SerialisedInventoryItem;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!this.ExistReservedFromNonSerialisedInventoryItem)
+                        {
+                            var inventoryItems = this.Part.InventoryItemsWherePart;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, salesOrder.OriginFacility);
+                            this.ReservedFromNonSerialisedInventoryItem = inventoryItems.FirstOrDefault() as NonSerialisedInventoryItem;
+                        }
+                    }
+                }
+
+                if (this.SalesOrderItemState.InProcess && !this.SalesOrderItemShipmentState.Shipped)
+                {
+                    if (this.ExistReservedFromNonSerialisedInventoryItem)
+                    {
+                        if ((salesOrder.OrderKind?.ScheduleManually == true && this.QuantityPendingShipment > 0)
+                            || !salesOrder.ExistOrderKind || salesOrder.OrderKind.ScheduleManually == false)
+                        {
+                            var qoh = this.ReservedFromNonSerialisedInventoryItem.QuantityOnHand;
+                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise;
+                            var salesOrderCommittedOut = this.QuantityCommittedOut;
+
+                            var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromNonSerialisedInventoryItem));
+                            if (this.QuantityCommittedOut > qoh)
+                            {
+                                salesOrderCommittedOut = qoh;
+
+                                if (inventoryAssignment != null)
+                                {
+                                    inventoryAssignment.Quantity = qoh;
+                                }
+                            }
+
+                            if (this.ExistPreviousReservedFromNonSerialisedInventoryItem
+                                && !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
+                            {
+                                var previousInventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem));
+                                previousInventoryAssignment.Quantity = 0;
+
+                                salesOrderCommittedOut = 0;
+                            }
+
+                            var neededFromInventory = this.QuantityOrdered - this.QuantityShipped - salesOrderCommittedOut;
+                            var availableFromInventory = neededFromInventory < atp ? neededFromInventory : atp;
+
+                            if (neededFromInventory != 0 || !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
+                            {
+                                if (salesOrder.PartiallyShip && salesOrder.SalesOrderState.Equals(new SalesOrderStates(salesOrder.Strategy.Session).InProcess))
+                                {
+                                    this.QuantityRequestsShipping = 0;
+                                }
+
+                                if (inventoryAssignment == null)
+                                {
+                                    new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
+                                        .WithSalesOrderItem(this)
+                                        .WithInventoryItem(this.ReservedFromNonSerialisedInventoryItem)
+                                        .WithQuantity(salesOrderCommittedOut + availableFromInventory)
+                                        .Build();
+                                }
+                                else
+                                {
+                                    inventoryAssignment.InventoryItem = this.ReservedFromNonSerialisedInventoryItem;
+                                    inventoryAssignment.Quantity = salesOrderCommittedOut + availableFromInventory;
+                                }
+
+                                if (salesOrder.PartiallyShip)
+                                {
+                                    this.QuantityRequestsShipping = availableFromInventory;
+                                }
+                                else
+                                {
+                                    this.QuantityRequestsShipping += availableFromInventory;
+                                }
+
+                                if (this.QuantityRequestsShipping > qoh)
+                                {
+                                    this.QuantityRequestsShipping = qoh;
+                                }
+
+                                if (this.QuantityRequestsShipping < 0)
+                                {
+                                    this.DecreasePendingShipmentQuantity(this.QuantityRequestsShipping * -1);
+                                    this.QuantityRequestsShipping = 0;
+                                }
+
+                                if (salesOrder.OrderKind?.ScheduleManually == true)
+                                {
+                                    this.QuantityRequestsShipping = 0;
+                                }
+
+                                this.QuantityReserved = this.QuantityOrdered - this.QuantityShipped;
+                                this.QuantityShortFalled = neededFromInventory - availableFromInventory > 0 ? neededFromInventory - availableFromInventory : 0;
+                            }
+                        }
+
+                        this.PreviousQuantity = this.QuantityOrdered;
+                        this.PreviousReservedFromNonSerialisedInventoryItem = this.ReservedFromNonSerialisedInventoryItem;
+                        this.PreviousProduct = this.Product;
+                    }
+
+                    if (this.ExistReservedFromSerialisedInventoryItem)
+                    {
+                        this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Assigned;
+                        this.QuantityReserved = 1;
+                        this.QuantityRequestsShipping = 1;
+                    }
+                }
+
+                // TODO: Move to Custom
+                if (derivation.IsCreated(this) && this.ExistSerialisedItem)
+                {
+                    this.Details = this.SerialisedItem.Details;
+                }
+            }
+            #endregion
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
