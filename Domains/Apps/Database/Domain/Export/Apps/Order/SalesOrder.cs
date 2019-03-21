@@ -628,6 +628,9 @@ namespace Allors.Domain
             #endregion
 
             // Reservations
+
+            var committedOutByGood = new Dictionary<Product, decimal>();
+
             foreach (var salesOrderItem in validOrderItems)
             {
                 // Reserve from inventory
@@ -670,17 +673,23 @@ namespace Allors.Domain
                         if ((this.OrderKind?.ScheduleManually == true && salesOrderItem.QuantityPendingShipment > 0)
                             || !this.ExistOrderKind || this.OrderKind.ScheduleManually == false)
                         {
-                            var atp = salesOrderItem.ReservedFromNonSerialisedInventoryItem.AvailableToPromise;
+                            var committedOut = salesOrderItem.QuantityCommittedOut == 0 && committedOutByGood.ContainsKey(salesOrderItem.Product) ? committedOutByGood[salesOrderItem.Product] : 0;
+                            var atp = salesOrderItem.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOut;
                             var neededFromInventory = salesOrderItem.QuantityOrdered - salesOrderItem.QuantityShipped - salesOrderItem.QuantityCommittedOut;
                             var availableFromInventory = neededFromInventory < atp ? neededFromInventory : atp;
 
-                            if (this.PartiallyShip && this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
-                            {
-                                salesOrderItem.QuantityRequestsShipping = 0;
-                            }
-
                             if (neededFromInventory != 0 || !Equals(salesOrderItem.ReservedFromNonSerialisedInventoryItem, salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem))
-                            { 
+                            {
+                                if (!committedOutByGood.ContainsKey(salesOrderItem.Product))
+                                {
+                                    committedOutByGood.Add(salesOrderItem.Product, availableFromInventory);
+                                }
+
+                                if (this.PartiallyShip && this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
+                                {
+                                    salesOrderItem.QuantityRequestsShipping = 0;
+                                }
+
                                 var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
                                 if (inventoryAssignment == null)
                                 {
@@ -710,16 +719,6 @@ namespace Allors.Domain
                                     salesOrderItem.DecreasePendingShipmentQuantity(salesOrderItem.QuantityRequestsShipping * -1);
                                     salesOrderItem.QuantityRequestsShipping = 0;
                                 }
-
-                                //if (salesOrderItem.QuantityRequestsShipping > atp)
-                                //{
-                                //    salesOrderItem.QuantityShortFalled = salesOrderItem.QuantityRequestsShipping - atp;
-                                //    salesOrderItem.QuantityRequestsShipping = atp;
-                                //}
-                                //else
-                                //{
-                                //    salesOrderItem.QuantityShortFalled = 0;
-                                //}
 
                                 if (this.OrderKind?.ScheduleManually == true)
                                 {
