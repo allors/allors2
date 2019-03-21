@@ -47,5 +47,10 @@ namespace Allors.Domain
                 sequence.Add(this);
             }
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }
