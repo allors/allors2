@@ -548,6 +548,12 @@ namespace Allors.Domain
         {
             var remainingCorrection = correction;
 
+            var inventoryAssignment = orderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+            if (inventoryAssignment != null)
+            {
+                inventoryAssignment.Quantity = orderItem.QuantityCommittedOut - correction;
+            }
+
             foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
             {
                 if (orderShipment.OrderItem.Equals(orderItem) && remainingCorrection > 0)

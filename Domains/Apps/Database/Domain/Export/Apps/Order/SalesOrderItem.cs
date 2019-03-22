@@ -265,8 +265,9 @@ namespace Allors.Domain
                         if ((salesOrder.OrderKind?.ScheduleManually == true && this.QuantityPendingShipment > 0)
                             || !salesOrder.ExistOrderKind || salesOrder.OrderKind.ScheduleManually == false)
                         {
+                            var committedOutSameProductOtherItem = salesOrder.SalesOrderItems.Where(v => !Equals(v, this) &&  Equals(v.Product, this.Product)).Sum(v => v.QuantityRequestsShipping);   
                             var qoh = this.ReservedFromNonSerialisedInventoryItem.QuantityOnHand;
-                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise;
+                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem;
                             var salesOrderCommittedOut = this.QuantityCommittedOut;
 
                             var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromNonSerialisedInventoryItem));
@@ -327,12 +328,6 @@ namespace Allors.Domain
                                     this.QuantityRequestsShipping = qoh;
                                 }
 
-                                if (this.QuantityRequestsShipping < 0)
-                                {
-                                    this.DecreasePendingShipmentQuantity(this.QuantityRequestsShipping * -1);
-                                    this.QuantityRequestsShipping = 0;
-                                }
-
                                 if (salesOrder.OrderKind?.ScheduleManually == true)
                                 {
                                     this.QuantityRequestsShipping = 0;
@@ -373,6 +368,12 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.AssignedUnitPrice, Operations.Write));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.InvoiceItemType, Operations.Write));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Product, Operations.Write));
+            }
+
+            if (this.QuantityRequestsShipping < 0)
+            {
+                this.DecreasePendingShipmentQuantity(this.QuantityRequestsShipping * -1);
+                this.QuantityRequestsShipping = 0;
             }
         }
 

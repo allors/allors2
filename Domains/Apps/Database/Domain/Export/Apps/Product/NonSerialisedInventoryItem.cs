@@ -72,6 +72,15 @@ namespace Allors.Domain
             this.AppsOnDeriveQuantityExpectedIn(derivation);
             this.AppsOnDeriveQuantityAvailableToPromise(derivation);
 
+            this.AppsOnDeriveUnitOfMeasure(derivation);
+
+            this.Part.OnDerive(x => x.WithDerivation(derivation));
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
             if (this.ExistPreviousQuantityOnHand && this.QuantityOnHand > this.PreviousQuantityOnHand)
             {
                 this.AppsReplenishSalesOrders(derivation);
@@ -82,11 +91,7 @@ namespace Allors.Domain
                 this.AppsDepleteSalesOrders(derivation);
             }
 
-            this.AppsOnDeriveUnitOfMeasure(derivation);
-
             this.PreviousQuantityOnHand = this.QuantityOnHand;
-
-            this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)

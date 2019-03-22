@@ -516,6 +516,19 @@ namespace Allors.Domain
             }
             #endregion
 
+
+            // TODO: Move to versioning
+            this.PreviousBillToCustomer = this.BillToCustomer;
+            this.PreviousShipToCustomer = this.ShipToCustomer;
+
+            this.ResetPrintDocument();
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
+            var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
             // CanShip
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
@@ -564,17 +577,6 @@ namespace Allors.Domain
             {
                 this.CanInvoice = false;
             }
-
-            // TODO: Move to versioning
-            this.PreviousBillToCustomer = this.BillToCustomer;
-            this.PreviousShipToCustomer = this.ShipToCustomer;
-
-            this.ResetPrintDocument();
-        }
-
-        public void AppsOnPostDerive(ObjectOnPostDerive method)
-        {
-            var derivation = method.Derivation;
 
             if (!this.CanShip)
             {
@@ -736,7 +738,7 @@ namespace Allors.Domain
                                 }
                                 else
                                 {
-                                    orderShipmentsWhereShipmentItem.First.Quantity += orderItem.QuantityRequestsShipping;
+                                    orderShipmentsWhereShipmentItem.First.Quantity = orderItem.QuantityRequestsShipping;
                                 }
 
                                 orderItem.QuantityRequestsShipping = 0;
