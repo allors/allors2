@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DerivationGraphTest.cs" company="Allors bvba">
+// <copyright file="DerivationNodesTest.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -32,7 +32,7 @@ namespace Tests
 
     using Xunit;
 
-    public class DerivationGraphTest : DomainTest
+    public class DerivationNodesTest : DomainTest
     {
         [Fact]
         public void Sort()

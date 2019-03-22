@@ -34,9 +34,9 @@ namespace Allors.Domain.Logging
 
         public IDerivationLog DerivationLog { get; }
 
-        protected override DerivationGraphBase CreateDerivationGraph(DerivationBase derivation)
+        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation)
         {
-            return new DerivationGraph(derivation, this.DerivationLog);
+            return new DerivationNodes(derivation, this.DerivationLog);
         }
 
         protected override void OnAddedDerivable(Object derivable)

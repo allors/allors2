@@ -31,9 +31,9 @@ namespace Allors.Domain.NonLogging
             this.Validation = new Validation(this);
         }
 
-        protected override DerivationGraphBase CreateDerivationGraph(DerivationBase derivation)
+        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation)
         {
-            return new DerivationGraph(derivation);
+            return new DerivationNodes(derivation);
         }
 
         protected override void OnAddedDerivable(Domain.Object derivable)

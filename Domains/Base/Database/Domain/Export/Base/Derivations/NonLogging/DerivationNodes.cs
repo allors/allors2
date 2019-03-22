@@ -18,21 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.Logging
+namespace Allors.Domain.NonLogging
 {
-    public class DerivationGraph : DerivationGraphBase
+    public class DerivationNodes : DerivationNodesBase
     {
-        private readonly IDerivationLog derivationLog;
-
-        public DerivationGraph(DerivationBase derivation, IDerivationLog derivationLog)
+        public DerivationNodes(DerivationBase derivation)
             : base(derivation)
         {
-            this.derivationLog = derivationLog;
         }
 
         protected override DerivationNodeBase CreateDerivationNode(Object derivable)
         {
-            return new DerivationNode(derivable, this.derivationLog);
+            return new DerivationNode(derivable);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Allors.Domain
 
         private int generation;
 
-        private DerivationGraphBase derivationGraph;
+        private DerivationNodesBase derivationNodes;
         private HashSet<IObject> added;
         private HashSet<IObject> inDependencies;
         private HashSet<IObject> dependees;
@@ -235,7 +235,7 @@ namespace Allors.Domain
                     return;
                 }
 
-                this.derivationGraph.Add(derivable);
+                this.derivationNodes.Add(derivable);
                 this.added.Add(derivable);
 
                 this.OnAddedDerivable(derivable);
@@ -264,7 +264,7 @@ namespace Allors.Domain
                 this.dependees.Add(dependee);
                 this.inDependencies.Add(dependent);
                 this.inDependencies.Add(dependee);
-                this.derivationGraph.AddDependency(dependent, dependee);
+                this.derivationNodes.AddDependency(dependent, dependee);
 
                 this.OnAddedDependency(dependent, dependee);
             }
@@ -304,7 +304,7 @@ namespace Allors.Domain
                 this.inDependencies = new HashSet<IObject>();
                 this.dependees = new HashSet<IObject>();
 
-                this.derivationGraph = this.CreateDerivationGraph(this);
+                this.derivationNodes = this.CreateDerivationGraph(this);
                 var preparationRun = 1;
 
                 while (this.added.Count > 0)
@@ -331,21 +331,15 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.derivationGraph.Count == 0)
+                if (this.derivationNodes.Count == 0)
                 {
                     changedObjects = EmptyObjectSet;
                 }
                 else
                 {
                     // Derive
-                    var generationPostDeriveObjects = new List<Object>();
-
-                    this.derivationGraph.Derive(this.dependees, generationPostDeriveObjects);
-
-                    // Keep derivation order within a generation,
-                    // but post derive generations backwards
-                    postDeriveObjects.InsertRange(0, generationPostDeriveObjects);
-
+                    this.derivationNodes.Derive(this.dependees, postDeriveObjects);
+                    
                     changeSet = this.Session.Checkpoint();
                     this.accumulatedChangeSet.Add(changeSet);
 
@@ -360,8 +354,9 @@ namespace Allors.Domain
                 // PostDerive
                 if (changedObjects.Count == 0)
                 {
-                    foreach (var derivable in postDeriveObjects)
+                    for (var i = postDeriveObjects.Count - 1; i >= 0; i--)
                     {
+                        var derivable = postDeriveObjects[i];
                         if (!derivable.Strategy.IsDeleted)
                         {
                             this.OnPostDeriving(derivable);
@@ -383,7 +378,7 @@ namespace Allors.Domain
                     changedObjects.ExceptWith(this.derivedObjects);
                 }
 
-                this.derivationGraph = null;
+                this.derivationNodes = null;
             }
 
             return this.validation;
@@ -394,7 +389,7 @@ namespace Allors.Domain
             this.derivedObjects.Add(derivable);
         }
 
-        protected abstract DerivationGraphBase CreateDerivationGraph(DerivationBase derivation);
+        protected abstract DerivationNodesBase CreateDerivationGraph(DerivationBase derivation);
 
         protected abstract void OnAddedDerivable(Object derivable);
 

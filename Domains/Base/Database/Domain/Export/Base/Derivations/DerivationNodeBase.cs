@@ -35,13 +35,13 @@ namespace Allors.Domain
             this.derivable = derivable;
         }
 
-        public void Derive(DerivationBase derivation, List<Object> derivedObjects)
+        public void Derive(DerivationBase derivation, List<Object> postDeriveObjects)
         {
             if (this.dependencies != null)
             {
                 foreach (var dependency in this.dependencies)
                 {
-                    dependency.Derive(derivation, derivedObjects);
+                    dependency.Derive(derivation, postDeriveObjects);
                 }
             }
 
@@ -51,7 +51,7 @@ namespace Allors.Domain
                 this.derivable.OnDerive(x => x.WithDerivation(derivation));
                 this.OnDerived(this.derivable);
 
-                derivedObjects.Add(this.derivable);
+                postDeriveObjects.Add(this.derivable);
             }
 
             derivation.AddDerivedObject(this.derivable);

@@ -23,11 +23,11 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
 
-    public abstract class DerivationGraphBase
+    public abstract class DerivationNodesBase
     {
         private readonly DerivationBase derivation;
 
-        protected DerivationGraphBase(DerivationBase derivation)
+        protected DerivationNodesBase(DerivationBase derivation)
         {
             this.derivation = derivation;
             this.DerivationNodeByDerivable = new Dictionary<Object, DerivationNodeBase>();
@@ -37,7 +37,7 @@ namespace Allors.Domain
 
         public int Count => this.DerivationNodeByDerivable.Count;
 
-        public void Derive(ISet<IObject> dependees, List<Object> derivedObjects)
+        public void Derive(ISet<IObject> dependees, List<Object> postDeriveObjects)
         {
             foreach (var kvp in this.DerivationNodeByDerivable)
             {
@@ -45,7 +45,7 @@ namespace Allors.Domain
                 if (!dependees.Contains(derivable))
                 {
                     var derivationNode = kvp.Value;
-                    derivationNode.Derive(this.derivation, derivedObjects);
+                    derivationNode.Derive(this.derivation, postDeriveObjects);
                 }
             }
         }
