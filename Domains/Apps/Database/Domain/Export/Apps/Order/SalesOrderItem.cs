@@ -94,6 +94,20 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
+            var reasons = new InventoryTransactionReasons(this.Strategy.Session);
+
+            this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem.Where(v => !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+            this.QuantityShipped = this.OrderShipmentsWhereOrderItem.Where(v => ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+
+            if (this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault() != null)
+            {
+                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reasons.Reservation)).Sum(v => v.Quantity);
+            }
+            else
+            {
+                this.QuantityCommittedOut = 0;
+            }
+
             #region States
             var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
             var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
