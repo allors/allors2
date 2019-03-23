@@ -38,26 +38,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityOnHand) 
-                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityCommittedOut) 
-                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.QuantityExpectedIn) 
-                || derivation.HasChangedRole(this, M.NonSerialisedInventoryItem.AvailableToPromise)
-                || derivation.InDependency(this))
-            {
-                foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
-                {
-                    if (salesOrderItem.SalesOrderItemState.InProcess)
-                    {
-                        derivation.AddDependency(salesOrderItem, this);
-                    }
-                }
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -80,6 +60,25 @@ namespace Allors.Domain
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
             var derivation = method.Derivation;
+
+            //if (this.ExistPreviousQuantityOnHand && this.QuantityOnHand != this.PreviousQuantityOnHand)
+            //{
+            //    Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
+            //    salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
+            //    salesOrderItems.Filter.AddEquals(M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem, this);
+            //    salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
+
+            //    foreach (SalesOrderItem salesOrderItem in salesOrderItems)
+            //    {
+            //        if (salesOrderItem.SalesOrderItemState.InProcess)
+            //        {
+            //            var x = salesOrderItem.QuantityOrdered;
+            //            salesOrderItem.QuantityOrdered = 0;
+            //            salesOrderItem.QuantityOrdered = x;
+
+            //        }
+            //    }
+            //}
 
             if (this.ExistPreviousQuantityOnHand && this.QuantityOnHand > this.PreviousQuantityOnHand)
             {
@@ -217,7 +216,6 @@ namespace Allors.Domain
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
-
             var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new [] { this.Part };
 
             if (goods != null)
@@ -243,12 +241,13 @@ namespace Allors.Domain
                         }
 
                         extra -= diff;
+                        salesOrderItem.QuantityShortFalled -= diff;
 
-                        var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                        if (inventoryAssignment != null)
-                        {
-                            inventoryAssignment.Quantity = diff;
-                        }
+                        //var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                        //if (inventoryAssignment != null)
+                        //{
+                        //    inventoryAssignment.Quantity += diff;
+                        //}
                     }
                 }
             }

@@ -259,6 +259,18 @@ namespace Allors.Domain
             {
                 this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Shipped;
                 this.EstimatedShipDate = DateTime.UtcNow.Date;
+
+                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                {
+                    foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                    {
+                        var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                        if (inventoryAssignment != null)
+                        {
+                            inventoryAssignment.Quantity -= orderShipment.Quantity;
+                        }
+                    }
+                }
             }
         }
 

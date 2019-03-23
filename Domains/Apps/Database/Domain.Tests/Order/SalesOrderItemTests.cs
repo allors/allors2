@@ -693,7 +693,7 @@ namespace Allors.Domain
             Assert.Equal(0, salesOrderItem.QuantityShipped);
             Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
             Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(1, salesOrderItem.QuantityShortFalled);
+            Assert.Equal(2, salesOrderItem.QuantityShortFalled);
             Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
             Assert.Equal(0, previous.QuantityCommittedOut);
             Assert.Equal(1, previous.AvailableToPromise);
@@ -1197,8 +1197,15 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            this.Session.Derive();
-            this.Session.Commit();
+            //this.Session.Derive();
+
+            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
+                {
+                    DerivationLogFunc = () => new CustomListDerivationLog()
+                }
+            );
+
+            derivation.Derive();
 
             Assert.Equal(120, item1.QuantityOrdered);
             Assert.Equal(0, item1.QuantityShipped);
@@ -1217,10 +1224,6 @@ namespace Allors.Domain
                 .Build();
 
             this.order.AddSalesOrderItem(item2);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
 
             this.Session.Derive();
 

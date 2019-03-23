@@ -319,15 +319,7 @@ namespace Allors.Domain
             CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
 
             // Act
-
-            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
-                {
-                    DerivationLogFunc = () => new CustomListDerivationLog()
-                }
-            );
-
-            derivation.Derive();
-
+            this.Session.Derive();
 
             // Assert
             Assert.Equal(3, salesItem.QuantityRequestsShipping);

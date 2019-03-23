@@ -494,9 +494,15 @@ namespace Allors.Domain
             // SalesOrderItem States
             foreach (var salesOrderItem in validOrderItems)
             {
-                if (this.SalesOrderState.InProcess && salesOrderItem.SalesOrderItemState.Created)
+                if (this.SalesOrderState.InProcess && 
+                    (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
                 {
                     salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
+                }
+
+                if (this.SalesOrderState.OnHold && salesOrderItem.SalesOrderItemState.InProcess)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.OnHold;
                 }
 
                 if (this.SalesOrderState.Finished)
@@ -529,6 +535,7 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
+
             // CanShip
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
@@ -725,21 +732,21 @@ namespace Allors.Domain
                                     shipmentItem.AddProductFeature(featureItem.ProductFeature);
                                 }
 
-                                var orderShipmentsWhereShipmentItem = shipmentItem.OrderShipmentsWhereShipmentItem;
-                                orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.OrderItem, orderItem);
+                                //var orderShipmentsWhereShipmentItem = shipmentItem.OrderShipmentsWhereShipmentItem;
+                                //orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.OrderItem, orderItem);
 
-                                if (orderShipmentsWhereShipmentItem.First == null)
-                                {
+                                //if (orderShipmentsWhereShipmentItem.First == null)
+                                //{
                                     new OrderShipmentBuilder(this.Strategy.Session)
                                         .WithOrderItem(orderItem)
                                         .WithShipmentItem(shipmentItem)
                                         .WithQuantity(orderItem.QuantityRequestsShipping)
                                         .Build();
-                                }
-                                else
-                                {
-                                    orderShipmentsWhereShipmentItem.First.Quantity = orderItem.QuantityRequestsShipping;
-                                }
+                                //}
+                                //else
+                                //{
+                                //    orderShipmentsWhereShipmentItem.First.Quantity = orderItem.QuantityRequestsShipping;
+                                //}
 
                                 orderItem.QuantityRequestsShipping = 0;
                             }

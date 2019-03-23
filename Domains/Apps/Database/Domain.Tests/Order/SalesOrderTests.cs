@@ -181,7 +181,6 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
-
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -239,20 +238,18 @@ namespace Allors.Domain
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
-
-            //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
-            //derivation.Derive();
-
-            //var list = ((DerivationLog)derivation.DerivationLog).List;
-            //list.RemoveAll(v => !v.StartsWith("Dependency"));
-
-
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item1.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
+
+            Assert.Equal(1, item1.QuantityShipped);
+            Assert.Equal(0, item1.QuantityCommittedOut);
+            Assert.Equal(0, item1.QuantityPendingShipment);
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(0, item1.QuantityShortFalled);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
@@ -296,6 +293,18 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item1.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
+
+            Assert.Equal(1, item1.QuantityShipped);
+            Assert.Equal(0, item1.QuantityCommittedOut);
+            Assert.Equal(0, item1.QuantityPendingShipment);
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(0, item1.QuantityShortFalled);
+
+            Assert.Equal(2, item2.QuantityShipped);
+            Assert.Equal(0, item2.QuantityCommittedOut);
+            Assert.Equal(0, item2.QuantityPendingShipment);
+            Assert.Equal(0, item2.QuantityRequestsShipping);
+            Assert.Equal(0, item2.QuantityShortFalled);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
 
@@ -645,6 +654,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
+            Assert.Equal(0, item.QuantityCommittedOut);
             Assert.Equal(10, item.QuantityShortFalled);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
@@ -653,8 +663,9 @@ namespace Allors.Domain
 
             Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
             Assert.Equal(0, item.QuantityPendingShipment);
-            Assert.Equal(10, item.QuantityRequestsShipping);
-            Assert.Equal(0, item.QuantityShortFalled);
+            Assert.Equal(0, item.QuantityRequestsShipping);
+            Assert.Equal(0, item.QuantityCommittedOut);
+            Assert.Equal(10, item.QuantityShortFalled);
         }
 
         [Fact]
@@ -707,6 +718,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
+            Assert.Equal(0, item.QuantityRequestsShipping);
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
@@ -715,9 +727,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
+            Assert.Equal(0, item.QuantityRequestsShipping);
             Assert.Equal(0, item.QuantityPendingShipment);
-            Assert.Equal(10, item.QuantityRequestsShipping);
-            Assert.Equal(0, item.QuantityShortFalled);
+            Assert.Equal(10, item.QuantityShortFalled);
 
             order.Continue();
 

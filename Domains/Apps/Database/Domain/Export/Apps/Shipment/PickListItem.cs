@@ -43,11 +43,6 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.PickListItem.QuantityPicked, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }
 
-            this.AppsOnDeriveOrderItemAdjustment(derivation);
-        }
-
-        public void AppsOnDeriveOrderItemAdjustment(IDerivation derivation)
-        {
             if (this.QuantityPicked > 0 && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked))
             {
                 var diff = this.Quantity - this.QuantityPicked;
@@ -59,7 +54,7 @@ namespace Allors.Domain
                     {
                         if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
                         {
-                            if (diff > 0)
+                            if (diff > 0 && this.QuantityPicked != orderShipment.Quantity)
                             {
                                 if (orderShipment.Quantity >= diff)
                                 {

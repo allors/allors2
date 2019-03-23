@@ -80,12 +80,7 @@ namespace Allors.Domain
 
             if (this.ExistReservedFromNonSerialisedInventoryItem)
             {
-                derivation.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
-
-                if (!this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
-                {
-                    derivation.AddDependency(this,  this.PreviousReservedFromNonSerialisedInventoryItem);
-                }
+                derivation.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
             }
         }
 
@@ -196,21 +191,6 @@ namespace Allors.Domain
                 }
 
                 // SalesOrderItem States
-                if (salesOrder.SalesOrderState.InProcess && this.SalesOrderItemState.Created)
-                {
-                    this.SalesOrderItemState = salesOrderItemStates.InProcess;
-                }
-
-                if (salesOrder.SalesOrderState.Cancelled)
-                {
-                    this.SalesOrderItemState = salesOrderItemStates.Cancelled;
-                }
-
-                if (salesOrder.SalesOrderState.Rejected)
-                {
-                    this.SalesOrderItemState = salesOrderItemStates.Rejected;
-                }
-
                 if (this.SalesOrderItemShipmentState.Shipped && this.SalesOrderItemInvoiceState.Invoiced)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.Completed;
@@ -265,20 +245,15 @@ namespace Allors.Domain
                         if ((salesOrder.OrderKind?.ScheduleManually == true && this.QuantityPendingShipment > 0)
                             || !salesOrder.ExistOrderKind || salesOrder.OrderKind.ScheduleManually == false)
                         {
-                            var committedOutSameProductOtherItem = salesOrder.SalesOrderItems.Where(v => !Equals(v, this) &&  Equals(v.Product, this.Product)).Sum(v => v.QuantityRequestsShipping);   
+                            var committedOutSameProductOtherItem = salesOrder.SalesOrderItems.Where(v => !Equals(v, this) && Equals(v.Product, this.Product)).Sum(v => v.QuantityRequestsShipping);
                             var qoh = this.ReservedFromNonSerialisedInventoryItem.QuantityOnHand;
-                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem;
-                            var salesOrderCommittedOut = this.QuantityCommittedOut;
+                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem > 0 ? this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem : 0;
+                            var wantToShip = this.QuantityCommittedOut - this.QuantityPendingShipment;
 
                             var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromNonSerialisedInventoryItem));
                             if (this.QuantityCommittedOut > qoh)
                             {
-                                salesOrderCommittedOut = qoh;
-
-                                if (inventoryAssignment != null)
-                                {
-                                    inventoryAssignment.Quantity = qoh;
-                                }
+                                wantToShip = qoh;
                             }
 
                             if (this.ExistPreviousReservedFromNonSerialisedInventoryItem
@@ -287,10 +262,11 @@ namespace Allors.Domain
                                 var previousInventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem));
                                 previousInventoryAssignment.Quantity = 0;
 
-                                salesOrderCommittedOut = 0;
+                                this.QuantityCommittedOut = 0;
+                                wantToShip = 0;
                             }
 
-                            var neededFromInventory = this.QuantityOrdered - this.QuantityShipped - salesOrderCommittedOut;
+                            var neededFromInventory = this.QuantityOrdered - this.QuantityShipped - this.QuantityCommittedOut;
                             var availableFromInventory = neededFromInventory < atp ? neededFromInventory : atp;
 
                             if (neededFromInventory != 0 || !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
@@ -305,18 +281,25 @@ namespace Allors.Domain
                                     new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
                                         .WithSalesOrderItem(this)
                                         .WithInventoryItem(this.ReservedFromNonSerialisedInventoryItem)
-                                        .WithQuantity(salesOrderCommittedOut + availableFromInventory)
+                                        .WithQuantity(wantToShip + availableFromInventory)
                                         .Build();
                                 }
                                 else
                                 {
                                     inventoryAssignment.InventoryItem = this.ReservedFromNonSerialisedInventoryItem;
-                                    inventoryAssignment.Quantity = salesOrderCommittedOut + availableFromInventory;
+                                    if (this.QuantityCommittedOut > qoh)
+                                    {
+                                        inventoryAssignment.Quantity = qoh;
+                                    }
+                                    else
+                                    {
+                                        inventoryAssignment.Quantity = this.QuantityCommittedOut + availableFromInventory;
+                                    }
                                 }
 
                                 if (salesOrder.PartiallyShip)
                                 {
-                                    this.QuantityRequestsShipping = availableFromInventory;
+                                    this.QuantityRequestsShipping = wantToShip + availableFromInventory;
                                 }
                                 else
                                 {
@@ -337,10 +320,6 @@ namespace Allors.Domain
                                 this.QuantityShortFalled = neededFromInventory - availableFromInventory > 0 ? neededFromInventory - availableFromInventory : 0;
                             }
                         }
-
-                        this.PreviousQuantity = this.QuantityOrdered;
-                        this.PreviousReservedFromNonSerialisedInventoryItem = this.ReservedFromNonSerialisedInventoryItem;
-                        this.PreviousProduct = this.Product;
                     }
 
                     if (this.ExistReservedFromSerialisedInventoryItem)
@@ -362,6 +341,10 @@ namespace Allors.Domain
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
+            this.PreviousReservedFromNonSerialisedInventoryItem = this.ReservedFromNonSerialisedInventoryItem;
+            this.PreviousQuantity = this.QuantityOrdered;
+            this.PreviousProduct = this.Product;
+
             if (this.ExistSalesOrderItemInvoiceState && this.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuantityOrdered, Operations.Write));

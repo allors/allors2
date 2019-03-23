@@ -19,7 +19,7 @@ namespace Allors.Domain
     {
         public override string ToString()
         {
-            return $"{this.Part} of {this.SalesOrderWhereSalesOrderItem?.OrderNumber}";
+            return $"{this.Part} of {this.SalesOrderWhereSalesOrderItem?.OrderNumber} with quantity {this.QuantityOrdered}";
         }
     }
 }

@@ -36,12 +36,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.AddDependency(this.ShipmentWhereShipmentItem, this);
-
-            var orderShipments = this.OrderShipmentsWhereShipmentItem;
-            foreach (OrderShipment orderShipment in orderShipments)
-            {
-                derivation.AddDependency(this, orderShipment);
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

@@ -845,7 +845,7 @@ namespace Allors.Domain
 
             Assert.Equal(new CustomerShipmentStates(this.Session).Picked, shipment.CustomerShipmentState);
 
-            item.QuantityOrdered = 1;
+            shipment.Hold();
 
             this.Session.Derive();
 
