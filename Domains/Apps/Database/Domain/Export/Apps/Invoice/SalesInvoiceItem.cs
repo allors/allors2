@@ -48,8 +48,6 @@ namespace Allors.Domain
             !this.ExistWorkEffortBillingsWhereInvoiceItem &&
             !this.ExistServiceEntryBillingsWhereInvoiceItem;
 
-        private bool IsSubTotalItem => this.AppsIsSubTotalItem;
-
         public void SetActualDiscountAmount(decimal amount)
         {
             if (!this.ExistDiscountAdjustment)
@@ -136,7 +134,7 @@ namespace Allors.Domain
                 this.Quantity = 1;
             }
 
-            if (this.ExistInvoiceItemType && this.IsSubTotalItem && this.Quantity <= 0)
+            if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }
@@ -176,8 +174,13 @@ namespace Allors.Domain
             }
         }
 
-        private bool AppsIsSubTotalItem =>
-            this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
-            || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
+        public void AppsIsSubTotalItem(SalesInvoiceItemIsSubTotalItem method)
+        {
+            if (!method.Result.HasValue)
+            {
+                method.Result = this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+                    || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
+            }
+        }
     }
 }
