@@ -91,8 +91,8 @@ namespace Allors.Domain
 
             var reasons = new InventoryTransactionReasons(this.Strategy.Session);
 
-            this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem.Where(v => !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
-            this.QuantityShipped = this.OrderShipmentsWhereOrderItem.Where(v => ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+            this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+            this.QuantityShipped = this.OrderShipmentsWhereOrderItem.Where(v => v.ExistShipmentItem && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 
             if (this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault() != null)
             {
@@ -271,11 +271,6 @@ namespace Allors.Domain
 
                             if (neededFromInventory != 0 || !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
                             {
-                                if (salesOrder.PartiallyShip && salesOrder.SalesOrderState.Equals(new SalesOrderStates(salesOrder.Strategy.Session).InProcess))
-                                {
-                                    this.QuantityRequestsShipping = 0;
-                                }
-
                                 if (inventoryAssignment == null)
                                 {
                                     new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
@@ -297,14 +292,7 @@ namespace Allors.Domain
                                     }
                                 }
 
-                                if (salesOrder.PartiallyShip)
-                                {
-                                    this.QuantityRequestsShipping = wantToShip + availableFromInventory;
-                                }
-                                else
-                                {
-                                    this.QuantityRequestsShipping += availableFromInventory;
-                                }
+                                this.QuantityRequestsShipping = wantToShip + availableFromInventory;
 
                                 if (this.QuantityRequestsShipping > qoh)
                                 {
@@ -399,6 +387,12 @@ namespace Allors.Domain
                     {
                         if (orderShipment.OrderItem.Equals(this))
                         {
+                            new OrderShipmentBuilder(this.Strategy.Session)
+                                .WithOrderItem(this)
+                                .WithShipmentItem(shipmentItem)
+                                .WithQuantity(diff * -1)
+                                .Build();
+
                             this.QuantityPendingShipment -= diff;
                             pendingShipment.AppsOnDeriveQuantityDecreased(shipmentItem, this, diff);
                             break;

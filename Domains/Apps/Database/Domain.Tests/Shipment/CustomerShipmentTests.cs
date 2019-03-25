@@ -468,7 +468,7 @@ namespace Allors.Domain
             var good2 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good2");
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Theft).WithPart(good2.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good2.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -510,6 +510,8 @@ namespace Allors.Domain
 
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(10).WithAssignedUnitPrice(10).Build();
             order.AddSalesOrderItem(item2);
+
+            item2.Confirm();
 
             this.Session.Derive();
 
@@ -1166,6 +1168,8 @@ namespace Allors.Domain
 
             item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item);
+
+            item.Confirm();
 
             this.Session.Derive();
 

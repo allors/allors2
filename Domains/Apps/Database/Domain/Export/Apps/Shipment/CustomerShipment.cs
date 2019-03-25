@@ -582,7 +582,6 @@ namespace Allors.Domain
                         remainingCorrection = 0;
                     }
 
-                    orderShipment.Quantity -= quantity;
                     shipmentItem.Quantity -= quantity;
 
                     var itemIssuanceCorrection = quantity;
@@ -610,19 +609,6 @@ namespace Allors.Domain
                             }
                         }
                     }
-
-                    if (orderShipment.Quantity == 0)
-                    {
-                        foreach (ItemIssuance itemIssuance in orderShipment.ShipmentItem.ItemIssuancesWhereShipmentItem)
-                        {
-                            if (!itemIssuance.PickListItem.PickListWherePickListItem.ExistPicker && itemIssuance.Quantity == 0)
-                            {
-                                itemIssuance.Delete();
-                            }
-                        }
-
-                        orderShipment.Delete();
-                    }
                 }
             }
 
@@ -634,6 +620,19 @@ namespace Allors.Domain
 
             if (shipmentItem.Quantity == 0)
             {
+                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                {
+                    foreach (ItemIssuance itemIssuance in orderShipment.ShipmentItem.ItemIssuancesWhereShipmentItem)
+                    {
+                        if (!itemIssuance.PickListItem.PickListWherePickListItem.ExistPicker && itemIssuance.Quantity == 0)
+                        {
+                            itemIssuance.Delete();
+                        }
+                    }
+
+                    orderShipment.Delete();
+                }
+
                 shipmentItem.Delete();
             }
 

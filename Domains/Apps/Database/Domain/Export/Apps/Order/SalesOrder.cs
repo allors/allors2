@@ -732,21 +732,11 @@ namespace Allors.Domain
                                     shipmentItem.AddProductFeature(featureItem.ProductFeature);
                                 }
 
-                                //var orderShipmentsWhereShipmentItem = shipmentItem.OrderShipmentsWhereShipmentItem;
-                                //orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.OrderItem, orderItem);
-
-                                //if (orderShipmentsWhereShipmentItem.First == null)
-                                //{
-                                    new OrderShipmentBuilder(this.Strategy.Session)
-                                        .WithOrderItem(orderItem)
-                                        .WithShipmentItem(shipmentItem)
-                                        .WithQuantity(orderItem.QuantityRequestsShipping)
-                                        .Build();
-                                //}
-                                //else
-                                //{
-                                //    orderShipmentsWhereShipmentItem.First.Quantity = orderItem.QuantityRequestsShipping;
-                                //}
+                                new OrderShipmentBuilder(this.Strategy.Session)
+                                    .WithOrderItem(orderItem)
+                                    .WithShipmentItem(shipmentItem)
+                                    .WithQuantity(orderItem.QuantityRequestsShipping)
+                                    .Build();
 
                                 orderItem.QuantityRequestsShipping = 0;
                             }

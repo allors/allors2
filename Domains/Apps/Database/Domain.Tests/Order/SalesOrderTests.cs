@@ -814,7 +814,6 @@ namespace Allors.Domain
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
-
             var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
                 {
                     DerivationLogFunc = () => new CustomListDerivationLog()

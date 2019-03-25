@@ -1931,7 +1931,7 @@ namespace Allors.Domain
                     .Build())
                 .Build();
 
-            var orderShipment =  new OrderShipmentBuilder(this.Session)
+            new OrderShipmentBuilder(this.Session)
                 .WithOrderItem(orderItem)
                 .WithShipmentItem(shipment.ShipmentItems.First)
                 .WithQuantity(10)
@@ -1947,8 +1947,11 @@ namespace Allors.Domain
 
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
-            shipment.ShipmentItems[0].Quantity = 3;
-            orderShipment.Quantity = 3;
+            new OrderShipmentBuilder(this.Session)
+                .WithOrderItem(orderItem)
+                .WithShipmentItem(shipment.ShipmentItems.First)
+                .WithQuantity(-7)
+                .Build();
 
             this.Session.Derive();
 
