@@ -39,33 +39,36 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var salesOrderItem = this.OrderItem as SalesOrderItem;
-            var customerShipment = this.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
-            var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 
-            if (salesOrderItem != null && salesOrderItem.QuantityPendingShipment > quantityPendingShipment)
+            if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && salesOrderItem != null)
             {
-                var diff = this.Quantity * -1;
-                salesOrderItem.QuantityPendingShipment -= diff;
-                customerShipment.AppsOnDeriveQuantityDecreased(this.ShipmentItem, salesOrderItem, diff);
-            }
+                var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 
-            if (this.strategy.IsNewInSession && salesOrderItem != null)
-            {
-                var quantityPicked = this.OrderItem.OrderShipmentsWhereOrderItem.Select(v => v.ShipmentItem?.ItemIssuancesWhereShipmentItem.Sum(z => z.PickListItem.Quantity)).Sum();
+                if (salesOrderItem.QuantityPendingShipment > quantityPendingShipment)
+                {
+                    var diff = this.Quantity * -1;
+                    salesOrderItem.QuantityPendingShipment -= diff;
+                    customerShipment.AppsOnDeriveQuantityDecreased(this.ShipmentItem, salesOrderItem, diff);
+                }
 
-                if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem && this.Quantity > salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand + quantityPicked)
+                if (this.strategy.IsNewInSession)
                 {
-                    derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
-                }
-                else if (this.Quantity > salesOrderItem.QuantityOrdered)
-                {
-                    derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
-                }
-                else 
-                {
-                    if (this.Quantity > salesOrderItem.QuantityOrdered - salesOrderItem.QuantityShipped - salesOrderItem.QuantityPendingShipment + salesOrderItem.QuantityReturned + quantityPicked)
-                    { 
-                        derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
+                    var quantityPicked = this.OrderItem.OrderShipmentsWhereOrderItem.Select(v => v.ShipmentItem?.ItemIssuancesWhereShipmentItem.Sum(z => z.PickListItem.Quantity)).Sum();
+
+                    if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem && this.Quantity > salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand + quantityPicked)
+                    {
+                        derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
+                    }
+                    else if (this.Quantity > salesOrderItem.QuantityOrdered)
+                    {
+                        derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered);
+                    }
+                    else
+                    {
+                        if (this.Quantity > salesOrderItem.QuantityOrdered - salesOrderItem.QuantityShipped - salesOrderItem.QuantityPendingShipment + salesOrderItem.QuantityReturned + quantityPicked)
+                        {
+                            derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
+                        }
                     }
                 }
             }
