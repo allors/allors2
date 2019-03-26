@@ -45,7 +45,7 @@ namespace Allors.Domain
 
         object this[string name] { get; set; }
 
-        IValidation Derive();
+        IValidation Derive(params IObject[] forced);
 
         void Add(Object derivable);
 
@@ -75,6 +75,8 @@ namespace Allors.Domain
         bool IsCreated(Object derivable);
 
         bool InDependency(Object derivable);
+
+        bool IsForced(Object derivable);
 
         bool HasChangedRole(Object derivable, RoleType roleType);
 

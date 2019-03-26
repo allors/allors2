@@ -106,5 +106,26 @@ namespace Tests
             Assert.True(dependent.Strategy.IsDeleted);
             Assert.Equal(1, dependee.Counter);
         }
+
+        [Fact]
+        public void Force()
+        {
+            var first = new FirstBuilder(this.Session).Build();
+
+            this.Session.Commit();
+
+            this.Session.Derive(true);
+
+            var derivation = new Derivation(this.Session);
+            derivation.Derive(first);
+
+            Assert.True(first.ExistIsDerived);
+            Assert.True(first.Second.ExistIsDerived);
+            Assert.True(first.Second.Third.ExistIsDerived);
+
+            Assert.Equal(1, first.DerivationCount);
+            Assert.Equal(1, first.Second.DerivationCount);
+            Assert.Equal(1, first.Second.Third.DerivationCount);
+        }
     }
 }

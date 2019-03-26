@@ -44,6 +44,8 @@ namespace Allors.Domain
 
         private int generation;
 
+        private HashSet<IObject> forced;
+
         private DerivationNodesBase derivationNodes;
         private HashSet<IObject> added;
         private HashSet<IObject> inDependencies;
@@ -129,12 +131,12 @@ namespace Allors.Domain
 
         public bool IsModified(Object @object)
         {
-            return this.InDependency(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object);
+            return this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object);
         }
 
         public bool IsModified(Object @object, RelationKind kind)
         {
-            return this.InDependency(@object) || this.IsCreated(@object) || this.HasChangedRoles(@object, kind);
+            return this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object, kind);
         }
 
         public bool IsCreated(Object derivable)
@@ -221,11 +223,16 @@ namespace Allors.Domain
             return this.inDependencies.Contains(derivable);
         }
 
+        public bool IsForced(Object derivable)
+        {
+            return this.forced?.Contains(derivable) == true;
+        }
+
         public void Add(Object derivable)
         {
             if (this.generation == 0)
             {
-                throw new Exception("Add can only be called during a derivation. Use Mark() instead.");
+                throw new Exception("Add can only be called during a derivation. Use Derive(intial) instead.");
             }
 
             if (derivable != null)
@@ -270,11 +277,16 @@ namespace Allors.Domain
             }
         }
 
-        public IValidation Derive()
+        public IValidation Derive(params IObject[] forceDeriveOn)
         {
             if (this.generation != 0)
             {
                 throw new Exception("Derive can only be called once. Create a new Derivation object.");
+            }
+
+            if (forceDeriveOn != null && forceDeriveOn.Length > 0)
+            {
+                this.forced = new HashSet<IObject>(forceDeriveOn);
             }
 
             var changeSet = this.Session.Checkpoint();
@@ -283,6 +295,11 @@ namespace Allors.Domain
             var changedObjectIds = new HashSet<long>(changeSet.Associations);
             changedObjectIds.UnionWith(changeSet.Roles);
             changedObjectIds.UnionWith(changeSet.Created);
+
+            if (this.forced != null)
+            {
+                changedObjectIds.UnionWith(this.forced.Select(v => v.Id));
+            }
 
             ISet<IObject> changedObjects = new HashSet<IObject>(this.Session.Instantiate(changedObjectIds));
             var preparedObjects = new HashSet<IObject>();
@@ -339,7 +356,7 @@ namespace Allors.Domain
                 {
                     // Derive
                     this.derivationNodes.Derive(this.dependees, postDeriveObjects);
-                    
+
                     changeSet = this.Session.Checkpoint();
                     this.accumulatedChangeSet.Add(changeSet);
 
