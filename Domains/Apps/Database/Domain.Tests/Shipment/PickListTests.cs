@@ -301,7 +301,15 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            this.Session.Derive();
+            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
+                {
+                    DerivationLogFunc = () => new CustomListDerivationLog()
+                }
+            );
+
+            derivation.Derive();
+
+           // this.Session.Derive();
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);

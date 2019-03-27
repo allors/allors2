@@ -58,17 +58,41 @@ namespace Allors.Domain
                             {
                                 if (orderShipment.Quantity >= diff)
                                 {
-                                    orderShipment.Quantity -= diff;
                                     orderShipment.ShipmentItem.Quantity -= diff;
                                     itemIssuance.Quantity -= diff;
+
+                                    new OrderShipmentBuilder(this.Strategy.Session)
+                                        .WithOrderItem(salesOrderItem)
+                                        .WithShipmentItem(orderShipment.ShipmentItem)
+                                        .WithQuantity(diff * -1)
+                                        .Build();
+
+                                    var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                                    if (inventoryAssignment != null)
+                                    {
+                                        inventoryAssignment.Quantity = inventoryAssignment.Quantity - diff;
+                                    }
+
                                     diff = 0;
                                 }
                                 else
                                 {
                                     orderShipment.ShipmentItem.Quantity -= orderShipment.Quantity;
                                     itemIssuance.Quantity -= orderShipment.Quantity;
+
+                                    new OrderShipmentBuilder(this.Strategy.Session)
+                                        .WithOrderItem(salesOrderItem)
+                                        .WithShipmentItem(orderShipment.ShipmentItem)
+                                        .WithQuantity(orderShipment.Quantity * -1)
+                                        .Build();
+
+                                    var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                                    if (inventoryAssignment != null)
+                                    {
+                                        inventoryAssignment.Quantity = inventoryAssignment.Quantity - orderShipment.Quantity;
+                                    }
+
                                     diff -= orderShipment.Quantity;
-                                    orderShipment.Quantity = 0;
                                 }
                             }
                         }

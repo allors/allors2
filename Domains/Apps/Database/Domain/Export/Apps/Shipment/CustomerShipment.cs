@@ -649,14 +649,16 @@ namespace Allors.Domain
 
         public void AppsOnDeriveShipmentValue(IDerivation derivation)
         {
-            this.ShipmentValue = 0;
+            var shipmentValue = 0M;
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    this.ShipmentValue += orderShipment.OrderItem.TotalExVat;
+                    shipmentValue += orderShipment.Quantity * orderShipment.OrderItem.UnitPrice;
                 }
             }
+
+            this.ShipmentValue = shipmentValue;
         }
 
         public void AppsOnDeriveCurrentShipmentState(IDerivation derivation)

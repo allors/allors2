@@ -61,25 +61,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            //if (this.ExistPreviousQuantityOnHand && this.QuantityOnHand != this.PreviousQuantityOnHand)
-            //{
-            //    Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
-            //    salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
-            //    salesOrderItems.Filter.AddEquals(M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem, this);
-            //    salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
-
-            //    foreach (SalesOrderItem salesOrderItem in salesOrderItems)
-            //    {
-            //        if (salesOrderItem.SalesOrderItemState.InProcess)
-            //        {
-            //            var x = salesOrderItem.QuantityOrdered;
-            //            salesOrderItem.QuantityOrdered = 0;
-            //            salesOrderItem.QuantityOrdered = x;
-
-            //        }
-            //    }
-            //}
-
             if (this.ExistPreviousQuantityOnHand && this.QuantityOnHand > this.PreviousQuantityOnHand)
             {
                 this.AppsReplenishSalesOrders(derivation);
