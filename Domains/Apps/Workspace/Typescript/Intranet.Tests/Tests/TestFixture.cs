@@ -47,8 +47,11 @@
             options.AddUserProfilePreference("browser.cache.offline.enable", false);
             options.AddUserProfilePreference("network.http.use-cache", false);
             options.AddArguments("disable-infobars");
-            
-            this.Driver = new ChromeDriver(Environment.CurrentDirectory, options);
+
+            var systemChromeDriver = @"\chromedriver";
+            this.Driver = Directory.Exists(systemChromeDriver) ? 
+                              new ChromeDriver(systemChromeDriver, options) : 
+                              new ChromeDriver(Environment.CurrentDirectory, options);
 
             this.Driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(30);
 

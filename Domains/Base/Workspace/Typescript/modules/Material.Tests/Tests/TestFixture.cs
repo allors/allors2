@@ -50,7 +50,10 @@ namespace Tests
             options.AddUserProfilePreference("network.http.use-cache", false);
             options.AddArguments("disable-infobars");
 
-            this.Driver = new ChromeDriver(Environment.CurrentDirectory, options);
+            var systemChromeDriver = @"\chromedriver";
+            this.Driver = Directory.Exists(systemChromeDriver) ?
+                              new ChromeDriver(systemChromeDriver, options) :
+                              new ChromeDriver(Environment.CurrentDirectory, options);
 
             // Move to monitor on the left
             this.Driver.Manage().Window.Position = new Point(-800, 0);
