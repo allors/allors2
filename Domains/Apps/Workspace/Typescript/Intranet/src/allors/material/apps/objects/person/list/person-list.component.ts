@@ -11,7 +11,7 @@ import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../.
 
 import { Person, Country } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService, ObjectData } from '../../../../../material/base/services/object';
 
 interface Row extends TableRow {
   object: Person;

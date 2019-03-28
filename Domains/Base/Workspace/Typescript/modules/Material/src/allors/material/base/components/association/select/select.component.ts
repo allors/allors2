@@ -14,7 +14,7 @@ export class AllorsMaterialAssociationSelectComponent extends AssociationField {
   @Input()
   public display = 'display';
 
-   @Output()
+  @Output()
   public selected: EventEmitter<ISessionObject> = new EventEmitter();
 
   constructor(@Optional() parentForm: NgForm) {
