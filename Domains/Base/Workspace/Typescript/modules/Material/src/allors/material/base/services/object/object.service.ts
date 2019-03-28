@@ -25,7 +25,7 @@ export class ObjectService {
 
     const component = this.createControlByObjectTypeId[data.objectType.id];
     if (component) {
-      const dialogRef = this.dialog.open(component, {data});
+      const dialogRef = this.dialog.open(component, {data, minWidth: '80vw'});
 
       return dialogRef
         .afterClosed();
@@ -47,7 +47,7 @@ export class ObjectService {
 
     const component = this.editControlByObjectTypeId[object.objectType.id];
     if (component) {
-      const dialogRef = this.dialog.open(component, { data });
+      const dialogRef = this.dialog.open(component, { data, minWidth: '80vw' });
       return dialogRef.afterClosed();
     }
 
