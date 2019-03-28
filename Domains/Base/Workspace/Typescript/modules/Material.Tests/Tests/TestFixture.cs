@@ -50,6 +50,8 @@ namespace Tests
             options.AddUserProfilePreference("network.http.use-cache", false);
             options.AddArguments("disable-infobars");
 
+            options.AddArgument("no-sandbox");
+
             var systemChromeDriver = @"\chromedriver";
             this.Driver = Directory.Exists(systemChromeDriver) ?
                               new ChromeDriver(systemChromeDriver, options) :
