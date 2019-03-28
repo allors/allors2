@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -70,6 +73,40 @@ namespace Allors.Domain
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.ThroughDate, this.Meta.AmountOfTime);
 
+            if (this.ExistTimeSheetWhereTimeEntry)
+            {
+                this.Worker = this.TimeSheetWhereTimeEntry.Worker;
+            }
+
+            if (this.ExistAssignedBillingRate)
+            {
+                this.BillingRate = this.AssignedBillingRate;
+            }
+            else
+            {
+                if (!this.ExistBillingRate && this.ExistWorkEffort)
+                {
+                    var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                                                                                                                                && v.Frequency.Equals(this.BillingFrequency)
+                                                                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    if (workEffortAssignmentRate != null)
+                    {
+                        this.BillingRate = workEffortAssignmentRate.Rate;
+                    }
+                }
+
+                if (!this.ExistBillingRate && this.ExistWorker && this.ExistRateType)
+                {
+                    var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                                                                               && v.Frequency.Equals(this.BillingFrequency)
+                                                                               && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    if (partyRate != null)
+                    {
+                        this.BillingRate = partyRate.Rate;
+                    }
+                }
+            }
+
             if (this.ExistBillingRate)
             {
                 derivation.Validation.AssertExists(this, this.Meta.BillingFrequency);
@@ -78,11 +115,6 @@ namespace Allors.Domain
             if (this.ExistAmountOfTime)
             {
                 derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
-            }
-
-            if (this.ExistTimeSheetWhereTimeEntry)
-            {
-                this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
             // calculate AmountOfTime Or ThroughDate

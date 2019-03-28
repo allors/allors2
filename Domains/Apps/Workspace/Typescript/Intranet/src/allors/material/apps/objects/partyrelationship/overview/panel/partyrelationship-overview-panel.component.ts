@@ -152,7 +152,7 @@ export class PartyRelationshipOverviewPanelComponent implements OnInit {
       }
 
       if (this.objects) {
-        this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+        this.table.total = loaded.values[`${pullName}_total`] || this.currentPartyRelationships.length;
         this.refreshTable();
       }
     };

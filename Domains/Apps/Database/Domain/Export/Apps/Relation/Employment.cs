@@ -32,6 +32,11 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.Employee, this);
             }
+
+            if (this.ExistEmployer)
+            {
+                derivation.AddDependency(this.Employer, this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

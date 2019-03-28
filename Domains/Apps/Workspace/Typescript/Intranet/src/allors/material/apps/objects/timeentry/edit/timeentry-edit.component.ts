@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType } from '../../../../../domain';
+import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType, WorkEffortAssignmentRate, PartyRate } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 import { StateService } from '../../../services/state';
 
@@ -30,6 +30,10 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
   selectedWorker: Party;
   workEffort: WorkEffort;
   rateTypes: RateType[];
+  workEffortAssignmentRates: WorkEffortAssignmentRate[];
+  workEffortRate: WorkEffortAssignmentRate;
+  partyRate: PartyRate;
+  derivedBillingRate: number;
 
   constructor(
     @Self() private allors: ContextService,
@@ -38,7 +42,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private stateService: StateService) {
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
   }
@@ -68,6 +72,17 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
               object: this.data.associationId,
               fetch: {
                 WorkEffortPartyAssignmentsWhereAssignment: x
+              }
+            }),
+            pull.WorkEffort({
+              object: this.data.associationId,
+              fetch: {
+                WorkEffortAssignmentRatesWhereWorkEffort: {
+                  include: {
+                    RateType: x,
+                    Frequency: x
+                   }
+                }
               }
             }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
@@ -104,12 +119,20 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           this.timeEntry.TimeFrequency = hour;
         } else {
           this.timeEntry = loaded.objects.TimeEntry as TimeEntry;
+          this.selectedWorker = this.timeEntry.Worker;
 
           if (this.timeEntry.CanWriteAmountOfTime) {
             this.title = 'Edit Time Entry';
           } else {
             this.title = 'View Time Entry';
           }
+        }
+
+        const workEffortAssignmentRates = loaded.collections.WorkEffortAssignmentRates as WorkEffortAssignmentRate[];
+        this.workEffortRate = workEffortAssignmentRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency);
+
+        if (!isCreate) {
+          this.workerSelected(this.selectedWorker);
         }
       }, this.errorService.handler);
   }
@@ -124,6 +147,12 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     this.allors.context.session.hasChanges = true;
   }
 
+  public findBillingRate(): void {
+    if (this.timeEntry.Worker && this.timeEntry.RateType && this.timeEntry.FromDate) {
+      this.workerSelected(this.timeEntry.Worker);
+    }
+  }
+
   public workerSelected(party: Party): void {
     const { pull, tree, x } = this.metaService;
 
@@ -134,6 +163,17 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           Person_TimeSheetWhereWorker: {
           }
         },
+      }),
+      pull.Party({
+        object: party.id,
+        fetch: {
+          PartyRates: {
+            include: {
+              RateType: x,
+              Frequency: x
+            }
+          }
+        },
       })
     ];
 
@@ -142,12 +182,33 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
+
+        const partyRates = loaded.collections.PartyRates as PartyRate[];
+        this.partyRate = partyRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
+
+        this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.partyRate && this.partyRate.Rate;
       }, this.errorService.handler);
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public save(): void {
 
-    this.timeSheet.AddTimeEntry(this.timeEntry);
+    if (!this.timeEntry.TimeSheetWhereTimeEntry) {
+      this.timeSheet.AddTimeEntry(this.timeEntry);
+    }
 
     this.allors.context
       .save()

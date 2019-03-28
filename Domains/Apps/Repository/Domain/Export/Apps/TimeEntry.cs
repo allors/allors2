@@ -88,12 +88,23 @@ namespace Allors.Repository
         public QuoteTerm QuoteTerm { get; set; }
 
         #region Allors
+        [Id("E478A603-B2DA-4C76-91A5-96C5A737FCFC")]
+        [AssociationId("518A24DB-10FC-42A5-A162-CBCBFFD09E1B")]
+        [RoleId("15DA196E-9AE2-4CAE-B1BC-44FDD07FCF4D")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal AssignedBillingRate { get; set; }
+
+        #region Allors
         [Id("2c33de6e-b4fd-47e4-b254-2991f33f01f1")]
         [AssociationId("c8b7e4be-fbc5-414c-8e30-3947925c24b8")]
         [RoleId("1cca252a-d6a1-4945-991a-dd85090bb41d")]
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Derived]
         [Workspace]
         public decimal BillingRate { get; set; }
 

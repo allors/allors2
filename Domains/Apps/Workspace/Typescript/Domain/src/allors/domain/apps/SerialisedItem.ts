@@ -20,7 +20,7 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'displayName', {
     get(this: SerialisedItem) {
 
-      return this.ItemNumber + ' ' + this.Name;
+      return this.ItemNumber + ' ' + this.Name + ' SN: ' + this.SerialNumber;
     },
   });
 

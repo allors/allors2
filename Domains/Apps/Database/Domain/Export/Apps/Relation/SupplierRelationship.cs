@@ -36,6 +36,11 @@ namespace Allors.Domain
                     derivation.AddDependency(this, contactRelationship);
                 }
             }
+
+            if (this.ExistInternalOrganisation)
+            {
+                derivation.AddDependency(this.InternalOrganisation, this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
