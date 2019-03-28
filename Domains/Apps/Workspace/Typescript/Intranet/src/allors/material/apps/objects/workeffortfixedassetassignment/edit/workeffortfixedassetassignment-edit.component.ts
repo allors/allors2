@@ -71,7 +71,13 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
             pull.WorkEffort({
               sort: new Sort(m.WorkEffort.Name)
             }),
-            pull.SerialisedItem({
+            pull.WorkEffort({
+              object: this.data.associationId,
+              fetch: {
+                Customer: {
+                  SerialisedItemsWhereOwnedBy: x
+                }
+              },
               sort: new Sort(m.SerialisedItem.Name)
             }),
             pull.AssetAssignmentStatus({
@@ -98,7 +104,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
         if (isCreate) {
-          this.title = 'Add Work Effort Assignment';
+          this.title = 'Add Work Asset Effort Assignment';
 
           this.workEffortFixedAssetAssignment = this.allors.context.create('WorkEffortFixedAssetAssignment') as WorkEffortFixedAssetAssignment;
 
@@ -115,9 +121,9 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
           this.workEffortFixedAssetAssignment = loaded.objects.WorkEffortFixedAssetAssignment as WorkEffortFixedAssetAssignment;
 
           if (this.workEffortFixedAssetAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Assignment';
+            this.title = 'Edit Work Effort Asset Assignment';
           } else {
-            this.title = 'View Work Effort Assignment';
+            this.title = 'View Work Effort Asset Assignment';
           }
         }
       }, this.errorService.handler);

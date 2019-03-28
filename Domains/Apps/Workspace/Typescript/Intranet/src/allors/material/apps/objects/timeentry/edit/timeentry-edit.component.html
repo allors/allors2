@@ -7,7 +7,7 @@
     <div class="row">
       <mat-form-field class="col-md">
         <mat-select [(ngModel)]="selectedWorker" name="workers" placeholder="Workers"
-          (ngModelChange)="workerSelected($event)">
+          (ngModelChange)="findBillingRate()">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let worker of workers" [value]="worker"> {{ worker.displayName }} </mat-option>
         </mat-select>
@@ -16,12 +16,11 @@
 
     <div class="row">
       <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.RateType"
-        [options]="rateTypes" display="Name"></a-mat-select>
+        [options]="rateTypes" display="Name" selected="findBillingRate()"></a-mat-select>
     </div>
 
     <div class="row">
-      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate">
-      </a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (onModelChange)="findBillingRate()"></a-mat-datetimepicker>
     </div>
 
     <div class="row">
@@ -34,7 +33,8 @@
     </div>
 
     <div class="row">
-      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingRate"></a-mat-input>
+      <div class="col-md" *ngIf="derivedBillingRate">{{derivedBillingRate}}</div>
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AssignedBillingRate"></a-mat-input>
       <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" [options]="frequencies"
         display="Name" label="Frequency"></a-mat-select>
     </div>
@@ -56,8 +56,9 @@
   </div>
 
   <div mat-dialog-actions>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE & CLOSE</button>
+    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !selectedWorker">SAVE</button>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE</button>
   </div>
 
 </form>
