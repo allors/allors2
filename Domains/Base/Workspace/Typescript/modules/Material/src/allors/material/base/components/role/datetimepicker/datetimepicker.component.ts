@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { Component, Optional, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RoleField } from '../../../../../angular';
@@ -10,6 +10,9 @@ import { RoleField } from '../../../../../angular';
   templateUrl: './datetimepicker.component.html',
 })
 export class AllorsMaterialDatetimepickerComponent extends RoleField {
+
+  @Output()
+  public selected: EventEmitter<Date> = new EventEmitter();
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
@@ -52,5 +55,9 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
         this.model.setMinutes(value);
       }
     }
+  }
+
+  public onModelChange(selected: Date): void {
+    this.selected.emit(selected);
   }
 }
