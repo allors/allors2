@@ -78,32 +78,35 @@ namespace Allors.Domain
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
-            if (this.ExistAssignedBillingRate)
+            decimal billingRate = 0M;
+            if (this.AssignedBillingRate.HasValue)
             {
-                this.BillingRate = this.AssignedBillingRate;
+                billingRate = this.AssignedBillingRate.Value;
             }
             else
             {
-                if (!this.ExistBillingRate && this.ExistWorkEffort)
+                if (this.ExistWorkEffort)
                 {
                     var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType) && v.Frequency.Equals(this.BillingFrequency));
                     if (workEffortAssignmentRate != null)
                     {
-                        this.BillingRate = workEffortAssignmentRate.Rate;
+                        billingRate = workEffortAssignmentRate.Rate;
                     }
                 }
 
-                if (!this.ExistBillingRate && this.ExistWorker && this.ExistRateType)
+                if (billingRate == 0 && this.ExistWorker && this.ExistRateType)
                 {
                     var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)
                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
                     if (partyRate != null)
                     {
-                        this.BillingRate = partyRate.Rate;
+                        billingRate = partyRate.Rate;
                     }
                 }
             }
+
+            this.BillingRate = billingRate;
 
             if (this.ExistBillingRate)
             {

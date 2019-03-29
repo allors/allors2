@@ -28,16 +28,23 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPostBuild(ObjectOnPostBuild method)
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
-            if (!this.ExistFacility)
-            {
-                this.Facility = this.Part.DefaultFacility;
-            }
+            var derivation = method.Derivation;
 
+            derivation.AddDependency(this.InventoryItem, this);
+        }
+
+        public void AppsOnInit(ObjectOnInit method)
+        {
             if (!this.ExistPart)
             {
                 this.Part = this.SerialisedItem?.PartWhereSerialisedItem;
+            }
+
+            if (!this.ExistFacility)
+            {
+                this.Facility = this.Part?.DefaultFacility;
             }
 
             if (!this.ExistUnitOfMeasure)
@@ -59,17 +66,7 @@ namespace Allors.Domain
                     this.NonSerialisedInventoryItemState = this.Reason.DefaultNonSerialisedInventoryItemState;
                 }
             }
-        }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.AddDependency(this.InventoryItem, this);
-        }
-
-        public void AppsOnInit(ObjectOnInit method)
-        {
             // Match on required properties
             bool matched = false;
             var matchingItems = this.Part.InventoryItemsWherePart.ToArray();
