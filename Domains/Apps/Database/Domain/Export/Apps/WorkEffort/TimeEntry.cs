@@ -86,9 +86,7 @@ namespace Allors.Domain
             {
                 if (!this.ExistBillingRate && this.ExistWorkEffort)
                 {
-                    var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType)
-                                                                                                                                && v.Frequency.Equals(this.BillingFrequency)
-                                                                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType) && v.Frequency.Equals(this.BillingFrequency));
                     if (workEffortAssignmentRate != null)
                     {
                         this.BillingRate = workEffortAssignmentRate.Rate;
@@ -144,8 +142,11 @@ namespace Allors.Domain
                 this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
             }
 
-            var timeInTimeEntryRateFrequency = Math.Round((decimal) frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
-            this.BillingAmount = Math.Round((decimal)(this.BillingRate * timeInTimeEntryRateFrequency), 2);
+            if (this.ExistBillingRate && this.ExistBillingFrequency)
+            {
+                var timeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
+                this.BillingAmount = Math.Round((decimal)(this.BillingRate * timeInTimeEntryRateFrequency), 2);
+            }
         }
     }
 }

@@ -387,7 +387,7 @@ namespace Allors.Domain
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
                 .WithWorkEffort(workOrder)
-                .WithBillingRate(10)
+                .WithAssignedBillingRate(10)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
@@ -397,7 +397,7 @@ namespace Allors.Domain
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
                 .WithWorkEffort(workOrder)
-                .WithBillingRate(12)
+                .WithAssignedBillingRate(12)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
@@ -408,7 +408,7 @@ namespace Allors.Domain
                 .WithThroughDate(laterTomorrow)
                 .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
-                .WithBillingRate(14)
+                .WithAssignedBillingRate(14)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
@@ -454,7 +454,7 @@ namespace Allors.Domain
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
                 .WithWorkEffort(parentWorkOrder)
-                .WithBillingRate(10)
+                .WithAssignedBillingRate(10)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
@@ -464,7 +464,7 @@ namespace Allors.Domain
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
                 .WithWorkEffort(parentWorkOrder)
-                .WithBillingRate(12)
+                .WithAssignedBillingRate(12)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
@@ -478,7 +478,7 @@ namespace Allors.Domain
                 .WithThroughDate(laterTomorrow)
                 .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(childWorkOrder)
-                .WithBillingRate(14)
+                .WithAssignedBillingRate(14)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
@@ -626,7 +626,7 @@ namespace Allors.Domain
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
                 .WithWorkEffort(workOrder)
-                .WithBillingRate(12)
+                .WithAssignedBillingRate(12)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
