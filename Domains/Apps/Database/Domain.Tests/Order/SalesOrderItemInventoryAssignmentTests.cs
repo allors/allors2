@@ -109,6 +109,9 @@ namespace Allors.Domain
             Assert.Equal(3, salesOrderItem.QuantityReserved);
             Assert.Equal(3, salesOrderItem.QuantityCommittedOut);
 
+            Assert.Equal(3, ((NonSerialisedInventoryItem)part.InventoryItemsWherePart.First()).QuantityCommittedOut);
+            Assert.Equal(11, ((NonSerialisedInventoryItem)part.InventoryItemsWherePart.First()).QuantityOnHand);
+
             Assert.Equal(3, part.QuantityCommittedOut);
             Assert.Equal(11, part.QuantityOnHand);
         }

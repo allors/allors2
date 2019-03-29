@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using Allors.Domain.NonLogging;
 
 namespace Allors.Domain
 {
@@ -53,6 +54,8 @@ namespace Allors.Domain
             this.AppsOnDeriveQuantityAvailableToPromise(derivation);
 
             this.AppsOnDeriveUnitOfMeasure(derivation);
+
+            this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -70,8 +73,6 @@ namespace Allors.Domain
             }
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
-
-            derivation.AddDependency(this.Part, this);
         }
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)

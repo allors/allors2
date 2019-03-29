@@ -213,6 +213,7 @@ namespace Allors.Domain
 
             Assert.Equal(2, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
+            Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(contact2));
 
             contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
 
