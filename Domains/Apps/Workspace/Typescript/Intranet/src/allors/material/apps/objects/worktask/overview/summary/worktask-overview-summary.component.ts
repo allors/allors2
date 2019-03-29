@@ -51,6 +51,9 @@ export class WorkTaskOverviewSummaryComponent {
             Customer: x,
             WorkEffortState: x,
             LastModifiedBy: x,
+            PrintDocument: {
+              Media: x
+            }
           }
         }),
         pull.WorkTask({

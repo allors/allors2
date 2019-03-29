@@ -7,7 +7,7 @@
     <div class="row">
       <mat-form-field class="col-md">
         <mat-select [(ngModel)]="selectedWorker" name="workers" placeholder="Workers"
-          (ngModelChange)="findBillingRate()">
+          (ngModelChange)="findBillingRate($event)">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let worker of workers" [value]="worker"> {{ worker.displayName }} </mat-option>
         </mat-select>
@@ -16,16 +16,20 @@
 
     <div class="row">
       <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.RateType"
-        [options]="rateTypes" display="Name" selected="findBillingRate()"></a-mat-select>
+        [options]="rateTypes" display="Name" (selected)="findBillingRate($event)"></a-mat-select>
     </div>
 
     <div class="row">
-      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (onModelChange)="findBillingRate()"></a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate($event)"></a-mat-datetimepicker>
     </div>
 
     <div class="row">
-      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate">
-      </a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate" ></a-mat-datetimepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AmountOfTime" [disabled]="timeEntry.ThroughDate !== null"></a-mat-input>
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.TimeFrequency" [options]="frequencies" display="Name" label="Frequency" [disabled]="timeEntry.ThroughDate !== null"></a-mat-select>
     </div>
 
     <div class="row">
@@ -33,16 +37,9 @@
     </div>
 
     <div class="row">
-      <div class="col-md" *ngIf="derivedBillingRate">{{derivedBillingRate}}</div>
+      <div class="col-md" *ngIf="derivedBillingRate">Rate used is {{derivedBillingRate}}</div>
       <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AssignedBillingRate"></a-mat-input>
-      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" [options]="frequencies"
-        display="Name" label="Frequency"></a-mat-select>
-    </div>
-
-    <div class="row">
-      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AmountOfTime"></a-mat-input>
-      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.TimeFrequency" [options]="frequencies"
-        display="Name" label="Frequency"></a-mat-select>
+      <a-mat-static class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" display="Name" label="Frequency"></a-mat-static>
     </div>
 
     <div class="row">
@@ -56,8 +53,7 @@
   </div>
 
   <div mat-dialog-actions>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE & CLOSE</button>
-    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !selectedWorker">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE</button>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
   </div>
 

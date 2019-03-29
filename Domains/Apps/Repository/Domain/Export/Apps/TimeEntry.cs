@@ -38,7 +38,7 @@ namespace Allors.Repository
         [RoleId("AA56EB9E-C4F0-4D04-875D-D79A36297603")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Workspace]
         public Person Worker { get; set; }
@@ -136,21 +136,30 @@ namespace Allors.Repository
         [Workspace]
         public TimeFrequency TimeFrequency { get; set; }
 
+        #region Allors
+        [Id("E1121F4A-5CE3-4966-9DF0-CCA9A7DCCEB6")]
+        [AssociationId("CDFE81B9-948A-4FE9-B97C-BFC356AD06E5")]
+        [RoleId("BB5A8989-EACB-4756-85A1-01B9313EA086")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public decimal BillingAmount{ get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 
         public void OnPostBuild(){}
 
-        public void OnInit()
-        {
-            
-        }
+        public void OnInit(){}
 
         public void OnPreDerive(){}
 
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+
+        public void Delete() { }
 
         #endregion
     }

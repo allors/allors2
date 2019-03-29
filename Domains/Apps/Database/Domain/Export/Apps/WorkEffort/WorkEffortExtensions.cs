@@ -157,7 +157,7 @@ namespace Allors.Domain
                     var matchingAssignment = existingAssignments.FirstOrDefault
                         (a => a.Assignment.Equals(@this)
                         && (a.Party.Equals(worker))
-                        && (a.ExistFacility && a.Facility.Equals(facility))
+                        && (a.ExistFacility && a.Facility.Equals(facility) || !a.ExistFacility && facility == null)
                         && (!a.ExistFromDate || (a.ExistFromDate && (a.FromDate <= from)))
                         && (!a.ExistThroughDate || (a.ExistThroughDate && (a.ThroughDate >= through))));
 
@@ -246,19 +246,7 @@ namespace Allors.Domain
                 if (timeEntry.IsBillable)
                 {
                     billableEntries.Add(timeEntry);
-                    var entryTimeSpan = (decimal)(timeEntry.ThroughDate - timeEntry.FromDate).Value.TotalMinutes;
-
-                    if (timeEntry.ExistBillingRate)
-                    {
-                        var timeInTimeEntryRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, timeEntry.BillingFrequency);
-                        timeBillingAmount += Math.Round((decimal)(timeEntry.BillingRate * timeInTimeEntryRateFrequency), 2);
-                    }
-                    else
-                    {
-                        var workEffortAssignmentRate = @this.WorkEffortAssignmentRatesWhereWorkEffort.First;
-                        var timeInWorkEffortRateFrequency = frequencies.Minute.ConvertToFrequency(entryTimeSpan, workEffortAssignmentRate.Frequency);
-                        timeBillingAmount += Math.Round((decimal)(workEffortAssignmentRate.Rate * timeInWorkEffortRateFrequency), 2);
-                    }
+                    timeBillingAmount += timeEntry.BillingAmount;
                 }
             }
 

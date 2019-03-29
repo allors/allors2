@@ -41,8 +41,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
-    private snackBar: MatSnackBar) {
+    private errorService: ErrorService) {
 
     this.m = this.metaService.m;
   }
@@ -147,9 +146,9 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     this.allors.context.session.hasChanges = true;
   }
 
-  public findBillingRate(): void {
-    if (this.timeEntry.Worker && this.timeEntry.RateType && this.timeEntry.FromDate) {
-      this.workerSelected(this.timeEntry.Worker);
+  public findBillingRate(parm: any): void {
+    if (this.selectedWorker && this.timeEntry.RateType && this.timeEntry.FromDate) {
+      this.workerSelected(this.selectedWorker);
     }
   }
 
@@ -188,20 +187,6 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
         this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.partyRate && this.partyRate.Rate;
       }, this.errorService.handler);
-  }
-
-  public update(): void {
-    const { context } = this.allors;
-
-    context
-      .save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
   }
 
   public save(): void {
