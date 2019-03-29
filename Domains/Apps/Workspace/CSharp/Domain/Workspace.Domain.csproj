@@ -30,11 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Polly.7.1.0\lib\netstandard2.0\Polly.dll</HintPath>
+    <Reference Include="Polly, Version=5.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Polly.5.8.0\lib\net45\Polly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,17 +46,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\Client\Context.cs" />
-    <Compile Include="Base\Client\Database.cs" />
-    <Compile Include="Base\Client\Indexer.cs" />
-    <Compile Include="Base\Client\Result.cs" />
-    <Compile Include="Base\Workspace\Config.cs" />
-    <Compile Include="Base\Workspace\Method.cs" />
-    <Compile Include="Base\Workspace\ObjectFactory.cs" />
-    <Compile Include="Base\Workspace\Session.cs" />
-    <Compile Include="Base\Workspace\SessionObject.cs" />
-    <Compile Include="Base\Workspace\Workspace.cs" />
-    <Compile Include="Base\Workspace\WorkspaceObject.cs" />
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Context.cs">
+      <Link>Base\Client\Context.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Database.cs">
+      <Link>Base\Client\Database.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Indexer.cs">
+      <Link>Base\Client\Indexer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Result.cs">
+      <Link>Base\Client\Result.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Config.cs">
+      <Link>Base\Workspace\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Method.cs">
+      <Link>Base\Workspace\Method.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\ObjectFactory.cs">
+      <Link>Base\Workspace\ObjectFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Session.cs">
+      <Link>Base\Workspace\Session.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\SessionObject.cs">
+      <Link>Base\Workspace\SessionObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Workspace.cs">
+      <Link>Base\Workspace\Workspace.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\WorkspaceObject.cs">
+      <Link>Base\Workspace\WorkspaceObject.cs</Link>
+    </Compile>
     <Compile Include="generated\AccessControl.g.cs" />
     <Compile Include="generated\AutomatedAgent.g.cs" />
     <Compile Include="generated\C1.g.cs" />

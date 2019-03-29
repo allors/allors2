@@ -33,6 +33,9 @@
 
                     { "../Base/Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/Intranet/src/allors/meta/generated" },
                     { "../Base/Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/Intranet/src/allors/domain/generated" },
+
+                    { "../Base/Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
+                    { "../Base/Workspace/CSharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
                 };
 
             for (var i = 0; i < config.GetLength(0); i++)

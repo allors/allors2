@@ -264,35 +264,7 @@ namespace Allors.Meta
 
             return -1;
         }
-
-        /// <summary>
-        /// Get the value of the role on this object.
-        /// </summary>
-        /// <param name="strategy">
-        /// The strategy.
-        /// </param>
-        /// <returns>
-        /// The role value.
-        /// </returns>
-        public override object Get(IStrategy strategy)
-        {
-            return strategy.GetRole(this.RelationType);
-        }
-
-        /// <summary>
-        /// Set the value of the role on this object.
-        /// </summary>
-        /// <param name="strategy">
-        /// The strategy.
-        /// </param>
-        /// <param name="value">
-        /// The role value.
-        /// </param>
-        public void Set(IStrategy strategy, object value)
-        {
-            strategy.SetRole(this.RelationType, value);
-        }
-
+        
         /// <summary>
         /// Get the object type.
         /// </summary>

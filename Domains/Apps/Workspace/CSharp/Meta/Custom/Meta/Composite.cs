@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="PropertyType.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
+// <copyright file="Composite.cs" company="Allors bvba">
+// Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -16,30 +16,15 @@
 // 
 // For more information visit http://www.allors.com/legal
 // </copyright>
+// <summary>Defines the ObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
-    using System;
-
-    public abstract partial class PropertyType : OperandType
+    public partial class Composite
     {
-        protected PropertyType(MetaPopulation metaPopulation)
-            : base(metaPopulation)
+        internal virtual void CustomExtend()
         {
         }
-
-        /// <summary>
-        /// Gets the operand name.
-        /// </summary>
-        public abstract string Name { get; }
-        
-        /// <summary>
-        /// Get the object type.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IObjectType"/>.
-        /// </returns>
-        public abstract ObjectType GetObjectType();
     }
 }

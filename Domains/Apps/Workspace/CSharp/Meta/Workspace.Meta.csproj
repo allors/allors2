@@ -40,6 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Domain\MetaClass.cs">
+      <Link>Base\Domain\MetaClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Domain\MetaInterface.cs">
+      <Link>Base\Domain\MetaInterface.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Domain\MetaUnit.cs">
+      <Link>Base\Domain\MetaUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Meta\ConcreteRoleType.cs">
+      <Link>Base\Meta\ConcreteRoleType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Meta\Path.cs">
+      <Link>Base\Meta\Path.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Meta\RoleType.cs">
+      <Link>Base\Meta\RoleType.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\AssociationType.cs">
       <Link>Core\Meta\AssociationType.cs</Link>
     </Compile>
@@ -76,6 +94,12 @@
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\MetaPopulation.cs">
       <Link>Core\Meta\MetaPopulation.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\Method.cs">
+      <Link>Core\Meta\Method.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\MethodInvocation.cs">
+      <Link>Core\Meta\MethodInvocation.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\MethodType.cs">
       <Link>Core\Meta\MethodType.cs</Link>
     </Compile>
@@ -106,12 +130,6 @@
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core\Meta\ValidationLog.cs">
       <Link>Core\Meta\ValidationLog.cs</Link>
     </Compile>
-    <Compile Include="Base\Domain\MetaClass.cs" />
-    <Compile Include="Base\Domain\MetaInterface.cs" />
-    <Compile Include="Base\Domain\MetaUnit.cs" />
-    <Compile Include="Base\Meta\ConcreteRoleType.cs" />
-    <Compile Include="Base\Meta\Path.cs" />
-    <Compile Include="Base\Meta\RoleType.cs" />
     <Compile Include="Custom\Meta\Composite.cs" />
     <Compile Include="generated\builder.g.cs" />
     <Compile Include="generated\classes.g.cs" />
@@ -122,7 +140,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Base\Meta\RelationType.cd" />
+    <None Include="..\..\..\..\Base\Workspace\CSharp\Meta\Base\Meta\RelationType.cd">
+      <Link>Base\Meta\RelationType.cd</Link>
+    </None>
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>

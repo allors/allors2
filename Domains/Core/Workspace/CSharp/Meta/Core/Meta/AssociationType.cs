@@ -160,20 +160,6 @@ namespace Allors.Meta
         /// </summary>
         public override string DisplayName => this.PropertyName;
 
-        /// <summary>
-        /// Get the value of the association on this object.
-        /// </summary>
-        /// <param name="strategy">
-        /// The strategy.
-        /// </param>
-        /// <returns>
-        /// The association value.
-        /// </returns>
-        public override object Get(IStrategy strategy)
-        {
-            return strategy.GetAssociation(this.RelationType);
-        }
-
         IRoleType IAssociationType.RoleType => this.RoleType;
 
         /// <summary>

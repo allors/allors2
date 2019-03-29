@@ -30,7 +30,7 @@
 
         public HttpClient HttpClient { get; }
 
-        public Policy Policy { get; set; } = Policy
+        public IAsyncPolicy Policy { get; set; } = Polly.Policy
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 

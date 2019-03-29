@@ -40,34 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\ArrayExtensions.cs" />
-    <Compile Include="Adapters\ClassCache.cs" />
-    <Compile Include="Adapters\Configuration.cs" />
-    <Compile Include="Adapters\EmptySet.cs" />
-    <Compile Include="Adapters\IClassCache.cs" />
-    <Compile Include="Adapters\IRoleCache.cs" />
-    <Compile Include="Adapters\PredicateAssertions.cs" />
-    <Compile Include="Adapters\RoleAssertions.cs" />
-    <Compile Include="Adapters\RoleCache.cs" />
-    <Compile Include="Adapters\RoleTypeExtensions.cs" />
-    <Compile Include="Adapters\Schema\Objects.cs" />
-    <Compile Include="Adapters\Schema\ObjectType.cs" />
-    <Compile Include="Adapters\Schema\Population.cs" />
-    <Compile Include="Adapters\Schema\Relation.cs" />
-    <Compile Include="Adapters\Schema\Relations.cs" />
-    <Compile Include="Adapters\Schema\RelationTypeComposite.cs" />
-    <Compile Include="Adapters\Schema\RelationTypeUnit.cs" />
-    <Compile Include="Adapters\Schema\Xml.cs" />
-    <Compile Include="Adapters\Serialization.cs" />
-    <Compile Include="Extent.cs" />
-    <Compile Include="ExtentT.cs" />
-    <Compile Include="IChangeSet.cs" />
-    <Compile Include="ICompositePredicate.cs" />
-    <Compile Include="IDatabase.cs" />
-    <Compile Include="IObject.cs" />
-    <Compile Include="IObjectFactory.cs" />
-    <Compile Include="ISession.cs" />
-    <Compile Include="IStrategy.cs" />
     <Compile Include="Meta\IAssociationType.cs" />
     <Compile Include="Meta\IClass.cs" />
     <Compile Include="Meta\IComposite.cs" />
@@ -85,26 +57,12 @@
     <Compile Include="Meta\UnitNames.cs" />
     <Compile Include="Meta\UnitTags.cs" />
     <Compile Include="Multiplicity.cs" />
-    <Compile Include="ObjectFactory.cs" />
-    <Compile Include="ObjectNotLoadedEventArgs.cs" />
-    <Compile Include="Prefetch\PrefetchPolicy.cs" />
-    <Compile Include="Prefetch\PrefetchPolicyBuilder.cs" />
-    <Compile Include="Prefetch\PrefetchRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelationNotLoadedEventArgs.cs" />
-    <Compile Include="SessionCommittedEventArgs.cs" />
-    <Compile Include="SessionCommittingEventArgs.cs" />
-    <Compile Include="SessionRolledBackEventArgs.cs" />
-    <Compile Include="SessionRollingBackEventArgs.cs" />
     <Compile Include="Sort.cs" />
     <Compile Include="SortDirection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Adapters\Schema\Serialization.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Meta\Overview.cd" />
-    <None Include="Prefetch\Prefetch.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

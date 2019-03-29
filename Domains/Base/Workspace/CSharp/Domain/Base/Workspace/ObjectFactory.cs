@@ -136,7 +136,7 @@ namespace Allors.Workspace
         public IMetaPopulation MetaPopulation { get; }
 
         /// <summary>
-        /// Creates a new <see cref="IObject"/> given the <see cref="IStrategy"/>.
+        /// Creates a new <see cref="IObject"/> given the <see cref="IObject"/>.
         /// </summary>
         /// <param name="session">
         /// The session.
