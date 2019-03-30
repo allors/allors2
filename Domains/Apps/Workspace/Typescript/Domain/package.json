@@ -21,7 +21,7 @@
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
     "ts-node": "latest",
-    "typescript": "latest",
+    "typescript": "~3.2.2",
     "lnk": "latest"
   }
 }
