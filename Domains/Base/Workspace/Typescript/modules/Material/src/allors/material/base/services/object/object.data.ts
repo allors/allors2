@@ -9,13 +9,3 @@ export interface CreateData {
 
   onCreate?: (object: ISessionObject) => void;
 }
-
-export interface EditData {
-  objectType?: ObjectType;
-  id: string;
-}
-
-export interface ObjectData {
-  objectType?: ObjectType;
-  id: string;
-}

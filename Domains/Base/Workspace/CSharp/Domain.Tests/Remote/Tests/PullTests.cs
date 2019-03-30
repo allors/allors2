@@ -22,8 +22,9 @@ namespace Tests.Remote
             };
 
 
+            var pulls = new[] { pull.Save() };
 
-            context.Load(new PullRequest{ new[] { pull.Save() }).Wait();}
+            context.Load(pulls).Wait();
 
             var people = context.Collections["People"];
         }

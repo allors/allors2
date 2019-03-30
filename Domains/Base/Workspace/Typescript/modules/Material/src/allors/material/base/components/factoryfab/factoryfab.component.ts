@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { ObjectType } from '../../../../framework';
-import { CreateData, ObjectData, ObjectService } from '../../services/object';
+import { ObjectType, IObject } from '../../../../framework';
+import { CreateData, ObjectService } from '../../services/object';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,7 +15,7 @@ export class FactoryFabComponent implements OnInit {
 
   @Input() private createData: CreateData;
 
-  @Output() private created: EventEmitter<ObjectData> = new EventEmitter();
+  @Output() private created: EventEmitter<IObject> = new EventEmitter();
 
   classes: ObjectType[];
 

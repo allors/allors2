@@ -2,10 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable, throwError } from 'rxjs';
 
-import { ObjectType, ISessionObject } from '../../../../framework';
+import { ObjectType, ISessionObject, IObject } from '../../../../framework';
 
 import { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './object.tokens';
-import { CreateData, EditData, ObjectData } from './object.data';
+import { CreateData } from './object.data';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class ObjectService {
   ) {
   }
 
-  create(objectType: ObjectType, createData?: CreateData): Observable<ObjectData> {
+  create(objectType: ObjectType, createData?: CreateData): Observable<IObject> {
 
     const data: CreateData = Object.assign({ objectType }, createData);
 
@@ -38,9 +38,9 @@ export class ObjectService {
     return !!this.createControlByObjectTypeId[objectType.id];
   }
 
-  edit(object: ISessionObject): Observable<ObjectData> {
+  edit(object: ISessionObject): Observable<IObject> {
 
-    const data: EditData = {
+    const data: IObject = {
       id: object.id,
       objectType: object.objectType,
     };

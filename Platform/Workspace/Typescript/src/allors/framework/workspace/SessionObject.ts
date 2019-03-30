@@ -8,7 +8,12 @@ import { Method } from './Method';
 import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 
-export interface ISessionObject {
+export interface IObject {
+    id: string;
+    objectType: ObjectType;
+}
+
+export interface ISessionObject extends IObject {
     id: string;
     version: string;
     objectType: ObjectType;
