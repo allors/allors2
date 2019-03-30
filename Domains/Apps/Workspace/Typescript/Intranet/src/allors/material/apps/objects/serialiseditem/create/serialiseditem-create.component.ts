@@ -5,12 +5,12 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ObjectData, CreateData } from '../../../../../../allors/material/base/services/object';
+import { CreateData } from '../../../../../../allors/material/base/services/object';
 
 @Component({
   templateUrl: './serialiseditem-create.component.html',
@@ -138,7 +138,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.serialisedItem.id,
           objectType: this.serialisedItem.objectType,
         };

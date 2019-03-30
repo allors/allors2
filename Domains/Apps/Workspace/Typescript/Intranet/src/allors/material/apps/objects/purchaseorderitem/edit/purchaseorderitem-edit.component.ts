@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
-import { PullRequest, Equals, And, LessThan } from '../../../../../framework';
+import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 import * as moment from 'moment';
 
 @Component({
@@ -35,7 +35,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,7 +54,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.PurchaseOrderItem({
@@ -161,7 +161,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.orderItem.id,
           objectType: this.orderItem.objectType,
         };

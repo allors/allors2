@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './telecommunicationsnumber-edit.component.html',
@@ -28,7 +28,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: EditData,
+    @Inject(MAT_DIALOG_DATA) public data: IObject,
     public dialogRef: MatDialogRef<TelecommunicationsNumberEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -85,7 +85,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.contactMechanism.id,
           objectType: this.contactMechanism.objectType,
         };

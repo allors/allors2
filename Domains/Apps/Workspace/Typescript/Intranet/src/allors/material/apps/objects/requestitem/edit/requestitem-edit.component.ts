@@ -5,11 +5,11 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 
-import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
@@ -35,7 +35,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
@@ -53,7 +53,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.RequestItem({
@@ -143,7 +143,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.requestItem.id,
           objectType: this.requestItem.objectType,
         };

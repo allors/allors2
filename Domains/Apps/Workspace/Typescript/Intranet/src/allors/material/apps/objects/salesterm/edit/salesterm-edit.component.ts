@@ -4,11 +4,11 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
-import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../framework';
+import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 @Component({
   templateUrl: './salesterm-edit.component.html',
   providers: [ContextService]
@@ -27,7 +27,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SalesTermEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -44,7 +44,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const create = (this.data as EditData).id === undefined;
+          const create = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;
 
           const pulls = [
@@ -103,7 +103,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe((saved: Saved) => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.object.id,
           objectType: this.object.objectType,
         };

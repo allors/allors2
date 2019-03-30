@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
-import { PullRequest, Equals, Sort } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './purchaseinvoiceitem-edit.component.html',
@@ -37,7 +37,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -55,7 +55,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { id } = this.data;
 
           const pulls = [
@@ -150,7 +150,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.invoiceItem.id,
           objectType: this.invoiceItem.objectType,
         };

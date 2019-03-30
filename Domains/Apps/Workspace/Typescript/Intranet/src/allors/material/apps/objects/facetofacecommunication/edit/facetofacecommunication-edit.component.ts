@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',
@@ -36,7 +36,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<FaceToFaceCommunicationEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,7 +54,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           let pulls = [
             pull.FaceToFaceCommunication({
@@ -222,7 +222,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.communicationEvent.id,
           objectType: this.communicationEvent.objectType,
         };

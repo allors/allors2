@@ -7,12 +7,12 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ObjectData } from 'src/allors/material/base/services/object';
+
 
 @Component({
   templateUrl: './worktask-create.component.html',
@@ -171,7 +171,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.workTask.id,
           objectType: this.workTask.objectType,
         };

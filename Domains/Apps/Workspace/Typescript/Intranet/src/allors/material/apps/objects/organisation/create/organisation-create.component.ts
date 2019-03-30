@@ -6,14 +6,14 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
+import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -208,7 +208,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.organisation.id,
           objectType: this.organisation.objectType,
         };

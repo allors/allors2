@@ -5,11 +5,10 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PostalAddress, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './postaladdress-edit.component.html',
@@ -30,7 +29,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: EditData,
+    @Inject(MAT_DIALOG_DATA) public data: IObject,
     public dialogRef: MatDialogRef<PostalAddressEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -91,7 +90,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.contactMechanism.id,
           objectType: this.contactMechanism.objectType,
         };

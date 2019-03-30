@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Employment, Party, Organisation, Person, InternalOrganisation } from '../../../../../domain';
-import { PullRequest, Equals } from '../../../../../framework';
+import { PullRequest, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
 import { Fetcher } from '../../Fetcher';
 
 @Component({
@@ -35,7 +35,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<EmploymentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,7 +54,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -137,7 +137,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.partyRelationship.id,
           objectType: this.partyRelationship.objectType,
         };

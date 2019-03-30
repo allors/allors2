@@ -5,13 +5,12 @@ import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
-import { ProductType, VatRate, ProductIdentificationType, ProductNumber, Settings, UnifiedGood } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { ProductType, VatRate, ProductIdentificationType, ProductNumber, Settings, UnifiedGood, Good, InventoryItemKind } from '../../../../../domain';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
-import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
-import { Good, InventoryItemKind } from 'src/allors/domain/generated';
 
 @Component({
   templateUrl: './unifiedgood-create.component.html',
@@ -103,7 +102,7 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.good.id,
           objectType: this.good.objectType,
         };

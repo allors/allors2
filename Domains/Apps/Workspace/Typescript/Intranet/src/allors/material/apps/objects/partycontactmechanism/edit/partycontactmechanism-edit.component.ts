@@ -5,12 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism, Organisation, OrganisationContactRelationship, Party } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   templateUrl: './partycontactmechanism-edit.component.html',
@@ -32,7 +31,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<PartyContactmechanismEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -50,7 +49,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.PartyContactMechanism({
@@ -158,7 +157,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.partyContactMechanism.id,
           objectType: this.partyContactMechanism.objectType,
         };

@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
-import { And, Equals, PullRequest, Sort, Filter } from '../../../../../framework';
+import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './salesinvoiceitem-edit.component.html',
@@ -43,7 +43,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SalesInvoiceItemEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
@@ -66,7 +66,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const { id } = this.data;
 
           const pulls = [
@@ -182,7 +182,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.invoiceItem.id,
           objectType: this.invoiceItem.objectType,
         };

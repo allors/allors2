@@ -3,11 +3,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PositionType } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 import { StateService } from '../../../services/state';
 
 @Component({
@@ -27,7 +27,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<PositionTypeEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -45,7 +45,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.PositionType({
@@ -90,7 +90,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.positionType.id,
           objectType: this.positionType.objectType,
         };

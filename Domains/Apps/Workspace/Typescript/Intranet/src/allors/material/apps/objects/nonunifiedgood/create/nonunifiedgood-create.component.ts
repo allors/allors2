@@ -6,11 +6,11 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
-import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 import { Good } from 'src/allors/domain/generated';
 
 @Component({
@@ -122,7 +122,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.good.id,
           objectType: this.good.objectType,
         };

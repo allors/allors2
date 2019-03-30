@@ -7,12 +7,12 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './person-create.component.html',
@@ -164,7 +164,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.person.id,
           objectType: this.person.objectType,
         };

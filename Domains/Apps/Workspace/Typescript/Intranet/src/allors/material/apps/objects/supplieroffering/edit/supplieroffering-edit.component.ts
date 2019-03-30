@@ -5,12 +5,12 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -55,7 +55,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           let pulls = [
             this.fetcher.Settings,
@@ -143,7 +143,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.supplierOffering.id,
           objectType: this.supplierOffering.objectType,
         };

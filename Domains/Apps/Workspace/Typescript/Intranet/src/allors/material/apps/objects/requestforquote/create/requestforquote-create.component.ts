@@ -4,13 +4,13 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ObjectData, CreateData } from '../../../../../../allors/material/base/services/object';
 
 @Component({
   templateUrl: './requestforquote-create.component.html',
@@ -92,7 +92,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.request.id,
           objectType: this.request.objectType,
         };

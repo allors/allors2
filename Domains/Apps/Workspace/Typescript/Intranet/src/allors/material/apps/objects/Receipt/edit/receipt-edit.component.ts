@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './receipt-edit.component.html',
@@ -43,7 +43,7 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<ReceiptEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -61,7 +61,7 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.SalesOrderItem({
@@ -188,7 +188,7 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.orderItem.id,
           objectType: this.orderItem.objectType,
         };

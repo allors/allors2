@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './telecommunicationsnumber-create.component.html',
@@ -96,7 +96,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.contactMechanism.id,
           objectType: this.contactMechanism.objectType,
         };

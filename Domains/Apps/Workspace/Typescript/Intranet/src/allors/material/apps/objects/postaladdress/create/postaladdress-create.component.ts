@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap } from 'rxjs/operators';
-import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './postaladdress-create.component.html',
@@ -98,7 +98,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.contactMechanism.id,
           objectType: this.contactMechanism.objectType,
         };

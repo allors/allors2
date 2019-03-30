@@ -6,11 +6,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, EmailAddress, EmailCommunication, EmailTemplate, Party, Person, Organisation, CommunicationEventState, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData, CreateData, EditData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './emailcommunication-edit.component.html',
@@ -43,7 +43,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<EmailCommunicationEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
@@ -63,7 +63,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           let pulls = [
             pull.EmailCommunication({
@@ -335,7 +335,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.communicationEvent.id,
           objectType: this.communicationEvent.objectType,
         };

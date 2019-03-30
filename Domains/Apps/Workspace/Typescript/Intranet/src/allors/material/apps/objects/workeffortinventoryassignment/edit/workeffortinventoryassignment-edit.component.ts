@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './workeffortinventoryassignment-edit.component.html',
@@ -32,7 +32,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<WorkEffortInventoryAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -50,7 +50,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.WorkEffortInventoryAssignment({
@@ -123,7 +123,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.workEffortInventoryAssignment.id,
           objectType: this.workEffortInventoryAssignment.objectType,
         };

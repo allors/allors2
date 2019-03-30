@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './workeffortpartyassignment-edit.component.html',
@@ -33,7 +33,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<WorkEffortPartyAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -51,7 +51,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.WorkEffortPartyAssignment({
@@ -137,7 +137,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.workEffortPartyAssignment.id,
           objectType: this.workEffortPartyAssignment.objectType,
         };

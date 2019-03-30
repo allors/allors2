@@ -5,11 +5,10 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { RepeatingSalesInvoice, TimeFrequency, DayOfWeek, SalesInvoice } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-
-import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './repeatingsalesinvoice-edit.component.html',
@@ -30,7 +29,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RepeatingSalesInvoiceEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
@@ -48,7 +47,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
           const id = this.data.id;
 
           const pulls = [
@@ -108,7 +107,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.repeatinginvoice.id,
           objectType: this.repeatinginvoice.objectType,
         };

@@ -4,11 +4,11 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
 import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
+import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
-import { CreateData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData } from '../../../../../material';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../services/state';
 
@@ -167,7 +167,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
     this.allors.context.save()
       .subscribe((saved: Saved) => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.inventoryItemTransaction.id,
           objectType: this.inventoryItemTransaction.objectType,
         };

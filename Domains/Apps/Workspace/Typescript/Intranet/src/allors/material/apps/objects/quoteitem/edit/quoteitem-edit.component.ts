@@ -6,11 +6,10 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { CreateData } from '../../../../../material/base/services/object';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-
-import { CreateData, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -40,7 +39,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
@@ -59,7 +58,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const create = (this.data as EditData).id === undefined;
+          const create = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.QuoteItem(
@@ -162,7 +161,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.quoteItem.id,
           objectType: this.quoteItem.objectType,
         };

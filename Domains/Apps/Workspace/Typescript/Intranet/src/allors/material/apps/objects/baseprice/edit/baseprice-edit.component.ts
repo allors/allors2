@@ -5,12 +5,12 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation, Organisation, NonUnifiedGood } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
+import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',
@@ -32,7 +32,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<BasepriceEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -51,7 +51,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           let pulls = [
             this.fetcher.internalOrganisation,
@@ -134,7 +134,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.priceComponent.id,
           objectType: this.priceComponent.objectType,
         };

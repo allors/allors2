@@ -5,12 +5,12 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { ObjectData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './nonunifiedpart-create.component.html',
@@ -186,7 +186,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.part.id,
           objectType: this.part.objectType,
         };

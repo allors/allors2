@@ -2,7 +2,7 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
 import { PartyRate } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, CreateData, EditService, EditData } from '../../../../..';
+import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {

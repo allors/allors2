@@ -5,10 +5,10 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { CreateData, EditData, ObjectData } from 'src/allors/material/base/services/object';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 
@@ -36,7 +36,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SerialisedItemCharacteristicEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -55,7 +55,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             this.fetcher.locales,
@@ -131,7 +131,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.productCharacteristic.id,
           objectType: this.productCharacteristic.objectType,
         };

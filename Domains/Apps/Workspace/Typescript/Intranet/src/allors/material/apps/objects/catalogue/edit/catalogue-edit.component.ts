@@ -5,12 +5,12 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton, Organisation } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
+import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
+import { CreateData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
@@ -36,7 +36,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<CatalogueEditComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -56,7 +56,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             this.fetcher.categories,
@@ -117,7 +117,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.catalogue.id,
           objectType: this.catalogue.objectType,
         };

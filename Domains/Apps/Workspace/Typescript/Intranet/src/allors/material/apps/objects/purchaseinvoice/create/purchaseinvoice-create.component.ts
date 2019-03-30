@@ -5,11 +5,11 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, PurchaseOrder } from '../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
-import { CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './purchaseinvoice-create.component.html',
@@ -159,7 +159,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.invoice.id,
           objectType: this.invoice.objectType,
         };

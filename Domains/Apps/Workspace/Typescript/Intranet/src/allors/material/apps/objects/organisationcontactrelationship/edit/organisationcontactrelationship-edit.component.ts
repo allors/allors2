@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Party, Organisation, Person, OrganisationContactRelationship, OrganisationContactKind } from '../../../../../domain';
-import { PullRequest, Equals, Sort } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { EditData, CreateData, ObjectData } from 'src/allors/material/base/services/object';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './organisationcontactrelationship-edit.component.html',
@@ -34,7 +34,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -52,7 +52,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           const pulls = [
             pull.OrganisationContactRelationship({
@@ -138,7 +138,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.partyRelationship.id,
           objectType: this.partyRelationship.objectType,
         };

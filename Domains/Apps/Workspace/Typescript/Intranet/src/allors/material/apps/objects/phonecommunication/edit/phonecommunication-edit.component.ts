@@ -6,12 +6,12 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData, EditData, CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './phonecommunication-edit.component.html',
@@ -42,7 +42,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<PhoneCommunicationEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
@@ -61,7 +61,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as IObject).id === undefined;
 
           let pulls = [
             pull.PhoneCommunication({
@@ -323,7 +323,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.save()
       .subscribe(() => {
-        const data: ObjectData = {
+        const data: IObject = {
           id: this.communicationEvent.id,
           objectType: this.communicationEvent.objectType,
         };
