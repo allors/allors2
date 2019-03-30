@@ -47,12 +47,11 @@ namespace Tests.Remote
 
         private void Init()
         {
-            AsyncContext.Run(
-                async () =>
-                    {
-                        var setup = await this.Database.HttpClient.GetAsync(SetupUrl);
-                        var login = await this.Database.HttpClient.GetAsync(LoginUrl);
-                    });
+            var init = this.Database.HttpClient.GetAsync(SetupUrl).Result;
+
+            var user = "administrator";
+            var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+            var loggedIn = this.Database.Login(uri, user, null).Result;
         }
 
     }

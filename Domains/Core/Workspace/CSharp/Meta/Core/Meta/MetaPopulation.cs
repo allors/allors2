@@ -410,8 +410,8 @@ namespace Allors.Meta
                         type.DeriveExclusiveSubclass();
                     }
 
-                    var roleTypesByAssociationObjectType = new Dictionary<ObjectType, HashSet<RoleType>>();
-                    var associationTypesByRoleObjectType = new Dictionary<ObjectType, HashSet<AssociationType>>();
+                    var roleTypesByAssociationObjectType = new Dictionary<IObjectType, HashSet<RoleType>>();
+                    var associationTypesByRoleObjectType = new Dictionary<IObjectType, HashSet<AssociationType>>();
                     foreach (var relationType in this.RelationTypes)
                     {
                         {

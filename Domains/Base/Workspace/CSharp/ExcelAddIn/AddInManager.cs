@@ -87,18 +87,7 @@
                 {
                     var user = ConfigurationManager.AppSettings[UserKey] ?? @"administrator";
                     var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
-                    var request = new { UserName = user, Password = string.Empty };
-                    using (var response = await database.PostAsJsonAsync(uri, request))
-                    {
-                        response.EnsureSuccessStatusCode();
-                        var authResult = await database.ReadAsAsync<AuthenticationResult>(response);
-                        if (!authResult.Authenticated)
-                        {
-                            throw new Exception("Not authenticated");
-                        }
-
-                        database.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.Token);
-                    }
+                    await database.Login(uri, user, null);
                 }
             }
             catch (Exception e)
@@ -106,12 +95,5 @@
                 this.Logger.Error(e);
             }
         }
-    }
-
-    public class AuthenticationResult
-    {
-        public bool Authenticated { get; set; }
-
-        public string Token { get; set; }
     }
 }

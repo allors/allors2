@@ -83,6 +83,7 @@
     <Compile Include="Local\Tests\WorkspaceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Remote\RemoteTest.cs" />
+    <Compile Include="Remote\Tests\PullTests.cs" />
     <Compile Include="Remote\Tests\ObjectTests.cs" />
     <Compile Include="Remote\Tests\UnitSamplesTests.cs" />
   </ItemGroup>

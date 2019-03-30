@@ -185,7 +185,7 @@ namespace Allors.Meta
                 if (this.AssociationType?.ObjectType != null && this.RoleType?.ObjectType != null)
                 {
                     var roleCompositeType = this.RoleType.ObjectType as Composite;
-                    return this.AssociationType.ObjectType.ExistExclusiveClass && roleCompositeType != null && roleCompositeType.ExistExclusiveClass;
+                    return ((Composite)this.AssociationType.ObjectType).ExistExclusiveClass && roleCompositeType != null && roleCompositeType.ExistExclusiveClass;
                 }
 
                 return false;

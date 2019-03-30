@@ -59,10 +59,8 @@ namespace Allors.Meta
         }
 
         public bool Workspace => this.RelationType.Workspace;
-
-        IObjectType IRoleType.ObjectType => this.ObjectType;
-
-        public ObjectType ObjectType
+        
+        public IObjectType ObjectType
         {
             get
             {
@@ -72,7 +70,7 @@ namespace Allors.Meta
             set
             {
                 this.MetaPopulation.AssertUnlocked();
-                this.objectType = value;
+                this.objectType = (ObjectType)value;
                 this.MetaPopulation.Stale();
             }
         }
@@ -273,7 +271,7 @@ namespace Allors.Meta
         /// </returns>
         public override ObjectType GetObjectType()
         {
-            return this.ObjectType;
+            return (ObjectType)this.ObjectType;
         }
 
         /// <summary>

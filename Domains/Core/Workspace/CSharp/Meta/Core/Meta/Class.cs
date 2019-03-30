@@ -165,7 +165,7 @@ namespace Allors.Meta
             get
             {
                 this.MetaPopulation.Derive();
-                return this.ConcreteRoleTypes.Where(m => m.RoleType.Workspace);
+                return this.ConcreteRoleTypes.Where(m => ((RoleType)m.RoleType).Workspace);
             }
         }
     }

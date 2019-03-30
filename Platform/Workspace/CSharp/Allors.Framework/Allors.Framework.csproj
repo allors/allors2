@@ -50,6 +50,7 @@
     <Compile Include="Meta\IObjectType.cs" />
     <Compile Include="Meta\IPropertyType.cs" />
     <Compile Include="Meta\IRelationType.cs" />
+    <Compile Include="Meta\IConcreteRoleType.cs" />
     <Compile Include="Meta\IRoleType.cs" />
     <Compile Include="Meta\IUnit.cs" />
     <Compile Include="Meta\IValidationLog.cs" />

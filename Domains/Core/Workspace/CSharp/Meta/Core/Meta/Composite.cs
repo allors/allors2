@@ -351,7 +351,7 @@ namespace Allors.Meta
         /// </summary>
         /// <param name="roleTypes">The role types.</param>
         /// <param name="roleTypesByAssociationObjectType">RoleTypes grouped by the ObjectType of the Association</param>
-        internal void DeriveRoleTypes(HashSet<RoleType> roleTypes, Dictionary<ObjectType, HashSet<RoleType>> roleTypesByAssociationObjectType)
+        internal void DeriveRoleTypes(HashSet<RoleType> roleTypes, Dictionary<IObjectType, HashSet<RoleType>> roleTypesByAssociationObjectType)
         {
             roleTypes.Clear();
 
@@ -378,7 +378,7 @@ namespace Allors.Meta
         /// </summary>
         /// <param name="associations">The associations.</param>
         /// <param name="relationTypesByRoleObjectType">AssociationTypes grouped by the ObjectType of the Role</param>
-        internal void DeriveAssociationTypes(HashSet<AssociationType> associations, Dictionary<ObjectType, HashSet<AssociationType>> relationTypesByRoleObjectType)
+        internal void DeriveAssociationTypes(HashSet<AssociationType> associations, Dictionary<IObjectType, HashSet<AssociationType>> relationTypesByRoleObjectType)
         {
             associations.Clear();
             
@@ -570,7 +570,7 @@ namespace Allors.Meta
                 return this
                     .Supertypes.Where(m => m.Workspace)
                     .Union(this.RoleTypes.Where(m => m.Workspace && m.ObjectType.IsComposite).Select(v => (Composite)v.ObjectType))
-                    .Union(this.AssociationTypes.Where(m => m.Workspace).Select(v => v.ObjectType)).Distinct()
+                    .Union(this.AssociationTypes.Where(m => m.Workspace).Select(v => (Composite)v.ObjectType)).Distinct()
                     .Except(new[] { this }).ToArray();
             }
         }

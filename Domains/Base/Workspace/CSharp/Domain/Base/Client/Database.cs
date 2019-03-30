@@ -118,5 +118,30 @@
             var deserializedObject = JsonConvert.DeserializeObject<T>(json);
             return deserializedObject;
         }
+
+        public async Task<bool> Login(Uri url, string username, string password)
+        {
+            var request = new { UserName = username, Password = password };
+            using (var response = await this.PostAsJsonAsync(url, request))
+            {
+                response.EnsureSuccessStatusCode();
+                var authResult = await this.ReadAsAsync<AuthenticationResult>(response);
+                if (!authResult.Authenticated)
+                {
+                    return false;
+                }
+
+                this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.Token);
+
+                return true;
+            }
+        }
+
+        public class AuthenticationResult
+        {
+            public bool Authenticated { get; set; }
+
+            public string Token { get; set; }
+        }
     }
 }

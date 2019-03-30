@@ -21,27 +21,23 @@
 
 namespace Allors.Meta
 {
-    using System;
-
-    public sealed partial class ConcreteRoleType
+    public sealed partial class ConcreteRoleType : IConcreteRoleType
     {
-        private readonly RoleType roleType;
-
         public ConcreteRoleType(Class @class, RoleType roleType)
         {
             this.Class = @class;
-            this.roleType = roleType;
+            this.RoleType = roleType;
         }
 
-        public RoleType RoleType => this.roleType;
+        public IRoleType RoleType { get; set; }
 
-        public RelationType RelationType => this.roleType.RelationType;
+        public IRelationType RelationType => this.RoleType.RelationType;
 
         public Class Class { get; }
         
         public static implicit operator RoleType(ConcreteRoleType concreteRoleType)
         {
-            return concreteRoleType.RoleType;
+            return (RoleType)concreteRoleType.RoleType;
         }
     }
 }

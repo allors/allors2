@@ -28,5 +28,16 @@ namespace Allors.Meta
     /// </summary>
     public interface IPropertyType : IMetaObject, IComparable
     {
+        string Name { get; }
+
+        string SingularName { get; }
+
+        string PluralName { get; }
+
+        IObjectType ObjectType { get; }
+
+        bool IsOne { get; }
+
+        bool IsMany { get; }
     }
 }
