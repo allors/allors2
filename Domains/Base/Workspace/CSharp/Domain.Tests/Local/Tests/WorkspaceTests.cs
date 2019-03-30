@@ -1,6 +1,7 @@
 namespace Tests.Local
 {
-    using Allors.Server;
+    using Allors.Protocol.Remote.Pull;
+
     using Xunit;
     
     public class WorkspaceTests : LocalTest

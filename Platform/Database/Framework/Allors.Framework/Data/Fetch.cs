@@ -57,9 +57,9 @@ namespace Allors.Data
             return fetch != null;
         }
 
-        public Protocol.Fetch Save()
+        public Protocol.Data.Fetch Save()
         {
-            return new Protocol.Fetch
+            return new Protocol.Data.Fetch
                        {
                            Step = this.Step?.Save(),
                            Include = this.Include?.Save()

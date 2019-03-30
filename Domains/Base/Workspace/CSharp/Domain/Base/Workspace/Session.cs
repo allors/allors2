@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Server;
     using Allors.Meta;
-    
+    using Allors.Protocol.Remote.Push;
+    using Allors.Protocol.Remote.Sync;
+
     public class Session
     {
         private static long idCounter = 0;

@@ -24,8 +24,8 @@ namespace Allors.Server
     using System.Linq;
 
     using Allors.Data;
-    using Allors.Server.Protocol;
-    using Allors.Server.Protocol.Pull;
+    using Allors.Protocol.Remote;
+    using Allors.Protocol.Remote.Pull;
 
     using Domain;
     using Meta;

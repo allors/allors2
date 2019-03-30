@@ -34,9 +34,9 @@ namespace Allors.Data
 
         public int? Take { get; set; }
 
-        public Protocol.Result Save()
+        public Protocol.Data.Result Save()
         {
-            return new Protocol.Result
+            return new Protocol.Data.Result
             {
                 FetchRef = this.FetchRef,
                 Fetch = this.Fetch?.Save(),

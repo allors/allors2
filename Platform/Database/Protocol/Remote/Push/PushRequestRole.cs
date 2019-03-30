@@ -1,0 +1,45 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PushRequestRole.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+//
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+//
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For more information visit http://www.allors.com/legal
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Allors.Protocol.Remote.Push
+{
+    public class PushRequestRole
+    {
+        /// <summary>
+        /// Gets or sets the role type.
+        /// </summary>
+        public string T { get; set; }
+
+        /// <summary>
+        /// Gets or sets the set role.
+        /// </summary>
+        public object S { get; set; }
+
+        /// <summary>
+        /// Gets or sets the add roles.
+        /// </summary>
+        public string[] A { get; set; }
+
+        /// <summary>
+        /// Gets or sets the remove roles.
+        /// </summary>
+        public string[] R { get; set; }
+    }
+}

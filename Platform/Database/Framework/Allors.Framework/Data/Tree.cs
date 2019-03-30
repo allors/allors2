@@ -108,9 +108,9 @@ namespace Allors.Data
             }
         }
 
-        public Protocol.Tree Save()
+        public Protocol.Data.Tree Save()
         {
-            return new Protocol.Tree
+            return new Protocol.Data.Tree
             {
                 Composite = this.Composite.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray()

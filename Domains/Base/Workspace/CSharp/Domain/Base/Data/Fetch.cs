@@ -50,9 +50,9 @@ namespace Allors.Workspace.Data
 
         public IObjectType ObjectType => this.Step?.GetObjectType() ?? this.Include.Composite;
 
-        public Protocol.Fetch Save()
+        public Protocol.Data.Fetch Save()
         {
-            return new Protocol.Fetch
+            return new Protocol.Data.Fetch
                        {
                            Step = this.Step?.Save(),
                            Include = this.Include?.Save()

@@ -44,9 +44,9 @@ namespace Allors.Data
 
         public TreeNodes Nodes { get; }
 
-        public Protocol.TreeNode Save()
+        public Protocol.Data.TreeNode Save()
         {
-            return new Protocol.TreeNode
+            return new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray()

@@ -40,9 +40,9 @@ namespace Allors.Workspace.Data
 
         public Result[] Results { get; set; }
         
-        public Protocol.Pull Save()
+        public Protocol.Data.Pull Save()
         {
-            return new Protocol.Pull
+            return new Protocol.Data.Pull
             {
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),

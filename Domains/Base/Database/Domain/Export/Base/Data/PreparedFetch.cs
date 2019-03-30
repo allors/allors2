@@ -25,17 +25,17 @@ namespace Allors.Domain
     using System.Text;
     using System.Xml.Serialization;
 
-    using Allors.Data;
+    using Allors.Protocol.Data;
 
     public partial class PreparedFetch
     {
-        public Fetch Fetch
+        public Allors.Data.Fetch Fetch
         {
             get
             {
                 using (TextReader reader = new StringReader(this.Content))
                 {
-                    var protocolFetch = (Allors.Data.Protocol.Fetch)XmlSerializer.Deserialize(reader);
+                    var protocolFetch = (Fetch)XmlSerializer.Deserialize(reader);
                     return protocolFetch.Load(this.Strategy.Session);
                 }
             }
@@ -51,6 +51,6 @@ namespace Allors.Domain
             }
         }
 
-        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Fetch));
+        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Fetch));
     }
 }

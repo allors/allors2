@@ -4,7 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Server;
+    using Allors.Protocol.Remote.Pull;
+    using Allors.Protocol.Remote.Sync;
 
     public class Workspace
     {

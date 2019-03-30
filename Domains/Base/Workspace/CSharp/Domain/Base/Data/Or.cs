@@ -23,7 +23,7 @@ namespace Allors.Workspace.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Workspace.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public class Or : ICompositePredicate
     {

@@ -25,7 +25,7 @@ namespace Allors.Domain
     using System.Xml.Serialization;
 
     using Allors.Data;
-    using Allors.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public partial class PreparedExtent
     {

@@ -3,7 +3,7 @@ namespace Server.Tests
     using System;
 
     using Allors.Domain;
-    using Allors.Server.Protocol.Sync;
+    using Allors.Protocol.Remote.Sync;
 
     using Xunit;
 

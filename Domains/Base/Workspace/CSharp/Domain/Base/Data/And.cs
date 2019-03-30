@@ -24,7 +24,7 @@ namespace Allors.Workspace.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Workspace.Data.Protocol;
+    using Protocol.Data;
 
     public class And : ICompositePredicate
     {

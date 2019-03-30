@@ -1,11 +1,9 @@
 namespace Tests.Remote
 {
     using Allors.Meta;
-    using Allors.Server;
+    using Allors.Protocol.Remote.Pull;
     using Allors.Workspace.Client;
     using Allors.Workspace.Data;
-
-    using Nito.AsyncEx;
 
     using Xunit;
 
@@ -18,13 +16,13 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                ObjectType = M.Person.ObjectType,
-            };
+                Extent = new Filter(M.Person.ObjectType)
+            }.Save();
 
-
-            var pulls = new[] { pull.Save() };
-
-            context.Load(pulls).Wait();
+            context.Load(new PullRequest
+            {
+                P = new[] { pull }
+            }).Wait();
 
             var people = context.Collections["People"];
         }

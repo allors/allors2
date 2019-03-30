@@ -24,7 +24,7 @@ namespace Allors.Workspace.Data
     using System.Linq;
 
     using Allors.Meta;
-    using Allors.Workspace.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public class Union : IExtentOperator
     {
@@ -44,13 +44,13 @@ namespace Allors.Workspace.Data
             return this.Operands.Any(v => v.HasMissingArguments(arguments));
         }
 
-        public Protocol.Extent Save()
+        public Extent Save()
         {
-            return new Protocol.Extent
+            return new Extent
                        {
                            Kind = ExtentKind.Union,
                            Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                           Sorting = this.Sorting.Select(v => new Protocol.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                           Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
         }
     }

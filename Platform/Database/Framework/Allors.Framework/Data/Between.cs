@@ -23,8 +23,8 @@ namespace Allors.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Data.Protocol;
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     public class Between : IRolePredicate
     {
@@ -45,7 +45,7 @@ namespace Allors.Data
                        {
                            Kind = PredicateKind.Between,
                            RoleType = this.RoleType?.Id,
-                           Values = this.Values.Select(Convert.ToString).ToArray(),
+                           Values = this.Values.Select(DataConvert.ToString).ToArray(),
                            Parameter = this.Parameter
                        };
         }

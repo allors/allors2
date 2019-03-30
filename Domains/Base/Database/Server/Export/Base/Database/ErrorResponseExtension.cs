@@ -24,7 +24,7 @@ namespace Allors.Server
     using System.Linq;
 
     using Allors.Domain;
-    using Allors.Server.Protocol;
+    using Allors.Protocol.Remote;
 
     public static class ErrorResponseExtensions
     {

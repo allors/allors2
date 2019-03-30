@@ -5,7 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Allors.Server;
+    using Allors.Protocol.Remote;
+    using Allors.Protocol.Remote.Push;
     using Allors.Workspace;
     using Allors.Workspace.Client;
 

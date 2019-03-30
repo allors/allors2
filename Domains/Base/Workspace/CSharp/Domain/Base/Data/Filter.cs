@@ -24,6 +24,7 @@ namespace Allors.Workspace.Data
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     using Meta;
     using Protocol;
@@ -58,7 +59,7 @@ namespace Allors.Workspace.Data
                            Kind = ExtentKind.Filter,
                            ObjectType = this.ObjectType?.Id,
                            Predicate = this.Predicate?.Save(),
-                           Sorting = this.Sorting?.Select(v => new Protocol.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                           Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
                        };
 
         }

@@ -4,7 +4,7 @@ namespace Tests.Local
     using System.Linq;
 
     using Allors.Meta;
-    using Allors.Server;
+    using Allors.Protocol.Remote.Push;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
 

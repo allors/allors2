@@ -22,7 +22,7 @@ namespace Allors.Workspace.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Workspace.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public interface IPredicate
     {

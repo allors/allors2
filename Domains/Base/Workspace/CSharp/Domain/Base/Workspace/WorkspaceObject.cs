@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Allors.Meta;
-    using Allors.Server;
+    using Allors.Protocol.Remote.Sync;
 
     public class WorkspaceObject {
         public Workspace Workspace { get; }

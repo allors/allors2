@@ -1,13 +1,9 @@
 namespace Server.Tests
 {
     using System;
-    using System.Collections.Generic;
-
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Server.Protocol;
-    using Allors.Server.Protocol.Push;
-    using Allors.Server;
+    using Allors.Protocol.Remote.Push;
 
     using Xunit;
 

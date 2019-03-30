@@ -29,8 +29,8 @@ namespace Allors.Workspace.Data
         IComposite ObjectType { get; }
 
         Sort[] Sorting { get; set; }
-        
-        Protocol.Extent Save();
+
+        Protocol.Data.Extent Save();
 
         bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
     }

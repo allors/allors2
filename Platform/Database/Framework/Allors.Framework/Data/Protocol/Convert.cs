@@ -18,7 +18,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Protocol
+namespace Allors.Protocol.Data
 {
     using System;
     using System.Xml;
@@ -27,33 +27,6 @@ namespace Allors.Data.Protocol
 
     public static class Convert
     {
-        internal static string ToString(object value)
-        {
-            switch (value)
-            {
-                case null:
-                    return null;
-                case string @string:
-                    return @string;
-                case int @int:
-                    return XmlConvert.ToString(@int);
-                case decimal @decimal:
-                    return XmlConvert.ToString(@decimal);
-                case double @double:
-                    return XmlConvert.ToString(@double);
-                case bool @bool:
-                    return XmlConvert.ToString(@bool);
-                case DateTime dateTime:
-                    return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
-                case Guid @guid:
-                    return XmlConvert.ToString(@guid);
-                case byte[] binary:
-                    return System.Convert.ToBase64String(binary);
-                default:
-                    throw new ArgumentException();
-            }
-        }
-
         public static object ToValue(IUnit unit, string @string)
         {
             if (@string == null)

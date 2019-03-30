@@ -25,7 +25,7 @@ namespace Allors.Workspace.Data
 
     using Allors.Meta;
     using Allors.Workspace;
-    using Allors.Workspace.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public class ContainedIn : IPropertyPredicate
     {

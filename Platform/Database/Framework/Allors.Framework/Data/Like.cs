@@ -22,8 +22,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Data.Protocol;
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     public class Like : IRolePredicate
     {
@@ -44,7 +44,7 @@ namespace Allors.Data
                        {
                            Kind = PredicateKind.Like,
                            RoleType = this.RoleType?.Id,
-                           Value = Convert.ToString(this.Value),
+                           Value = DataConvert.ToString(this.Value),
                            Parameter = this.Parameter
                        };
         }

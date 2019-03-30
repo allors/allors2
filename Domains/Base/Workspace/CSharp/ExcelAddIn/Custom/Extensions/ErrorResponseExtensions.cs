@@ -3,8 +3,8 @@
     using System.Text;
     using System.Windows.Forms;
 
+    using Allors.Protocol.Remote;
     using Allors.Workspace;
-    using Allors.Server;
 
     using NLog;
 

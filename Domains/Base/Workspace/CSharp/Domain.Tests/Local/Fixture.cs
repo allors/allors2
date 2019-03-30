@@ -1,6 +1,6 @@
 ﻿namespace Tests.Local
 {
-    using Allors.Server;
+    using Allors.Protocol.Remote.Sync;
 
     public class Fixture
     {

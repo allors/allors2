@@ -23,7 +23,7 @@ namespace Allors.Data
     using System.Collections.Generic;
 
     using Allors.Meta;
-    using Allors.Data.Protocol;
+    using Allors.Protocol.Data;
 
     public class GreaterThan : IRolePredicate
     {
@@ -44,7 +44,7 @@ namespace Allors.Data
                        {
                            Kind = PredicateKind.GreaterThan,
                            RoleType = this.RoleType?.Id,
-                           Value = Convert.ToString(this.Value),
+                           Value = DataConvert.ToString(this.Value),
                            Parameter = this.Parameter
                        };
         }

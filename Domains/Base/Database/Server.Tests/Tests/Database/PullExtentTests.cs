@@ -4,10 +4,10 @@ namespace Server.Tests
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Data.Protocol;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Server.Protocol.Pull;
+    using Allors.Protocol.Data;
+    using Allors.Protocol.Remote.Pull;
 
     using Xunit;
 

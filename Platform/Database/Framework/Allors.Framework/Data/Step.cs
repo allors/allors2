@@ -63,9 +63,9 @@ namespace Allors.Data
 
         public Step End => this.ExistNext ? this.Next.End : this;
 
-        public Protocol.Step Save()
+        public Protocol.Data.Step Save()
         {
-            return new Protocol.Step
+            return new Protocol.Data.Step
             {
                 Include = this.Include?.Save(),
                 PropertyType = this.PropertyType.Id,
