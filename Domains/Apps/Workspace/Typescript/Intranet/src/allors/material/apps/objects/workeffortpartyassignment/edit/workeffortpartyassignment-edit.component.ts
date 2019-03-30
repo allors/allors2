@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, Person, WorkEffort, Party } from '../../../../../domain';
+import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -29,6 +29,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
   title: string;
 
   private subscription: Subscription;
+  employees: Person[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -48,7 +49,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, internalOrganisationId]) => {
 
           const isCreate = (this.data as EditData).id === undefined;
 
@@ -66,7 +67,15 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
             pull.WorkEffort({
               object: this.data.associationId
             }),
-            pull.Person({
+            pull.Organisation({
+              object: internalOrganisationId,
+              fetch: {
+                EmploymentsWhereEmployer: {
+                  include: {
+                    Employee: x
+                  }
+                }
+              },
               sort: new Sort(m.Person.PartyName)
             }),
           ];
@@ -82,7 +91,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         this.allors.context.reset();
 
-        this.people = loaded.collections.People as Person[];
         this.party = loaded.objects.Party as Party;
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
@@ -112,6 +120,10 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
             this.title = 'View Work Effort Assignment';
           }
         }
+
+        const employments = loaded.collections.Employments as Employment[];
+        this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
+
       }, this.errorService.handler);
   }
 

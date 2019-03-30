@@ -78,34 +78,35 @@ namespace Allors.Domain
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
-            if (this.ExistAssignedBillingRate)
+            decimal billingRate = 0M;
+            if (this.AssignedBillingRate.HasValue)
             {
-                this.BillingRate = this.AssignedBillingRate;
+                billingRate = this.AssignedBillingRate.Value;
             }
             else
             {
-                if (!this.ExistBillingRate && this.ExistWorkEffort)
+                if (this.ExistWorkEffort)
                 {
-                    var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType)
-                                                                                                                                && v.Frequency.Equals(this.BillingFrequency)
-                                                                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    var workEffortAssignmentRate = this.WorkEffort.WorkEffortAssignmentRatesWhereWorkEffort.FirstOrDefault(v => v.RateType.Equals(this.RateType) && v.Frequency.Equals(this.BillingFrequency));
                     if (workEffortAssignmentRate != null)
                     {
-                        this.BillingRate = workEffortAssignmentRate.Rate;
+                        billingRate = workEffortAssignmentRate.Rate;
                     }
                 }
 
-                if (!this.ExistBillingRate && this.ExistWorker && this.ExistRateType)
+                if (billingRate == 0 && this.ExistWorker && this.ExistRateType)
                 {
                     var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)
                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
                     if (partyRate != null)
                     {
-                        this.BillingRate = partyRate.Rate;
+                        billingRate = partyRate.Rate;
                     }
                 }
             }
+
+            this.BillingRate = billingRate;
 
             if (this.ExistBillingRate)
             {
@@ -120,10 +121,11 @@ namespace Allors.Domain
             // calculate AmountOfTime Or ThroughDate
             var frequencies = new TimeFrequencies(this.Strategy.Session);
 
+            var minutes = 0M;
             if (this.ThroughDate != null)
             {
                 var timeSpan = this.ThroughDate - this.FromDate;
-                var minutes = (decimal)timeSpan.Value.TotalMinutes;
+                minutes = (decimal)timeSpan.Value.TotalMinutes;
                 var amount = frequencies.Minute.ConvertToFrequency(minutes, this.TimeFrequency);
 
                 if (amount == null)
@@ -137,17 +139,16 @@ namespace Allors.Domain
             }
             else if (this.AmountOfTime != null)
             {
-                var minutes = this.TimeFrequency.ConvertToFrequency((decimal)this.AmountOfTime, frequencies.Minute);
+                minutes = (decimal) this.TimeFrequency.ConvertToFrequency((decimal)this.AmountOfTime, frequencies.Minute);
 
-                if (minutes == null)
-                {
-                    this.RemoveThroughDate();
-                }
-                else
-                {
-                    var timeSpan = TimeSpan.FromMinutes((double)minutes);
-                    this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
-                }
+                var timeSpan = TimeSpan.FromMinutes((double)minutes);
+                this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
+            }
+
+            if (this.ExistBillingRate && this.ExistBillingFrequency)
+            {
+                var timeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
+                this.BillingAmount = Math.Round((decimal)(this.BillingRate * timeInTimeEntryRateFrequency), 2);
             }
         }
     }

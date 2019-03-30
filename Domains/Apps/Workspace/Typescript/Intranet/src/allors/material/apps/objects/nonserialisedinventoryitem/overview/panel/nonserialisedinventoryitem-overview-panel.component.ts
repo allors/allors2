@@ -99,6 +99,8 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
         'expectedIn'
       ],
       defaultAction: this.changeInventory,
+      autoSort: true,
+      autoFilter: true,
     });
 
     const pullName = `${this.panel.name}_${this.m.NonSerialisedInventoryItem.name}`;

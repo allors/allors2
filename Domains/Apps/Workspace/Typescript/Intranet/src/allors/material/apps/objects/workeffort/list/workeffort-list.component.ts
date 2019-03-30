@@ -149,8 +149,8 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
             name: v.Name,
             type: v.objectType.name,
             state: v.WorkEffortState ? v.WorkEffortState.Name : '',
-            customer: v.Customer.displayName,
-            executedBy: v.ExecutedBy.displayName,
+            customer: v.Customer ? v.Customer.displayName : '',
+            executedBy: v.ExecutedBy ? v.ExecutedBy.displayName : '',
             description: v.Description,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

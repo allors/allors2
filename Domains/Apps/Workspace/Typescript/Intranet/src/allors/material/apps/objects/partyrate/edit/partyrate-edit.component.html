@@ -18,8 +18,7 @@
 
     <div class="row">
       <a-mat-input class="col-md" [object]="partyRate" [roleType]="m.PartyRate.Rate"></a-mat-input>
-      <a-mat-select class="col-md" [object]="partyRate" [roleType]="m.PartyRate.Frequency"
-        [options]="timeFrequencies" display="Name" label="Frequency"></a-mat-select>
+      <a-mat-static class="col-md" [object]="partyRate" [roleType]="m.PartyRate.Frequency" display="Name" label="Frequency"></a-mat-static>
     </div>
 
   </div>

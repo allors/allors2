@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using Allors.Domain.NonLogging;
 
 namespace Allors.Domain
 {

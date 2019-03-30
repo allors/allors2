@@ -84,8 +84,8 @@ namespace Allors.Domain
                 {
                     foreach (OrganisationContactRelationship contactRelationship in this.Supplier.OrganisationContactRelationshipsWhereOrganisation)
                     {
-                        if (this.FromDate <= DateTime.UtcNow &&
-                            (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                        if (contactRelationship.FromDate <= DateTime.UtcNow &&
+                            (!contactRelationship.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                         {
                             if (!this.Supplier.ContactsUserGroup.Members.Contains(contactRelationship.Contact))
                             {
