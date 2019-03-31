@@ -34,12 +34,12 @@ namespace Allors.Workspace.Data
 
         public int? Take { get; set; }
 
-        public Protocol.Data.Result Save()
+        public Protocol.Data.Result ToJson()
         {
             return new Protocol.Data.Result
             {
                 FetchRef = this.FetchRef,
-                Fetch = this.Fetch?.Save(),
+                Fetch = this.Fetch?.ToJson(),
                 Name = this.Name,
                 Skip = this.Skip,
                 Take = this.Take

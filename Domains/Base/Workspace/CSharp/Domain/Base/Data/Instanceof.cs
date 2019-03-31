@@ -38,7 +38,7 @@ namespace Allors.Workspace.Data
 
         public IPropertyType PropertyType { get; set; }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate
             {

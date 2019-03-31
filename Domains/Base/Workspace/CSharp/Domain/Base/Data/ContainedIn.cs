@@ -75,13 +75,13 @@ namespace Allors.Workspace.Data
             return false;
         }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate
                        {
                            Kind = PredicateKind.ContainedIn,
                            PropertyType = this.PropertyType?.Id,
-                           Extent = this.Extent?.Save(),
+                           Extent = this.Extent?.ToJson(),
                            Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
                            Parameter = this.Parameter
                        };

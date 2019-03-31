@@ -40,15 +40,15 @@ namespace Allors.Workspace.Data
 
         public Result[] Results { get; set; }
         
-        public Protocol.Data.Pull Save()
+        public Protocol.Data.Pull ToJson()
         {
             return new Protocol.Data.Pull
             {
                 ExtentRef = this.ExtentRef,
-                Extent = this.Extent?.Save(),
+                Extent = this.Extent?.ToJson(),
                 ObjectType = this.ObjectType?.Id,
                 Object = this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.Save()).ToArray()
+                Results = this.Results?.Select(v => v.ToJson()).ToArray()
             };
         }
     }

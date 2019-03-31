@@ -33,7 +33,7 @@
                     if (!(await sheet.Save()).HasErrors)
                     {
                         await sheet.Refresh();
-                    };
+                    }
                 }
             }
             catch (Exception e)

@@ -52,13 +52,13 @@ namespace Allors.Workspace.Data
             this.Predicate = predicate;
         }
 
-        public Extent Save()
+        public Extent ToJson()
         {
             return new Extent
                        {
                            Kind = ExtentKind.Filter,
                            ObjectType = this.ObjectType?.Id,
-                           Predicate = this.Predicate?.Save(),
+                           Predicate = this.Predicate?.ToJson(),
                            Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
                        };
 

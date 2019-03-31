@@ -30,7 +30,7 @@ namespace Allors.Workspace.Data
 
         Sort[] Sorting { get; set; }
 
-        Protocol.Data.Extent Save();
+        Protocol.Data.Extent ToJson();
 
         bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
     }

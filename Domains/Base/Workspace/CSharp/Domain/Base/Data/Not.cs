@@ -42,12 +42,12 @@ namespace Allors.Workspace.Data
             this.Operand = predicate;
         }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate()
             {
                 Kind = PredicateKind.Not,
-                Operand = this.Operand?.Save()
+                Operand = this.Operand?.ToJson()
             };
         }
     }

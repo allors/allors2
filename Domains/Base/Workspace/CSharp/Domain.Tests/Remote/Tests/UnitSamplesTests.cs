@@ -17,11 +17,11 @@ namespace Tests.Remote
             AsyncContext.Run(
                 async () =>
                     {
-                        var context = new Context("TestUnitSamples", this.Database, this.Workspace);
+                        var context = new Context(this.Database, this.Workspace);
 
-                        await context.Load(new { step = 0 });
+                        var result = await context.Load(new { step = 0 }, "TestUnitSamples");
 
-                        var unitSample = (UnitSample)context.Objects["unitSample"];
+                        result.GetObject("unitSample", out UnitSample unitSample);
 
                         Assert.False(unitSample.ExistAllorsBinary);
                         Assert.False(unitSample.ExistAllorsBoolean);
@@ -40,11 +40,11 @@ namespace Tests.Remote
             AsyncContext.Run(
                    async () =>
                    {
-                       var context = new Context("TestUnitSamples", this.Database, this.Workspace);
+                       var context = new Context(this.Database, this.Workspace);
 
-                       await context.Load(new { step = 1 });
+                       var result = await context.Load(new { step = 1 }, "TestUnitSamples");
 
-                       var unitSample = (UnitSample)context.Objects["unitSample"];
+                       result.GetObject("unitSample", out UnitSample unitSample);
 
                        Assert.True(unitSample.ExistAllorsBinary);
                        Assert.True(unitSample.ExistAllorsBoolean);

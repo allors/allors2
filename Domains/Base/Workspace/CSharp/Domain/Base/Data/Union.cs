@@ -44,12 +44,12 @@ namespace Allors.Workspace.Data
             return this.Operands.Any(v => v.HasMissingArguments(arguments));
         }
 
-        public Extent Save()
+        public Extent ToJson()
         {
             return new Extent
                        {
                            Kind = ExtentKind.Union,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                           Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
                            Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
         }

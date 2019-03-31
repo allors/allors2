@@ -20,7 +20,6 @@
 
 namespace Allors.Workspace.Data
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -44,12 +43,12 @@ namespace Allors.Workspace.Data
 
         public TreeNodes Nodes { get; }
 
-        public Protocol.Data.TreeNode Save()
+        public Protocol.Data.TreeNode ToJson()
         {
             return new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
-                Nodes = this.Nodes.Select(v => v.Save()).ToArray()
+                Nodes = this.Nodes.Select(v => v.ToJson()).ToArray()
             };
         }
     }

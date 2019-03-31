@@ -35,7 +35,7 @@ namespace Allors.Workspace.Data
 
         public string Parameter { get; set; }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate
                        {

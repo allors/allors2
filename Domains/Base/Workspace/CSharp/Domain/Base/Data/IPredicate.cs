@@ -26,7 +26,7 @@ namespace Allors.Workspace.Data
 
     public interface IPredicate
     {
-        Predicate Save();
+        Predicate ToJson();
 
         bool ShouldTreeShake(IReadOnlyDictionary<string, object> arguments);
 

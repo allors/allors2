@@ -45,12 +45,12 @@ namespace Allors.Workspace.Data
             return this.Operands.All(v => v.HasMissingArguments(arguments));
         }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate()
             {
                 Kind = PredicateKind.And,
-                Operands = this.Operands.Select(v => v.Save()).ToArray()
+                Operands = this.Operands.Select(v => v.ToJson()).ToArray()
             };
         }
 

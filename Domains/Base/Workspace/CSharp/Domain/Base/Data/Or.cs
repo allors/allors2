@@ -49,12 +49,12 @@ namespace Allors.Workspace.Data
             this.Operands = new List<IPredicate>(this.Operands) { predicate }.ToArray();
         }
 
-        public Predicate Save()
+        public Predicate ToJson()
         {
             return new Predicate()
             {
                 Kind = PredicateKind.Or,
-                Operands = this.Operands.Select(v => v.Save()).ToArray()
+                Operands = this.Operands.Select(v => v.ToJson()).ToArray()
             };
         }
     }

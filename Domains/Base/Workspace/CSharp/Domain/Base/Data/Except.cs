@@ -39,12 +39,12 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Extent Save()
+        public Extent ToJson()
         {
             return new Extent
                        {
                            Kind = ExtentKind.Except,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                           Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
                            Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType.Id}).ToArray()
                        };
         }

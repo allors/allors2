@@ -5,12 +5,16 @@
     using System.Windows.Forms;
 
     using Allors.Excel;
+    using Allors.Meta;
     using Allors.Protocol.Remote;
+    using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
 
     using Microsoft.Office.Interop.Excel;
 
+    using Filter = Microsoft.Office.Interop.Excel.Filter;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
+    using Result = Allors.Workspace.Client.Result;
     using Sheets = Allors.Excel.Sheets;
     using Task = System.Threading.Tasks.Task;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
@@ -18,13 +22,13 @@
     public class PeopleSheet : Sheet
     {
         private const string PeopleListObjectName = "PeopleListObject";
-
         private DataSet dataSet;
-
         private ListObject listObject;
 
+        private Result result;
+
         public PeopleSheet(Sheets sheets, Worksheet worksheet)
-            : base("PeopleSheet", sheets, worksheet)
+            : base(sheets, worksheet)
         {
         }
 
@@ -50,10 +54,8 @@
         
         public override async Task Refresh()
         {
-            await this.Load(null);
+            await this.Load();
 
-            this.People = this.GetCollection<Person>("people");
-            
             this.ToListObject();
 
             this.Sheets.Mediator.OnStateChanged();
@@ -61,7 +63,7 @@
 
         protected override async Task OnSaving()
         {
-            await this.Context.Load(null);
+            await this.Load();
 
             this.ToWorkspace();
         }
@@ -73,7 +75,7 @@
                 MessageBox.Show(@"Successfully saved");
             }
         }
-
+        
         private void ToListObject()
         {
             this.dataSet = new DataSet();
@@ -127,6 +129,13 @@
                 person.FirstName = values[2];
                 person.LastName = values[3];
             }
+        }
+
+        private async Task Load()
+        {
+            var pull = new Pull { Extent = new Workspace.Data.Filter(M.Person.ObjectType) };
+            this.result = await this.Load(pull);
+            this.People = this.result.GetCollection<Person>("People");
         }
     }
 }

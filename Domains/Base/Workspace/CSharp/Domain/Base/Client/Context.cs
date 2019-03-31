@@ -1,7 +1,10 @@
 ﻿namespace Allors.Workspace.Client
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Allors.Workspace.Data;
 
     using Protocol.Remote.Invoke;
     using Protocol.Remote.Pull;
@@ -10,52 +13,34 @@
 
     public class Context
     {
-        private readonly string name;
+        private const string DefaultPullService = "Pull";
+
         private readonly Database database;
         private readonly Workspace workspace;
 
-        public Context(string name, Database database, Workspace workspace)
+        public Context(Database database, Workspace workspace)
         {
-            this.name = name;
             this.database = database;
             this.workspace = workspace;
 
             this.Session = new Session(this.workspace);
         }
 
-        public Context(Context parentContext, string name)
-        {
-            this.name = name;
-            this.database = parentContext.database;
-            this.workspace = parentContext.workspace;
-
-            this.Session = parentContext.Session;
-        }
-
         public Session Session { get; }
 
-        public Indexer<SessionObject> Objects { get; private set; }
-
-        public Indexer<SessionObject[]> Collections { get; private set; }
-
-        public Indexer<object> Values { get; private set; }
-
-        public async Task Load(object args)
+        public async Task<Result> Load(object args, string pullService = DefaultPullService)
         {
-            var response = await this.database.Pull(this.name, args);
-            var requireLoadIds = this.workspace.Diff(response);
-            if (requireLoadIds.Objects.Length > 0)
+            if (args is Pull pull)
             {
-                var loadResponse = await this.database.Sync(requireLoadIds);
-                this.workspace.Sync(loadResponse);
+                args = new PullRequest { P = new[] { pull.ToJson() } };
             }
 
-            this.Update(response);
-        }
+            if (args is IEnumerable<Pull> pulls)
+            {
+                args = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
+            }
 
-        public async Task<Result> Query(string service, object args)
-        {
-            var pullResponse = await this.database.Pull(service, args);
+            var pullResponse = await this.database.Pull(pullService, args);
             var requireLoadIds = this.workspace.Diff(pullResponse);
             if (requireLoadIds.Objects.Length > 0)
             {
@@ -65,6 +50,11 @@
 
             var result = new Result(this.Session, pullResponse);
             return result;
+        }
+
+        public async Task<Result> Load(params Pull[] pulls)
+        {
+            return await this.Load((IEnumerable<Pull>)pulls);
         }
 
         public async Task<PushResponse> Save()
@@ -82,9 +72,9 @@
                 }
 
                 var requireLoadIds = new SyncRequest
-                                         {
-                                             Objects = objects
-                                         };
+                {
+                    Objects = objects
+                };
 
                 var loadResponse = await this.database.Sync(requireLoadIds);
                 this.workspace.Sync(loadResponse);
@@ -102,19 +92,6 @@
         public Task<InvokeResponse> Invoke(string service, object args)
         {
             return this.database.Invoke(service, args);
-        }
-        
-        private void Update(PullResponse response)
-        {
-            this.Objects = new Indexer<SessionObject>(response.NamedObjects.ToDictionary(
-                pair => pair.Key,
-                pair => this.Session.Get(long.Parse(pair.Value))));
-            this.Collections = new Indexer<SessionObject[]>(response.NamedCollections.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value.Select(v => this.Session.Get(long.Parse(v))).ToArray()));
-            this.Values = new Indexer<object>(response.NamedValues.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value));
         }
     }
 }

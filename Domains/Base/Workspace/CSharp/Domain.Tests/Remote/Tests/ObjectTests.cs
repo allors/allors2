@@ -15,12 +15,12 @@ namespace Tests.Remote
             AsyncContext.Run(
                 async () =>
                     {
-                        var context = new Context("ThisIsWrong", this.Database, this.Workspace);
+                        var context = new Context(this.Database, this.Workspace);
 
                         var exceptionThrown = false;
                         try
                         {
-                            await context.Load(new { step = 0 });
+                            await context.Load(new { step = 0 }, "ThisIsWrong");
                         }
                         catch (HttpRequestException e)
                         {
@@ -37,11 +37,11 @@ namespace Tests.Remote
             AsyncContext.Run(
                    async () =>
                    {
-                       var context = new Context("TestUnitSamples", this.Database, this.Workspace);
+                       var context = new Context(this.Database, this.Workspace);
 
-                       await context.Load(new { step = 1 });
+                       var result = await context.Load(new { step = 1 }, "TestUnitSamples");
 
-                       var notHere = context.Objects["NotHere"];
+                       var notHere = result.Objects["NotHere"];
                    });
         }
 
@@ -51,11 +51,11 @@ namespace Tests.Remote
             AsyncContext.Run(
                    async () =>
                    {
-                       var context = new Context("TestUnitSamples", this.Database, this.Workspace);
+                       var context = new Context(this.Database, this.Workspace);
 
-                       await context.Load(new { step = 1 });
+                       var result = await context.Load(new { step = 1 }, "TestUnitSamples");
 
-                       var notHere = context.Collections["NotHere"];
+                       var notHere = result.Collections["NotHere"];
                    });
         }
 
@@ -65,11 +65,11 @@ namespace Tests.Remote
             AsyncContext.Run(
                    async () =>
                    {
-                       var context = new Context("TestUnitSamples", this.Database, this.Workspace);
+                       var context = new Context(this.Database, this.Workspace);
 
-                       await context.Load(new { step = 1 });
+                       var result = await context.Load(new { step = 1 });
 
-                       var notHere = context.Values["NotHere"];
+                       var notHere = result.Values["NotHere"];
                    });
         }
 

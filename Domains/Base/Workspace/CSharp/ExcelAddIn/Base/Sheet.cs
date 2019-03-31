@@ -17,13 +17,13 @@
 
     public abstract partial class Sheet
     {
-        protected Sheet(string name, Sheets sheets, Worksheet worksheet)
+        protected Sheet(Sheets sheets, Worksheet worksheet)
         {
             this.Sheets = sheets;
 
             this.Worksheet = worksheet;
 
-            this.Context = new Context(name, this.Sheets.Client.Database, this.Sheets.Client.Workspace);
+            this.Context = new Context(this.Sheets.Client.Database, this.Sheets.Client.Workspace);
         }
 
         public Sheets Sheets { get; }
@@ -37,9 +37,9 @@
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
         // Commands
-        public virtual async Task Load(object args)
+        public virtual async Task<Result> Load(object args)
         {
-            await this.Context.Load(args);
+            return await this.Context.Load(args);
         }
 
         public async Task<PushResponse> Save()
@@ -75,12 +75,7 @@
                 .Cast<Microsoft.Office.Interop.Excel.Worksheet>()
                 .FirstOrDefault(ws => name.Equals(ws.Name, StringComparison.OrdinalIgnoreCase));
 
-            if (sheet != null)
-            {
-                return this.Sheets.Host.GetVstoWorksheet(sheet);
-            }
-
-            return null;
+            return sheet != null ? this.Sheets.Host.GetVstoWorksheet(sheet) : null;
         }
 
         public async Task SaveAndInvokeSilent(Method method)
@@ -182,45 +177,18 @@
             this.OnInvoked(response);
         }
 
-        public async Task<Result> Query(string service, Dictionary<string, string> p)
+        public async Task<Result> Load(Dictionary<string, string> p, string service = null)
         {
-            var result = await this.Context.Query(service, p);
+            var result = await this.Context.Load(p, service);
             return result;
         }
 
-        public async Task<object> QueryResults(string service, Dictionary<string, string> p)
+        public async Task<object> LoadResults(Dictionary<string, string> p, string service = null)
         {
-            var result = await this.Context.Query(service, p);
+            var result = await this.Context.Load(p, service);
             return result.Collections["results"];
         }
-
-        protected SessionObject GetObject(string key)
-        {
-            return this.Context.Objects[key];
-        }
-
-        protected T GetObject<T>(string key)
-              where T : SessionObject
-        {
-            return (T)this.Context.Objects[key];
-        }
-
-        protected SessionObject[] GetCollection(string key)
-        {
-            return this.Context.Collections[key];
-        }
-
-        protected T[] GetCollection<T>(string key)
-        {
-            var collection = this.Context.Collections[key];
-            return collection?.Cast<T>().ToArray() ?? new T[0];
-        }
-
-        protected object GetValue(string key)
-        {
-            return this.Context.Values[key];
-        }
-
+        
         protected ListObject FindListObject(string name)
         {
             foreach (Microsoft.Office.Interop.Excel.ListObject interopListObject in this.Worksheet.ListObjects)
