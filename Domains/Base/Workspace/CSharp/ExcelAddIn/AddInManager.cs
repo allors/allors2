@@ -11,12 +11,16 @@
     using Allors.Workspace;
     using Allors.Workspace.Client;
 
+    using Microsoft.Office.Core;
+    using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
 
     using NLog;
 
     using Application = Microsoft.Office.Interop.Excel.Application;
+    using Sheets = Allors.Excel.Sheets;
+    using Workbook = Microsoft.Office.Interop.Excel.Workbook;
 
     public partial class AddInManager
     {
@@ -27,6 +31,16 @@
         private readonly Application application;
         private readonly CustomTaskPaneCollection customTaskPanes;
         private readonly ApplicationFactory factory;
+
+        private Database database;
+        private Workspace workspace;
+        private Client client;
+
+        private Host host;
+
+        private Mediator mediator;
+        private Sheets sheets;
+        private Commands commands;
 
         public AddInManager(Application application, CustomTaskPaneCollection customTaskPanes, ApplicationFactory factory)
         {
@@ -41,7 +55,7 @@
         {
             try
             {
-                // Make sure we have a SynchroniztionContext
+                // Make sure we have a SynchronizationContext
                 var form = new Form();
 
                 var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
@@ -50,25 +64,27 @@
                             BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
                         };
 
-                var database = new Database(httpClient);
-                var workspace = new Workspace(Config.ObjectFactory);
-                var client = new Client(database, workspace);
+                this.database = new Database(httpClient);
+                this.workspace = new Workspace(Config.ObjectFactory);
+                this.client = new Client(this.database, this.workspace);
 
-                var host = new Host(this.application, this.customTaskPanes, this.factory);
+                this.host = new Host(this.application, this.customTaskPanes, this.factory);
 
-                var mediator = new Mediator();
-                var sheets = new Sheets(host, client, mediator);
-                var commands = new Commands(sheets);
+                this.mediator = new Mediator();
+                this.sheets = new Sheets(this.host, this.client, this.mediator);
+                this.commands = new Commands(this.sheets);
 
-                this.application.WindowActivate += (wb, wn) => mediator.OnStateChanged();
-                this.application.WorkbookOpen += wb => mediator.OnStateChanged();
-                this.application.WorkbookActivate += wb => mediator.OnStateChanged();
-                this.application.WorkbookNewSheet += (wb, sh) => mediator.OnStateChanged();
-                this.application.SheetActivate += sh => mediator.OnStateChanged();
+                this.application.WindowActivate += this.ApplicationOnWindowActivate;
+                this.application.WorkbookOpen += this.ApplicationOnWorkbookOpen;
+                this.application.WorkbookBeforeClose += this.ApplicationOnWorkbookBeforeClose;
+                this.application.WorkbookActivate += this.ApplicationOnWorkbookActivate;
+                this.application.WorkbookNewSheet += this.ApplicationOnWorkbookNewSheet;
+                this.application.SheetActivate += this.ApplicationOnSheetActivate;
 
-                Globals.Ribbons.Ribbon.Init(commands, sheets, mediator);
+                Globals.Ribbons.Ribbon.Init(this.commands, this.sheets, this.mediator);
 
-                await this.Login(database);
+                // TODO: Make this lazy
+                await this.Login(this.database);
             }
             catch (Exception e)
             {
@@ -94,6 +110,39 @@
             {
                 this.Logger.Error(e);
             }
+        }
+
+        private void ApplicationOnSheetActivate(object sheet)
+        {
+            this.mediator.OnStateChanged();
+        }
+
+        private void ApplicationOnWorkbookNewSheet(Workbook workbook, object sheet)
+        {
+            this.mediator.OnStateChanged();
+        }
+
+        private void ApplicationOnWorkbookActivate(Workbook workbook)
+        {
+            this.mediator.OnStateChanged();
+        }
+
+        private void ApplicationOnWorkbookOpen(Workbook workbook)
+        {
+            this.mediator.OnStateChanged();
+        }
+
+        private void ApplicationOnWorkbookBeforeClose(Workbook workbook, ref bool cancel)
+        {
+            //this.mediator.OnStateChanged();
+
+            //var populationXml = this.workspace.Save();
+            //var xmlPart = workbook.CustomXMLParts.Add(populationXml);
+        }
+
+        private void ApplicationOnWindowActivate(Workbook wb, Window wn)
+        {
+            this.mediator.OnStateChanged();
         }
     }
 }

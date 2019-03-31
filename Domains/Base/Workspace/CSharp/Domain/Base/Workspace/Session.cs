@@ -31,8 +31,7 @@
 
         public SessionObject Get(long id)
         {
-            SessionObject sessionObject;
-            if (!this.sessionObjectById.TryGetValue(id, out sessionObject))
+            if (!this.sessionObjectById.TryGetValue(id, out var sessionObject))
             {
                 if (!this.newSessionObjectById.TryGetValue(id, out sessionObject))
                 {
@@ -107,7 +106,7 @@
                                                            new SyncResponseObject
                                                                {
                                                                    I = id.ToString(),
-                                                                   V = "",
+                                                                   V = string.Empty,
                                                                    T =
                                                                        newSessionObject
                                                                        .ObjectType.Name,

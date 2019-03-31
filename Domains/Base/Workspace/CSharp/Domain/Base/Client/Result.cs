@@ -3,11 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Workspace.Domain;
-
     using Protocol.Remote.Pull;
-
-
+    
     public class Result
     {
         public Result(Session session, PullResponse response)

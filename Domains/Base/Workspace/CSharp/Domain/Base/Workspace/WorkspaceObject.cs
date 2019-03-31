@@ -4,22 +4,10 @@
     using Allors.Meta;
     using Allors.Protocol.Remote.Sync;
 
-    public class WorkspaceObject {
-        public Workspace Workspace { get; }
-
-        public long Id { get; }
-
-        public long Version { get; }
-
-        public string UserSecurityHash { get; }
-
-        public Class ObjectType { get; }
-
-        public Dictionary<string, object> Roles { get; }
-
-        public Dictionary<string, object> Methods { get; }
-
-        public WorkspaceObject(Workspace workspace, SyncResponse loadResponse, SyncResponseObject loadObject) {
+    public class WorkspaceObject
+    {
+        public WorkspaceObject(Workspace workspace, SyncResponse loadResponse, SyncResponseObject loadObject)
+        {
             this.Workspace = workspace;
             this.Id = long.Parse(loadObject.I);
             this.Version = !string.IsNullOrEmpty(loadObject.V) ? long.Parse(loadObject.V) : 0;
@@ -27,7 +15,7 @@
             this.ObjectType = (Class)this.Workspace.ObjectFactory.GetObjectTypeForTypeName(loadObject.T);
 
             this.Roles = new Dictionary<string, object>();
-            this.Methods =new Dictionary<string, object>();
+            this.Methods = new Dictionary<string, object>();
 
             if (loadObject.Roles != null)
             {
@@ -62,11 +50,27 @@
             }
         }
 
-        public bool CanRead(string roleTypeName) {
+        public Workspace Workspace { get; }
+
+        public long Id { get; }
+
+        public long Version { get; }
+
+        public string UserSecurityHash { get; }
+
+        public Class ObjectType { get; }
+
+        public Dictionary<string, object> Roles { get; }
+
+        public Dictionary<string, object> Methods { get; }
+
+        public bool CanRead(string roleTypeName)
+        {
             return (bool)this.Roles[$"CanRead{roleTypeName}"];
         }
 
-        public bool CanWrite(string roleTypeName) {
+        public bool CanWrite(string roleTypeName)
+        {
             return (bool)this.Roles[$"CanWrite{roleTypeName}"];
         }
 

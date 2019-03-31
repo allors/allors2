@@ -67,6 +67,10 @@
 
         public long? NewId { get; set; }
 
+        public long Id => this.WorkspaceObject?.Id ?? this.NewId ?? 0;
+
+        public long? Version => this.WorkspaceObject?.Version;
+
         public bool HasChanges
         {
             get
@@ -84,7 +88,7 @@
         {
             if (roleTypes.Length == 0)
             {
-                return HasChanges;
+                return this.HasChanges;
             }
 
             if (this.NewId != null)
@@ -108,10 +112,6 @@
 
             return false;
         }
-
-        public long Id => this.WorkspaceObject?.Id ?? this.NewId.Value;
-
-        public long? Version => this.WorkspaceObject?.Version;
 
         public bool CanRead(RoleType roleType)
         {
@@ -156,8 +156,7 @@
 
         public object Get(RoleType roleType)
         {
-            object value;
-            if (!this.roleByRoleType.TryGetValue(roleType, out value))
+            if (!this.roleByRoleType.TryGetValue(roleType, out var value))
             {
                 if (this.NewId == null)
                 {
@@ -203,17 +202,14 @@
                         {
                             if (roleType.IsOne)
                             {
-                                object role;
-                                this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out role);
+                                this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var role);
                                 value = role != null ? this.Session.Get(long.Parse((string)role)) : null;
                             }
                             else
                             {
-                                object roles;
-                                if (this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out roles))
+                                if (this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var roles))
                                 {
-                                    var list = roles as IList;
-                                    if (list != null)
+                                    if (roles is IList list)
                                     {
                                         var array = Array.CreateInstance(roleType.ObjectType.ClrType, list.Count);
 
@@ -231,14 +227,17 @@
                                 return new ArrayList().ToArray(roleType.ObjectType.ClrType);
                             }
                         }
-                        catch (Exception e)
+                        catch
                         {
                             var stringValue = "N/A";
                             try
                             {
                                 stringValue = this.ToString();
                             }
-                            catch { };
+                            catch
+                            {
+                                // ignored
+                            }
 
                             throw new Exception($"Could not get role {roleType.PropertyName} from [objectType: ${this.ObjectType.Name}, id: ${this.Id}, value: '${stringValue}']");
                         }
@@ -388,7 +387,7 @@
                     if (roleType.IsOne)
                     {
                         var sessionRole = (SessionObject)role;
-                        saveRole.S = sessionRole?.Id.ToString() ?? sessionRole?.NewId?.ToString();
+                        saveRole.S = sessionRole?.Id.ToString();
                     }
                     else
                     {
@@ -400,8 +399,7 @@
                         }
                         else
                         {
-                            object originalRoleIdsObject;
-                            if (!this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out originalRoleIdsObject))
+                            if (!this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var originalRoleIdsObject))
                             {
                                 saveRole.A = roleIds;
                             }

@@ -162,14 +162,12 @@ namespace Allors.Workspace
         /// <returns>The Allors <see cref="IObjectType"/>.</returns>
         public IObjectType GetObjectTypeForType(Type type)
         {
-            IObjectType objectType;
-            return !this.objectTypeByType.TryGetValue(type, out objectType) ? null : objectType;
+            return !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
         }
 
         public IObjectType GetObjectTypeForTypeName(string name)
         {
-            IObjectType objectType;
-            return !this.objectTypeByName.TryGetValue(name, out objectType) ? null : objectType;
+            return !this.objectTypeByName.TryGetValue(name, out var objectType) ? null : objectType;
         }
 
         /// <summary>
@@ -183,8 +181,7 @@ namespace Allors.Workspace
         /// </returns>
         public IObjectType GetObjectTypeForObjectTypeId(Guid id)
         {
-            IObjectType objectType;
-            return !this.objectTypeByObjectTypeId.TryGetValue(id, out objectType) ? null : objectType;
+            return !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
         }
 
         /// <summary>
@@ -194,8 +191,7 @@ namespace Allors.Workspace
         /// <returns>The .Net <see cref="Type"/>.</returns>
         public Type GetTypeForObjectType(IObjectType objectType)
         {
-            Type type;
-            this.typeByObjectType.TryGetValue(objectType, out type);
+            this.typeByObjectType.TryGetValue(objectType, out var type);
             return type;
         }
 
@@ -206,8 +202,7 @@ namespace Allors.Workspace
         /// <returns>The .Net <see cref="Type"/>.</returns>
         public IObjectType GetObjectTypeForType(Guid objectTypeId)
         {
-            IObjectType objectType;
-            this.objectTypeByObjectTypeId.TryGetValue(objectTypeId, out objectType);
+            this.objectTypeByObjectTypeId.TryGetValue(objectTypeId, out var objectType);
             return objectType;
         }
     }

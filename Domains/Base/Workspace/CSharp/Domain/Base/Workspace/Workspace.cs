@@ -9,14 +9,14 @@
 
     public class Workspace
     {
-        public ObjectFactory ObjectFactory { get; }
-
         private readonly Dictionary<long, WorkspaceObject> workspaceObjectById = new Dictionary<long, WorkspaceObject>();
         
         public Workspace(ObjectFactory objectFactory)
         {
             this.ObjectFactory = objectFactory;
         }
+
+        public ObjectFactory ObjectFactory { get; }
 
         public SyncRequest Diff(PullResponse response)
         {
@@ -28,8 +28,7 @@
                                                  {
                                                      var id = long.Parse(v[0]);
                                                      var version = long.Parse(v[1]);
-                                                     WorkspaceObject workspaceObject;
-                                                     this.workspaceObjectById.TryGetValue(id, out workspaceObject);
+                                                     this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
                                                      return workspaceObject == null || !workspaceObject.Version.Equals(version) || !workspaceObject.UserSecurityHash.Equals(userSecurityHash);
                                                  }).Select(v => v[0]).ToArray()
                                      };
@@ -46,7 +45,8 @@
             }
         }
 
-        public WorkspaceObject Get(long id) {
+        public WorkspaceObject Get(long id)
+        {
             var workspaceObject = this.workspaceObjectById[id];
             if (workspaceObject == null)
             {

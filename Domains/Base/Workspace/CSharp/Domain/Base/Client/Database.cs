@@ -15,8 +15,7 @@
     using Protocol.Remote.Pull;
     using Protocol.Remote.Push;
     using Protocol.Remote.Sync;
-
-
+    
     public class Database
     {
         public Database(HttpClient httpClient)

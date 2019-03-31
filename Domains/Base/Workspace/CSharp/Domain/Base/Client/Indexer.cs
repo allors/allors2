@@ -11,13 +11,6 @@
             this.dictionary = dictionary;
         } 
 
-        public T this[string index]
-        {
-            get
-            {
-                T value;
-                return this.dictionary.TryGetValue(index, out value) ? value : default(T);
-            }
-        }
+        public T this[string index] => this.dictionary.TryGetValue(index, out var value) ? value : default(T);
     }
 }
