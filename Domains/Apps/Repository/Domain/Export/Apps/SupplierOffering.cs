@@ -76,16 +76,6 @@ namespace Allors.Repository
         public Currency Currency { get; set; }
 
         #region Allors
-        [Id("B1552295-EA57-4B64-AD34-A8C64F89841C")]
-        [AssociationId("64314429-18F9-417E-94C5-743C127A4A71")]
-        [RoleId("B589C109-62B5-43B1-A7AE-176DD531016F")]
-        #endregion
-        [Derived]
-        [Precision(19)]
-        [Scale(2)]
-        public decimal CurrentPrice { get; set; }
-
-        #region Allors
         [Id("9c3458aa-7062-4c4c-9160-2f978b088082")]
         [AssociationId("2efde592-4a60-4c79-bc20-f389c5df5966")]
         [RoleId("99b85157-6b6a-4556-a910-af955802b6da")]

@@ -78,6 +78,40 @@ namespace Allors.Repository
         [Workspace]
         public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
 
+        #region Allors
+        [Id("ED3CE72C-C980-43DC-95FC-E8111E87F018")]
+        [AssociationId("C6C727BE-8E08-4067-AFEE-5239AE98E019")]
+        [RoleId("BD121953-AC5D-4883-B8C1-BF3275B73BA8")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal AssignedUnitSellingPrice { get; set; }
+
+        #region Allors
+        [Id("7A7D176E-A18D-44BC-8E05-9FA592A3A911")]
+        [AssociationId("FE28EC08-2568-41D3-9755-6F756D1C4E49")]
+        [RoleId("DBAAB5D5-185E-4BD2-9DB7-18ACE998B1FF")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitPurchasePrice { get; set; }
+
+        #region Allors
+        [Id("48C27B12-EAE9-48F6-B803-DC6C568D3816")]
+        [AssociationId("A76C9D29-68E7-49DB-9839-97C7EA20392C")]
+        [RoleId("24F92D49-99F0-493B-A1DE-34FFEA4E8819")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitSellingPrice { get; set; }
+
         #region Versioning
         #region Allors
         [Id("07AAB5A6-19C0-4812-B957-B051C3998BCD")]

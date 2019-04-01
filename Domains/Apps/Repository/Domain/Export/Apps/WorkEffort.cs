@@ -209,6 +209,7 @@ namespace Allors.Repository
         [RoleId("e23b0aa8-8b02-4274-826c-af140683ad22")]
         #endregion
         [Indexed]
+        [Required]
         [Workspace]
         DateTime ScheduledStart { get; set; }
 

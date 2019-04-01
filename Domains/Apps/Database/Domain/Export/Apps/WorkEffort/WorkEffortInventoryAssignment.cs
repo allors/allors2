@@ -13,6 +13,11 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -21,6 +26,8 @@ namespace Allors.Domain
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            var derivation = method.Derivation;
+
             var state = this.Assignment.WorkEffortState;
             var inventoryItemChanged = this.ExistCurrentVersion && (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
 
@@ -51,6 +58,34 @@ namespace Allors.Domain
                     this.SyncInventoryTransactions(previousInventoryItem, previousQuantity, cancelReason, true);
                 }
             }
+
+            var date = this.Assignment.ScheduledStart;
+
+            #region Pricing
+            this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart.Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+
+            var part = this.InventoryItem.Part;
+            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+
+            var unitSellingPrice = 0M;
+            foreach (var priceComponent in currentPartPriceComponents)
+            {
+                if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
+                {
+                    if (priceComponent.ExistPrice)
+                    {
+                        if (unitSellingPrice < priceComponent.Price)
+                        {
+                            unitSellingPrice = (decimal)priceComponent.Price;
+                        }
+                    }
+                }
+            }
+
+            this.UnitSellingPrice = AssignedUnitSellingPrice ?? unitSellingPrice;
+
+            #endregion
         }
 
         private void SyncInventoryTransactions(InventoryItem inventoryItem, int initialQuantity, InventoryTransactionReason reason, bool isCancellation)

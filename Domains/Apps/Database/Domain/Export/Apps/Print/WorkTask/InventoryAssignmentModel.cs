@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Allors.Domain.Print.WorkTaskModel
 {
     public class InventoryAssignmentModel
@@ -28,6 +30,8 @@ namespace Allors.Domain.Print.WorkTaskModel
                 this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
                                      assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                      "EA";
+                this.UnitSellingPrice = assignment.UnitSellingPrice;
+                this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2);
             }
         }
 
@@ -35,5 +39,7 @@ namespace Allors.Domain.Print.WorkTaskModel
         public string PartName { get; }
         public int Quantity { get; }
         public string UnitOfMeasure { get; }
+        public decimal UnitSellingPrice { get; }
+        public decimal SellingPrice { get; }
     }
 }
