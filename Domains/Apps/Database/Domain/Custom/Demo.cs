@@ -602,7 +602,7 @@ line2")
 
             finishedGood2.AddSerialisedItem(item);
 
-            var worktask = new WorkTaskBuilder(this.Session)
+            var workTask = new WorkTaskBuilder(this.Session)
                 .WithTakenBy(allors)
                 .WithCustomer(new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0"))
                 .WithName("maintenance")
@@ -610,8 +610,70 @@ line2")
 
             new WorkEffortFixedAssetAssignmentBuilder(this.Session)
                 .WithFixedAsset(item)
-                .WithAssignment(worktask)
+                .WithAssignment(workTask)
                 .Build();
+
+            var part1 = this.CreatePart("P1");
+            var part2 = this.CreatePart("P2");
+            var part3 = this.CreatePart("P3");
+
+            var employee1 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 1").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee1).WithEmployer(allors).Build();
+            
+            var employee2 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 2").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee2).WithEmployer(allors).Build();
+
+            this.Session.Derive();
+            
+            var workOrder = new WorkTaskBuilder(this.Session)
+                .WithName("Task")
+                .WithTakenBy(allors)
+                .WithFacility(new Facilities(this.Session).Extent().First)
+                .WithCustomer(acme0)
+                .WithWorkEffortPurpose(new WorkEffortPurposes(this.Session).Maintenance)
+                .WithSpecialTerms("Net 45 Days")
+                .Build();
+
+            new WorkEffortFixedAssetAssignmentBuilder(this.Session)
+                .WithFixedAsset(item)
+                .WithAssignment(workOrder)
+                .WithComment("Busted tailpipe")
+                .Build();
+
+            this.CreateInventoryAssignment(workOrder, part1, 11);
+            this.CreateInventoryAssignment(workOrder, part2, 12);
+            this.CreateInventoryAssignment(workOrder, part3, 13);
+
+            //// Work Effort Time Entries
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var standardRate = new RateTypes(this.Session).StandardRate;
+            var overtimeRate = new RateTypes(this.Session).OvertimeRate;
+
+            var frequencies = new TimeFrequencies(this.Session);
+
+            var timeEntryYesterday1 = this.CreateTimeEntry(yesterday, laterYesterday, frequencies.Day, workOrder, standardRate);
+            var timeEntryToday1 = this.CreateTimeEntry(today, laterToday, frequencies.Hour, workOrder, standardRate);
+            var timeEntryTomorrow1 = this.CreateTimeEntry(tomorrow, laterTomorrow, frequencies.Minute, workOrder, overtimeRate);
+
+            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday1);
+            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday1);
+            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow1);
+
+            var timeEntryYesterday2 = this.CreateTimeEntry(yesterday, laterYesterday, frequencies.Day, workOrder, standardRate);
+            var timeEntryToday2 = this.CreateTimeEntry(today, laterToday, frequencies.Hour, workOrder, standardRate);
+            var timeEntryTomorrow2 = this.CreateTimeEntry(tomorrow, laterTomorrow, frequencies.Minute, workOrder, overtimeRate);
+
+            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday2);
+            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday2);
+            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow2);
 
             this.Session.Derive();
         }
@@ -688,5 +750,36 @@ line2")
 
             person.SetPassword(password);
         }
+
+        private Part CreatePart(string id) =>
+            new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification(id)
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .Build();
+
+        private WorkEffortInventoryAssignment CreateInventoryAssignment(WorkEffort workOrder, Part part, int quantity)
+        {
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(part)
+                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+                .WithQuantity(quantity)
+                .Build();
+
+            return new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workOrder)
+                .WithInventoryItem(part.InventoryItemsWherePart.First)
+                .WithQuantity(quantity)
+                .Build();
+        }
+
+        private TimeEntry CreateTimeEntry(DateTime fromDate, DateTime throughDate, TimeFrequency frequency, WorkEffort workEffort, RateType rateType) =>
+            new TimeEntryBuilder(this.Session)
+                .WithRateType(rateType)
+                .WithFromDate(fromDate)
+                .WithThroughDate(throughDate)
+                .WithTimeFrequency(frequency)
+                .WithWorkEffort(workEffort)
+                .Build();
     }
 }

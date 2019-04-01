@@ -23,6 +23,7 @@ namespace Commands
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using Allors;
     using Allors.Domain;
@@ -50,6 +51,12 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
+            //return this.PrintSalesInvoice();
+            return this.PrintWorkTask();
+        }
+
+        private int PrintSalesInvoice()
+        {
             using (var session = this.databaseService.Database.CreateSession())
             {
                 this.logger.LogInformation("Begin");
@@ -70,7 +77,11 @@ namespace Commands
                 var template = invoice.BilledFrom.SalesInvoiceTemplate;
 
                 using (var memoryStream = new MemoryStream())
-                using (var fileStream = new FileStream(templateFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var fileStream = new FileStream(
+                    templateFileInfo.FullName,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite))
                 {
                     fileStream.CopyTo(memoryStream);
                     template.Media.InData = memoryStream.ToArray();
@@ -78,10 +89,7 @@ namespace Commands
 
                 session.Derive();
 
-                var images = new Dictionary<string, byte[]>
-                                 {
-                                     { "Logo", session.GetSingleton().LogoImage.MediaContent.Data },
-                                 };
+                var images = new Dictionary<string, byte[]> { { "Logo", session.GetSingleton().LogoImage.MediaContent.Data }, };
 
                 if (invoice.ExistInvoiceNumber)
                 {
@@ -99,6 +107,70 @@ namespace Commands
 
                 var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 var outputFile = File.Create(Path.Combine(desktopDir, "salesInvoice.odt"));
+                using (var stream = new MemoryStream(result.Media.MediaContent.Data))
+                {
+                    stream.CopyTo(outputFile);
+                }
+
+                this.logger.LogInformation("End");
+            }
+
+            return ExitCode.Success;
+        }
+
+        private int PrintWorkTask()
+        {
+            using (var session = this.databaseService.Database.CreateSession())
+            {
+                this.logger.LogInformation("Begin");
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
+                var templateFilePath = "domain/templates/WorkTask.odt";
+                var templateFileInfo = new FileInfo(templateFilePath);
+                var prefix = string.Empty;
+                while (!templateFileInfo.Exists)
+                {
+                    prefix += "../";
+                    templateFileInfo = new FileInfo(prefix + templateFilePath);
+                }
+
+                var workTasks = new WorkTasks(session).Extent();
+                var workTask = workTasks.First(v => v.Name.Equals("Task"));
+                var template = workTask.TakenBy.WorkTaskTemplate;
+
+                using (var memoryStream = new MemoryStream())
+                using (var fileStream = new FileStream(
+                    templateFileInfo.FullName,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite))
+                {
+                    fileStream.CopyTo(memoryStream);
+                    template.Media.InData = memoryStream.ToArray();
+                }
+
+                session.Derive();
+
+                var images = new Dictionary<string, byte[]> { { "Logo", session.GetSingleton().LogoImage.MediaContent.Data }, };
+
+                if (workTask.ExistWorkEffortNumber)
+                {
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(workTask.WorkEffortNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var printModel = new Allors.Domain.Print.WorkTaskModel.Model(workTask);
+                workTask.RenderPrintDocument(template, printModel, images);
+
+                session.Derive();
+
+                var result = workTask.PrintDocument;
+
+                var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var outputFile = File.Create(Path.Combine(desktopDir, "workTask.odt"));
                 using (var stream = new MemoryStream(result.Media.MediaContent.Data))
                 {
                     stream.CopyTo(outputFile);

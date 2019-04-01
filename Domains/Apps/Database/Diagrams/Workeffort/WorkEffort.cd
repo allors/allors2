@@ -17,13 +17,14 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkAIAgAA=</HashCode>
+      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAmAIAkAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="WorkEffortState" />
       <Property Name="Facility" />
       <Property Name="OrderItemFulfillment" />
+      <Property Name="TakenBy" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortInventoryAssignment">
@@ -35,7 +36,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAgAIAAAAAAAAAAAAQAAAAACAAgAAAAAgCAAAAA=</HashCode>
+      <HashCode>AAAAAAgAAQAAAAAAAAAAAQCAAABCAAgAACAAgAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -53,14 +54,14 @@
   <Interface Name="Allors.Domain.OrderItem" Collapsed="true">
     <Position X="10" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAgAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
+      <HashCode>gAAAAAAAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.SalesOrder" Collapsed="true">
     <Position X="14.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAuhAQhIAAAIEgwQABEAAgIAkEAYNAiQAAYRESJC0AA=</HashCode>
+      <HashCode>gAuhAQhIAAAIEgwRABEAAgAAgEAYNAiQAAYRESJCkAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -70,7 +71,7 @@
   <Interface Name="Allors.Domain.SalesOrderItem" Collapsed="true">
     <Position X="13.5" Y="2.25" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>gAxmFAkAIQABACIAQEwAAYCKEMApAApAAAKAAAAE4AE=</HashCode>
+      <HashCode>gARGAAkAIAABACIAQEgAAIAKAMApAApAAACAACAEoBE=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -80,7 +81,7 @@
   <Interface Name="Allors.Domain.TimeEntry">
     <Position X="13.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAQAAAAAAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAABA0AAAAQAAAAgAAABCAAAAACQAAAAEAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -104,7 +105,7 @@
   <Interface Name="Allors.Domain.WorkEffortAssignmentRate">
     <Position X="0.75" Y="1.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAIAAAAAABAAAIACCAAAAAgAAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -116,18 +117,22 @@
     <AssociationLine Name="Assignment" Type="Allors.Domain.WorkEffort" FixedFromPoint="true">
       <Path>
         <Point X="2.75" Y="3.671" />
+        <Point X="3.292" Y="3.671" Type="JumpStart" />
+        <Point X="3.458" Y="3.671" Type="JumpEnd" />
         <Point X="6.25" Y="3.671" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Facility" Type="Allors.Domain.Facility" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="2.75" Y="3.355" />
+        <Point X="3.292" Y="3.355" Type="JumpStart" />
+        <Point X="3.458" Y="3.355" Type="JumpEnd" />
         <Point X="3.812" Y="3.355" />
         <Point X="3.812" Y="2.191" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAABAAA=</HashCode>
+      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAgACAAAAAAAAAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -144,9 +149,9 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.QuoteItem" Collapsed="true">
-    <Position X="5.5" Y="5.25" Width="1.5" />
+    <Position X="5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>OAEiIIgAAQABAAEEAAAgAAABAIAAAAgAAAgBgAAAAgA=</HashCode>
+      <HashCode>OAECIIgAAQABAAEEAAAgAAABAIAAAAgAAAgBgCAAAgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -156,7 +161,7 @@
   <Interface Name="Allors.Domain.CommunicationEvent" Collapsed="true">
     <Position X="5.5" Y="1" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AICAAEKAAACgAEAEAIDIAAIAQgiAQAACAACAgCEIAAQ=</HashCode>
+      <HashCode>AICAAEKAAACgAEAEAIDIAAIAQogAQAACIACAgCAIAAQ=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -177,21 +182,21 @@
   <Interface Name="Allors.Domain.InvoiceItem">
     <Position X="2.75" Y="7" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAcAggAAAAAAAAAAAAAAAAQABAgAAoAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAcAggAAAAAAAAAAAAAAAAQAAAgAAoAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Product" Collapsed="true">
     <Position X="18.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAKgA=</HashCode>
+      <HashCode>AAgBABEAAQAAAAAAABAAAAQAABAAAAAAAAAAICAAIgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Good" Collapsed="true">
     <Position X="19.25" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAIAAAECABAAABAAAAAAAAAAABAAAAAAAAgAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -219,7 +224,7 @@
   <Interface Name="Allors.Domain.Party" Collapsed="true">
     <Position X="0.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAgUAAAACAIFBANAgEI=</HashCode>
+      <HashCode>AYAIGAABVAAQAoAQIJgGAACgoAkUAAAAAQIFBANAgEI=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -234,7 +239,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortFixedAssetAssignment">
-    <Position X="7.5" Y="5.25" Width="2.5" />
+    <Position X="8" Y="5.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAIAAAAAAAAAAQAAAAAAAQAAAAAAAQAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -242,6 +247,13 @@
     <ShowAsAssociation>
       <Property Name="Assignment" />
     </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Organisation" Collapsed="true">
+    <Position X="9" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACoAgAAAAAAoAAAAAkAAUAAAAAAAhACAEBAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

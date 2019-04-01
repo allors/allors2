@@ -24,15 +24,26 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             this.WorkTask = new WorkTaskModel(workTask);
             this.Customer = new CustomerModel(workTask.Customer);
-            this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
+            this.FixedAssetAssignments = workTask.WorkEffortFixedAssetAssignmentsWhereAssignment.Select(v => new FixedAssetAssignmentModel(v)).ToArray();
+
             this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Select(v => new InventoryAssignmentModel(v)).ToArray();
+            this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
+            this.TimeEntriesByBillingRate = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+                .GroupBy(v => v.BillingRate)
+                .Select(v => new TimeEntryByBillingRateModel(v))
+                .ToArray();
         }
+
         public WorkTaskModel WorkTask { get; }
 
         public CustomerModel Customer { get; }
 
-        public TimeEntryModel[] TimeEntries { get; }
+        public FixedAssetAssignmentModel[] FixedAssetAssignments { get; }
 
         public InventoryAssignmentModel[] InventoryAssignments { get; }
+
+        public TimeEntryModel[] TimeEntries { get; }
+
+        public TimeEntryByBillingRateModel[] TimeEntriesByBillingRate { get; }
     }
 }

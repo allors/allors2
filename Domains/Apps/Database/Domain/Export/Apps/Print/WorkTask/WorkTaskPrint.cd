@@ -1,46 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Domain.WorkTaskPrint.TimeEntryModel">
-    <Position X="7.25" Y="2" Width="1.5" />
+  <Class Name="Allors.Domain.Print.WorkTaskModel.TimeEntryModel">
+    <Position X="10" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAFAAAgQAAAAAAAgBAAAAECAQAAAAAAAgABAAA=</HashCode>
+      <HashCode>AAAAAAAVAAAgQAAAAAAAgBAAAAECAQAAAAAAAgABAAA=</HashCode>
       <FileName>Export\Apps\Print\WorkTask\TimeEntryModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Allors.Domain.WorkTaskPrint.WorkTaskModel">
-    <Position X="4" Y="0.5" Width="1.75" />
+  <Class Name="Allors.Domain.Print.WorkTaskModel.WorkTaskModel">
+    <Position X="1" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>gAAIAAAAAQEABAAABEAgAAAAAAAAAAABIAAAAAAAAAA=</HashCode>
+      <HashCode>gAAIAAAAAQAABAAABEAgAAAAAAAAAAABIAAAAAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\WorkTask\WorkTaskModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Allors.Domain.WorkTaskPrint.Model">
-    <Position X="0.5" Y="2.5" Width="1.5" />
+  <Class Name="Allors.Domain.Print.WorkTaskModel.Model">
+    <Position X="5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAQAACAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <HashCode>AAEAARAACAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>Export\Apps\Print\WorkTask\Model.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Customer" />
-      <Property Name="InventoryAssignments" />
       <Property Name="WorkTask" />
+      <Property Name="Customer" />
+      <Property Name="FixedAssetAssignment" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="TimeEntries" />
+      <Property Name="TimeEntriesByBillingRate" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Allors.Domain.WorkTaskPrint.InventoryAssignmentModel">
-    <Position X="3.25" Y="6.25" Width="2.25" />
+  <Class Name="Allors.Domain.Print.WorkTaskModel.FixedAssetAssignmentModel">
+    <Position X="1.75" Y="6.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>BAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAA=</HashCode>
-      <FileName>Export\Apps\Print\WorkTask\InventoryAssignmentModel.cs</FileName>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQEAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\FixedAssetAssignmentModel.cs</FileName>
+      <NewMemberFileName>Export\Apps\Print\WorkTask\InventoryAssignmentModel.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Allors.Domain.WorkTaskPrint.CustomerModel">
-    <Position X="6.5" Y="6.25" Width="1.75" />
+  <Class Name="Allors.Domain.Print.WorkTaskModel.CustomerModel">
+    <Position X="7.25" Y="6.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AQIAGgAAEAAAAAAAAEAAAAQgBAAAAAAAAAAABIAAAAA=</HashCode>
+      <HashCode>AQIAAAAAUAAAAAAAAEAAAAQgBAAAAAAAAAAABIAAAAA=</HashCode>
       <FileName>Export\Apps\Print\WorkTask\CustomerModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.Print.WorkTaskModel.TimeEntryByBillingRateModel">
+    <Position X="7.25" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAQAAAAAAAABAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Export\Apps\Print\WorkTask\TimeEntryByBillingRateModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

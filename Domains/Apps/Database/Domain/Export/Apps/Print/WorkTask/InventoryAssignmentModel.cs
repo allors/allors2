@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkTaskModel.cs" company="Allors bvba">
+// <copyright file="InventoryAssignmentModel.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -22,17 +22,14 @@ namespace Allors.Domain.Print.WorkTaskModel
     {
         public InventoryAssignmentModel(WorkEffortInventoryAssignment assignment)
         {
-            if (assignment != null)
-            {
-                this.PartId = assignment.InventoryItem.Part?.PartIdentification();
-                this.PartName = assignment.InventoryItem.Part?.Name;
-                this.Quantity = assignment.Quantity;
-                this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
-                                     assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
-                                     "EA";
-                this.UnitSellingPrice = assignment.UnitSellingPrice;
-                this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2);
-            }
+            this.PartId = assignment.InventoryItem.Part?.PartIdentification();
+            this.PartName = assignment.InventoryItem.Part?.Name;
+            this.Quantity = assignment.Quantity;
+            this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
+                                 assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
+                                 "EA";
+            this.UnitSellingPrice = assignment.UnitSellingPrice;
+            this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2);
         }
 
         public string PartId { get; }
