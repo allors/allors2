@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
@@ -37,7 +37,8 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     public metaService: MetaService,
     public refreshService: RefreshService,
     private errorService: ErrorService,
-    private stateService: StateService) {
+    private stateService: StateService,
+    private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
   }
@@ -117,6 +118,20 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public save(): void {

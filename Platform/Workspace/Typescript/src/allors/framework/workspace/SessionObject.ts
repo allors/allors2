@@ -181,6 +181,15 @@ export class SessionObject implements INewSessionObject {
                 value = [];
             }
         }
+        
+        if (value === '') {
+            const roleType = this.objectType.roleTypeByName[roleTypeName];
+            if (roleType.objectType.isUnit) {
+                if (!roleType.objectType.isString) {
+                    value = null;
+                }
+            }
+        }
 
         this.roleByRoleTypeName[roleTypeName] = value;
         this.changedRoleByRoleTypeName[roleTypeName] = value;

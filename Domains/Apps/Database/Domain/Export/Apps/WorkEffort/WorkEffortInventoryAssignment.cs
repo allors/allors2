@@ -29,7 +29,8 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var state = this.Assignment.WorkEffortState;
-            var inventoryItemChanged = this.ExistCurrentVersion && (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
+            var inventoryItemChanged = this.ExistCurrentVersion &&
+                                       (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
             {
@@ -46,7 +47,8 @@ namespace Allors.Domain
                 // CurrentVersion is Previous Version until PostDerive
                 var previousInventoryItem = this.CurrentVersion.InventoryItem;
                 var previousQuantity = this.CurrentVersion.Quantity;
-                state = this.CurrentVersion.Assignment.PreviousWorkEffortState ?? this.CurrentVersion.Assignment.WorkEffortState;
+                state = this.CurrentVersion.Assignment.PreviousWorkEffortState ??
+                        this.CurrentVersion.Assignment.WorkEffortState;
 
                 foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {
@@ -65,42 +67,27 @@ namespace Allors.Domain
 
             try
             {
-                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart.Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
+                    .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
             }
             catch (Exception e)
             {
                 this.UnitPurchasePrice = 0M;
             }
 
-            var part = this.InventoryItem.Part;
-            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
-
-            var unitSellingPrice = 0M;
-            foreach (var priceComponent in currentPartPriceComponents)
-            {
-                if (priceComponent.Strategy.Class.Equals(M.BasePrice.ObjectType))
-                {
-                    if (priceComponent.ExistPrice)
-                    {
-                        if (unitSellingPrice < priceComponent.Price)
-                        {
-                            unitSellingPrice = (decimal)priceComponent.Price;
-                        }
-                    }
-                }
-            }
-
+            var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
             this.UnitSellingPrice = AssignedUnitSellingPrice ?? unitSellingPrice;
 
             #endregion
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, int initialQuantity, InventoryTransactionReason reason, bool isCancellation)
+        private void SyncInventoryTransactions(InventoryItem inventoryItem, int initialQuantity,
+            InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
             var existingQuantity = 0M;
-            var matchingTransactions = this.InventoryItemTransactions.Where(t => t.Reason.Equals(reason) && t.Part.Equals(inventoryItem.Part)).ToArray();
+            var matchingTransactions = this.InventoryItemTransactions
+                .Where(t => t.Reason.Equals(reason) && t.Part.Equals(inventoryItem.Part)).ToArray();
 
             if (matchingTransactions.Length > 0)
             {
@@ -123,6 +110,18 @@ namespace Allors.Domain
                     .WithQuantity(adjustmentQuantity)
                     .WithReason(reason)
                     .Build());
+            }
+        }
+
+        public void AppsCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var part = this.InventoryItem.Part;
+                var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+
+                method.Result = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
             }
         }
     }

@@ -153,5 +153,17 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
+
+
+        #region Allors
+
+        [Id("89135E39-E084-4671-A8C9-8188037F58F0")]
+
+        #endregion
+
+        public void CalculateSellingPrice()
+        {
+        }
+
     }
 }
