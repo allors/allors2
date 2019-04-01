@@ -38,8 +38,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
 
             config.Deny(this.ObjectType, cancelled, cancel, invoice);
-            config.Deny(this.ObjectType, completed, cancel);
-            config.Deny(this.ObjectType, finished, cancel, invoice, reopen);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }
 }

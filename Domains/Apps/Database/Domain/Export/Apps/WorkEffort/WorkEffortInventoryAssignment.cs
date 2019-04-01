@@ -62,7 +62,15 @@ namespace Allors.Domain
             var date = this.Assignment.ScheduledStart;
 
             #region Pricing
-            this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart.Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+
+            try
+            {
+                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart.Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+            }
+            catch (Exception e)
+            {
+                this.UnitPurchasePrice = 0M;
+            }
 
             var part = this.InventoryItem.Part;
             var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
