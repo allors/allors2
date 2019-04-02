@@ -58,9 +58,11 @@ import { WorkEffortAssignmentRateEditComponent, WorkEffortAssignmentRateEditModu
 import { WorkEffortFixedAssetAssignmentEditComponent, WorkEffortFixedAssetAssignmentEditModule } from '../allors/material/apps/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.module';
 import { WorkEffortInventoryAssignmentEditComponent, WorkEffortInventoryAssignmentEditModule } from '../allors/material/apps/objects/workeffortinventoryassignment/edit/workeffortinventoryassignment-edit.module';
 import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditModule } from '../allors/material/apps/objects/workeffortpartyassignment/edit/workeffortpartyassignment-edit.module';
+import { WorkEffortPurchaseOrderItemAssignmentEditComponent, WorkEffortPurchaseOrderItemAssignmentEditModule } from '../allors/material/apps/objects/workeffortpurchaseorderitemassignment/edit/workeffortpurchaseorderitemassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
+import { WorkEffortInventoryAssignmentOverviewPanelModule } from 'src/allors/material/apps/objects/workeffortinventoryassignment/overview/panel/workeffortinventoryassignment-overview-panel.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
@@ -122,6 +124,7 @@ export const create = {
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
+  [ids.WorkEffortPurchaseOrderItemAssignment]: WorkEffortPurchaseOrderItemAssignmentEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
 
@@ -172,6 +175,7 @@ export const edit = {
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
   [ids.WorkEffortInventoryAssignment]: WorkEffortInventoryAssignmentEditComponent,
+  [ids.WorkEffortPurchaseOrderItemAssignment]: WorkEffortPurchaseOrderItemAssignmentEditComponent,
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
@@ -233,6 +237,7 @@ export const edit = {
     WorkEffortAssignmentRateEditModule,
     WorkEffortFixedAssetAssignmentEditModule,
     WorkEffortPartyAssignmentEditModule,
+    WorkEffortPurchaseOrderItemAssignmentEditModule,
     WorkEffortInventoryAssignmentEditModule,
     WorkTaskCreateModule,
   ],
@@ -291,6 +296,7 @@ export const edit = {
     WorkEffortFixedAssetAssignmentEditComponent,
     WorkEffortInventoryAssignmentEditComponent,
     WorkEffortPartyAssignmentEditComponent,
+    WorkEffortPurchaseOrderItemAssignmentEditComponent,
     WorkTaskCreateComponent,
   ],
   providers: [

@@ -9,12 +9,16 @@
     </div>
 
     <div class="row">
+      <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Description"></a-mat-textarea>
+    </div>
+
+    <div class="row">
       <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Part" [options]="parts" display="Name" (selected)="partSelected($event)"></a-mat-select>
     </div>
 
     <div class="row">
       <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.QuantityOrdered"></a-mat-input>
-      <a-mat-static class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Price" label="Supplier Price"></a-mat-static>
+      <a-mat-static *ngIf="orderItem.Part" class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.Price" label="Supplier Price"></a-mat-static>
       <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.AssignedUnitPrice" label="Agreed on Price"></a-mat-input>
     </div>
 

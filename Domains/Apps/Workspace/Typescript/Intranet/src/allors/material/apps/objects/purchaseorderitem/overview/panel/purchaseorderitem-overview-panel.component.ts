@@ -140,7 +140,7 @@ export class PurchaseOrderItemOverviewPanelComponent {
       this.table.data = this.objects.map((v) => {
         return {
           object: v,
-          item: (v.Part && v.Part.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          item: (v.Part && v.Part.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || v.Description,
           state: `${v.PurchaseOrderItemState && v.PurchaseOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
           received: v.QuantityReceived,

@@ -4,6 +4,8 @@ import './Organisation';
 import './Party';
 import './Person';
 import './PostalAddress';
+import './PurchaseOrder';
+import './PurchaseOrderItem';
 import './SerialisedItem';
 import './SerialisedItemCharacteristicType';
 import './TelecommunicationsNumber';

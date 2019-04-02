@@ -20,6 +20,7 @@ import { WorkEffortAssignmentRateOverviewPanelModule } from '../../workeffortass
 import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
 import { WorkEffortInventoryAssignmentOverviewPanelModule } from '../../workeffortinventoryassignment/overview/panel/workeffortinventoryassignment-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+import { WorkEffortPurchaseOrderItemAssignmentOverviewPanelModule } from '../../workeffortpurchaseorderitemassignment/overview/panel/workeffortpurchaseorderitemassignment-overview-panel.module';
 
 import { WorkTaskOverviewSummaryModule } from './summary/worktask-overview-summary.module';
 import { WorkTaskOverviewDetailModule } from './detail/worktask-overview-detail.module';
@@ -44,6 +45,7 @@ export { WorkTaskOverviewComponent } from './worktask-overview.component';
     WorkEffortFixedAssetAssignmentOverviewPanelModule,
     WorkEffortInventoryAssignmentOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
+    WorkEffortPurchaseOrderItemAssignmentOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

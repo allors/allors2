@@ -39,6 +39,17 @@ namespace Allors.Repository
         public PurchaseOrderItem PurchaseOrderItem { get; set; }
 
         #region Allors
+        [Id("95577BE1-EC7A-41D2-B51F-96791B172B84")]
+        [AssociationId("A18A9971-031F-47F2-95F5-81676C6ECB98")]
+        [RoleId("FCB518DC-3510-4113-BCFF-38C3FEE4C6AE")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public PurchaseOrder PurchaseOrder { get; set; }
+
+        #region Allors
         [Id("346A4EC3-16F7-45EB-9BD6-949EDB86BCFF")]
         [AssociationId("377449FA-8E79-4163-8CEB-DDE4B816264D")]
         [RoleId("1EF8D82F-9E88-416E-8C32-7D18F5056408")]
