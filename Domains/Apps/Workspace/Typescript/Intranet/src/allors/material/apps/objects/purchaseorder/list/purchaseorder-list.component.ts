@@ -183,7 +183,9 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
-                PrintDocument: x,
+                PrintDocument: {
+                  Media: x
+                },
                 TakenViaSupplier: x,
                 PurchaseOrderState: x,
               },

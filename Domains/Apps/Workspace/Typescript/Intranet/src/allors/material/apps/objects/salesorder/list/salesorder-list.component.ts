@@ -185,7 +185,9 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
-                PrintDocument: x,
+                PrintDocument: {
+                  Media: x
+                },
                 ShipToCustomer: x,
                 SalesOrderState: x,
               },

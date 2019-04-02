@@ -69,10 +69,10 @@ namespace Allors.Domain
             return string.Concat(this.OutgoingShipmentNumberPrefix, shipmentNumber);
         }
 
-        public string DeriveNextSalesOrderNumber()
+        public string DeriveNextSalesOrderNumber(int year)
         {
             var salesOrderNumber = this.SalesOrderCounter.NextValue();
-            return string.Concat(this.SalesOrderNumberPrefix, salesOrderNumber);
+            return string.Concat(this.SalesOrderNumberPrefix, salesOrderNumber).Replace("{year}", year.ToString());
         }
 
         public string DeriveNextCreditNoteNumber(int year)

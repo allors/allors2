@@ -174,6 +174,7 @@ namespace Allors.Domain
                 .WithShipmentMethod(new ShipmentMethods(session).Ground)
                 .WithReceiver(this.OrderedBy)
                 .WithShipFromParty(this.TakenViaSupplier)
+                .WithFacility(this.Facility)
                 .Build();
 
             foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)

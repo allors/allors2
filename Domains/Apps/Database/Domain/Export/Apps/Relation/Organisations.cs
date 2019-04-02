@@ -75,6 +75,7 @@ namespace Allors.Domain
             string requestNumberPrefix,
             string quoteNumberPrefix,
             string productNumberPrefix,
+            string workEffortPrefix,
             int? requestCounterValue,
             int? quoteCounterValue,
             int? orderCounterValue,
@@ -114,6 +115,7 @@ namespace Allors.Domain
                 .WithDoAccounting(false)
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
+                .WithWorkEffortPrefix(workEffortPrefix)
                 .Build();
 
             if (requestCounterValue != null)
@@ -202,35 +204,35 @@ namespace Allors.Domain
 
             var paymentMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
 
-            var store = new StoreBuilder(session)
-                .WithName(storeName)
-                .WithOutgoingShipmentNumberPrefix(outgoingShipmentNumberPrefix)
-                .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
-                .WithSalesOrderNumberPrefix(salesOrderNumberPrefix)
-                .WithDefaultCollectionMethod(paymentMethod)
-                .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
-                .WithDefaultCarrier(new Carriers(session).Fedex)
-                .WithBillingProcess(billingProcess)
-                .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithIsImmediatelyPicked(true)
-                .WithIsAutomaticallyShipped(true)
-                .WithInternalOrganisation(organisation)
-                .Build();
+            //var store = new StoreBuilder(session)
+            //    .WithName(storeName)
+            //    .WithOutgoingShipmentNumberPrefix(outgoingShipmentNumberPrefix)
+            //    .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
+            //    .WithSalesOrderNumberPrefix(salesOrderNumberPrefix)
+            //    .WithDefaultCollectionMethod(paymentMethod)
+            //    .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
+            //    .WithDefaultCarrier(new Carriers(session).Fedex)
+            //    .WithBillingProcess(billingProcess)
+            //    .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+            //    .WithIsImmediatelyPicked(true)
+            //    .WithIsAutomaticallyShipped(true)
+            //    .WithInternalOrganisation(organisation)
+            //    .Build();
 
-            if (facility != null)
-            {
-                store.DefaultFacility = facility;
-            }
+            //if (facility != null)
+            //{
+            //    store.DefaultFacility = facility;
+            //}
 
-            if (orderCounterValue != null)
-            {
-                store.SalesOrderCounter = new CounterBuilder(session).WithValue(orderCounterValue).Build();
-            }
+            //if (orderCounterValue != null)
+            //{
+            //    store.SalesOrderCounter = new CounterBuilder(session).WithValue(orderCounterValue).Build();
+            //}
 
-            if (invoiceCounterValue != null)
-            {
-                store.SalesInvoiceCounter = new CounterBuilder(session).WithValue(invoiceCounterValue).Build();
-            }
+            //if (invoiceCounterValue != null)
+            //{
+            //    store.SalesInvoiceCounter = new CounterBuilder(session).WithValue(invoiceCounterValue).Build();
+            //}
 
             return organisation;
         }

@@ -100,10 +100,17 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
 
           if (isCreate && this.data.associationId) {
             pulls.push(
+              pull.SupplierOffering({
+                include: {
+                  Part: x,
+                  Supplier: x
+                }
+              }),
               pull.PurchaseOrder({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x
+                  VatRegime: x,
+                  TakenViaSupplier: x
                 }
               })
             );
@@ -119,13 +126,15 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
+        const now = new Date();
+
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.parts = this.supplierOfferings.map(v => v.Part);
+        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now)).map(v => v.Part);
 
         if (isCreate) {
           this.title = 'Add Order Item';

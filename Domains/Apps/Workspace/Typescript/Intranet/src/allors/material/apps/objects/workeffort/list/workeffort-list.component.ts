@@ -126,7 +126,9 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
               include: {
                 Customer: x,
                 ExecutedBy: x,
-                PrintDocument: x,
+                PrintDocument: {
+                  Media: x
+                },
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
               },

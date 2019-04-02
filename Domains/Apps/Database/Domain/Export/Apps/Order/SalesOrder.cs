@@ -136,7 +136,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber && this.ExistStore)
             {
-                this.OrderNumber = this.Store.DeriveNextSalesOrderNumber();
+                this.OrderNumber = this.Store.DeriveNextSalesOrderNumber(this.OrderDate.Year);
             }
         }
 

@@ -92,12 +92,17 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
-        this.order.OrderedBy = this.internalOrganisation;
         this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
+
+        this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
+        this.order.OrderedBy = this.internalOrganisation;
+
+        if (this.facilities.length > 0) {
+          this.order.Facility = this.facilities[0];
+        }
 
         if (this.order.TakenViaSupplier) {
           this.updateSupplier(this.order.TakenViaSupplier);

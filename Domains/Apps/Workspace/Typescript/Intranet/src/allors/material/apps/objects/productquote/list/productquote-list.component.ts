@@ -136,7 +136,9 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
-                PrintDocument: x,
+                PrintDocument: {
+                  Media: x
+                },
                 Receiver: x,
                 QuoteState: x,
               },
