@@ -405,6 +405,11 @@ namespace Allors.Domain
 
         private void CreatePickList(IDerivation derivation)
         {
+            if (this.Store.IsImmediatelyPicked && this.ShipmentItems.First.ExistItemIssuancesWhereShipmentItem)
+            {
+                return;
+            }
+
             if (this.ExistShipToParty)
             {
                 var pendingPickList = this.PendingPickList;
