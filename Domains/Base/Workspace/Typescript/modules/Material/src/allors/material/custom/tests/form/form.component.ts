@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { Meta } from '../../../../meta';
 import { Person, Data, Organisation } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
-import { ErrorService, SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
+import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
 import { RadioGroupOption } from '../../../../material';
 
 import { PullFactory } from '../../../../meta/generated/pull.g';
@@ -42,7 +42,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     @Self() public allors: ContextService,
     public metaService: MetaService,
     private workspaceService: WorkspaceService,
-    private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
   ) {
@@ -104,12 +103,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.data = this.allors.context.create(this.m.Data) as Data;
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -132,10 +126,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(() => {
         this.data = undefined;
         this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goBack(): void {

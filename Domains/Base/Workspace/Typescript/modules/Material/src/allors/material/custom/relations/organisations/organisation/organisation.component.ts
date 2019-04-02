@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
+import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -33,7 +33,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     private metaService: MetaService,
-    private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
   ) {
@@ -77,12 +76,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.organisation = loaded.objects.Organisation as Organisation || this.allors.context.create('Organisation') as Organisation;
         this.people = loaded.collections.People as Person[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -103,10 +97,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
       .invoke(this.organisation.ToggleCanWrite)
       .subscribe(() => {
         this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public save(): void {
@@ -115,10 +106,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.goBack();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goBack(): void {

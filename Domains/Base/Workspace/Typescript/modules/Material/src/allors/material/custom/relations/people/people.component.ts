@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like } from '../../../../framework';
-import { ErrorService, Invoked, MediaService, ContextService, NavigationService, AllorsFilterService, MetaService } from '../../../../angular';
+import { Invoked, MediaService, ContextService, NavigationService, AllorsFilterService, MetaService } from '../../../../angular';
 import { Person } from '../../../../domain';
 import { TableRow, Sorter, AllorsMaterialDialogService } from '../../../../material';
 
@@ -45,7 +45,6 @@ export class PeopleComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
@@ -119,11 +118,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
             email: v.UserEmail,
           } as Row;
         });
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      });
   }
 
   public ngOnDestroy(): void {
@@ -189,10 +184,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
+              });
           }
         });
     }

@@ -8,7 +8,7 @@ import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
-import { Loaded, ContextService, WorkspaceService, ErrorService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
@@ -28,7 +28,6 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   constructor(
     @Self() private allors: ContextService,
     private metaService: MetaService,
-    private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
 
@@ -68,12 +67,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
       )
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.Organisation as Organisation;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      });
   }
 
   public ngAfterViewInit(): void {

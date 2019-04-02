@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { ErrorService, Loaded, ContextService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService } from '../../../../../angular';
 
 @Component({
   templateUrl: './person.component.html',
@@ -26,7 +26,6 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     private metaService: MetaService,
-    private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
 
@@ -63,12 +62,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.person = loaded.objects.Person as Person || this.allors.context.create('Person') as Person;
         this.locales = loaded.collections.Locales as Locale[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -86,10 +80,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.goBack();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goBack(): void {

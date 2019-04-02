@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, ContextService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService } from '../../../../../angular';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -26,7 +26,6 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
   constructor(
     @Self() private allors: ContextService,
     private metaService: MetaService,
-    private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
 
@@ -62,12 +61,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
       )
       .subscribe((loaded: Loaded) => {
         this.person = loaded.objects.Person as Person;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      });
   }
 
   public ngAfterViewInit(): void {
