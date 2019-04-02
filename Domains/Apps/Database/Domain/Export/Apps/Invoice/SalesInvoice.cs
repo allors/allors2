@@ -421,7 +421,7 @@ namespace Allors.Domain
                 if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
                     !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
                 {
-                    if (!invoiceItem.ExistAmountPaid)
+                    if (invoiceItem.AmountPaid == 0)
                     {
                         invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.NotPaid;
                     }
