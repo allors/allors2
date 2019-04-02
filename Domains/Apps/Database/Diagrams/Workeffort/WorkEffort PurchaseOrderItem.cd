@@ -61,5 +61,17 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="Allors.Domain.WorkEffortPurchaseOrderItemAssignment">
+    <Position X="7.5" Y="4.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAgAAABAAAAQAAAABAAAAAACAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Assignment" />
+      <Property Name="PurchaseOrderItem" />
+      <Property Name="PurchaseOrder" />
+    </ShowAsAssociation>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

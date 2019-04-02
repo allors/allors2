@@ -587,7 +587,7 @@ line2")
                     .WithOrderedBy(allors)
                     .WithTakenViaSupplier(supplier)
                     .WithPurchaseOrderItem(purchaseOrderItem1)
-                    .WithCustomerReference("a reference number")
+                    .WithCustomerReference("reference " + i)
                     .Build();
             }
 
@@ -619,12 +619,12 @@ line2")
 
             var employee1 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 1").Build();
             new EmploymentBuilder(this.Session).WithEmployee(employee1).WithEmployer(allors).Build();
-            
+
             var employee2 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 2").Build();
             new EmploymentBuilder(this.Session).WithEmployee(employee2).WithEmployer(allors).Build();
 
             this.Session.Derive();
-            
+
             var workOrder = new WorkTaskBuilder(this.Session)
                 .WithName("Task")
                 .WithTakenBy(allors)
@@ -674,6 +674,16 @@ line2")
             employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday2);
             employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday2);
             employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow2);
+
+            var po = new PurchaseOrders(this.Session).Extent().First;
+            foreach (PurchaseOrderItem purchaseOrderItem in po.PurchaseOrderItems)
+            {
+                new WorkEffortPurchaseOrderItemAssignmentBuilder(this.Session)
+                    .WithPurchaseOrderItem(purchaseOrderItem)
+                    .WithAssignment(workOrder)
+                    .WithQuantity(1)
+                    .Build();
+            }
 
             this.Session.Derive();
         }
