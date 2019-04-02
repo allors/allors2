@@ -48,7 +48,7 @@
             options.AddUserProfilePreference("network.http.use-cache", false);
             options.AddArguments("disable-infobars");
 
-            options.AddArgument("--auto-open-devtools-for-tabs");
+            //options.AddArgument("--auto-open-devtools-for-tabs");
 
             options.AddArgument("no-sandbox");
 
