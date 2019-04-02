@@ -26,6 +26,7 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.Customer = new CustomerModel(workTask.Customer);
             this.FixedAssetAssignments = workTask.WorkEffortFixedAssetAssignmentsWhereAssignment.Select(v => new FixedAssetAssignmentModel(v)).ToArray();
 
+            this.PurchaseOrderItems = workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Select(v => new PurchaseOrderItemAssignmentModel(v)).ToArray();
             this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Select(v => new InventoryAssignmentModel(v)).ToArray();
             this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
             this.TimeEntriesByBillingRate = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
@@ -34,11 +35,14 @@ namespace Allors.Domain.Print.WorkTaskModel
                 .ToArray();
         }
 
+
         public WorkTaskModel WorkTask { get; }
 
         public CustomerModel Customer { get; }
 
         public FixedAssetAssignmentModel[] FixedAssetAssignments { get; }
+
+        public PurchaseOrderItemAssignmentModel[] PurchaseOrderItems { get; }
 
         public InventoryAssignmentModel[] InventoryAssignments { get; }
 
