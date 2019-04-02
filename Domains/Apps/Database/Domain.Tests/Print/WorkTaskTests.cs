@@ -104,7 +104,7 @@ namespace Allors.Domain.Print
 
             // Assert
             Assert.Equal(3, model.TimeEntries.Length);
-            Assert.Equal(2, model.TimeEntriesByBillingRate.Length);
+            Assert.Single(model.TimeEntriesByBillingRate);
         }
         
         private Part CreatePart(string id) =>
