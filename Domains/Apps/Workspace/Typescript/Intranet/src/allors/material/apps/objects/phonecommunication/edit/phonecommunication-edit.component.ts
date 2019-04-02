@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -47,7 +47,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -200,7 +200,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
           }
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -283,7 +283,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.fromPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public toPartySelected(party: Party) {
@@ -316,7 +316,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.toPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public save(): void {
@@ -329,9 +329,6 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

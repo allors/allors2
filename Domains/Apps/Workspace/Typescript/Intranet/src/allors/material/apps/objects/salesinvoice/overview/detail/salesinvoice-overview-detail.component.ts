@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -80,7 +80,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -237,7 +237,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
           this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -252,10 +252,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public shipToCustomerAdded(party: Party): void {
@@ -433,7 +430,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateShipToCustomer(party: Party): void {
@@ -482,7 +479,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.currentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateBillToEndCustomer(party: Party) {
@@ -532,7 +529,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateShipToEndCustomer(party: Party) {
@@ -582,6 +579,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 }

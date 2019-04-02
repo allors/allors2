@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, RefreshService, Invoked, ErrorService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, RefreshService, Invoked} from '../../../../../../angular';
 import { RequestForQuote, ProductQuote, Quote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -22,8 +22,7 @@ export class RequestForQuoteOverviewSummaryComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar,
-    public navigation: NavigationService,
-    public errorService: ErrorService) {
+    public navigation: NavigationService) {
 
     this.m = this.metaService.m;
 
@@ -81,10 +80,7 @@ export class RequestForQuoteOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public reject(): void {
@@ -93,10 +89,7 @@ export class RequestForQuoteOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public submit(): void {
@@ -105,10 +98,7 @@ export class RequestForQuoteOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public hold(): void {
@@ -117,10 +107,7 @@ export class RequestForQuoteOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public createQuote(): void {
@@ -129,10 +116,7 @@ export class RequestForQuoteOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created a quote.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }
 

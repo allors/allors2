@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, tap, delay } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Good, Part } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -27,7 +27,7 @@ export class UnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,
@@ -96,7 +96,7 @@ export class UnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
         this.panelManager.onPulled(loaded);
 
         this.good = loaded.objects.NonUnifiedGood as Good;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked, ContextService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService,  Action, MetaService, ActionTarget, Invoked, ContextService } from '../../../../../../angular';
 import { QuoteItem, ProductQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -57,7 +57,7 @@ export class QuoteItemOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    public errorService: ErrorService,
+    
     public methodService: MethodService,
     public editService: EditService,
     public deleteService: DeleteService,

@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService, Action } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
 import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, SalesInvoiceItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -30,8 +30,7 @@ export class SalesInvoiceOverviewSummaryComponent {
     public navigation: NavigationService,
     public printService: PrintService,
     public refreshService: RefreshService,
-    public snackBar: MatSnackBar,
-    public errorService: ErrorService) {
+    public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
@@ -134,10 +133,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public cancel(): void {
@@ -146,10 +142,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public writeOff(): void {
@@ -158,10 +151,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public reopen(): void {
@@ -170,10 +160,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public credit(): void {
@@ -182,10 +169,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public copy(): void {
@@ -194,10 +178,7 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }
 

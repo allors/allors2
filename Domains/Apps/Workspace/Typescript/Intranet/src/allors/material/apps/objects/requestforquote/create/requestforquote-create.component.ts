@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -43,7 +43,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<RequestForQuoteCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -78,7 +78,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         this.request.Recipient = this.internalOrganisation;
         this.request.RequestDate = new Date();
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -98,10 +98,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   get originatorIsPerson(): boolean {
@@ -180,6 +177,6 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 }

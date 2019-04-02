@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -36,7 +36,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PostalAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -85,7 +85,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -104,9 +104,6 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

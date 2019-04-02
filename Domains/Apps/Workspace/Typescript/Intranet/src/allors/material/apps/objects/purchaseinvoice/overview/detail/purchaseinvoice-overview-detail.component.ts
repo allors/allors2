@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -83,7 +83,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     public stateService: StateService) {
 
@@ -248,7 +248,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -263,10 +263,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public billedFromAdded(organisation: Organisation): void {
@@ -447,7 +444,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateShipToCustomer(party: Party) {
@@ -492,7 +489,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToCustomerAddresses = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateBillToEndCustomer(party: Party) {
@@ -540,7 +537,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateShipToEndCustomer(party: Party) {
@@ -588,7 +585,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
 }

@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, ContextService, NavigationService, MetaService } from '../../../../../angular';
+import {  ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -48,7 +48,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     public stateService: StateService) {
 
@@ -93,7 +93,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
         this.workTask = this.allors.context.create('WorkTask') as WorkTask;
         this.workTask.TakenBy = this.internalOrganisation as Organisation;
 
-      }, this.errorService.handler);
+      });
   }
 
   public customerSelected(customer: Party) {
@@ -134,11 +134,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
           .map((v: PartyContactMechanism) => v.ContactMechanism);
 
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      },
-      (error: Error) => {
-        this.errorService.handle(error);
-      },
-    );
+      });
   }
 
   public contactPersonAdded(id: string): void {
@@ -177,9 +173,6 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

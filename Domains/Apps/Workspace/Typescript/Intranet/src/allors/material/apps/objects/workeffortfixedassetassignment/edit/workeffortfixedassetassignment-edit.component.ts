@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -36,7 +36,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
     public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -126,7 +126,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
             this.title = 'View Work Effort Asset Assignment';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -145,9 +145,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

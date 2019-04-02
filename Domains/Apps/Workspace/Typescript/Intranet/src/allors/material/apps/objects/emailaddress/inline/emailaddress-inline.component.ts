@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, ContextService, MetaService } from '../../../../../angular';
+import {  ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -29,7 +29,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
   constructor(
     private allors: ContextService,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
   ) {
     this.m = this.metaService.m;
   }

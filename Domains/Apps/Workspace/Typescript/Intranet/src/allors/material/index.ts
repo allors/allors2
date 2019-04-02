@@ -1,6 +1,5 @@
 // Base Components
 export * from './base/components/dialog/dialog.module';
-export * from './base/components/errordialog/errordialog.module';
 export * from './base/components/filter/filter.module';
 export * from './base/components/factoryfab/factoryfab.module';
 export * from './base/components/footer/footer.module';
@@ -30,7 +29,6 @@ export * from './base/components/role/textarea/textarea.module';
 // Base Services
 export * from './base/services/actions';
 export * from './base/services/dialog';
-export * from './base/services/error';
 export * from './base/services/object';
 export * from './base/services/logging';
 export * from './base/services/sidenav';

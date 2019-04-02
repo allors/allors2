@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortAssignmentRate, TimeFrequency, RateType, WorkEffort, WorkEffortPartyAssignment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -35,7 +35,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
     public dialogRef: MatDialogRef<WorkEffortAssignmentRateEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -110,7 +110,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
             this.title = 'View Work Effort Rate';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -134,9 +134,6 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
@@ -45,7 +45,7 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     titleService: Title) {
 
@@ -175,7 +175,7 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
             qoh: v.QuantityOnHand
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

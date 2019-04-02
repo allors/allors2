@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PositionTypeRate, TimeFrequency, RateType, PositionType } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -36,7 +36,7 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PositionTypeRateEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -103,7 +103,7 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
         this.selectedPositionTypes = this.positionTypes.filter(v => v.PositionTypeRate === this.positionTypeRate);
         this.originalPositionTypes = this.selectedPositionTypes;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -143,9 +143,6 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

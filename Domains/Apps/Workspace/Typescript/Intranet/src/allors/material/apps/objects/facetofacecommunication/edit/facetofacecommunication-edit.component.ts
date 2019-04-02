@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -40,7 +40,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<FaceToFaceCommunicationEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -197,7 +197,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
             this.title = 'View Meeting';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -228,10 +228,7 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private addContactRelationship(party: Person): void {

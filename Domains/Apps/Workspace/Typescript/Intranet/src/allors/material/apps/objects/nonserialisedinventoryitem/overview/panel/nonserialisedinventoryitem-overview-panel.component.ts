@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService,  MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { InventoryItem, NonSerialisedInventoryItem } from '../../../../../../domain';
 import { DeleteService, EditService, TableRow, Table, Sorter } from '../../../../..';
@@ -54,7 +54,7 @@ export class NonSerialisedInventoryItemComponent implements OnInit {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService,
     public editService: EditService) {
 

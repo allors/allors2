@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals } from '../../../../../framework';
 import { WorkEffort } from '../../../../../domain';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService, StateService } from '../../../../../material';
 
 interface Row extends TableRow {
@@ -47,7 +47,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
     public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     titleService: Title) {
 
@@ -155,7 +155,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

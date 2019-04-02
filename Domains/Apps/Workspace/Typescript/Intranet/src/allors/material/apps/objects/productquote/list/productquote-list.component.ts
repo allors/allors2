@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../../../material';
 
 import { Quote, QuoteState, Party } from '../../../../../domain';
@@ -46,7 +46,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
     public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     titleService: Title,
   ) {
@@ -163,7 +163,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -41,7 +41,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
   ) {
     this.m = this.metaService.m;
@@ -135,7 +135,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
             this.title = 'View purchase invoice Item';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -156,10 +156,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private onSave() {

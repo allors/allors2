@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PositionType } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -31,7 +31,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PositionTypeEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -76,7 +76,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
             this.title = 'View Position Type';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -96,9 +96,6 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

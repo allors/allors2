@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, SalesOrder, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -45,7 +45,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -153,7 +153,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
           this.update(this.productQuote.Receiver);
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -168,10 +168,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public personAdded(person: Person): void {
@@ -248,6 +245,6 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 }

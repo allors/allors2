@@ -1,22 +1,17 @@
 import { Subject } from 'rxjs';
 
 import { Printable } from '../../../../../domain';
-import { Action, ActionTarget, ErrorService } from '../../../../../angular';
+import { Action, ActionTarget} from '../../../../../angular';
 
 import { PrintConfig } from './print.config';
 
 export class PrintAction implements Action {
 
-  constructor(config: PrintConfig, errorService: ErrorService) {
+  constructor(config: PrintConfig) {
     this.execute = (target: ActionTarget) => {
       const printable = target as Printable;
 
-      let revision: string;
-      try {
-        revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;
-      } catch (exception) {
-        errorService.handle(exception);
-      }
+      const revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;
 
       const url = revision ?
         `${config.url}Print/DownloadWithRevision/${printable.id}?revision=${revision}` :

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, ElectronicAddress } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -31,7 +31,7 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<WebAddressEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -69,7 +69,7 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
         } else {
           this.title = 'View Web Address';
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -88,9 +88,6 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

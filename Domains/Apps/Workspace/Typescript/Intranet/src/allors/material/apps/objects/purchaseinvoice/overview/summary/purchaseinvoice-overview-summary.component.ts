@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService} from '../../../../../../angular';
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -24,8 +24,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
     public metaService: MetaService,
     public navigation: NavigationService,
     public refreshService: RefreshService,
-    public snackBar: MatSnackBar,
-    public errorService: ErrorService) {
+    public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
@@ -97,10 +96,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public approve(): void {
@@ -109,10 +105,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public finish(invoice: PurchaseInvoice): void {

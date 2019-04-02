@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -40,7 +40,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
     public dialogRef: MatDialogRef<SerialisedItemCharacteristicEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -117,7 +117,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
             this.title = 'View Product Characteristic';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -137,9 +137,6 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

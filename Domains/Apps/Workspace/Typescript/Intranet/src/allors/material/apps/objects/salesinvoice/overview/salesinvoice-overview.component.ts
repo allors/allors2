@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Good, SalesInvoice, RepeatingSalesInvoice } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -29,7 +29,7 @@ export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,
@@ -133,7 +133,7 @@ export class SalesInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
           this.repeatingInvoice = undefined;
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

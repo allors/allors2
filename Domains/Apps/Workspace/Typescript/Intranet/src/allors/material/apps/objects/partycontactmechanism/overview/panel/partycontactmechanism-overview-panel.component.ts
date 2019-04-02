@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService,  Action, MetaService } from '../../../../../../angular';
 import { PartyContactMechanism, ContactMechanism } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
@@ -49,7 +49,7 @@ export class PartyContactMechanismOverviewPanelComponent implements OnInit {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService,
     public editService: EditService
   ) {

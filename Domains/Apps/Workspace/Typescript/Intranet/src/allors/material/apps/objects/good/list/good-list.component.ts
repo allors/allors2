@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Filter, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
 
 import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedGood, UnifiedGood } from '../../../../../domain';
@@ -45,7 +45,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -148,7 +148,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent ]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.Good({
@@ -194,7 +194,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             qoh: ((v as NonUnifiedGood).Part && (v as NonUnifiedGood).Part.QuantityOnHand) || (v as UnifiedGood).QuantityOnHand
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

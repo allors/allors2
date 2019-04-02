@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ContextService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService } from '../../../../../../angular';
 import { Payment, PaymentMethod } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -50,7 +50,6 @@ export class PaymentOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    public errorService: ErrorService,
     public methodService: MethodService,
     public deleteService: DeleteService,
     public editService: EditService,

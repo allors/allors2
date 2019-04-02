@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -37,7 +37,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
     public dialogRef: MatDialogRef<WorkEffortPartyAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -124,7 +124,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
         const employments = loaded.collections.Employments as Employment[];
         this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -143,9 +143,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, ContextService, MetaService } from '../../../../../angular';
+import {  ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -28,8 +28,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   constructor(
     private allors: ContextService,
-    public metaService: MetaService,
-    private errorService: ErrorService) {
+    public metaService: MetaService) {
 
     this.m = this.metaService.m;
   }
@@ -58,7 +57,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.telecommunicationsNumber = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

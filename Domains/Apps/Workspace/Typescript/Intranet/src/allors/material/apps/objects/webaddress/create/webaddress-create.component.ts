@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -35,7 +35,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<WebAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -78,7 +78,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -97,9 +97,6 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

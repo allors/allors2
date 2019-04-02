@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
 import { WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, CreateData } from '../../../../..';
@@ -46,7 +46,7 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public overviewService: OverviewService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService) {
 
     this.m = this.metaService.m;

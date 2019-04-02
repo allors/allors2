@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PartyRate, TimeFrequency, RateType, Party } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -34,7 +34,7 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PartyRateEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -98,7 +98,7 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
             this.title = 'View Party Rate';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -122,9 +122,6 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

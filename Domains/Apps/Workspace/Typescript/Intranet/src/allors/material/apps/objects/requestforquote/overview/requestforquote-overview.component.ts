@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { RequestForQuote, Quote } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -27,7 +27,7 @@ export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestro
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,
@@ -98,7 +98,7 @@ export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestro
         this.requestForQuote = loaded.objects.RequestForQuote as RequestForQuote;
         this.quote = loaded.objects.Quote as Quote;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

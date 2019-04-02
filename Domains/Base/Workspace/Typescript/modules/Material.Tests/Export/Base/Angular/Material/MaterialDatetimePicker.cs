@@ -69,6 +69,8 @@ namespace Angular.Material
                     dateElement.SendKeys(value.Value.ToString("d"));
                 }
 
+                dateElement.SendKeys(Keys.Tab);
+
                 this.Driver.WaitForAngular();
 
                 var hourElement = this.Driver.FindElements(this.Selector)[1];
@@ -78,6 +80,8 @@ namespace Angular.Material
                 {
                     hourElement.SendKeys(value.Value.Hour.ToString());
                 }
+
+                hourElement.SendKeys(Keys.Tab);
 
                 this.Driver.WaitForAngular();
 

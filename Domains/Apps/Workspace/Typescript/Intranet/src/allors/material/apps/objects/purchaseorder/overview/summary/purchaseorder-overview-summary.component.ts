@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService, Action } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
 import { PurchaseOrder, PurchaseInvoice} from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -27,8 +27,7 @@ export class PurchaseOrderOverviewSummaryComponent {
     public navigation: NavigationService,
     public printService: PrintService,
     public refreshService: RefreshService,
-    public snackBar: MatSnackBar,
-    public errorService: ErrorService) {
+    public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
@@ -75,10 +74,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public cancel(): void {
@@ -87,10 +83,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public reject(): void {
@@ -99,10 +92,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public hold(): void {
@@ -111,10 +101,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public continue(): void {
@@ -123,10 +110,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public confirm(): void {
@@ -135,10 +119,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public finish(): void {
@@ -147,10 +128,7 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public quickReceive(): void {
@@ -160,9 +138,6 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.panel.toggle();
         this.snackBar.open('inventory created for all items', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

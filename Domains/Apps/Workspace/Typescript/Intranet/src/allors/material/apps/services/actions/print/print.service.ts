@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Action, ErrorService } from '../../../../../angular';
+import { Action} from '../../../../../angular';
 import { PrintAction } from './PrintAction';
 import { PrintConfig } from './print.config';
 
@@ -9,11 +9,11 @@ import { PrintConfig } from './print.config';
 })
 export class PrintService {
 
-  constructor(private config: PrintConfig, private errorService: ErrorService) {
+  constructor(private config: PrintConfig) {
    }
 
   print(): Action {
-    return new PrintAction(this.config, this.errorService);
+    return new PrintAction(this.config);
   }
 
 }

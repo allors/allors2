@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism, Organisation, OrganisationContactRelationship, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -35,7 +35,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PartyContactmechanismEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -144,7 +144,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
             this.title = 'View Party ContactMechanism';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -163,9 +163,6 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

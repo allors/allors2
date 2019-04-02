@@ -3,7 +3,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -36,7 +36,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ProductCategoryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -104,7 +104,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
           }
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -124,9 +124,6 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

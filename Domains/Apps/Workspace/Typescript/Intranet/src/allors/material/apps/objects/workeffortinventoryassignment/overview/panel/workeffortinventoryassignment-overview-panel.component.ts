@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
 import { WorkEffortInventoryAssignment, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
@@ -45,7 +45,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService,
     public editService: EditService,
   ) {

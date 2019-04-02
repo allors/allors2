@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CustomerRelationship, Organisation, Party } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -34,7 +34,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<CustomerRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -94,7 +94,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
             this.title = 'View Customer Relationship';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -113,8 +113,5 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }}

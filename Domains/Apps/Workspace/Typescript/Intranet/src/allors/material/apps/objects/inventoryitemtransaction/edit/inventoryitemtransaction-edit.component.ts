@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
 import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -50,8 +50,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
     public dialogRef: MatDialogRef<InventoryItemTransactionEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public stateService: StateService,
-    private errorService: ErrorService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -152,7 +151,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
           this.inventoryItemTransaction.SerialisedItem = this.serialisedItem;
           this.serialised = true;
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -173,10 +172,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public facilityAdded(facility: Facility): void {

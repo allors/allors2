@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Self, OnDestroy } from '@angular/core';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -24,8 +24,7 @@ export class OrganisationInlineComponent implements OnInit, OnDestroy {
 
   constructor(
     private allors: ContextService,
-    public metaService: MetaService,
-    private errorService: ErrorService) {
+    public metaService: MetaService) {
 
     this.m = this.metaService.m;
   }
@@ -36,7 +35,7 @@ export class OrganisationInlineComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({}))
       .subscribe((loaded) => {
         this.organisation = this.allors.context.create('Organisation') as Organisation;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

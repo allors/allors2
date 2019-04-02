@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType, WorkEffortAssignmentRate, PartyRate } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -39,8 +39,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
-    public refreshService: RefreshService,
-    private errorService: ErrorService) {
+    public refreshService: RefreshService) {
 
     this.m = this.metaService.m;
   }
@@ -132,7 +131,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         if (!isCreate) {
           this.workerSelected(this.selectedWorker);
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -185,7 +184,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         this.partyRate = partyRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
 
         this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.partyRate && this.partyRate.Rate;
-      }, this.errorService.handler);
+      });
   }
 
   public save(): void {
@@ -203,9 +202,6 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

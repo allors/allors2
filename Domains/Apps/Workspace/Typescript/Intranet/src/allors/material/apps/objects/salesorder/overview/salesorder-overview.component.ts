@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -33,7 +33,7 @@ export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,
@@ -142,7 +142,7 @@ export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
         this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
         this.orderItems = this.order.SalesOrderItems;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

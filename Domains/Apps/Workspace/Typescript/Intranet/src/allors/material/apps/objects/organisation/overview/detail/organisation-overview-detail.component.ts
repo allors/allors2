@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, PanelService } from '../../../../../../angular';
+import {  ContextService, MetaService, PanelService } from '../../../../../../angular';
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -38,7 +38,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public location: Location,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService) {
 
@@ -116,7 +116,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -131,10 +131,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.goBack();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goBack(): void {

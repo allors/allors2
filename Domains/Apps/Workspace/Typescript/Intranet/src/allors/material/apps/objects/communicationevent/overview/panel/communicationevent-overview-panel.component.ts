@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, NavigationService, ErrorService } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, NavigationService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
@@ -48,7 +48,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
     public objectService: ObjectService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public errorService: ErrorService,
+
     public deleteService: DeleteService,
     public editService: EditService
   ) {

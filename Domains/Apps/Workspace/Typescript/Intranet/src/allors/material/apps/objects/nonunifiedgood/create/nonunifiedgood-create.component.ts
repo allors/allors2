@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -48,7 +48,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     public navigationService: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -105,7 +105,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
           this.good.AddProductIdentification(this.productNumber);
         }
-      }, this.errorService.handler);
+      });
     }
 
   public ngOnDestroy(): void {
@@ -128,9 +128,6 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

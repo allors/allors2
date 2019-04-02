@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
 
 import { SerialisedItemCharacteristicType, UnitOfMeasure, IUnitOfMeasure } from '../../../../../domain';
@@ -42,7 +42,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     titleService: Title,
   ) {
@@ -143,7 +143,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
             active: v.IsActive,
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

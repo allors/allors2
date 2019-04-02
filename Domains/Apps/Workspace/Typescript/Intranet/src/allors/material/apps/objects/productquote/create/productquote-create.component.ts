@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -43,7 +43,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
     public refreshService: RefreshService,
     public stateService: StateService) {
 
@@ -81,7 +81,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         this.quote.IssueDate = new Date();
         this.quote.ValidFromDate = new Date();
 
-      }, this.errorService.handler);
+      });
   }
 
   get receiverIsPerson(): boolean {
@@ -137,10 +137,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private update(party: Party) {
@@ -185,6 +182,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ContextService, ErrorService, MetaService } from '../../../../../angular';
+import { ContextService, MetaService } from '../../../../../angular';
 import { Facility, FacilityType, Organisation } from '../../../../../domain';
 import { Meta } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
@@ -27,7 +27,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
   internalOrganisation: Organisation;
 
   constructor(private allors: ContextService,
-    private errorService: ErrorService,
+    
     public metaService: MetaService,
     private stateService: StateService) {
 
@@ -58,7 +58,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
         this.facility = this.allors.context.create('Facility') as Facility;
         this.facility.Owner = this.internalOrganisation;
         this.facility.FacilityType = warehouse;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

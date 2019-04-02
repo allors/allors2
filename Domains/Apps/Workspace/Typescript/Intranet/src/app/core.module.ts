@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -8,16 +8,12 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
 import { environment } from '../environments/environment';
 
-import {
-  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule
-} from '../allors/angular';
+import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
+import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, StateService, MethodModule, PrintModule } from '../allors/material';
 
-import {
-  MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule, StateService, MethodModule, PrintModule
-} from '../allors/material';
-
-import { DefaultStateService } from 'src/allors/material/apps/services/state/default.state.service';
+import { DefaultStateService } from '../allors/material/apps/services/state/default.state.service';
 import { ConfigService } from './app.config.service';
+import { ErrorModule } from './error/error.module';
 
 @NgModule({
   imports: [
@@ -25,11 +21,13 @@ import { ConfigService } from './app.config.service';
     environment.production ? BrowserAnimationsModule : NoopAnimationsModule,
     RouterModule,
     HttpClientModule,
+    ErrorModule,
 
     AllorsModule.forRoot({ url: environment.url }),
-    AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
+    AuthenticationModule.forRoot({
+      url: environment.url + environment.authenticationUrl
+    }),
     LoggingModule.forRoot({ console: true }),
-    ErrorModule.forRoot({ log: true, display: true }),
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
@@ -46,18 +44,17 @@ import { ConfigService } from './app.config.service';
     // Actions
     DeleteModule.forRoot(),
     MethodModule.forRoot(),
-    NavigateModule.forRoot(),
+    NavigateModule.forRoot()
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
     { provide: StateService, useClass: DefaultStateService },
-    ConfigService,
-  ],
+    ConfigService
+  ]
 })
 export class CoreModule {
-
   constructor(@Optional() @SkipSelf() core: CoreModule) {
     if (core) {
       throw new Error('Use CoreModule from AppModule');

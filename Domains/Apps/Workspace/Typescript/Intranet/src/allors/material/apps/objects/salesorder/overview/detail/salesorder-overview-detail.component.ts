@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -90,7 +90,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -291,7 +291,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
           this.updateShipToEndCustomer(this.order.ShipToEndCustomer);
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -306,10 +306,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public shipToCustomerAdded(party: Party): void {
@@ -475,7 +472,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateBillToCustomer(party: Party) {
@@ -527,7 +524,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateBillToEndCustomer(party: Party) {
@@ -579,7 +576,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateShipToEndCustomer(party: Party) {
@@ -629,7 +626,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   public shipToCustomerSelected(party: Party) {
