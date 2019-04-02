@@ -66,14 +66,18 @@ namespace Allors.Domain
                 var internalOrganisation = purchaseShipment.Receiver;
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as PurchaseOrderItem;
 
-                var defaultFacility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;
+                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
+                if (facility == null)
+                {
+                    facility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;
+                }
 
                 if (purchaseOrderItem != null && purchaseOrderItem.ExistPart)
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {
                         var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                         this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }

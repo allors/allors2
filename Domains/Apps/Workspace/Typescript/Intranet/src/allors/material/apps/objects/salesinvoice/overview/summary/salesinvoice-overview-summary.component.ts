@@ -61,7 +61,9 @@ export class SalesInvoiceOverviewSummaryComponent {
             SalesTerms: {
               TermType: x,
             },
-            PrintDocument: x,
+            PrintDocument: {
+              Media: x
+            },
             BillToCustomer: x,
             BillToContactPerson: x,
             ShipToCustomer: x,

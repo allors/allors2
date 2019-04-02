@@ -219,51 +219,14 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     this.part.Brand = this.selectedBrand;
     this.part.Model = this.selectedModel;
 
-    if (this.suppliers !== undefined) {
-      const suppliersToDelete = this.suppliers.filter(v => v);
-
-      if (this.selectedSuppliers !== undefined) {
-        this.selectedSuppliers.forEach((supplier: Organisation) => {
-          const index = suppliersToDelete.indexOf(supplier);
-          if (index > -1) {
-            suppliersToDelete.splice(index, 1);
-          }
-
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier));
-          } else {
-            supplierOffering.ThroughDate = null;
-          }
-        });
-      }
-
-      if (suppliersToDelete !== undefined) {
-        suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = new Date();
-          }
-        });
-      }
+    if (this.selectedSuppliers !== undefined) {
+      this.selectedSuppliers.forEach((supplier: Organisation) => {
+        const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
+        supplierOffering.Supplier = supplier;
+        supplierOffering.Part = this.part;
+        supplierOffering.UnitOfMeasure = this.part.UnitOfMeasure;
+        supplierOffering.Currency = this.settings.PreferredCurrency;
+      });
     }
-  }
-
-  private newSupplierOffering(supplier: Organisation): SupplierOffering {
-
-    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
-    supplierOffering.Supplier = supplier;
-    supplierOffering.Part = this.part;
-    return supplierOffering;
   }
 }
