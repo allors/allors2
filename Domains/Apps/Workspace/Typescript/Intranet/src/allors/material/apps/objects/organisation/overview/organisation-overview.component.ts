@@ -26,7 +26,6 @@ export class OrganisationOverviewComponent implements AfterViewInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,

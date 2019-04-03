@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType, WorkEffortAssignmentRate, PartyRate } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -33,6 +33,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
   workEffortRate: WorkEffortAssignmentRate;
   partyRate: PartyRate;
   derivedBillingRate: number;
+  customerRate: PartyRate;
 
   constructor(
     @Self() private allors: ContextService,
@@ -71,17 +72,6 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
                 WorkEffortPartyAssignmentsWhereAssignment: x
               }
             }),
-            pull.WorkEffort({
-              object: this.data.associationId,
-              fetch: {
-                WorkEffortAssignmentRatesWhereWorkEffort: {
-                  include: {
-                    RateType: x,
-                    Frequency: x
-                   }
-                }
-              }
-            }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
           ];
@@ -105,7 +95,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
         const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
 
-        this.workers = Array.from(new Set(workEffortPartyAssignments.map( v => v.Party)).values());
+        this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
 
         if (isCreate) {
           this.title = 'Add Time Entry';
@@ -124,9 +114,6 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
             this.title = 'View Time Entry';
           }
         }
-
-        const workEffortAssignmentRates = loaded.collections.WorkEffortAssignmentRates as WorkEffortAssignmentRate[];
-        this.workEffortRate = workEffortAssignmentRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency);
 
         if (!isCreate) {
           this.workerSelected(this.selectedWorker);
@@ -171,7 +158,31 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
             }
           }
         },
-      })
+      }),
+      pull.WorkEffort({
+        object: this.data.associationId,
+        fetch: {
+          WorkEffortAssignmentRatesWhereWorkEffort: {
+            include: {
+              RateType: x,
+              Frequency: x
+            }
+          }
+        }
+      }),
+      pull.WorkEffort({
+        object: this.data.associationId,
+        fetch: {
+          Customer: {
+            PartyRates: {
+              include: {
+                RateType: x,
+                Frequency: x
+              }
+            }
+          }
+        }
+      }),
     ];
 
     this.allors.context
@@ -181,9 +192,21 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
 
         const partyRates = loaded.collections.PartyRates as PartyRate[];
-        this.partyRate = partyRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
+        this.partyRate = partyRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency
+                                        && v.FromDate <= this.timeEntry.FromDate 
+                                        && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
 
-        this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.partyRate && this.partyRate.Rate;
+        const workEffortAssignmentRates = loaded.collections.WorkEffortAssignmentRates as WorkEffortAssignmentRate[];
+        this.workEffortRate = workEffortAssignmentRates.find(v => v.RateType === this.timeEntry.RateType
+          && v.Frequency === this.timeEntry.BillingFrequency
+          && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
+
+        const customerRates = loaded.collections.PartyRates as PartyRate[];
+        this.customerRate = customerRates.find(v => v.RateType === this.timeEntry.RateType
+          && v.Frequency === this.timeEntry.BillingFrequency
+          && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
+
+        this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.customerRate && this.customerRate.Rate || this.partyRate && this.partyRate.Rate;
       });
   }
 
