@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ac18c87b-683c-4529-9171-d23e73c583d4")]
     #endregion
-    public partial class WorkEffortAssignmentRate : AccessControlledObject 
+    public partial class WorkEffortAssignmentRate : AccessControlledObject, Deletable
     {
         #region inherited properties
 
@@ -111,6 +111,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void Delete() { }
 
         #endregion
     }

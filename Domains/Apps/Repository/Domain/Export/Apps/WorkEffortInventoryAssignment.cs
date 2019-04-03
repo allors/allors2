@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f67e7755-5848-4601-ba70-4d1a39abfe4b")]
     #endregion
-    public partial class WorkEffortInventoryAssignment : AccessControlledObject, Versioned
+    public partial class WorkEffortInventoryAssignment : AccessControlledObject, Versioned, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -62,7 +62,16 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
+
+        #region Allors
+        [Id("E13BAD88-7B44-4B92-89D0-86D182404880")]
+        [AssociationId("2A428B1E-E913-4E7D-ABBE-8D68A0BF8396")]
+        [RoleId("729A391C-60D6-47A2-A66D-9E21B90285A8")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal BillableQuantity { get; set; }
 
         /// <summary>
         /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).
@@ -151,19 +160,17 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void Delete() { }
 
         #endregion
-
 
         #region Allors
 
         [Id("89135E39-E084-4671-A8C9-8188037F58F0")]
 
         #endregion
-
         public void CalculateSellingPrice()
         {
         }
-
     }
 }

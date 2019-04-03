@@ -34,7 +34,7 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public string PartId { get; }
         public string PartName { get; }
-        public int Quantity { get; }
+        public decimal Quantity { get; }
         public string UnitOfMeasure { get; }
         public decimal UnitSellingPrice { get; }
         public decimal SellingPrice { get; }
