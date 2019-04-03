@@ -6,7 +6,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-JL.setOptions({ defaultAjaxUrl: environment.url + 'jsnlog.js' });
+JL.setOptions({ defaultAjaxUrl: environment.url + 'jsnlog.logger' });
 
 if (environment.production) {
   enableProdMode();
