@@ -8,7 +8,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../services/state';
 
@@ -50,6 +50,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
     public dialogRef: MatDialogRef<InventoryItemTransactionEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -172,7 +173,9 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public facilityAdded(facility: Facility): void {

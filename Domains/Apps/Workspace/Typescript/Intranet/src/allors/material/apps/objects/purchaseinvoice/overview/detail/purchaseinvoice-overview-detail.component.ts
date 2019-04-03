@@ -11,6 +11,7 @@ import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -83,7 +84,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private route: ActivatedRoute,
     public stateService: StateService) {
 
@@ -263,7 +264,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public billedFromAdded(organisation: Organisation): void {

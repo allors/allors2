@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { Component, Optional, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RoleField } from '../../../../../angular';

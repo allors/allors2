@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import {  Saved, ContextService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
@@ -55,7 +55,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
     public location: Location,
-    
+    private saveService: SaveService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
@@ -214,6 +214,8 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

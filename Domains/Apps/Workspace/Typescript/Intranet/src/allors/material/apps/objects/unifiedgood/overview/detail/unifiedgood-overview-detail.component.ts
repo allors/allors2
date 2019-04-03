@@ -9,6 +9,7 @@ import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { MatSnackBar } from '@angular/material';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -61,6 +62,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
+    private saveService: SaveService,
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -311,7 +313,9 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private onSave() {

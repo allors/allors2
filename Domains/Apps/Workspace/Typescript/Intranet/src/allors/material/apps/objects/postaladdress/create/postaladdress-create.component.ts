@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './postaladdress-create.component.html',
@@ -36,7 +37,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PostalAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -104,6 +105,8 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

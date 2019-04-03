@@ -11,6 +11,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './salesorder-create.component.html',
@@ -82,7 +83,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SalesOrderCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -172,7 +173,9 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public shipToCustomerAdded(party: Party): void {

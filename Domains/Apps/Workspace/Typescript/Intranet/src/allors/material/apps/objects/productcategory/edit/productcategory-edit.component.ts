@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
@@ -36,7 +36,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ProductCategoryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -124,6 +124,8 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

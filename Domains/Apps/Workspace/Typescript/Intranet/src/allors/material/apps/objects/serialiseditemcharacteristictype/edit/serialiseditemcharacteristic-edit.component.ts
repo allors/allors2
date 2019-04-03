@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { StateService } from '../../../services/state';
@@ -40,7 +40,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
     public dialogRef: MatDialogRef<SerialisedItemCharacteristicEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -137,6 +137,8 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

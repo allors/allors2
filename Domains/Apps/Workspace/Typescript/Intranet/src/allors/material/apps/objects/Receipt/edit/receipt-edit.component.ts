@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './receipt-edit.component.html',
@@ -47,7 +48,7 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ReceiptEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -194,7 +195,9 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public goodSelected(product: Product): void {

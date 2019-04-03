@@ -12,6 +12,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SaveService } from 'src/allors/material';
 
 
 @Component({
@@ -48,7 +49,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
-    
+    private saveService: SaveService,
     private route: ActivatedRoute,
     public stateService: StateService) {
 
@@ -173,6 +174,8 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

@@ -9,6 +9,7 @@ import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './webaddress-edit.component.html',
@@ -24,14 +25,13 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: IObject,
     public dialogRef: MatDialogRef<WebAddressEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -88,6 +88,8 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

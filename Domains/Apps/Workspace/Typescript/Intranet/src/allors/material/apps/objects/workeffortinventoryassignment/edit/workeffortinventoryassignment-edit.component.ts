@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './workeffortinventoryassignment-edit.component.html',
@@ -36,6 +37,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     public dialogRef: MatDialogRef<WorkEffortInventoryAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    private saveService: SaveService,
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -127,7 +129,9 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public save(): void {
@@ -140,7 +144,9 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public inventoryItemSelected(inventoryItem: InventoryItem): void {

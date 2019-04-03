@@ -9,6 +9,7 @@ import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -80,7 +81,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -252,7 +253,9 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public shipToCustomerAdded(party: Party): void {

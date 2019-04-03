@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import {  Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
@@ -57,6 +57,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     public navigationService: NavigationService,
     public location: Location,
     private route: ActivatedRoute,
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -169,6 +170,8 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

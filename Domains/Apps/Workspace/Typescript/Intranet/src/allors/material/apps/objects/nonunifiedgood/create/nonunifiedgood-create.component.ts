@@ -9,7 +9,7 @@ import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership,
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
-import { StateService } from '../../../..';
+import { StateService, SaveService } from '../../../..';
 import { CreateData } from 'src/allors/material/base/services/object';
 import { Good } from 'src/allors/domain/generated';
 
@@ -48,7 +48,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     public navigationService: NavigationService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -128,6 +128,8 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

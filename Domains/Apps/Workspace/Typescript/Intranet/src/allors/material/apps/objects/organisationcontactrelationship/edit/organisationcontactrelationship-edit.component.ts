@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './organisationcontactrelationship-edit.component.html',
@@ -38,7 +39,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -144,6 +145,8 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

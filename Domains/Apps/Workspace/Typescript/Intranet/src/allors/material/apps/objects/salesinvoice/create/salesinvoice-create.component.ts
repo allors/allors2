@@ -11,6 +11,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './salesinvoice-create.component.html',
@@ -79,7 +80,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<SalesInvoiceCreateComponent>,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public refreshService: RefreshService,
     public stateService: StateService) {
 
@@ -157,7 +158,9 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public shipToCustomerAdded(party: Party): void {

@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism, Organisation, OrganisationContactRelationship, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PartyContactmechanismEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -163,6 +163,8 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

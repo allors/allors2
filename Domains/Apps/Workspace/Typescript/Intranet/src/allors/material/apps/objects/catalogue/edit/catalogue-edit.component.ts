@@ -11,6 +11,7 @@ import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material/base/services/save';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
@@ -40,7 +41,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<CatalogueEditComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -123,6 +124,8 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

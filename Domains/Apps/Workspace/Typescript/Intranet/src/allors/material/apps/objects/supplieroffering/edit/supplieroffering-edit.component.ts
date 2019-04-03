@@ -11,6 +11,7 @@ import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -149,6 +150,8 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

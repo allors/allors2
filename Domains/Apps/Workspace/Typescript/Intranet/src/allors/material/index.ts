@@ -31,6 +31,7 @@ export * from './base/services/actions';
 export * from './base/services/dialog';
 export * from './base/services/object';
 export * from './base/services/logging';
+export * from './base/services/save';
 export * from './base/services/sidenav';
 
 // Base Misc

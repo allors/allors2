@@ -10,6 +10,7 @@ import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './workeffortfixedassetassignment-edit.component.html',
@@ -36,7 +37,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
     public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -145,6 +146,8 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

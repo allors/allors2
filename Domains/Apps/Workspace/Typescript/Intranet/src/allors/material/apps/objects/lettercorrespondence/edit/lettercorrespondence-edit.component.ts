@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
@@ -43,6 +43,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<LetterCorrespondenceEditComponent>,
     public refreshService: RefreshService,
+    private saveService: SaveService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private stateService: StateService) {
@@ -354,7 +355,8 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors.context.save().subscribe(
+    this.allors.context.save()
+    .subscribe(
       () => {
         const data: IObject = {
           id: this.communicationEvent.id,
@@ -362,6 +364,8 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }
