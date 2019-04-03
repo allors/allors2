@@ -1,7 +1,7 @@
 ﻿namespace Allors.Excel
 {
     using System;
-    using Nito.AsyncEx;
+    using System.Threading.Tasks;
 
     public partial class Commands
     {
@@ -10,21 +10,10 @@
             e.Handle();
         }
 
-        public void PeopleNew()
+        public async Task PeopleNew()
         {
-            try
-            {
-                AsyncContext.Run(
-                    async () =>
-                    {
-                        var sheet = this.Sheets.CreatePeople();
-                        await sheet.Refresh();
-                    });
-            }
-            catch (Exception e)
-            {
-                e.Handle();
-            }
+            var sheet = this.Sheets.CreatePeople();
+            await sheet.Refresh();
         }
     }
 }

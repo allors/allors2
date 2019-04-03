@@ -22,8 +22,8 @@ namespace Allors.Server.Controllers
 {
     using System;
 
-    using Allors.Protocol.Data;
     using Allors.Domain;
+    using Allors.Protocol.Data;
     using Allors.Protocol.Remote.Pull;
     using Allors.Services;
 
