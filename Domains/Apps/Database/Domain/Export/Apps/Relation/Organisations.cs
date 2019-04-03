@@ -76,6 +76,10 @@ namespace Allors.Domain
             string quoteNumberPrefix,
             string productNumberPrefix,
             string workEffortPrefix,
+            string creditNoteNumberPrefix,
+            bool isImmediatelyPicked,
+            bool IsAutomaticallyShipped,
+            bool UseCreditNoteSequence,
             int? requestCounterValue,
             int? quoteCounterValue,
             int? orderCounterValue,
@@ -210,12 +214,14 @@ namespace Allors.Domain
                 .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
                 .WithSalesOrderNumberPrefix(salesOrderNumberPrefix)
                 .WithDefaultCollectionMethod(paymentMethod)
+                .WithCreditNoteNumberPrefix(creditNoteNumberPrefix)
                 .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
                 .WithDefaultCarrier(new Carriers(session).Fedex)
                 .WithBillingProcess(billingProcess)
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithIsImmediatelyPicked(true)
-                .WithIsAutomaticallyShipped(true)
+                .WithIsImmediatelyPicked(isImmediatelyPicked)
+                .WithIsAutomaticallyShipped(IsAutomaticallyShipped)
+                .WithUseCreditNoteSequence(UseCreditNoteSequence)
                 .WithInternalOrganisation(organisation)
                 .Build();
 
