@@ -8,6 +8,7 @@ import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './timeentry-edit.component.html',
@@ -39,7 +40,9 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
-    public refreshService: RefreshService) {
+    public refreshService: RefreshService,
+    private saveService: SaveService,
+    ) {
 
     this.m = this.metaService.m;
   }
@@ -202,6 +205,8 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

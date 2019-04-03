@@ -11,6 +11,7 @@ import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './purchaseorder-create.component.html',
@@ -55,7 +56,7 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PurchaseOrderCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -132,7 +133,9 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public supplierAdded(organisation: Organisation): void {

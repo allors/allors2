@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import {  Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -39,7 +40,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -236,6 +237,8 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      });
+      },
+        this.saveService.errorHandler
+      );
   }
 }

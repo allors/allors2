@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
@@ -55,7 +55,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<NonUnifiedPartCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -192,7 +192,9 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public update(): void {
@@ -205,7 +207,9 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private onSave() {

@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { IObject, ObjectType } from "../../../framework";
+import { IObject, ObjectType } from '../../../framework';
 
 @Injectable()
 export class NavigationService {
@@ -15,9 +15,5 @@ export class NavigationService {
   overview(obj: IObject) {
     const url = obj.objectType.overview.replace(`:id`, obj.id);
     this.router.navigate([url]);
-  }
-
-  back(): any {
-    throw new Error("Remove this method");
   }
 }

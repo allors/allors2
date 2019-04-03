@@ -11,6 +11,7 @@ import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
 import { increaseElementDepthCount } from '@angular/core/src/render3/state';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './workeffortpurchaseorderitemassignment-edit.component.html',
@@ -34,7 +35,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
     public dialogRef: MatDialogRef<WorkEffortPurchaseOrderItemAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -119,7 +120,9 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public save(): void {
@@ -132,6 +135,8 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

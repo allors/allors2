@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 
@@ -38,7 +38,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public stateService: StateService,
     public refreshService: RefreshService) {
 
@@ -149,7 +149,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private refreshSerialisedItems(product: Product): void {

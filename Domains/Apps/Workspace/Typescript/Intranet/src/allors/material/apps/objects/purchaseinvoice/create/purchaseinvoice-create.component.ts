@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { CreateData } from 'src/allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './purchaseinvoice-create.component.html',
@@ -80,7 +81,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PurchaseInvoiceCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -165,7 +166,9 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public billedFromAdded(organisation: Organisation): void {

@@ -8,6 +8,7 @@ import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -52,7 +53,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -222,7 +223,9 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public setDirty(): void {

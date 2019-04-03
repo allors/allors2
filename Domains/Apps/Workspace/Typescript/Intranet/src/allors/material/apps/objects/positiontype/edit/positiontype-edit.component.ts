@@ -9,6 +9,7 @@ import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { StateService } from '../../../services/state';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './positiontype-edit.component.html',
@@ -31,7 +32,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PositionTypeEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -96,6 +97,8 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

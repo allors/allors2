@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Employment, Party, Organisation, Person, InternalOrganisation } from '../../../../../domain';
 import { PullRequest, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<EmploymentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -143,6 +143,8 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

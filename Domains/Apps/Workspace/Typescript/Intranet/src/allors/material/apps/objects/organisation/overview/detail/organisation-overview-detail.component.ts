@@ -8,6 +8,7 @@ import {  ContextService, MetaService, PanelService } from '../../../../../../an
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
+import { SaveService } from '../../../../../../material';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
@@ -37,8 +38,8 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() private allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
+    public saveService: SaveService,
     public location: Location,
-    
     private route: ActivatedRoute,
     private stateService: StateService) {
 
@@ -130,11 +131,10 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe(() => {
-        this.goBack();
-      });
-  }
-
-  public goBack(): void {
-    window.history.back();
+        window.history.back();
+      },
+        this.saveService.errorHandler
+      );
   }
 }
+5

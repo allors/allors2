@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material';
+import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -30,7 +30,9 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SalesTermEditComponent>,
     public metaService: MetaService,
-    public refreshService: RefreshService) {
+    public refreshService: RefreshService,
+    private saveService: SaveService,
+    ) {
 
     this.m = this.metaService.m;
   }
@@ -108,6 +110,8 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

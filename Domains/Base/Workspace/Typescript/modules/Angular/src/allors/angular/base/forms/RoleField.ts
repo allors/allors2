@@ -37,6 +37,9 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   @Input()
   public focus: boolean;
 
+  @Input()
+  public emptyStringIsNull = true;
+
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
   private id = 0;
@@ -57,6 +60,11 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
 
   set model(value: any) {
     if (this.ExistObject) {
+
+      if (this.emptyStringIsNull && value === '') {
+        value = null;
+      }
+
       this.object.set(this.roleType.name, value);
     }
   }

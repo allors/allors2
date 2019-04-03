@@ -10,6 +10,7 @@ import { CreateData } from '../../../../../material/base/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -42,7 +43,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public stateService: StateService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar
@@ -167,7 +168,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private refreshSerialisedItems(product: Product): void {

@@ -13,10 +13,14 @@ export class AllorsErrorHandler implements ErrorHandler {
 
     JL().fatalException('Uncaught Exception', error);
 
-    const router = this.injector.get<Router>(Router as Type<Router>);
-    const errorService = this.injector.get<ErrorService>(ErrorService as Type<ErrorService>);
+    alert('🛑 An error occurred and was logged, the application will restart.');
+    location.href = '/';
 
-    errorService.error = error;
-    router.navigate(['/error']);
+
+    // const router = this.injector.get<Router>(Router as Type<Router>);
+    // const errorService = this.injector.get<ErrorService>(ErrorService as Type<ErrorService>);
+
+    // errorService.error = error;
+    // router.navigate(['/error']);
   }
 }

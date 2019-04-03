@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './telecommunicationsnumber-create.component.html',
@@ -36,7 +37,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
     public dialogRef: MatDialogRef<TelecommunicationsNumberCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -102,6 +103,8 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

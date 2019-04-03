@@ -10,6 +10,7 @@ import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './salesinvoiceitem-edit.component.html',
@@ -47,7 +48,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SalesInvoiceItemEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public stateService: StateService,
   ) {
     this.m = this.metaService.m;
@@ -188,7 +189,9 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public goodSelected(object: any) {

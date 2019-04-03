@@ -9,6 +9,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './postaladdress-edit.component.html',
@@ -33,7 +34,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PostalAddressEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -96,6 +97,8 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

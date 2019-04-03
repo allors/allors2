@@ -9,6 +9,7 @@ import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -40,7 +41,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public stateService: StateService,
-    
+    private saveService: SaveService,
     private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
@@ -184,7 +185,9 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public update(): void {
@@ -197,7 +200,9 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private onSave() {

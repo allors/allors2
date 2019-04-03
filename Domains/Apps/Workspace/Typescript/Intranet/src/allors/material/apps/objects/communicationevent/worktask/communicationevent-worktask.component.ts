@@ -12,6 +12,7 @@ import { StateService } from '../../../services/state';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',
@@ -38,7 +39,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     private route: ActivatedRoute,
     public refreshService: RefreshService,
     private stateService: StateService,
@@ -125,7 +126,9 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.goBack();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public goBack(): void {

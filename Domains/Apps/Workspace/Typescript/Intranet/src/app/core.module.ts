@@ -9,7 +9,7 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { environment } from '../environments/environment';
 
 import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
-import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, StateService, MethodModule, PrintModule } from '../allors/material';
+import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, StateService, MethodModule, PrintModule, SaveModule } from '../allors/material';
 
 import { DefaultStateService } from '../allors/material/apps/services/state/default.state.service';
 import { ConfigService } from './app.config.service';
@@ -21,6 +21,7 @@ import { ErrorModule } from './error/error.module';
     environment.production ? BrowserAnimationsModule : NoopAnimationsModule,
     RouterModule,
     HttpClientModule,
+    SaveModule,
     ErrorModule,
 
     AllorsModule.forRoot({ url: environment.url }),

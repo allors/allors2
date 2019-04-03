@@ -10,6 +10,7 @@ import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './webaddress-create.component.html',
@@ -35,7 +36,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<WebAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private saveService: SaveService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -97,6 +98,8 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }

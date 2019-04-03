@@ -12,6 +12,7 @@ import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { menu } from './main.menu';
+import { environment } from '../../environments/environment';
 
 @Component({
   styleUrls: ['main.component.scss'],
@@ -23,6 +24,8 @@ export class MainComponent implements OnInit, OnDestroy {
   internalOriganisations: Organisation[];
 
   sideMenuItems: SideMenuItem[] = [];
+
+  isProduction = environment.production;
 
   private subscription: Subscription;
   private toggleSubscription;

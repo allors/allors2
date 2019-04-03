@@ -12,6 +12,7 @@ import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 
 import { CreateData } from '../../../../../material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './productquote-create.component.html',
@@ -43,7 +44,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public refreshService: RefreshService,
     public stateService: StateService) {
 
@@ -137,7 +138,9 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   private update(party: Party) {

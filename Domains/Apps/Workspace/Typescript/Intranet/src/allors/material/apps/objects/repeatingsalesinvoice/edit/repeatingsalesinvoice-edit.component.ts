@@ -9,6 +9,7 @@ import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './repeatingsalesinvoice-edit.component.html',
@@ -32,7 +33,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RepeatingSalesInvoiceEditComponent>,
     public metaService: MetaService,
-    
+    private saveService: SaveService,
     public stateService: StateService,
     public refreshService: RefreshService) {
 
@@ -113,5 +114,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }}

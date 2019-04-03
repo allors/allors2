@@ -11,6 +11,7 @@ import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateData } from '../../../../../../allors/material/base/services/object';
+import { SaveService } from 'src/allors/material';
 
 @Component({
   templateUrl: './serialiseditem-create.component.html',
@@ -45,7 +46,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SerialisedItemCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    
+    private saveService: SaveService,
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -144,6 +145,8 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 }
