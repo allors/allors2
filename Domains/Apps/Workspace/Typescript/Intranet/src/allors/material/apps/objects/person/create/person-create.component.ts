@@ -56,7 +56,6 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
-    
     private route: ActivatedRoute,
     private stateService: StateService) {
 
