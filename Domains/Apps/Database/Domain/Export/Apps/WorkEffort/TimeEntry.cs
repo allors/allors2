@@ -95,6 +95,17 @@ namespace Allors.Domain
                     }
                 }
 
+                if (billingRate == 0 && this.ExistWorkEffort && this.WorkEffort.ExistCustomer)
+                {
+                    var partyRate = this.WorkEffort.Customer.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                                                                               && v.Frequency.Equals(this.BillingFrequency)
+                                                                               && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    if (partyRate != null)
+                    {
+                        billingRate = partyRate.Rate;
+                    }
+                }
+
                 if (billingRate == 0 && this.ExistWorker && this.ExistRateType)
                 {
                     var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
