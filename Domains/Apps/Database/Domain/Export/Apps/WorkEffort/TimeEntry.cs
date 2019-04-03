@@ -148,8 +148,18 @@ namespace Allors.Domain
 
             if (this.ExistBillingRate && this.ExistBillingFrequency)
             {
-                var timeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
-                this.BillingAmount = Math.Round((decimal)(this.BillingRate * timeInTimeEntryRateFrequency), 2);
+                var billableMinutes = 0M;
+                if (this.BillableAmountOfTime.HasValue)
+                {
+                    billableMinutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.BillableAmountOfTime, frequencies.Minute);
+                }
+                else
+                {
+                    billableMinutes = minutes;
+                }
+
+                var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(billableMinutes, this.BillingFrequency), 2);
+                this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
             }
         }
     }

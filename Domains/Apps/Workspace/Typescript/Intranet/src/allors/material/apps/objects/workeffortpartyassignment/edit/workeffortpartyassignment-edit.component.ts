@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';

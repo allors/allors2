@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';

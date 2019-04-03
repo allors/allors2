@@ -3,8 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder } from '../../../../../domain';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder, PurchaseOrderItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
