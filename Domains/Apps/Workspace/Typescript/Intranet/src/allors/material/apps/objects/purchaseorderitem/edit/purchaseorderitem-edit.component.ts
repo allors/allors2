@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -39,7 +39,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -151,7 +151,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
             this.title = 'View Purchase Order Item';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public partSelected(part: Part): void {
@@ -176,10 +176,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public update(): void {
@@ -190,10 +187,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private updateFromPart(part: Part) {
@@ -220,6 +214,6 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
           && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
           && v.Supplier === this.order.TakenViaSupplier);
 
-      }, this.errorService.handler);
+      });
   }
 }

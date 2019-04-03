@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService, StateService } from '../../../..';
 
 import { Catalogue, CatScope } from '../../../../../domain';
@@ -42,7 +42,6 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
     private stateService: StateService,
     titleService: Title) {
 
@@ -145,7 +144,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
             scope: v.CatScope.Name
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

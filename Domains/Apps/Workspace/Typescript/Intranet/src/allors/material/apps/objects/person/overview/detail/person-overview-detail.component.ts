@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, Person } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -34,7 +34,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -130,7 +130,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
-      }, this.errorService.handler);
+      });
 
   }
 
@@ -145,9 +145,6 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

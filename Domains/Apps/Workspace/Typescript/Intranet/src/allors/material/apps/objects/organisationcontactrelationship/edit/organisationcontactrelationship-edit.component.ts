@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Party, Organisation, Person, OrganisationContactRelationship, OrganisationContactKind } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -38,7 +38,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -121,7 +121,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
             this.title = 'View Organisation Contact';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public contactAdded(contact: Person): void {
@@ -144,9 +144,6 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

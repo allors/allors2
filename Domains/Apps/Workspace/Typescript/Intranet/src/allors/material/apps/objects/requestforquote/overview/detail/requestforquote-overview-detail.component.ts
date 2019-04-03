@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -40,7 +40,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -153,7 +153,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
           this.previousOriginator = this.request.Originator;
           this.update(this.request.Originator);
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -167,10 +167,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   get originatorIsPerson(): boolean {
@@ -249,6 +246,6 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 }

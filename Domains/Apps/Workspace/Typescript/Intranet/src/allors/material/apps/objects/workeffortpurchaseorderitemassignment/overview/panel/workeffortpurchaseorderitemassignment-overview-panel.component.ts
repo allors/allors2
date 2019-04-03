@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
 import { WorkEffortPurchaseOrderItemAssignment } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
@@ -45,7 +45,7 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent impleme
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService,
     public editService: EditService,
   ) {

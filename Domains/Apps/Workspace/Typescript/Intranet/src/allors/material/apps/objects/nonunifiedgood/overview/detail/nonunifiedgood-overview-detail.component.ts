@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -52,7 +52,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -194,7 +194,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
 
         this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
 
-      }, this.errorService.handler);
+      });
 
   }
 
@@ -222,10 +222,7 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public setDirty(): void {

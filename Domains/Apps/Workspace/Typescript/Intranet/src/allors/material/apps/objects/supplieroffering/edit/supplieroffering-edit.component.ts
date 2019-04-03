@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -40,7 +40,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -130,7 +130,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
             this.title = 'View supplier offering';
           }
         }
-      }, this.errorService.handler);
+      });
     }
 
   public ngOnDestroy(): void {
@@ -149,9 +149,6 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

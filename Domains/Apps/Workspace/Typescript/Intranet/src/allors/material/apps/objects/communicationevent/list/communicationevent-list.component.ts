@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, DeleteService, EditService } from '../../../..';
 
 import { CommunicationEvent } from '../../../../../domain';
@@ -46,7 +46,6 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     public editService: EditService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -137,7 +136,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

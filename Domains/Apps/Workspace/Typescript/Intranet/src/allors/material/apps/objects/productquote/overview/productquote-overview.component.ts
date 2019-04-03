@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { ProductQuote, Quote, Good, SalesOrder } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -28,7 +28,7 @@ export class ProductQuoteOverviewComponent implements AfterViewInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService,
     public injector: Injector,
@@ -101,7 +101,7 @@ export class ProductQuoteOverviewComponent implements AfterViewInit, OnDestroy {
         this.goods = loaded.collections.Goods as Good[];
         this.salesOrder = loaded.objects.SalesOrder as SalesOrder;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

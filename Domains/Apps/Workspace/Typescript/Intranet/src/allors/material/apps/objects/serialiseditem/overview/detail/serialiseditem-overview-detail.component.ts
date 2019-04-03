@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -40,7 +40,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public stateService: StateService,
-    private errorService: ErrorService,
+    
     private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
@@ -167,7 +167,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
         this.currentFacility = serialisedInventoryItems.find(v => v.Quantity === 1).Facility;
 
-      }, this.errorService.handler);
+      });
 
   }
 
@@ -184,10 +184,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public update(): void {
@@ -200,10 +197,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private onSave() {

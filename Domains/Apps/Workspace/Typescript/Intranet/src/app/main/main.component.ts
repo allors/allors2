@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav, MatExpansionPanelDescription } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
@@ -19,7 +19,6 @@ import { menu } from './main.menu';
   providers: [ContextService]
 })
 export class MainComponent implements OnInit, OnDestroy {
-
   selectedInternalOrganisation: Organisation;
   internalOriganisations: Organisation[];
 
@@ -34,33 +33,41 @@ export class MainComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+
     public metaService: MetaService,
     private stateService: StateService,
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService
-  ) {
-  }
+  ) { }
 
   public ngOnInit(): void {
-
-    menu.forEach((menuItem) => {
-      const objectType = this.metaService.m.metaObjectById[menuItem.id] as ObjectType;
+    menu.forEach(menuItem => {
+      const objectType = this.metaService.m.metaObjectById[
+        menuItem.id
+      ] as ObjectType;
 
       const sideMenuItem: SideMenuItem = {
-        icon: menuItem.icon || objectType && objectType.icon,
-        title: menuItem.title || objectType && objectType.displayName,
-        link: menuItem.link || objectType && objectType.list,
+        icon: menuItem.icon || (objectType && objectType.icon),
+        title: menuItem.title || (objectType && objectType.displayName),
+        link: menuItem.link || (objectType && objectType.list),
         id: objectType && objectType.id,
-        children: menuItem.children && menuItem.children.map((childMenuItem) => {
-
-          const childObjectType = this.metaService.m.metaObjectById[childMenuItem.id] as ObjectType;
-          return {
-            icon: childMenuItem.icon || childObjectType && childObjectType.icon,
-            title: childMenuItem.title || childObjectType && childObjectType.displayName,
-            link: childMenuItem.link || childObjectType && childObjectType.list,
-            id: childObjectType && childObjectType.id,
-          };
-        }),
+        children:
+          menuItem.children &&
+          menuItem.children.map(childMenuItem => {
+            const childObjectType = this.metaService.m.metaObjectById[
+              childMenuItem.id
+            ] as ObjectType;
+            return {
+              icon:
+                childMenuItem.icon || (childObjectType && childObjectType.icon),
+              title:
+                childMenuItem.title ||
+                (childObjectType && childObjectType.displayName),
+              link:
+                childMenuItem.link || (childObjectType && childObjectType.list),
+              id: childObjectType && childObjectType.id
+            };
+          })
       };
 
       this.sideMenuItems.push(sideMenuItem);
@@ -68,9 +75,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.router.onSameUrlNavigation = 'reload';
     this.router.events
-      .pipe(
-        filter((v) => v instanceof NavigationEnd)
-      ).subscribe(() => {
+      .pipe(filter(v => v instanceof NavigationEnd))
+      .subscribe(() => {
         if (this.sidenav) {
           this.sidenav.close();
         }
@@ -92,25 +98,28 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.subscription = this.stateService.internalOrganisationId$
       .pipe(
-        switchMap((internalOrganisationId) => {
-
+        switchMap(internalOrganisationId => {
           const pulls = [
             pull.InternalOrganisation({
-              object: internalOrganisationId,
+              object: internalOrganisationId
             }),
             pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
+              predicate: new Equals({
+                propertyType: m.Organisation.IsInternalOrganisation,
+                value: true
+              })
             })
           ];
 
-          return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
         this.allors.context.reset();
-        this.internalOriganisations = loaded.collections.InternalOrganisations as Organisation[];
-        this.selectedInternalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.internalOriganisations = loaded.collections
+          .InternalOrganisations as Organisation[];
+        this.selectedInternalOrganisation = loaded.objects
+          .InternalOrganisation as Organisation;
       });
   }
 

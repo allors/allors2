@@ -116,12 +116,19 @@ namespace Tests
             this.SetupUser(allors, "firstemployee@allors.com", "second", "allors employee", "letmein");
             this.SetupUser(dipu, "firstemployee@allors.com", "first", "dipu employee", "letmein");
 
-            new FacilityBuilder(this.Session)
+            var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithOwner(allors)
                 .Build();
 
+            var store = new StoreBuilder(this.Session).WithName("store")
+                .WithInternalOrganisation(allors)
+                .WithDefaultFacility(facility)
+                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .Build();
+            
             var manufacturer = new OrganisationBuilder(this.Session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
 
             var productType = new ProductTypeBuilder(this.Session)

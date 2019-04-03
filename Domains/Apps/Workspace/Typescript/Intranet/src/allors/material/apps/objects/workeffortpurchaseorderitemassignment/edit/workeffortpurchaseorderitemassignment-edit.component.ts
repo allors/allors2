@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -34,7 +34,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
     public dialogRef: MatDialogRef<WorkEffortPurchaseOrderItemAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -102,7 +102,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
             this.title = 'View purchase order item assignment';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -119,10 +119,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public save(): void {
@@ -135,9 +132,6 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

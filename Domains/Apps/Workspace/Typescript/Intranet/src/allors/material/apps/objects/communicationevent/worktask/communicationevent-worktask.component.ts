@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Loaded, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask, Organisation } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -38,7 +38,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     public refreshService: RefreshService,
     private stateService: StateService,
@@ -105,7 +105,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         this.workEffortPurposes = loaded.collections.WorkEffortPurposes as WorkEffortPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.employees = internalOrganisation.ActiveEmployees;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -125,10 +125,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.goBack();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goBack(): void {

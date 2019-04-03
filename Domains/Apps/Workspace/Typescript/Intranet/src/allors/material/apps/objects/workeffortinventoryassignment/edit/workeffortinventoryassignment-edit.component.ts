@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -36,7 +36,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     public dialogRef: MatDialogRef<WorkEffortInventoryAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -111,7 +111,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
             this.title = 'View work effort inventory assignment';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -128,10 +128,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public save(): void {
@@ -144,10 +141,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public inventoryItemSelected(inventoryItem: InventoryItem): void {

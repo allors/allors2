@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, ContextService, MetaService } from '../../../../../angular';
+import {  ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -29,8 +29,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   constructor(
     private allors: ContextService,
-    public metaService: MetaService,
-    private errorService: ErrorService) {
+    public metaService: MetaService) {
 
     this.m = this.metaService.m;
   }
@@ -60,7 +59,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
         this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -45,7 +45,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SerialisedItemCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -117,7 +117,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         if (this.part) {
           this.serialisedItem.Name = this.part.Name;
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -144,9 +144,6 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -30,8 +30,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<SalesTermEditComponent>,
     public metaService: MetaService,
-    public refreshService: RefreshService,
-    private errorService: ErrorService) {
+    public refreshService: RefreshService) {
 
     this.m = this.metaService.m;
   }
@@ -90,7 +89,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
           this.container.add(associationRoleType.name, this.object);
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -109,9 +108,6 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

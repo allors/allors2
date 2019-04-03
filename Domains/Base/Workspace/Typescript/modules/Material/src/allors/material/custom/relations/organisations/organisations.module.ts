@@ -7,7 +7,6 @@ import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, M
 import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialSideNavToggleModule, AllorsMaterialTableModule, AllorsMaterialFilterModule } from '../../../../material';
 
 import { OrganisationsComponent } from './organisations.component';
-import { AllorsMaterialErrorDialogModule } from 'src/allors/material/base/components/errordialog';
 export { OrganisationsComponent } from './organisations.component';
 
 @NgModule({

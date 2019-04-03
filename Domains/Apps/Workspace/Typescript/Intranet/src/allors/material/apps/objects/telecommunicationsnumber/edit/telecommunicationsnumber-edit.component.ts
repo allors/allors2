@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -32,7 +32,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
     public dialogRef: MatDialogRef<TelecommunicationsNumberEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -72,7 +72,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
         } else {
           this.title = 'View Phone Number';
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -91,9 +91,6 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

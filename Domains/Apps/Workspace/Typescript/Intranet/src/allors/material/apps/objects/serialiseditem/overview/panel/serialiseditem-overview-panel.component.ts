@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
-import { NavigationService, Action, PanelService, RefreshService, ErrorService, MetaService, ActionTarget } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService,  MetaService, ActionTarget } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { SerialisedItem } from '../../../../../../domain';
 import { DeleteService, TableRow, Table } from '../../../../..';
@@ -47,7 +47,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
-    public errorService: ErrorService,
+    
     public deleteService: DeleteService,
   ) {
 

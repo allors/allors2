@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, RefreshService, Invoked, ErrorService, Action } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, RefreshService, Invoked,  Action } from '../../../../../../angular';
 import { WorkTask } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -26,8 +26,7 @@ export class WorkTaskOverviewSummaryComponent {
     public navigation: NavigationService,
     public refreshService: RefreshService,
     public printService: PrintService,
-    public snackBar: MatSnackBar,
-    public errorService: ErrorService) {
+    public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
@@ -78,10 +77,7 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public reopen(): void {
@@ -90,10 +86,7 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public complete(): void {
@@ -102,10 +95,7 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public invoice(): void {
@@ -114,9 +104,6 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

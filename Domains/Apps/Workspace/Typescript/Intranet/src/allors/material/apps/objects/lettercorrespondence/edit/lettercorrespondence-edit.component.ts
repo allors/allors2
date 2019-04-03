@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -46,7 +46,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -224,7 +224,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
             this.title = 'View Letter';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -307,7 +307,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.fromPostalAddresses = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.PostalAddress).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public toPartySelected(party: Party) {
@@ -340,7 +340,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.toPostalAddresses = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.PostalAddress).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
   public addressAdded(partyContactMechanism: PartyContactMechanism): void {
 
@@ -361,10 +361,6 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-      (error: Error) => {
-        this.errorService.handle(error);
-      }
-    );
+      });
   }
 }

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -55,7 +55,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<NonUnifiedPartCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -136,7 +136,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
           this.part.AddProductIdentification(this.partNumber);
         }
-      }, this.errorService.handler);
+      });
   }
 
   public brandAdded(brand: Brand): void {
@@ -170,7 +170,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe(() => {
         this.models = this.selectedBrand.Models ? this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)) : [];
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -192,10 +192,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public update(): void {
@@ -208,10 +205,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private onSave() {

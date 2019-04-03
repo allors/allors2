@@ -5,7 +5,7 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like } from '../../../../framework';
-import { ContextService, NavigationService, AllorsFilterService, ErrorService, RefreshService, Action, MetaService } from '../../../../angular';
+import { ContextService, NavigationService, AllorsFilterService, RefreshService, Action, MetaService } from '../../../../angular';
 import { Table, TableRow, Sorter } from '../../../../material';
 
 import { DeleteService, OverviewService } from '../../../../material';
@@ -39,7 +39,6 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public overviewService: OverviewService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
     private titleService: Title) {
 
     this.titleService.setTitle(this.title);
@@ -119,8 +118,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
             owner: v.Owner && v.Owner.UserName
           };
         });
-
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

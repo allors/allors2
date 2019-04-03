@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, VatRate, ProductIdentificationType, ProductNumber, Facility, InventoryItemKind, SupplierOffering, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -61,7 +61,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -244,7 +244,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
 
-      }, this.errorService.handler);
+      });
 
   }
 
@@ -289,7 +289,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe(() => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      }, this.errorService.handler);
+      });
   }
 
   public save(): void {
@@ -299,10 +299,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public update(): void {
@@ -315,10 +312,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private onSave() {

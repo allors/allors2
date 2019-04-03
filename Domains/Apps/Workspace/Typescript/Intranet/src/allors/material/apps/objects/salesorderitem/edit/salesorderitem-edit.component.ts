@@ -3,7 +3,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -47,7 +47,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -173,7 +173,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             this.title = 'View Sales Order Item';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -194,10 +194,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public goodSelected(product: Product): void {
@@ -253,6 +250,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.previousProduct = this.orderItem.Product;
         }
 
-      }, this.errorService.handler);
+      });
   }
 }

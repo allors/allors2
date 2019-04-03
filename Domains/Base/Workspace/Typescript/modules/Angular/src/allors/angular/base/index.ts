@@ -2,7 +2,6 @@ export * from './authentication';
 export * from './actions';
 export * from './barcode';
 export * from './data';
-export * from './errors';
 export * from './filter';
 export * from './focus';
 export * from './forms';

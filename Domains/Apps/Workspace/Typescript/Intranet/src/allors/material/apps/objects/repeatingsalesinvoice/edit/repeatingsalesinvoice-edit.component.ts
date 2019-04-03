@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { RepeatingSalesInvoice, TimeFrequency, DayOfWeek, SalesInvoice } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -32,7 +32,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RepeatingSalesInvoiceEditComponent>,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
     public refreshService: RefreshService) {
 
@@ -93,7 +93,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
             this.title = 'View Repeating Invoice';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -113,8 +113,5 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }}

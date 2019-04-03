@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService,  Action, MetaService } from '../../../../../../angular';
 import { SalesTerm, SalesInvoice, SalesOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
@@ -57,7 +57,7 @@ export class SalesTermOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    public errorService: ErrorService,
+    
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar

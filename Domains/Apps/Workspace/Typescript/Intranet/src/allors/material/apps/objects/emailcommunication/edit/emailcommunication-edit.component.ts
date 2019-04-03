@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, EmailAddress, EmailCommunication, EmailTemplate, Party, Person, Organisation, CommunicationEventState, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -48,7 +48,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -212,7 +212,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
             this.title = 'View Email';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -295,7 +295,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.fromEmails = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.EmailAddress).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public toPartySelected(party: Party) {
@@ -328,7 +328,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
         this.toEmails = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.EmailAddress).map((v) => v.ContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public save(): void {
@@ -341,9 +341,6 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

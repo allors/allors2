@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory } from '../../../../../angular';
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, StateService } from '../../../../../material';
@@ -56,7 +56,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService,
     titleService: Title) {
 
@@ -227,7 +227,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {

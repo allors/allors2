@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService, Action } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
 import { ProductQuote, SalesOrder, RequestForQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -26,8 +26,7 @@ export class ProductQuoteOverviewSummaryComponent {
     public navigation: NavigationService,
     public printService: PrintService,
     public refreshService: RefreshService,
-    public snackBar: MatSnackBar,
-    public errorService: ErrorService) {
+    public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
 
@@ -102,10 +101,7 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public order(): void {
@@ -114,10 +110,7 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created a salesorder.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public cancel(): void {
@@ -126,10 +119,7 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public reject(): void {
@@ -138,10 +128,7 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public Order(): void {
@@ -150,9 +137,6 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('SalesOrder successfully created.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

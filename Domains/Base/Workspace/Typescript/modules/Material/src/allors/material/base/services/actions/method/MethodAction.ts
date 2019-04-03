@@ -2,7 +2,7 @@ import { MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 
 import { Deletable } from '../../../../../domain';
-import { Action, ActionTarget, Invoked, Context, RefreshService, ErrorService } from '../../../../../angular';
+import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
 import { MethodType, ISessionObject } from '../../../../../framework';
 
 import { MethodConfig } from './MethodConfig';
@@ -11,7 +11,6 @@ export class DeleteAction implements Action {
 
   constructor(
     refreshService: RefreshService,
-    errorService: ErrorService,
     snackBar: MatSnackBar,
     context: Context,
     public methodType: MethodType,
@@ -28,11 +27,7 @@ export class DeleteAction implements Action {
             snackBar.open('Successfully executed ' + this.name + '.', 'close', { duration: 5000 });
             refreshService.refresh();
             this.result.next(true);
-          },
-            (error: Error) => {
-              errorService.handle(error);
-              this.result.next(false);
-            });
+          });
       }
     };
   }

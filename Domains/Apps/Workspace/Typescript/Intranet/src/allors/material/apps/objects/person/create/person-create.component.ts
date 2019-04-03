@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
+import {  Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -56,7 +56,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
-    private errorService: ErrorService,
+    
     private route: ActivatedRoute,
     private stateService: StateService) {
 
@@ -125,7 +125,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
         this.person = this.allors.context.create('Person') as Person;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -170,9 +170,6 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

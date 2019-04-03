@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -36,7 +36,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
     public dialogRef: MatDialogRef<TelecommunicationsNumberCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -83,7 +83,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
 
         this.party.AddPartyContactMechanism(this.partyContactMechanism);
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -102,9 +102,6 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

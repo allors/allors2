@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Employment, Party, Organisation, Person, InternalOrganisation } from '../../../../../domain';
 import { PullRequest, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -39,7 +39,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<EmploymentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -119,7 +119,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
             this.title = 'View Employment';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public employeeAdded(employee: Person): void {
@@ -143,9 +143,6 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

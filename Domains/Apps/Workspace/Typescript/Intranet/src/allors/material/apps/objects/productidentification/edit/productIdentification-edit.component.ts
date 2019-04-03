@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ProductIdentification, ProductIdentificationType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -30,8 +30,7 @@ export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<ProductIdentificationEditComponent>,
     public metaService: MetaService,
-    public refreshService: RefreshService,
-    private errorService: ErrorService) {
+    public refreshService: RefreshService) {
 
     this.m = this.metaService.m;
   }
@@ -89,7 +88,7 @@ export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
           this.container.add(associationRoleType.name, this.object);
         }
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -108,9 +107,6 @@ export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

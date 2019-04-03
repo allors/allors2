@@ -2,7 +2,7 @@ import { MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 
 import { Deletable } from '../../../../../domain';
-import { Action, ActionTarget, Invoked, Context, RefreshService, ErrorService } from '../../../../../angular';
+import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
 import { AllorsMaterialDialogService } from '../../dialog';
 
 
@@ -10,7 +10,6 @@ export class DeleteAction implements Action {
 
   constructor(
     refreshService: RefreshService,
-    errorService: ErrorService,
     dialogService: AllorsMaterialDialogService,
     snackBar: MatSnackBar,
     context: Context) {
@@ -32,11 +31,7 @@ export class DeleteAction implements Action {
                   snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                   refreshService.refresh();
                   this.result.next(true);
-                },
-                  (error: Error) => {
-                    errorService.handle(error);
-                    this.result.next(false);
-                  });
+                });
             }
           });
       }

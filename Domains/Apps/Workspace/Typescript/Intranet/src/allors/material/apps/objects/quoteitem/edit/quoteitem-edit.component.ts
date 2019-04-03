@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
 import { CreateData } from '../../../../../material/base/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
@@ -42,7 +42,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar
@@ -138,7 +138,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             this.title = 'View Quote Item';
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -167,10 +167,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private refreshSerialisedItems(product: Product): void {
@@ -206,6 +203,6 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.previousProduct = this.quoteItem.Product;
         }
 
-      }, this.errorService.handler);
+      });
   }
 }

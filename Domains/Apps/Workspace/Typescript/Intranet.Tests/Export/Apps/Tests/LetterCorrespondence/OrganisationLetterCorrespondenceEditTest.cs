@@ -39,7 +39,7 @@ namespace Tests.LetterCorrespondenceTests
                 .Build();
 
             organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(organisationAddress).Build());
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -126,9 +126,10 @@ namespace Tests.LetterCorrespondenceTests
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(employee.PartyName)
                 .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
-                .Subject.Set("new subject")
-                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
+                .Subject.Set("new subject");
+            page.ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23));
+            page.ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23));
+            page
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .Comment.Set("new comment")

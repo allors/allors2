@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -38,7 +38,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
     public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
-    private errorService: ErrorService,
+    
     public stateService: StateService,
     public refreshService: RefreshService) {
 
@@ -119,7 +119,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             this.serialisedItems.push(this.requestItem.SerialisedItem);
           }
         }
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -149,10 +149,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         };
 
         this.dialogRef.close(data);
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   private refreshSerialisedItems(product: Product): void {
@@ -188,6 +185,6 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           this.previousProduct = this.requestItem.Product;
         }
 
-      }, this.errorService.handler);
+      });
   }
 }

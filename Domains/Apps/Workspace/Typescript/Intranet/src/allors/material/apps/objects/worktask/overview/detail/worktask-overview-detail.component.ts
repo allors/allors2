@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import {  Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -39,7 +39,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -145,7 +145,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.updateCustomer(this.workTask.Customer);
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -228,11 +228,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
           .map((v: PartyContactMechanism) => v.ContactMechanism);
 
         this.contacts = loaded.collections.CurrentContacts as Person[];
-      },
-      (error: Error) => {
-        this.errorService.handle(error);
-      },
-    );
+      });
   }
 
   public save(): void {
@@ -240,9 +236,6 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 }

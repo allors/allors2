@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Party, VatRate, VatRegime, PostalAddress, CustomerRelationship, Facility, PurchaseOrder, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -54,7 +54,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private errorService: ErrorService,
+    
     public stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -162,7 +162,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
         this.previousSupplier = this.order.TakenViaSupplier;
 
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
@@ -177,10 +177,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
       .save()
       .subscribe(() => {
         this.panel.toggle();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      });
   }
 
   public supplierAdded(organisation: Organisation): void {
@@ -289,7 +286,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
-      }, this.errorService.handler);
+      });
   }
 
   private updateOrderedBy(organisation: Party): void {
@@ -330,6 +327,6 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
         this.shipToContacts = this.billToContacts;
-      }, this.errorService.handler);
+      });
   }
 }

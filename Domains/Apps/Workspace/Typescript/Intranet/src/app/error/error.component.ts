@@ -1,18 +1,22 @@
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Component, Inject } from '@angular/core';
-import { ResponseError, Response, DerivationError } from '../../../../framework';
+import { Component } from '@angular/core';
+import { Response, ResponseError, DerivationError } from '../../allors/framework';
+import { ErrorService } from './error.service';
+import { LoggingService } from 'src/allors/angular';
 
 @Component({
-  templateUrl: 'errordialog.component.html',
+  templateUrl: './error.component.html'
 })
-export class AllorsMaterialErrorDialogComponent {
+export class ErrorComponent {
 
-  public title;
-  public message;
+  title: string;
+  message: string;
 
-  constructor(public dialogRef: MatDialogRef<AllorsMaterialErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(
+    errorService: ErrorService,
+    ) {
+    const error = errorService.error;
 
-    const error = data.error;
+    this.title = 'Error';
 
     if (error instanceof ResponseError) {
       const responseError: ResponseError = error;
@@ -33,22 +37,21 @@ export class AllorsMaterialErrorDialogComponent {
           this.message += `\n* ${derivationError.m}`;
         });
       } else {
-        this.title = 'Error';
         this.message = responseError.message;
       }
-    } else {
-      this.title = 'Error';
+    } else if (error) {
       if (error.message) {
         this.message = error.message;
       } else {
         this.message = JSON.stringify(error);
       }
+    } else {
+      this.message = 'An unknown error occured';
     }
   }
 
-  close(): void {
-    this.dialogRef.close();
+  restart() {
+    location.href = '/';
   }
+
 }
-
-

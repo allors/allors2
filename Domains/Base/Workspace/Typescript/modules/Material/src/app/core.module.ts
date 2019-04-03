@@ -8,13 +8,9 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
 import { environment } from '../environments/environment';
 
-import {
-  ErrorService, AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule
-} from '../allors/angular';
+import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
 
-import {
-  MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule
-} from '../allors/material';
+import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
 
 @NgModule({
   imports: [
@@ -26,7 +22,6 @@ import {
     AllorsModule.forRoot({ url: environment.url }),
     AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
     LoggingModule.forRoot({ console: true }),
-    ErrorModule.forRoot({ log: true, display: true }),
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),

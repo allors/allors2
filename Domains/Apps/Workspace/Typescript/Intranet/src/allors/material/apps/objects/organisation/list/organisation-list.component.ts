@@ -5,7 +5,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory } from '../../../../../angular';
 import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
 import { Organisation, Country } from '../../../../../domain';
@@ -48,7 +48,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     public methodService: MethodService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private errorService: ErrorService,
+    
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -167,7 +167,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
-      }, this.errorService.handler);
+      });
   }
 
   public ngOnDestroy(): void {
