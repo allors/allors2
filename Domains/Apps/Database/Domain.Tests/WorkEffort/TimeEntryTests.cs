@@ -52,7 +52,7 @@ namespace Allors.Domain
 
             // Assert
             Assert.True(derivation.HasErrors);
-            Assert.Equal(originalCount - 1, derivation.Errors.Count());
+            Assert.Equal(originalCount, derivation.Errors.Count());
 
             //// Re-arrange
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").Build();
@@ -63,7 +63,7 @@ namespace Allors.Domain
 
             // Assert
             Assert.True(derivation.HasErrors);
-            Assert.Equal(originalCount - 2, derivation.Errors.Count());
+            Assert.Equal(originalCount - 1, derivation.Errors.Count());
 
             //// Re-arrange
             var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
