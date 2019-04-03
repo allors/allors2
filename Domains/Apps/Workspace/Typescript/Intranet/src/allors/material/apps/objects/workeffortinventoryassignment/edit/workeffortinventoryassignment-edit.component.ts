@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -36,7 +36,6 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     public dialogRef: MatDialogRef<WorkEffortInventoryAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 

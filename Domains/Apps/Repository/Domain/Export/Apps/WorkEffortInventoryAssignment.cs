@@ -69,7 +69,6 @@ namespace Allors.Repository
         [AssociationId("2A428B1E-E913-4E7D-ABBE-8D68A0BF8396")]
         [RoleId("729A391C-60D6-47A2-A66D-9E21B90285A8")]
         #endregion
-        [Required]
         [Workspace]
         public decimal BillableQuantity { get; set; }
 

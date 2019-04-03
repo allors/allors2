@@ -3,14 +3,14 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder } from '../../../../../domain';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder, PurchaseOrderItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
-import { increaseElementDepthCount } from '@angular/core/src/render3/state';
+import { ErrorService } from 'src/app/error/error.service';
 
 @Component({
   templateUrl: './workeffortpurchaseorderitemassignment-edit.component.html',
@@ -34,7 +34,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
     public dialogRef: MatDialogRef<WorkEffortPurchaseOrderItemAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    
+    private errorService: ErrorService,
     private stateService: StateService,
     private snackBar: MatSnackBar) {
 
@@ -133,5 +133,4 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
 
         this.dialogRef.close(data);
       });
-  }
-}
+  }}

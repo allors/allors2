@@ -237,16 +237,17 @@ namespace Allors.Domain
         {
             var session = @this.Strategy.Session;
             var timeBillingAmount = 0M;
-            var hours = 0M;
+            var billableHours = 0M;
             var billableEntries = new List<TimeEntry>();
             var frequencies = new TimeFrequencies(session);
 
             foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
             {
-                if (timeEntry.IsBillable)
+                if (timeEntry.IsBillable && (!timeEntry.BillableAmountOfTime.HasValue && timeEntry.AmountOfTime.HasValue) || timeEntry.BillableAmountOfTime.HasValue)
                 {
                     billableEntries.Add(timeEntry);
                     timeBillingAmount += timeEntry.BillingAmount;
+                    billableHours += timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0M;
                 }
             }
 
@@ -255,7 +256,7 @@ namespace Allors.Domain
                 var invoiceItem = new SalesInvoiceItemBuilder(session)
                     .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
                     .WithAssignedUnitPrice(timeBillingAmount)
-                    .WithQuantity(hours)
+                    .WithQuantity(billableHours)
                     .Build();
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
@@ -277,7 +278,7 @@ namespace Allors.Domain
                     .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
                     .WithPart(part)
                     .WithAssignedUnitPrice(workEffortInventoryAssignment.UnitSellingPrice)
-                    .WithQuantity(workEffortInventoryAssignment.Quantity)
+                    .WithQuantity(workEffortInventoryAssignment.BillableQuantity ?? workEffortInventoryAssignment.Quantity)
                     .Build();
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
