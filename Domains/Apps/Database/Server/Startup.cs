@@ -125,11 +125,11 @@
             services.AddCors(options =>
             {
                 options.AddPolicy(
-                    "AllowAll",
+                    "AllowAngular",
                     builder =>
                     {
                         builder
-                                .AllowAnyOrigin()
+                                .WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -142,7 +142,7 @@
 
             services.Configure<MvcOptions>(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAll"));
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAngular"));
             });
         }
 
@@ -176,7 +176,6 @@
             var jsnlogConfiguration = new JsnlogConfiguration
             {
                 corsAllowedOriginsRegex = ".*",
-                defaultAjaxUrl = "logging",
                 serverSideMessageFormat = env.IsDevelopment() ?
                             "%requestId | %url | %message" :
                             "%requestId | %url | %userHostAddress | %userAgent | %message",
