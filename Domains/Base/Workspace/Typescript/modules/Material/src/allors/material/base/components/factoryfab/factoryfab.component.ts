@@ -36,7 +36,9 @@ export class FactoryFabComponent implements OnInit {
   create(objectType: ObjectType) {
     this.factoryService.create(objectType, this.createData)
       .subscribe((v) => {
-        this.created.next(v);
+        if (v && this.created) {
+          this.created.next(v);
+        }
       });
   }
 }
