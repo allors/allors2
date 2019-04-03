@@ -30,7 +30,9 @@ namespace Allors.Domain
             get
             {
                 var frequencies = new TimeFrequencies(this.Strategy.Session);
-                var minutes = (decimal)(this.ThroughDate - this.FromDate).Value.TotalMinutes;
+
+                var through = this.ExistThroughDate ? this.ThroughDate : this.strategy.Session.Now();
+                var minutes = (decimal)(through - this.FromDate).Value.TotalMinutes;
                 var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 
                 return Math.Round(hours, DecimalScale);
@@ -71,7 +73,6 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
-            derivation.Validation.AssertAtLeastOne(this, this.Meta.ThroughDate, this.Meta.AmountOfTime);
 
             if (this.ExistTimeSheetWhereTimeEntry)
             {
@@ -137,7 +138,7 @@ namespace Allors.Domain
                     this.AmountOfTime = Math.Round((decimal)amount, 2);
                 }
             }
-            else if (this.AmountOfTime != null)
+            else if (this.AmountOfTime.HasValue)
             {
                 minutes = (decimal) this.TimeFrequency.ConvertToFrequency((decimal)this.AmountOfTime, frequencies.Minute);
 

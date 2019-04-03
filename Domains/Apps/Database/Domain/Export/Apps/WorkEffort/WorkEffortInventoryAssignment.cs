@@ -81,7 +81,7 @@ namespace Allors.Domain
             #endregion
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, int initialQuantity,
+        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity,
             InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;

@@ -29,6 +29,7 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent impleme
 
   objects: WorkEffortPurchaseOrderItemAssignment[] = [];
 
+  delete: Action;
   edit: Action;
   table: Table<TableRow>;
 
@@ -54,12 +55,13 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent impleme
 
   ngOnInit() {
 
-    this.edit = this.editService.edit();
-
     this.panel.name = 'workeffortpurchaseorderitemassignment';
     this.panel.title = 'Work Effort PurchaseOrder Item Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
+
+    this.edit = this.editService.edit();
+    this.delete = this.deleteService.delete(this.panel.manager.context);
 
     const sort = true;
     this.table = new Table({
@@ -72,6 +74,7 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent impleme
       ],
       actions: [
         this.edit,
+        this.delete
       ],
       defaultAction: this.edit,
       autoSort: true,

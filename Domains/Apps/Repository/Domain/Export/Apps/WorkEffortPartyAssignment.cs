@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0bdfb093-35af-4c87-9c1c-05ed9dae6df6")]
     #endregion
-    public partial class WorkEffortPartyAssignment : AccessControlledObject, Commentable 
+    public partial class WorkEffortPartyAssignment : AccessControlledObject, Commentable, Deletable 
     {
         #region inherited properties
 
@@ -83,7 +83,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -98,6 +97,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void Delete() { }
 
         #endregion
     }
