@@ -95,38 +95,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItem_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            this.InstantiateObjects(this.Session);
-
-            var buyer = new OrganisationBuilder(this.Session).WithName("buyer").Build();
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(shipToContactMechanism).Build();
-            var part = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                .Build();
-            buyer.AddPartyContactMechanism(partyContactMechanism);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var builder = new PurchaseOrderItemBuilder(this.Session);
-            order.AddPurchaseOrderItem(builder.Build());
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithPart(part);
-            order.AddPurchaseOrderItem(builder.Build());
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenConfirmedOrderItemForGood_WhenOrderItemIsRemoved_ThenItemIsRemovedFromValidOrderItems()
         {
             this.InstantiateObjects(this.Session);
