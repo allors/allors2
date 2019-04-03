@@ -6,17 +6,14 @@
     <div class="container-fluid">
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState"
-          [options]="eventStates" display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
-          [options]="purposes" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" [options]="eventStates" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty"
-              [options]="contacts" display="displayName" (selected)="fromPartySelected($event)"></a-mat-select>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty" [options]="contacts" display="displayName" (selected)="fromPartySelected($event)"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="person" type="button" [disabled]="person" (click)="addFromParty = !addFromParty">
               <mat-icon *ngIf="!addFromParty">add</mat-icon>
               <mat-icon *ngIf="addFromParty">close</mat-icon>
@@ -35,8 +32,7 @@
 
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty" [options]="contacts"
-              display="displayName" (selected)="toPartySelected($event)"></a-mat-select>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty" [options]="contacts" display="displayName" (selected)="toPartySelected($event)"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="person" type="button" (click)="addToParty = !addToParty">
               <mat-icon *ngIf="!addToParty">add</mat-icon>
               <mat-icon *ngIf="addToParty">close</mat-icon>
@@ -57,8 +53,7 @@
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress"
-              [options]="fromPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="fromPostalAddress"></a-mat-select>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress" [options]="fromPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="fromPostalAddress"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addFromAddress = !addFromAddress">
               <mat-icon *ngIf="!addFromAddress">add</mat-icon>
               <mat-icon *ngIf="addFromAddress">close</mat-icon>
@@ -78,8 +73,7 @@
 
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress"
-              [options]="toPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="toPostalAddress"></a-mat-select>
+            <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.PostalAddress" [options]="toPostalAddresses" display="displayName" label="Postal Address" attr.data-allors-name="toPostalAddress"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addToAddress = !addToAddress">
               <mat-icon *ngIf="!addToAddress">add</mat-icon>
               <mat-icon *ngIf="addToAddress">close</mat-icon>

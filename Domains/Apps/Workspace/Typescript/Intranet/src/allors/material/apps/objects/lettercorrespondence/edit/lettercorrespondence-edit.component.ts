@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material';
@@ -46,7 +45,6 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    
     private stateService: StateService) {
 
     this.m = this.metaService.m;
@@ -293,8 +291,11 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
           PartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                ContactMechanismType: x
-              }
+                ContactMechanismType: x,
+                PostalAddress_PostalBoundary: {
+                  Country: x,
+                }
+              },
             }
           }
         },
