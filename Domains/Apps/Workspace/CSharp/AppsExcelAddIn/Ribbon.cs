@@ -1,10 +1,12 @@
-﻿namespace ExcelAddIn
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Office.Tools.Ribbon;
+
+namespace AppsExcelAddIn
 {
-    using System;
-
     using Allors.Excel;
-
-    using Microsoft.Office.Tools.Ribbon;
 
     using Nito.AsyncEx;
 
@@ -22,11 +24,11 @@
             mediator.StateChanged += this.MediatorOnStateChanged;
         }
 
-        private void Ribbon_Load(object sender, RibbonUIEventArgs eventArgs)
+        private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
         }
-        
-        private void SaveButtonClick(object sender, RibbonControlEventArgs eventArgs)
+
+        private void saveButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -45,7 +47,7 @@
             }
         }
 
-        private void RefreshButtonClick(object sender, RibbonControlEventArgs eventArgs)
+        private void refreshButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -64,7 +66,7 @@
             }
         }
 
-        private void PeopleInitializeButtonClick(object sender, RibbonControlEventArgs eventArgs)
+        private void peopleInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
