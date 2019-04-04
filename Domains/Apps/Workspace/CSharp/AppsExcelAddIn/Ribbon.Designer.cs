@@ -1,4 +1,4 @@
-﻿namespace ExcelAddIn
+﻿namespace AppsExcelAddIn
 {
     partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
@@ -34,23 +34,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.allorsTab = this.Factory.CreateRibbonTab();
+            this.tab1 = this.Factory.CreateRibbonTab();
+            this.appsTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.saveButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.peopleInitializeButton = this.Factory.CreateRibbonButton();
-            this.allorsTab.SuspendLayout();
+            this.tab1.SuspendLayout();
+            this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // allorsTab
+            // tab1
             // 
-            this.allorsTab.Groups.Add(this.group1);
-            this.allorsTab.Groups.Add(this.group2);
-            this.allorsTab.Label = "Allors";
-            this.allorsTab.Name = "allorsTab";
+            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tab1.Label = "TabAddIns";
+            this.tab1.Name = "tab1";
+            // 
+            // appsTab
+            // 
+            this.appsTab.Groups.Add(this.group1);
+            this.appsTab.Groups.Add(this.group2);
+            this.appsTab.Label = "Apps";
+            this.appsTab.Name = "appsTab";
             // 
             // group1
             // 
@@ -63,13 +71,13 @@
             // 
             this.saveButton.Label = "Save";
             this.saveButton.Name = "saveButton";
-            this.saveButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveButtonClick);
+            this.saveButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.saveButton_Click);
             // 
             // refreshButton
             // 
             this.refreshButton.Label = "Refresh";
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RefreshButtonClick);
+            this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.refreshButton_Click);
             // 
             // group2
             // 
@@ -81,16 +89,19 @@
             // 
             this.peopleInitializeButton.Label = "Initialize People";
             this.peopleInitializeButton.Name = "peopleInitializeButton";
-            this.peopleInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.PeopleInitializeButtonClick);
+            this.peopleInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.peopleInitializeButton_Click);
             // 
             // Ribbon
             // 
             this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.allorsTab);
+            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.appsTab);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
-            this.allorsTab.ResumeLayout(false);
-            this.allorsTab.PerformLayout();
+            this.tab1.ResumeLayout(false);
+            this.tab1.PerformLayout();
+            this.appsTab.ResumeLayout(false);
+            this.appsTab.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
@@ -101,7 +112,8 @@
 
         #endregion
 
-        private Microsoft.Office.Tools.Ribbon.RibbonTab allorsTab;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        private Microsoft.Office.Tools.Ribbon.RibbonTab appsTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton saveButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;

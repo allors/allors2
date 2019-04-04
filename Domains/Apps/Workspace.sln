@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Domain", "Workspace\CSharp\Domain\Workspace.Domain.csproj", "{94474285-CAFB-4A71-AED2-D6A80564F543}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Meta", "Workspace\CSharp\Meta\Workspace.Meta.csproj", "{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1}"
@@ -17,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{E0653F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{1543B471-0FF8-445A-B4F4-C961AA49C749}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsExcelAddIn", "Workspace\CSharp\AppsExcelAddIn\AppsExcelAddIn.csproj", "{15E278BF-C374-4C63-8469-18B71AF991FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,12 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94474285-CAFB-4A71-AED2-D6A80564F543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94474285-CAFB-4A71-AED2-D6A80564F543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94474285-CAFB-4A71-AED2-D6A80564F543}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,16 +48,22 @@ Global
 		{FD813B65-0E78-4F1C-8825-7296AE9CC54E}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
 		{FD813B65-0E78-4F1C-8825-7296AE9CC54E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD813B65-0E78-4F1C-8825-7296AE9CC54E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E278BF-C374-4C63-8469-18B71AF991FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 		{94474285-CAFB-4A71-AED2-D6A80564F543} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 		{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
 		{FD813B65-0E78-4F1C-8825-7296AE9CC54E} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
+		{15E278BF-C374-4C63-8469-18B71AF991FA} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53EAA948-FA5C-4843-99B4-FCF5FB7A9F55}

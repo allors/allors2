@@ -1,4 +1,4 @@
-﻿namespace ExcelAddIn
+﻿namespace AppsExcelAddIn
 {
     using System;
     using System.Configuration;
