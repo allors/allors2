@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Framework", "..\..\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{FD813B65-0E78-4F1C-8825-7296AE9CC54E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{1543B471-0FF8-445A-B4F4-C961AA49C749}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
+		{94474285-CAFB-4A71-AED2-D6A80564F543} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
+		{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
+		{B01846A2-2E2B-4676-BE34-F9E14442F80F} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
+		{FD813B65-0E78-4F1C-8825-7296AE9CC54E} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53EAA948-FA5C-4843-99B4-FCF5FB7A9F55}

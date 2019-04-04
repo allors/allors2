@@ -58,6 +58,102 @@
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Client\Result.cs">
       <Link>Base\Client\Result.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\And.cs">
+      <Link>Base\Data\And.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Arguments.cs">
+      <Link>Base\Data\Arguments.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Between.cs">
+      <Link>Base\Data\Between.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\ContainedIn.cs">
+      <Link>Base\Data\ContainedIn.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Contains.cs">
+      <Link>Base\Data\Contains.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Equals.cs">
+      <Link>Base\Data\Equals.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Except.cs">
+      <Link>Base\Data\Except.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Exists.cs">
+      <Link>Base\Data\Exists.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Fetch.cs">
+      <Link>Base\Data\Fetch.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Filter.cs">
+      <Link>Base\Data\Filter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\GreaterThan.cs">
+      <Link>Base\Data\GreaterThan.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\ICompositePredicate.cs">
+      <Link>Base\Data\ICompositePredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IExtent.cs">
+      <Link>Base\Data\IExtent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IExtentOperator.cs">
+      <Link>Base\Data\IExtentOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Instanceof.cs">
+      <Link>Base\Data\Instanceof.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Intersect.cs">
+      <Link>Base\Data\Intersect.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IPredicate.cs">
+      <Link>Base\Data\IPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IPredicateContainer.cs">
+      <Link>Base\Data\IPredicateContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IPropertyPredicate.cs">
+      <Link>Base\Data\IPropertyPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\IRolePredicate.cs">
+      <Link>Base\Data\IRolePredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\LessThan.cs">
+      <Link>Base\Data\LessThan.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Like.cs">
+      <Link>Base\Data\Like.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Not.cs">
+      <Link>Base\Data\Not.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Or.cs">
+      <Link>Base\Data\Or.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Pull.cs">
+      <Link>Base\Data\Pull.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Result.cs">
+      <Link>Base\Data\Result.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Sort.cs">
+      <Link>Base\Data\Sort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Step.cs">
+      <Link>Base\Data\Step.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Tree.cs">
+      <Link>Base\Data\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\TreeNode.cs">
+      <Link>Base\Data\TreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\TreeNodes.cs">
+      <Link>Base\Data\TreeNodes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Data\Union.cs">
+      <Link>Base\Data\Union.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\Config.cs">
       <Link>Base\Workspace\Config.cs</Link>
     </Compile>
@@ -567,6 +663,7 @@
     <Compile Include="generated\WorkEffortInventoryProduced.g.cs" />
     <Compile Include="generated\WorkEffortInventoryProducedVersion.g.cs" />
     <Compile Include="generated\WorkEffortPartyAssignment.g.cs" />
+    <Compile Include="generated\WorkEffortPurchaseOrderItemAssignment.g.cs" />
     <Compile Include="generated\WorkEffortPurpose.g.cs" />
     <Compile Include="generated\WorkEffortState.g.cs" />
     <Compile Include="generated\WorkEffortType.g.cs" />
@@ -583,7 +680,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj">
-      <Project>{da4974fe-1b8b-4a61-bc22-0f4508806a75}</Project>
+      <Project>{fd813b65-0e78-4f1c-8825-7296ae9cc54e}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
@@ -594,6 +691,9 @@
       <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
       <Name>Workspace.Meta</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Apps\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

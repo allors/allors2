@@ -6,12 +6,10 @@
 
     using Microsoft.Office.Tools.Ribbon;
 
+    using Nito.AsyncEx;
+
     public partial class Ribbon
     {
-        private void Ribbon_Load(object sender, RibbonUIEventArgs e)
-        {
-        }
-
         private Commands Commands { get; set; }
 
         private Sheets Sheets { get; set; }
@@ -24,19 +22,65 @@
             mediator.StateChanged += this.MediatorOnStateChanged;
         }
 
-        private void SaveButtonClick(object sender, RibbonControlEventArgs e)
+        private void Ribbon_Load(object sender, RibbonUIEventArgs eventArgs)
         {
-            this.Commands?.Save();
+        }
+        
+        private void SaveButtonClick(object sender, RibbonControlEventArgs eventArgs)
+        {
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                        {
+                            if (this.Commands != null)
+                            {
+                                await this.Commands.Save();
+                            }
+                        });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
         }
 
-        private void RefreshButtonClick(object sender, RibbonControlEventArgs e)
+        private void RefreshButtonClick(object sender, RibbonControlEventArgs eventArgs)
         {
-            this.Commands?.Refresh();
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                        {
+                            if (this.Commands != null)
+                            {
+                                await this.Commands.Refresh();
+                            }
+                        });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
         }
 
-        private void PeopleInitializeButtonClick(object sender, RibbonControlEventArgs e)
+        private void PeopleInitializeButtonClick(object sender, RibbonControlEventArgs eventArgs)
         {
-            this.Commands?.PeopleNew();
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                        {
+                            if (this.Commands != null)
+                            {
+                                await this.Commands.PeopleNew();
+                            }
+                        });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
         }
 
         private void MediatorOnStateChanged(object sender, EventArgs eventArgs)

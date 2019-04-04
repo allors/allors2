@@ -1,7 +1,5 @@
 import { ErrorHandler, Injectable, Injector, Type, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
 import { JL } from 'jsnlog';
-import { ErrorService } from './error.service';
 
 @Injectable()
 export class AllorsErrorHandler implements ErrorHandler {
@@ -11,16 +9,14 @@ export class AllorsErrorHandler implements ErrorHandler {
 
   handleError(error: any) {
 
+    const message: string = error && error.message;
+    if (message.startsWith('ExpressionChangedAfterItHasBeenCheckedError')) {
+      return;
+    }
+
     JL().fatalException('Uncaught Exception', error);
 
     alert('🛑 An error occurred and was logged, the application will restart.');
     location.href = '/';
-
-
-    // const router = this.injector.get<Router>(Router as Type<Router>);
-    // const errorService = this.injector.get<ErrorService>(ErrorService as Type<ErrorService>);
-
-    // errorService.error = error;
-    // router.navigate(['/error']);
   }
 }

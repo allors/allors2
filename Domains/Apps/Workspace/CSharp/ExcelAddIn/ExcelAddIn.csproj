@@ -221,11 +221,7 @@
     <Compile Include="Apps\Relation\People\DataSet.Designer.cs">
       <DependentUpon>DataSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Apps\Relation\People\DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Apps\Relation\People\DataSet1.Designer.cs" />
     <Compile Include="Apps\Relation\People\PeopleSheet.cs" />
     <Compile Include="Apps\Sheet.cs" />
     <Compile Include="Apps\Sheets.cs" />
@@ -248,11 +244,7 @@
     <None Include="Apps\Relation\People\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\People\DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Apps\Relation\People\DataSet.xsd" />
     <None Include="Apps\Relation\People\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
@@ -290,7 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj">
-      <Project>{da4974fe-1b8b-4a61-bc22-0f4508806a75}</Project>
+      <Project>{fd813b65-0e78-4f1c-8825-7296ae9cc54e}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
