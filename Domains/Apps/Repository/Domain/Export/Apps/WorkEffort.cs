@@ -159,9 +159,18 @@ namespace Allors.Repository
         [AssociationId("7172728e-29d2-498f-bea9-da8ab04a1ae5")]
         [RoleId("60306059-f537-4fd6-9d31-7b502f39662e")]
         #endregion
-        [Size(4096)]
+        [Size(-1)]
         [Workspace]
         string Description { get; set; }
+
+        #region Allors
+        [Id("B8348A76-34BF-4B1B-B840-0946C52A639D")]
+        [AssociationId("7177F83A-B722-4B9B-8473-C100A164649A")]
+        [RoleId("C08F12DD-92FE-4C01-9BD9-EAA484E42F87")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string WorkDone { get; set; }
 
         #region Allors
         [Id("858e42df-d775-4eec-b029-343e8b094311")]

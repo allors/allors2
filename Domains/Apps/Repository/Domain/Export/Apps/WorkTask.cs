@@ -32,6 +32,7 @@ namespace Allors.Repository
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public string WorkDone { get; set; }
         public Priority Priority { get; set; }
         public WorkEffortPurpose[] WorkEffortPurposes { get; set; }
         public DateTime ActualCompletion { get; set; }
