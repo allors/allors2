@@ -174,6 +174,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         }
       }),
       pull.WorkEffort({
+        name: "customerRates",
         object: this.data.associationId,
         fetch: {
           Customer: {
@@ -204,7 +205,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           && v.Frequency === this.timeEntry.BillingFrequency
           && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
 
-        const customerRates = loaded.collections.PartyRates as PartyRate[];
+        const customerRates = loaded.collections["customerRates"] as PartyRate[];
         this.customerRate = customerRates.find(v => v.RateType === this.timeEntry.RateType
           && v.Frequency === this.timeEntry.BillingFrequency
           && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
