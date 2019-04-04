@@ -24,6 +24,16 @@ namespace Allors.Domain
 
     public partial class WorkEffortInventoryAssignment
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.ExistAssignment)
+            {
+                derivation.AddDependency(this.Assignment, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
