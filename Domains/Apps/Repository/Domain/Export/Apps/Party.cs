@@ -463,5 +463,14 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.OneToMany)]
         PartyRate[] PartyRates { get; set; }
+
+        #region Allors
+        [Id("6EC8B6A5-D5E1-4A62-AE55-B12045F059D4")]
+        [AssociationId("0335FA58-AB0E-4EA7-B51F-44300B48A511")]
+        [RoleId("629BBD0F-AB66-469A-9578-CE54B129AEC0")]
+        #endregion
+        [Required]
+        [Workspace]
+        bool CollectiveWorkEffortInvoice{ get; set; }
     }
 }

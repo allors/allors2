@@ -295,6 +295,14 @@ namespace Allors.Repository
         [Workspace]
         public bool AvailableForSale { get; set; }
 
+        #region Allors
+        [Id("BB954677-BEB7-4092-96C6-44D36503174D")]
+        [AssociationId("9EB5189B-3F6F-423A-A48C-05B1EB337169")]
+        [RoleId("E6382C24-8AC5-4E3E-B6E3-14AE7B48241E")]
+        #endregion
+        [Workspace]
+        public string CustomerReferenceNumber { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

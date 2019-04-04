@@ -65,12 +65,12 @@
             </div>
 
             <div class="row">
-              <a-mat-slidetoggle class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.CustomerReferenceNumber"></a-mat-input>
+              <a-mat-slidetoggle class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
             </div>
 
             <div class="row">
-              <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Details" label="Print details"
-                class="col-md-12"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Details" label="Print details"></a-mat-textarea>
             </div>
 
             <div class="row">

@@ -52,7 +52,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
 
           const isCreate = (this.data as IObject).id === undefined;
 
-          const pulls = [
+          let pulls = [
             pull.WorkEffortPurchaseOrderItemAssignment({
               object: this.data.id,
               include: {
@@ -61,9 +61,6 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
               }
             }
             ),
-            pull.WorkEffort({
-              object: this.data.associationId
-            }),
             pull.PurchaseOrder({
               sort: new Sort(this.m.PurchaseOrder.OrderNumber),
               include: {
@@ -72,6 +69,15 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
               }
             }),
           ];
+
+          if (isCreate) {
+            pulls = [
+              ...pulls,
+              pull.WorkEffort({
+                object: this.data.associationId
+              }),
+            ];
+          }
 
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
@@ -84,10 +90,10 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
 
         this.allors.context.reset();
 
-        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
         this.purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
 
         if (isCreate) {
+          this.workEffort = loaded.objects.WorkEffort as WorkEffort;
           this.title = 'Add purchase order item assignment';
 
           this.workEffortPurchaseOrderItemAssignment = this.allors.context.create('WorkEffortPurchaseOrderItemAssignment') as WorkEffortPurchaseOrderItemAssignment;
@@ -96,6 +102,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
         } else {
           this.workEffortPurchaseOrderItemAssignment = loaded.objects.WorkEffortPurchaseOrderItemAssignment as WorkEffortPurchaseOrderItemAssignment;
           this.selectedPurchaseOrder = this.workEffortPurchaseOrderItemAssignment.PurchaseOrder;
+          this.workEffort = this.workEffortPurchaseOrderItemAssignment.Assignment;
 
           if (this.workEffortPurchaseOrderItemAssignment.CanWritePurchaseOrderItem) {
             this.title = 'Edit purchase order item assignment';
@@ -121,8 +128,8 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public save(): void {
@@ -136,7 +143,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

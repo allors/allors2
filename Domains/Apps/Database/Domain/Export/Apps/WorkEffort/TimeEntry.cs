@@ -173,5 +173,11 @@ namespace Allors.Domain
                 this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
             }
         }
+
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.WorkEffort?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.WorkEffort?.DeniedPermissions.ToArray();
+        }
     }
 }

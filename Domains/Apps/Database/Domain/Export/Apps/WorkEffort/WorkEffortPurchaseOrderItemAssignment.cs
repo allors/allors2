@@ -18,6 +18,16 @@ namespace Allors.Domain
 {
     public partial class WorkEffortPurchaseOrderItemAssignment
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.ExistAssignment)
+            {
+                derivation.AddDependency(this.Assignment, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -29,6 +39,12 @@ namespace Allors.Domain
             }
 
             this.UnitSellingPrice = AssignedUnitSellingPrice ?? 0M;
+        }
+
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
         }
     }
 }

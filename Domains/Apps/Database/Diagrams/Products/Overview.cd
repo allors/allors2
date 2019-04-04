@@ -9,36 +9,12 @@
         <Point X="12" Y="1.981" />
       </Path>
     </AssociationLine>
-    <AssociationLine Name="OptionalFeatures" Type="Allors.Domain.ProductFeature" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="29.25" Y="6.75" />
-        <Point X="29.25" Y="3.41" />
-        <Point X="18" Y="3.41" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="SelectableFeatures" Type="Allors.Domain.ProductFeature" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="28.812" Y="6.75" />
-        <Point X="28.812" Y="3.647" />
-        <Point X="18" Y="3.647" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="StandardFeatures" Type="Allors.Domain.ProductFeature" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="29.812" Y="6.75" />
-        <Point X="29.812" Y="3.174" />
-        <Point X="18" Y="3.174" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAgBIBEQAQAgAAAAABAAAAQAABAAAAACAAIIICAALgA=</HashCode>
+      <HashCode>AAgBABEAAQAAAAAAABAAAAQAABAAAAAAAAAAICAAIgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="BasePrices" />
-      <Property Name="OptionalFeatures" />
-      <Property Name="SelectableFeatures" />
-      <Property Name="StandardFeatures" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Service" Collapsed="true">
@@ -50,21 +26,6 @@
   </Interface>
   <Interface Name="Allors.Domain.Good">
     <Position X="25.5" Y="13.25" Width="2" />
-    <InheritanceLine Type="Allors.Domain.Product" FixedToPoint="true">
-      <Path>
-        <Point X="29.5" Y="12.217" />
-        <Point X="29.5" Y="12.625" />
-        <Point X="26.938" Y="12.625" />
-        <Point X="26.938" Y="13.25" />
-      </Path>
-    </InheritanceLine>
-    <AssociationLine Name="ProductIncompatibilities" Type="Allors.Domain.Product" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="26.188" Y="13.25" />
-        <Point X="26.188" Y="9" />
-        <Point X="28.25" Y="9" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="ProductSubstitutions" Type="Allors.Domain.Product" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="26.625" Y="13.25" />
@@ -72,14 +33,20 @@
         <Point X="28.25" Y="9.625" />
       </Path>
     </AssociationLine>
+    <AssociationLine Name="ProductIncompatibilities" Type="Allors.Domain.Product" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26.188" Y="13.25" />
+        <Point X="26.188" Y="9" />
+        <Point X="28.25" Y="9" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAACAQAAAAAAgCCBAAABABEAAAEAAAAhEAAAAAAAhBA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="FinishedGood" />
-      <Property Name="ProductIncompatibilities" />
       <Property Name="ProductSubstitutions" />
+      <Property Name="ProductIncompatibilities" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.DeliverableBasedService" Collapsed="true">
@@ -105,12 +72,6 @@
         <Point X="28.25" Y="7" />
       </Path>
     </AssociationLine>
-    <AssociationLine Name="ProductCategory" Type="Allors.Domain.ProductCategory" FixedFromPoint="true">
-      <Path>
-        <Point X="9.75" Y="1.5" />
-        <Point X="5.75" Y="1.5" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="ProductFeature" Type="Allors.Domain.ProductFeature" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="11.219" Y="2.079" />
@@ -119,16 +80,22 @@
         <Point X="16.688" Y="3" />
       </Path>
     </AssociationLine>
+    <AssociationLine Name="ProductCategory" Type="Allors.Domain.ProductCategory" FixedFromPoint="true">
+      <Path>
+        <Point X="9.75" Y="1.5" />
+        <Point X="5.75" Y="1.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAQCAQAAAQAgAQABCBAABAAACKAAAAAAAAAgABAAEAE=</HashCode>
+      <HashCode>QAQCAQAAIQAgAAABABAABAAACKAAAAAAAAAgAAAAEAE=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="GeographicBoundary" />
-      <Property Name="OrderKind" />
       <Property Name="Product" />
-      <Property Name="ProductCategory" />
       <Property Name="ProductFeature" />
+      <Property Name="OrderKind" />
+      <Property Name="ProductCategory" />
       <Property Name="SalesChannel" />
     </ShowAsAssociation>
   </Interface>
@@ -149,13 +116,13 @@
   <Interface Name="Allors.Domain.ProductCategory" Collapsed="true">
     <Position X="4" Y="1.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgCAAAAAA0AASAAAAAAACAAAIAAAEIAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAgCAAAAAAkAASAIAAAAACAAAJAAAEIAAw=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Property Name="Parents" />
       <Property Name="Children" />
       <Property Name="CatScope" />
-      <Property Name="Parents" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.ProductFeature" Collapsed="true">
@@ -194,7 +161,7 @@
   <Interface Name="Allors.Domain.Brand" Collapsed="true">
     <Position X="11" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAABAAAAQAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -208,14 +175,14 @@
   <Interface Name="Allors.Domain.Dimension" Collapsed="true">
     <Position X="15.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Model" Collapsed="true">
     <Position X="17.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -249,12 +216,6 @@
   </Interface>
   <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
     <Position X="13" Y="13" Width="1.5" />
-    <AssociationLine Name="Good" Type="Allors.Domain.Good" FixedFromPoint="true">
-      <Path>
-        <Point X="14.5" Y="13.812" />
-        <Point X="25.5" Y="13.812" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="UnitOfMeasure" Type="Allors.Domain.UnitOfMeasure" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="13.75" Y="13" />
@@ -263,56 +224,45 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAQAAEAAAAAAAgAE=</HashCode>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Facility" />
-      <Property Name="Good" />
       <Property Name="Part" />
-      <Property Name="Lot" />
+      <Property Name="Facility" />
       <Property Name="UnitOfMeasure" />
+      <Property Name="Lot" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Facility" Collapsed="true">
     <Position X="14.75" Y="11" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABAAAACAAAAgAAAAAAAAAAQAAAAAACABAAAAAEAAAAA=</HashCode>
+      <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.NonSerialisedInventoryItem" Collapsed="true">
     <Position X="10.75" Y="14.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAgAAACAAACAAAAAACEAAAAAAAgkAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAgAAACAAACAAAAAACEAAAAAAIgkAAAAAAAAABA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.SerialisedInventoryItem" Collapsed="true">
     <Position X="13.75" Y="14.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AACAAEzAHAAAAQAAAABAhAAAAAEAAAgAAAQQAAAAABA=</HashCode>
+      <HashCode>AAAAAAgACAAAAAAAAAAAhAAAAAAAAIgAAAAAgCAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Part" Collapsed="true">
     <Position X="6.75" Y="7.5" Width="1.75" />
-    <AssociationLine Name="PriceComponents" Type="Allors.Domain.PriceComponent" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="8.094" Y="7.5" />
-        <Point X="8.094" Y="1.812" />
-        <Point X="9.75" Y="1.812" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAIQAAAAAAAAAAAAAAQASAQAEAAACCEAACAAAAAAA=</HashCode>
+      <HashCode>AAAAEQAQAAAAAACQAAAAQAGAQAAAAAAgAAgBACABBBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="UnitOfMeasure" />
-      <Property Name="InternalOrganisation" />
       <Property Name="InventoryItemKind" />
-      <Property Name="PriceComponents" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Lot" Collapsed="true">
@@ -329,31 +279,10 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.FinishedGood" Collapsed="true">
-    <Position X="4.25" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.RawMaterial" Collapsed="true">
-    <Position X="6.5" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.SubAssembly" Collapsed="true">
-    <Position X="8.75" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
     <Position X="3.75" Y="7.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>mAQAEAGECRYAAICAUAgQhhIIBgGMgoIACAESAAAxSAA=</HashCode>
+      <HashCode>mAQAAAGESRYAAICAUAhQphIIBgmMgoIACAESAAAxSAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

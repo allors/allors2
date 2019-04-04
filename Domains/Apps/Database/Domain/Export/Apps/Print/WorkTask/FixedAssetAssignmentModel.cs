@@ -21,11 +21,24 @@ namespace Allors.Domain.Print.WorkTaskModel
         public FixedAssetAssignmentModel(WorkEffortFixedAssetAssignment assignment)
         {
             this.Name = assignment.FixedAsset?.Name;
-            this.Comment = assignment.Comment ?? assignment.FixedAsset?.Comment;
+            this.Comment = assignment.FixedAsset?.Comment;
+
+            if (assignment.FixedAsset is SerialisedItem serialisedItem)
+            {
+                this.CustomerReferenceNumber = serialisedItem.CustomerReferenceNumber;
+                this.ItemNumber = serialisedItem.ItemNumber;
+                this.SerialNumber = serialisedItem.SerialNumber;
+                this.Brand = serialisedItem.PartWhereSerialisedItem?.Brand?.Name;
+                this.Model = serialisedItem.PartWhereSerialisedItem?.Model?.Name;
+            }
         }
 
         public string Name { get; }
-
+        public string CustomerReferenceNumber { get; }
+        public string SerialNumber { get; }
+        public string ItemNumber { get; }
+        public string Brand { get; }
+        public string Model { get; }
         public string Comment { get; }
     }
 }

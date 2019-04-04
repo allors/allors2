@@ -108,6 +108,10 @@
         </div>
 
         <div class="row">
+          <a-mat-textarea class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.WorkDone"></a-mat-textarea>
+        </div>
+
+        <div class="row">
           <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.Children" [options]="workEfforts"
             display="Name"></a-mat-select>
         </div>
