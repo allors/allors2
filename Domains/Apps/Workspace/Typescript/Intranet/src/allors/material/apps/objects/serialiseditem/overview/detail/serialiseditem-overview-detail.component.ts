@@ -124,7 +124,11 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
             pull.SerialisedItem({
               object: id,
               fetch: {
-                SerialisedInventoryItemsWhereSerialisedItem: x
+                SerialisedInventoryItemsWhereSerialisedItem: {
+                  include: {
+                    Facility: x
+                  }
+                }
               }
             }),
             pull.Part({
@@ -166,8 +170,10 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         this.parts = loaded.collections.Parts as Part[];
 
         const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
-        this.currentFacility = serialisedInventoryItems.find(v => v.Quantity === 1).Facility;
-
+        const inventoryItem = serialisedInventoryItems.find(v => v.Quantity === 1);
+        if (inventoryItem) {
+        this.currentFacility = inventoryItem.Facility;
+        }
       });
 
   }
