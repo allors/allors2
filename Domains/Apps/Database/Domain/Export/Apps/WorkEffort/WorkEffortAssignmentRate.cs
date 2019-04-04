@@ -58,5 +58,11 @@ namespace Allors.Domain
                 }
             }
         }
+
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.WorkEffort?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.WorkEffort?.DeniedPermissions.ToArray();
+        }
     }
 }

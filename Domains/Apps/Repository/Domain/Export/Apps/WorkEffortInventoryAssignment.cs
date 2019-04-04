@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f67e7755-5848-4601-ba70-4d1a39abfe4b")]
     #endregion
-    public partial class WorkEffortInventoryAssignment : AccessControlledObject, Versioned, Deletable
+    public partial class WorkEffortInventoryAssignment :  Versioned, Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -160,6 +160,7 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         public void Delete() { }
+        public void DelegateAccess() { }
 
         #endregion
 

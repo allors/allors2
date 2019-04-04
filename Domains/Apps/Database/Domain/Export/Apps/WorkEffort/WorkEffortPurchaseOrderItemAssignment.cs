@@ -30,5 +30,11 @@ namespace Allors.Domain
 
             this.UnitSellingPrice = AssignedUnitSellingPrice ?? 0M;
         }
+
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+        }
     }
 }

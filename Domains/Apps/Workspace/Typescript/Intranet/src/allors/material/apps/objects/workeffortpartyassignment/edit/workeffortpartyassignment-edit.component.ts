@@ -54,19 +54,13 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
           const isCreate = (this.data as IObject).id === undefined;
 
-          const pulls = [
+          let pulls = [
             pull.WorkEffortPartyAssignment({
               object: this.data.id,
               include: {
                 Assignment: x,
                 Party: x
               }
-            }),
-            pull.Party({
-              object: this.data.associationId
-            }),
-            pull.WorkEffort({
-              object: this.data.associationId
             }),
             pull.Organisation({
               object: internalOrganisationId,
@@ -81,6 +75,18 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
             }),
           ];
 
+          if (isCreate) {
+            pulls = [
+              ...pulls,
+              pull.Party({
+                object: this.data.associationId
+              }),
+              pull.WorkEffort({
+                object: this.data.associationId
+              }),
+            ];
+          }
+
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
@@ -92,13 +98,12 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         this.allors.context.reset();
 
-        this.party = loaded.objects.Party as Party;
-        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
-
         if (isCreate) {
           this.title = 'Add Work Effort Assignment';
 
           this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
+          this.party = loaded.objects.Party as Party;
+          this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
           if (this.party !== undefined && this.party.objectType.name === m.Person.name) {
             this.person = this.party as Person;
@@ -112,6 +117,8 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         } else {
           this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
+          this.party = this.workEffortPartyAssignment.Party;
+          this.workEffort = this.workEffortPartyAssignment.Assignment;
           this.person = this.workEffortPartyAssignment.Party as Person;
           this.assignment = this.workEffortPartyAssignment.Assignment;
 
@@ -124,7 +131,6 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         const employments = loaded.collections.Employments as Employment[];
         this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
-
       });
   }
 
@@ -145,7 +151,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

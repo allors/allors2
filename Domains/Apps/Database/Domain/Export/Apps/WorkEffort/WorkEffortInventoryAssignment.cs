@@ -81,6 +81,12 @@ namespace Allors.Domain
             #endregion
         }
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+        }
+
         private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity,
             InventoryTransactionReason reason, bool isCancellation)
         {

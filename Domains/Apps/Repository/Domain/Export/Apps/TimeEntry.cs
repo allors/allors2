@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("6360b45d-3556-41c6-b183-f42a15b9424f")]
     #endregion
     [Plural("TimeEntries")]
-    public partial class TimeEntry : ServiceEntry 
+    public partial class TimeEntry : ServiceEntry, DelegatedAccessControlledObject
     {
         #region inherited properties
         public EngagementItem EngagementItem { get; set; }
@@ -30,6 +30,7 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
         #endregion
 
         #region Allors
@@ -168,6 +169,7 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Delete() { }
+        public void DelegateAccess() { }
 
         #endregion
     }

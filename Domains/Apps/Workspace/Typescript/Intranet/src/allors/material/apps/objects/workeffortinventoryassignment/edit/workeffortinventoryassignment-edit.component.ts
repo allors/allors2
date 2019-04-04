@@ -54,7 +54,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
           const isCreate = (this.data as IObject).id === undefined;
 
-          const pulls = [
+          let pulls = [
             pull.WorkEffortInventoryAssignment({
               object: this.data.id,
               include: {
@@ -65,9 +65,6 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
                   },
                 }
               }
-            }),
-            pull.WorkEffort({
-              object: this.data.associationId
             }),
             pull.InventoryItem({
               sort: new Sort(m.InventoryItem.Name),
@@ -82,6 +79,15 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
             }),
           ];
 
+          if (isCreate) {
+            pulls = [
+              ...pulls,
+              pull.WorkEffort({
+                object: this.data.associationId
+              }),
+            ];
+          }
+
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
@@ -94,9 +100,10 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         this.allors.context.reset();
 
         this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
-        this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
         if (isCreate) {
+          this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+
           this.title = 'Add work effort inventory assignment';
 
           this.workEffortInventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
@@ -104,6 +111,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         } else {
           this.workEffortInventoryAssignment = loaded.objects.WorkEffortInventoryAssignment as WorkEffortInventoryAssignment;
+          this.workEffort = this.workEffortInventoryAssignment.Assignment;
           this.inventoryItemSelected(this.workEffortInventoryAssignment.InventoryItem);
 
           if (this.workEffortInventoryAssignment.CanWriteInventoryItem) {
@@ -130,8 +138,8 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public save(): void {
@@ -145,8 +153,8 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public inventoryItemSelected(inventoryItem: InventoryItem): void {

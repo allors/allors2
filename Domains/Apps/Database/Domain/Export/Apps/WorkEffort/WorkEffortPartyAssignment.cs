@@ -30,5 +30,11 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, this.Meta.AssignmentRates, ErrorMessages.WorkEffortRateError);
             }
         }
+
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+        }
     }
 }

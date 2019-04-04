@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("2C8554EF-7B0E-47A3-AC66-E6CB50E20DF9")]
     #endregion
-    public partial class WorkEffortPurchaseOrderItemAssignment : AccessControlledObject, Deletable
+    public partial class WorkEffortPurchaseOrderItemAssignment : Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -109,6 +109,7 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         public void Delete() { }
+        public void DelegateAccess() { }
 
         #endregion
     }

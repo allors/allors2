@@ -79,6 +79,11 @@ namespace Allors.Domain
                 @this.ExecutedBy = @this.TakenBy;
             }
 
+            if (@this.ExistActualStart && @this.WorkEffortState.IsCreated)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            }
+
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
@@ -109,7 +114,14 @@ namespace Allors.Domain
 
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
-            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            if (@this.ExistActualStart)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            }
+            else
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
+            }
         }
 
         public static void AppsInvoice(this WorkEffort @this, WorkEffortInvoice method)
