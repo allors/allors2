@@ -45,7 +45,8 @@
       </div>
 
       <div class="row">
-        <a-mat-slidetoggle class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.CustomerReferenceNumber"></a-mat-input>
+        <a-mat-slidetoggle class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
       </div>
 
       <a-mat-file class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrimaryPhoto" accept="image/*"></a-mat-file>

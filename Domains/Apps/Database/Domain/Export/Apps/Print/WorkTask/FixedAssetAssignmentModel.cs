@@ -22,9 +22,15 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             this.Name = assignment.FixedAsset?.Name;
             this.Comment = assignment.Comment ?? assignment.FixedAsset?.Comment;
+
+            if (assignment.FixedAsset is SerialisedItem serialisedItem)
+            {
+                this.CustomerReferenceNumber = serialisedItem.CustomerReferenceNumber;
+            }
         }
 
         public string Name { get; }
+        public string CustomerReferenceNumber { get; }
 
         public string Comment { get; }
     }
