@@ -215,6 +215,7 @@ namespace Allors.Repository
         public Template WorkTaskTemplate { get; set; }
 
         public PartyRate[] PartyRates { get; set; }
+        public bool CollectiveWorkEffortInvoice { get; set; }
 
         public Counter WorkEffortCounter { get; set; }
 

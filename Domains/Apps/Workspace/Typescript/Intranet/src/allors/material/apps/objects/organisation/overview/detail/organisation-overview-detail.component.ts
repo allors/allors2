@@ -137,4 +137,3 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
       );
   }
 }
-5

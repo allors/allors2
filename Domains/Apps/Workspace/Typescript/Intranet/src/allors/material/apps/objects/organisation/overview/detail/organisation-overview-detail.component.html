@@ -47,10 +47,8 @@
 
         <div class="row">
           <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
-        </div>
-
-        <div class="row">
           <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
+          <a-mat-slidetoggle class="col-md" [object]="organisation" [roleType]="m.Organisation.CollectiveWorkEffortInvoice"></a-mat-slidetoggle>
         </div>
       </div>
     </mat-card-content>
