@@ -13,6 +13,10 @@ import { AppDialogModule } from './app-dialogs.module';
 import { WorkspaceService } from 'src/allors/angular';
 import { appInit } from './app.init';
 
+export function appInitFactory(workspaceService: WorkspaceService) {
+  return () => (appInit(workspaceService));
+}
+
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
@@ -33,9 +37,7 @@ import { appInit } from './app.init';
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: (workspaceService: WorkspaceService) => () => {
-        appInit(workspaceService);
-      },
+      useFactory: appInitFactory,
       deps: [WorkspaceService],
       multi: true
     },

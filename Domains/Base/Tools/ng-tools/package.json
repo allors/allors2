@@ -1,0 +1,34 @@
+{
+  "name": "@allors/ng-tool",
+  "version": "2.0.0",
+  "description": "Allors Angular Tool",
+  "repository": "https://github.com/Allors/allors2",
+  "private": true,
+  "license": "LGPL-3.0",
+  "scripts": {
+    "start": "ts-node ./src/main.ts",
+    "build": "tsc",
+    "lint": "tslint --fix --project ./tsconfig.json",
+    "lint-fix": "tslint --fix --project ./tsconfig.json",
+    "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
+    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+  },
+  "dependencies": {
+    "@angular/compiler": "^7.2.12",
+    "@angular/compiler-cli": "^7.2.12",
+    "@angular/core": "^7.2.12",
+    "ngast": "^0.2.4",
+    "rxjs": "^6.4.0"
+  },
+  "devDependencies": {
+    "@types/chai": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "istanbul": "latest",
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  }
+}
