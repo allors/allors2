@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
@@ -10,7 +12,6 @@ import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import * as moment from 'moment';
 
 @Component({
   templateUrl: './purchaseorderitem-edit.component.html',
@@ -134,7 +135,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now)).map(v => v.Part);
+        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now))).map(v => v.Part);
 
         if (isCreate) {
           this.title = 'Add Order Item';

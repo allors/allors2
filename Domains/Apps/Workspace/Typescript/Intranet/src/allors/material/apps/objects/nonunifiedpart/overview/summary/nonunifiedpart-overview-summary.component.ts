@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { BasePrice, PriceComponent, SupplierOffering, Part } from '../../../../../../domain';
@@ -90,18 +92,18 @@ export class NonUnifiedPartOverviewSummaryComponent {
     };
 
     panel.onPulled = (loaded) => {
-      const now = new Date();
+      const now = moment.utc();
 
       this.part = loaded.objects[partPullName] as Part;
       this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
       this.allPricecomponents = loaded.collections[priceComponentPullName] as PriceComponent[];
-      this.currentPricecomponents = this.allPricecomponents.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
-      this.inactivePricecomponents = this.allPricecomponents.filter(v => v.FromDate > now || (v.ThroughDate !== null && v.ThroughDate < now));
+      this.currentPricecomponents = this.allPricecomponents.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+      this.inactivePricecomponents = this.allPricecomponents.filter(v => v.FromDate.isAfter(now) || (v.ThroughDate !== null && v.ThroughDate.isBefore(now)));
 
       this.allSupplierOfferings = loaded.collections[supplierOfferingsPullName] as SupplierOffering[];
-      this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
-      this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate > now || (v.ThroughDate !== null && v.ThroughDate < now));
+      this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+      this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate.isAfter(now) || (v.ThroughDate !== null && v.ThroughDate.isBefore(now)));
 
       if (this.part.SuppliedBy.length > 0) {
         this.suppliers = this.part.SuppliedBy

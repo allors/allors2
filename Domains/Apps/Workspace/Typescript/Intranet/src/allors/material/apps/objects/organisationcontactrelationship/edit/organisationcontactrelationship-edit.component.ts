@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -97,7 +99,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
           this.title = 'Add Organisation Contact';
 
           this.partyRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-          this.partyRelationship.FromDate = new Date();
+          this.partyRelationship.FromDate = moment.utc();
           this.partyRelationship.AddContactKind(this.generalContact);
 
           this.party = loaded.objects.Party as Party;

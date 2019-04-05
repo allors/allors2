@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -79,8 +81,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = this.internalOrganisation;
-        this.quote.IssueDate = new Date();
-        this.quote.ValidFromDate = new Date();
+        this.quote.IssueDate = moment.utc();
+        this.quote.ValidFromDate = moment.utc();
 
       });
   }
