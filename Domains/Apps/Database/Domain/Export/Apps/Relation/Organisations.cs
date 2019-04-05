@@ -141,6 +141,8 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
+                .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(session).ShippingAddress)
                 .Build());
             organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)

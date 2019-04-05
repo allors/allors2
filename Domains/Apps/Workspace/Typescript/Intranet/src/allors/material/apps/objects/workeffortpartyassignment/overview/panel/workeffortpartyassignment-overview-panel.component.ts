@@ -61,7 +61,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent implements OnInit {
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortpartyassignment';
-    this.panel.title = 'Work Effort Party Assignment';
+    this.panel.title = 'Party Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

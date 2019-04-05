@@ -56,7 +56,7 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent impleme
   ngOnInit() {
 
     this.panel.name = 'workeffortpurchaseorderitemassignment';
-    this.panel.title = 'Work Effort PurchaseOrder Item Assignment';
+    this.panel.title = 'PurchaseOrder Item Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

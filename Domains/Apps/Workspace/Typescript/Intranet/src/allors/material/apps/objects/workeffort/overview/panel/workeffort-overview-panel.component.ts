@@ -54,7 +54,7 @@ export class WorkEffortOverviewPanelComponent implements OnInit {
   ngOnInit() {
 
     this.panel.name = 'workefort';
-    this.panel.title = 'Child Work Efforts';
+    this.panel.title = 'Child Work Orders';
     this.panel.icon = 'business';
     this.panel.expandable = true;
 

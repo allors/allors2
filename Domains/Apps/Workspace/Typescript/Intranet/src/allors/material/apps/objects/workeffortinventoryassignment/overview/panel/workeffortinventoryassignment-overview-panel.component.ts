@@ -58,7 +58,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortinventoryassignment';
-    this.panel.title = 'Work Effort Inventory Assignment';
+    this.panel.title = 'Inventory Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

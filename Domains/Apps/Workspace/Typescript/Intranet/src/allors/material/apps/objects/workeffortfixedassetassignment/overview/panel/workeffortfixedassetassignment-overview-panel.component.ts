@@ -61,7 +61,7 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent implements OnI
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortfixedassetassignment';
-    this.panel.title = 'Work Effort Fixed Asset Assignments';
+    this.panel.title = 'Fixed Asset Assignments';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     public partial class WorkEffortPurchaseOrderItemAssignment
@@ -28,7 +30,8 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = this.PurchaseOrderItem.UnitPrice;
             }
 
-            this.UnitSellingPrice = AssignedUnitSellingPrice ?? 0M;
+            var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
+            this.UnitSellingPrice = AssignedUnitSellingPrice ?? unitSellingPrice;
 
             if (this.ExistAssignment)
             {
@@ -40,6 +43,18 @@ namespace Allors.Domain
         {
             method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
             method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+        }
+
+        public void AppsCalculateSellingPrice(WorkEffortPurchaseOrderItemAssignmentCalculateSellingPrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var part = this.PurchaseOrderItem.Part;
+                var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+
+                method.Result = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+            }
         }
     }
 }

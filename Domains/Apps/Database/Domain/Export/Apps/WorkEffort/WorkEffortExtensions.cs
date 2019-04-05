@@ -79,15 +79,15 @@ namespace Allors.Domain
                 @this.ExecutedBy = @this.TakenBy;
             }
 
-            if (@this.ExistActualStart && @this.WorkEffortState.IsCreated)
-            {
-                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
-            }
-
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
             @this.DeriveCanInvoice();
+
+            if (@this.ExistActualStart && @this.WorkEffortState.IsCreated)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            }
         }
 
         public static void AppsOnPostDerive(this WorkEffort @this, ObjectOnPostDerive method)

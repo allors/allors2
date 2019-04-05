@@ -63,7 +63,7 @@ export class WorkEffortAssignmentRateOverviewPanelComponent implements OnInit {
   ngOnInit() {
 
     this.panel.name = 'workeffortrate';
-    this.panel.title = 'Work Effort Rates';
+    this.panel.title = 'Rates';
     this.panel.icon = 'contacts';
     this.panel.expandable = true;
 
