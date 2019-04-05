@@ -5,15 +5,15 @@ import { MatInputModule } from '@angular/material';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
-import { TextareaComponent } from './textarea.component';
-export { TextareaComponent } from './textarea.component';
+import { AllorsMaterialTextareaComponent } from './textarea.component';
+export { AllorsMaterialTextareaComponent as TextareaComponent } from './textarea.component';
 
 @NgModule({
   declarations: [
-    TextareaComponent,
+    AllorsMaterialTextareaComponent,
   ],
   exports: [
-    TextareaComponent,
+    AllorsMaterialTextareaComponent,
   ],
   imports: [
     FormsModule,
