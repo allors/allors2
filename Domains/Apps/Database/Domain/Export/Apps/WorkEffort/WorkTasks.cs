@@ -13,6 +13,10 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Linq;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -61,6 +65,116 @@ namespace Allors.Domain
             config.Deny(M.WorkEffortFixedAssetAssignment, cancelled, Operations.Write);
             config.Deny(M.WorkEffortFixedAssetAssignment, finished, Operations.Write);
             config.Deny(M.WorkEffortFixedAssetAssignment, completed, Operations.Write);
+        }
+
+        public static void Monthly(ISession session)
+        {
+            var customers = new Parties(session).Extent();
+            customers.Filter.AddEquals(M.Party.CollectiveWorkEffortInvoice, true);
+
+            var workTasks = new WorkTasks(session).Extent();
+            workTasks.Filter.AddEquals(M.WorkEffort.WorkEffortState, new WorkEffortStates(session).Completed);
+            workTasks.Filter.AddContainedIn(M.WorkEffort.Customer, (Extent)customers);
+
+            var workTasksByCustomer = workTasks
+                .ToDictionary(v => v.Customer, v => v.Customer.WorkEffortsWhereCustomer.Where(w => w.WorkEffortState.Equals(new WorkEffortStates(session).Completed)).ToArray());
+
+            SalesInvoice salesInvoice = null;
+
+            foreach (var customerWorkTasks in workTasksByCustomer)
+            {
+                var customer = customerWorkTasks.Key;
+
+                var customerWorkTasksByInternalOrganisation = customerWorkTasks.Value
+                    .GroupBy(v => v.TakenBy)
+                    .Select(v => v)
+                    .ToArray();
+
+                if (customerWorkTasks.Value.Any(v => v.CanInvoice))
+                {
+                    foreach (var group in customerWorkTasksByInternalOrganisation)
+                    {
+                        if (group.Any(v => v.CanInvoice))
+                        {
+                            salesInvoice = new SalesInvoiceBuilder(session)
+                                .WithBilledFrom(group.Key)
+                                .WithBillToCustomer(customer)
+                                .WithBillToContactMechanism(customer.ExistBillingAddress ? customer.BillingAddress : customer.GeneralCorrespondence)
+                                .WithInvoiceDate(DateTime.UtcNow)
+                                .WithSalesInvoiceType(new SalesInvoiceTypes(session).SalesInvoice)
+                                .Build();
+                        }
+
+                        var timeEntriesByBillingRate = group.SelectMany(v => v.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>())
+                            .Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                            .GroupBy(v => v.BillingRate)
+                            .Select(v => v)
+                            .ToArray();
+
+                        foreach (var workEffort in group)
+                        {
+                            if (workEffort.CanInvoice)
+                            {
+                                foreach (var rateGroup in timeEntriesByBillingRate)
+                                {
+                                    var timeEntries = rateGroup.ToArray();
+
+                                    var invoiceItem = new SalesInvoiceItemBuilder(session)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
+                                        .WithAssignedUnitPrice(rateGroup.Key)
+                                        .WithQuantity(timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m))
+                                        .Build();
+
+                                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                                    foreach (TimeEntry billableEntry in workEffort.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue))
+                                    {
+                                        new TimeEntryBillingBuilder(session)
+                                            .WithTimeEntry(billableEntry)
+                                            .WithInvoiceItem(invoiceItem)
+                                            .Build();
+                                    }
+                                }
+
+                                foreach (WorkEffortInventoryAssignment inventoryAssignment in workEffort.WorkEffortInventoryAssignmentsWhereAssignment)
+                                {
+                                    var part = inventoryAssignment.InventoryItem.Part;
+
+                                    var invoiceItem = new SalesInvoiceItemBuilder(session)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
+                                        .WithPart(part)
+                                        .WithAssignedUnitPrice(inventoryAssignment.UnitSellingPrice)
+                                        .WithQuantity(inventoryAssignment.BillableQuantity ?? inventoryAssignment.Quantity)
+                                        .Build();
+
+                                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                                    new WorkEffortBillingBuilder(session)
+                                        .WithWorkEffort(workEffort)
+                                        .WithInvoiceItem(invoiceItem)
+                                        .Build();
+                                }
+
+                                foreach (WorkEffortPurchaseOrderItemAssignment purchaseOrderItemAssignment in workEffort.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment)
+                                {
+                                    var invoiceItem = new SalesInvoiceItemBuilder(session)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(session).Work)
+                                        .WithAssignedUnitPrice(purchaseOrderItemAssignment.UnitSellingPrice)
+                                        .WithQuantity(purchaseOrderItemAssignment.Quantity)
+                                        .Build();
+
+                                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                                    new WorkEffortBillingBuilder(session)
+                                        .WithWorkEffort(workEffort)
+                                        .WithInvoiceItem(invoiceItem)
+                                        .Build();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

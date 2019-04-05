@@ -28,7 +28,7 @@ interface Row extends TableRow {
 })
 export class WorkEffortListComponent implements OnInit, OnDestroy {
 
-  public title = 'Work Efforts';
+  public title = 'Work Orders';
 
   table: Table<Row>;
 

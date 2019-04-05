@@ -106,8 +106,8 @@ export class PositionTypeRatesOverviewComponent implements OnInit, OnDestroy {
     this.filterService.init(predicate,
       {
         active: { initialValue: true },
-        positionType: { search: positionTypeSearch, display: (v: PositionType) => v.Title },
-        rateType: { search: rateTypeSearch, display: (v: RateType) => v.Name },
+        positionType: { search: positionTypeSearch, display: (v: PositionType) => v && v.Title },
+        rateType: { search: rateTypeSearch, display: (v: RateType) => v && v.Name },
       });
 
     const sorter = new Sorter(

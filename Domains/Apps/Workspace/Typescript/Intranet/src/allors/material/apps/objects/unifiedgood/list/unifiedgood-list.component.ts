@@ -108,10 +108,10 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        category: { search: categorySearch, display: (v: ProductCategory) => v.Name },
-        identification: { search: idSearch, display: (v: ProductIdentification) => v.Identification },
-        brand: { search: brandSearch, display: (v: Brand) => v.Name },
-        model: { search: modelSearch, display: (v: Model) => v.Name },
+        category: { search: categorySearch, display: (v: ProductCategory) => v && v.Name },
+        identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
+        brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
+        model: { search: modelSearch, display: (v: Model) => v && v.Name },
       });
 
     const sorter = new Sorter(

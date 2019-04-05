@@ -145,14 +145,14 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        supplier: { search: this.stateService.suppliersFilter, display: (v: Organisation) => v.PartyName },
-        manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v.PartyName },
-        brand: { search: brandSearch, display: (v: Brand) => v.Name },
+        supplier: { search: this.stateService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
+        manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
+        brand: { search: brandSearch, display: (v: Brand) => v && v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v.Name },
-        kind: { search: kindSearch, display: (v: InventoryItemKind) => v.Name },
-        type: { search: typeSearch, display: (v: ProductType) => v.Name },
-        identification: { search: idSearch, display: (v: ProductIdentification) => v.Identification },
-        facility: { search: facilitySearch, display: (v: Facility) => v.Name },
+        kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
+        type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
+        identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
+        facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
       });
 
     const sorter = new Sorter(

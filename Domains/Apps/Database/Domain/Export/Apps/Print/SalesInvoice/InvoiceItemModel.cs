@@ -21,7 +21,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceItemModel(SalesInvoiceItem item)
         {
             this.Reference = item.InvoiceItemType?.Name;
-            this.Product = item.Product?.Name;
+            this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
             this.Description = item.Description;
             this.Details = item.Details;
             this.Quantity = item.Quantity;

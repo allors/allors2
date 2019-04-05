@@ -103,8 +103,8 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: QuoteState) => v.Name },
-      to: { search: receiverSearch, display: (v: Party) => v.PartyName },
+      state: { search: stateSearch, display: (v: QuoteState) => v && v.Name },
+      to: { search: receiverSearch, display: (v: Party) => v && v.PartyName },
     });
 
     const sorter = new Sorter(

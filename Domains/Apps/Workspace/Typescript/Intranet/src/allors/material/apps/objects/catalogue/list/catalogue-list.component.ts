@@ -89,7 +89,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       roleTypes: [m.CatScope.Name],
     });
 
-    this.filterService.init(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v.Name } });
+    this.filterService.init(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
 
     const sorter = new Sorter(
       {
