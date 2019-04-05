@@ -4,13 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
-import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 import { environment } from '../environments/environment';
 
 import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
 
-import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
+import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
 
 @NgModule({
   imports: [
@@ -40,8 +40,6 @@ import { MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, Loggi
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-    { provide: DateAdapter, useClass: MomentUtcDateAdapter },
   ],
 })
 export class CoreModule {

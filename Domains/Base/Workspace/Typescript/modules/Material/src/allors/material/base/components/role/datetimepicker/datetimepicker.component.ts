@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, Optional, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
@@ -20,40 +22,27 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
 
   get hours(): number {
     if (this.model) {
-      if (this.model.hour) {
-        return this.model.hour();
-      }
-
-      return this.model.getHours();
+      return this.model.hour();
     }
   }
 
   set hours(value: number) {
     if (this.model) {
-      if (this.model.hour) {
-        this.model = new Date(this.model.hour(value));
-      } else {
-        this.model = new Date(this.model.setHours(value));
-      }
+      this.model.hour(value);
+      this.model = moment(this.model);
     }
   }
 
   get minutes(): number {
     if (this.model) {
-      if (this.model.minute) {
-        return this.model.minute();
-      }
-      return this.model.getMinutes();
+      return this.model.minute();
     }
   }
 
   set minutes(value: number) {
     if (this.model) {
-      if (this.model.minute) {
-        this.model = new Date(this.model.minute(value));
-      } else {
-        this.model = new Date(this.model.setMinutes(value));
-      }
+      this.model.minute(value);
+      this.model = moment(this.model);
     }
   }
 
