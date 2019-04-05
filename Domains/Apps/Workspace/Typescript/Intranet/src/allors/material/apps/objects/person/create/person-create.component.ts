@@ -124,6 +124,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
         this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === '2D41946C-4A77-456F-918A-2E83E6C12D7F');
 
         this.person = this.allors.context.create('Person') as Person;
+        this.person.CollectiveWorkEffortInvoice = false;
 
       });
   }

@@ -24,7 +24,7 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             var frequency = timeEntry.TimeFrequency?.Abbreviation ?? timeEntry.TimeFrequency?.Name;
 
-            this.AmountOfTime = Math.Round(timeEntry.BillableAmountOfTime ?? 0.0m, 2);
+            this.AmountOfTime = Math.Round(timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0.0m, 2);
             this.BillingRate = Math.Round(timeEntry.BillingRate ?? 0.0m, 2);
             this.BillingAmount = Math.Round(timeEntry.BillingAmount, 2);
             this.Cost = Math.Round(timeEntry.Cost, 2);

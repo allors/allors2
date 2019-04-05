@@ -98,7 +98,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
         const hour = this.timeFrequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
         if (isCreate) {
-          this.title = 'Add Work Effort Rate';
+          this.title = 'Add Rate';
           this.workEffortAssignmentRate = this.allors.context.create('WorkEffortAssignmentRate') as WorkEffortAssignmentRate;
           this.workEffortAssignmentRate.WorkEffort = this.workEffort;
           this.workEffortAssignmentRate.Frequency = hour;
@@ -106,9 +106,9 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
           this.workEffortAssignmentRate = loaded.objects.WorkEffortAssignmentRate as WorkEffortAssignmentRate;
 
           if (this.workEffortAssignmentRate.CanWriteRate) {
-            this.title = 'Edit Work Effort Rate';
+            this.title = 'Edit Rate';
           } else {
-            this.title = 'View Work Effort Rate';
+            this.title = 'View Rate';
           }
         }
       });

@@ -58,7 +58,7 @@ namespace Allors.Domain
 
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
-                .WithName("Delivered")
+                .WithName("Completed")
                 .Build();
 
             new WorkEffortStateBuilder(this.Session)

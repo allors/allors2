@@ -99,7 +99,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
         this.allors.context.reset();
 
         if (isCreate) {
-          this.title = 'Add Work Effort Assignment';
+          this.title = 'Add Party Assignment';
 
           this.workEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
           this.party = loaded.objects.Party as Party;
@@ -123,9 +123,9 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
           this.assignment = this.workEffortPartyAssignment.Assignment;
 
           if (this.workEffortPartyAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Assignment';
+            this.title = 'Edit Party Assignment';
           } else {
-            this.title = 'View Work Effort Assignment';
+            this.title = 'View Party Assignment';
           }
         }
 

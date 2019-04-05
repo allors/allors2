@@ -149,12 +149,14 @@ namespace Allors.Domain
                     this.AmountOfTime = Math.Round((decimal)amount, 2);
                 }
             }
-            else if (this.AmountOfTime.HasValue)
+            else if (this.ExistAssignedAmountOfTime)
             {
-                minutes = (decimal) this.TimeFrequency.ConvertToFrequency((decimal)this.AmountOfTime, frequencies.Minute);
+                minutes = (decimal) this.TimeFrequency.ConvertToFrequency((decimal)this.AssignedAmountOfTime, frequencies.Minute);
 
                 var timeSpan = TimeSpan.FromMinutes((double)minutes);
                 this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
+
+                this.AmountOfTime = this.AssignedAmountOfTime;
             }
 
             if (this.ExistBillingRate && this.ExistBillingFrequency)

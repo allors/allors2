@@ -105,7 +105,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
         if (isCreate) {
-          this.title = 'Add Work Asset Effort Assignment';
+          this.title = 'Add Asset Assignment';
 
           this.workEffortFixedAssetAssignment = this.allors.context.create('WorkEffortFixedAssetAssignment') as WorkEffortFixedAssetAssignment;
 
@@ -122,9 +122,9 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
           this.workEffortFixedAssetAssignment = loaded.objects.WorkEffortFixedAssetAssignment as WorkEffortFixedAssetAssignment;
 
           if (this.workEffortFixedAssetAssignment.CanWriteFromDate) {
-            this.title = 'Edit Work Effort Asset Assignment';
+            this.title = 'Edit Asset Assignment';
           } else {
-            this.title = 'View Work Effort Asset Assignment';
+            this.title = 'View Asset Assignment';
           }
         }
       });

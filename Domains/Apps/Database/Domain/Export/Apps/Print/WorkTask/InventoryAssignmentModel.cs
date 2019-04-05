@@ -24,12 +24,12 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             this.PartId = assignment.InventoryItem.Part?.PartIdentification();
             this.PartName = assignment.InventoryItem.Part?.Name;
-            this.Quantity = assignment.BillableQuantity ?? 0M;
+            this.Quantity = assignment.BillableQuantity ?? assignment.Quantity;
             this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
                                  assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                  "EA";
             this.UnitSellingPrice = assignment.UnitSellingPrice;
-            this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2);
+            this.SellingPrice = Math.Round(this.Quantity * assignment.UnitSellingPrice, 2);
         }
 
         public string PartId { get; }

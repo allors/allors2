@@ -133,7 +133,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           this.selectedWorker = this.timeEntry.Worker;
           this.workEffort = this.timeEntry.WorkEffort;
 
-          if (this.timeEntry.CanWriteAmountOfTime) {
+          if (this.timeEntry.CanWriteAssignedAmountOfTime) {
             this.title = 'Edit Time Entry';
           } else {
             this.title = 'View Time Entry';

@@ -124,8 +124,17 @@ namespace Allors.Repository
         [AssociationId("01112e75-888e-4dac-93e0-185afe6988af")]
         [RoleId("56c9d8a5-45d0-4bb4-8809-43740938b824")]
         #endregion
+        [Derived]
         [Workspace]
         public decimal AmountOfTime { get; set; }
+
+        #region Allors
+        [Id("B53DFC71-1BEA-40BC-B3F9-02F4FEA0EC43")]
+        [AssociationId("6388C1E5-DAA8-4247-A3C9-CA6B43A613EA")]
+        [RoleId("C4DBD911-80E6-4953-B379-BD599BE88F04")]
+        #endregion
+        [Workspace]
+        public decimal AssignedAmountOfTime { get; set; }
 
         #region Allors
         [Id("816719D2-8386-4D19-BF3F-D1AC9A6BFB4F")]

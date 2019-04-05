@@ -104,7 +104,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
-          this.title = 'Add work effort inventory assignment';
+          this.title = 'Add inventory assignment';
 
           this.workEffortInventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
           this.workEffortInventoryAssignment.Assignment = this.workEffort;
@@ -115,9 +115,9 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
           this.inventoryItemSelected(this.workEffortInventoryAssignment.InventoryItem);
 
           if (this.workEffortInventoryAssignment.CanWriteInventoryItem) {
-            this.title = 'Edit work effort inventory assignment';
+            this.title = 'Edit inventory assignment';
           } else {
-            this.title = 'View work effort inventory assignment';
+            this.title = 'View inventory assignment';
           }
         }
       });
