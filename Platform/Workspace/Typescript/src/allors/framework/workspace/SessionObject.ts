@@ -181,7 +181,7 @@ export class SessionObject implements INewSessionObject {
                 value = [];
             }
         }
-        
+
         if (value === '') {
             const roleType = this.objectType.roleTypeByName[roleTypeName];
             if (roleType.objectType.isUnit) {
@@ -323,8 +323,11 @@ export class SessionObject implements INewSessionObject {
             Object
                 .keys(this.changedRoleByRoleTypeName)
                 .forEach((roleTypeName) => {
-                    const role = this.changedRoleByRoleTypeName[roleTypeName];
                     const roleType = this.objectType.roleTypeByName[roleTypeName];
+                    let role = this.changedRoleByRoleTypeName[roleTypeName];
+                    if (role instanceof Date) {
+                        role = (role as Date).toISOString();
+                    }
 
                     const saveRole = new PushRequestRole();
                     saveRole.t = roleType.name;

@@ -31,9 +31,9 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   set hours(value: number) {
     if (this.model) {
       if (this.model.hour) {
-        this.model.hour(value);
+        this.model = new Date(this.model.hour(value));
       } else {
-        this.model.setHours(value);
+        this.model = new Date(this.model.setHours(value));
       }
     }
   }
@@ -50,9 +50,9 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   set minutes(value: number) {
     if (this.model) {
       if (this.model.minute) {
-        this.model.minute(value);
+        this.model = new Date(this.model.minute(value));
       } else {
-        this.model.setMinutes(value);
+        this.model = new Date(this.model.setMinutes(value));
       }
     }
   }
