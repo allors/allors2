@@ -33,9 +33,14 @@ namespace Allors.Domain
         public void GivenWorkEffortAndTimeEntry_WhenDeriving_ThenWorkEffortPartyAssignmentSynced()
         {
             // Arrange
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive(true);
 
@@ -69,12 +74,16 @@ namespace Allors.Domain
         public void GivenTimeEntryWithRequiredAssignmentOrganisation_WhenDeriving_ThenWorkEffortPartyAssignmentSynced()
         {
             // Arrange
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
-            var organisation = new InternalOrganisations(this.Session).Extent().First;
-            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            organisation.RequireExistingWorkEffortPartyAssignment = true;
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
+
+            internalOrganisation.RequireExistingWorkEffortPartyAssignment = true;
             this.Session.Derive(true);
 
             var today = DateTimeFactory.CreateDateTime(DateTime.UtcNow);
@@ -118,10 +127,15 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkEffort_WhenAddingRates_ThenRateForPartyIsNotAllowed()
         {
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
             // Calculating rates per party is not implemented yet
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             var assignedParty = new WorkEffortPartyAssignmentBuilder(this.Session).WithAssignment(workOrder).WithParty(employee).Build();
 

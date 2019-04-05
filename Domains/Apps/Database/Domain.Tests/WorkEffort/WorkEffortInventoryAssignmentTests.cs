@@ -31,9 +31,13 @@ namespace Allors.Domain
         public void GivenWorkEffort_WhenAddingInventoryAssignment_ThenInventoryReservationCreated()
         {
             // Arrange
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -81,7 +85,11 @@ namespace Allors.Domain
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -162,7 +170,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -228,7 +240,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -275,7 +291,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -319,7 +339,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -373,7 +397,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -438,7 +466,11 @@ namespace Allors.Domain
             // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part1 = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
@@ -507,7 +539,11 @@ namespace Allors.Domain
             // Arrage
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")

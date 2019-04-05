@@ -37,11 +37,11 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, created, reopen, complete, invoice);
             config.Deny(this.ObjectType, inProgress, reopen);
             config.Deny(this.ObjectType, cancelled, cancel, invoice, complete);
-            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, reopen, complete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
 
             config.Deny(M.TimeEntry, cancelled, Operations.Write);
             config.Deny(M.TimeEntry, finished, Operations.Write);
