@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -101,7 +102,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
           this.title = 'Add base price';
 
           this.priceComponent = this.allors.context.create('BasePrice') as PriceComponent;
-          this.priceComponent.FromDate = new Date();
+          this.priceComponent.FromDate = moment.utc();
           this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.nonUnifiedGood) {

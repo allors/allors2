@@ -13,7 +13,6 @@ export * from './base/components/role/autocomplete/autocomplete.module';
 export * from './base/components/role/checkbox/checkbox.module';
 export * from './base/components/role/chips/chips.module';
 export * from './base/components/role/datepicker/datepicker.module';
-export * from './base/components/role/datepicker/MomentUtcDateAdapter';
 export * from './base/components/role/datetimepicker/datetimepicker.module';
 export * from './base/components/role/file/file.module';
 export * from './base/components/role/files/files.module';

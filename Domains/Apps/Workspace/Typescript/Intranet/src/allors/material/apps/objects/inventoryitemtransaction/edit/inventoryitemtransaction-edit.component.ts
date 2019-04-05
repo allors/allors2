@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
@@ -132,7 +133,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         }
 
         this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;
-        this.inventoryItemTransaction.TransactionDate = new Date();
+        this.inventoryItemTransaction.TransactionDate = moment.utc();
         this.inventoryItemTransaction.Part = this.part;
 
         if (this.inventoryItem) {

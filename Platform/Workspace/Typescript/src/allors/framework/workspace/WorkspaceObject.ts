@@ -1,7 +1,7 @@
+import * as moment from 'moment';
+
 import { ObjectType } from '../meta';
-
 import { SyncResponse, SyncResponseObject } from '../protocol/sync/SyncResponse';
-
 import { IWorkspace } from './Workspace';
 
 export interface IWorkspaceObject {
@@ -54,9 +54,10 @@ export class WorkspaceObject implements IWorkspaceObject {
                     const roleType = objectType.roleTypeByName[name];
                     let value = role[2];
 
-                    if (value && roleType.objectType.isUnit && roleType.objectType.name === 'DateTime') {
-                        value = new Date(value as string);
+                    if (value && roleType.objectType.isDateTime) {
+                        value = moment.utc(value);
                     }
+
                     this.roles[name] = value;
                 }
 

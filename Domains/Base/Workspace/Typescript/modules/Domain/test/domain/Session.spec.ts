@@ -120,7 +120,7 @@ describe('Session',
                 assert.equal(koen.FirstName, 'Koen');
                 assert.isNull(koen.MiddleName);
                 assert.equal(koen.LastName, 'Van Exem');
-                assert.equal(koen.BirthDate.toUTCString(), new Date('1973-03-27T18:00:00Z').toUTCString());
+                assert.equal(koen.BirthDate.toDate().toUTCString(), new Date('1973-03-27T18:00:00Z').toUTCString());
                 assert.isTrue(koen.IsStudent);
 
                 const patrick = session.get('2') as Person;

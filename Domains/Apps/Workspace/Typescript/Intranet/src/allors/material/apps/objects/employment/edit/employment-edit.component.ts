@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -91,7 +93,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Employment';
 
           this.partyRelationship = this.allors.context.create('Employment') as Employment;
-          this.partyRelationship.FromDate = new Date();
+          this.partyRelationship.FromDate = moment.utc();
           this.partyRelationship.Employer = this.internalOrganisation;
 
           this.party = loaded.objects.Party as Party;

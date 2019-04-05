@@ -29,8 +29,7 @@ namespace Angular.Material
                 var dateValue = dateElement.GetAttribute("value");
                 if (!string.IsNullOrEmpty(dateValue))
                 {
-                    // TODO: UTC
-                    var dateTime = DateTime.Parse(dateValue);
+                    var dateTime = DateTime.Parse(dateValue).ToLocalTime().ToUniversalTime();
 
                     var hourElement = this.Driver.FindElements(this.Selector)[1];
                     var hourValue = hourElement.GetAttribute("value");

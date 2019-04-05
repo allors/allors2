@@ -8,11 +8,12 @@
     "postinstall": "node ./postinstall.js",
     "lint": "tslint --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "test": "_mocha --timeout 30000 --require ts-node/register ./test/**/*.spec.ts",
-    "tc:test": "_mocha --timeout 30000 --require ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
+    "tc:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
-    "axios": "latest"
+    "axios": "latest",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@types/chai": "latest",
@@ -21,7 +22,7 @@
     "@types/node": "latest",
     "chai": "latest",
     "istanbul": "latest",
-    "lodash": "^4.17.11",
+    "lodash": "latest",
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
     "ts-node": "latest",
