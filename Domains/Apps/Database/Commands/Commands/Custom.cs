@@ -137,7 +137,7 @@ namespace Commands
                 }
 
                 var workTasks = new WorkTasks(session).Extent();
-                var workTask = workTasks.First(v => v.Name.Equals("Task"));
+                var workTask = workTasks.First(v => v.Name.Equals("maintenance"));
                 var template = workTask.TakenBy.WorkTaskTemplate;
 
                 using (var memoryStream = new MemoryStream())
