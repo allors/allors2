@@ -9,5 +9,10 @@
         "**/node_modules": true,
         "**/bower_components": true,
         "**/tmp": true
-    }
+    },
+    "cSpell.words": [
+        "allors",
+        "datepicker",
+        "roletype"
+    ]
 }

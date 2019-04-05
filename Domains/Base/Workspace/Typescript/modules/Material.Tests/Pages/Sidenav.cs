@@ -23,7 +23,7 @@ namespace Tests
         public Element ContactsGroup => this.Group("Contacts");
 
         public Anchor People => this.Link("/contacts/people");
-        
+
         public Anchor Organisations => this.Link("/contacts/organisations");
 
         public Element TestsGroup => this.Group("Tests");
@@ -36,6 +36,13 @@ namespace Tests
         public DashboardPage NavigateToHome()
         {
             this.Driver.WaitForAngular();
+
+            if (!this.Home.IsVisible)
+            {
+                this.Toggle.Click();
+                this.Driver.WaitForCondition(driver => this.Home.IsVisible);
+            }
+
             this.Home.Click();
 
             return new DashboardPage(this.Driver);
@@ -70,8 +77,11 @@ namespace Tests
                     this.Toggle.Click();
                     this.Driver.WaitForCondition(driver => @group.IsVisible);
                 }
-               
-                group.Click();
+
+                if (!link.IsVisible)
+                {
+                    group.Click();
+                }
             }
 
             link.Click();
