@@ -18,16 +18,6 @@ namespace Allors.Domain
 {
     public partial class WorkEffortPurchaseOrderItemAssignment
     {
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.ExistAssignment)
-            {
-                derivation.AddDependency(this.Assignment, this);
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -39,6 +29,11 @@ namespace Allors.Domain
             }
 
             this.UnitSellingPrice = AssignedUnitSellingPrice ?? 0M;
+
+            if (this.ExistAssignment)
+            {
+                this.Assignment.ResetPrintDocument();
+            }
         }
 
         public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)

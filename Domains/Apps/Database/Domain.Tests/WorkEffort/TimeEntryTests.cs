@@ -32,6 +32,10 @@ namespace Allors.Domain
         public void GivenTimeEntry_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             // Arrange
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .Build();
@@ -55,7 +59,7 @@ namespace Allors.Domain
             Assert.Equal(originalCount, derivation.Errors.Count());
 
             //// Re-arrange
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").Build();
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             timeEntry.WorkEffort = workOrder;
 
             // Act
@@ -67,8 +71,7 @@ namespace Allors.Domain
 
             //// Re-arrange
             var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var organisation = new InternalOrganisations(this.Session).Extent().First;
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(worker).WithEmployer(organisation).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(worker).WithEmployer(internalOrganisation).Build();
             
             derivation = this.Session.Derive(false);
 
@@ -86,9 +89,14 @@ namespace Allors.Domain
         {
             // Arrange
             var frequencies = new TimeFrequencies(this.Session);
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive(true);
 
@@ -140,9 +148,14 @@ namespace Allors.Domain
         {
             // Arrange
             var frequencies = new TimeFrequencies(this.Session);
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive(true);
 
@@ -152,7 +165,7 @@ namespace Allors.Domain
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(now)
-                .WithAmountOfTime(4.0M)
+                .WithAssignedAmountOfTime(4.0M)
                 .WithTimeFrequency(hour)
                 .WithWorkEffort(workOrder)
                 .Build();

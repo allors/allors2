@@ -32,7 +32,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkTask_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -43,7 +47,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkTask_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -51,39 +59,18 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkTask_WhenBuildingWithTakenBy_ThenWorkEffortNumberAssigned()
-        {
-            // Arrange
-            var organisation1 = new OrganisationBuilder(this.Session).WithName("Org1").WithIsInternalOrganisation(true).Build();
-            var organisation2 = new OrganisationBuilder(this.Session).WithName("Org2").WithIsInternalOrganisation(true).Build();
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
-
-            // Act
-            var derivation = this.Session.Derive(false);
-
-            // Assert
-            Assert.True(derivation.HasErrors);
-            Assert.Contains(M.WorkTask.WorkEffortNumber, derivation.Errors.SelectMany(e => e.RoleTypes));
-
-            //// Re-arrange
-            workOrder.TakenBy = organisation2;
-
-            // Act
-            this.Session.Derive(true);
-
-            // Assert
-            Assert.NotNull(workOrder.WorkEffortNumber);
-        }
-
-        [Fact]
         public void GivenWorkEffortAndTimeEntries_WhenDeriving_ThenActualHoursDerived()
         {
             // Arrange
-            var frequencies = new TimeFrequencies(this.Session);
 
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive(true);
 
@@ -134,9 +121,14 @@ namespace Allors.Domain
             // Arrange
             var frequencies = new TimeFrequencies(this.Session);
 
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive(true);
 

@@ -24,16 +24,6 @@ namespace Allors.Domain
 
     public partial class WorkEffortInventoryAssignment
     {
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.ExistAssignment)
-            {
-                derivation.AddDependency(this.Assignment, this);
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -89,6 +79,11 @@ namespace Allors.Domain
             this.UnitSellingPrice = AssignedUnitSellingPrice ?? unitSellingPrice;
 
             #endregion
+
+            if (this.ExistAssignment)
+            {
+                this.Assignment.ResetPrintDocument();
+            }
         }
 
         public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
@@ -97,8 +92,7 @@ namespace Allors.Domain
             method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity,
-            InventoryTransactionReason reason, bool isCancellation)
+        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
             var existingQuantity = 0M;

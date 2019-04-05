@@ -1,4 +1,6 @@
-﻿namespace Allors.Domain
+﻿using System.Linq;
+
+namespace Allors.Domain
 {
     using Meta;
     using Xunit;
@@ -8,7 +10,11 @@
         [Fact]
         public void WorkTask_StateCreated()
         {
-            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -25,14 +31,45 @@
         }
 
         [Fact]
+        public void WorkTask_StateCompleted()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
+            this.Session.Derive();
+
+            workTask.Complete();
+
+            this.Session.Derive();
+
+            Assert.Equal(new WorkEffortStates(this.Session).Completed, workTask.WorkEffortState);
+
+            var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
+            this.SetIdentity(Users.AdministratorUserName);
+
+            var acl = new AccessControlList(workTask, administrator);
+            Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
+            Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
+            Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
+            Assert.False(acl.CanExecute(M.WorkEffort.Complete));
+        }
+
+        [Fact]
         public void WorkTask_StateCancelled_TimeEntry()
         {
-            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
 
             this.Session.Derive();
 
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
             this.Session.Derive();
 
