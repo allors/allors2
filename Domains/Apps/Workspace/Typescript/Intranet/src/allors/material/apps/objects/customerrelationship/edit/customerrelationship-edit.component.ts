@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -82,7 +84,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Customer Relationship';
 
           this.partyRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-          this.partyRelationship.FromDate = new Date();
+          this.partyRelationship.FromDate = moment.utc();
           this.partyRelationship.Customer = this.party;
           this.partyRelationship.InternalOrganisation = this.internalOrganisation;
         } else {

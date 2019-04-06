@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
@@ -185,7 +186,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
 
         this.allors.context.reset();
 
-        const now = new Date();
+        const now = moment.utc();
 
         this.part = loaded.objects.Part as Part;
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
@@ -198,7 +199,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         this.settings = loaded.objects.Settings as Settings;
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
@@ -314,11 +315,10 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
             suppliersToDelete.splice(index, 1);
           }
 
-          const now = new Date();
+          const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
+            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
 
           if (supplierOffering === undefined) {
             this.supplierOfferings.push(this.newSupplierOffering(supplier));
@@ -330,14 +330,13 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
 
       if (suppliersToDelete !== undefined) {
         suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = new Date();
+          const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
+            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
 
           if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = new Date();
+            supplierOffering.ThroughDate = now;
           }
         });
       }

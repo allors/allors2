@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
@@ -205,7 +207,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        const now = new Date();
+        const now = moment.utc();
 
         this.good = loaded.objects.UnifiedGood as UnifiedGood;
         this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
@@ -226,7 +228,7 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
@@ -346,11 +348,10 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
             suppliersToDelete.splice(index, 1);
           }
 
-          const now = new Date();
+          const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
+            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
 
           if (supplierOffering === undefined) {
             this.supplierOfferings.push(this.newSupplierOffering(supplier));
@@ -362,14 +363,13 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
 
       if (suppliersToDelete !== undefined) {
         suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = new Date();
+          const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
+            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
 
           if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = new Date();
+            supplierOffering.ThroughDate = moment.utc();
           }
         });
       }

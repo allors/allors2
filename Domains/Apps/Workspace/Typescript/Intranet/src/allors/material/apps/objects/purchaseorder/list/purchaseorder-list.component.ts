@@ -148,10 +148,10 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: PurchaseOrderState) => v.Name },
-      supplier: { search: supplierSearch, display: (v: Party) => v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v.ItemNumber },
+      state: { search: stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
+      supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
+      product: { search: productSearch, display: (v: Product) => v && v.Name },
+      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
 
     const sorter = new Sorter(

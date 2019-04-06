@@ -97,7 +97,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
       roleTypes: [m.Country.Name],
     });
 
-    this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v.Name } });
+    this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v && v.Name } });
 
     const sorter = new Sorter(
       {

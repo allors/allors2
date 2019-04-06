@@ -98,8 +98,8 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: RequestState) => v.Name },
-      from: { search: originatorSearch, display: (v: Party) => v.PartyName },
+      state: { search: stateSearch, display: (v: RequestState) => v && v.Name },
+      from: { search: originatorSearch, display: (v: Party) => v && v.PartyName },
     });
 
     const sorter = new Sorter(

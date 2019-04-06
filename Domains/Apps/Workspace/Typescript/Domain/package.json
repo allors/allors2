@@ -11,7 +11,9 @@
     "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
     "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "moment": "latest"
+  },
   "devDependencies": {
     "@types/chai": "latest",
     "@types/mocha": "latest",

@@ -96,8 +96,8 @@ export class ProductCategoriesOverviewComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        scope: { search: scopeSearch, display: (v: CatScope) => v.Name },
-        product: { search: productSearch, display: (v: Good) => v.Name }
+        scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name },
+        product: { search: productSearch, display: (v: Good) => v && v.Name }
       });
 
     const sorter = new Sorter(

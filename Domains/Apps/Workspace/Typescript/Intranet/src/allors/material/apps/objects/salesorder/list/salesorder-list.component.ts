@@ -148,13 +148,13 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: SalesOrderState) => v.Name },
-      shipTo: { search: partySearch, display: (v: Party) => v.PartyName },
-      billTo: { search: partySearch, display: (v: Party) => v.PartyName },
-      shipToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
-      billToEndCustomer: { search: partySearch, display: (v: Party) => v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v.ItemNumber },
+      state: { search: stateSearch, display: (v: SalesOrderState) => v && v.Name },
+      shipTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
+      billTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
+      shipToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
+      billToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
+      product: { search: productSearch, display: (v: Product) => v && v.Name },
+      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
 
     const sorter = new Sorter(

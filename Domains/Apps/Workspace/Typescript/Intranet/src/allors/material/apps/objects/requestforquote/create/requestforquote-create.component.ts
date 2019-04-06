@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 
 import { Subscription, combineLatest } from 'rxjs';
@@ -76,7 +78,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.request = this.allors.context.create('RequestForQuote') as RequestForQuote;
         this.request.Recipient = this.internalOrganisation;
-        this.request.RequestDate = new Date();
+        this.request.RequestDate = moment.utc();
 
       });
   }

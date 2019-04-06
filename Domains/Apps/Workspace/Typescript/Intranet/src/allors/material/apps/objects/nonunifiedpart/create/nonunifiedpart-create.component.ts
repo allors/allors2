@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 
 import { Subscription, combineLatest } from 'rxjs';
@@ -104,7 +105,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
         this.allors.context.reset();
 
-        const now = new Date();
+        const now = moment.utc();
 
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
@@ -115,7 +116,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         this.settings = loaded.objects.Settings as Settings;
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];

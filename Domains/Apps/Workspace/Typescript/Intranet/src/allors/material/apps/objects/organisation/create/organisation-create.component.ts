@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -189,7 +191,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.customerRole) === -1 && this.isActiveCustomer) {
-      this.customerRelationship.ThroughDate = new Date();
+      this.customerRelationship.ThroughDate = moment.utc();
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) > -1 && !this.isActiveSupplier) {
@@ -203,7 +205,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) === -1 && this.isActiveSupplier) {
-      this.supplierRelationship.ThroughDate = new Date();
+      this.supplierRelationship.ThroughDate = moment.utc();
     }
 
     this.allors.context

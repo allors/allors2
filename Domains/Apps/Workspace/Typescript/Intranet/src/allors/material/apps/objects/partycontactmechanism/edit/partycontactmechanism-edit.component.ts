@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -130,7 +132,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Party ContactMechanism';
 
           this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
-          this.partyContactMechanism.FromDate = new Date();
+          this.partyContactMechanism.FromDate = moment.utc();
           this.partyContactMechanism.UseAsDefault = true;
 
           this.party = loaded.objects.Party as Party;
