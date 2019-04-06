@@ -43,8 +43,8 @@
 
       <div class="row">
         <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
-        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.UnitPrice" [disabled]="invoiceItem.InvoiceItemType === productItemType"></a-mat-input>
-        <a-mat-input class="col-md" *ngIf="invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedUnitPrice"></a-mat-input>
+        <a-mat-static *ngIf="invoiceItem.InvoiceItemType === productItemType" class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.UnitPrice"></a-mat-static>
+        <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedUnitPrice"></a-mat-input>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.UnitVat"></a-mat-static>
         <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.TotalIncVat"></a-mat-static>
       </div>

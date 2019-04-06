@@ -1447,5 +1447,70 @@ namespace Allors.Domain
             Assert.Equal(new SalesInvoiceItemStates(this.Session).WrittenOff, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
             Assert.Equal(new SalesInvoiceItemStates(this.Session).WrittenOff, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
         }
+
+        [Fact]
+        public void GivenSalesOrder_WhenBillngForOrderItemsConfirmedAndConfirmed_ThenInvoiceIsCreated()
+        {
+            var store = this.Session.Extent<Store>().First;
+            store.IsAutomaticallyShipped= true;
+            store.IsImmediatelyPicked = true;
+            store.BillingProcess = new BillingProcesses(this.Session).BillingForOrderItems;
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(good1.Part)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .Build();
+
+            this.Session.Derive();
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .Build();
+
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            order.AddSalesOrderItem(item1);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            order.Invoice();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Completed, order.SalesOrderState);
+            Assert.Equal(new SalesOrderPaymentStates(this.Session).NotPaid, order.SalesOrderPaymentState);
+        }
     }
 }
