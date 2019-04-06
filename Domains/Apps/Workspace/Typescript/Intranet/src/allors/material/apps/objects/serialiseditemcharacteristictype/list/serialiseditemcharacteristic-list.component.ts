@@ -92,7 +92,7 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     this.filterService.init(predicate,
       {
         active: { initialValue: true },
-        uom: { search: uomSearch, display: (v: IUnitOfMeasure) => v.Name },
+        uom: { search: uomSearch, display: (v: IUnitOfMeasure) => v && v.Name },
       });
 
     const sorter = new Sorter(

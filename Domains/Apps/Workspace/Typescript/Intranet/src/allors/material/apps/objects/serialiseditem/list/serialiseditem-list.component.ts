@@ -148,13 +148,13 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: SerialisedItemState) => v.Name },
-      ownership: { search: ownershipSearch, display: (v: Ownership) => v.Name },
-      suppliedby: { search: supplierSearch, display: (v: Organisation) => v.Name },
-      ownedby: { search: partySearch, display: (v: Party) => v.displayName },
-      rentedby: { search: partySearch, display: (v: Party) => v.displayName },
-      brand: { search: brandSearch, display: (v: Brand) => v.Name },
-      model: { search: modelSearch, display: (v: Model) => v.Name },
+      state: { search: stateSearch, display: (v: SerialisedItemState) => v && v.Name },
+      ownership: { search: ownershipSearch, display: (v: Ownership) => v && v.Name },
+      suppliedby: { search: supplierSearch, display: (v: Organisation) => v && v.Name },
+      ownedby: { search: partySearch, display: (v: Party) => v && v.displayName },
+      rentedby: { search: partySearch, display: (v: Party) => v && v.displayName },
+      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
+      model: { search: modelSearch, display: (v: Model) => v && v.Name },
   });
 
     const sorter = new Sorter(

@@ -108,7 +108,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     this.filterService.init(predicate, {
       country: {
         search: countrySearch,
-        display: (v: Country) => v.Name
+        display: (v: Country) => v && v.Name
       }
     });
 

@@ -230,7 +230,7 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(@this.Strategy.Session)
                 .WithBilledFrom(@this.TakenBy)
                 .WithBillToCustomer(@this.Customer)
-                .WithBillToContactMechanism(@this.FullfillContactMechanism)
+                .WithBillToContactMechanism(@this.Customer.ExistBillingAddress ? @this.Customer.BillingAddress : @this.Customer.GeneralCorrespondence)
                 .WithBillToContactPerson(@this.ContactPerson)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(@this.Strategy.Session).SalesInvoice)
@@ -248,32 +248,26 @@ namespace Allors.Domain
         private static void CreateInvoiceItems(this WorkEffort @this, SalesInvoice salesInvoice)
         {
             var session = @this.Strategy.Session;
-            var timeBillingAmount = 0M;
-            var billableHours = 0M;
-            var billableEntries = new List<TimeEntry>();
-            var frequencies = new TimeFrequencies(session);
 
-            foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
-            {
-                if (timeEntry.IsBillable && (!timeEntry.BillableAmountOfTime.HasValue && timeEntry.AmountOfTime.HasValue) || timeEntry.BillableAmountOfTime.HasValue)
-                {
-                    billableEntries.Add(timeEntry);
-                    timeBillingAmount += timeEntry.BillingAmount;
-                    billableHours += timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0M;
-                }
-            }
+            var timeEntriesByBillingRate = @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+                .Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                .GroupBy(v => v.BillingRate)
+                .Select(v => v)
+                .ToArray();
 
-            if (timeBillingAmount > 0)
+            foreach (var rateGroup in timeEntriesByBillingRate)
             {
+                var timeEntries = rateGroup.ToArray();
+
                 var invoiceItem = new SalesInvoiceItemBuilder(session)
                     .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
-                    .WithAssignedUnitPrice(timeBillingAmount)
-                    .WithQuantity(billableHours)
+                    .WithAssignedUnitPrice(rateGroup.Key)
+                    .WithQuantity(timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m))
                     .Build();
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
-                foreach (TimeEntry billableEntry in billableEntries)
+                foreach (TimeEntry billableEntry in @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue))
                 {
                     new TimeEntryBillingBuilder(session)
                         .WithTimeEntry(billableEntry)
@@ -313,7 +307,7 @@ namespace Allors.Domain
                     @this.CanInvoice = false;
                 }
 
-                if (@this.CanInvoice == true)
+                if (@this.CanInvoice)
                 {
                     foreach (WorkEffort child in @this.Children)
                     {
@@ -325,7 +319,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (@this.CanInvoice == true)
+                if (@this.CanInvoice)
                 {
                     foreach (TimeEntry timeEntry in @this.ServiceEntriesWhereWorkEffort)
                     {
