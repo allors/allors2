@@ -17,6 +17,7 @@
     "@angular/compiler": "^7.2.12",
     "@angular/compiler-cli": "^7.2.12",
     "@angular/core": "^7.2.12",
+    "moment": "^2.24.0",
     "ngast": "^0.2.4",
     "rxjs": "^6.4.0"
   },

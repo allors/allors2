@@ -93,7 +93,7 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Employment';
 
           this.partyRelationship = this.allors.context.create('Employment') as Employment;
-          this.partyRelationship.FromDate = moment.utc();
+          this.partyRelationship.FromDate = moment.utc().toISOString();
           this.partyRelationship.Employer = this.internalOrganisation;
 
           this.party = loaded.objects.Party as Party;

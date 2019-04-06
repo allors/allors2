@@ -78,7 +78,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.request = this.allors.context.create('RequestForQuote') as RequestForQuote;
         this.request.Recipient = this.internalOrganisation;
-        this.request.RequestDate = moment.utc();
+        this.request.RequestDate = moment.utc().toISOString();
 
       });
   }

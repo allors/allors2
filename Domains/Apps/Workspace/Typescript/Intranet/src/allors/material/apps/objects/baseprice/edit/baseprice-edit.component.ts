@@ -102,7 +102,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
           this.title = 'Add base price';
 
           this.priceComponent = this.allors.context.create('BasePrice') as PriceComponent;
-          this.priceComponent.FromDate = moment.utc();
+          this.priceComponent.FromDate = moment.utc().toISOString();
           this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.nonUnifiedGood) {

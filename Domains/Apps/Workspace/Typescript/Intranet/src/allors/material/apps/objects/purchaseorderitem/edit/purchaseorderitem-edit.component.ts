@@ -127,7 +127,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        const now = new Date();
+        const now = moment.utc();
 
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
@@ -135,7 +135,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now))).map(v => v.Part);
+        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now))).map(v => v.Part);
 
         if (isCreate) {
           this.title = 'Add Order Item';

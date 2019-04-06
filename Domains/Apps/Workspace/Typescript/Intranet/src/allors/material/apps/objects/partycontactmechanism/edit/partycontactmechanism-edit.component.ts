@@ -132,7 +132,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Party ContactMechanism';
 
           this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
-          this.partyContactMechanism.FromDate = moment.utc();
+          this.partyContactMechanism.FromDate = moment.utc().toISOString();
           this.partyContactMechanism.UseAsDefault = true;
 
           this.party = loaded.objects.Party as Party;

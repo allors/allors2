@@ -4,6 +4,17 @@
       {
           "type": "node",
           "request": "launch",
+          "name": "Run main",
+        //   "args": ["${relativeFile}"],
+          "args": ["./src/main.ts"],
+          "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+          "sourceMaps": true,
+          "cwd": "${workspaceRoot}",
+          "protocol": "inspector",
+      },
+      {
+          "type": "node",
+          "request": "launch",
           "name": "Run Tests",
           "cwd": "${workspaceFolder}",
           "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",

@@ -65,6 +65,12 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         value = null;
       }
 
+      if (value && value.toISOString) {
+        if (typeof value.toISOString === 'function') {
+          value = (value as any).toISOString();
+        }
+      }
+
       this.object.set(this.roleType.name, value);
     }
   }

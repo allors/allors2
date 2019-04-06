@@ -133,7 +133,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         }
 
         this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;
-        this.inventoryItemTransaction.TransactionDate = moment.utc();
+        this.inventoryItemTransaction.TransactionDate = moment.utc().toISOString();
         this.inventoryItemTransaction.Part = this.part;
 
         if (this.inventoryItem) {

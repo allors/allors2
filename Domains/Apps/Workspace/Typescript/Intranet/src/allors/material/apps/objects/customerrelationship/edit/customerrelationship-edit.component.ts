@@ -84,7 +84,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Customer Relationship';
 
           this.partyRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
-          this.partyRelationship.FromDate = moment.utc();
+          this.partyRelationship.FromDate = moment.utc().toISOString();
           this.partyRelationship.Customer = this.party;
           this.partyRelationship.InternalOrganisation = this.internalOrganisation;
         } else {
