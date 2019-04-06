@@ -8,12 +8,12 @@ export class AllorsBarcodeService {
     scan$: Observable<string>;
 
     // TODO: put in its own service
-    _keypressSubject: Subject<KeyboardEvent>;
+    keypressSubject: Subject<any>;
 
     constructor() {
-        this._keypressSubject = new Subject();
+        this.keypressSubject = new Subject();
 
-        this.scan$ = this._keypressSubject
+        this.scan$ = this.keypressSubject
             .pipe(
                 map((v) => v.key),
                 bufferTime(50),

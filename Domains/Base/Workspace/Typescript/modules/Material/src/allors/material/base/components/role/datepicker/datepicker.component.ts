@@ -4,7 +4,6 @@ import { Component, Optional, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RoleField } from '../../../../../angular';
-import { ISessionObject } from 'src/allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector

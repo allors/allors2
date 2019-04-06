@@ -7,19 +7,21 @@
   "license": "LGPL-3.0",
   "scripts": {
     "start": "ts-node ./src/main.ts",
-    "build": "tsc",
+    "build": "npx tsc",
+    "dev": "npx tsc --watch",
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
-    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "test": "npm build && mocha ./dist/**/*.spec.js",
+    "tc:test": "npm build && mocha --reporter mocha-teamcity-reporter ./dist/**/*.spec.js"
   },
   "dependencies": {
-    "@angular/compiler": "^7.2.12",
-    "@angular/compiler-cli": "^7.2.12",
-    "@angular/core": "^7.2.12",
+    "@angular/compiler": "~7.2.0",
+    "@angular/compiler-cli": "~7.2.0",
+    "@angular/core": "~7.2.0",
+    "ejs": "^2.6.1",
     "moment": "^2.24.0",
     "ngast": "^0.2.4",
-    "rxjs": "^6.4.0"
+    "rxjs": "~6.3.3"
   },
   "devDependencies": {
     "@types/chai": "latest",
@@ -30,6 +32,6 @@
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
     "ts-node": "latest",
-    "typescript": "latest"
+    "typescript": "~3.2.2"
   }
 }

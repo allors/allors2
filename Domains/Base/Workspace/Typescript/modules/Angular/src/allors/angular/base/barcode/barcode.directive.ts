@@ -11,7 +11,7 @@ export class AllorsBarcodeDirective {
   }
 
   @HostListener('document:keypress', ['$event'])
-  onKeypress(event: KeyboardEvent) {
-    this.barcodeService._keypressSubject.next(event);
+  onKeypress(event) {
+    this.barcodeService.keypressSubject.next(event);
   }
 }
