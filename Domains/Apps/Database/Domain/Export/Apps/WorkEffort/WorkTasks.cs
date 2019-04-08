@@ -158,7 +158,7 @@ namespace Allors.Domain
                                 foreach (WorkEffortPurchaseOrderItemAssignment purchaseOrderItemAssignment in workEffort.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment)
                                 {
                                     var invoiceItem = new SalesInvoiceItemBuilder(session)
-                                        .WithInvoiceItemType(new InvoiceItemTypes(session).Work)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(session).WorkDone)
                                         .WithAssignedUnitPrice(purchaseOrderItemAssignment.UnitSellingPrice)
                                         .WithQuantity(purchaseOrderItemAssignment.Quantity)
                                         .Build();

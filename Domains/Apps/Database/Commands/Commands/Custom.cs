@@ -52,7 +52,10 @@ namespace Commands
         public int OnExecute(CommandLineApplication app)
         {
             //return this.PrintSalesInvoice();
-            return this.PrintWorkTask();
+            //return this.PrintWorkTask();
+
+            WorkTasks.Monthly(this.databaseService.Database.CreateSession());
+            return ExitCode.Success;
         }
 
         private int PrintSalesInvoice()

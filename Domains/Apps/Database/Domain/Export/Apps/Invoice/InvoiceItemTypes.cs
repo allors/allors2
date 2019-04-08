@@ -32,6 +32,7 @@ namespace Allors.Domain
         internal static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
         internal static readonly Guid TimeId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
         internal static readonly Guid FreightChargeId = new Guid("199AEA42-FDC1-4C40-AF19-2255EBBD2729");
+        internal static readonly Guid WorkDoneId = new Guid("A4D2E6D0-C6C1-46EC-A1CF-3A64822E7A9E");
 
         private UniquelyIdentifiableSticky<InvoiceItemType> cache;
 
@@ -60,6 +61,8 @@ namespace Allors.Domain
         public InvoiceItemType Time => this.Cache[TimeId];
 
         public InvoiceItemType FreightCharge => this.Cache[FreightChargeId];
+
+        public InvoiceItemType WorkDone => this.Cache[WorkDoneId];
 
         private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session));
 
@@ -157,6 +160,13 @@ namespace Allors.Domain
                 .WithName("Freight Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vracht toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FreightChargeId)
+                .WithIsActive(true)
+                .Build();
+
+            new InvoiceItemTypeBuilder(this.Session)
+                .WithName("Work Done")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitgevoerde werkzaamheden").WithLocale(dutchLocale).Build())
+                .WithUniqueId(WorkDoneId)
                 .WithIsActive(true)
                 .Build();
         }
