@@ -38,7 +38,15 @@
         </div>
         {{parent.Name}}
       </div>
+    </div>
 
+    <div *ngFor="let salesInvoice of salesInvoices" (click)="navigation.overview(salesInvoice)" style="cursor: pointer;">
+      <div style="color: grey">
+        Invoice
+      </div>
+      <div>
+        {{salesInvoice.InvoiceNumber}}
+      </div>
     </div>
 
   </mat-card-content>

@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
-import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, SalesInvoiceItem } from '../../../../../../domain';
+import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, SalesInvoiceItem, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { Sort, Equals } from 'src/allors/framework';
@@ -23,6 +23,7 @@ export class SalesInvoiceOverviewSummaryComponent {
   goods: Good[] = [];
 
   print: Action;
+  workEfforts: WorkEffort[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -40,6 +41,7 @@ export class SalesInvoiceOverviewSummaryComponent {
 
     const salesInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
     const salesOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
+    const workEffortPullName = `${panel.name}_${this.m.WorkEffort.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
     const repeatingSalesInvoicePullName = `${panel.name}_${this.m.Good.name}`;
 
@@ -101,6 +103,13 @@ export class SalesInvoiceOverviewSummaryComponent {
             SalesOrders: x
           }
         }),
+        pull.SalesInvoice({
+          name: workEffortPullName,
+          object: id,
+          fetch: {
+            WorkEfforts: x
+          }
+        }),
         pull.Good({
           name: goodPullName,
           sort: new Sort(m.Good.Name),
@@ -119,6 +128,7 @@ export class SalesInvoiceOverviewSummaryComponent {
     panel.onPulled = (loaded) => {
       this.goods = loaded.collections.Goods as Good[];
       this.orders = loaded.collections.SalesOrders as SalesOrder[];
+      this.workEfforts = loaded.collections[workEffortPullName] as WorkEffort[];
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
       this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
       if (this.repeatingInvoices.length > 0) {

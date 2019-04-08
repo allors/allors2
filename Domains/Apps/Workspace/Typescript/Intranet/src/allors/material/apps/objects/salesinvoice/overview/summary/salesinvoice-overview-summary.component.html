@@ -15,6 +15,16 @@
   </mat-card-header>
 
   <mat-card-content>
+
+    <div (click)="navigation.overview(invoice.BillToCustomer)" style="cursor: pointer;">
+      <div style="color: grey">
+        Bill to
+      </div>
+      <div>
+        {{invoice.BillToCustomer?.displayName}}
+      </div>
+    </div>
+
     <div *ngFor="let order of orders" (click)="navigation.overview(order)" style="cursor: pointer;">
       <div style="color: grey">
         Order
@@ -24,12 +34,12 @@
       </div>
     </div>
 
-    <div (click)="navigation.overview(invoice.BillToCustomer)" style="cursor: pointer;">
+    <div *ngFor="let workEffort of workEfforts" (click)="navigation.overview(workEffort)" style="cursor: pointer;">
       <div style="color: grey">
-        Bill to
+        Work Effort
       </div>
       <div>
-        {{invoice.BillToCustomer?.displayName}}
+        {{workEffort.WorkEffortNumber}}
       </div>
     </div>
   </mat-card-content>
