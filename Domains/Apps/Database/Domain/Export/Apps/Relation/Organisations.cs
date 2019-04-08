@@ -98,20 +98,22 @@ namespace Allors.Domain
                 .WithElectronicAddressString(websiteAddress)
                 .Build();
 
-            var bank = new BankBuilder(session).WithName(bankName).WithBic(bic).WithCountry(country).Build();
-            var bankaccount = new BankAccountBuilder(session)
-                .WithBank(bank)
-                .WithIban(iban)
-                .WithNameOnAccount(name)
-                .WithCurrency(currency)
-                .Build();
+            BankAccount bankAccount = null;
+            if (!string.IsNullOrEmpty(bic) && !string.IsNullOrEmpty(iban))
+            {
+                var bank = new BankBuilder(session).WithName(bankName).WithBic(bic).WithCountry(country).Build();
+                bankAccount = new BankAccountBuilder(session)
+                    .WithBank(bank)
+                    .WithIban(iban)
+                    .WithNameOnAccount(name)
+                    .WithCurrency(currency)
+                    .Build();
+            }
 
             var organisation = new OrganisationBuilder(session)
                 .WithIsInternalOrganisation(true)
                 .WithTaxNumber(taxNumber)
                 .WithName(name)
-                .WithBankAccount(bankaccount)
-                .WithDefaultCollectionMethod(new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Huisbank").Build())
                 .WithPreferredCurrency(new Currencies(session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithInvoiceSequence(new InvoiceSequences(session).EnforcedSequence)
                 .WithFiscalYearStartMonth(01)
@@ -121,6 +123,14 @@ namespace Allors.Domain
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithWorkEffortPrefix(workEffortPrefix)
                 .Build();
+
+            OwnBankAccount defaultCollectionMethod = null;
+            if (bankAccount != null)
+            {
+                organisation.AddBankAccount(bankAccount);
+                defaultCollectionMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankAccount).WithDescription("Huisbank").Build();
+                organisation.DefaultCollectionMethod = defaultCollectionMethod;
+            }
 
             if (requestCounterValue != null)
             {
@@ -208,14 +218,12 @@ namespace Allors.Domain
                     .Build();
             }
 
-            var paymentMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
-
             var store = new StoreBuilder(session)
                 .WithName(storeName)
                 .WithOutgoingShipmentNumberPrefix(outgoingShipmentNumberPrefix)
                 .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
                 .WithSalesOrderNumberPrefix(salesOrderNumberPrefix)
-                .WithDefaultCollectionMethod(paymentMethod)
+                .WithDefaultCollectionMethod(defaultCollectionMethod)
                 .WithCreditNoteNumberPrefix(creditNoteNumberPrefix)
                 .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
                 .WithDefaultCarrier(new Carriers(session).Fedex)
@@ -226,6 +234,15 @@ namespace Allors.Domain
                 .WithUseCreditNoteSequence(UseCreditNoteSequence)
                 .WithInternalOrganisation(organisation)
                 .Build();
+
+            if (defaultCollectionMethod == null)
+            {
+                store.DefaultCollectionMethod = new CashBuilder(session).Build();
+            }
+            else
+            {
+                store.DefaultCollectionMethod = defaultCollectionMethod;
+            }
 
             if (facility != null)
             {

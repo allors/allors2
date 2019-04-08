@@ -50,7 +50,6 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
     private stateService: StateService,
     titleService: Title) {
 
@@ -90,6 +89,16 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
       new Contains({ propertyType: m.Part.ProductIdentifications, parameter: 'identification' }),
       new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'supplier' }),
+      new ContainedIn({
+        propertyType: m.Part.SupplierOfferingsWherePart,
+        extent: new Filter({
+          objectType: m.SupplierOffering,
+          predicate: new Like({
+            roleType: m.SupplierOffering.SupplierProductId,
+            parameter: 'supplierReference'
+          })
+        })
+      }),
       new Equals({ propertyType: m.Part.ManufacturedBy, parameter: 'manufacturer' }),
       new Equals({ propertyType: m.Part.Brand, parameter: 'brand' }),
       new Equals({ propertyType: m.Part.Model, parameter: 'model' }),
@@ -104,7 +113,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             parameter: 'facility'
           })
         })
-      })
+      }),
     ]);
 
     const typeSearch = new SearchFactory({

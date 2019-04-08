@@ -488,12 +488,11 @@ namespace Allors.Domain
                                 if (salesOrderItem.ExistNewSerialisedItemState)
                                 {
                                     salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
-                                }
 
-                                if (salesOrderItem.NewSerialisedItemState.Equals(
-                                    new SerialisedItemStates(this.strategy.Session).Sold))
-                                {
-                                    salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
+                                    if (salesOrderItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
+                                    {
+                                        salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
+                                    }
                                 }
                             }
 

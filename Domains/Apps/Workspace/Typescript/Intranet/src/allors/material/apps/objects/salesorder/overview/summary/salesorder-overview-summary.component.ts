@@ -83,6 +83,9 @@ export class SalesOrderOverviewSummaryComponent {
             CreatedBy: x,
             LastModifiedBy: x,
             Quote: x,
+            PrintDocument: {
+              Media: x
+            },
             ShipToAddress: {
               PostalBoundary: {
                 Country: x,
