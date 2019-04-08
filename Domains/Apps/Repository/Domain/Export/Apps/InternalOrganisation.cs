@@ -416,17 +416,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         Organisation[] CurrentSuppliers { get; set; }
-
-        #region Allors
-        [Id("7E926007-DED3-4B53-B9C5-4B4D25EC9AF7")]
-        [AssociationId("56A50C32-AB99-40A1-9393-99CBFBD61B6E")]
-        [RoleId("18E2BEB9-343B-4C82-9D39-DB013749DB1F")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        Person[] SalesReps { get; set; }
-
+        
         #region Allors
         [Id("0ac44c21-6a2c-4162-9d77-fe1b16b60b73")]
         [AssociationId("4d61b711-7aab-4162-bb31-74db09f666fe")]
@@ -553,10 +543,30 @@ namespace Allors.Repository
         Media LogoImage { get; set; }
 
         #region Allors
+        [Id("7E926007-DED3-4B53-B9C5-4B4D25EC9AF7")]
+        [AssociationId("56A50C32-AB99-40A1-9393-99CBFBD61B6E")]
+        [RoleId("18E2BEB9-343B-4C82-9D39-DB013749DB1F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        Person[] SalesReps { get; set; }
+
+        #region Allors
+        [Id("0A1163E6-FBAA-4A67-B988-40E0E3548CCE")]
+        [AssociationId("688E590E-67FA-4D73-BBA4-89E6B9AF264C")]
+        [RoleId("F260CB40-B1FB-451B-8A8D-BE5374C9C79C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        Person[] ProductQuoteApprovers { get; set; }
+
+        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();
- 
+
         #region inherited methods
 
         #endregion

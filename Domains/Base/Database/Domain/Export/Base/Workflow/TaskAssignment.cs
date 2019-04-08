@@ -31,17 +31,15 @@ namespace Allors.Domain
         
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            if (!this.ExistTask)
-            {
-                this.Delete();
-            }
-            else
-            {
-                var singleton = this.Strategy.Session.GetSingleton();
-                this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
+            var singleton = this.Strategy.Session.GetSingleton();
+            this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
 
-                this.Task.ManageNotification(this);
-            }
+            this.Task?.ManageNotification(this);
+        }
+
+        public void BaseDelete(DeletableDelete method)
+        {
+            this.Notification?.Delete();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public string WorkItemDescription { get; set; }
+
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }

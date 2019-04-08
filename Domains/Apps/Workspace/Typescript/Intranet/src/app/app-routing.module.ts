@@ -46,6 +46,7 @@ import * as UnifiedGoodList from 'src/allors/material/apps/objects/unifiedgood/l
 import * as UnifiedGoodOverview from 'src/allors/material/apps/objects/unifiedgood/overview/unifiedgood-overview.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
+import * as TaskList from 'src/allors/material/apps/objects/task/list/task-list.module';
 
 const modules = [
 
@@ -89,6 +90,8 @@ const modules = [
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
+
+  TaskList.TaskListModule,
 ];
 
 export const routes: Routes = [
@@ -166,6 +169,13 @@ export const routes: Routes = [
         children: [
           { path: 'positiontypes', component: PositionTypeList.PositionTypesOverviewComponent },
           { path: 'positiontyperates', component: PositionTypeRateList.PositionTypeRatesOverviewComponent },
+        ],
+      },
+
+      {
+        path: 'workflow',
+        children: [
+          { path: 'tasks', component: TaskList.TaskListComponent },
         ],
       },
     ],

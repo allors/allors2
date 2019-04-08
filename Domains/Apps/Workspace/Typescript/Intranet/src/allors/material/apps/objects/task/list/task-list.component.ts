@@ -6,28 +6,26 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { Person, Country } from '../../../../../domain';
+import { Task } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../base/services/object';
 
 interface Row extends TableRow {
-  object: Person;
-  name: string;
-  email: string;
-  phone: string;
-  lastModifiedDate: string;
+  object: Task;
+  description: string;
+  dateCreated: string;
 }
 
 @Component({
-  templateUrl: './person-list.component.html',
+  templateUrl: './task-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PersonListComponent implements OnInit, OnDestroy {
+export class TaskListComponent implements OnInit, OnDestroy {
 
-  public title = 'People';
+  public title = 'Tasks';
 
   table: Table<Row>;
 
@@ -45,7 +43,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -58,10 +55,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name', sort: true },
-        { name: 'email', sort: true },
-        { name: 'phone', sort: true },
-        'lastModifiedDate'
+        'dateCreated'
       ],
       actions: [
         overviewService.overview(),
@@ -69,7 +63,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
-      initialSort: 'name'
+      initialSort: 'dateCreated'
     });
   }
 
@@ -78,31 +72,14 @@ export class PersonListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
-      new ContainedIn({
-        propertyType: m.Party.GeneralCorrespondence,
-        extent: new Filter({
-          objectType: m.PostalAddress,
-          predicate: new ContainedIn({
-            propertyType: m.PostalAddress.Country,
-            parameter: 'country'
-          })
-        })
-      })
+      new Like({ roleType: m.Person.FirstName, parameter: 'description' }),
     ]);
 
-    const countrySearch = new SearchFactory({
-      objectType: m.Country,
-      roleTypes: [m.Country.Name],
-    });
-
-    this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v && v.Name } });
+    this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: [m.Person.FirstName, m.Person.LastName],
-        lastModifiedDate: m.Person.LastModifiedDate,
+        dateCreated: m.Task.DateCreated,
       }
     );
 
@@ -119,14 +96,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            pull.Person({
+            pull.Task({
               predicate,
               sort: sorter.create(sort),
               include: {
-                Salutation: x,
-                Picture: x,
-                GeneralPhoneNumber: x,
-                GeneralEmail: x,
+                WorkItem: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -138,15 +112,13 @@ export class PersonListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const people = loaded.collections.People as Person[];
+        const tasks = loaded.collections.Tasks as Task[];
         this.table.total = loaded.values.People_total;
-        this.table.data = people.map((v) => {
+        this.table.data = tasks.map((v) => {
           return {
             object: v,
-            name: v.displayName,
-            email: v.displayEmail,
-            phone: v.displayPhone,
-            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
+            description: v.WorkItem.WorkItemDescription,
+            dateCreated: moment(v.DateCreated).fromNow()
           } as Row;
         });
       });

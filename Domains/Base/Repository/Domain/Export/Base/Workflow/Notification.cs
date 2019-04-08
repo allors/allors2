@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("73dcdc68-7571-4ed1-86db-77c914fe2f62")]
     #endregion
-    public partial class Notification : AccessControlledObject 
+    public partial class Notification : AccessControlledObject, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -84,24 +84,22 @@ namespace Allors.Repository
         [Workspace]
         [Required]
         public DateTime DateCreated { get; set; }
-        
+
         #region inherited methods
+        
+        public void OnBuild() { }
 
+        public void OnPostBuild() { }
 
-        public void OnBuild(){}
+        public void OnInit() { }
 
-        public void OnPostBuild(){}
+        public void OnPreDerive() { }
 
-        public void OnInit()
-        {
-            
-        }
+        public void OnDerive() { }
 
-        public void OnPreDerive(){}
+        public void OnPostDerive() { }
 
-        public void OnDerive(){}
-
-        public void OnPostDerive(){}
+        public void Delete() { }
 
         #endregion
     }

@@ -94,6 +94,8 @@ namespace Allors.Repository
 
         public Person[] SalesReps { get; set; }
 
+        public Person[] ProductQuoteApprovers { get; set; }
+
         public GeneralLedgerAccount GlAccount { get; set; }
 
         public Party[] ActiveCustomers { get; set; }
