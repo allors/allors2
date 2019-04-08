@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductQuoteStates.cs" company="Allors bvba">
+// <copyright file="QuoteStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -19,11 +19,11 @@ namespace Allors.Domain
 
     public partial class QuoteStates
     {
-        private static readonly Guid CreatedId = new Guid("B1565CD4-D01A-4623-BF19-8C816DF96AA6");
-        private static readonly Guid ApprovedId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
-        private static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
-        private static readonly Guid CancelledId = new Guid("ED013479-08AF-4D02-96A7-3FC8B7BE37EF");
-        private static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
+        public static readonly Guid CreatedId = new Guid("B1565CD4-D01A-4623-BF19-8C816DF96AA6");
+        public static readonly Guid ApprovedId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
+        public static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
+        public static readonly Guid CancelledId = new Guid("ED013479-08AF-4D02-96A7-3FC8B7BE37EF");
+        public static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
 
         private UniquelyIdentifiableSticky<QuoteState> stateCache;
 

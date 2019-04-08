@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("066bf242-2710-4a68-8ff6-ce4d7d88a04a")]
     #endregion
-    public partial interface Quote : Transitional, Printable, Auditable, Commentable
+    public partial interface Quote : Transitional, WorkItem, Printable, Auditable, Commentable
     {
         #region ObjectStates
         #region QuoteState

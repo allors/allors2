@@ -22,7 +22,6 @@
 namespace Allors.Repository
 {
     using System;
-
     using Attributes;
 
     #region Allors
@@ -34,23 +33,21 @@ namespace Allors.Repository
         [Id("f247de73-70fe-47e4-a763-22ee9c68a476")]
         [AssociationId("2e1ebe97-52d3-46fc-94c2-3203a13856c7")]
         [RoleId("4ca8997f-9232-4c84-8f37-e977071eb316")]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        [Required]
+        [Derived]
         WorkItem WorkItem { get; set; }
 
         #region Allors
         [Id("8ebd9048-a344-417c-bae7-359ca9a74aa1")]
         [AssociationId("af6cbf34-5f71-498b-a2ec-ef698eeae799")]
         [RoleId("ceba2888-2a6e-4822-881b-1101b48f80f3")]
-        [Derived]
         [Indexed]
         #endregion
         [Workspace]
-        [Required]
+        [Derived]
         DateTime DateCreated { get; set; }
 
         #region Allors

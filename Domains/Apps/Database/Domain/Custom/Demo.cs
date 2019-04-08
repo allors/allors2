@@ -26,6 +26,8 @@ namespace Allors
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             singleton.AddAdditionalLocale(dutchLocale);
 
+            var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
+
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
@@ -119,8 +121,15 @@ namespace Allors
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
-            this.SetupUser(allors, "employee1@allors.com", "first", "allors employee", "letmein");
-            this.SetupUser(dipu, "employee1@allors.com", "first", "dipu employee", "letmein");
+            var allorsEmployee = this.CreatePerson(allors, "employee@allors.com", "Allors", "Employee", "letmein");
+            var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
+
+            allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
+
+            var dipuEmployee = this.CreatePerson(dipu, "employee1@dipu.com", "first", "dipu employee", "letmein");
+            var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
+
+            dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -359,8 +368,6 @@ namespace Allors
                     .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
                     .WithFromDate(DateTime.UtcNow)
                     .Build();
-
-                var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
 
                 new FaceToFaceCommunicationBuilder(this.Session)
                     .WithDescription($"Meeting {i}")
@@ -723,7 +730,7 @@ line2")
             return template;
         }
 
-        private void SetupUser(Organisation organisation, string email, string firstName, string lastName, string password)
+        private Person CreatePerson(Organisation organisation, string email, string firstName, string lastName, string password)
         {
             var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
 
@@ -765,10 +772,11 @@ line2")
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new UserGroups(this.Session).Administrators.AddMember(person);
             new UserGroups(this.Session).Creators.AddMember(person);
 
             person.SetPassword(password);
+
+            return person;
         }
 
         private Part CreatePart(string id) =>

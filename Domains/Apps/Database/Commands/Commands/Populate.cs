@@ -20,7 +20,6 @@
 
 namespace Commands
 {
-    using System;
     using System.IO;
 
     using Allors;

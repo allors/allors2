@@ -43,6 +43,14 @@ namespace Allors.Domain
             }
         }
 
+        public static void BaseDelete(this Task @this, DeletableDelete method)
+        {
+            foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
+            {
+                taskAssignment.Delete();
+            }
+        }
+
         public static void AssignPerformer(this Task @this)
         {
             var currentUser = @this.Strategy.Session.GetUser() as Person;

@@ -16,7 +16,9 @@
         <span style="padding-left: 1rem">Allors Applications</span>
         <span class="ml-auto">
           <internalorganisation-select></internalorganisation-select>
-          <a-dev *ngIf="!isProduction"></a-dev>
+          <a [routerLink]="['/workflow/tasks']">
+            Tasks
+          </a>
         </span>
       </mat-toolbar>
 

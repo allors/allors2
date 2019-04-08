@@ -35,8 +35,8 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Size(-1)]
-        [Workspace]
         #endregion
+        [Workspace]
         string WorkItemDescription { get; set; }
     }
 }

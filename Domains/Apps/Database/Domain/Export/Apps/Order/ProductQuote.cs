@@ -32,44 +32,17 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void AppsOnDerive(ObjectOnDerive method)
+        public void AppsApprove(ProductQuoteApprove method)
         {
-            this.ResetPrintDocument();
+            this.QuoteState = new QuoteStates(this.strategy.Session).Approved;
         }
 
-        private SalesOrder OrderThis()
+        public void AppsReject(ProductQuoteReject method)
         {
-            var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
-                .WithTakenBy(this.Issuer)
-                .WithBillToCustomer(this.Receiver)
-                .WithDescription(this.Description)
-                .WithShipToContactPerson(this.ContactPerson)
-                .WithBillToContactPerson(this.ContactPerson)
-                .WithQuote(this)
-                .Build();
-
-            var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
-
-            foreach (QuoteItem quoteItem in quoteItems)
-            {
-                quoteItem.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
-
-                salesOrder.AddSalesOrderItem(
-                    new SalesOrderItemBuilder(this.Strategy.Session)
-                        .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
-                        .WithInternalComment(quoteItem.InternalComment)
-                        .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
-                        .WithAssignedUnitPrice(quoteItem.UnitPrice)
-                        .WithProduct(quoteItem.Product)
-                        .WithSerialisedItem(quoteItem.SerialisedItem)
-                        .WithProductFeature(quoteItem.ProductFeature)
-                        .WithQuantityOrdered(quoteItem.Quantity).Build());
-            }
-
-            return salesOrder;
+            this.QuoteState = new QuoteStates(this.strategy.Session).Rejected;
         }
 
-        public void AppsOrder(ProductQuoteOrder Method)
+        public void AppsOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
             this.OrderThis();
@@ -102,6 +75,59 @@ namespace Allors.Domain
 
                 this.PrintDocument.Media.FileName = $"{this.QuoteNumber}.odt";
             }
+        }
+        
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            this.DeriveWorkflow();
+            this.ResetPrintDocument();
+        }
+
+        private void DeriveWorkflow()
+        {
+            this.WorkItemDescription = $"[{this.Issuer?.PartyName}] ProductQuote: {this.QuoteNumber}";
+
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
+            if (this.QuoteState.IsCreated)
+            {
+                if (!openTasks.OfType<ProductQuoteApproval>().Any())
+                {
+                    new ProductQuoteApprovalBuilder(this.strategy.Session).WithProductQuote(this).Build();
+                }
+            }
+        }
+        
+        private SalesOrder OrderThis()
+        {
+            var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
+                .WithTakenBy(this.Issuer)
+                .WithBillToCustomer(this.Receiver)
+                .WithDescription(this.Description)
+                .WithShipToContactPerson(this.ContactPerson)
+                .WithBillToContactPerson(this.ContactPerson)
+                .WithQuote(this)
+                .Build();
+
+            var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
+
+            foreach (QuoteItem quoteItem in quoteItems)
+            {
+                quoteItem.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
+
+                salesOrder.AddSalesOrderItem(
+                    new SalesOrderItemBuilder(this.Strategy.Session)
+                        .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+                        .WithInternalComment(quoteItem.InternalComment)
+                        .WithAssignedDeliveryDate(quoteItem.EstimatedDeliveryDate)
+                        .WithAssignedUnitPrice(quoteItem.UnitPrice)
+                        .WithProduct(quoteItem.Product)
+                        .WithSerialisedItem(quoteItem.SerialisedItem)
+                        .WithProductFeature(quoteItem.ProductFeature)
+                        .WithQuantityOrdered(quoteItem.Quantity).Build());
+            }
+
+            return salesOrder;
         }
     }
 }

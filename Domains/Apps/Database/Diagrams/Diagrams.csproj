@@ -49,6 +49,7 @@
     <None Include="General\Media.cd" />
     <None Include="General\Localised.cd" />
     <None Include="Invoice\Invoice.cd" />
+    <None Include="Order\ProductQuote - Approval.cd" />
     <None Include="Order\Overview.cd" />
     <None Include="Products\Inventory Storage.cd" />
     <None Include="Products\Overview.cd" />

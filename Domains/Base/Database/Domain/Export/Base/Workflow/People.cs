@@ -21,11 +21,14 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Collections.Generic;
 
     using Allors.Meta;
 
     public partial class People
     {
+        public static readonly IEnumerable<Person> EmptyList = new Person[0];
+
         public static readonly Guid AdministratorId = new Guid("FF791BA1-6E02-4F64-83A3-E6BEE1208C11");
         public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
 

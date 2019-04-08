@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
 
-import { AllorsDevModule } from '../../allors/angular';
 import { AllorsMaterialSideMenuModule } from '../../allors/material';
 import { InternalOrganisationSelectModule } from '../../allors/material';
 
@@ -23,7 +22,6 @@ import { MainComponent } from './main.component';
     MatSidenavModule,
     MatToolbarModule,
 
-    AllorsDevModule,
     AllorsMaterialSideMenuModule,
     InternalOrganisationSelectModule,
   ],
