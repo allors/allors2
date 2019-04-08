@@ -18,6 +18,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public WorkEffort WorkEffort { get; set; }
 
         #region Allors
@@ -37,6 +38,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public InvoiceItem InvoiceItem { get; set; }
         
         #region inherited methods

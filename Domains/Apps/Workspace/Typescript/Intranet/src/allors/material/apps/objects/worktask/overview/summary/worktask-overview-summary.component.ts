@@ -1,9 +1,10 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, RefreshService, Invoked,  Action } from '../../../../../../angular';
-import { WorkTask } from '../../../../../../domain';
+import { PanelService, NavigationService, MetaService, RefreshService, Invoked, Action } from '../../../../../../angular';
+import { WorkTask, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { PrintService } from 'src/allors/material';
+import { Equals, And, ContainedIn, Filter } from 'src/allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,6 +20,7 @@ export class WorkTaskOverviewSummaryComponent {
   parent: WorkTask;
 
   print: Action;
+  salesInvoices: Set<SalesInvoice>;
 
   constructor(
     @Self() public panel: PanelService,
@@ -35,6 +37,8 @@ export class WorkTaskOverviewSummaryComponent {
     panel.name = 'summary';
 
     const workTaskPullName = `${panel.name}_${this.m.WorkTask.name}`;
+    const serviceEntryPullName = `${panel.name}_${this.m.ServiceEntry.name}`;
+    const workEffortBillingPullName = `${panel.name}_${this.m.WorkEffortBilling.name}`;
     const parentPullName = `${panel.name}_${this.m.WorkTask.name}_parent`;
 
     panel.onPull = (pulls) => {
@@ -61,13 +65,45 @@ export class WorkTaskOverviewSummaryComponent {
           fetch: {
             WorkEffortWhereChild: x
           }
-        })
+        }),
+        pull.WorkEffort({
+          name: workEffortBillingPullName,
+          object: id,
+          fetch: {
+            WorkEffortBillingsWhereWorkEffort: {
+              InvoiceItem: {
+                SalesInvoiceItem_SalesInvoiceWhereSalesInvoiceItem: x
+              }
+            }
+          }
+        }),
+        pull.TimeEntryBilling({
+          name: serviceEntryPullName,
+          predicate:
+            new ContainedIn({
+              propertyType: m.TimeEntryBilling.TimeEntry,
+              extent: new Filter({
+                objectType: m.ServiceEntry,
+                predicate: new Equals({
+                  propertyType: m.ServiceEntry.WorkEffort, object: id
+                })
+              })
+            }),
+          fetch: {
+            InvoiceItem: {
+              SalesInvoiceItem_SalesInvoiceWhereSalesInvoiceItem: x
+            }
+          }
+        }),
       );
     };
 
     panel.onPulled = (loaded) => {
       this.workTask = loaded.objects[workTaskPullName] as WorkTask;
       this.parent = loaded.objects[parentPullName] as WorkTask;
+      const salesInvoices1 = loaded.collections[workEffortBillingPullName] as SalesInvoice[];
+      const salesInvoices2 = loaded.collections[serviceEntryPullName] as SalesInvoice[];
+      this.salesInvoices = new Set([...salesInvoices1, ...salesInvoices2]);
     };
   }
 

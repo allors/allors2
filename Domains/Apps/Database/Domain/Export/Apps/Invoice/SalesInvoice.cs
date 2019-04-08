@@ -229,21 +229,26 @@ namespace Allors.Domain
 
                 foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
                 {
-                    //TODO: Why?, Add is not needed here!
                     var salesOrder = orderItemBilling.OrderItem.SalesOrderWhereSalesOrderItem;
-                    if (this.SalesOrders.Contains(salesOrder))
+                    if (!this.SalesOrders.Contains(salesOrder))
                     {
-                        this.SalesOrders.Add(salesOrder);
+                        this.AddSalesOrder(salesOrder);
                     }
                 }
 
-
                 foreach (WorkEffortBilling workEffortBilling in salesInvoiceItem.WorkEffortBillingsWhereInvoiceItem)
                 {
-                    //TODO: Why?, workeffort Add is not needed here!
-                    if (this.SalesOrders.Contains(workEffortBilling.WorkEffort))
+                    if (!this.WorkEfforts.Contains(workEffortBilling.WorkEffort))
                     {
-                        this.SalesOrders.Add(workEffortBilling.WorkEffort);
+                        this.AddWorkEffort(workEffortBilling.WorkEffort);
+                    }
+                }
+
+                foreach (TimeEntryBilling timeEntryBilling in salesInvoiceItem.TimeEntryBillingsWhereInvoiceItem)
+                {
+                    if (!this.WorkEfforts.Contains(timeEntryBilling.TimeEntry.WorkEffort))
+                    {
+                        this.AddWorkEffort(timeEntryBilling.TimeEntry.WorkEffort);
                     }
                 }
             }

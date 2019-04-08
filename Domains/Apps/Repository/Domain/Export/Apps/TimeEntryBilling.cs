@@ -18,6 +18,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
+        [Workspace]
         public TimeEntry TimeEntry { get; set; }
 
         #region Allors
@@ -28,6 +29,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
+        [Workspace]
         public InvoiceItem InvoiceItem { get; set; }
 
         #region inherited methods
