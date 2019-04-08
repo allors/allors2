@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { ObjectType } from 'src/allors/framework';
+import { ObjectType } from '../../../../allors/framework';
 
 export class NavigationActivatedRoute {
 

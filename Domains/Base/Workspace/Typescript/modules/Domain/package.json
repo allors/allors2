@@ -24,7 +24,5 @@
     "typescript": "latest",
     "lnk": "latest"
   },
-  "dependencies": {
-    "moment": "latest"
-  }
+  "dependencies": {}
 }

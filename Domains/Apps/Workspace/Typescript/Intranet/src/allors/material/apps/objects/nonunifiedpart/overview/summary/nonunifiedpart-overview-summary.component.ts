@@ -98,12 +98,12 @@ export class NonUnifiedPartOverviewSummaryComponent {
       this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
       this.allPricecomponents = loaded.collections[priceComponentPullName] as PriceComponent[];
-      this.currentPricecomponents = this.allPricecomponents.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
-      this.inactivePricecomponents = this.allPricecomponents.filter(v => v.FromDate.isAfter(now) || (v.ThroughDate !== null && v.ThroughDate.isBefore(now)));
+      this.currentPricecomponents = this.allPricecomponents.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
+      this.inactivePricecomponents = this.allPricecomponents.filter(v => moment(v.FromDate).isAfter(now) || (v.ThroughDate !== null && moment(v.ThroughDate).isBefore(now)));
 
       this.allSupplierOfferings = loaded.collections[supplierOfferingsPullName] as SupplierOffering[];
-      this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
-      this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate.isAfter(now) || (v.ThroughDate !== null && v.ThroughDate.isBefore(now)));
+      this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
+      this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => moment(v.FromDate).isAfter(now) || (v.ThroughDate !== null && moment(v.ThroughDate).isBefore(now)));
 
       if (this.part.SuppliedBy.length > 0) {
         this.suppliers = this.part.SuppliedBy

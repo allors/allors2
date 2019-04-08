@@ -100,7 +100,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         const now = moment.utc();
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+        const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.owner = loaded.objects.Party as Party;

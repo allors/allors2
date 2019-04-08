@@ -22,27 +22,31 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
 
   get hours(): number {
     if (this.model) {
-      return this.model.hour();
+      const model = moment.utc(this.model);
+      return model.hours();
     }
   }
 
   set hours(value: number) {
     if (this.model) {
-      this.model.hour(value);
-      this.model = moment(this.model);
+      const model = moment.utc(this.model);
+      model.hours(value);
+      this.model = model;
     }
   }
 
   get minutes(): number {
     if (this.model) {
-      return this.model.minute();
+      const model = moment.utc(this.model);
+      return model.minutes();
     }
   }
 
   set minutes(value: number) {
     if (this.model) {
-      this.model.minute(value);
-      this.model = moment(this.model);
+      const model = moment.utc(this.model);
+      model.minutes(value);
+      this.model = model;
     }
   }
 

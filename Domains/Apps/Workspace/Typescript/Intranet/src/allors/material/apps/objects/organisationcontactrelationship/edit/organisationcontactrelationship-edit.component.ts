@@ -99,7 +99,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
           this.title = 'Add Organisation Contact';
 
           this.partyRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-          this.partyRelationship.FromDate = moment.utc();
+          this.partyRelationship.FromDate = moment.utc().toISOString();
           this.partyRelationship.AddContactKind(this.generalContact);
 
           this.party = loaded.objects.Party as Party;

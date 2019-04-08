@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-
 import { ObjectType } from '../meta';
 import { SyncResponse, SyncResponseObject } from '../protocol/sync/SyncResponse';
 import { IWorkspace } from './Workspace';
@@ -51,13 +49,7 @@ export class WorkspaceObject implements IWorkspaceObject {
                 this.roles[`CanWrite${name}`] = canWrite;
 
                 if (canRead) {
-                    const roleType = objectType.roleTypeByName[name];
-                    let value = role[2];
-
-                    if (value && roleType.objectType.isDateTime) {
-                        value = moment.utc(value);
-                    }
-
+                    const value = role[2];
                     this.roles[name] = value;
                 }
 

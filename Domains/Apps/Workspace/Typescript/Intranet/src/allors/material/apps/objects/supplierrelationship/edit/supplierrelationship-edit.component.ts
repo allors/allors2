@@ -90,7 +90,7 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
           this.title = 'Add Supplier Relationship';
 
           this.partyRelationship = this.allors.context.create('SupplierRelationship') as SupplierRelationship;
-          this.partyRelationship.FromDate = moment.utc();
+          this.partyRelationship.FromDate = moment.utc().toISOString();
           this.partyRelationship.Supplier = this.organisation;
           this.partyRelationship.InternalOrganisation = this.internalOrganisation;
         } else {

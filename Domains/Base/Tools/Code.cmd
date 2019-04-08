@@ -1,6 +1,6 @@
 @echo off
 
-cd ng-tool
+cd ng-tools
 call code .
 exit
 

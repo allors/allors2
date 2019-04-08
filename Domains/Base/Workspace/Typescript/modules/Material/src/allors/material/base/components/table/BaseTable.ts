@@ -6,7 +6,7 @@ import { Action } from '../../../../angular';
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';
-import { ISessionObject } from 'src/allors/framework';
+import { ISessionObject } from '../../../../../allors/framework';
 
 export abstract class BaseTable {
   columns: Column[];

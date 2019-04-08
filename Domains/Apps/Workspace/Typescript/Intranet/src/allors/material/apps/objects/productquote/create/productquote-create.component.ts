@@ -81,8 +81,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = this.internalOrganisation;
-        this.quote.IssueDate = moment.utc();
-        this.quote.ValidFromDate = moment.utc();
+        this.quote.IssueDate = moment.utc().toISOString();
+        this.quote.ValidFromDate = moment.utc().toISOString();
 
       });
   }

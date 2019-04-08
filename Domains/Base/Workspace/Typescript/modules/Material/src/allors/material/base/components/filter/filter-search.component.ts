@@ -3,9 +3,9 @@ import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, map, switchMap, scan, tap } from 'rxjs/operators';
 
-import { ISessionObject } from 'src/allors/framework';
-import { ContextService } from 'src/allors/angular';
-import { FilterFieldDefinition } from 'src/allors/angular/base/filter/filterFieldDefinition';
+import { ISessionObject } from '../../../../../allors/framework';
+import { ContextService } from '../../../../../allors/angular';
+import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/filterFieldDefinition';
 
 @Component({
     // tslint:disable-next-line:component-selector

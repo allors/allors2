@@ -9,7 +9,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import * as relations from '../allors/material/custom/relations';
 import * as tests from '../allors/material/custom/tests';
-const routes: Routes = [
+
+export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {

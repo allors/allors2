@@ -191,7 +191,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.customerRole) === -1 && this.isActiveCustomer) {
-      this.customerRelationship.ThroughDate = moment.utc();
+      this.customerRelationship.ThroughDate = moment.utc().toISOString();
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) > -1 && !this.isActiveSupplier) {
@@ -205,7 +205,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) === -1 && this.isActiveSupplier) {
-      this.supplierRelationship.ThroughDate = moment.utc();
+      this.supplierRelationship.ThroughDate = moment.utc().toISOString();
     }
 
     this.allors.context

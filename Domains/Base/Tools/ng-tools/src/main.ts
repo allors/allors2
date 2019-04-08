@@ -1,19 +1,11 @@
 #! /usr/bin/env node
-import * as path from 'path';
-import { Program } from './Program';
+import { Menu } from './Model/Menu';
+import { workspace, routes } from './config';
 
-//const project = path.resolve("./projects/empty/src/tsconfig.app.json");
-const project = path.resolve("../../Workspace/Typescript/modules/Material/src/tsconfig.app.json");
+//const router = new router(workspace, routes);
 
-const program = new Program(project);
-const { application } = program;
+console.log();
+console.log('Output');
+console.log('======');
+const menu = new Menu();
 
-console.log()
-console.log("Root Components")
-console.log("===============")
-application.directives.filter((v)=>v.isComponent && v.isLocal && v.hasSelector).forEach((v) => console.log(v.name))
-
-console.log()
-console.log("Selector Components")
-console.log("===================")
-application.directives.filter((v)=>v.isComponent && v.isLocal && !v.hasSelector).forEach((v) => console.log(v.name))

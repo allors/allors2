@@ -199,7 +199,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         this.settings = loaded.objects.Settings as Settings;
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+        const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
@@ -318,7 +318,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
           const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+            moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
 
           if (supplierOffering === undefined) {
             this.supplierOfferings.push(this.newSupplierOffering(supplier));
@@ -333,7 +333,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
           const now = moment.utc();
           const supplierOffering = this.supplierOfferings.find((v) =>
             v.Supplier === supplier &&
-            v.FromDate.isBefore(now) && (v.ThroughDate === null || v.ThroughDate.isAfter(now)));
+            moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
 
           if (supplierOffering !== undefined) {
             supplierOffering.ThroughDate = now;
