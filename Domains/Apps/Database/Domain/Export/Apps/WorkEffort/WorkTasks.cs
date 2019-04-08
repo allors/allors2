@@ -76,8 +76,8 @@ namespace Allors.Domain
             workTasks.Filter.AddEquals(M.WorkEffort.WorkEffortState, new WorkEffortStates(session).Completed);
             workTasks.Filter.AddContainedIn(M.WorkEffort.Customer, (Extent)customers);
 
-            var workTasksByCustomer = workTasks
-                .ToDictionary(v => v.Customer, v => v.Customer.WorkEffortsWhereCustomer.Where(w => w.WorkEffortState.Equals(new WorkEffortStates(session).Completed)).ToArray());
+            var workTasksByCustomer = workTasks.Select(v => v.Customer).Distinct()
+                .ToDictionary(v => v, v => v.WorkEffortsWhereCustomer.Where(w => w.WorkEffortState.Equals(new WorkEffortStates(session).Completed)).ToArray());
 
             SalesInvoice salesInvoice = null;
 
@@ -111,29 +111,38 @@ namespace Allors.Domain
                             .Select(v => v)
                             .ToArray();
 
+                        foreach (var rateGroup in timeEntriesByBillingRate)
+                        {
+                            var timeEntries = rateGroup.ToArray();
+
+                            var invoiceItem = new SalesInvoiceItemBuilder(session)
+                                .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
+                                .WithAssignedUnitPrice(rateGroup.Key)
+                                .WithQuantity(timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m))
+                                .Build();
+
+                            salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                            foreach (TimeEntry billableEntry in timeEntries)
+                            {
+                                new TimeEntryBillingBuilder(session)
+                                    .WithTimeEntry(billableEntry)
+                                    .WithInvoiceItem(invoiceItem)
+                                    .Build();
+                            }
+                        }
+
                         foreach (var workEffort in group)
                         {
                             if (workEffort.CanInvoice)
                             {
-                                foreach (var rateGroup in timeEntriesByBillingRate)
+                                if (string.IsNullOrEmpty(salesInvoice.CustomerReference))
                                 {
-                                    var timeEntries = rateGroup.ToArray();
-
-                                    var invoiceItem = new SalesInvoiceItemBuilder(session)
-                                        .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
-                                        .WithAssignedUnitPrice(rateGroup.Key)
-                                        .WithQuantity(timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m))
-                                        .Build();
-
-                                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
-
-                                    foreach (TimeEntry billableEntry in workEffort.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue))
-                                    {
-                                        new TimeEntryBillingBuilder(session)
-                                            .WithTimeEntry(billableEntry)
-                                            .WithInvoiceItem(invoiceItem)
-                                            .Build();
-                                    }
+                                    salesInvoice.CustomerReference = $"WorkOrder(s): {workEffort.WorkEffortNumber}";
+                                }
+                                else
+                                {
+                                    salesInvoice.CustomerReference += $", {workEffort.WorkEffortNumber}";
                                 }
 
                                 foreach (WorkEffortInventoryAssignment inventoryAssignment in workEffort.WorkEffortInventoryAssignmentsWhereAssignment)
@@ -170,6 +179,8 @@ namespace Allors.Domain
                                         .WithInvoiceItem(invoiceItem)
                                         .Build();
                                 }
+
+                                workEffort.WorkEffortState = new WorkEffortStates(session).Finished;
                             }
                         }
                     }

@@ -51,11 +51,10 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
+
             //return this.PrintSalesInvoice();
             //return this.PrintWorkTask();
-
-            WorkTasks.Monthly(this.databaseService.Database.CreateSession());
-            return ExitCode.Success;
+            return this.MonthlyScheduler();
         }
 
         private int PrintSalesInvoice()
@@ -178,6 +177,42 @@ namespace Commands
                 {
                     stream.CopyTo(outputFile);
                 }
+
+                this.logger.LogInformation("End");
+            }
+
+            return ExitCode.Success;
+        }
+
+        private int MonthlyScheduler()
+        {
+            using (var session = this.databaseService.Database.CreateSession())
+            {
+                this.logger.LogInformation("Begin");
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
+                WorkTasks.Monthly(session);
+
+                var validation = session.Derive(false);
+
+                if (validation.HasErrors)
+                {
+                    foreach (var error in validation.Errors)
+                    {
+                        this.logger.LogError("Validation error: {error}", error);
+                    }
+
+                    session.Rollback();
+                }
+                else
+                {
+                    session.Commit();
+                }
+
+                session.Derive();
+                session.Commit();
 
                 this.logger.LogInformation("End");
             }

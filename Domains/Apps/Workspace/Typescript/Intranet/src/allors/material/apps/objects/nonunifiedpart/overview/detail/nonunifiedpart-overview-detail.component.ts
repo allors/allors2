@@ -336,7 +336,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
             moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
 
           if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = now;
+            supplierOffering.ThroughDate = moment.utc().toISOString();;
           }
         });
       }
