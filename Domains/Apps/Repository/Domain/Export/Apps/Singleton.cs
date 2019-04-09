@@ -38,5 +38,11 @@ namespace Allors.Repository
         #region inherited methods
 
         #endregion
+
+        #region Allors
+        [Id("57159458-EBAD-45F5-94A7-771103E380DD")]
+        #endregion
+        [Workspace]
+        public void WorkEffortInvoicing() { }
     }
 }

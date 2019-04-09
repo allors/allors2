@@ -67,7 +67,7 @@ namespace Allors.Domain
             config.Deny(M.WorkEffortFixedAssetAssignment, completed, Operations.Write);
         }
 
-        public static void Monthly(ISession session)
+        public static void AppsMonthly(ISession session)
         {
             var customers = new Parties(session).Extent();
             customers.Filter.AddEquals(M.Party.CollectiveWorkEffortInvoice, true);
