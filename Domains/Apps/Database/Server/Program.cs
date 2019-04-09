@@ -1,4 +1,6 @@
-﻿namespace Allors.Server
+﻿using System.Runtime.InteropServices;
+
+namespace Allors.Server
 {
     using System;
 
@@ -11,6 +13,8 @@
 
     public class Program
     {
+        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
         public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -35,12 +39,10 @@
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    const string FileName = @"apps.appSettings.json";
-                    var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
-                    var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
-
-                    config.AddJsonFile(systemSettings, true);
-                    config.AddJsonFile(userSettings, true);
+                    if (IsOsx)
+                    {
+                        config.AddJsonFile("appSettings.osx.json", false);                        
+                    }                    
                 })
                 .ConfigureLogging(logging =>
                     {

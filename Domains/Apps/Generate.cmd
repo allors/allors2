@@ -3,8 +3,9 @@
 @echo Clean
 @echo =====
 
-rmdir /s /q .\Database\Domain\Generated >nul 2>&1
-rmdir /s /q .\Database\Diagrams\Generated >nul 2>&1
+rmdir /s /q .\Database\Meta\generated >nul 2>&1
+rmdir /s /q .\Database\Domain\generated >nul 2>&1
+rmdir /s /q .\Database\Diagrams\generated >nul 2>&1
 rmdir /s /q .\Workspace\Typescript\Domain\src\allors\meta\generated >nul 2>&1
 rmdir /s /q .\Workspace\Typescript\Domain\src\allors\domain\generated >nul 2>&1
 rmdir /s /q .\Workspace\Typescript\Intranet\src\allors\meta\generated >nul 2>&1

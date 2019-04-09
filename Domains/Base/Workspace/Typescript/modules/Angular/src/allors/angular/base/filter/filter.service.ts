@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { FilterFieldDefinition } from './filterFieldDefinition';
+import { FilterFieldDefinition } from './FilterFieldDefinition';
 import { Predicate, And, Or, Not, ContainedIn, Filter } from '../../../framework';
 import { FilterField } from './FilterField';
 import { ParametrizedPredicate } from '../../../framework/database/data/ParametrizedPredicate';

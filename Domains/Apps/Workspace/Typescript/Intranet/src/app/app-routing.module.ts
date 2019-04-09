@@ -27,7 +27,7 @@ import * as ProductQuoteOverview from 'src/allors/material/apps/objects/productq
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
 import * as PurchaseInvoiceList from '../allors/material/apps/objects/purchaseinvoice/list/purchaseinvoice-list.module';
 import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purchaseinvoice/overview/purchaseinvoice-overview.module';
-import * as PurchaseInvoiceItemEdit from '../allors/material/apps/objects/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+import * as PurchaseInvoiceItemEdit from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import * as PurchaseOrderList from 'src/allors/material/apps/objects/purchaseorder/list/purchaseorder-list.module';
 import * as PurchaseOrderOverview from 'src/allors/material/apps/objects/purchaseorder/overview/purchaseorder-overview.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';

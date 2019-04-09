@@ -5,7 +5,7 @@ import { filter, debounceTime, distinctUntilChanged, map, switchMap, scan, tap }
 
 import { ISessionObject } from '../../../../../allors/framework';
 import { ContextService } from '../../../../../allors/angular';
-import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/filterFieldDefinition';
+import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/FilterFieldDefinition';
 
 @Component({
     // tslint:disable-next-line:component-selector

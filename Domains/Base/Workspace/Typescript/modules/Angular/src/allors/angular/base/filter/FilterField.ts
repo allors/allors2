@@ -1,5 +1,5 @@
 import { Exists } from '../../../../allors/framework';
-import { FilterFieldDefinition } from './filterFieldDefinition';
+import { FilterFieldDefinition } from './FilterFieldDefinition';
 
 export class FilterField {
   definition: FilterFieldDefinition;
