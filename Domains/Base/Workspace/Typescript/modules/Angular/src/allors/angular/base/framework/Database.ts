@@ -96,7 +96,7 @@ export class Database {
   }
 
   private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
-    const service: string = this.fullyQualifiedUrl(methodOrService + '/Pull');
+    const service: string = this.fullyQualifiedUrl(methodOrService + '/Invoke');
     return this.http
       .post<InvokeResponse>(service, args)
       .pipe(
