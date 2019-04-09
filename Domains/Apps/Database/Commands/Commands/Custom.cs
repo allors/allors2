@@ -193,7 +193,7 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
-                WorkTasks.Monthly(session);
+                WorkTasks.AppsMonthly(session);
 
                 var validation = session.Derive(false);
 
