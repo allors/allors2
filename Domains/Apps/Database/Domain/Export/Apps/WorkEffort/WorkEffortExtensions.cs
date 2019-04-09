@@ -126,10 +126,15 @@ namespace Allors.Domain
 
         public static void AppsInvoice(this WorkEffort @this, WorkEffortInvoice method)
         {
-            if (@this.CanInvoice)
+            if (!method.Result.HasValue)
             {
-                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Finished;
-                @this.InvoiceThis();
+                if (@this.CanInvoice)
+                {
+                    @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Finished;
+                    @this.InvoiceThis();
+                }
+
+                method.Result = true;
             }
         }
 

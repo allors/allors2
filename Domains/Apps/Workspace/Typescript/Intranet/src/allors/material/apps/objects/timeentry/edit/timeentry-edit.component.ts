@@ -52,6 +52,8 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
+    const workEffortPartyAssignmentPullName = `${this.m.WorkEffortPartyAssignment.name}`;
+
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(([]) => {
@@ -89,6 +91,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
                 object: this.data.associationId
               }),
               pull.WorkEffort({
+                name: workEffortPartyAssignmentPullName,
                 object: this.data.associationId,
                 fetch: {
                   WorkEffortPartyAssignmentsWhereAssignment: {
@@ -116,7 +119,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         const hour = this.frequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
-        const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
+        const workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
         this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
 
         if (isCreate) {
