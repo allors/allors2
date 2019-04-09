@@ -5,6 +5,7 @@ import { MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule } fr
 
 import { AllorsMaterialSideMenuModule } from '../../allors/material';
 import { InternalOrganisationSelectModule } from '../../allors/material';
+import { TaskAssignmentLinkModule } from '../../allors/material/apps/objects/taskassignment/link/taskassignment-link.module';
 
 import { MainComponent } from './main.component';
 
@@ -21,9 +22,9 @@ import { MainComponent } from './main.component';
     MatIconModule,
     MatSidenavModule,
     MatToolbarModule,
-
     AllorsMaterialSideMenuModule,
     InternalOrganisationSelectModule,
+    TaskAssignmentLinkModule,
   ],
 })
 export class MainModule {

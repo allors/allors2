@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
+import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
@@ -20,10 +20,10 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './task-list.component.html',
+  templateUrl: './taskassignment-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class TaskListComponent implements OnInit, OnDestroy {
+export class TaskAssignmentListComponent implements OnInit, OnDestroy {
 
   public title = 'Tasks';
 
@@ -72,7 +72,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'description' }),
+      // new Like({ roleType: m.TaskAssignment., parameter: 'title' }),
     ]);
 
     this.filterService.init(predicate);

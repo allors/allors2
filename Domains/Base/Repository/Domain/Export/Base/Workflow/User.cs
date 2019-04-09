@@ -72,17 +72,6 @@ namespace Allors.Repository
         bool UserEmailConfirmed { get; set; }
         
         #region Allors
-        [Id("b4c09bec-168f-4f05-8ec6-919d1a24ae96")]
-        [AssociationId("3d05bc18-c205-424a-ab26-fec24eafbd78")]
-        [RoleId("484ecaae-3f39-451b-a689-a55601df6778")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Workspace]
-        TaskList TaskList { get; set; }
-
-        #region Allors
         [Id("bed34563-4ed8-4c6b-88d2-b4199e521d74")]
         [AssociationId("e678c2f8-5c66-4886-ad21-2be98101f759")]
         [RoleId("79e9a907-9237-4aab-9340-277d593748f5")]

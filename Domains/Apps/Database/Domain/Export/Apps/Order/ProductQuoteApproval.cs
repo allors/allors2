@@ -40,6 +40,8 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.Title = "Approval of " + this.ProductQuote.Description;
+
             this.WorkItem = this.ProductQuote;
 
             // Lifecycle

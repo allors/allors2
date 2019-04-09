@@ -22,13 +22,6 @@ namespace Allors.Domain
 {
     public partial class TaskAssignment
     {
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.AddDependency(this.User.TaskList, this);
-        }
-        
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var singleton = this.Strategy.Session.GetSingleton();

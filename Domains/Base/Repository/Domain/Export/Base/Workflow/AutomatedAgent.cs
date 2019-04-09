@@ -44,8 +44,6 @@ namespace Allors.Repository
 
         public string UserPasswordHash { get; set; }
 
-        public TaskList TaskList { get; set; }
-
         public NotificationList NotificationList { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

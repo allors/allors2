@@ -50,4 +50,6 @@ export function appInit(workspaceService: WorkspaceService) {
 
   m.PositionType.list = '/humanresource/positiontypes';
   m.PositionTypeRate.list = '/humanresource/positiontyperates';
+
+  m.TaskAssignment.list = '/workflow/taskassignments';
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="7" Y="5.5" Width="1.75" />
+    <Position X="7" Y="5.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>mAQAAAGESRYAQICAUAhQphIIBgmMgoIACAESAAAxSAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -11,7 +11,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Quote" Collapsed="true">
-    <Position X="12.75" Y="5.5" Width="1.75" />
+    <Position X="12.75" Y="5.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAEAAIAAA4AgAAAABACAAAEACgAEgAAAAAAAAAAIQAg=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -22,38 +22,48 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.User" Collapsed="true">
-    <Position X="1" Y="0.5" Width="1.75" />
+    <Position X="1" Y="0.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAGAACAAAQAACBAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAGAAAAAAQAACBAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="TaskList" />
       <Property Name="NotificationList" />
     </ShowAsAssociation>
   </Interface>
+  <Interface Name="Allors.Domain.ApproveTask">
+    <Position X="10" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RejectionNotification" />
+      <Property Name="ApprovalNotification" />
+    </ShowAsAssociation>
+  </Interface>
   <Interface Name="Allors.Domain.Task">
-    <Position X="10" Y="0.5" Width="1.75" />
+    <Position X="10" Y="0.75" Width="1.75" />
     <AssociationLine Name="Participants" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.375" Y="0.5" />
-        <Point X="11.375" Y="0.125" />
-        <Point X="0.625" Y="0.125" />
-        <Point X="0.625" Y="4.812" />
-        <Point X="1" Y="4.812" />
+        <Point X="11.375" Y="0.75" />
+        <Point X="11.375" Y="0.375" />
+        <Point X="0.625" Y="0.375" />
+        <Point X="0.625" Y="5.062" />
+        <Point X="1" Y="5.062" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Performer" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.188" Y="0.5" />
-        <Point X="11.188" Y="0.125" />
-        <Point X="0.625" Y="0.125" />
-        <Point X="0.625" Y="4.438" />
-        <Point X="1" Y="4.438" />
+        <Point X="11.188" Y="0.75" />
+        <Point X="11.188" Y="0.375" />
+        <Point X="0.625" Y="0.375" />
+        <Point X="0.625" Y="4.688" />
+        <Point X="1" Y="4.688" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAQAAAAAAACAEAAAACAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAEAABAAAAAAAAQAAAAAAACAEAAAACAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -63,63 +73,52 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkItem">
-    <Position X="12.75" Y="0.5" Width="1.75" />
+    <Position X="12.75" Y="0.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Person" Collapsed="true">
-    <Position X="1" Y="4.25" Width="1.5" />
+    <Position X="1" Y="4.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAEggEiAJgAAAEiKABAwAAYEACAAAAiACAAgAACAAAg=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="Allors.Domain.ProductQuote" Collapsed="true">
+    <Position X="12.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ProductQuoteApproval">
+    <Position X="9.75" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ProductQuote" />
+    </ShowAsAssociation>
+  </Interface>
   <Interface Name="Allors.Domain.QuoteState" Collapsed="true">
-    <Position X="15.5" Y="5.75" Width="1.5" />
+    <Position X="15.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.TaskAssignment" Collapsed="true">
-    <Position X="6.75" Y="0.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="User" />
-      <Property Name="Notification" />
-      <Property Name="Task" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.TaskList">
-    <Position X="3.5" Y="0.5" Width="1.5" />
-    <AssociationLine Name="TaskAssignments" Type="Allors.Domain.TaskAssignment">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.058" Y="0.102" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAABAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="TaskAssignments" />
-      <Property Name="OpenTaskAssignments" />
-    </ShowAsAssociation>
-  </Interface>
   <Interface Name="Allors.Domain.Notification">
-    <Position X="6.75" Y="2.25" Width="1.75" />
+    <Position X="6.75" Y="2.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAEAAAAAAACAAAAAAAAAAAAAkAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.NotificationList" Collapsed="true">
-    <Position X="3.5" Y="2.25" Width="1.75" />
+    <Position X="3.25" Y="3" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAABAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -130,33 +129,17 @@
       <Property Name="ConfirmedNotifications" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.ApproveTask">
-    <Position X="10" Y="3" Width="1.75" />
+  <Interface Name="Allors.Domain.TaskAssignment" Collapsed="true">
+    <Position X="6.75" Y="0.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ApprovalNotification" />
-      <Property Name="RejectionNotification" />
+      <Property Name="User" />
+      <Property Name="Notification" />
+      <Property Name="Task" />
     </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.ProductQuoteApproval">
-    <Position X="9.75" Y="7" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ProductQuote" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.ProductQuote" Collapsed="true">
-    <Position X="12.75" Y="7" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -24,11 +24,6 @@ namespace Allors.Domain
     {
         public static void BaseDelete(this User @this, DeletableDelete method)
         {
-            if (@this.ExistTaskList)
-            {
-                @this.TaskList.Delete();
-            }
-
             if (@this.ExistNotificationList)
             {
                 @this.NotificationList.Delete();
@@ -37,11 +32,6 @@ namespace Allors.Domain
 
         public static void BaseOnBuild(this User @this, ObjectOnBuild method)
         {
-            if (!@this.ExistTaskList)
-            {
-                @this.TaskList = new TaskListBuilder(@this.Strategy.Session).Build();
-            }
-
             if (!@this.ExistNotificationList)
             {
                 @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();

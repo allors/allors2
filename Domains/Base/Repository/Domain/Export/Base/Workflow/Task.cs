@@ -41,6 +41,17 @@ namespace Allors.Repository
         WorkItem WorkItem { get; set; }
 
         #region Allors
+        [Id("0233714E-44A4-4363-8CC4-9D1C1DDD9BE5")]
+        [AssociationId("E2870D8C-D314-4A45-855D-88E52C050B0D")]
+        [RoleId("92C2C1CD-9D12-45B6-873D-34215EA9AFDE")]
+        [Indexed]
+        #endregion
+        [Size(512)]
+        [Derived]
+        [Workspace]
+        string Title { get; set; }
+
+        #region Allors
         [Id("8ebd9048-a344-417c-bae7-359ca9a74aa1")]
         [AssociationId("af6cbf34-5f71-498b-a2ec-ef698eeae799")]
         [RoleId("ceba2888-2a6e-4822-881b-1101b48f80f3")]

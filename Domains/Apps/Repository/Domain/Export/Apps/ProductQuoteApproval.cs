@@ -18,6 +18,8 @@ namespace Allors.Repository
 
         public WorkItem WorkItem { get; set; }
 
+        public string Title { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public DateTime DateClosed { get; set; }

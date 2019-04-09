@@ -1,26 +1,27 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatToolbarModule, MatBadgeModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
-import { TaskListComponent } from './task-list.component';
-export { TaskListComponent } from './task-list.component';
+import { TaskAssignmentLinkComponent } from './taskassignment-link.component';
+export { TaskAssignmentLinkComponent } from './taskassignment-link.component';
 
 @NgModule({
   declarations: [
-    TaskListComponent,
+    TaskAssignmentLinkComponent,
   ],
   exports: [
-    TaskListComponent,
+    TaskAssignmentLinkComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MatBadgeModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
@@ -29,4 +30,4 @@ export { TaskListComponent } from './task-list.component';
     AllorsMaterialTableModule,
   ],
 })
-export class TaskListModule { }
+export class TaskAssignmentLinkModule { }
