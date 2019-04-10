@@ -563,6 +563,76 @@ namespace Allors.Repository
         Person[] ProductQuoteApprovers { get; set; }
 
         #region Allors
+        [Id("556CBF9E-919A-4908-9115-161570B1D045")]
+        [AssociationId("61A5E44E-E63A-4A68-B8E8-00DD8014D37A")]
+        [RoleId("67325DD9-DBBB-49B7-8DCE-4D56BF69D3A7")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        SecurityToken ProductQuoteApproverSecurityToken { get; set; }
+
+        #region Allors
+        [Id("0C8C8316-4DA3-48B4-B758-198ABF06BB5E")]
+        [AssociationId("B99871FE-B66A-4C80-B360-F1ED29F10F0E")]
+        [RoleId("17D4FB33-7531-4C2A-AF5B-D831FE58C543")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        AccessControl ProductQuoteApproverAccessControl { get; set; }
+
+        #region Allors
+        [Id("8DCFB787-1C1B-4B15-937A-6E97A38179BA")]
+        [AssociationId("D6DD4077-0B73-4E32-AF94-1A7DF90240E7")]
+        [RoleId("2D8335A7-779E-4470-BEFA-1BE849829A60")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        UserGroup ProductQuoteApproverUserGroup { get; set; }
+
+        #region Allors
+        [Id("7886C66E-CC9F-44A5-BABC-3E0B987F25E2")]
+        [AssociationId("F109EE89-68AC-44B6-951A-AE75A0A0DED4")]
+        [RoleId("0F56D4C6-E1E3-4936-A96C-AC23FF41A8B5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        Person[] BlueCollarWorkers { get; set; }
+
+        #region Allors
+        [Id("1BB408C3-06B6-4F88-AA4F-089DB58676CA")]
+        [AssociationId("B570576B-BEDD-4984-BC6C-C1B26D320480")]
+        [RoleId("118BB412-13A1-4F1A-B63C-363BD351945B")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        SecurityToken BlueCollarWorkerSecurityToken { get; set; }
+
+        #region Allors
+        [Id("B727ED6B-A18B-4BA3-8CE6-33A164898484")]
+        [AssociationId("09B5D676-A59E-4AC7-AB2C-E12695A513DE")]
+        [RoleId("7AAA11C9-42B4-49E6-B57B-56101A8141C2")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        AccessControl BlueCollarWorkerAccessControl { get; set; }
+
+        #region Allors
+        [Id("3C6FD866-64AA-481A-9AAC-4A538C643129")]
+        [AssociationId("182B0069-75C0-4F8F-8AF7-D15692C39A5B")]
+        [RoleId("97B79CD5-FC6F-4415-9A16-A4FBAF5749D2")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        UserGroup BlueCollarWorkerUserGroup { get; set; }
+
+        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();

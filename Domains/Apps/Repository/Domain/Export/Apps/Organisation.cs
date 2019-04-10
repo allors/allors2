@@ -95,6 +95,14 @@ namespace Allors.Repository
         public Person[] SalesReps { get; set; }
 
         public Person[] ProductQuoteApprovers { get; set; }
+        public SecurityToken ProductQuoteApproverSecurityToken { get; set; }
+        public AccessControl ProductQuoteApproverAccessControl { get; set; }
+        public UserGroup ProductQuoteApproverUserGroup { get; set; }
+
+        public Person[] BlueCollarWorkers { get; set; }
+        public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
+        public AccessControl BlueCollarWorkerAccessControl { get; set; }
+        public UserGroup BlueCollarWorkerUserGroup { get; set; }
 
         public GeneralLedgerAccount GlAccount { get; set; }
 

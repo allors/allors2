@@ -119,9 +119,6 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         const hour = this.frequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
 
-        const workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
-        this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
-
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
 
@@ -131,10 +128,16 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           this.timeEntry.IsBillable = true;
           this.timeEntry.BillingFrequency = hour;
           this.timeEntry.TimeFrequency = hour;
-        } else {
+
+          const workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
+          this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
+          } else {
           this.timeEntry = loaded.objects.TimeEntry as TimeEntry;
           this.selectedWorker = this.timeEntry.Worker;
           this.workEffort = this.timeEntry.WorkEffort;
+
+          const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
+          this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
 
           if (this.timeEntry.CanWriteAssignedAmountOfTime) {
             this.title = 'Edit Time Entry';

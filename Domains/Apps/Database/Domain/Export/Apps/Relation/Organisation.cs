@@ -41,50 +41,50 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var validation = derivation.Validation;
+            var session = this.Strategy.Session;
 
-            this.Strategy.Session.Prefetch(this.PrefetchPolicy);
+            session.Prefetch(this.PrefetchPolicy);
 
             if (this.IsInternalOrganisation)
             {
                 if (!this.ExistRequestCounter)
                 {
-                    this.RequestCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.RequestCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistQuoteCounter)
                 {
-                    this.QuoteCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.QuoteCounter = new CounterBuilder(session).Build();
                 }
                 
                 if (!this.ExistPurchaseInvoiceCounter)
                 {
-                    this.PurchaseInvoiceCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.PurchaseInvoiceCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistPurchaseOrderCounter)
                 {
-                    this.PurchaseOrderCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.PurchaseOrderCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistSubAccountCounter)
                 {
-                    this.SubAccountCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.SubAccountCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistIncomingShipmentCounter)
                 {
-                    this.IncomingShipmentCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.IncomingShipmentCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistWorkEffortCounter)
                 {
-                    this.WorkEffortCounter = new CounterBuilder(this.Strategy.Session).Build();
+                    this.WorkEffortCounter = new CounterBuilder(session).Build();
                 }
 
                 if (!this.ExistInvoiceSequence)
                 {
-                    this.InvoiceSequence = new InvoiceSequenceBuilder(this.Strategy.Session).Build();
+                    this.InvoiceSequence = new InvoiceSequenceBuilder(session).Build();
                 }
 
                 if (this.DoAccounting && !this.ExistFiscalYearStartMonth)
@@ -96,6 +96,70 @@ namespace Allors.Domain
                 {
                     this.FiscalYearStartDay = 1;
                 }
+
+                #region Security
+
+                var groupName = "ProductQuote approvers";
+
+                if (!this.ExistProductQuoteApproverSecurityToken)
+                {
+                    this.ProductQuoteApproverSecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistProductQuoteApproverUserGroup)
+                {
+                    this.ProductQuoteApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                               ?? new UserGroupBuilder(session).Build();
+                }
+
+                if (!groupName.Equals(this.ProductQuoteApproverUserGroup.Name))
+                {
+                    this.ProductQuoteApproverUserGroup.Name = groupName;
+                }
+
+                if (!this.ExistProductQuoteApproverAccessControl)
+                {
+                    var role = new Roles(session).ProductQuoteApprover;
+
+                    this.ProductQuoteApproverAccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.ProductQuoteApproverUserGroup)
+                            .Build();
+
+                    this.ProductQuoteApproverSecurityToken.AddAccessControl(this.ProductQuoteApproverAccessControl);
+                }
+
+                groupName = "Blue-collar workers";
+
+                if (!this.ExistBlueCollarWorkerSecurityToken)
+                {
+                    this.BlueCollarWorkerSecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistBlueCollarWorkerUserGroup)
+                {
+                    this.BlueCollarWorkerUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                                         ?? new UserGroupBuilder(session).Build();
+                }
+
+                if (!groupName.Equals(this.BlueCollarWorkerUserGroup.Name))
+                {
+                    this.BlueCollarWorkerUserGroup.Name = groupName;
+                }
+
+                if (!this.ExistBlueCollarWorkerAccessControl)
+                {
+                    var role = new Roles(session).BlueCollarWorker;
+
+                    this.BlueCollarWorkerAccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.BlueCollarWorkerUserGroup)
+                            .Build();
+
+                    this.BlueCollarWorkerSecurityToken.AddAccessControl(this.BlueCollarWorkerAccessControl);
+                }
+
+                #endregion
             }
 
             this.PartyName = this.Name;

@@ -70,13 +70,5 @@ namespace Allors.Domain
 
             return null;
         }
-        public void AppsWorkEffortInvoicing(SingletonWorkEffortInvoicing method)
-        {
-            if (!method.Result.HasValue)
-            {
-                WorkTasks.AppsMonthly(this.strategy.Session);
-                method.Result = true;
-            }
-        }
     }
 }
