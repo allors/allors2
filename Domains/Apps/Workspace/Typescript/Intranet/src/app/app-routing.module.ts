@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+// Objects
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
 import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
@@ -48,6 +49,10 @@ import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/lis
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 import * as TaskAssignmentList from 'src/allors/material/apps/objects/taskassignment/list/taskassignment-list.module';
 
+// Apps
+import * as WorkOrderApp from 'src/allors/material/apps/apps/workorder/workorder-app.module';
+
+
 const modules = [
 
   CommunicationEventList.CommunicationEventListModule,
@@ -86,12 +91,13 @@ const modules = [
   SalesOrderOverview.SalesOrderOverviewModule,
   SerialisedItemList.SerialisedItemListModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
+  TaskAssignmentList.TaskListModule,
   UnifiedGoodList.UnifiedGoodListModule,
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
 
-  TaskAssignmentList.TaskListModule,
+  WorkOrderApp.WorkOrdersAppModule,
 ];
 
 export const routes: Routes = [
@@ -101,7 +107,7 @@ export const routes: Routes = [
     path: '', component: MainComponent,
     children: [
       {
-        path: '', component: DashboardComponent,
+        path: '', component: DashboardComponent, pathMatch: 'full',
       },
       {
         path: 'contacts',
@@ -176,6 +182,14 @@ export const routes: Routes = [
         path: 'workflow',
         children: [
           { path: 'taskassignments', component: TaskAssignmentList.TaskAssignmentListComponent },
+        ],
+      },
+
+      {
+        path: 'app',
+        children: [
+          { path: 'workorder', component: WorkOrderApp.WorkerOrderMasterComponent },
+          { path: 'workorder/:id', component: WorkOrderApp.WorkerOrderDetailComponent },
         ],
       },
     ],

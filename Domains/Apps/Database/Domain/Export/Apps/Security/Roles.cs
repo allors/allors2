@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Security.cs" company="Allors bvba">
+// <copyright file="Roles.cs" company="Allors bvba">
 //   Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,26 +20,23 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
+    using System;
 
-    public partial class Security
+    public partial class Roles
     {
-        public void GrantBlueCollarWorker(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.BlueCollarWorkerId, objectType, operations);
-        }
+        public static readonly Guid ProductQuoteApproverId = new Guid("07D39583-C82C-4EA0-92F1-288FB8E17FA3");
+        public static readonly Guid BlueCollarWorkerId = new Guid("3C2D223E-6056-447A-A3F9-AED2413D717D");
 
-        public void GrantProductQuoteApprover(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.ProductQuoteApproverId, objectType, operations);
-        }
+        public Role ProductQuoteApprover => this.Sticky[ProductQuoteApproverId];
 
-        private void AppsOnPreSetup()
-        {
-        }
+        public Role BlueCollarWorker => this.Sticky[BlueCollarWorkerId];
 
-        private void AppsOnPostSetup()
+        protected override void AppsSetup(Setup config)
         {
+            base.AppsSetup(config);
+
+            new RoleBuilder(this.Session).WithName("ProductQuote approver").WithUniqueId(ProductQuoteApproverId).Build();
+            new RoleBuilder(this.Session).WithName("Blue-collar worker").WithUniqueId(BlueCollarWorkerId).Build();
         }
     }
 }

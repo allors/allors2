@@ -202,7 +202,7 @@ namespace Allors.Domain
             }
         }
 
-        public void  Grant(Guid roleId, ObjectType objectType, params Operations[] operations)
+        public void Grant(Guid roleId, ObjectType objectType, params Operations[] operations)
         {
             Role role;
             if (this.roleById.TryGetValue(roleId, out role))

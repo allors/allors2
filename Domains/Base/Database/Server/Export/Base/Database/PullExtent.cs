@@ -30,6 +30,8 @@ namespace Allors.Server
 
     public class PullExtent
     {
+        private static readonly IObject[] EmptyArray = { };
+
         private readonly ISession session;
         private readonly Pull pull;
         private readonly User user;
@@ -79,7 +81,7 @@ namespace Allors.Server
 
                             objects = propertyType.IsOne ? 
                                           objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() : 
-                                          objects.SelectMany(v => ((Extent)fetch.Step.Get(v, aclCache)).ToArray()).Distinct().ToArray();
+                                          objects.SelectMany(v => ((Extent)fetch.Step.Get(v, aclCache))?.ToArray() ?? EmptyArray).Distinct().ToArray();
 
                             name = name ?? propertyType.PluralName;
                         }

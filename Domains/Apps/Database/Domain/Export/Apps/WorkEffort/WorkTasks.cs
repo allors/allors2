@@ -14,11 +14,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System;
+    using System.Linq;
+
     using Meta;
 
     public partial class WorkTasks

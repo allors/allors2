@@ -33,6 +33,7 @@ namespace Allors.Server
     public class PullResponseBuilder
     {
         private static readonly IObject[] EmptyArray = new IObject[0];
+
         private readonly User user;
 
         private readonly HashSet<IObject> objects = new HashSet<IObject>();

@@ -7,9 +7,9 @@ import { StateService } from './state.service';
 
 @Injectable()
 export class DefaultStateService extends StateService {
-  private static readonly internalOrganisationsKey = 'StateService$InternalOrganisations';
-  private static readonly internalOrganisationIdKey = 'StateService$InternalOrganisationId';
   private static readonly singletonIdKey = 'StateService$SingletonId';
+  private static readonly userIdKey = 'StateService$UserId';
+  private static readonly internalOrganisationIdKey = 'StateService$InternalOrganisationId';
 
   private internalOrganisationIdSubject: BehaviorSubject<string>;
 
@@ -92,6 +92,16 @@ export class DefaultStateService extends StateService {
 
   public set singletonId(value: string) {
     const key = DefaultStateService.singletonIdKey;
+    sessionStorage.setItem(key, value);
+  }
+
+  public get userId(): string {
+    const key = DefaultStateService.userIdKey;
+    return sessionStorage.getItem(key);
+  }
+
+  public set userId(value: string) {
+    const key = DefaultStateService.userIdKey;
     sessionStorage.setItem(key, value);
   }
 

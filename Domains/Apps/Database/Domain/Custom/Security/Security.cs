@@ -32,6 +32,8 @@ namespace Allors.Domain
             {
                 security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
                 security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantBlueCollarWorker(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantProductQuoteApprover(@class, Operations.Read, Operations.Write, Operations.Execute);
             }
         }
 

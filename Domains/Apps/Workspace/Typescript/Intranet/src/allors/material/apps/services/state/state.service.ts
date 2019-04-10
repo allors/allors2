@@ -2,16 +2,17 @@ import { Observable } from 'rxjs';
 import { SearchFactory } from '../../../../angular';
 
 export abstract class StateService {
-    public singletonId: string;
+    singletonId: string;
+    userId: string;
 
-    public internalOrganisationId: string;
-    public internalOrganisationId$: Observable<string>;
+    internalOrganisationId: string;
+    internalOrganisationId$: Observable<string>;
 
-    public goodsFilter: SearchFactory;
-    public partsFilter: SearchFactory;
-    public customersFilter: SearchFactory;
-    public suppliersFilter: SearchFactory;
-    public employeeFilter: SearchFactory;
-    public organisationsFilter: SearchFactory;
-    public partiesFilter: SearchFactory;
+    goodsFilter: SearchFactory;
+    partsFilter: SearchFactory;
+    customersFilter: SearchFactory;
+    suppliersFilter: SearchFactory;
+    employeeFilter: SearchFactory;
+    organisationsFilter: SearchFactory;
+    partiesFilter: SearchFactory;
 }

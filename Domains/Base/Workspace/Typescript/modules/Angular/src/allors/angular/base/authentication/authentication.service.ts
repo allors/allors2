@@ -7,9 +7,11 @@ import { AuthenticationConfig } from './authentication.config';
 import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
 import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
 import { throwError, Observable } from 'rxjs';
+import { StateService } from '../../../../allors/material/apps/services/state/state.service';
 
 @Injectable()
 export class AuthenticationService {
+
   private tokenName = 'ALLORS_JWT';
 
   public get token(): string {
@@ -23,6 +25,7 @@ export class AuthenticationService {
   constructor(
     private http: HttpClient,
     private authenticationConfig: AuthenticationConfig,
+    private stateService: StateService,
   ) { }
 
   public login$(userName: string, password: string): Observable<AuthenticationTokenResponse> {
@@ -35,6 +38,7 @@ export class AuthenticationService {
         map((result) => {
           if (result.authenticated) {
             this.token = result.token;
+            this.stateService.userId = result.userId;
           }
 
           return result;

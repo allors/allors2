@@ -119,14 +119,20 @@ namespace Allors
                 orderCounterValue: 1,
                 invoiceCounterValue: 1);
 
+            // Give Administrator access
+            new EmploymentBuilder(this.Session).WithEmployee(administrator).WithEmployer(allors).Build();
+            allors.AddProductQuoteApprover(administrator);
+            allors.AddBlueCollarWorker(administrator);
+
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
-            var allorsEmployee = this.CreatePerson(allors, "employee@allors.com", "Allors", "Employee", "letmein");
+            var allorsEmployee1 = this.CreatePerson(allors, "employee1@allors.com", "Allors", "Employee 1", "letmein");
+            var allorsEmployee2 = this.CreatePerson(allors, "employee2@allors.com", "Allors", "Employee 2", "letmein");
             var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
 
             allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
 
-            var dipuEmployee = this.CreatePerson(dipu, "employee1@dipu.com", "first", "dipu employee", "letmein");
+            var dipuEmployee = this.CreatePerson(dipu, "employee@dipu.com", "first", "dipu employee", "letmein");
             var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
 
             dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
@@ -633,13 +639,7 @@ line2")
             var part1 = this.CreatePart("P1");
             var part2 = this.CreatePart("P2");
             var part3 = this.CreatePart("P3");
-
-            var employee1 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 1").Build();
-            new EmploymentBuilder(this.Session).WithEmployee(employee1).WithEmployer(allors).Build();
-
-            var employee2 = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker 2").Build();
-            new EmploymentBuilder(this.Session).WithEmployee(employee2).WithEmployer(allors).Build();
-
+            
             this.Session.Derive();
 
             var workOrder = new WorkTaskBuilder(this.Session)
@@ -680,17 +680,17 @@ line2")
             var timeEntryToday1 = this.CreateTimeEntry(today, laterToday, frequencies.Hour, workOrder, standardRate);
             var timeEntryTomorrow1 = this.CreateTimeEntry(tomorrow, laterTomorrow, frequencies.Minute, workOrder, overtimeRate);
 
-            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday1);
-            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday1);
-            employee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow1);
+            allorsEmployee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday1);
+            allorsEmployee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday1);
+            allorsEmployee1.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow1);
 
             var timeEntryYesterday2 = this.CreateTimeEntry(yesterday, laterYesterday, frequencies.Day, workOrder, standardRate);
             var timeEntryToday2 = this.CreateTimeEntry(today, laterToday, frequencies.Hour, workOrder, standardRate);
             var timeEntryTomorrow2 = this.CreateTimeEntry(tomorrow, laterTomorrow, frequencies.Minute, workOrder, overtimeRate);
 
-            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday2);
-            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday2);
-            employee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow2);
+            allorsEmployee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday2);
+            allorsEmployee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday2);
+            allorsEmployee2.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow2);
 
             var po = new PurchaseOrders(this.Session).Extent().First;
             foreach (PurchaseOrderItem purchaseOrderItem in po.PurchaseOrderItems)

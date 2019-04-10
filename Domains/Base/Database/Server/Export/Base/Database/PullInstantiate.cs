@@ -21,7 +21,6 @@
 
 namespace Allors.Server
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -30,10 +29,10 @@ namespace Allors.Server
     using Allors.Meta;
     using Allors.Services;
 
-    using Org.BouncyCastle.Utilities.Collections;
-
     public class PullInstantiate
     {
+        private static readonly IObject[] EmptyArray = new IObject[0];
+
         private readonly ISession session;
 
         private readonly Pull pull;
@@ -99,7 +98,7 @@ namespace Allors.Server
                                 name = name ?? propertyType.PluralName;
 
                                 var stepResult = fetch.Step.Get(@object, aclCache);
-                                var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult).ToArray();
+                                var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
 
                                 if (result.Skip.HasValue || result.Take.HasValue)
                                 {
