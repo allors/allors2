@@ -75,7 +75,7 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Equals({propertyType: m.TaskAssignment.User, value: this.stateService.userId}),
+      new Equals({propertyType: m.TaskAssignment.User, object: this.stateService.userId}),
       new ContainedIn({
         propertyType: m.TaskAssignment.Task,
         extent: new Filter({
