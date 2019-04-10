@@ -1,12 +1,12 @@
-<form *ngIf="order" #form="ngForm" (submit)="save()">
+<form *ngIf="receipt" #form="ngForm" (submit)="save()">
 
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
 
-    <div class="row" *ngIf="orderItem.isNew">
-      <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes"
-        display="Name"></a-mat-select>
+    <div class="row">
+      <a-mat-input class="col-md" [object]="receipt" [roleType]="m.Payment.Amount"></a-mat-input>
+      <a-mat-datepicker class="col-md" [object]="receipt" [roleType]="m.Payment.EffectiveDate"></a-mat-datepicker>
     </div>
 
   </div>

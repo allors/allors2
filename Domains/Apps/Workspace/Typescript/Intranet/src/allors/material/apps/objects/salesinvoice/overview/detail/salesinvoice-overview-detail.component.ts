@@ -94,7 +94,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
 
     // Normal
     const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
@@ -113,6 +112,9 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
             },
             SalesTerms: {
               TermType: x,
+            },
+            VatRegime: {
+              VatRate: x
             },
             BillToCustomer: x,
             BillToContactPerson: x,

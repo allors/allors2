@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Receipt.cs" company="Allors bvba">
+// <copyright file="PaymentExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,45 +13,54 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using Allors.Meta;
+using Resources;
+
 namespace Allors.Domain
 {
-    using System;
-    using Meta;
-    using Resources;
-
-    public partial class Receipt
-    {       
-        public void AppsOnBuild(ObjectOnBuild method)
+    public static partial class PaymentExtensions
+    {
+        public static void AppsOnBuild(this Payment @this, ObjectOnBuild method)
         {
-            if (!this.ExistEffectiveDate)
+            if (!@this.ExistEffectiveDate)
             {
-                this.EffectiveDate = DateTime.UtcNow;
+                @this.EffectiveDate = DateTime.UtcNow;
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        public static void AppsOnPreDerive(this Payment @this, ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
 
-            foreach (PaymentApplication paymentApplication in this.PaymentApplications)
+            foreach (PaymentApplication paymentApplication in @this.PaymentApplications)
             {
-                derivation.AddDependency(this, paymentApplication);
+                derivation.AddDependency(@this, paymentApplication);
             }
         }
 
-        public void AppsOnDerive(ObjectOnDerive method)
+        public static  void AppsOnDerive(this Payment @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
             decimal totalAmountApplied = 0;
-            foreach (PaymentApplication paymentApplication in this.PaymentApplications)
+            foreach (PaymentApplication paymentApplication in @this.PaymentApplications)
             {
                 totalAmountApplied += paymentApplication.AmountApplied;
             }
 
-            if (this.ExistAmount && totalAmountApplied > this.Amount)
+            if (@this.ExistAmount && totalAmountApplied > @this.Amount)
             {
-                derivation.Validation.AddError(this, M.Receipt.Amount, ErrorMessages.ReceiptAmountIsToSmall);
+                derivation.Validation.AddError(@this, M.Payment.Amount, ErrorMessages.PaymentAmountIsToSmall);
+            }
+        }
+
+        public static void AppsDelete(this Payment @this, DeletableDelete method)
+        {
+            foreach (PaymentApplication paymentApplication in @this.PaymentApplications)
+            {
+                paymentApplication.Delete();
             }
         }
     }

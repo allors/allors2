@@ -286,6 +286,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to amount is to small.
+        /// </summary>
+        public static string PaymentAmountIsToSmall {
+            get {
+                return ResourceManager.GetString("PaymentAmountIsToSmall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to amount can not be larger then invoice amount.
         /// </summary>
         public static string PaymentApplicationNotLargerThanInvoiceAmount {
@@ -336,15 +345,6 @@ namespace Resources {
         public static string ProductCategoryPackageOnlyAtLowestLevel {
             get {
                 return ResourceManager.GetString("ProductCategoryPackageOnlyAtLowestLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to amount is to small.
-        /// </summary>
-        public static string ReceiptAmountIsToSmall {
-            get {
-                return ResourceManager.GetString("ReceiptAmountIsToSmall", resourceCulture);
             }
         }
         

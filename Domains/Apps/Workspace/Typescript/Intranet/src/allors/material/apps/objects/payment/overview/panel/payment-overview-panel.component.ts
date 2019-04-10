@@ -8,10 +8,10 @@ import * as moment from 'moment';
 import { MatSnackBar } from '@angular/material';
 
 import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
+import { Equals } from 'src/allors/framework';
 
 interface Row extends TableRow {
   object: Payment;
-  sender: string;
   date: string;
   amount: number;
 }
@@ -70,7 +70,6 @@ export class PaymentOverviewPanelComponent {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'sender' },
         { name: 'date' },
         { name: 'amount' },
       ],
@@ -86,17 +85,21 @@ export class PaymentOverviewPanelComponent {
     const pullName = `${panel.name}_${this.m.Payment.name}`;
 
     panel.onPull = (pulls) => {
-      const { pull, x } = this.metaService;
+      const { pull, x, m } = this.metaService;
 
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.Payment({
+        pull.PaymentApplication({
           name: pullName,
-          object: id,
-          include: {
-            Sender: x,
-            PaymentMethod: x,
+          predicate: new Equals({ propertyType: m.PaymentApplication.Invoice, object: id }),
+          fetch: {
+            PaymentWherePaymentApplication: {
+              include: {
+                Sender: x,
+                PaymentMethod: x,
+              }
+            }
           }
         }),
       );
@@ -110,7 +113,6 @@ export class PaymentOverviewPanelComponent {
       this.table.data = this.payments.map((v) => {
         return {
           object: v,
-          sender: v.Sender.PartyName,
           date: v.EffectiveDate && moment(v.EffectiveDate).format('MMM Do YY'),
           amount: v.Amount
         } as Row;

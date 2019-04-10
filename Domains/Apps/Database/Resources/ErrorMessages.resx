@@ -201,7 +201,7 @@
   <data name="ProductCategoryPackageOnlyAtLowestLevel" xml:space="preserve">
     <value>package only allowed at lowest level</value>
   </data>
-  <data name="ReceiptAmountIsToSmall" xml:space="preserve">
+  <data name="PaymentAmountIsToSmall" xml:space="preserve">
     <value>amount is to small</value>
   </data>
   <data name="SalesOrderItemLessThanAlreadeyShipped" xml:space="preserve">
