@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
@@ -76,6 +76,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
               include:
               {
                 SalesInvoiceItemState: x,
+                SerialisedItem: x,
                 Facility: {
                   Owner: x,
                 },
@@ -190,8 +191,8 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public goodSelected(object: any) {
@@ -200,23 +201,28 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-  }
-
   private refreshSerialisedItems(good: Product): void {
 
     const { pull, x } = this.metaService;
 
+    const unifiedGoodPullName = `${this.m.UnifiedGood.name}_items`;
+    const nonUnifiedGoodPullName = `${this.m.NonUnifiedGood.name}_items`;
+
     const pulls = [
       pull.NonUnifiedGood({
+        name: nonUnifiedGoodPullName,
         object: good.id,
         fetch: {
           Part: {
-            include: {
-              SerialisedItems: x
-            }
+            SerialisedItems: x
           }
+        }
+      }),
+      pull.UnifiedGood({
+        name: unifiedGoodPullName,
+        object: good.id,
+        fetch: {
+          SerialisedItems: x
         }
       })
     ];
@@ -224,8 +230,11 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = loaded.objects.Part as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        const serialisedItems1 = loaded.collections[unifiedGoodPullName] as SerialisedItem[];
+        const serialisedItems2 = loaded.collections[nonUnifiedGoodPullName] as SerialisedItem[];
+        const items = serialisedItems1 || serialisedItems2;
+
+        this.serialisedItems = items.filter(v => v.AvailableForSale === true);
 
         if (this.invoiceItem.Product !== this.previousProduct) {
           this.invoiceItem.SerialisedItem = null;
