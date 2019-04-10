@@ -5,17 +5,17 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like } from '../../../../../framework';
+import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
+import { Sorter, TableRow, Table, EditService } from '../../../..';
 
-import { Task } from '../../../../../domain';
+import { TaskAssignment } from '../../../../../domain';
 
 import { ObjectService } from '../../../../base/services/object';
 
 interface Row extends TableRow {
-  object: Task;
-  description: string;
+  object: TaskAssignment;
+  title: string;
   dateCreated: string;
 }
 
@@ -29,7 +29,7 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
 
   table: Table<Row>;
 
-  delete: Action;
+  edit: Action;
 
   private subscription: Subscription;
 
@@ -39,29 +39,30 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public overviewService: OverviewService,
-    public deleteService: DeleteService,
+    public editService: EditService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    const { m } = this.metaService;
+
+    this.edit = editService.edit(m.TaskAssignment.Task);
+    this.edit.result.subscribe((v) => {
       this.table.selection.clear();
     });
 
     this.table = new Table({
       selection: true,
       columns: [
+        'title',
         'dateCreated'
       ],
       actions: [
-        overviewService.overview(),
-        this.delete
+        this.edit
       ],
-      defaultAction: overviewService.overview(),
+      defaultAction: this.edit,
       pageSize: 50,
       initialSort: 'dateCreated'
     });
@@ -72,7 +73,13 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      // new Like({ roleType: m.TaskAssignment., parameter: 'title' }),
+      new ContainedIn({
+        propertyType: m.TaskAssignment.Task,
+        extent: new Filter({
+          objectType: m.Task,
+          predicate: new Like({ roleType: m.Task.Title, parameter: 'title' }),
+        })
+      }),
     ]);
 
     this.filterService.init(predicate);
@@ -96,11 +103,14 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            pull.Task({
+            pull.TaskAssignment({
               predicate,
-              sort: sorter.create(sort),
+              // sort: sorter.create(sort),
               include: {
-                WorkItem: x,
+                Task: {
+                  WorkItem: x
+                },
+                User: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -112,13 +122,13 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const tasks = loaded.collections.Tasks as Task[];
+        const taskAssignments = loaded.collections.TaskAssignments as TaskAssignment[];
         this.table.total = loaded.values.People_total;
-        this.table.data = tasks.map((v) => {
+        this.table.data = taskAssignments.map((v) => {
           return {
             object: v,
-            description: v.WorkItem.WorkItemDescription,
-            dateCreated: moment(v.DateCreated).fromNow()
+            title: v.Task.Title,
+            dateCreated: moment(v.Task.DateCreated).fromNow()
           } as Row;
         });
       });

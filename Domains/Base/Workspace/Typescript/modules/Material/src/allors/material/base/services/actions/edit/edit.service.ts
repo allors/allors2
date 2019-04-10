@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import {RefreshService } from '../../../../../angular';
+import { RoleType } from './../../../../../framework';
+import { RefreshService } from '../../../../../angular';
 import { ObjectService } from '../../../../../material/base/services/object';
 
 import { EditAction } from './EditAction';
@@ -15,8 +16,8 @@ export class EditService {
     private refreshService: RefreshService,
     ) {}
 
-  edit() {
-    return new EditAction(this.objectService, this.refreshService);
+  edit(roleType?: RoleType) {
+    return new EditAction(this.objectService, this.refreshService, roleType);
   }
 
 }

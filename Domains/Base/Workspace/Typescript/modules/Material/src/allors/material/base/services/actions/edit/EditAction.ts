@@ -2,8 +2,7 @@ import { Subject } from 'rxjs';
 
 import { Action, ActionTarget, RefreshService } from '../../../../../angular';
 
-import { EditService } from './edit.service';
-import { ISessionObject } from '../../../../../framework';
+import { ISessionObject, RoleType } from '../../../../../framework';
 import { ObjectService } from '../../object';
 
 export class EditAction implements Action {
@@ -14,16 +13,29 @@ export class EditAction implements Action {
 
   constructor(
     private objectService: ObjectService,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private roleType?: RoleType
   ) {
   }
 
+  resolve(target: ActionTarget){
+    let editObject = target as ISessionObject 
+
+    if(this.roleType){
+      editObject = editObject.get(this.roleType.name);
+    }
+
+    return editObject;
+  }
+
   disabled(target: ActionTarget) {
-    return !this.objectService.hasEditControl(target as ISessionObject);
+    var editObject = this.resolve(target);
+    return !this.objectService.hasEditControl(editObject);
   }
 
   execute(target: ActionTarget) {
-    this.objectService.edit(target as ISessionObject)
+    var editObject = this.resolve(target);
+    this.objectService.edit(editObject)
       .subscribe((v) => {
         this.refreshService.refresh();
         this.result.next(true);

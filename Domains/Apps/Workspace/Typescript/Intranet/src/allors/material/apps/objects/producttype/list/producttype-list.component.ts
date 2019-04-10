@@ -95,7 +95,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
+        }, [, , , ]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

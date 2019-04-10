@@ -102,7 +102,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
+        }, [, , , , ]),
         switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [

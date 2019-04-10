@@ -85,7 +85,7 @@ namespace Allors.Domain
 
         private void DeriveWorkflow()
         {
-            this.WorkItemDescription = $"[{this.Issuer?.PartyName}] ProductQuote: {this.QuoteNumber}";
+            this.WorkItemDescription = $"ProductQuote: {this.QuoteNumber} [{this.Issuer?.PartyName}]";
 
             var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 

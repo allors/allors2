@@ -30,6 +30,7 @@ import { PostalAddressEditComponent, PostalAddressEditModule } from '../allors/m
 import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allors/material/apps/objects/productcategory/edit/productcategory-edit.module';
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
+import { ProductQuoteApprovalEditComponent, ProductQuoteApprovalEditModule } from '../allors/material/apps/objects/productquoteapproval/edit/productquoteapproval-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
@@ -62,7 +63,6 @@ import { WorkEffortPurchaseOrderItemAssignmentEditComponent, WorkEffortPurchaseO
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
-import { WorkEffortInventoryAssignmentOverviewPanelModule } from 'src/allors/material/apps/objects/workeffortinventoryassignment/overview/panel/workeffortinventoryassignment-overview-panel.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
@@ -155,6 +155,7 @@ export const edit = {
   [ids.PartNumber]: ProductIdentificationEditComponent,
   [ids.ProductNumber]: ProductIdentificationEditComponent,
   [ids.ProductType]: ProductTypeEditComponent,
+  [ids.ProductQuoteApproval]: ProductQuoteApprovalEditComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
@@ -208,6 +209,7 @@ export const edit = {
     PostalAddressCreateModule,
     PostalAddressEditModule,
     ProductCategoryEditModule,
+    ProductQuoteApprovalEditModule,
     ProductQuoteCreateModule,
     ProductTypeEditModule,
     PurchaseInvoiceCreateModule,
@@ -266,6 +268,7 @@ export const edit = {
     PostalAddressEditComponent,
     ProductCategoryEditComponent,
     ProductIdentificationEditComponent,
+    ProductQuoteApprovalEditComponent,
     ProductQuoteCreateComponent,
     ProductTypeEditComponent,
     PurchaseInvoiceCreateComponent,

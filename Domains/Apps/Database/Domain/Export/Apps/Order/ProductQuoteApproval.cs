@@ -40,7 +40,7 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            this.Title = "Approval of " + this.ProductQuote.Description;
+            this.Title = "Approval of " + this.ProductQuote.WorkItemDescription;
 
             this.WorkItem = this.ProductQuote;
 

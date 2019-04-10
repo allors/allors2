@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs';
 
+import { RoleType, ISessionObject } from './../../../../../framework';
 import { Printable } from '../../../../../domain';
 import { Action, ActionTarget} from '../../../../../angular';
 
@@ -7,9 +8,14 @@ import { PrintConfig } from './print.config';
 
 export class PrintAction implements Action {
 
-  constructor(config: PrintConfig) {
+  constructor(config: PrintConfig, roleType?: RoleType) {
     this.execute = (target: ActionTarget) => {
-      const printable = target as Printable;
+
+      let printable = target as Printable;
+
+      if (roleType) {
+        printable = printable.get(roleType.name);
+      }
 
       const revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;
 
