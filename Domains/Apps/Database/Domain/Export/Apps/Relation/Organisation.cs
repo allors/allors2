@@ -99,7 +99,7 @@ namespace Allors.Domain
 
                 #region Security
 
-                var groupName = "ProductQuote approvers";
+                var groupName = $"{this.Name} ProductQuote approvers";
 
                 if (!this.ExistProductQuoteApproverSecurityToken)
                 {
@@ -129,7 +129,7 @@ namespace Allors.Domain
                     this.ProductQuoteApproverSecurityToken.AddAccessControl(this.ProductQuoteApproverAccessControl);
                 }
 
-                groupName = "Blue-collar workers";
+                groupName = $"{this.Name} Blue-collar workers";
 
                 if (!this.ExistBlueCollarWorkerSecurityToken)
                 {
@@ -158,6 +158,9 @@ namespace Allors.Domain
 
                     this.BlueCollarWorkerSecurityToken.AddAccessControl(this.BlueCollarWorkerAccessControl);
                 }
+
+                this.ProductQuoteApproverUserGroup.Members = this.ProductQuoteApprovers.ToArray();
+                this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
 
                 #endregion
             }
