@@ -298,14 +298,15 @@
 
         <div class="row">
           <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AdvancePayment"></a-mat-input>
-          <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-textarea>
-          <a-mat-static class="col-md-12" *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
-          <a-mat-static class="col-md-12" *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
+          <a-mat-static class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AmountPaid"></a-mat-static>
         </div>
 
+        <div class="row">
+          <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
+          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-textarea>
+          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
+          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
+        </div>
 
       </div>
     </mat-card-content>

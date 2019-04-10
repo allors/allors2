@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6fef08f0-d4cb-42f4-a10f-fb31787f65c3")]
     #endregion
-    public partial class PaymentApplication : AccessControlledObject 
+    public partial class PaymentApplication : AccessControlledObject, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -22,8 +22,9 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal AmountApplied { get; set; }
-        
+
         #region Allors
         [Id("b5f00552-5976-4368-9f38-dc4734b1c4af")]
         [AssociationId("c51f9be5-aee5-43db-b986-78e076ded8bf")]
@@ -31,6 +32,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public InvoiceItem InvoiceItem { get; set; }
 
         #region Allors
@@ -40,6 +42,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Invoice Invoice { get; set; }
         
         #region Allors
@@ -49,6 +52,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public BillingAccount BillingAccount { get; set; }
         
         #region inherited methods
@@ -68,6 +72,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void Delete() { }
 
         #endregion
     }

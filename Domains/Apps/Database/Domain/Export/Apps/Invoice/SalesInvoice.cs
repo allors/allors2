@@ -459,24 +459,53 @@ namespace Allors.Domain
                 }
 
             }
-            #endregion
-
-            this.SalesReps = this.InvoiceItems
-                .Cast<SalesInvoiceItem>()
-                .SelectMany(v => v.SalesReps)
-                .Distinct()
-                .ToArray();
-
-            this.AppsOnDeriveCustomers(derivation);
 
             this.AmountPaid = this.AdvancePayment;
             this.AmountPaid += this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
-            
+
             //// Perhaps payments are recorded at the item level.
             if (this.AmountPaid == 0)
             {
                 this.AmountPaid = this.InvoiceItems.Sum(v => v.AmountPaid);
             }
+
+            // If receipts are not matched at invoice level
+            if (this.AmountPaid > 0)
+            {
+                if (this.AmountPaid >= this.TotalIncVat)
+                {
+                    this.SalesInvoiceState = salesInvoiceStates.Paid;
+                }
+                else
+                {
+                    this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
+                }
+
+                foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+                {
+                    if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
+                        !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
+                    {
+                        if (this.AmountPaid >= this.TotalIncVat)
+                        {
+                            invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
+                        }
+                        else
+                        {
+                            invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.PartiallyPaid;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            this.SalesReps = this.InvoiceItems
+            .Cast<SalesInvoiceItem>()
+            .SelectMany(v => v.SalesReps)
+            .Distinct()
+            .ToArray();
+
+            this.AppsOnDeriveCustomers(derivation);
 
             if (this.ExistBillToCustomer && !this.BillToCustomer.AppsIsActiveCustomer(this.BilledFrom, this.InvoiceDate))
             {

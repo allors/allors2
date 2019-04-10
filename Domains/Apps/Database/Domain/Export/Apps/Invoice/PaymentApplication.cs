@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -24,23 +27,20 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.HasChangedRoles(this))
+            var receipt = this.PaymentWherePaymentApplication;
+            if (receipt != null)
             {
-                var receipt = this.PaymentWherePaymentApplication;
-                if (receipt != null)
-                {
-                    derivation.AddDependency(receipt, this);
-                }
+                derivation.AddDependency(receipt, this);
+            }
 
-                if (this.ExistInvoiceItem)
-                {
-                    derivation.AddDependency(this.InvoiceItem, this);
-                }
+            if (this.ExistInvoiceItem)
+            {
+                derivation.AddDependency(this.InvoiceItem, this);
+            }
 
-                if (this.ExistInvoice)
-                {
-                    derivation.AddDependency(this.Invoice, this);
-                }
+            if (this.ExistInvoice)
+            {
+                derivation.AddDependency(this.Invoice, this);
             }
         }
 
@@ -55,12 +55,19 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanPaymentAmount);
             }
 
-            if (this.ExistInvoice && this.Invoice.AmountPaid > this.Invoice.TotalIncVat)
+            var totalInvoiceAmountPaid = this.Invoice?.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
+            if (this.Invoice is SalesInvoice salesInvoice)
+            {
+                totalInvoiceAmountPaid += salesInvoice.AdvancePayment;
+            }
+
+            if (this.ExistInvoice && totalInvoiceAmountPaid > this.Invoice.TotalIncVat)
             {
                 derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceAmount);
             }
 
-            if (this.ExistInvoiceItem && this.InvoiceItem.AmountPaid > this.InvoiceItem.TotalIncVat)
+            var totalInvoiceItemAmountPaid = this.InvoiceItem?.PaymentApplicationsWhereInvoiceItem.Sum(v => v.AmountApplied);
+            if (this.ExistInvoiceItem && totalInvoiceItemAmountPaid > this.InvoiceItem.TotalIncVat)
             {
                 derivation.Validation.AddError(this, M.PaymentApplication.AmountApplied, ErrorMessages.PaymentApplicationNotLargerThanInvoiceItemAmount);
             }
