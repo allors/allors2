@@ -34,6 +34,19 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.ContactName = workTask.ContactPerson?.PartyName;
             this.ContactTelephone = workTask.ContactPerson?.CellPhoneNumber?.Description ?? workTask.ContactPerson?.GeneralPhoneNumber?.Description;
 
+            this.TotalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+                .Where(v => v.IsBillable &&
+                            (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                .Sum(v => v.BillingAmount), 2);
+
+            this.TotalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment
+                .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+
+            this.TotalOther = Math.Round(workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment
+                .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+
+            this.Total = this.TotalLabour + this.TotalParts + this.TotalOther;
+
             if (workTask.ExistOrderItemFulfillment)
             {
                 if (workTask.OrderItemFulfillment is SalesOrderItem salesOrderItem)
@@ -68,6 +81,10 @@ namespace Allors.Domain.Print.WorkTaskModel
         public string ContactTelephone { get; }
         public string PaymentTerms { get; }
         public string Facility { get; }
+        public decimal TotalLabour{ get; }
+        public decimal TotalParts{ get; }
+        public decimal TotalOther { get; }
+        public decimal Total{ get; }
         public string SalesRep { get; }
     }
 }

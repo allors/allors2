@@ -137,8 +137,9 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
               sort: sorter.create(sort),
               include: {
                 GeneralCorrespondence: {
-                  PostalBoundary: {
-                    Country: x
+                  PostalAddress_PostalCode: x,
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
                   }
                 },
                 GeneralPhoneNumber: x,

@@ -398,9 +398,8 @@ namespace Allors.Domain
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
-                .WithAssignedBillingRate(14)
+                .WithAssignedBillingRate(12)
                 .Build();
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
@@ -413,8 +412,11 @@ namespace Allors.Domain
 
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
-            Assert.Single(salesInvoice.InvoiceItems);
-            Assert.Equal(162, salesInvoice.InvoiceItems.First().AssignedUnitPrice); // (3 * 10) + (4 * 12) + (6 * 14)
+            Assert.Equal(2, salesInvoice.InvoiceItems.Length);
+            Assert.Equal(10, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(3, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
+            Assert.Equal(12, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(10, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
         }
 
         [Fact]
@@ -468,7 +470,6 @@ namespace Allors.Domain
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(childWorkOrder)
                 .WithAssignedBillingRate(14)
                 .Build();
@@ -483,9 +484,13 @@ namespace Allors.Domain
 
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
-            Assert.Equal(2, salesInvoice.InvoiceItems.Length);
-            Assert.Equal(78, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice); // (3 * 10) + (4 * 12)
-            Assert.Equal(84, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice); // 6 * 14
+            Assert.Equal(3, salesInvoice.InvoiceItems.Length);
+            Assert.Equal(10, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(3, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
+            Assert.Equal(12, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(4, timeEntryToday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
+            Assert.Equal(14, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(6, timeEntryTomorrow.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
         }
 
         [Fact]
@@ -536,7 +541,6 @@ namespace Allors.Domain
                 .WithRateType(new RateTypes(this.Session).StandardRate)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -551,7 +555,8 @@ namespace Allors.Domain
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 
             Assert.Single(salesInvoice.InvoiceItems);
-            Assert.Equal(130, salesInvoice.InvoiceItems.First().AssignedUnitPrice); // (3 * 10) + (4 * 10) + (6 * 10)
+            Assert.Equal(10, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.AssignedUnitPrice);
+            Assert.Equal(13, timeEntryYesterday.TimeEntryBillingsWhereTimeEntry.First.InvoiceItem.Quantity);
         }
 
         [Fact]

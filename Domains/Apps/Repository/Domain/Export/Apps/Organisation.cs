@@ -114,7 +114,7 @@ namespace Allors.Repository
 
         public string PartyName { get; set; }
 
-        public PostalAddress GeneralCorrespondence { get; set; }
+        public ContactMechanism GeneralCorrespondence { get; set; }
 
         public TelecommunicationsNumber BillingInquiriesFax { get; set; }
 

@@ -38,27 +38,27 @@ namespace Allors.Domain.Print.SalesInvoiceModel
                                 invoice.BillToCustomer?.ShippingAddress ??
                                 invoice.BillToCustomer?.GeneralCorrespondence;
 
-            if (shipToAddress != null)
+            if (shipToAddress is PostalAddress postalAddress)
             {
-                this.Address = shipToAddress.Address1;
-                if (!string.IsNullOrWhiteSpace(shipToAddress.Address2))
+                this.Address = postalAddress.Address1;
+                if (!string.IsNullOrWhiteSpace(postalAddress.Address2))
                 {
-                    this.Address = $"\n{shipToAddress.Address2}";
+                    this.Address = $"\n{postalAddress.Address2}";
                 }
 
-                if (!string.IsNullOrWhiteSpace(shipToAddress.Address3))
+                if (!string.IsNullOrWhiteSpace(postalAddress.Address3))
                 {
-                    this.Address = $"\n{shipToAddress.Address3}";
+                    this.Address = $"\n{postalAddress.Address3}";
                 }
 
-                if (shipToAddress.ExistCity)
+                if (postalAddress.ExistCity)
                 {
-                    this.City = shipToAddress.City.Name;
-                    this.State = shipToAddress.City.State?.Name;
+                    this.City = postalAddress.City.Name;
+                    this.State = postalAddress.City.State?.Name;
                 }
-                else if (shipToAddress.ExistPostalBoundary)
+                else if (postalAddress.ExistPostalBoundary)
                 {
-                    var postalBoundary = shipToAddress.PostalBoundary;
+                    var postalBoundary = postalAddress.PostalBoundary;
 
                     this.City = postalBoundary.Locality;
                     this.State = postalBoundary.Region;
@@ -68,12 +68,12 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
                 if (this.PostalCode == null)
                 {
-                    this.PostalCode = shipToAddress.PostalCode?.Code;
+                    this.PostalCode = postalAddress.PostalCode?.Code;
                 }
 
                 if (this.Country == null)
                 {
-                    this.Country = shipToAddress.Country?.Name;
+                    this.Country = postalAddress.Country?.Name;
                 }
             }
         }
