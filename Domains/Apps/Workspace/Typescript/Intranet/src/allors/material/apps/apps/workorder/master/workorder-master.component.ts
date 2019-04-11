@@ -4,11 +4,12 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
+import { PullRequest, And, Equals, ContainedIn, Filter, Exists, Not } from '../../../../../framework';
 import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService } from '../../../../../angular';
 import { StateService } from '../../../..';
 
-import { WorkEffortPartyAssignment, WorkEffort, TimeEntry } from '../../../../../domain';
+import { WorkEffortPartyAssignment, WorkEffort, TimeEntry, Person } from '../../../../../domain';
+import { load } from '@angular/core/src/render3';
 
 export interface TimeEntryModel {
   object: TimeEntry;
@@ -61,9 +62,19 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
 
           const predicate = new And([
             new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, object: this.stateService.userId }),
+            new ContainedIn({
+              propertyType: m.WorkEffortPartyAssignment.Assignment,
+              extent: new Filter({
+                objectType: m.WorkEffort,
+                // TODO: only in progress
+              })
+            })
           ]);
 
           const pulls = [
+            pull.Person({
+              object: this.stateService.userId
+            }),
             pull.WorkEffortPartyAssignment({
               predicate,
               include: {
@@ -92,21 +103,24 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        const worker = loaded.objects.Person as Person;
         const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
         const allTimeEntries = loaded.collections.ServiceEntries.filter((v) => v.objectType === m.TimeEntry) as TimeEntry[];
 
         this.workEfforts = workEffortPartyAssignments
           .filter((v) => v.CanReadAssignment && v.Assignment)
+          .map((v) => v.Assignment)
+          .filter((v, i, a) => a.indexOf(v) === i)
           .map((v) => {
-            const workEffort = v.Assignment;
-            const timeEntries = allTimeEntries.filter((w) => v.Party === w.Worker && w.WorkEffort === workEffort);
-            const openTimeEntries = timeEntries.filter((w) => !v.ThroughDate);
+
+            const timeEntries = allTimeEntries.filter((w) => w.Worker === worker && w.WorkEffort === v);
+            const openTimeEntries = timeEntries.filter((w) => !w.ThroughDate);
 
             return {
-              object: workEffort,
-              name: workEffort.Name,
-              started: new Date(workEffort.ActualStart),
-              routerLink: `./${workEffort.id}`,
+              object: v,
+              name: v.Name,
+              started: new Date(v.ActualStart),
+              routerLink: `./${v.id}`,
               timeEntries: timeEntries.map((w) => {
                 return {
                   object: w
@@ -120,8 +134,8 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
             };
           });
 
-        this.activeWorkEfforts = this.workEfforts.filter((v) => v.timeEntries.length > 0 && v.openTimeEntries.length > 0);
-        this.runningWorkEfforts = this.workEfforts.filter((v) => v.timeEntries.length > 0 && v.openTimeEntries.length === 0);
+        this.runningWorkEfforts = this.workEfforts.filter((v) => v.timeEntries.length > 0 && v.openTimeEntries.length > 0);
+        this.activeWorkEfforts = this.workEfforts.filter((v) => v.timeEntries.length > 0 && v.openTimeEntries.length === 0);
         this.assignedWorkEfforts = this.workEfforts.filter((v) => v.timeEntries.length === 0);
       });
   }

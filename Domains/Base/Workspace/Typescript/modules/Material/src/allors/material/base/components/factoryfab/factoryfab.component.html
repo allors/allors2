@@ -1,7 +1,7 @@
 <div class="factoryfab-wrapper">
   <div class="factoryfab">
 
-    <button *ngIf="classes.length === 1" mat-fab (click)="create(classes[0]); false">
+    <button *ngIf="classes.length === 1" mat-fab type="button" (click)="create(classes[0])">
       <mat-icon>add</mat-icon>
     </button>
 

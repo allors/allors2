@@ -167,7 +167,7 @@
   <Interface Name="Allors.Domain.SalesInvoiceItem" Collapsed="true">
     <Position X="14.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAKAAgAIAABAAEAAAAAAAAAAIAAAAgAAAAABCAEAAE=</HashCode>
+      <HashCode>gAAKAAgAIAAAAAEAAAAAAAAAAIAAAAgAAAAABCAEAAE=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

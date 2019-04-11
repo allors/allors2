@@ -19,19 +19,7 @@ export class DashboardComponent implements OnInit {
       subtitle: 'Edit time entries and parts',
       icon: 'assignment',
       routerLink: ['/app/workorder'],
-    }, {
-      title: 'App 2',
-      icon: 'alarm_on',
-      routerLink: ['/app/workorder'],
-    }, {
-      title: 'App 3',
-      icon: 'alarm_on',
-      routerLink: ['/app/workorder'],
-    }, {
-      title: 'App 4',
-      icon: 'alarm_on',
-      routerLink: ['/app/workorder'],
-    }
+    }, 
     ];
   }
 }

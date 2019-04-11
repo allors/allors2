@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService,  Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService } from '../../../../../../angular';
 import { TimeEntry } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
@@ -45,7 +45,6 @@ export class TimeEntryOverviewPanelComponent implements OnInit {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    
     public deleteService: DeleteService,
     public editService: EditService
   ) {
