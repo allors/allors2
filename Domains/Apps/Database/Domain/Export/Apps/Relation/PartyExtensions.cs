@@ -155,7 +155,7 @@ namespace Allors.Domain
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralCorrespondence))
                     {
-                        @this.GeneralCorrespondence = partyContactMechanism.ContactMechanism as PostalAddress;
+                        @this.GeneralCorrespondence = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralEmail))
@@ -227,6 +227,18 @@ namespace Allors.Domain
                     {
                         @this.ShippingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
+                }
+
+                // Fallback
+                if (!@this.ExistBillingAddress && @this.ExistGeneralCorrespondence)
+                {
+                    @this.BillingAddress = @this.GeneralCorrespondence;
+                }
+
+                // Fallback
+                if (!@this.ExistShippingAddress && @this.GeneralCorrespondence is PostalAddress postalAddress)
+                {
+                    @this.ShippingAddress = postalAddress;
                 }
             }
 

@@ -43,5 +43,10 @@ namespace Allors.Domain
                 derivation.AddDependency(partyContactMechanism, this);
             }
         }
+
+        public override string ToString()
+        {
+            return this.ElectronicAddressString;
+        }
     }
 }

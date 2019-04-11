@@ -52,7 +52,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Workspace]
-        PostalAddress GeneralCorrespondence { get; set; }
+        ContactMechanism GeneralCorrespondence { get; set; }
 
         #region Allors
         [Id("27A64036-F3FD-4F7A-BF11-5AC3F032C943")]

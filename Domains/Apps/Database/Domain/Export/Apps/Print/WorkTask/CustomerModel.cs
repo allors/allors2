@@ -25,26 +25,32 @@ namespace Allors.Domain.Print.WorkTaskModel
                 this.Number = customer.Id.ToString();
                 this.Name = customer.PartyName;
 
-                if (customer.BillingAddress is PostalAddress billingAddress)
+                var postalBillingAddress = customer.BillingAddress as PostalAddress;
+                if (postalBillingAddress != null)
                 {
-                    this.BillingAddress = billingAddress.Address1;
-                    if (!string.IsNullOrWhiteSpace(billingAddress.Address2))
+                    this.BillingAddress = postalBillingAddress.Address1;
+                    if (!string.IsNullOrWhiteSpace(postalBillingAddress.Address2))
                     {
-                        this.BillingAddress = $"\n{billingAddress.Address2}";
+                        this.BillingAddress = $"\n{postalBillingAddress.Address2}";
                     }
 
-                    if (!string.IsNullOrWhiteSpace(billingAddress.Address3))
+                    if (!string.IsNullOrWhiteSpace(postalBillingAddress.Address3))
                     {
-                        this.BillingAddress = $"\n{billingAddress.Address3}";
+                        this.BillingAddress = $"\n{postalBillingAddress.Address3}";
                     }
 
-                    this.BillingCity = billingAddress.City?.Name;
-                    this.BillingState = billingAddress.City?.State?.Name;
+                    this.BillingCity = postalBillingAddress.City?.Name;
+                    this.BillingState = postalBillingAddress.City?.State?.Name;
 
-                    this.BillingPostalCode = billingAddress.PostalCode?.Code;
+                    this.BillingPostalCode = postalBillingAddress.PostalCode?.Code;
+                }
+                else
+                {
+                    this.BillingAddress = customer.BillingAddress.ToString();
                 }
 
-                if (customer.ShippingAddress is PostalAddress shippingAddress)
+                var shippingAddress = customer.ShippingAddress;
+                if (shippingAddress != null)
                 {
                     this.ShippingAddress = shippingAddress.Address1;
                     if (!string.IsNullOrWhiteSpace(shippingAddress.Address2))

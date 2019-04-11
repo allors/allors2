@@ -80,7 +80,7 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
 
-            this.ShipToAddress = this.ShipToAddress ?? this.Receiver?.ShippingAddress ?? this.Receiver?.GeneralCorrespondence;
+            this.ShipToAddress = this.ShipToAddress ?? this.Receiver?.ShippingAddress ?? this.Receiver?.GeneralCorrespondence as PostalAddress;
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 

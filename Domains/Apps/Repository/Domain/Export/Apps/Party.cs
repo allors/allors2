@@ -369,7 +369,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        PostalAddress GeneralCorrespondence { get; set; }
+        ContactMechanism GeneralCorrespondence { get; set; }
 
         #region Allors
         [Id("78cc2859-b815-453f-9bdc-17fe64a853c4")]
