@@ -272,7 +272,7 @@ namespace Allors.Domain
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
-                foreach (TimeEntry billableEntry in @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue))
+                foreach (TimeEntry billableEntry in timeEntries)
                 {
                     new TimeEntryBillingBuilder(session)
                         .WithTimeEntry(billableEntry)
