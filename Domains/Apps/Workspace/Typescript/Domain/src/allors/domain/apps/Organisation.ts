@@ -1,5 +1,7 @@
 import { domain } from '../domain';
 import { Organisation } from '../generated/Organisation.g';
+import { Meta } from '../../meta';
+import { PostalAddress } from '../generated';
 
 declare module '../generated/Organisation.g' {
     interface Organisation {
@@ -29,22 +31,31 @@ domain.extend((workspace) => {
         },
         displayAddress: {
             get(this: Organisation): string {
-                return `${this.GeneralCorrespondence && this.GeneralCorrespondence.Address1 ? this.GeneralCorrespondence.Address1 : ''} ${this.GeneralCorrespondence && this.GeneralCorrespondence.Address2 ? this.GeneralCorrespondence.Address2 : ''} ${this.GeneralCorrespondence && this.GeneralCorrespondence.Address3 ? this.GeneralCorrespondence.Address3 : ''}`;
+                const postalAddress = this.GeneralCorrespondence as PostalAddress;
+                if (postalAddress) {
+                    return `${postalAddress.Address1 ? postalAddress.Address1 : ''} ${postalAddress.Address2 ? postalAddress.Address2 : ''} ${postalAddress.Address3 ? postalAddress.Address3 : ''}`;
+                }
             },
         },
         displayAddress2: {
             get(this: Organisation): string {
-                return `${this.GeneralCorrespondence && this.GeneralCorrespondence.PostalBoundary ? this.GeneralCorrespondence.PostalBoundary.PostalCode : ''} ${this.GeneralCorrespondence && this.GeneralCorrespondence.PostalBoundary ? this.GeneralCorrespondence.PostalBoundary.Locality : ''}`;
-                },
+                const postalAddress = this.GeneralCorrespondence as PostalAddress;
+                if (postalAddress) {
+                    return `${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.PostalCode : ''} ${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.Locality : ''}`;
+                }
+            },
         },
         displayAddress3: {
             get(this: Organisation): string {
-                return  `${this.GeneralCorrespondence && this.GeneralCorrespondence.PostalBoundary.Country ? this.GeneralCorrespondence.PostalBoundary.Country.Name : ''}`;
+                const postalAddress = this.GeneralCorrespondence as PostalAddress;
+                if (postalAddress) {
+                    return `${postalAddress.PostalBoundary.Country ? postalAddress.PostalBoundary.Country.Name : ''}`;
+                }
             },
         },
         displayPhone: {
             get(this: Organisation): string {
-                return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.CountryCode : ''} ${this.GeneralPhoneNumber && this.GeneralPhoneNumber.AreaCode ? this.GeneralPhoneNumber.AreaCode : ''} ${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.ContactNumber : ''}`;
+                return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.displayName : ''}`;
             },
         },
     });

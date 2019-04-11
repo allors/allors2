@@ -54,11 +54,7 @@ export class PersonOverviewSummaryComponent {
             PartyContactMechanisms: partyContactMechanismTree,
             CurrentPartyContactMechanisms: partyContactMechanismTree,
             InactivePartyContactMechanisms: partyContactMechanismTree,
-            GeneralCorrespondence: {
-              PostalBoundary: {
-                Country: x,
-              }
-            }
+            GeneralCorrespondence: x
           }
         }));
 
