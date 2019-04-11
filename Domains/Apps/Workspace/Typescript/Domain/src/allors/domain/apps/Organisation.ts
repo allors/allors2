@@ -1,6 +1,5 @@
 import { domain } from '../domain';
 import { Organisation } from '../generated/Organisation.g';
-import { Meta } from '../../meta';
 import { PostalAddress } from '../generated';
 
 declare module '../generated/Organisation.g' {
@@ -31,26 +30,29 @@ domain.extend((workspace) => {
         },
         displayAddress: {
             get(this: Organisation): string {
-                const postalAddress = this.GeneralCorrespondence as PostalAddress;
-                if (postalAddress) {
+                if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
+                    const postalAddress = this.GeneralCorrespondence as PostalAddress;
                     return `${postalAddress.Address1 ? postalAddress.Address1 : ''} ${postalAddress.Address2 ? postalAddress.Address2 : ''} ${postalAddress.Address3 ? postalAddress.Address3 : ''}`;
                 }
+
+                return '';
             },
         },
         displayAddress2: {
             get(this: Organisation): string {
-                const postalAddress = this.GeneralCorrespondence as PostalAddress;
-                if (postalAddress) {
+                if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
+                    const postalAddress = this.GeneralCorrespondence as PostalAddress;
                     return `${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.PostalCode : ''} ${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.Locality : ''}`;
                 }
             },
         },
         displayAddress3: {
             get(this: Organisation): string {
-                const postalAddress = this.GeneralCorrespondence as PostalAddress;
-                if (postalAddress) {
+                if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
+                    const postalAddress = this.GeneralCorrespondence as PostalAddress;
                     return `${postalAddress.PostalBoundary.Country ? postalAddress.PostalBoundary.Country.Name : ''}`;
                 }
+                return '';
             },
         },
         displayPhone: {

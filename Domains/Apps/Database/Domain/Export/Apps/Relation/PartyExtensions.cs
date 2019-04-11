@@ -115,6 +115,7 @@ namespace Allors.Domain
             @this.BillingInquiriesFax = null;
             @this.BillingInquiriesPhone = null;
             @this.CellPhoneNumber = null;
+            @this.GeneralCorrespondence = null;
             @this.GeneralFaxNumber = null;
             @this.GeneralPhoneNumber = null;
             @this.HeadQuarter = null;
