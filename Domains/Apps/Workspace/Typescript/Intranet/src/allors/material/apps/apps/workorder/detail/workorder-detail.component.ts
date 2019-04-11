@@ -8,12 +8,11 @@ import { switchMap } from 'rxjs/operators';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute } from '../../../../../angular';
-import { StateService } from '../../../..';
+import { StateService, SaveService } from '../../../..';
 
-import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment } from '../../../../../domain';
+import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, Person, RateType } from '../../../../../domain';
 import { MatTableDataSource } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
-
 
 export interface TimeEntryModel {
   object: TimeEntry;
@@ -24,7 +23,15 @@ export interface TimeEntryModel {
   duration: string;
 }
 
+export interface PartModel {
+  object: WorkEffortInventoryAssignment;
+  name: string;
+  location: string;
+  quantity: number;
+}
+
 @Component({
+  styleUrls: ['./workorder-detail.component.scss'],
   templateUrl: './workorder-detail.component.html',
   providers: [ContextService, AllorsFilterService]
 })
@@ -37,9 +44,14 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
   timeEntryColumns: string[] = ['worker', 'date', 'from', 'through', 'duration'];
   timeEntryDataSource: DataSource<TimeEntryModel>;
 
+  partColumns: string[] = ['name', 'location', 'quantity'];
+  partDataSource: DataSource<PartModel>;
+
+  rateTypes: RateType[];
   workEffort: WorkEffort;
+  timeSheets: TimeSheet[];
   timeEntries: TimeEntry[];
-  workEffortInventoryAssignments: any[];
+  workEffortInventoryAssignments: WorkEffortInventoryAssignment[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -49,9 +61,16 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     private stateService: StateService,
+    private saveService: SaveService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
+  }
+
+  get runningTimeEntry(): TimeEntry {
+    if (this.timeEntries) {
+      return this.timeEntries.find((v => v.Worker.id === this.stateService.userId && !v.ThroughDate));
+    }
   }
 
   ngOnInit(): void {
@@ -66,12 +85,20 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
           const object = navRoute.id();
 
           const pulls = [
+            pull.RateType({}),
             pull.WorkEffort({
               object,
               include: {
                 Customer: x,
                 ContactPerson: x,
                 WorkEffortState: x
+              }
+            }),
+            pull.TimeSheet({
+              predicate: new Equals({ propertyType: m.TimeSheet.Worker, object: this.stateService.userId }),
+              include: {
+                Worker: x,
+                TimeEntries: x,
               }
             }),
             pull.TimeEntry({
@@ -85,7 +112,10 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
               predicate: new Equals({ propertyType: m.WorkEffortInventoryAssignment.Assignment, object }),
               include: {
                 Assignment: x,
-                InventoryItemTransactions: x,
+                InventoryItem: {
+                  Part: x,
+                  Facility: x,
+                },
               }
             }),
           ];
@@ -96,34 +126,86 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+        this.timeSheets = loaded.collections.TimeSheets as TimeSheet[];
         this.timeEntries = loaded.collections.TimeEntries as TimeEntry[];
         this.workEffortInventoryAssignments = loaded.collections.WorkEffortInventoryAssignments as WorkEffortInventoryAssignment[];
 
+        // TimeEntries
         const timeEntryModels: TimeEntryModel[] = this.timeEntries.map((v) => {
 
           const fromDate = moment.utc(v.FromDate);
-          const throughDate = moment.utc(v.ThroughDate);
-          const diff = throughDate.diff(fromDate);
-          const diffDuration = moment.duration(diff);
+
+          let throughDate: moment.Moment;
+          let diffDuration: moment.Duration;
+
+          if (v.ThroughDate) {
+            throughDate = moment.utc(v.ThroughDate);
+            const diff = throughDate.diff(fromDate);
+            diffDuration = moment.duration(diff);
+          }
 
           return {
             object: v,
             worker: v.Worker.displayName,
             date: fromDate.format('ll'),
             from: fromDate.format('HH:mm'),
-            through: throughDate.format('HH:mm'),
-            duration: diffDuration.humanize(),
+            through: throughDate ? throughDate.format('HH:mm') : '',
+            duration: diffDuration ? diffDuration.humanize() : '',
           };
         });
 
         this.timeEntryDataSource = new MatTableDataSource<TimeEntryModel>(timeEntryModels);
+
+        // Parts
+        const partModels: PartModel[] = this.workEffortInventoryAssignments.map((v) => {
+
+          return {
+            object: v,
+            name: v.InventoryItem.Part.Name,
+            location: v.InventoryItem.Facility.Name,
+            quantity: v.Quantity
+          };
+        });
+
+        this.partDataSource = new MatTableDataSource<PartModel>(partModels);
+
       });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  start() {
+    const { m } = this.metaService;
+
+    const timeEntry = this.allors.context.create(m.TimeEntry) as TimeEntry;
+    timeEntry.WorkEffort = this.workEffort;
+    timeEntry.FromDate = moment.utc().toISOString();
+    timeEntry.RateType = this.rateTypes[0];
+
+    const timeSheet = this.timeSheets[0];
+    timeSheet.AddTimeEntry(timeEntry);
+
+    this.save();
+  }
+
+  stop() {
+    this.runningTimeEntry.ThroughDate = moment.utc().toISOString();
+
+    this.save();
+  }
+
+  private save(): void {
+
+    this.allors.context.save()
+      .subscribe(() => {
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler);
   }
 }
