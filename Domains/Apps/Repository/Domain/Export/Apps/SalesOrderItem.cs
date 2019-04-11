@@ -467,15 +467,6 @@ namespace Allors.Repository
         [Workspace]
         public InvoiceItemType InvoiceItemType { get; set; }
 
-        #region Allors
-        [Id("4593FC53-DC6A-4BF5-96A1-B1E964DD6240")]
-        [AssociationId("1D3D7C10-3A25-453B-9964-D4C464696B37")]
-        [RoleId("656611B8-C9D8-4639-BD2F-692AA2EBC0BC")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        public string Details { get; set; }
-
         #region inherited methods
 
 

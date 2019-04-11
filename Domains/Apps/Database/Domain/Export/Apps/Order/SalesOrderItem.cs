@@ -321,7 +321,7 @@ namespace Allors.Domain
                 // TODO: Move to Custom
                 if (derivation.IsCreated(this) && this.ExistSerialisedItem)
                 {
-                    this.Details = this.SerialisedItem.Details;
+                    this.Description = this.SerialisedItem.Details;
                 }
             }
             #endregion

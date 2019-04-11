@@ -153,15 +153,6 @@ namespace Allors.Repository
         [Workspace]
         public Person[] SalesReps { get; set; }
        
-        #region Allors
-        [Id("85A108D7-5444-43EA-91F5-DF2DDBA1B862")]
-        [AssociationId("8B53845D-10FC-4EB6-A59E-FB4DC0DA0322")]
-        [RoleId("75F1244C-A709-4653-BE7F-C3F32D7861E4")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        public string Details { get; set; }
-
         #region inherited methods
 
         public void OnBuild() { }

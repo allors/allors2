@@ -795,7 +795,6 @@ namespace Allors.Domain
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
                             .WithProduct(orderItem.Product)
                             .WithQuantity(orderItem.QuantityOrdered)
-                            .WithDetails(orderItem.Details)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)
                             .WithMessage(orderItem.Message)

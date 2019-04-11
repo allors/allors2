@@ -49,7 +49,7 @@
       </div>
 
       <div class="row">
-        <a-mat-textarea class="col-md-12" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Details"></a-mat-textarea>
+        <a-mat-textarea class="col-md-12" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Description"></a-mat-textarea>
         <a-mat-static class="col-md" *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
         <a-mat-textarea class="col-md-12" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Comment"></a-mat-textarea>
         <a-mat-static class="col-md" *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment"></a-mat-static>

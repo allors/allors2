@@ -77,7 +77,7 @@
         <br/> -->
 
       <div class="row">
-        <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Details"></a-mat-textarea>
+        <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Description"></a-mat-textarea>
         <a-mat-static class="col-md-12" *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment"
           label="Quote Comment"></a-mat-static>
         <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Item Comment"></a-mat-textarea>

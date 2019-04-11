@@ -220,15 +220,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Person[] SalesReps { get; set; }
-    
-        #region Allors
-        [Id("09E97D2C-55A5-4D96-8028-2B36FCB90994")]
-        [AssociationId("59EB1A75-3521-4506-A044-CB93554C6C9F")]
-        [RoleId("E15A86AE-6ABA-4D24-8021-BA68A466DAC4")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        public string Details { get; set; }
 
         #region Allors
         [Id("BB115D9A-53F8-4A3C-95F0-403A883C84FE")]

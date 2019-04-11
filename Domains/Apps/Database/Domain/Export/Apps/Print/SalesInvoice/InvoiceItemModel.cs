@@ -23,7 +23,6 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.Reference = item.InvoiceItemType?.Name;
             this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
             this.Description = item.Description;
-            this.Details = item.Details;
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
             var currency = "€";
@@ -35,7 +34,6 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public string Reference { get; }
         public string Product { get; }
         public string Description { get; }
-        public string Details { get; }
         public decimal Quantity { get; }
         public string Price { get; }
         public string Amount { get; }

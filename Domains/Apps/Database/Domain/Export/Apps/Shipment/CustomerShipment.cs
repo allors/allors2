@@ -383,7 +383,6 @@ namespace Allors.Domain
                                 .WithProduct(salesOrderItem.Product)
                                 .WithQuantity(orderShipment.Quantity)
                                 .WithAssignedUnitPrice(salesOrderItem.UnitPrice)
-                                .WithDetails(salesOrderItem.Details)
                                 .WithDescription(salesOrderItem.Description)
                                 .WithInternalComment(salesOrderItem.InternalComment)
                                 .WithMessage(salesOrderItem.Message)
