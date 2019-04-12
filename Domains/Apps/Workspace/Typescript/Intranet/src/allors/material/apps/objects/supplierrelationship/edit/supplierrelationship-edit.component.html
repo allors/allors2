@@ -17,7 +17,7 @@
 
       <div class="row">
         <a-mat-slidetoggle class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.NeedsApproval"></a-mat-slidetoggle>
-        <a-mat-input class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.ApprovalThreshold"></a-mat-input>
+        <a-mat-input class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.ApprovalThreshold" [disabled]="!partyRelationship.NeedsApproval"></a-mat-input>
       </div>
 
     </div>
