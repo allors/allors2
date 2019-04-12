@@ -137,7 +137,8 @@
 
             services.AddResponseCaching();
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .AddXmlSerializerFormatters()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<MvcOptions>(options =>
                 {
@@ -167,7 +168,7 @@
                             IsolationLevel = IsolationLevel.Serializable
                         })
                 });
-            
+
             app.UseAllors(database);
 
             if (env.IsDevelopment())
@@ -224,9 +225,14 @@
             app.UseResponseCaching();
 
             app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });
+                {
+                    routes.MapRoute(
+                        name: "odata",
+                        template: "odata/{**request}",
+                        defaults: new { controller = "OData", Action = "Get" });
+
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }
