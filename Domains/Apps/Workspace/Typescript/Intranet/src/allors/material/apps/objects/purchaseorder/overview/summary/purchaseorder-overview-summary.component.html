@@ -47,6 +47,7 @@
     <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
     <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
     <button *ngIf="order.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
+    <button mat-button type="button" (click)="print.execute(order)">Print</button>
     <button *ngIf="order.CanExecuteQuickReceive" mat-button (click)="quickReceive()">Quick Receive</button>
   </mat-card-actions>
 

@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using Allors.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Allors.Domain
 {
@@ -133,6 +135,37 @@ namespace Allors.Domain
             this.AppsOnDeriveOrderTotals(derivation);
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
+
+            this.ResetPrintDocument();
+        }
+
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
+            {
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.OrderedBy?.ExistLogoImage == true ?
+                    this.OrderedBy.LogoImage.MediaContent.Data :
+                    singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                {
+                    { "Logo", logo },
+                };
+
+                if (this.ExistOrderNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.OrderNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var model = new Print.PurchaseOrderModel.Model(this);
+                this.RenderPrintDocument(this.OrderedBy?.PurchaseOrderTemplate, model, images);
+
+                this.PrintDocument.Media.FileName = $"{this.OrderNumber}.odt";
+            }
         }
 
         public void AppsCancel(OrderCancel method)
