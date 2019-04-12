@@ -52,6 +52,9 @@ export class PurchaseOrderOverviewSummaryComponent {
             PurchaseOrderShipmentState: x,
             CreatedBy: x,
             LastModifiedBy: x,
+            PrintDocument: {
+              Media: x
+            },
           }
         }),
         pull.PurchaseOrder({

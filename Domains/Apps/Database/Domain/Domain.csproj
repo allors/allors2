@@ -28,6 +28,7 @@
   <ItemGroup>
     <None Remove="Templates\allors.png" />
     <None Remove="Templates\ProductQuote.odt" />
+    <None Remove="Templates\PurchaseOrder.odt" />
     <None Remove="Templates\SalesInvoice.odt" />
     <None Remove="Templates\SalesOrder.odt" />
     <None Remove="Templates\WorkTask.odt" />
@@ -35,6 +36,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Templates\allors.png" />
+    <EmbeddedResource Include="Templates\PurchaseOrder.odt" />
     <EmbeddedResource Include="Templates\WorkTask.odt" />
     <EmbeddedResource Include="Templates\SalesInvoice.odt" />
     <EmbeddedResource Include="Templates\SalesOrder.odt" />

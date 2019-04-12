@@ -15,6 +15,11 @@
         <a-mat-static class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.InternalOrganisation" display="displayName" label="Supplier at"></a-mat-static>
       </div>
 
+      <div class="row">
+        <a-mat-slidetoggle class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.NeedsApproval"></a-mat-slidetoggle>
+        <a-mat-input class="col-md" [object]="partyRelationship" [roleType]="m.SupplierRelationship.ApprovalThreshold" [disabled]="!partyRelationship.NeedsApproval"></a-mat-input>
+      </div>
+
     </div>
   </div>
 

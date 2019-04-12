@@ -30,7 +30,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var created = new PurchaseOrderStates(this.Session).Provisional;
+            var provisional = new PurchaseOrderStates(this.Session).Provisional;
             var onHold = new PurchaseOrderStates(this.Session).OnHold;
             var requestsApproval = new PurchaseOrderStates(this.Session).RequestsApproval;
             var inProcess = new PurchaseOrderStates(this.Session).InProcess;
@@ -46,7 +46,7 @@ namespace Allors.Domain
             var confirm = this.Meta.Confirm;
             var quickReceive = this.Meta.QuickReceive;
 
-            config.Deny(this.ObjectType, created, quickReceive, approve, @continue);
+            config.Deny(this.ObjectType, provisional, quickReceive, approve, @continue);
             config.Deny(this.ObjectType, requestsApproval, confirm, approve, quickReceive, @continue);
             config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
             config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, quickReceive);

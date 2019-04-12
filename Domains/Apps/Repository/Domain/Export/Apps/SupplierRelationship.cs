@@ -44,6 +44,23 @@ namespace Allors.Repository
         [Workspace]
         public InternalOrganisation InternalOrganisation { get; set; }
 
+        #region Allors
+        [Id("7C5FDA1C-CE16-45C5-80DB-D89E2E9FB273")]
+        [AssociationId("3CCD3C96-2348-4A5C-8C1A-8B08C67D580C")]
+        [RoleId("44F54BE6-E873-436D-8B46-6924F361DCA9")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool NeedsApproval{ get; set; }
+
+        #region Allors
+        [Id("EC58B25E-D84A-402D-873B-A48E1E59365D")]
+        [AssociationId("CD76AE94-2B41-44B0-8085-995AC7A2A2EB")]
+        [RoleId("1B9652BB-C074-46AB-AA3E-C2645CC1BAFF")]
+        #endregion
+        [Workspace]
+        public decimal ApprovalThreshold { get; set; }
+
         #region inherited methods
 
 

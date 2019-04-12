@@ -52,7 +52,6 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
     private stateService: StateService,
     titleService: Title,
   ) {

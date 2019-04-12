@@ -478,6 +478,15 @@ namespace Allors.Repository
         Template SalesOrderTemplate { get; set; }
 
         #region Allors
+        [Id("8DF822D1-B7B8-4211-B941-69664FAA3537")]
+        [AssociationId("63C40172-6402-4411-905F-56E0CD2DFC74")]
+        [RoleId("E3B9B581-657D-4311-8723-17AA6224F327")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template PurchaseOrderTemplate { get; set; }
+
+        #region Allors
         [Id("A8D44A4A-9C82-44A7-BBBA-117A4F7D261B")]
         [AssociationId("3B55BFB3-5531-4659-A7E1-20D39E68FD59")]
         [RoleId("F9C61F15-C32C-48D1-85E0-490A9F540EB6")]

@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
 import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { SupplierRelationship, Organisation } from '../../../../../domain';
+import { SupplierRelationship, Organisation } from '../../../../../domain/';
 import { PullRequest, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -93,6 +93,7 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
           this.partyRelationship.FromDate = moment.utc().toISOString();
           this.partyRelationship.Supplier = this.organisation;
           this.partyRelationship.InternalOrganisation = this.internalOrganisation;
+          this.partyRelationship.NeedsApproval = false;
         } else {
           this.partyRelationship = loaded.objects.SupplierRelationship as SupplierRelationship;
 

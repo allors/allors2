@@ -52,12 +52,12 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
     private stateService: StateService,
     titleService: Title,
   ) {
     titleService.setTitle(this.title);
 
+    this.print = printService.print();
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
@@ -77,6 +77,7 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
       actions: [
         overviewService.overview(),
         this.delete,
+        this.print,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
