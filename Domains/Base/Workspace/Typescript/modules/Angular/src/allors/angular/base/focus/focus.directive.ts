@@ -4,7 +4,6 @@ import { timer, Subscription } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
 
 import { AllorsFocusService } from './focus.service';
-import { RoleType } from '../../../framework';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

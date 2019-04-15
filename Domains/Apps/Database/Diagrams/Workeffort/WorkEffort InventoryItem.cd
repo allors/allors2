@@ -53,8 +53,8 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Assignment" />
-      <Property Name="InventoryItemTransactions" />
       <Property Name="InventoryItem" />
+      <Property Name="InventoryItemTransactions" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortState" Collapsed="true">
@@ -136,6 +136,20 @@
     <ShowAsAssociation>
       <Property Name="Part" />
     </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.NonUnifiedPart" Collapsed="true">
+    <Position X="8.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.UnifiedGood" Collapsed="true">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

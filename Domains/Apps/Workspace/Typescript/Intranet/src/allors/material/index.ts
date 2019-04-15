@@ -9,6 +9,8 @@ export * from './base/components/sidemenu/sidemenu.module';
 export * from './base/components/sidenavtoggle/sidenavtoggle.module';
 export * from './base/components/table/table.module';
 
+export * from './base/components/model/autocomplete/autocomplete.module';
+
 export * from './base/components/role/autocomplete/autocomplete.module';
 export * from './base/components/role/checkbox/checkbox.module';
 export * from './base/components/role/chips/chips.module';

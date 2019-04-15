@@ -30,7 +30,7 @@ namespace Commands
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
-    [Command(Description = "Add file contents to the index")]
+    [Command(Description = "Save the population to file")]
     public class Save
     {
         private readonly IConfiguration configuration;

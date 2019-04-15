@@ -3,14 +3,14 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute } from '../../../../../angular';
+import { PullRequest, And, Equals, ISessionObject } from '../../../../../framework';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute, SearchFactory } from '../../../../../angular';
 import { StateService, SaveService } from '../../../..';
 
-import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, Person, RateType } from '../../../../../domain';
+import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, Person, RateType, Good, InventoryItem } from '../../../../../domain';
 import { MatTableDataSource } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
 
@@ -48,10 +48,15 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
   partDataSource: DataSource<PartModel>;
 
   rateTypes: RateType[];
-  workEffort: WorkEffort;
   timeSheets: TimeSheet[];
   timeEntries: TimeEntry[];
   workEffortInventoryAssignments: WorkEffortInventoryAssignment[];
+
+  workEffortInventoryAssignment: WorkEffortInventoryAssignment;
+  newSelected: InventoryItem;
+  filter: (search: string) => Observable<ISessionObject[]>;
+
+  workEffort: WorkEffort;
 
   constructor(
     @Self() public allors: ContextService,
@@ -171,6 +176,11 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
 
         this.partDataSource = new MatTableDataSource<PartModel>(partModels);
 
+        this.filter = new SearchFactory({
+          objectType: m.InventoryItem,
+          roleTypes: [m.InventoryItem.Name],
+        }).create(this.allors);
+
       });
   }
 
@@ -179,6 +189,22 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
+  onSelected(inventoryItem: InventoryItem) {
+    if (!inventoryItem) {
+      this.workEffortInventoryAssignment = null;
+    } else {
+      const inventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
+      inventoryAssignment.Assignment = this.workEffort;
+      inventoryAssignment.InventoryItem = inventoryItem;
+      inventoryAssignment.BillableQuantity = 1;
+      inventoryAssignment.Quantity = 1;
+      this.workEffortInventoryAssignment = inventoryAssignment;
+
+      this.save();
+    }
+  }
+
 
   start() {
     const { m } = this.metaService;

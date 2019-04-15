@@ -9,7 +9,6 @@ import { AllorsFilterService, ContextService, NavigationService, RefreshService,
 import { StateService } from '../../../..';
 
 import { WorkEffortPartyAssignment, WorkEffort, TimeEntry, Person } from '../../../../../domain';
-import { load } from '@angular/core/src/render3';
 
 export interface TimeEntryModel {
   object: TimeEntry;

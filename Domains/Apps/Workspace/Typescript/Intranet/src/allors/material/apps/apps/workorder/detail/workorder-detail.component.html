@@ -10,71 +10,62 @@
     </div>
   </div>
 
-  <div class="container mt-3">
+  <div class="a-list" *ngIf="workEffort">
 
-    <div class="row">
-      <div class="col">
-        <div class="mat-elevation-z8">
-          <button mat-button type="button" *ngIf="!runningTimeEntry" (click)="start()">Start</button>
-          <button mat-button type="button" *ngIf="runningTimeEntry" (click)="stop()">Stop</button>
+    <div class="a-content mat-elevation-z8">
+
+      <div class="a-header">
+        <mat-toolbar style="background-color: transparent">
+          <mat-toolbar-row>
+            <div class="pl-3 mr-auto">{{workEffort.WorkEffortNumber}} {{workEffort.Name}} for
+              {{workEffort.Customer.displayName}}</div>
+            <div>
+              <button mat-raised-button type="button" color="primary" *ngIf="!runningTimeEntry"
+                (click)="start()">Start</button>
+              <button mat-raised-button type="button" color="warn" *ngIf="runningTimeEntry"
+                (click)="stop()">Stop</button>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+
+      <div class="a-search container">
+        <div class="row mt-1">
+          <div class="col-md">
+            <mat-form-field style="width: 100%">
+              <mat-label>Select an already used part</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of workEffortInventoryAssignments" [value]="item"
+                  (selectionChange)="onSelected($event)">
+                  {{item.InventoryItem.Part.Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <a-mat-model-autocomplete *ngIf="filter" class="col-md" label="or a new part" [model]="newSelected"
+            [filter]="filter" display="Name" (changed)="onSelected($event)"></a-mat-model-autocomplete>
         </div>
       </div>
+
+      <div class="container">
+        <div class="row mt-1">
+          <div class="col-md">
+            <input autofocus *ngIf="workEffortInventoryAssignment" [(ngModel)]="workEffortInventoryAssignment.InventoryItem.Name">
+          </div>
+          <div class="col-md">
+            YY
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
-  <div class="container mt-2">
 
+  <div class="container mt-3">
     <div class="row">
-      <div class="col-md-6">
-        <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="timeEntryDataSource">
-
-            <!-- Worker Column -->
-            <ng-container matColumnDef="worker">
-              <th mat-header-cell *matHeaderCellDef> Worker </th>
-              <td mat-cell *matCellDef="let element"> {{element.worker}} </td>
-            </ng-container>
-
-            <!-- From Column -->
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef> Date </th>
-              <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-            </ng-container>
-
-            <!-- From Column -->
-            <ng-container matColumnDef="from">
-              <th mat-header-cell *matHeaderCellDef> From </th>
-              <td mat-cell *matCellDef="let element"> {{element.from}} </td>
-            </ng-container>
-
-            <!-- Through Column -->
-            <ng-container matColumnDef="through">
-              <th mat-header-cell *matHeaderCellDef> Through </th>
-              <td mat-cell *matCellDef="let element"> {{element.through}} </td>
-            </ng-container>
-
-            <!-- Duration Column -->
-            <ng-container matColumnDef="duration">
-              <th mat-header-cell *matHeaderCellDef> Duration </th>
-              <td mat-cell *matCellDef="let element"> {{element.duration}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef colspan="5" class="title">
-                Time Entries
-              </th>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="['title']"></tr>
-            <tr mat-header-row *matHeaderRowDef="timeEntryColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: timeEntryColumns;"></tr>
-          </table>
-
-        </div>
-      </div>
-
-      <div class="col-md-6">
+      <div class="col-md">
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="partDataSource">
             <!-- Name Column -->

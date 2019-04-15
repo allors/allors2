@@ -35,7 +35,7 @@ namespace Commands
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
-    [Command(Description = "Add file contents to the index")]
+    [Command(Description = "Upgrade population from file")]
     public class Upgrade
     {
         private readonly HashSet<Guid> excludedObjectTypes = new HashSet<Guid>
