@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { Loaded, ContextService, MetaService } from '../../allors/angular';
+import { Loaded, ContextService, MetaService, AllorsBarcodeService } from '../../allors/angular';
 import { Equals, PullRequest, ObjectType } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
@@ -36,8 +36,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-
     public metaService: MetaService,
+    private barcodeService: AllorsBarcodeService,
     private stateService: StateService,
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService

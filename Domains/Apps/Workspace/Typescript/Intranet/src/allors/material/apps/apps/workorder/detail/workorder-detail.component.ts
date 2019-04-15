@@ -4,26 +4,15 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
-import { PullRequest, And, Equals, ISessionObject } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute, SearchFactory } from '../../../../../angular';
-import { StateService, SaveService } from '../../../..';
+import { PullRequest, And, Equals, ISessionObject, Or, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute, SearchFactory, Action, AllorsBarcodeService } from '../../../../../angular';
+import { StateService, SaveService, Table, EditService, CreateData } from '../../../..';
 
-import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, Person, RateType, Good, InventoryItem } from '../../../../../domain';
-import { MatTableDataSource } from '@angular/material';
-import { DataSource } from '@angular/cdk/table';
+import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, RateType, InventoryItem, UnifiedGood, NonUnifiedPart } from '../../../../../domain';
 
-export interface TimeEntryModel {
-  object: TimeEntry;
-  worker: string;
-  date: string;
-  from: string;
-  through: string;
-  duration: string;
-}
-
-export interface PartModel {
+export interface Row {
   object: WorkEffortInventoryAssignment;
   name: string;
   location: string;
@@ -39,13 +28,11 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
 
   title = 'Work Orders - Detail';
 
+  edit: Action;
+  table: Table<Row>;
+
   private subscription: Subscription;
-
-  timeEntryColumns: string[] = ['worker', 'date', 'from', 'through', 'duration'];
-  timeEntryDataSource: DataSource<TimeEntryModel>;
-
-  partColumns: string[] = ['name', 'location', 'quantity'];
-  partDataSource: DataSource<PartModel>;
+  private barcodeSubscription: Subscription;
 
   rateTypes: RateType[];
   timeSheets: TimeSheet[];
@@ -64,12 +51,109 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private route: ActivatedRoute,
     public refreshService: RefreshService,
+    public editService: EditService,
+    public barcodeService: AllorsBarcodeService,
     public navigation: NavigationService,
     private stateService: StateService,
     private saveService: SaveService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
+
+    this.edit = editService.edit();
+    this.edit.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'name', sort: true },
+        { name: 'location', sort: true },
+        { name: 'quantity', sort: true },
+      ],
+      actions: [
+        this.edit,
+      ],
+      defaultAction: this.edit,
+    });
+
+    const { m, pull, x } = this.metaService;
+
+    this.barcodeSubscription = barcodeService.scan$
+      .pipe(
+        switchMap((barcode: string) => {
+
+          const unifiedProduct = new ContainedIn({
+            propertyType: m.UnifiedGood.ProductIdentifications,
+            extent: new Filter({
+              objectType: m.ProductIdentification,
+              predicate: new Equals({ propertyType: m.ProductIdentification.Identification, value: barcode })
+            })
+          });
+
+          const inventoryItem = new ContainedIn({
+            propertyType: m.InventoryItem.Part,
+            extent: new Filter({
+              objectType: m.UnifiedProduct,
+              predicate: unifiedProduct
+            })
+          });
+
+          const pulls = [
+            pull.InventoryItem({
+              predicate: inventoryItem,
+              include: {
+                Part: x,
+                Facility: x,
+              }
+            }),
+            pull.WorkEffortInventoryAssignment({
+              predicate: new And([
+                new Equals({ propertyType: m.WorkEffortInventoryAssignment.Assignment, object: this.workEffort }),
+                new ContainedIn({
+                  propertyType: m.WorkEffortInventoryAssignment.InventoryItem,
+                  extent: new Filter({
+                    objectType: m.InventoryItem,
+                    predicate: inventoryItem
+                  })
+                })
+              ]
+              ),
+              include: {
+                Assignment: x,
+                InventoryItem: {
+                  Part: x,
+                  Facility: x,
+                },
+              }
+            }),
+          ];
+
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+        })
+      )
+      .subscribe((loaded) => {
+        const inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
+        const workEffortInventoryAssignments = loaded.collections.WorkEffortInventoryAssignments as WorkEffortInventoryAssignment[];
+
+        if (workEffortInventoryAssignments && workEffortInventoryAssignments.length > 0) {
+          const workEffortInventoryAssignment = workEffortInventoryAssignments[0];
+          this.edit.execute(workEffortInventoryAssignment);
+        } else if (inventoryItems && inventoryItems.length > 0) {
+          const inventoryItem = inventoryItems[0];
+          this.create(inventoryItem);
+        }
+      });
+
+  }
+
+  get createData(): CreateData {
+    if (this.workEffort) {
+      return {
+        associationId: this.workEffort.id,
+      };
+    }
   }
 
   get runningTimeEntry(): TimeEntry {
@@ -137,44 +221,20 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
         this.timeEntries = loaded.collections.TimeEntries as TimeEntry[];
         this.workEffortInventoryAssignments = loaded.collections.WorkEffortInventoryAssignments as WorkEffortInventoryAssignment[];
 
-        // TimeEntries
-        const timeEntryModels: TimeEntryModel[] = this.timeEntries.map((v) => {
-
-          const fromDate = moment.utc(v.FromDate);
-
-          let throughDate: moment.Moment;
-          let diffDuration: moment.Duration;
-
-          if (v.ThroughDate) {
-            throughDate = moment.utc(v.ThroughDate);
-            const diff = throughDate.diff(fromDate);
-            diffDuration = moment.duration(diff);
-          }
-
-          return {
-            object: v,
-            worker: v.Worker.displayName,
-            date: fromDate.format('ll'),
-            from: fromDate.format('HH:mm'),
-            through: throughDate ? throughDate.format('HH:mm') : '',
-            duration: diffDuration ? diffDuration.humanize() : '',
-          };
-        });
-
-        this.timeEntryDataSource = new MatTableDataSource<TimeEntryModel>(timeEntryModels);
-
         // Parts
-        const partModels: PartModel[] = this.workEffortInventoryAssignments.map((v) => {
+        const partModels: Row[] = this.workEffortInventoryAssignments.map((v) => {
+
+          const part = v.InventoryItem.Part as UnifiedGood & NonUnifiedPart;
 
           return {
             object: v,
-            name: v.InventoryItem.Part.Name,
+            name: part.Name,
             location: v.InventoryItem.Facility.Name,
-            quantity: v.Quantity
+            quantity: v.Quantity,
           };
         });
 
-        this.partDataSource = new MatTableDataSource<PartModel>(partModels);
+        this.table.data = partModels;
 
         this.filter = new SearchFactory({
           objectType: m.InventoryItem,
@@ -188,23 +248,19 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+
+    if (this.barcodeSubscription) {
+      this.barcodeSubscription.unsubscribe();
+    }
   }
 
   onSelected(inventoryItem: InventoryItem) {
     if (!inventoryItem) {
       this.workEffortInventoryAssignment = null;
     } else {
-      const inventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
-      inventoryAssignment.Assignment = this.workEffort;
-      inventoryAssignment.InventoryItem = inventoryItem;
-      inventoryAssignment.BillableQuantity = 1;
-      inventoryAssignment.Quantity = 1;
-      this.workEffortInventoryAssignment = inventoryAssignment;
-
-      this.save();
+      this.create(inventoryItem);
     }
   }
-
 
   start() {
     const { m } = this.metaService;
@@ -226,7 +282,18 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
     this.save();
   }
 
-  private save(): void {
+  private create(inventoryItem: InventoryItem) {
+    const inventoryAssignment = this.allors.context.create('WorkEffortInventoryAssignment') as WorkEffortInventoryAssignment;
+    inventoryAssignment.Assignment = this.workEffort;
+    inventoryAssignment.InventoryItem = inventoryItem;
+    inventoryAssignment.BillableQuantity = 1;
+    inventoryAssignment.Quantity = 1;
+    this.workEffortInventoryAssignment = inventoryAssignment;
+
+    this.save();
+  }
+
+  private save() {
 
     this.allors.context.save()
       .subscribe(() => {

@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { bufferTime, map, filter, tap } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject, merge } from 'rxjs';
+import { bufferTime, map, filter, tap, combineLatest } from 'rxjs/operators';
 
 @Injectable()
 export class AllorsBarcodeService {
 
     scan$: Observable<string>;
 
-    // TODO: put in its own service
     keypressSubject: Subject<any>;
+    simulateSubject: Subject<any>;
 
     constructor() {
         this.keypressSubject = new Subject();
+        this.simulateSubject = new Subject();
 
-        this.scan$ = this.keypressSubject
+        const scanner = this.keypressSubject
             .pipe(
                 map((v) => v.key),
                 bufferTime(50),
@@ -21,6 +22,8 @@ export class AllorsBarcodeService {
                 filter((v) => v.length > 1 && v[v.length - 1] && v[v.length - 1].trim().length === 0),
                 map((v) => v.join('').trim()),
             );
+
+        this.scan$ = merge(scanner, this.simulateSubject);
 
         // this.scan$.subscribe((v) => alert(v));
     }
