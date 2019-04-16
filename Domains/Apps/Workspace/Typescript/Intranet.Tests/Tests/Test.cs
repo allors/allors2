@@ -15,6 +15,9 @@ namespace Tests
     using Microsoft.Extensions.DependencyInjection;
 
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Html5;
+    using OpenQA.Selenium.Remote;
+    using OpenQA.Selenium.Support.Extensions;
 
     using Pages.ApplicationTests;
 
@@ -129,9 +132,16 @@ namespace Tests
         {
         }
 
-        public DashboardPage Login(string userName = "administrator")
+        public DashboardPage Login(string userName = "administrator", bool reset = true)
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
+
+            if (reset)
+            {
+                this.Driver.Manage().Cookies.DeleteAllCookies();
+                this.Driver.ExecuteJavaScript("localStorage.clear();");
+                this.Driver.ExecuteJavaScript("sessionStorage.clear();");
+            }
 
             var page = new LoginPage(this.Driver);
             return page.Login();
