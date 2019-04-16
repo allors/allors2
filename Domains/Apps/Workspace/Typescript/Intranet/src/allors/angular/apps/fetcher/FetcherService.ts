@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { Pull } from '../../../framework';
 import { PullFactory } from '../../../meta';
+
+import { MetaService } from '../../base/framework/MetaService';
 import { SingletonId } from '../../base/state/SingletonId';
 import { InternalOrganisationId } from '../state/InternalOrganisationId';
 
@@ -11,10 +13,14 @@ const x = {};
   providedIn: 'root',
 })
 export class FetcherService {
+  pull: PullFactory;
+
   constructor(
     private singletonId: SingletonId,
     private internalOrganisationId: InternalOrganisationId,
-    private pull: PullFactory) {
+    private meta: MetaService) {
+
+    this.pull = this.meta.pull;
   }
 
   public get internalOrganisation(): Pull {
