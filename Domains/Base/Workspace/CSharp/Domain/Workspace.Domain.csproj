@@ -90,6 +90,7 @@
     <Compile Include="Base\Workspace\Workspace.cs" />
     <Compile Include="Base\Workspace\WorkspaceObject.cs" />
     <Compile Include="generated\AccessControl.g.cs" />
+    <Compile Include="generated\ApproveTask.g.cs" />
     <Compile Include="generated\AutomatedAgent.g.cs" />
     <Compile Include="generated\C1.g.cs" />
     <Compile Include="generated\C2.g.cs" />
