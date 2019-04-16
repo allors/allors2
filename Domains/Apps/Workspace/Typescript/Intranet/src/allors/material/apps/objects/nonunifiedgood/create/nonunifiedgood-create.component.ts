@@ -2,14 +2,13 @@ import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/c
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { Fetcher } from '../../Fetcher';
-import { StateService, SaveService } from '../../../..';
+import { SaveService } from '../../../..';
 import { CreateData } from 'src/allors/material/base/services/object';
 import { Good } from 'src/allors/domain/generated';
 
@@ -39,7 +38,6 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
   goodNumberType: ProductIdentificationType;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
@@ -49,10 +47,10 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
     private refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
@@ -106,7 +104,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
           this.good.AddProductIdentification(this.productNumber);
         }
       });
-    }
+  }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -129,7 +127,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

@@ -3,11 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
@@ -38,7 +37,8 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
   }
@@ -47,7 +47,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -106,7 +106,7 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

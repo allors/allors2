@@ -4,10 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
@@ -27,7 +26,7 @@ export class OrganisationOverviewComponent implements AfterViewInit, OnDestroy {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     private route: ActivatedRoute,
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     public injector: Injector,
     titleService: Title,
   ) {
@@ -37,7 +36,7 @@ export class OrganisationOverviewComponent implements AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 

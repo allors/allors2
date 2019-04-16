@@ -1,19 +1,27 @@
+import { Injectable } from '@angular/core';
+
 import { Pull } from '../../../framework';
-import { StateService } from '../services/state';
 import { PullFactory } from '../../../meta';
+import { SingletonId } from '../../base/state/SingletonId';
+import { InternalOrganisationId } from '../state/InternalOrganisationId';
 
 const x = {};
 
-export class Fetcher {
-
-  constructor(private stateService: StateService, private pull: PullFactory) {
+@Injectable({
+  providedIn: 'root',
+})
+export class FetcherService {
+  constructor(
+    private singletonId: SingletonId,
+    private internalOrganisationId: InternalOrganisationId,
+    private pull: PullFactory) {
   }
 
   public get internalOrganisation(): Pull {
 
     return this.pull.Organisation({
       name: 'InternalOrganisation',
-      object: this.stateService.internalOrganisationId,
+      object: this.internalOrganisationId.value,
       include: {
         DefaultPaymentMethod: x,
         DefaultShipmentMethod: x,
@@ -30,7 +38,7 @@ export class Fetcher {
   public get categories(): Pull {
 
     return this.pull.Organisation({
-      object: this.stateService.internalOrganisationId,
+      object: this.internalOrganisationId.value,
       fetch: { ProductCategoriesWhereInternalOrganisation: x },
     });
   }
@@ -38,7 +46,7 @@ export class Fetcher {
   public get locales(): Pull {
 
     return this.pull.Singleton({
-      object: this.stateService.singletonId,
+      object: this.singletonId.value,
       fetch: {
         AdditionalLocales: {
           include: {
@@ -53,7 +61,7 @@ export class Fetcher {
   public get Settings(): Pull {
 
     return this.pull.Singleton({
-      object: this.stateService.singletonId,
+      object: this.singletonId.value,
       fetch: {
         Settings: {
           include: {

@@ -5,14 +5,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { SupplierRelationship, Organisation } from '../../../../../domain/';
 import { PullRequest, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './supplierrelationship-edit.component.html',
@@ -27,7 +25,6 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
   organisation: Organisation;
   title: string;
 
-  private fetcher: Fetcher;
   private subscription: Subscription;
 
   constructor(
@@ -37,17 +34,18 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+    private fetcher: FetcherService
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -123,7 +121,7 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import {  ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
 import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -44,7 +42,6 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
   productDimensions: ProductDimension[];
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
@@ -54,11 +51,10 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject(new Date());
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Good Details';

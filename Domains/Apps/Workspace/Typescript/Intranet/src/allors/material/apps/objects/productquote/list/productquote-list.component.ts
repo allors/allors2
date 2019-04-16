@@ -6,8 +6,8 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, PrintService } from '../../../../../material';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../../../material';
 
 import { Quote, QuoteState, Party } from '../../../../../domain';
 
@@ -46,8 +46,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
     public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
     titleService.setTitle(this.title);
@@ -116,7 +115,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -126,7 +125,7 @@ export class ProductQuoteListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, []),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;

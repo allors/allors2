@@ -3,11 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { Enumeration, ElectronicAddress } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -32,7 +31,7 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId) {
 
     this.m = this.metaService.m;
   }
@@ -41,7 +40,7 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
 
     const { pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Organisation, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Party, VatRate, VatRegime, PostalAddress, CustomerRelationship, Facility, PurchaseOrder, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -47,7 +45,6 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
   private previousSupplier: Party;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
   facilities: Facility[];
 
   constructor(
@@ -56,10 +53,10 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Purchase Order Details';
@@ -179,8 +176,8 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public supplierAdded(organisation: Organisation): void {
@@ -280,7 +277,7 @@ export class PurchaseOrderOverviewDetailComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        if (this.order.TakenViaSupplier  !== this.previousSupplier) {
+        if (this.order.TakenViaSupplier !== this.previousSupplier) {
           this.order.TakenViaContactMechanism = null;
           this.order.TakenViaContactPerson = null;
           this.previousSupplier = this.order.TakenViaSupplier;

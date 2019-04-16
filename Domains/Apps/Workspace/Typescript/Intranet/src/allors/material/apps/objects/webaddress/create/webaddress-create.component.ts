@@ -7,7 +7,7 @@ import {  ContextService, MetaService, RefreshService } from '../../../../../ang
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
+import { InternalOrganisationId } from '../../../../../angular/apps/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
@@ -37,7 +37,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId) {
 
     this.m = this.metaService.m;
   }
@@ -46,7 +46,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

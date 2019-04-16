@@ -3,15 +3,13 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, Saved } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, Saved, FetcherService } from '../../../../../angular';
 import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
 import { CreateData, SaveService } from '../../../../../material';
-import { Fetcher } from '../../Fetcher';
-import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './inventoryitemtransaction-edit.component.html',
@@ -42,7 +40,6 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
-  private readonly fetcher: Fetcher;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
 
   constructor(
@@ -52,11 +49,11 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService,
+    ) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {

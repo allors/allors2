@@ -1,11 +1,9 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ContextService, MetaService } from '../../../../../angular';
+import { ContextService, MetaService, FetcherService } from '../../../../../angular';
 import { Facility, FacilityType, Organisation } from '../../../../../domain';
 import { Meta } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
-import { Fetcher } from '../../Fetcher';
-import { StateService } from '../../../services/state';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -22,17 +20,16 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
   facilityTypes: FacilityType[];
   public facility: Facility;
 
-  private readonly fetcher: Fetcher;
   facilities: Facility[];
   internalOrganisation: Organisation;
 
-  constructor(private allors: ContextService,
-    
+  constructor(
+    private allors: ContextService,
     public metaService: MetaService,
-    private stateService: StateService) {
+    private fetcher: FetcherService
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {

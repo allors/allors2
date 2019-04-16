@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -33,7 +31,6 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
   addOriginator = false;
   previousOriginator: Party;
 
-  private fetcher: Fetcher;
   private subscription: Subscription;
 
   constructor(
@@ -42,10 +39,10 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService,
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Request For Quote Details';
@@ -169,8 +166,8 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   get originatorIsPerson(): boolean {

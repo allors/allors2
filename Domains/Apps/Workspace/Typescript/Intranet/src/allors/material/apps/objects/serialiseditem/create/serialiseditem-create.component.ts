@@ -5,12 +5,10 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, SearchFactory, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateData } from '../../../../../../allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
@@ -40,7 +38,6 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
   currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() public allors: ContextService,
@@ -49,17 +46,18 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

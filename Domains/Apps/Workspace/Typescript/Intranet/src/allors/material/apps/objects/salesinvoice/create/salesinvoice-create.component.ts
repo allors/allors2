@@ -4,12 +4,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
+import { InternalOrganisationId } from '../../../../../angular/apps/state';
 import { CreateData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
@@ -57,7 +56,6 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   get billToCustomerIsPerson(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
@@ -82,17 +80,18 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private saveService: SaveService,
     public refreshService: RefreshService,
-    public stateService: StateService) {
+    public internalOrganisationId: InternalOrganisationId,
+    private fetcher: FetcherService,
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -159,8 +158,8 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public shipToCustomerAdded(party: Party): void {

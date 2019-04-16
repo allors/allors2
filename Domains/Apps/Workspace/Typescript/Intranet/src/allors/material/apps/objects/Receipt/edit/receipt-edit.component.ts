@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Receipt, SalesInvoice, PaymentApplication } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject, Not } from '../../../../../framework';
+import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
@@ -34,8 +33,7 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ReceiptEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private saveService: SaveService,
-    public stateService: StateService) {
+    private saveService: SaveService) {
 
     this.m = this.metaService.m;
   }

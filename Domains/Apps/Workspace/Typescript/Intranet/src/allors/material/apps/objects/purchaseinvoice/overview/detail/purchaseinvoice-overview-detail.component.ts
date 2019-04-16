@@ -3,12 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
@@ -63,7 +61,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
   private previousBillToEndCustomer: Party;
   private previousShipToEndCustomer: Party;
 
-  private fetcher: Fetcher;
   private subscription: Subscription;
   internalOrganisation: Organisation;
 
@@ -86,10 +83,10 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,
-    public stateService: StateService) {
+    public fetcher: FetcherService,
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Purchase Invoice Details';
@@ -199,7 +196,8 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
             pull.VatRate(),
             pull.VatRegime(
               {
-                include: { VatRate: x
+                include: {
+                  VatRate: x
                 }
               }
             ),
@@ -265,8 +263,8 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public billedFromAdded(organisation: Organisation): void {

@@ -5,14 +5,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { CustomerRelationship, Organisation, Party } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
-import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
+import { Meta, FetchServiceEntry } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './customerrelationship-edit.component.html',
@@ -28,7 +26,6 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
   title: string;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
@@ -37,17 +34,18 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

@@ -4,12 +4,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
 import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, VatRate, ProductIdentificationType, ProductNumber, Facility, InventoryItemKind, SupplierOffering, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { MatSnackBar } from '@angular/material';
 import { SaveService } from 'src/allors/material';
 
@@ -55,7 +53,6 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
   settings: Settings;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
@@ -65,12 +62,11 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private stateService: StateService,
+    private fetcher: FetcherService,
     private snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject(new Date());
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Good Details';

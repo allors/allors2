@@ -1,16 +1,14 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { InternalOrganisationId } from '../../../../../angular/apps/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -48,7 +46,8 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigation: NavigationService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
   }
@@ -57,7 +56,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -83,7 +82,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
               }
             }),
             pull.Organisation({
-              object: this.stateService.internalOrganisationId,
+              object: this.internalOrganisationId.value,
               name: 'InternalOrganisation',
               include: {
                 ActiveEmployees: {
@@ -330,7 +329,7 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

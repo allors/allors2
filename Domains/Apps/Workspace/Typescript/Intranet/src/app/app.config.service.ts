@@ -1,11 +1,10 @@
 import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ContextService, MetaService } from '../allors/angular';
+import { ContextService, MetaService, InternalOrganisationId, SingletonId} from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
-import { StateService } from '../allors/material';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
@@ -14,7 +13,8 @@ export class ConfigService {
     constructor(
         @Self() private allors: ContextService,
         public metaService: MetaService,
-        private stateService: StateService
+        private internalOrganisationId: InternalOrganisationId,
+        private singletonId: SingletonId,
     ) { }
 
     public setup(): Observable<any> {
@@ -35,14 +35,14 @@ export class ConfigService {
                     const internalOrganisations = loaded.collections.Organisations as Organisation[];
 
                     if (internalOrganisations && internalOrganisations.length > 0) {
-                        const organisation = internalOrganisations.find(v => v.id === this.stateService.internalOrganisationId);
+                        const organisation = internalOrganisations.find(v => v.id === this.internalOrganisationId.value);
                         if (!organisation) {
-                            this.stateService.internalOrganisationId = internalOrganisations[0].id;
+                            this.internalOrganisationId.value = internalOrganisations[0].id;
                         }
                     }
 
                     const singletons = loaded.collections.Singletons as Singleton[];
-                    this.stateService.singletonId = singletons[0].id;
+                    this.singletonId.value = singletons[0].id;
                 })
             );
     }

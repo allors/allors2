@@ -9,7 +9,6 @@ import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, Quote
 import { CreateData } from '../../../../../material/base/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -44,7 +43,6 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
-    public stateService: StateService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar
   ) {

@@ -4,13 +4,11 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 @Component({
@@ -48,7 +46,6 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
   currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() public allors: ContextService,
@@ -57,11 +54,11 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private fetcher: FetcherService
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {

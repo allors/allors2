@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -41,7 +39,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService) {
 
     this.m = this.metaService.m;
 
@@ -96,11 +94,10 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
           this.workTask = undefined;
 
           const { m, pull, x } = this.metaService;
-          const fetcher = new Fetcher(this.stateService, this.metaService.pull);
           const id = this.panel.manager.id;
 
           const pulls = [
-            fetcher.internalOrganisation,
+            this.fetcher.internalOrganisation,
             pull.WorkTask({
               object: id,
               include: {

@@ -4,7 +4,6 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { BasePrice, PriceComponent, SupplierOffering, Part } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../../../material';
 import { Equals, Sort } from 'src/allors/framework';
 
 @Component({
@@ -32,7 +31,7 @@ export class NonUnifiedPartOverviewSummaryComponent {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    private stateService: StateService) {
+    ) {
 
     this.m = this.metaService.m;
 

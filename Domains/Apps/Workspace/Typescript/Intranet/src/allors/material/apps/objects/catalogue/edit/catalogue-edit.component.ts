@@ -3,12 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton, Organisation } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material/base/services/save';
@@ -33,7 +31,6 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
@@ -42,18 +39,17 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+    private fetcher: FetcherService) {
 
     this.m = this.metaService.m;
-
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

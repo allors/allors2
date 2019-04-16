@@ -3,12 +3,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
+import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService } from '../../../../../../angular';
 import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { MatSnackBar } from '@angular/material';
 import { SaveService } from 'src/allors/material';
 
@@ -58,8 +56,9 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private stateService: StateService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private fetcher: FetcherService
+    ) {
 
     this.m = this.metaService.m;
 
@@ -108,11 +107,10 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
 
           const { m, pull, x } = this.metaService;
           const id = this.panel.manager.id;
-          const fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
           const pulls = [
-            fetcher.locales,
-            fetcher.Settings,
+            this.fetcher.locales,
+            this.fetcher.Settings,
             pull.Part({
               object: id,
               include: {

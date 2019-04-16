@@ -5,13 +5,11 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
+import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -47,7 +45,6 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
-  private readonly fetcher: Fetcher;
 
   constructor(
     @Self() public allors: ContextService,
@@ -58,22 +55,19 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     public location: Location,
     private route: ActivatedRoute,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(
-      this.route.url,
-      this.refresh$,
-      this.stateService.internalOrganisationId$
-    )
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -143,13 +137,13 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
-    if (this.selectedRoles.indexOf(this.employeeRole) > -1 ) {
+    if (this.selectedRoles.indexOf(this.employeeRole) > -1) {
       const employment = this.allors.context.create('Employment') as Employment;
       employment.Employee = this.person;
       employment.Employer = this.internalOrganisation;
     }
 
-    if (this.selectedRoles.indexOf(this.salesRepRole) > -1 ) {
+    if (this.selectedRoles.indexOf(this.salesRepRole) > -1) {
       const salesRepRelationship = this.allors.context.create('SalesRepRelationship') as SalesRepRelationship;
       salesRepRelationship.SalesRepresentative = this.person;
       salesRepRelationship.Customer = this.internalOrganisation;
@@ -172,7 +166,7 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

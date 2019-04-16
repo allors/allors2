@@ -6,13 +6,10 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId } from '../../../../../angular';
 import { Sorter, TableRow, Table, EditService } from '../../../..';
-
 import { TaskAssignment } from '../../../../../domain';
-
 import { ObjectService } from '../../../../base/services/object';
-import { StateService } from '../../../services/state';
 
 interface Row extends TableRow {
   object: TaskAssignment;
@@ -39,11 +36,11 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public factoryService: ObjectService,
-    public stateService: StateService,
     public refreshService: RefreshService,
     public editService: EditService,
     public navigation: NavigationService,
     public mediaService: MediaService,
+    private userId: UserId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -75,7 +72,7 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Equals({propertyType: m.TaskAssignment.User, object: this.stateService.userId}),
+      new Equals({propertyType: m.TaskAssignment.User, object: this.userId.value}),
       new ContainedIn({
         propertyType: m.TaskAssignment.Task,
         extent: new Filter({

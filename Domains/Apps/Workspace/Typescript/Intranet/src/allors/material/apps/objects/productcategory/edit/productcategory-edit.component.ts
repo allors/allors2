@@ -3,13 +3,11 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -28,7 +26,6 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
@@ -37,17 +34,18 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -125,7 +123,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

@@ -6,8 +6,8 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
 
@@ -45,8 +45,7 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -129,8 +128,8 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
-        switchMap(([, filterFields, sort, pageEvent ]) => {
+        }, [,,,,,]),
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.UnifiedGood({

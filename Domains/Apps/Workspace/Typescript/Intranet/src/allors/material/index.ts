@@ -43,4 +43,4 @@ export * from './apps/objects/internalorganisation/state/internalorganisation-se
 
 // Apps Services
 export * from './apps/services/actions';
-export * from './apps/services/state';
+export * from './apps/services/filters';

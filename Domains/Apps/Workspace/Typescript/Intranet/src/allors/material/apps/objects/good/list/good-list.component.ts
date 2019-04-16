@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Filter, Contains, Exists } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedGood, UnifiedGood } from '../../../../../domain';
 
@@ -147,7 +147,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

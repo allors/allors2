@@ -6,10 +6,10 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService,  ContextService, MediaService, MetaService, RefreshService, Action, NavigationService } from '../../../../../angular';
+import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId } from '../../../../../angular';
 import { PurchaseInvoice } from '../../../../../domain';
 import { And, Like, PullRequest, Equals } from '../../../../../framework';
-import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, StateService } from '../../../../../material';
+import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
@@ -51,8 +51,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public overviewService: OverviewService,
     public mediaService: MediaService,
-    
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -111,7 +110,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -121,7 +120,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , ]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;

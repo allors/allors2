@@ -5,11 +5,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { Party, Organisation, Person, OrganisationContactRelationship, OrganisationContactKind } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { CreateData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
@@ -42,7 +41,8 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
   }
@@ -51,7 +51,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
 
     const { pull, x, m } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -148,7 +148,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

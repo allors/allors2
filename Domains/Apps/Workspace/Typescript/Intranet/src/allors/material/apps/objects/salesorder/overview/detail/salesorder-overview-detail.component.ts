@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material/base/services/save';
 
@@ -66,7 +64,6 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-  private fetcher: Fetcher;
   private subscription: Subscription;
   facilities: Facility[];
 
@@ -92,10 +89,10 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private singletonId: SingletonId,
+    private fetcher: FetcherService) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Sales Order Details';

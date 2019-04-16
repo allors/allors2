@@ -6,13 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import {  Saved, ContextService, MetaService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -48,7 +46,6 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
-  private fetcher: Fetcher;
   legalForms: LegalForm[];
 
   constructor(
@@ -60,18 +57,19 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -218,7 +216,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import {  Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, SalesOrder, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -34,7 +32,6 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
   addReceiver = false;
 
   private previousReceiver: Party;
-  private fetcher: Fetcher;
   private subscription: Subscription;
 
   get receiverIsPerson(): boolean {
@@ -47,10 +44,9 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'ProductQuote Details';

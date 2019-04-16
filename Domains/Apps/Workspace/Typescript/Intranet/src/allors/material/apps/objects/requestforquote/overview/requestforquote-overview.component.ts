@@ -4,10 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
 import { RequestForQuote, Quote } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './requestforquote-overview.component.html',
@@ -27,10 +26,9 @@ export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestro
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
     private route: ActivatedRoute,
-    private stateService: StateService,
     public injector: Injector,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
 
@@ -39,7 +37,7 @@ export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestro
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

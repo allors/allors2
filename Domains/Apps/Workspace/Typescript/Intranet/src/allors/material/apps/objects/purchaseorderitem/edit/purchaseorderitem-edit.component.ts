@@ -5,12 +5,11 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -41,8 +40,8 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+  ) {
 
     this.m = this.metaService.m;
   }
@@ -178,8 +177,8 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public update(): void {
@@ -191,8 +190,8 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private updateFromPart(part: Part) {

@@ -5,12 +5,10 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, NavigationService, MetaService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SaveService } from 'src/allors/material';
 
@@ -39,7 +37,6 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
-  private readonly fetcher: Fetcher;
   organisations: Organisation[];
 
   constructor(
@@ -51,22 +48,19 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     public location: Location,
     private saveService: SaveService,
     private route: ActivatedRoute,
-    public stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
+  ) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(
-      this.route.url,
-      this.refresh$,
-      this.stateService.internalOrganisationId$
-    )
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -175,7 +169,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

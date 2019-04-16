@@ -4,11 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, tap, delay, map } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
 import { Part, NonUnifiedPart } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { StateService } from '../../../services/state';
-import { timeout } from 'q';
 
 @Component({
   templateUrl: './nonunifiedpart-overview.component.html',
@@ -28,10 +26,9 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
     private route: ActivatedRoute,
-    private stateService: StateService,
     public injector: Injector,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
 
@@ -40,7 +37,7 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

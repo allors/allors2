@@ -3,12 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { Enumeration, ElectronicAddress, PartyContactMechanism, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -37,7 +36,7 @@ export class EmailAddressCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId) {
 
     this.m = this.metaService.m;
   }
@@ -46,7 +45,7 @@ export class EmailAddressCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { StateService } from '../../../services/state';
-import {  ContextService, MetaService } from '../../../../../angular';
+import { ContextService, MetaService, InternalOrganisationId } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
@@ -15,12 +14,12 @@ import { Organisation } from '../../../../../domain';
 export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
   public get internalOrganisation() {
-    const internalOrganisation = this.internalOrganisations.find(v => v.id === this.stateService.internalOrganisationId);
+    const internalOrganisation = this.internalOrganisations.find(v => v.id === this.internalOrganisationId.value);
     return internalOrganisation;
   }
 
   public set internalOrganisation(value: Organisation) {
-    this.stateService.internalOrganisationId = value.id;
+    this.internalOrganisationId.value = value.id;
   }
 
   public internalOrganisations: Organisation[];
@@ -30,7 +29,8 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     public metaService: MetaService,
-    private stateService: StateService) { }
+    private internalOrganisationId: InternalOrganisationId,
+  ) { }
 
   ngOnInit(): void {
 

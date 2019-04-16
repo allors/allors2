@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
 
@@ -49,8 +49,7 @@ export class PartListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
-    private stateService: StateService,
+    private filtersService: FiltersService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -145,7 +144,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        supplier: { search: this.stateService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
+        supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
         brand: { search: brandSearch, display: (v: Brand) => v && v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v.Name },

@@ -5,9 +5,8 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { Loaded, ContextService, MetaService, AllorsBarcodeService } from '../../allors/angular';
+import { Loaded, ContextService, MetaService, AllorsBarcodeService, InternalOrganisationId } from '../../allors/angular';
 import { Equals, PullRequest, ObjectType } from '../../allors/framework';
-import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -38,9 +37,9 @@ export class MainComponent implements OnInit, OnDestroy {
     @Self() private allors: ContextService,
     public metaService: MetaService,
     private barcodeService: AllorsBarcodeService,
-    private stateService: StateService,
     private router: Router,
-    private sideNavService: AllorsMaterialSideNavService
+    private sideNavService: AllorsMaterialSideNavService,
+    private internalOrganisationId: InternalOrganisationId,
   ) { }
 
   public ngOnInit(): void {
@@ -99,7 +98,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = this.stateService.internalOrganisationId$
+    this.subscription = this.internalOrganisationId.observable$
       .pipe(
         switchMap(internalOrganisationId => {
           const pulls = [

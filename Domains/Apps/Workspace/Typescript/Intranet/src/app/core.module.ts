@@ -8,11 +8,12 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { environment } from '../environments/environment';
 
 import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
-import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, StateService, MethodModule, PrintModule, SaveModule } from '../allors/material';
+import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, MethodModule, PrintModule, SaveModule, FiltersService } from '../allors/material';
 
-import { DefaultStateService } from '../allors/material/apps/services/state/default.state.service';
 import { ConfigService } from './app.config.service';
 import { ErrorModule } from './error/error.module';
+
+import { DefaultFiltersService } from '../allors/material/apps/services/filters/default.filters.service';
 
 @NgModule({
   imports: [
@@ -48,7 +49,7 @@ import { ErrorModule } from './error/error.module';
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    { provide: StateService, useClass: DefaultStateService },
+    { provide: FiltersService, useClass: DefaultFiltersService },
     ConfigService
   ]
 })

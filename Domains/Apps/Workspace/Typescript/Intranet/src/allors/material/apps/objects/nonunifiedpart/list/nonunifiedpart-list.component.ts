@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService } from '../../../..';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart } from '../../../../../domain';
 
@@ -50,7 +50,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private stateService: StateService,
+    private filtersService: FiltersService,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -123,7 +123,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     const kindSearch = new SearchFactory({
       objectType: m.InventoryItemKind,
-      predicates: [new Equals ({ propertyType: m.Enumeration.IsActive, value: true })],
+      predicates: [new Equals({ propertyType: m.Enumeration.IsActive, value: true })],
       roleTypes: [m.InventoryItemKind.Name],
     });
 
@@ -139,7 +139,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     const manufacturerSearch = new SearchFactory({
       objectType: m.Organisation,
-      predicates: [new Equals ({ propertyType: m.Organisation.IsManufacturer, value: true })],
+      predicates: [new Equals({ propertyType: m.Organisation.IsManufacturer, value: true })],
       roleTypes: [m.Organisation.PartyName],
     });
 
@@ -155,7 +155,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        supplier: { search: this.stateService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
+        supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
         brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v && v.Name },
@@ -185,7 +185,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [

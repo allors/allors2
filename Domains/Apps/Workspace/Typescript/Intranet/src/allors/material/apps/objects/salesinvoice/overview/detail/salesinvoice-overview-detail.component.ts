@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -57,7 +55,6 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
 
-  private fetcher: Fetcher;
   private subscription: Subscription;
 
   get billToCustomerIsPerson(): boolean {
@@ -82,10 +79,10 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public stateService: StateService) {
+    private fetcher: FetcherService,
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     panel.name = 'detail';
     panel.title = 'Sales Invoice Details';
@@ -256,8 +253,8 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public shipToCustomerAdded(party: Party): void {

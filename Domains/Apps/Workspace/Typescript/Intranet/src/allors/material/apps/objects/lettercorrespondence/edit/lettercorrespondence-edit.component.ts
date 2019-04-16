@@ -3,12 +3,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -46,7 +45,8 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     public metaService: MetaService,
     public navigation: NavigationService,
-    private stateService: StateService) {
+    private internalOrganisationId: InternalOrganisationId,
+    ) {
 
     this.m = this.metaService.m;
   }
@@ -55,7 +55,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -85,7 +85,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
               }
             }),
             pull.Organisation({
-              object: this.stateService.internalOrganisationId,
+              object: this.internalOrganisationId.value,
               name: 'InternalOrganisation',
               include: {
                 ActiveEmployees: {

@@ -8,7 +8,6 @@ import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialised
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
 
@@ -49,7 +48,6 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public metaService: MetaService,
     private saveService: SaveService,
-    public stateService: StateService,
   ) {
     this.m = this.metaService.m;
 

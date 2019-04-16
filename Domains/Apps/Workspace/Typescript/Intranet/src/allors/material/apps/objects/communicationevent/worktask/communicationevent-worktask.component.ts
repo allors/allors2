@@ -1,14 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import {  Loaded, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
-import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask, Organisation } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
+import { Saved, ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { CommunicationEvent, Person, Priority, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask, Organisation } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -42,7 +40,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private route: ActivatedRoute,
     public refreshService: RefreshService,
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -54,7 +52,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -127,8 +125,8 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public goBack(): void {

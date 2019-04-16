@@ -3,14 +3,12 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { CreateData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './serialiseditemcharacteristic-edit.component.html',
@@ -31,7 +29,6 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
   public allUoms: IUnitOfMeasure[];
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
   locales: Locale[];
 
   constructor(
@@ -41,17 +38,18 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
+    ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

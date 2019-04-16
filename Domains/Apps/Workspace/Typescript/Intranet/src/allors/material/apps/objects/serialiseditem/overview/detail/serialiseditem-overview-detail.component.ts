@@ -5,12 +5,10 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { StateService } from '../../../../services/state';
-import { Fetcher } from '../../../Fetcher';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -42,9 +40,10 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    public stateService: StateService,
     private saveService: SaveService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private fetcher: FetcherService,
+  ) {
 
     this.m = this.metaService.m;
 
@@ -93,7 +92,6 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
           this.serialisedItem = undefined;
 
           const { m, pull, x } = this.metaService;
-          const fetcher = new Fetcher(this.stateService, this.metaService.pull);
           const id = this.panel.manager.id;
 
           const pulls = [
@@ -113,8 +111,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
                 Photos: x
               }
             }),
-            fetcher.internalOrganisation,
-            fetcher.locales,
+            this.fetcher.internalOrganisation,
+            this.fetcher.locales,
             pull.SerialisedItem({
               object: id,
               fetch: {
@@ -134,7 +132,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
               }
             }),
             pull.Part({
-              include: { SerialisedItems: x}
+              include: { SerialisedItems: x }
             }),
             pull.SupplierRelationship({
               include: {
@@ -174,7 +172,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
         const inventoryItem = serialisedInventoryItems.find(v => v.Quantity === 1);
         if (inventoryItem) {
-        this.currentFacility = inventoryItem.Facility;
+          this.currentFacility = inventoryItem.Facility;
         }
       });
 
@@ -194,8 +192,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public update(): void {
@@ -209,8 +207,8 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private onSave() {

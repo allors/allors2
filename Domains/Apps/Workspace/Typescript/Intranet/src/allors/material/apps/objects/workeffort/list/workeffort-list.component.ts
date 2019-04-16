@@ -7,8 +7,8 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals } from '../../../../../framework';
 import { WorkEffort } from '../../../../../domain';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService, StateService } from '../../../../../material';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
   object: WorkEffort;
@@ -47,8 +47,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
     public printService: PrintService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -103,8 +102,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
       }
     );
 
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -114,7 +112,7 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , ]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;

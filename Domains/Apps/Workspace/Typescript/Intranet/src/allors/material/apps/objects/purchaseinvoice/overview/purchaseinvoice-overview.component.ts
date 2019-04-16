@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
-import { StateService } from '../../../services/state';
+import { InternalOrganisationId } from '../../../../../angular/apps/state';
 
 @Component({
   templateUrl: './purchaseinvoice-overview.component.html',
@@ -28,9 +28,8 @@ export class PurchasInvoiceOverviewComponent implements AfterViewInit, OnDestroy
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
     private route: ActivatedRoute,
-    private stateService: StateService,
+    private internalOrganisationId: InternalOrganisationId,
     public injector: Injector,
     titleService: Title,
   ) {
@@ -40,7 +39,7 @@ export class PurchasInvoiceOverviewComponent implements AfterViewInit, OnDestroy
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

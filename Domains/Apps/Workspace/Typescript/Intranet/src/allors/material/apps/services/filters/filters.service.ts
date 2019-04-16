@@ -1,13 +1,7 @@
 import { Observable } from 'rxjs';
 import { SearchFactory } from '../../../../angular';
 
-export abstract class StateService {
-    singletonId: string;
-    userId: string;
-
-    internalOrganisationId: string;
-    internalOrganisationId$: Observable<string>;
-
+export abstract class FiltersService {
     goodsFilter: SearchFactory;
     partsFilter: SearchFactory;
     customersFilter: SearchFactory;

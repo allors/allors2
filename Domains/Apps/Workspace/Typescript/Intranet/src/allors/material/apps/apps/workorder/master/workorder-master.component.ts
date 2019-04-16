@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, ContainedIn, Filter, Exists, Not } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService } from '../../../../../angular';
-import { StateService } from '../../../..';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
 
 import { WorkEffortPartyAssignment, WorkEffort, TimeEntry, Person } from '../../../../../domain';
 
@@ -45,7 +44,7 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    private stateService: StateService,
+    private userId: UserId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -60,7 +59,7 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
         switchMap(() => {
 
           const predicate = new And([
-            new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, object: this.stateService.userId }),
+            new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, object: this.userId.value }),
             new ContainedIn({
               propertyType: m.WorkEffortPartyAssignment.Assignment,
               extent: new Filter({
@@ -72,7 +71,7 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
 
           const pulls = [
             pull.Person({
-              object: this.stateService.userId
+              object: this.userId.value
             }),
             pull.WorkEffortPartyAssignment({
               predicate,

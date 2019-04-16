@@ -5,10 +5,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Meta } from '../../../../../meta';
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
 import { SerialisedItem, Part, Party } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './serialiseditem-overview.component.html',
@@ -30,10 +29,9 @@ export class SerialisedItemOverviewComponent implements AfterViewInit, OnDestroy
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    
     private route: ActivatedRoute,
-    private stateService: StateService,
     public injector: Injector,
+    private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
 
@@ -43,7 +41,7 @@ export class SerialisedItemOverviewComponent implements AfterViewInit, OnDestroy
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 

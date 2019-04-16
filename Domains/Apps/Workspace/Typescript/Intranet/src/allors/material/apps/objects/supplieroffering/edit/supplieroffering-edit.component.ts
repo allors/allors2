@@ -3,13 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
-import { Fetcher } from '../../Fetcher';
 import { CreateData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
@@ -32,7 +30,6 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
   settings: Settings;
 
   private subscription: Subscription;
-  private fetcher: Fetcher;
   title: string;
 
   constructor(
@@ -42,17 +39,18 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+  ) {
 
     this.m = this.metaService.m;
-    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
     const { pull, x, m } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([]) => {
 
@@ -132,7 +130,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }
+  }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -151,7 +149,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

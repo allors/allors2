@@ -8,7 +8,6 @@ import { CreateData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { StateService } from '../../../services/state';
 import { SaveService } from 'src/allors/material/base/services/save';
 
 @Component({
@@ -38,7 +37,7 @@ export class PositionTypeRateEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private stateService: StateService) {
+  ) {
 
     this.m = this.metaService.m;
   }

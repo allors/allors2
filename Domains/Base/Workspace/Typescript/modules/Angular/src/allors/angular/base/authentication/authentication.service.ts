@@ -7,7 +7,8 @@ import { AuthenticationConfig } from './authentication.config';
 import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
 import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
 import { throwError, Observable } from 'rxjs';
-import { StateService } from '../../../../allors/material/apps/services/state/state.service';
+
+import { UserId } from '../state/UserId';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,7 +26,7 @@ export class AuthenticationService {
   constructor(
     private http: HttpClient,
     private authenticationConfig: AuthenticationConfig,
-    private stateService: StateService,
+    private userIdState: UserId,
   ) { }
 
   public login$(userName: string, password: string): Observable<AuthenticationTokenResponse> {
@@ -38,7 +39,7 @@ export class AuthenticationService {
         map((result) => {
           if (result.authenticated) {
             this.token = result.token;
-            this.stateService.userId = result.userId;
+            this.userIdState.value = result.userId;
           }
 
           return result;

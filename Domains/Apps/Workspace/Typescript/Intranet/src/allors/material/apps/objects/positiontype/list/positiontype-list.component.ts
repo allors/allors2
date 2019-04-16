@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, StateService, EditService } from '../../../..';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PositionType } from '../../../../../domain';
 
@@ -41,8 +41,6 @@ export class PositionTypesOverviewComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
-    private stateService: StateService,
     titleService: Title,
   ) {
     titleService.setTitle(this.title);
@@ -97,7 +95,7 @@ export class PositionTypesOverviewComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ]),
+        }, [, , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
