@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Protocol.Data;
+
 namespace Allors.Adapters
 {
     using System;
@@ -145,13 +147,13 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
                 
-                var schemaExtent = new Data.Protocol.Extent
+                var schemaExtent = new Protocol.Data.Extent
                 {
-                    Kind = Data.Protocol.ExtentKind.Filter,
+                    Kind = Protocol.Data.ExtentKind.Filter,
                     ObjectType = M.C1.ObjectType.Id,
-                    Predicate = new Data.Protocol.Predicate
+                    Predicate = new Protocol.Data.Predicate
                     {
-                        Kind = Data.Protocol.PredicateKind.Equals,
+                        Kind = Protocol.Data.PredicateKind.Equals,
                         PropertyType = M.C1.C1AllorsString.Id,
                         Value = "ᴀbra"
                     }

@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
@@ -10,8 +12,6 @@ import { Person, Data, Organisation } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
 import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
 import { RadioGroupOption } from '../../../../material';
-
-import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './form.component.html',
@@ -56,10 +56,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
     const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
-
 
     const { m, pull, x } = this.metaService;
 
@@ -78,13 +77,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
                   MultipleFiles: x
                 }
               }),
-              pull.Organisation({
-                include: {
-                  OneData: x,
-                  ManyDatas: x,
-                }
-              }),
-              pull.Person(),
+            pull.Organisation({
+              include: {
+                OneData: x,
+                ManyDatas: x,
+              }
+            }),
+            pull.Person(),
           ];
 
           return this.allors.context
@@ -106,20 +105,34 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
-  public refresh(): void {
+  reset() {
+    this.allors.context.reset();
+    this.data = this.allors.context.create(this.m.Data) as Data;
+  }
+
+
+  newDate() {
+    this.data.Date = moment.utc().toISOString();
+  }
+
+  newDateTime() {
+    this.data.DateTime = moment.utc().toISOString();
+  }
+
+  refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  public save(): void {
+  save(): void {
 
     this.allors.context
       .save()

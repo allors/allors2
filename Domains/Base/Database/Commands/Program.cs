@@ -19,6 +19,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Commands
 {
@@ -32,24 +33,28 @@ namespace Commands
 
     public class Program
     {
+        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
         public static void Main(string[] args)
         {
             var services = new ServiceCollection();
             services.AddAllors();
+ 
+            var configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appSettings.json");
 
-            const string FileName = @"base.appSettings.json";
-            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
-            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
-
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(systemSettings, true)
-                .AddJsonFile(userSettings, true)
-                .AddEnvironmentVariables()
+            if (IsOsx)
+            {
+                configurationBuilder.AddJsonFile("appSettings.osx.json");
+            }
+                
+            configurationBuilder.AddEnvironmentVariables()
                 .Build();
 
-            services.AddSingleton<IConfiguration>(configuration);
+            var configuration = configurationBuilder.Build();
 
+            services.AddSingleton<IConfiguration>(configuration);
+            
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));

@@ -76,7 +76,18 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
             }
         }
 
-        protected override string ConnectionString => "Integrated Security=SSPI;Data Source=(local);Initial Catalog=object;Application Name=Adapters";
+        protected override string ConnectionString
+        {
+            get
+            {
+                if (Settings.IsOsx)
+                {
+                    return "server=localhost;database=object;User Id=SA;Password=Allors2018";
+                }
+                
+                return "Integrated Security=SSPI;Data Source=(local);Initial Catalog=object;Application Name=Adapters";
+            }
+        }
 
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {

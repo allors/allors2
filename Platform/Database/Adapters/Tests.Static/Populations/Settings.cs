@@ -18,12 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace Allors.Adapters
 {
     using System;
 
     public static class Settings
     {
+        public static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        public static bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        
         // Smoke
         private const int DefaultNumberOfRuns = 2;
         private const int DefaultLargeArraySize = 10;

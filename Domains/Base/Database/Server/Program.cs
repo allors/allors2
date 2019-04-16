@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Runtime.InteropServices;
 
 namespace Allors.Server
 {
@@ -6,12 +6,15 @@ namespace Allors.Server
 
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     using NLog.Web;
 
     public class Program
     {
+        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
         public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
@@ -32,23 +35,20 @@ namespace Allors.Server
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    const string FileName = @"base.appSettings.json";
-                    var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
-                    var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
-
-                    config.AddJsonFile(systemSettings, true);
-                    config.AddJsonFile(userSettings, true);
+                    if (IsOsx)
+                    {
+                        config.AddJsonFile("appSettings.osx.json", false);                        
+                    }                    
                 })
                 .ConfigureLogging(logging =>
-                    {
-                        logging.ClearProviders();
-                        logging.SetMinimumLevel(LogLevel.Trace);
-                    })
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                })
                 .UseNLog();
     }
 }
