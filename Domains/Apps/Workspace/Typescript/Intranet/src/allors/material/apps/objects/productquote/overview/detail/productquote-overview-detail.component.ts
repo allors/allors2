@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
+import { Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, SalesOrder, Party, RequestForQuote, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService, FiltersService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -41,6 +41,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
+    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
@@ -166,8 +167,8 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public personAdded(person: Person): void {

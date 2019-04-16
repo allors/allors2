@@ -6,12 +6,11 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { SaveService, FiltersService } from '../../../../../material';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { SaveService } from 'src/allors/material';
-
 
 @Component({
   templateUrl: './worktask-create.component.html',
@@ -42,6 +41,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<WorkTaskCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,

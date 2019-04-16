@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
+import { SaveService, FiltersService } from '../../../../../../material';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -35,6 +35,7 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
+    public filtersService: FiltersService,
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,

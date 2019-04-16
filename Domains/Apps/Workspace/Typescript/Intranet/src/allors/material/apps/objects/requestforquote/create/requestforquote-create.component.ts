@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { CreateData, SaveService, FiltersService } from '../../../../../material';
 import { Meta, FetchService } from '../../../../../meta';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -39,6 +39,7 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<RequestForQuoteCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,

@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { CreateData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -37,11 +37,12 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
- ) {
+  ) {
     this.m = this.metaService.m;
   }
 

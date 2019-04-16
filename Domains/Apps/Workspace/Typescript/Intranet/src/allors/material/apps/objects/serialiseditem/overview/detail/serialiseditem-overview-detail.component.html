@@ -49,14 +49,14 @@
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
                 display="Name"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy"
-                [filter]="stateService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" [options]="currentSuppliers"
                 display="Name"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy"
-                [filter]="stateService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">

@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
@@ -112,7 +112,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     const kindSearch = new SearchFactory({
       objectType: m.InventoryItemKind,
-      predicates: [new Equals ({ propertyType: m.Enumeration.IsActive, value: true })],
+      predicates: [new Equals({ propertyType: m.Enumeration.IsActive, value: true })],
       roleTypes: [m.InventoryItemKind.Name],
     });
 
@@ -128,7 +128,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     const manufacturerSearch = new SearchFactory({
       objectType: m.Organisation,
-      predicates: [new Equals ({ propertyType: m.Organisation.IsManufacturer, value: true })],
+      predicates: [new Equals({ propertyType: m.Organisation.IsManufacturer, value: true })],
       roleTypes: [m.Organisation.PartyName],
     });
 
@@ -174,7 +174,7 @@ export class PartListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [

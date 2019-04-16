@@ -4,12 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import {  SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
 import { CreateData } from '../../../../../material/base/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { SaveService } from 'src/allors/material';
+import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -40,6 +40,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
@@ -167,8 +168,8 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private refreshSerialisedItems(product: Product): void {

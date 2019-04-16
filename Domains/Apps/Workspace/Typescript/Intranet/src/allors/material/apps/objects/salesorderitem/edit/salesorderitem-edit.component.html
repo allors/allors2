@@ -35,7 +35,7 @@
       <div *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
         <div class="row">
           <a-mat-autocomplete class="col-md" *ngIf="orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.Product"
-            [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="stateService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+            [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
           <a-mat-static class="col-md" *ngIf="!orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.Product"
             display="Name"></a-mat-static>
           <a-mat-select class="col-md" *ngIf="orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.SerialisedItem"

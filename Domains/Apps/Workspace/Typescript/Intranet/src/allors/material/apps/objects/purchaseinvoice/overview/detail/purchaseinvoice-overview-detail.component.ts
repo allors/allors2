@@ -7,9 +7,8 @@ import { ContextService, MetaService, PanelService, RefreshService, FetcherServi
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService, FiltersService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -79,12 +78,13 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
+    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,
     public fetcher: FetcherService,
-    ) {
+  ) {
 
     this.m = this.metaService.m;
 

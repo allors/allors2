@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService } from '../../../../../../angular';
+import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material/base/services/save';
+import { SaveService, FiltersService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -86,6 +86,7 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
+    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
@@ -305,8 +306,8 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public shipToCustomerAdded(party: Party): void {

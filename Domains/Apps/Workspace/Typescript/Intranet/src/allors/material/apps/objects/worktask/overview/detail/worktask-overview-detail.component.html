@@ -32,12 +32,12 @@
         </div>
 
         <div class="row">
-          <a-mat-autocomplete class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.ExecutedBy" [filter]="stateService.organisationsFilter.create(allors)"
+          <a-mat-autocomplete class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.ExecutedBy" [filter]="filtersService.organisationsFilter.create(allors)"
              display="displayName"></a-mat-autocomplete>
         </div>
 
         <div class="row">
-          <a-mat-autocomplete class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(allors)"
+          <a-mat-autocomplete class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="filtersService.customersFilter.create(allors)"
             (changed)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
         </div>
 

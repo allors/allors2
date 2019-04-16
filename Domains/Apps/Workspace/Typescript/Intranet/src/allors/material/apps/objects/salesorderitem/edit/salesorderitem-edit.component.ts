@@ -8,7 +8,7 @@ import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryI
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, SaveService } from '../../../../../material';
+import { CreateData, SaveService, FiltersService } from '../../../../../material';
 
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
@@ -43,6 +43,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

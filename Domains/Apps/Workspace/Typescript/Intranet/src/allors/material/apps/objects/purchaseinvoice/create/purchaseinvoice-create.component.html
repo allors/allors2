@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-md">
         <div class="row">
-          <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.suppliersFilter.create(allors.context)"
+          <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="filtersService.suppliersFilter.create(allors.context)"
             display="displayName" (changed)="billedFromSelected($event)"></a-mat-autocomplete>
           <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBilledFrom" type="button" (click)="addBilledFrom = !addBilledFrom">
             <mat-icon *ngIf="!addBilledFrom">add</mat-icon>
@@ -79,13 +79,13 @@
 
     <div class="row">
       <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledToContactPerson"
-        [filter]="stateService.employeeFilter.create(allors.context)" display="displayName" label="Billed to Contact Person"></a-mat-autocomplete>
+        [filter]="filtersService.employeeFilter.create(allors.context)" display="displayName" label="Billed to Contact Person"></a-mat-autocomplete>
     </div>
 
     <div class="row">
       <div class="col-md">
         <div class="row">
-          <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToCustomer" [filter]="stateService.customersFilter.create(allors.context)"
+          <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
             display="displayName" (changed)="shipToCustomerSelected($event)"></a-mat-autocomplete>
           <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToCustomer" type="button" (click)="addShipToCustomer = !addShipToCustomer">
             <mat-icon *ngIf="!addShipToCustomer">add</mat-icon>
@@ -153,7 +153,7 @@
       <div class="col-md">
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToEndCustomer"
-            [filter]="stateService.customersFilter.create(allors.context)" display="displayName" (changed)="billToEndCustomerSelected($event)"></a-mat-autocomplete>
+            [filter]="filtersService.customersFilter.create(allors.context)" display="displayName" (changed)="billToEndCustomerSelected($event)"></a-mat-autocomplete>
           <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBillToEndCustomer" type="button" (click)="addBillToEndCustomer = !addBillToEndCustomer">
             <mat-icon *ngIf="!addBillToEndCustomer">add</mat-icon>
             <mat-icon *ngIf="addBillToEndCustomer">close</mat-icon>
@@ -220,7 +220,7 @@
       <div class="col-md">
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
-            [filter]="stateService.customersFilter.create(allors.context)" display="displayName" (changed)="shipToEndCustomerSelected($event)"></a-mat-autocomplete>
+            [filter]="filtersService.customersFilter.create(allors.context)" display="displayName" (changed)="shipToEndCustomerSelected($event)"></a-mat-autocomplete>
           <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteshipToEndCustomer" type="button" (click)="addShipToEndCustomer = !addShipToEndCustomer">
             <mat-icon *ngIf="!addShipToEndCustomer">add</mat-icon>
             <mat-icon *ngIf="addShipToEndCustomer">close</mat-icon>

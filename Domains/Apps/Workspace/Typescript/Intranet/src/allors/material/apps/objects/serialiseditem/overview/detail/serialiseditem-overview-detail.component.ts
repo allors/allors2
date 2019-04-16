@@ -7,9 +7,9 @@ import { MatSnackBar } from '@angular/material';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
+import { SaveService, FiltersService} from '../../../../../../material';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -37,6 +37,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
+    public filtersService: FiltersService,
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,

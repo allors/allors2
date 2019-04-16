@@ -9,7 +9,7 @@ import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../
 import { CreateData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({
   templateUrl: './salesinvoiceitem-edit.component.html',
@@ -44,6 +44,7 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesInvoiceItemEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
