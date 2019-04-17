@@ -25,9 +25,6 @@ export { AllorsMaterialDatetimepickerComponent } from './datetimepicker.componen
     MatMomentDateModule,
     AllorsFocusModule
   ],
-  providers: [
-    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-  ]
 })
 export class AllorsMaterialDatetimepickerModule {
 }

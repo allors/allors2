@@ -72,8 +72,6 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
       }
 
       this.object.set(this.roleType.name, value);
-
-      console.log(this.model);
     }
   }
 

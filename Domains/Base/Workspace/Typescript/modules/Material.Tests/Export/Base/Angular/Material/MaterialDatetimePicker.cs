@@ -29,7 +29,7 @@ namespace Angular.Material
                 var dateValue = dateElement.GetAttribute("value");
                 if (!string.IsNullOrEmpty(dateValue))
                 {
-                    var dateTime = DateTime.Parse(dateValue).ToLocalTime().ToUniversalTime();
+                    var dateTime = DateTime.Parse(dateValue).ToLocalTime();
 
                     var hourElement = this.Driver.FindElements(this.Selector)[1];
                     var hourValue = hourElement.GetAttribute("value");
@@ -53,6 +53,8 @@ namespace Angular.Material
 
             set
             {
+                value = value?.ToLocalTime();
+
                 this.Driver.WaitForAngular();
 
                 var dateElement = this.Driver.FindElement(this.Selector);
@@ -61,11 +63,13 @@ namespace Angular.Material
 
                 this.Driver.WaitForAngular();
 
-                dateElement = this.Driver.FindElements(this.Selector)[0];
                 dateElement.Clear();
+                dateElement.SendKeys(Keys.Control + "a");
+                dateElement.SendKeys(Keys.Delete);
                 if (value != null)
                 {
-                    dateElement.SendKeys(value.Value.ToString("d"));
+                    string text = value.Value.ToString("d");
+                    dateElement.SendKeys(text);
                 }
 
                 dateElement.SendKeys(Keys.Tab);

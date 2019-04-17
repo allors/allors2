@@ -28,8 +28,9 @@ namespace Tests
 
         protected Test(TestFixture fixture)
         {
-            // Init Browser
-            this.Driver = fixture.Driver;
+            // Start Driver
+            this.DriverManager = new DriverManager();
+            this.DriverManager.Start();
 
             // Init Server
             this.Driver.Navigate().GoToUrl(Test.DatabaseInithUrl);
@@ -75,10 +76,13 @@ namespace Tests
 
         public ISession Session { get; set; }
 
-        public IWebDriver Driver { get; set; }
+        public DriverManager DriverManager { get; }
+
+        public IWebDriver Driver => this.DriverManager.Driver;
 
         public virtual void Dispose()
         {
+            this.DriverManager.Stop();
         }
 
         public DashboardPage Login(string userName = "administrator")

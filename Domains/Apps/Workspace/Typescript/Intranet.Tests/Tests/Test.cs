@@ -3,6 +3,7 @@ namespace Tests
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Runtime.InteropServices;
     using System.Xml;
 
     using Allors;
@@ -15,13 +16,9 @@ namespace Tests
     using Microsoft.Extensions.DependencyInjection;
 
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Html5;
-    using OpenQA.Selenium.Remote;
     using OpenQA.Selenium.Support.Extensions;
 
     using Pages.ApplicationTests;
-
-    using Tests.ApplicationTests;
 
     using ObjectFactory = Allors.ObjectFactory;
 
@@ -32,6 +29,8 @@ namespace Tests
 
         public static readonly string DatabaseInitUrl = $"{ServerUrl}/Test/Init";
         public static readonly string DatabaseTimeShiftUrl = $"{ServerUrl}/Test/TimeShift";
+
+        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
         private static FileInfo populationFileInfo;
         private static string population;
@@ -46,7 +45,8 @@ namespace Tests
         protected Test(TestFixture fixture)
         {
             // Init Browser
-            this.Driver = fixture.Driver;
+            this.DriverManager = new DriverManager();
+            this.DriverManager.Start();
 
             // Init Server
             this.Driver.Navigate().GoToUrl(Test.DatabaseInitUrl);
@@ -54,17 +54,18 @@ namespace Tests
             // Init Allors
             CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
+            var configurationBuilder = new ConfigurationBuilder()
+                          .AddJsonFile("appSettings.json");
 
-            const string FileName = @"apps.appSettings.json";
-            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
-            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
+            if (IsOsx)
+            {
+                configurationBuilder.AddJsonFile("appSettings.osx.json");
+            }
 
-            var appConfiguration = new ConfigurationBuilder()
-                .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(systemSettings, true)
-                .AddJsonFile(userSettings, true)
-                .AddEnvironmentVariables()
+            configurationBuilder.AddEnvironmentVariables()
                 .Build();
+
+            var appConfiguration = configurationBuilder.Build();
 
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
@@ -126,10 +127,13 @@ namespace Tests
 
         public ISession Session { get; set; }
 
-        public IWebDriver Driver { get; set; }
+        public DriverManager DriverManager { get; }
+
+        public IWebDriver Driver => this.DriverManager.Driver;
 
         public virtual void Dispose()
         {
+            this.DriverManager.Stop();
         }
 
         public DashboardPage Login(string userName = "administrator", bool reset = true)

@@ -30,7 +30,6 @@ namespace Angular.Material
                 var value = element.GetAttribute("value");
                 if (!string.IsNullOrEmpty(value))
                 {
-                    // TODO: UTC
                     return DateTime.Parse(value);
                 }
 
@@ -43,6 +42,8 @@ namespace Angular.Material
                 var element = this.Driver.FindElement(this.Selector);
                 this.ScrollToElement(element);
                 element.Clear();
+                element.SendKeys(Keys.Control + "a");
+                element.SendKeys(Keys.Delete);
                 if (value != null)
                 {
                     element.SendKeys(value.Value.ToString("d"));
