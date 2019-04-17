@@ -7,6 +7,10 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { RoleField, ModelField } from '../../../../../angular';
 
+export function dateAdapterFactory(dateLocale) {
+  return new MomentDateAdapter(dateLocale, { useUtc: false })
+}
+
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-datetimepicker',
@@ -14,9 +18,7 @@ import { RoleField, ModelField } from '../../../../../angular';
   templateUrl: './datetimepicker.component.html',
   providers: [
     {
-      provide: DateAdapter, useFactory: (dateLocale) => {
-        return new MomentDateAdapter(dateLocale, { useUtc: false })
-      }, deps: [MAT_DATE_LOCALE]
+      provide: DateAdapter, useFactory: dateAdapterFactory, deps: [MAT_DATE_LOCALE]
     },
   ]
 })
@@ -25,45 +27,49 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   @Output()
   public selected: EventEmitter<Date> = new EventEmitter();
 
-  private momentModel: moment.Moment;
+  private momentModel: moment.Moment = null;
+
+  private adapter: MomentDateAdapter;
 
   constructor(
     @Optional() parentForm: NgForm,
     @Self() dateAdapter: DateAdapter<any>,
   ) {
     super(parentForm);
+
+    this.adapter = dateAdapter as MomentDateAdapter;
   }
 
   get model(): any {
-    if (!this.momentModel) {
-      this.momentModel = this.ExistObject ? moment(this.object.get(this.roleType.name)) : undefined;
+    if (this.momentModel == null) {
+      if (this.ExistObject) {
+        const isoString = this.object.get(this.roleType.name);
+        this.momentModel = isoString ? moment(isoString).clone() : null;
+      }
     }
 
     return this.momentModel;
   }
 
   set model(value: any) {
-    if (this.ExistObject) {
-      if(!value){
+    if (!this.ExistObject) {
+      this.momentModel = null;
+    } else {
 
-        this.momentModel = null;
+      this.momentModel = value;
+
+      if (value === null) {
         this.object.set(this.roleType.name, null);
-        console.log(this.momentModel.utc().toISOString());
+      } else {
+        if (value.isValid()) {
+          const isoString = value.toISOString();
+          this.object.set(this.roleType.name, isoString);
 
-      } else{
-
-        this.momentModel = value;
-
-        if (this.momentModel.isValid()) {
-          this.object.set(this.roleType.name, this.momentModel.utc().toISOString());
-          this.momentModel = null;
-
-          console.log(this.momentModel.utc().toISOString());
+          console.log(isoString + ' : ' + this.momentModel);
         }
       }
     }
   }
-
 
   get hours(): number {
     if (this.model) {
@@ -72,9 +78,8 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   }
 
   set hours(value: number) {
-    if (this.model) {
-      this.model.hours(value);
-      this.model = this.model;
+    if (this.model && value !== null) {
+      this.model = this.model.clone().hours(value);
     }
   }
 
@@ -85,9 +90,8 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   }
 
   set minutes(value: number) {
-    if (this.model) {
-      this.model.minutes(value);
-      this.model = this.model;
+    if (this.model && value !== null) {
+      this.model = this.model.clone().minutes(value);
     }
   }
 

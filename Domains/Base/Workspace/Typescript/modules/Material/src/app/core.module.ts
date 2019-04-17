@@ -39,7 +39,7 @@ import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModul
     NavigateModule.forRoot(),
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
   ],
 })
 export class CoreModule {

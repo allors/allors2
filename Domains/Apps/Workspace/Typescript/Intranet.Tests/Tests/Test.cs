@@ -136,17 +136,9 @@ namespace Tests
             this.DriverManager.Stop();
         }
 
-        public DashboardPage Login(string userName = "administrator", bool reset = true)
+        public DashboardPage Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
-
-            if (reset)
-            {
-                this.Driver.Manage().Cookies.DeleteAllCookies();
-                this.Driver.ExecuteJavaScript("localStorage.clear();");
-                this.Driver.ExecuteJavaScript("sessionStorage.clear();");
-            }
-
             var page = new LoginPage(this.Driver);
             return page.Login();
         }

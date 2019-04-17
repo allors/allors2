@@ -42,13 +42,18 @@ namespace Angular.Material
                 var element = this.Driver.FindElement(this.Selector);
                 this.ScrollToElement(element);
                 element.Clear();
+
+                this.Driver.WaitForAngular();
                 element.SendKeys(Keys.Control + "a");
                 element.SendKeys(Keys.Delete);
+
                 if (value != null)
                 {
+                    this.Driver.WaitForAngular();
                     element.SendKeys(value.Value.ToString("d"));
                 }
 
+                this.Driver.WaitForAngular();
                 element.SendKeys(Keys.Tab);
             }
         }

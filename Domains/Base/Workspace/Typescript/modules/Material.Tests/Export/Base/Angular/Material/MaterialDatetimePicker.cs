@@ -29,23 +29,19 @@ namespace Angular.Material
                 var dateValue = dateElement.GetAttribute("value");
                 if (!string.IsNullOrEmpty(dateValue))
                 {
-                    var dateTime = DateTime.Parse(dateValue).ToLocalTime();
-
                     var hourElement = this.Driver.FindElements(this.Selector)[1];
                     var hourValue = hourElement.GetAttribute("value");
-                    if (int.TryParse(hourValue, out var hours))
-                    {
-                        dateTime = dateTime.AddHours(hours);
-                    }
+                    int.TryParse(hourValue, out var hours);
 
                     var minuteElement = this.Driver.FindElements(this.Selector)[2];
                     var minuteValue = minuteElement.GetAttribute("value");
-                    if (int.TryParse(minuteValue, out var minutes))
-                    {
-                        dateTime = dateTime.AddMinutes(minutes);
-                    }
+                    int.TryParse(minuteValue, out var minutes);
 
-                    return dateTime;
+                    if (DateTime.TryParse(dateValue, out var date))
+                    {
+                        var dateTime = new DateTime(date.Year, date.Month, date.Day, hours, minutes, 0);
+                        return dateTime.ToUniversalTime();
+                    }
                 }
 
                 return null;
@@ -62,16 +58,21 @@ namespace Angular.Material
                 dateElement.Click();
 
                 this.Driver.WaitForAngular();
-
                 dateElement.Clear();
+
+                this.Driver.WaitForAngular();
                 dateElement.SendKeys(Keys.Control + "a");
+                this.Driver.WaitForAngular();
                 dateElement.SendKeys(Keys.Delete);
+
                 if (value != null)
                 {
-                    string text = value.Value.ToString("d");
+                    this.Driver.WaitForAngular();
+                    var text = value.Value.ToString("d");
                     dateElement.SendKeys(text);
                 }
 
+                this.Driver.WaitForAngular();
                 dateElement.SendKeys(Keys.Tab);
 
                 this.Driver.WaitForAngular();

@@ -7,6 +7,10 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { RoleField } from '../../../../../angular';
 
+export function dateAdapterFactory(dateLocale) {
+  return new MomentDateAdapter(dateLocale, { useUtc: true });
+}
+
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-datepicker',
@@ -14,9 +18,7 @@ import { RoleField } from '../../../../../angular';
   templateUrl: './datepicker.component.html',
   providers: [
     {
-      provide: DateAdapter, useFactory: (dateLocale) => {
-        return new MomentDateAdapter(dateLocale, { useUtc: true })
-      }, deps: [MAT_DATE_LOCALE]
+      provide: DateAdapter, useFactory: dateAdapterFactory, deps: [MAT_DATE_LOCALE]
     },
   ]
 })
@@ -48,21 +50,17 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
 
   set model(value: any) {
     if (this.ExistObject) {
-      if(!value){
+      this.momentModel = value;
 
-        this.momentModel = null;
+      if (value == null) {
         this.object.set(this.roleType.name, null);
-        console.log(this.momentModel.utc().toISOString());
-
-      } else{
-
-        this.momentModel = value as moment.Moment;
-
-        if (this.momentModel.isValid()) {
-          this.object.set(this.roleType.name, this.momentModel.utc().toISOString());
+      } else {
+        if (value.isValid()) {
+          const isoString = value.toISOString();
+          this.object.set(this.roleType.name, isoString);
           this.momentModel = null;
 
-          console.log(this.momentModel.utc().toISOString());
+          console.log(isoString + " : " + this.momentModel);
         }
       }
     }

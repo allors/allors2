@@ -27,15 +27,33 @@ namespace Tests
         [Fact]
         public void Populated()
         {
-            var expected = new DateTime(1973, 3, 27, 12, 0, 0, DateTimeKind.Utc);
-            var data = new DataBuilder(this.Session).WithDateTime(expected).Build();
-            this.Session.Commit();
+            var data = new DataBuilder(this.Session).Build();
 
-            var homePage = this.page.Sidenav.NavigateToHome();
-            this.page = homePage.Sidenav.NavigateToForm();
+            {
+                // Wintertime
+                var expected = new DateTime(2018, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+                data.DateTime = expected;
+                this.Session.Commit();
 
-            var actual = this.page.Datetime.Value;
-            Assert.Equal(expected, actual);
+                var homePage = this.page.Sidenav.NavigateToHome();
+                this.page = homePage.Sidenav.NavigateToForm();
+
+                var actual = this.page.Datetime.Value;
+                Assert.Equal(expected, actual);
+            }
+
+            {
+                // Summertime
+                var expected = new DateTime(2018, 6, 1, 12, 0, 0, DateTimeKind.Utc);
+                data.DateTime = expected;
+                this.Session.Commit();
+
+                var homePage = this.page.Sidenav.NavigateToHome();
+                this.page = homePage.Sidenav.NavigateToForm();
+
+                var actual = this.page.Datetime.Value;
+                Assert.Equal(expected, actual);
+            }
         }
 
         [Fact]
@@ -43,7 +61,7 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            var date = new DateTime(1973, 3, 27, 12, 0, 0, DateTimeKind.Utc);
+            var date = new DateTime(2018, 1, 1, 12, 0, 0, DateTimeKind.Utc);
             this.page.Datetime.Value = date;
 
             this.page.Save.Click();
@@ -66,12 +84,12 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            var date = new DateTime(1973, 3, 27, 12, 0, 0, DateTimeKind.Utc);
+            var date = new DateTime(2019, 1, 1, 12, 0, 0, DateTimeKind.Utc);
             this.page.Datetime.Value = date;
 
             this.page.Save.Click();
 
-            date = new DateTime(1973, 3, 27, 18, 0, 0, DateTimeKind.Utc);
+            date = new DateTime(2019, 1, 1, 18, 0, 0, DateTimeKind.Utc);
             this.page.Datetime.Value = date;
 
             this.page.Save.Click();
