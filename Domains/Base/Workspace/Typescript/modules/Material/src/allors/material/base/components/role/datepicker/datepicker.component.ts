@@ -59,8 +59,6 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
           const isoString = value.toISOString();
           this.object.set(this.roleType.name, isoString);
           this.momentModel = null;
-
-          console.log(isoString + " : " + this.momentModel);
         }
       }
     }
