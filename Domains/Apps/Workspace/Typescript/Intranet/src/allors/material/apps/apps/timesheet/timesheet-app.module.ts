@@ -6,20 +6,20 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule, AllorsMaterialModelAutoCompleteModule } from '../../..';
 
-import { WorkerOrderMasterComponent } from './master/workorder-master.component';
-export { WorkerOrderMasterComponent } from './master/workorder-master.component';
+import { TimesheetMasterComponent } from './master/timesheet-master.component';
+export { TimesheetMasterComponent } from './master/timesheet-master.component';
 
-import { WorkerOrderDetailComponent } from './detail/workorder-detail.component';
-export { WorkerOrderDetailComponent } from './detail/workorder-detail.component';
+import { TimesheetDetailComponent } from './detail/timesheet-detail.component';
+export { TimesheetDetailComponent } from './detail/timesheet-detail.component';
 
 @NgModule({
   declarations: [
-    WorkerOrderMasterComponent,
-    WorkerOrderDetailComponent,
+    TimesheetMasterComponent,
+    TimesheetDetailComponent,
   ],
   exports: [
-    WorkerOrderMasterComponent,
-    WorkerOrderDetailComponent,
+    TimesheetMasterComponent,
+    TimesheetDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -41,4 +41,4 @@ export { WorkerOrderDetailComponent } from './detail/workorder-detail.component'
     AllorsMaterialModelAutoCompleteModule,
   ],
 })
-export class WorkOrdersAppModule { }
+export class TimesheetAppModule { }

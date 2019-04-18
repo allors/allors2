@@ -16,10 +16,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.apps = [{
       title: 'WorkOrder',
-      subtitle: 'Edit time entries and parts',
+      subtitle: 'Manage workorder',
       icon: 'assignment',
       routerLink: ['/app/workorder'],
-    }, 
+    },
+    {
+      title: 'Timesheet',
+      subtitle: 'Manage time entries',
+      icon: 'alarm',
+      routerLink: ['/app/timesheet'],
+    },
     ];
   }
 }

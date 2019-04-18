@@ -51,7 +51,7 @@ import * as TaskAssignmentList from 'src/allors/material/apps/objects/taskassign
 
 // Apps
 import * as WorkOrderApp from 'src/allors/material/apps/apps/workorder/workorder-app.module';
-
+import * as TimesheetApp from 'src/allors/material/apps/apps/timesheet/timesheet-app.module';
 
 const modules = [
 
@@ -98,6 +98,7 @@ const modules = [
   WorkTaskOverview.WorkTaskDetailModule,
 
   WorkOrderApp.WorkOrdersAppModule,
+  TimesheetApp.TimesheetAppModule,
 ];
 
 export const routes: Routes = [
@@ -190,6 +191,8 @@ export const routes: Routes = [
         children: [
           { path: 'workorder', component: WorkOrderApp.WorkerOrderMasterComponent },
           { path: 'workorder/:id', component: WorkOrderApp.WorkerOrderDetailComponent },
+          { path: 'timesheet', component: TimesheetApp.TimesheetMasterComponent },
+          { path: 'timesheet/:id', component: TimesheetApp.TimesheetDetailComponent },
         ],
       },
     ],
