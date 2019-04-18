@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
-    "tc:test": "ng test --watch=false",
+    "tc:test": "ng test --watch=false"
   },
   "private": true,
   "dependencies": {
