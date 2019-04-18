@@ -191,8 +191,7 @@ export const routes: Routes = [
         children: [
           { path: 'workorder', component: WorkOrderApp.WorkerOrderMasterComponent },
           { path: 'workorder/:id', component: WorkOrderApp.WorkerOrderDetailComponent },
-          { path: 'timesheet', component: TimesheetApp.TimesheetMasterComponent },
-          { path: 'timesheet/:id', component: TimesheetApp.TimesheetDetailComponent },
+          { path: 'timesheet', component: TimesheetApp.TimesheetAppComponent },
         ],
       },
     ],

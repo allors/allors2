@@ -7,7 +7,7 @@ export abstract class SessionState {
   private subject: BehaviorSubject<string>;
 
   constructor(private key: string) {
-    const initialValue = sessionStorage.getItem(key);
+    const initialValue = sessionStorage.getItem(this.key);
     this.subject = new BehaviorSubject(initialValue);
     this.observable$ = this.subject.asObservable();
   }
@@ -17,6 +17,7 @@ export abstract class SessionState {
   }
 
   set value(value: string) {
+    sessionStorage.setItem(this.key, value)
     this.subject.next(value);
   }
 }

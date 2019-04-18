@@ -10,6 +10,9 @@ import { environment } from '../environments/environment';
 import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
 import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, MethodModule, PrintModule, SaveModule, FiltersService } from '../allors/material';
 
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 import { ConfigService } from './app.config.service';
 import { ErrorModule } from './error/error.module';
 
@@ -45,7 +48,13 @@ import { DefaultFiltersService } from '../allors/material/apps/services/filters/
     // Actions
     DeleteModule.forRoot(),
     MethodModule.forRoot(),
-    NavigateModule.forRoot()
+    NavigateModule.forRoot(),
+
+    // Angular Calendar
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

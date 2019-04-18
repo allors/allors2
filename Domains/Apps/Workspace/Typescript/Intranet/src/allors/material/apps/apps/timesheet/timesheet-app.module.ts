@@ -6,20 +6,17 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule, AllorsMaterialModelAutoCompleteModule } from '../../..';
 
-import { TimesheetMasterComponent } from './master/timesheet-master.component';
-export { TimesheetMasterComponent } from './master/timesheet-master.component';
+import { CalendarModule } from 'angular-calendar';
 
-import { TimesheetDetailComponent } from './detail/timesheet-detail.component';
-export { TimesheetDetailComponent } from './detail/timesheet-detail.component';
+import { TimesheetAppComponent  } from './timesheet-app.component';
+export { TimesheetAppComponent  } from './timesheet-app.component';
 
 @NgModule({
   declarations: [
-    TimesheetMasterComponent,
-    TimesheetDetailComponent,
+    TimesheetAppComponent,
   ],
   exports: [
-    TimesheetMasterComponent,
-    TimesheetDetailComponent,
+    TimesheetAppComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +32,7 @@ export { TimesheetDetailComponent } from './detail/timesheet-detail.component';
     MatListModule,
     MatTableModule,
     MatToolbarModule,
+    CalendarModule,
     AllorsMaterialFactoryFabModule,
     AllorsMaterialFilterModule,
     AllorsMaterialTableModule,
