@@ -8,7 +8,7 @@ import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } f
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -32,7 +32,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<TelecommunicationsNumberCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

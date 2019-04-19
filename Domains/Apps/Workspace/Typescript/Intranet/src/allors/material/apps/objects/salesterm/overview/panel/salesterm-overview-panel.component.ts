@@ -6,7 +6,7 @@ import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
+import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
 import { RoleType, ConcreteRoleType } from 'src/allors/framework/meta/Data';
 interface Row extends TableRow {
   object: SalesTerm;
@@ -35,7 +35,7 @@ export class SalesTermOverviewPanelComponent {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -57,7 +57,7 @@ export class SalesTermOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
+
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar

@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
+import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
 import { Equals } from 'src/allors/framework';
 
 interface Row extends TableRow {
@@ -36,7 +36,7 @@ export class PaymentOverviewPanelComponent {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,

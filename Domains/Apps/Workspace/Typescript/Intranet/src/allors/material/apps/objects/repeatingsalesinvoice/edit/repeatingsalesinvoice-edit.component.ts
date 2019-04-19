@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { RepeatingSalesInvoice, TimeFrequency, DayOfWeek, SalesInvoice } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { SaveService } from 'src/allors/material';
 
@@ -29,7 +29,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<RepeatingSalesInvoiceEditComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
@@ -47,7 +47,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
           const id = this.data.id;
 
           const pulls = [

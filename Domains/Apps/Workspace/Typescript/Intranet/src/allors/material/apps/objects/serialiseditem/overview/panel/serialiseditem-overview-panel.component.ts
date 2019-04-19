@@ -4,7 +4,7 @@ import { NavigationService, Action, PanelService, RefreshService,  MetaService, 
 import { Meta } from '../../../../../../meta';
 import { SerialisedItem } from '../../../../../../domain';
 import { DeleteService, TableRow, Table } from '../../../../..';
-import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
+import { ObjectService, ObjectData, OverviewService } from '../../../../../../material';
 
 interface Row extends TableRow {
   object: SerialisedItem;
@@ -33,7 +33,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
 
   delete: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -47,7 +47,7 @@ export class SerialisedItemOverviewPanelComponent implements OnInit {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
-    
+
     public deleteService: DeleteService,
   ) {
 

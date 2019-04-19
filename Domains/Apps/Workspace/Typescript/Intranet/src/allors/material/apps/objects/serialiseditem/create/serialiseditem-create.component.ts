@@ -5,7 +5,7 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { SaveService, FiltersService, CreateData } from '../../../../../material';
+import { SaveService, FiltersService, ObjectData } from '../../../../../material';
 import {  ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
@@ -40,7 +40,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SerialisedItemCreateComponent>,
     public metaService: MetaService,

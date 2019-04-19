@@ -4,7 +4,7 @@ import { PanelService, MetaService, RefreshService, Action, ActionTarget } from 
 import { ProductIdentification } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../../../material';
-import { ObjectService, CreateData } from '../../../../../../material/base/services/object';
+import { ObjectService, ObjectData } from '../../../../../../material/base/services/object';
 import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
 import { Step } from 'src/allors/framework/database/data/Step';
 
@@ -35,7 +35,7 @@ export class ProductIdentificationsPanelComponent implements OnInit {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,

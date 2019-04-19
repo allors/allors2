@@ -2,7 +2,7 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService,  Action, MetaService } from '../../../../../../angular';
 import { PartyRate } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, CreateData, EditService } from '../../../../..';
+import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
@@ -34,7 +34,7 @@ export class PartyRateOverviewPanelComponent implements OnInit {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -51,7 +51,7 @@ export class PartyRateOverviewPanelComponent implements OnInit {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-    
+
     public deleteService: DeleteService,
     public editService: EditService
   ) {

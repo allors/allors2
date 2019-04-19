@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -27,7 +27,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<SalesTermEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

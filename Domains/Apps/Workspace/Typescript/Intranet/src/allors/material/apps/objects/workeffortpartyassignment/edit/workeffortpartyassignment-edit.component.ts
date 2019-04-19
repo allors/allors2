@@ -8,7 +8,7 @@ import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -33,7 +33,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortPartyAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -51,7 +51,7 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             pull.WorkEffortPartyAssignment({

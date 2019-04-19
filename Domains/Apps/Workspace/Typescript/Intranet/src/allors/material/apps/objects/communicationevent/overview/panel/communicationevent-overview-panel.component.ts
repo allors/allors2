@@ -4,7 +4,7 @@ import { PanelService, MetaService, RefreshService, Action, NavigationService } 
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
-import { ObjectService, CreateData } from '../../../../../base/services/object';
+import { ObjectService, ObjectData } from '../../../../../base/services/object';
 
 interface Row extends TableRow {
   object: CommunicationEvent;
@@ -35,7 +35,7 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,

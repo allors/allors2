@@ -8,7 +8,7 @@ import { ContextService, MetaService, RefreshService, FetcherService, InternalOr
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({
@@ -76,7 +76,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesOrderCreateComponent>,
     public metaService: MetaService,

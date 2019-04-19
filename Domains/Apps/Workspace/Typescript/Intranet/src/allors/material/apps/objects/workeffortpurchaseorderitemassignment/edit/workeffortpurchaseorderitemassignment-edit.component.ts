@@ -7,7 +7,7 @@ import { ContextService, MetaService, RefreshService, InternalOrganisationId } f
 import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder, PurchaseOrderItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { increaseElementDepthCount } from '@angular/core/src/render3/state';
 import { SaveService } from 'src/allors/material';
 import { switchMap, map } from 'rxjs/operators';
@@ -30,7 +30,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortPurchaseOrderItemAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -49,7 +49,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent implements OnIni
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             pull.WorkEffortPurchaseOrderItemAssignment({

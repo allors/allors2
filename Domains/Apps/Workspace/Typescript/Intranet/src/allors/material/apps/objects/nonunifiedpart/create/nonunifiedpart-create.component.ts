@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import {  ContextService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
@@ -49,7 +49,7 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<NonUnifiedPartCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,

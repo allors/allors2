@@ -9,7 +9,7 @@ import { Good, Part, PriceComponent, InternalOrganisation, Organisation, NonUnif
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -31,7 +31,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<BasepriceEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -50,7 +50,7 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             this.fetcher.internalOrganisation,

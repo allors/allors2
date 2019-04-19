@@ -9,7 +9,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
@@ -50,7 +50,7 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
     public location: Location,

@@ -8,7 +8,7 @@ import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Sin
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material/base/services/save';
 
 @Component({
@@ -34,7 +34,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<CatalogueEditComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -53,7 +53,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             this.fetcher.categories,

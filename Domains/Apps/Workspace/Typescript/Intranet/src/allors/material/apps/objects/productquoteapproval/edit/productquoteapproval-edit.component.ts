@@ -5,7 +5,7 @@ import { Subscription, combineLatest, Observable } from 'rxjs';
 import { Saved, ContextService, MetaService, RefreshService, Invoked, Action } from '../../../../../angular';
 import { ProductQuoteApproval } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../base/services/object';
+import { ObjectData } from '../../../../base/services/object';
 import { PrintService } from './../../../services/actions/print/print.service';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class ProductQuoteApprovalEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<ProductQuoteApprovalEditComponent>,
     public metaService: MetaService,
     public printService: PrintService,

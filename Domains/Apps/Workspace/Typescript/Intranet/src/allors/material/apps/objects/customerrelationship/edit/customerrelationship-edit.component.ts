@@ -8,7 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
 import { CustomerRelationship, Organisation, Party } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta, FetchServiceEntry } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -29,7 +29,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<CustomerRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -49,7 +49,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             this.fetcher.internalOrganisation,

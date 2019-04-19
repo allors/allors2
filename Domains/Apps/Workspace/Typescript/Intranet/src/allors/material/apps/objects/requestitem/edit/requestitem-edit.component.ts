@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData, SaveService, FiltersService } from '../../../../../material';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 
 @Component({
@@ -33,7 +33,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
@@ -52,7 +52,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.RequestItem({

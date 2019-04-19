@@ -2,7 +2,7 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
 import { WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, OverviewService, CreateData } from '../../../../..';
+import { DeleteService, TableRow, Table, OverviewService, ObjectData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
@@ -33,7 +33,7 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
   delete: Action;
   table: Table<TableRow>;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -46,7 +46,7 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public overviewService: OverviewService,
-    
+
     public deleteService: DeleteService) {
 
     this.m = this.metaService.m;

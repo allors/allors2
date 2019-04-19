@@ -10,7 +10,7 @@ import { Party, Organisation, Person, OrganisationContactRelationship, Organisat
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -36,7 +36,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -55,7 +55,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.OrganisationContactRelationship({

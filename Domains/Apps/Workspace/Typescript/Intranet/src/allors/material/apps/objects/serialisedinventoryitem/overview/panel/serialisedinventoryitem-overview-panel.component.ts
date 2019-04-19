@@ -4,7 +4,7 @@ import { NavigationService, Action, PanelService, RefreshService,  MetaService, 
 import { Meta } from '../../../../../../meta';
 import { InventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { DeleteService, EditService, TableRow, Table, Sorter } from '../../../../..';
-import { ObjectService, CreateData, OverviewService } from '../../../../../../material';
+import { ObjectService, ObjectData, OverviewService } from '../../../../../../material';
 
 interface Row extends TableRow {
   object: InventoryItem;
@@ -34,7 +34,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
 
   objects: SerialisedInventoryItem[];
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -49,7 +49,7 @@ export class SerialisedInventoryItemComponent implements OnInit {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
-    
+
     public deleteService: DeleteService,
     public editService: EditService) {
 

@@ -12,7 +12,7 @@ import { ContactMechanism, Currency, Organisation, OrganisationContactRelationsh
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './productquote-create.component.html',
@@ -40,7 +40,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     public filtersService: FiltersService,

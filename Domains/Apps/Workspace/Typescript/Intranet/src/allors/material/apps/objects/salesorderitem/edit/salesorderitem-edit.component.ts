@@ -8,7 +8,7 @@ import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryI
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, SaveService, FiltersService } from '../../../../../material';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
@@ -42,7 +42,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
@@ -61,7 +61,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.SalesOrderItem({

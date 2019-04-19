@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { TimeEntry, TimeFrequency, TimeSheet, Party, WorkEffortPartyAssignment, WorkEffort, RateType, WorkEffortAssignmentRate, PartyRate } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
@@ -38,7 +38,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -58,7 +58,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             pull.TimeEntry({
@@ -131,7 +131,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
           const workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
           this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
-          } else {
+        } else {
           this.timeEntry = loaded.objects.TimeEntry as TimeEntry;
           this.selectedWorker = this.timeEntry.Worker;
           this.workEffort = this.timeEntry.WorkEffort;
@@ -233,7 +233,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
           && v.Frequency === this.timeEntry.BillingFrequency
           && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
 
-        const customerRates = loaded.collections['customerRates'] as PartyRate[];
+        const customerRates = loaded.collections.customerRates as PartyRate[];
         this.customerRate = customerRates.find(v => v.RateType === this.timeEntry.RateType
           && v.Frequency === this.timeEntry.BillingFrequency
           && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));

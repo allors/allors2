@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService } from '../../../../../base/services/object';
+import { ObjectData, ObjectService } from '../../../../../base/services/object';
 
 interface Row extends TableRow {
   object: SalesInvoiceItem;
@@ -38,7 +38,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
   delete: Action;
   edit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -53,7 +53,7 @@ export class SalesInvoiceItemOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
+
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar

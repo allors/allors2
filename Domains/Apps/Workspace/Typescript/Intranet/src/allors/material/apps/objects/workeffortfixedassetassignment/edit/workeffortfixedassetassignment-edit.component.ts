@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { SaveService } from 'src/allors/material';
@@ -32,7 +32,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -51,7 +51,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.WorkEffortFixedAssetAssignment({

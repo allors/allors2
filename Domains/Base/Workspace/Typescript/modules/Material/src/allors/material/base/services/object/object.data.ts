@@ -1,7 +1,6 @@
-import { ObjectType, RoleType, ISessionObject } from '../../../../framework';
+import { ObjectType, RoleType, ISessionObject, IObject } from '../../../../framework';
 
-export interface CreateData {
-  objectType?: ObjectType;
+export interface ObjectData extends Partial<IObject> {
 
   associationId?: string;
   associationObjectType?: ObjectType;

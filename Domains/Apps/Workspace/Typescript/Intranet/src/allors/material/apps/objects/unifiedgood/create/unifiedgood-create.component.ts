@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ContextService, NavigationService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
 import { ProductType, VatRate, ProductIdentificationType, ProductNumber, Settings, UnifiedGood, Good, InventoryItemKind } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 
 @Component({
@@ -33,7 +33,7 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<UnifiedGoodCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,

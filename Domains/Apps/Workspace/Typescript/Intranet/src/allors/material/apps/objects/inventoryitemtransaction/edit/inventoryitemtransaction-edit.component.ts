@@ -9,7 +9,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 
 @Component({
   templateUrl: './inventoryitemtransaction-edit.component.html',
@@ -44,7 +44,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<InventoryItemTransactionEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
-import { CreateData, SaveService, FiltersService } from '../../../../../material';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -36,7 +36,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
@@ -54,7 +54,7 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
           const { id } = this.data;
 
           const pulls = [

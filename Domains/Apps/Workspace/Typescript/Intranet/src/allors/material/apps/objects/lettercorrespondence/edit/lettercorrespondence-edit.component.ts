@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<LetterCorrespondenceEditComponent>,
     public refreshService: RefreshService,
     private saveService: SaveService,
@@ -59,7 +59,7 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             pull.LetterCorrespondence({

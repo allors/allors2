@@ -9,8 +9,8 @@ import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 
 export interface IObject {
-    id: string;
-    objectType: ObjectType;
+  id: string;
+  objectType: ObjectType;
 }
 
 export interface ISessionObject extends IObject {

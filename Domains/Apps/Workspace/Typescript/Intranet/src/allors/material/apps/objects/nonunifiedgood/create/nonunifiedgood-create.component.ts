@@ -9,7 +9,7 @@ import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership,
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService } from '../../../..';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData } from 'src/allors/material/base/services/object';
 import { Good } from 'src/allors/domain/generated';
 
 @Component({
@@ -41,7 +41,7 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<NonUnifiedGoodCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,

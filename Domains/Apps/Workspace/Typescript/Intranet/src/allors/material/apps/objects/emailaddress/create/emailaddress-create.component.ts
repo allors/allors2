@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
 import { Enumeration, ElectronicAddress, PartyContactMechanism, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ export class EmailAddressCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<EmailAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

@@ -51,7 +51,7 @@ import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
-import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/apps/objects/timeentry/edit/timeentry-edit.module';
+//import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/apps/objects/timeentry/edit/timeentry-edit.module';
 import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/apps/objects/unifiedgood/create/unifiedgood-create.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
@@ -63,6 +63,9 @@ import { WorkEffortPurchaseOrderItemAssignmentEditComponent, WorkEffortPurchaseO
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
+
+// Garage
+import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/garage/objects/timeentry/edit/timeentry-edit.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,

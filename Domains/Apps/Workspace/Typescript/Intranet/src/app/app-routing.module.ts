@@ -50,8 +50,8 @@ import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/ove
 import * as TaskAssignmentList from 'src/allors/material/apps/objects/taskassignment/list/taskassignment-list.module';
 
 // Apps
-import * as WorkOrderApp from 'src/allors/material/apps/apps/workorder/workorder-app.module';
-import * as TimesheetApp from 'src/allors/material/apps/apps/timesheet/timesheet-app.module';
+import * as WorkOrderApp from 'src/allors/material/garage/apps/workorder/workorder-app.module';
+import * as TimesheetApp from 'src/allors/material/garage/apps/timesheet/timesheet-app.module';
 
 const modules = [
 

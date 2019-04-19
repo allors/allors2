@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { ObjectType, ISessionObject, IObject } from '../../../../framework';
 
 import { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './object.tokens';
-import { CreateData } from './object.data';
+import { ObjectData } from './object.data';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +19,13 @@ export class ObjectService {
   ) {
   }
 
-  create(objectType: ObjectType, createData?: CreateData): Observable<IObject> {
+  create(objectType: ObjectType, createData?: ObjectData): Observable<IObject> {
 
-    const data: CreateData = Object.assign({ objectType }, createData);
+    const data: ObjectData = Object.assign({ objectType }, createData);
 
     const component = this.createControlByObjectTypeId[data.objectType.id];
     if (component) {
-      const dialogRef = this.dialog.open(component, {data, minWidth: '80vw'});
+      const dialogRef = this.dialog.open(component, { data, minWidth: '80vw' });
 
       return dialogRef
         .afterClosed();
@@ -38,12 +38,12 @@ export class ObjectService {
     return !!this.createControlByObjectTypeId[objectType.id];
   }
 
-  edit(object: ISessionObject): Observable<IObject> {
+  edit(object: ISessionObject, createData?: ObjectData): Observable<IObject> {
 
-    const data: IObject = {
+    const data: ObjectData = Object.assign({
       id: object.id,
       objectType: object.objectType,
-    };
+    }, createData);
 
     const component = this.editControlByObjectTypeId[object.objectType.id];
     if (component) {

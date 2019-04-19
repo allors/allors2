@@ -7,7 +7,7 @@ import { ContextService, MetaService, RefreshService, FetcherService, InternalOr
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, PurchaseOrder } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { CreateData, SaveService, FiltersService } from '../../../../../material';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 
 @Component({
   templateUrl: './purchaseinvoice-create.component.html',
@@ -73,7 +73,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseInvoiceCreateComponent>,
     public metaService: MetaService,

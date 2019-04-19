@@ -8,7 +8,7 @@ import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasur
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 
@@ -34,7 +34,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,7 +54,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             this.fetcher.Settings,

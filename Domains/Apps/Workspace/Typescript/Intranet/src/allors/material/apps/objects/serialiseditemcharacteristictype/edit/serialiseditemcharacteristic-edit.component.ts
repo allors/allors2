@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
@@ -33,7 +33,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<SerialisedItemCharacteristicEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -53,7 +53,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             this.fetcher.locales,

@@ -8,7 +8,7 @@ import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facilit
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -32,7 +32,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortInventoryAssignmentEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -51,7 +51,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           let pulls = [
             pull.WorkEffortInventoryAssignment({

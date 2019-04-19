@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { WorkEffortAssignmentRate, TimeFrequency, RateType, WorkEffort, WorkEffortPartyAssignment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
@@ -31,7 +31,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortAssignmentRateEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -49,7 +49,7 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.WorkEffortAssignmentRate({

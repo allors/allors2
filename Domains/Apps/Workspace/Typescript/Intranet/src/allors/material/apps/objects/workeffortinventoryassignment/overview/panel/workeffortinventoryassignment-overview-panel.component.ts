@@ -2,7 +2,7 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
 import { WorkEffortInventoryAssignment, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, EditService, Table, OverviewService, CreateData } from '../../../../..';
+import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
 import * as moment from 'moment';
 
 interface Row extends TableRow {
@@ -33,7 +33,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
   edit: Action;
   table: Table<TableRow>;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -45,7 +45,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
+
     public deleteService: DeleteService,
     public editService: EditService,
   ) {

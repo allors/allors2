@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { MatSnackBar } from '@angular/material';
 
-import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
+import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
 
 interface Row extends TableRow {
   object: QuoteItem;
@@ -42,7 +42,7 @@ export class QuoteItemOverviewPanelComponent {
   reject: Action;
   submit: Action;
 
-  get createData(): CreateData {
+  get createData(): ObjectData {
     return {
       associationId: this.panel.manager.id,
       associationObjectType: this.panel.manager.objectType,
@@ -57,7 +57,7 @@ export class QuoteItemOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-    
+
     public methodService: MethodService,
     public editService: EditService,
     public deleteService: DeleteService,

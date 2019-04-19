@@ -9,7 +9,7 @@ import { ContactMechanism, Currency, Organisation, OrganisationContactRelationsh
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
-import { CreateData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/base/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({
@@ -75,7 +75,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesInvoiceCreateComponent>,
     public metaService: MetaService,

@@ -22,5 +22,7 @@
         "jsnlog",
         "lettercorrespondence",
         "postaladdress"
-    ]
+    ],
+    "html.format.wrapLineLength": 0,
+    "html.format.wrapAttributes": "preserve-aligned"
 }

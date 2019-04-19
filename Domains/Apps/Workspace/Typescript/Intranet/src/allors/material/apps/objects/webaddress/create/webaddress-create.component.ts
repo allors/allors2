@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData } from 'src/allors/material/base/services/object';
+import { ObjectData } from 'src/allors/material/base/services/object';
 import { SaveService } from 'src/allors/material';
 
 @Component({
@@ -32,7 +32,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WebAddressCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,

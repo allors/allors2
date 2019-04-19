@@ -8,7 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
-import { CreateData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -35,7 +35,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Inject(MAT_DIALOG_DATA) public data: CreateData & IObject,
+    @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,7 +54,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const isCreate = (this.data as IObject).id === undefined;
+          const isCreate = this.data.id === undefined;
 
           const pulls = [
             pull.PurchaseOrderItem({
