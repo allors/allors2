@@ -590,26 +590,23 @@ namespace Allors.Domain
                     var itemIssuanceCorrection = quantity;
                     foreach (ItemIssuance itemIssuance in shipmentItem.ItemIssuancesWhereShipmentItem)
                     {
-                        if (!itemIssuance.PickListItem.PickListWherePickListItem.ExistPicker)
+                        decimal subQuantity;
+                        if (itemIssuance.Quantity < itemIssuanceCorrection)
                         {
-                            decimal subQuantity;
-                            if (itemIssuance.Quantity < itemIssuanceCorrection)
-                            {
-                                subQuantity = itemIssuance.Quantity;
-                                itemIssuanceCorrection -= quantity;
-                            }
-                            else
-                            {
-                                subQuantity = itemIssuanceCorrection;
-                                itemIssuanceCorrection = 0;
-                            }
+                            subQuantity = itemIssuance.Quantity;
+                            itemIssuanceCorrection -= quantity;
+                        }
+                        else
+                        {
+                            subQuantity = itemIssuanceCorrection;
+                            itemIssuanceCorrection = 0;
+                        }
 
-                            itemIssuance.Quantity -= subQuantity;
+                        itemIssuance.Quantity -= subQuantity;
 
-                            if (itemIssuanceCorrection == 0)
-                            {
-                                break;
-                            }
+                        if (itemIssuanceCorrection == 0)
+                        {
+                            break;
                         }
                     }
                 }

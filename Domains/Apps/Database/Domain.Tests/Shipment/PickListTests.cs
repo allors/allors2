@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -292,7 +294,9 @@ namespace Allors.Domain
 
             var itemIssuance = adjustedPicklistItem.ItemIssuancesWherePickListItem[0];
             var shipmentItem = adjustedPicklistItem.ItemIssuancesWherePickListItem[0].ShipmentItem;
+            var shipment = shipmentItem.ShipmentWhereShipmentItem;
 
+            Assert.Equal(2, shipment.ShipmentItems.Count);
             Assert.Equal(5, itemIssuance.Quantity);
             Assert.Equal(5, shipmentItem.Quantity);
             Assert.Equal(5, item3.QuantityPendingShipment);
@@ -309,11 +313,16 @@ namespace Allors.Domain
 
             derivation.Derive();
 
-           // this.Session.Derive();
+            // this.Session.Derive();
+
+            // When SalesOrder is derived 1 quantity is requested for shipping (because inventory is available and quantity ordered (5) is greater then quantity pending shipment (4)
+            // A new shipment item is created with quantity 1 and QuantityPendingShipment remains 5 
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);
-            Assert.Equal(4, item3.QuantityPendingShipment);
+            Assert.Equal(3, shipment.ShipmentItems.Count);
+            Assert.Equal(1, shipment.ShipmentItems.Last().Quantity);
+            Assert.Equal(5, item3.QuantityPendingShipment);
         }
 
         [Fact]

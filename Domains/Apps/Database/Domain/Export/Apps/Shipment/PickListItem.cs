@@ -14,6 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Allors.Domain
@@ -45,7 +46,8 @@ namespace Allors.Domain
 
             if (this.QuantityPicked > 0 && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked))
             {
-                var diff = this.Quantity - this.QuantityPicked;
+                var quantityProcessed = this.ItemIssuancesWherePickListItem.SelectMany(v => v.ShipmentItem.OrderShipmentsWhereShipmentItem).Sum(v => v.Quantity);
+                var diff = quantityProcessed - this.QuantityPicked;
 
                 foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
                 {
@@ -58,39 +60,21 @@ namespace Allors.Domain
                             {
                                 if (orderShipment.Quantity >= diff)
                                 {
-                                    orderShipment.ShipmentItem.Quantity -= diff;
-                                    itemIssuance.Quantity -= diff;
-
                                     new OrderShipmentBuilder(this.Strategy.Session)
                                         .WithOrderItem(salesOrderItem)
                                         .WithShipmentItem(orderShipment.ShipmentItem)
                                         .WithQuantity(diff * -1)
                                         .Build();
 
-                                    var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                                    if (inventoryAssignment != null)
-                                    {
-                                        inventoryAssignment.Quantity = inventoryAssignment.Quantity - diff;
-                                    }
-
                                     diff = 0;
                                 }
                                 else
                                 {
-                                    orderShipment.ShipmentItem.Quantity -= orderShipment.Quantity;
-                                    itemIssuance.Quantity -= orderShipment.Quantity;
-
                                     new OrderShipmentBuilder(this.Strategy.Session)
                                         .WithOrderItem(salesOrderItem)
                                         .WithShipmentItem(orderShipment.ShipmentItem)
                                         .WithQuantity(orderShipment.Quantity * -1)
                                         .Build();
-
-                                    var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                                    if (inventoryAssignment != null)
-                                    {
-                                        inventoryAssignment.Quantity = inventoryAssignment.Quantity - orderShipment.Quantity;
-                                    }
 
                                     diff -= orderShipment.Quantity;
                                 }

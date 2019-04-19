@@ -704,7 +704,7 @@ namespace Allors.Domain
                                 ShipmentItem shipmentItem = null;
                                 foreach (ShipmentItem item in pendingShipment.ShipmentItems)
                                 {
-                                    if (item.Good.Equals(good))
+                                    if (item.Good.Equals(good) && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked)))
                                     {
                                         shipmentItem = item;
                                         break;
