@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -27,6 +29,11 @@ namespace Allors.Domain
         public void GrantBlueCollarWorker(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.BlueCollarWorkerId, objectType, operations);
+        }
+
+        public void GrantExceptBlueCollarWorker(ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations)
+        {
+            this.GrantExcept(Roles.BlueCollarWorkerId, objectType, excepts, operations);
         }
 
         public void GrantProductQuoteApprover(ObjectType objectType, params Operations[] operations)

@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -232,6 +234,44 @@ namespace Allors.Domain
                     if (permissionByOperandType != null)
                     {
                         foreach (var dictionaryEntry in permissionByOperandType)
+                        {
+                            role.AddPermission(dictionaryEntry.Value);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void GrantExcept(Guid roleId, ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations)
+        {
+            Role role;
+            if (this.roleById.TryGetValue(roleId, out role))
+            {
+                var actualOperations = operations ?? ReadWriteExecute;
+                foreach (var operation in actualOperations)
+                {
+                    Dictionary<OperandType, Permission> permissionByOperandType;
+                    switch (operation)
+                    {
+                        case Operations.Read:
+                            this.readPermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        case Operations.Write:
+                            this.writePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        case Operations.Execute:
+                            this.executePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        default:
+                            throw new Exception("Unkown operation: " + operations);
+                    }
+
+                    if (permissionByOperandType != null)
+                    {
+                        foreach (var dictionaryEntry in permissionByOperandType.Where(v => !excepts.Contains(v.Key)))
                         {
                             role.AddPermission(dictionaryEntry.Value);
                         }

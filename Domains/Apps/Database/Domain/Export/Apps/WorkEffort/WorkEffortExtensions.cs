@@ -33,6 +33,19 @@ namespace Allors.Domain
             {
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
             }
+
+            if (!@this.ExistOwner)
+            {
+                if (!(@this.Strategy.Session.GetUser() is Person owner))
+                {
+                    owner = @this.Strategy.Session.GetSingleton().Guest as Person;
+                }
+
+                @this.Owner = owner;
+            }
+
+            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
+            @this.DeriveOwnerSecurity();
         }
 
         public static void AppsOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
@@ -52,16 +65,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!@this.ExistOwner)
-            {
-                if (!(@this.Strategy.Session.GetUser() is Person owner))
-                {
-                    owner = @this.Strategy.Session.GetSingleton().Guest as Person;
-                }
-
-                @this.Owner = owner;
-            }
-
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!@this.ExistTakenBy && internalOrganisations.Count() == 1)
@@ -80,6 +83,7 @@ namespace Allors.Domain
             }
 
             @this.DeriveOwnerSecurity();
+            @this.DeriveSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
             @this.DeriveCanInvoice();
@@ -155,6 +159,19 @@ namespace Allors.Domain
                     .WithAccessControl(@this.OwnerAccessControl)
                     .Build();
             }
+        }
+
+        private static void DeriveSecurity(this WorkEffort @this)
+        {
+            var session = @this.Strategy.Session;
+
+            var singleton = session.GetSingleton();
+
+            @this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken,
+                @this.ExecutedBy.BlueCollarWorkerSecurityToken,
+            };
         }
 
         private static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
