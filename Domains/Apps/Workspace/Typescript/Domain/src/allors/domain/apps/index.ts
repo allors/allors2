@@ -11,4 +11,5 @@ import './SerialisedItemCharacteristicType';
 import './TelecommunicationsNumber';
 import './User';
 import './WebAddress';
+import './WorkEffortState';
 import './WorkEffortPartyAssignment';

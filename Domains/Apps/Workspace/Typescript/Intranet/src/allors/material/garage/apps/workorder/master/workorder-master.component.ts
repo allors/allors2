@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PullRequest, And, Equals, ContainedIn, Filter, Exists, Not } from '../../../../../framework';
+import { PullRequest, And, Equals, ContainedIn, Filter, Exists, Not, Or } from '../../../../../framework';
 import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
 
 import { WorkEffortPartyAssignment, WorkEffort, TimeEntry, Person } from '../../../../../domain';
@@ -64,7 +64,16 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
               propertyType: m.WorkEffortPartyAssignment.Assignment,
               extent: new Filter({
                 objectType: m.WorkEffort,
-                // TODO: only in progress
+                predicate: new ContainedIn({
+                  propertyType: m.WorkEffort.WorkEffortState,
+                  extent: new Filter({
+                    objectType: m.WorkEffortState,
+                    predicate: new Or([
+                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: 'c082cd60-5c5f-4948-bdb1-06bd9c385751'}),
+                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: '7a83df7b-9918-4b10-8f99-48896f9db105'}),
+                    ])
+                  })
+                })
               })
             })
           ]);

@@ -12,6 +12,8 @@ import { ObjectService, SaveService } from '../../../../material';
 
 import { TimeEntryData } from '../../objects/timeentry/edit/TimeEntryData';
 
+import { colors } from './colors';
+
 interface MetaType {
   timeEntry: TimeEntry;
 }
@@ -70,7 +72,9 @@ export class TimesheetAppComponent implements OnInit, OnDestroy {
             pull.TimeEntry({
               predicate: new Equals({ propertyType: m.TimeEntry.Worker, object: this.userId.value }),
               include: {
-                WorkEffort: x,
+                WorkEffort: {
+                  WorkEffortState: x
+                },
               }
             }),
           ];
@@ -84,19 +88,24 @@ export class TimesheetAppComponent implements OnInit, OnDestroy {
         const timeEntries = loaded.collections.TimeEntries as TimeEntry[];
 
         this.events = timeEntries.map((v) => {
-          return {
-            title: v.WorkEffort.Name,
-            start: new Date(v.FromDate),
-            end: v.ThroughDate ? new Date(v.ThroughDate) : null,
-            draggable: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true
-            },
-            meta: {
-              timeEntry: v
-            },
+
+          const workEffortState = v.WorkEffort.WorkEffortState;
+          const editable = workEffortState.created || workEffortState.inProgress;
+
+          const title = v.WorkEffort.Name;
+          const start = new Date(v.FromDate);
+          const end = v.ThroughDate ? new Date(v.ThroughDate) : null;
+          const draggable = editable;
+          const resizable = editable ? {
+            beforeStart: true,
+            afterEnd: true
+          } : undefined;
+          const meta: MetaType = {
+            timeEntry: v
           };
+          const color = editable ? !!end ? colors.yellow : colors.red : colors.blue;
+
+          return { title, start, end, draggable, resizable, meta, color };
         });
 
         this.calendarRefresh$.next();
@@ -111,7 +120,9 @@ export class TimesheetAppComponent implements OnInit, OnDestroy {
 
   eventClicked({ event }: { event: CalendarEvent }): void {
     if (event.meta) {
-      this.objectService.edit(event.meta.timeEntry, this.createData);
+      this.objectService
+        .edit(event.meta.timeEntry, this.createData)
+        .subscribe((v) => this.refreshService.refresh());
     }
   }
 
