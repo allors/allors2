@@ -78,6 +78,15 @@ namespace Allors.Repository
         [Workspace]
         public DateTime DateTime { get; set; }
 
+
+        #region Allors
+        [Id("940DAD46-78C6-44B3-93A2-4AE0137C2839")]
+        [AssociationId("93C8A47F-1069-4565-9EED-D4D612EDF422")]
+        [RoleId("924808AC-861B-4000-89A9-F0D1EC98F8FB")]
+        #endregion
+        [Workspace]
+        public DateTime DateTime2 { get; set; }
+
         #region Allors
         [Id("BA910E25-0D71-43E1-8311-7C9620AC0CDE")]
         [AssociationId("55675B9D-6226-45F1-9DE2-ED92263212D9")]
