@@ -43,6 +43,7 @@ namespace Allors.Domain
             var reject = this.Meta.Reject;
             var complete = this.Meta.Complete;
             var cancel = this.Meta.Cancel;
+            var reopen = this.Meta.Reopen;
             var approve = this.Meta.Approve;
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;

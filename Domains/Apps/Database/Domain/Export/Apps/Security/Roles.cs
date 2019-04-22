@@ -25,9 +25,12 @@ namespace Allors.Domain
     public partial class Roles
     {
         public static readonly Guid ProductQuoteApproverId = new Guid("07D39583-C82C-4EA0-92F1-288FB8E17FA3");
+        public static readonly Guid PurchaseOrderApproverId = new Guid("E7F5FB30-4B12-4BF4-8D14-8640FD21ED4A");
         public static readonly Guid BlueCollarWorkerId = new Guid("3C2D223E-6056-447A-A3F9-AED2413D717D");
 
         public Role ProductQuoteApprover => this.Sticky[ProductQuoteApproverId];
+
+        public Role PurchaseOrderApprover => this.Sticky[PurchaseOrderApproverId];
 
         public Role BlueCollarWorker => this.Sticky[BlueCollarWorkerId];
 
@@ -36,6 +39,7 @@ namespace Allors.Domain
             base.AppsSetup(config);
 
             new RoleBuilder(this.Session).WithName("ProductQuote approver").WithUniqueId(ProductQuoteApproverId).Build();
+            new RoleBuilder(this.Session).WithName("PurchaseOrder approver").WithUniqueId(PurchaseOrderApproverId).Build();
             new RoleBuilder(this.Session).WithName("Blue-collar worker").WithUniqueId(BlueCollarWorkerId).Build();
         }
     }

@@ -129,6 +129,37 @@ namespace Allors.Domain
                     this.ProductQuoteApproverSecurityToken.AddAccessControl(this.ProductQuoteApproverAccessControl);
                 }
 
+
+                groupName = $"{this.Name} PurchaseOrder approvers";
+
+                if (!this.ExistPurchaseOrderApproverSecurityToken)
+                {
+                    this.PurchaseOrderApproverSecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistPurchaseOrderApproverUserGroup)
+                {
+                    this.PurchaseOrderApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                                         ?? new UserGroupBuilder(session).Build();
+                }
+
+                if (!groupName.Equals(this.PurchaseOrderApproverUserGroup.Name))
+                {
+                    this.PurchaseOrderApproverUserGroup.Name = groupName;
+                }
+
+                if (!this.ExistPurchaseOrderApproverAccessControl)
+                {
+                    var role = new Roles(session).PurchaseOrderApprover;
+
+                    this.PurchaseOrderApproverAccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.PurchaseOrderApproverUserGroup)
+                            .Build();
+
+                    this.PurchaseOrderApproverSecurityToken.AddAccessControl(this.PurchaseOrderApproverAccessControl);
+                }
+
                 groupName = $"{this.Name} Blue-collar workers";
 
                 if (!this.ExistBlueCollarWorkerSecurityToken)
@@ -160,6 +191,7 @@ namespace Allors.Domain
                 }
 
                 this.ProductQuoteApproverUserGroup.Members = this.ProductQuoteApprovers.ToArray();
+                this.PurchaseOrderApproverUserGroup.Members = this.PurchaseOrderApprovers.ToArray();
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
 
                 #endregion

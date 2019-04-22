@@ -576,12 +576,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Ship() { }
-        
-        #region Allors
-        [Id("794F36F3-04A0-41E9-8AE1-AD48C006CE6B")]
-        #endregion
-        [Workspace]
-        public void Invoice() { }
 
         #region inherited methods
         public void OnBuild() { }
@@ -612,6 +606,8 @@ namespace Allors.Repository
         public void Cancel() { }
 
         public void Complete() { }
+        public void Invoice() { }
+        public void Reopen() { }
 
         public void Print() { }
 
