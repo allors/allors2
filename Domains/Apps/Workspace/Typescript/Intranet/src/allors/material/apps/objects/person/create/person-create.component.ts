@@ -113,9 +113,9 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
         this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 
-        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
-        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
-        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === '2D41946C-4A77-456F-918A-2E83E6C12D7F');
+        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId === 'b29444ef09504d6fab3e9c6dc44c050f');
+        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId === 'db06a3e161464c18a60ddd10e19f7243');
+        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId === '2d41946c4a77456f918a2e83e6c12d7f');
 
         this.person = this.allors.context.create('Person') as Person;
         this.person.CollectiveWorkEffortInvoice = false;

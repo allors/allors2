@@ -157,7 +157,7 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
   }
 
   public inventoryItemSelected(inventoryItem: InventoryItem): void {
-    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
 
     if (inventoryItem.objectType === this.metaService.m.NonSerialisedInventoryItem) {
       const item = inventoryItem as NonSerialisedInventoryItem;

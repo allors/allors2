@@ -60,7 +60,7 @@ export class NonUnifiedPartOverviewComponent implements AfterViewInit, OnDestroy
             .pipe(
               tap((loaded) => {
                 const part = loaded.objects.NonUnifiedPart as NonUnifiedPart;
-                this.serialised = part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+                this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
               }),
               delay(1)
             );

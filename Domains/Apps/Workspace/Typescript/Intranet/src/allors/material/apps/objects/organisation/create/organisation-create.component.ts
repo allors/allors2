@@ -148,9 +148,9 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
-        this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8B5E0CEE-4C98-42F1-8F18-3638FBA943A0');
-        this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8C6D629B-1E27-4520-AA8C-E8ADF93A5095');
-        this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661');
+        this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8b5e0cee4c9842f18f183638fba943a0');
+        this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8c6d629b1e274520aa8ce8adf93a5095');
+        this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '32e74bef2d7944278902-b093afa81661');
         this.selectableRoles.push(this.customerRole);
         this.selectableRoles.push(this.supplierRole);
 

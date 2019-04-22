@@ -74,7 +74,7 @@ export class UnifiedGoodCreateComponent implements OnInit, OnDestroy {
         this.settings = loaded.objects.Settings as Settings;
 
         const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-        this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
+        this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630da5564526a2e560a84ab0db3f');
 
         this.good = this.allors.context.create('UnifiedGood') as UnifiedGood;
         this.good.VatRate = vatRateZero;

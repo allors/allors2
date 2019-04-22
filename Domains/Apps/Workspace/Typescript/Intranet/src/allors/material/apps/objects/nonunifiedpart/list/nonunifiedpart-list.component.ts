@@ -219,7 +219,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191acdc4456396efdddc7b969ca6');
 
         const partNumberByPart = this.parts.reduce((map, obj) => {
           map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);

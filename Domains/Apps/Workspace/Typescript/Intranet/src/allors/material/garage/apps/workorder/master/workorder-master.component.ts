@@ -69,8 +69,8 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
                   extent: new Filter({
                     objectType: m.WorkEffortState,
                     predicate: new Or([
-                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: 'c082cd60-5c5f-4948-bdb1-06bd9c385751'}),
-                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: '7a83df7b-9918-4b10-8f99-48896f9db105'}),
+                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: 'c082cd605c5f4948bdb106bd9c385751'}),
+                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: '7a83df7b99184b108f9948896f9db105'}),
                     ])
                   })
                 })

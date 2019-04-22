@@ -81,7 +81,7 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
         this.party = loaded.objects.Party as Party;
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.timeFrequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
-        const hour = this.timeFrequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
+        const hour = this.timeFrequencies.find((v) => v.UniqueId === 'db14e5d55eaf4ec8b149c558a28d99f5');
 
         if (isCreate) {
           this.title = 'Add Party Rate';
