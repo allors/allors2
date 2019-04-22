@@ -95,7 +95,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         this.requestItem = loaded.objects.RequestItem as RequestItem;
         this.goods = loaded.collections.Goods as Good[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
-        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
+        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb523441476892d4729c6c5d6f1b');
 
         if (isCreate) {
           this.title = 'Create Request Item';

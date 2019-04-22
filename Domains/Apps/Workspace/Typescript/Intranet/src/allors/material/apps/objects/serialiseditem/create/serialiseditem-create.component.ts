@@ -109,7 +109,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         this.parts = loaded.collections.Parts as Part[];
-        this.parts = this.parts.filter(v => v.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase());
+        this.parts = this.parts.filter(v => v.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae');
 
         this.serialisedItem = this.allors.context.create('SerialisedItem') as SerialisedItem;
         this.serialisedItem.AvailableForSale = false;

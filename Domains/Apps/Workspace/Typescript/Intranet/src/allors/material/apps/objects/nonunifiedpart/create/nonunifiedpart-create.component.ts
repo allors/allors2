@@ -117,10 +117,10 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
-        const piece = this.unitsOfMeasure.find((v) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
+        const piece = this.unitsOfMeasure.find((v) => v.UniqueId === 'f4bbdb523441476892d4729c6c5d6f1b');
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId.toUpperCase() === '5735191A-CDC4-4563-96EF-DDDC7B969CA6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191acdc4456396efdddc7b969ca6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 

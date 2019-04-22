@@ -15,6 +15,11 @@ $container-max-widths: (
   xl: 1600px
 );
 
+$link-color: #3f51b5;
+$link-hover-color: currentColor;
+$link-hover-decoration: none;
+$label-margin-bottom: 0;
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
@@ -25,10 +30,10 @@ $container-max-widths: (
 * {
   &:active,
   :focus {
-    outline: none !important;
+    outline: none !important;  // 1
   }
 }
 
-label {
-  margin-bottom: 0;
-}
+a:not(.mat-button):not(.mat-raised-button):not(.mat-fab):not(.mat-mini-fab):not([mat-list-item]) {
+    color: #3f51b5; // 2
+  }

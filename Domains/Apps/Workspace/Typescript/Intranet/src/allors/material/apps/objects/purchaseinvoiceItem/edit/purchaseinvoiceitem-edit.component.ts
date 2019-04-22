@@ -117,10 +117,8 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
-        this.partItemType = this.invoiceItemTypes.find(
-          (v: InvoiceItemType) => v.UniqueId.toUpperCase() === 'FF2B943D-57C9-4311-9C56-9FF37959653B');
-        this.productItemType = this.invoiceItemTypes.find(
-          (v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44cb-8354-FB887ADA42AD');
+        this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d57c943119c569ff37959653b');
+        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778273544cb8354fb887ada42ad');
 
         if (isCreate) {
           this.title = 'Add purchase invoice Item';

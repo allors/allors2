@@ -132,7 +132,7 @@ export class TimeEntryEditComponent implements OnInit, OnDestroy {
 
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
-        const hour = this.frequencies.find((v) => v.UniqueId.toUpperCase() === 'DB14E5D5-5EAF-4EC8-B149-C558A28D99F5');
+        const hour = this.frequencies.find((v) => v.UniqueId === 'db14e5d55eaf4ec8b149c558a28d99f5');
 
         if (this.isEdit) {
           this.timeEntry = loaded.objects.TimeEntry as TimeEntry;

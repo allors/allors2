@@ -128,6 +128,10 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.data.DateTime = moment.utc().toISOString();
   }
 
+  newDateTime2() {
+    this.data.DateTime2 = moment.utc().toISOString();
+  }
+
   refresh(): void {
     this.refresh$.next(new Date());
   }

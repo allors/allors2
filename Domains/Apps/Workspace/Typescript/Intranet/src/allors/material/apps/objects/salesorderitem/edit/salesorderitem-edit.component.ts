@@ -139,7 +139,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
-        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44CB-8354-FB887ADA42AD');
+        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778273544cb8354fb887ada42ad');
 
         if (isCreate) {
           this.title = 'Add Order Item';

@@ -26,6 +26,10 @@
           <button type="button" mat-raised-button (click)="newDateTime()">New DateTime</button>
         </div>
 
+        <div class="row">
+          <a-mat-datetimepicker class="col-md" [object]="data" [roleType]="m.Data.DateTime2"></a-mat-datetimepicker>
+          <button type="button" mat-raised-button (click)="newDateTime2()">New DateTime2</button>
+        </div>
 
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteFilter" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
