@@ -82,7 +82,7 @@ export class PurchaseOrderOverviewSummaryComponent {
 
   public cancel(): void {
 
-    this.panel.manager.context.invoke(this.order.Reject)
+    this.panel.manager.context.invoke(this.order.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -147,9 +147,8 @@ export class PurchaseOrderOverviewSummaryComponent {
 
     this.panel.manager.context.invoke(this.order.Invoice)
       .subscribe((invoked: Invoked) => {
-        this.panel.toggle();
-        this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
         this.refreshService.refresh();
+        this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
       });
   }
 

@@ -139,32 +139,37 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistOrderWhereValidOrderItem)
+            var order = this.PurchaseOrderWherePurchaseOrderItem;
+
+            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled))
             {
-                var order = this.PurchaseOrderWherePurchaseOrderItem;
+                this.Cancel();
+            }
 
-                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled))
+            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).InProcess))
+            {
+                if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Created))
                 {
-                    this.Cancel();
+                    this.Confirm();
                 }
+            }
 
-                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).InProcess))
+            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created))
+            {
+                if (!this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
                 {
-                    if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Created))
-                    {
-                        this.Confirm();
-                    }
+                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
                 }
+            }
 
-                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Completed))
-                {
-                    this.Complete();
-                }
+            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Completed))
+            {
+                this.Complete();
+            }
 
-                if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Finished))
-                {
-                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Finished;
-                }
+            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Finished))
+            {
+                this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Finished;
             }
 
             if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
