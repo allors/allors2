@@ -129,13 +129,17 @@ namespace Allors
             var allorsEmployee1 = this.CreatePerson(allors, "employee1@allors.com", "Allors", "Employee 1", "letmein");
             var allorsEmployee2 = this.CreatePerson(allors, "employee2@allors.com", "Allors", "Employee 2", "letmein");
             var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
+            var allorsPurchaseOrderApprover = this.CreatePerson(allors, "purchaseOrderApprover@allors.com", "Allors", "PurchaseOrderApprover", "letmein");
 
             allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
+            allors.PurchaseOrderApprovers = new[] { allorsPurchaseOrderApprover, administrator };
 
             var dipuEmployee = this.CreatePerson(dipu, "employee@dipu.com", "first", "dipu employee", "letmein");
             var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
+            var dipuPurchaseOrderApprover = this.CreatePerson(allors, "purchaseOrderApprover@dipu.com", "dipu", "PurchaseOrderApprover", "letmein");
 
             dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
+            dipu.PurchaseOrderApprovers = new[] { dipuPurchaseOrderApprover, administrator };
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")

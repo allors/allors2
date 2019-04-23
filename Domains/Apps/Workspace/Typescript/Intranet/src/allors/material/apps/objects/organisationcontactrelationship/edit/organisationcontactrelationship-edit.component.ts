@@ -93,7 +93,7 @@ export class OrganisationContactRelationshipEditComponent implements OnInit, OnD
         this.organisations = loaded.collections.Organisations as Organisation[];
 
         this.contactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
-        this.generalContact = this.contactKinds.find(v => v.UniqueId.toUpperCase() === 'EEBE4D65-C452-49C9-A583-C0FFEC385E98');
+        this.generalContact = this.contactKinds.find(v => v.UniqueId === 'eebe4d65c45249c9a583c0ffec385e98');
 
         if (isCreate) {
           this.title = 'Add Organisation Contact';

@@ -98,6 +98,10 @@ namespace Allors.Repository
         public SecurityToken ProductQuoteApproverSecurityToken { get; set; }
         public AccessControl ProductQuoteApproverAccessControl { get; set; }
         public UserGroup ProductQuoteApproverUserGroup { get; set; }
+        public Person[] PurchaseOrderApprovers { get; set; }
+        public SecurityToken PurchaseOrderApproverSecurityToken { get; set; }
+        public AccessControl PurchaseOrderApproverAccessControl { get; set; }
+        public UserGroup PurchaseOrderApproverUserGroup { get; set; }
 
         public Person[] BlueCollarWorkers { get; set; }
         public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
@@ -236,6 +240,11 @@ namespace Allors.Repository
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }
 
         public Media LogoImage { get; set; }
+
+        public void StartNewFiscalYear() { }
+        public bool PurchaseOrderNeedsApproval { get; set; }
+        public decimal PurchaseOrderApprovalThreshold { get; set; }
+
         #endregion
 
         #region Versioning
@@ -408,8 +417,6 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Delete(){}
-
-        public void StartNewFiscalYear() {}
         #endregion
     }
 }

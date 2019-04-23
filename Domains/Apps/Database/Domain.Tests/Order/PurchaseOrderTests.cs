@@ -24,8 +24,6 @@ using Resources;
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
     using Meta;
     using Xunit;
 
@@ -40,7 +38,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            Assert.Equal(new PurchaseOrderStates(this.Session).Provisional, order.PurchaseOrderState);
+            Assert.Equal(new PurchaseOrderStates(this.Session).Created, order.PurchaseOrderState);
             Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
             Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
@@ -198,12 +196,14 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderStates(this.Session).RequestsApproval, order.PurchaseOrderState);
+            Assert.Equal(new PurchaseOrderStates(this.Session).InProcess, order.PurchaseOrderState);
             var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.False(acl.CanExecute(M.PurchaseOrder.QuickReceive));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reopen));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.QuickReceive));
         }
 
         [Fact]
@@ -239,7 +239,6 @@ namespace Allors.Domain
             this.SetIdentity("orderProcessor");
 
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
-            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -256,12 +255,17 @@ namespace Allors.Domain
 
             Assert.Equal(new PurchaseOrderStates(this.Session).OnHold, order.PurchaseOrderState);
             var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
-            Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
-            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
-            Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Hold));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Reopen));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Send));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.QuickReceive));
+            Assert.False(acl.CanExecute(M.PurchaseOrder.Invoice));
+
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Reject));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
         }
 
         [Fact]

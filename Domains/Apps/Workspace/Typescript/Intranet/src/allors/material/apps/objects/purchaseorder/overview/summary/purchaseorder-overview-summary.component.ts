@@ -125,12 +125,31 @@ export class PurchaseOrderOverviewSummaryComponent {
       });
   }
 
-  public finish(): void {
+  public reopen(): void {
 
-    this.panel.manager.context.invoke(this.order.Continue)
+    this.panel.manager.context.invoke(this.order.Reopen)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
-        this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
+        this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+      });
+  }
+
+  public send(): void {
+
+    this.panel.manager.context.invoke(this.order.Send)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
+      });
+  }
+
+  public invoice(): void {
+
+    this.panel.manager.context.invoke(this.order.Invoice)
+      .subscribe((invoked: Invoked) => {
+        this.panel.toggle();
+        this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
+        this.refreshService.refresh();
       });
   }
 

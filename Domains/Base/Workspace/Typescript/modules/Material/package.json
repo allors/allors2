@@ -9,7 +9,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
-    "tc:test": "ng test --watch=false"
+    "tc:test": "ng test --watch=false",
+    "build-stats": "ng build --aot --optimization --stats-json",
+    "stats": "webpack-bundle-analyzer dist/material/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -54,6 +56,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2",
-    "typescript-tslint-plugin": "^0.3.1"
+    "typescript-tslint-plugin": "^0.3.1",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

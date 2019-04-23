@@ -137,7 +137,7 @@ export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
         this.salesInvoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
         this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
-        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
+        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc264804fc0b20e265afd41fae2');
         this.orderItems = this.order.SalesOrderItems;
 
       });

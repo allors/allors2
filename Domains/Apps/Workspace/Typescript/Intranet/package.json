@@ -6,11 +6,13 @@
     "ng": "ng",
     "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --stats-json",
     "test": "ng test",
     "lint": "ng lint",
     "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
-    "tc:test": "ng test --watch=false"
+    "tc:test": "ng test --watch=false",
+    "build-stats": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
+    "stats": "webpack-bundle-analyzer dist/intranet/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +60,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2",
-    "typescript-tslint-plugin": "^0.3.1"
+    "typescript-tslint-plugin": "^0.3.1",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

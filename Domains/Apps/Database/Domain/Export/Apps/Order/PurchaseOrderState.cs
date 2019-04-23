@@ -17,16 +17,24 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class QuoteState
+    public partial class PurchaseOrderState
     {
-        public bool IsCreated => Equals(this.UniqueId, QuoteStates.CreatedId);
+        public bool IsCreated => Equals(this.UniqueId, PurchaseOrderStates.CreatedId);
 
-        public bool IsApproved => Equals(this.UniqueId, QuoteStates.ApprovedId);
+        public bool IsAwaitingApproval => Equals(this.UniqueId, PurchaseOrderStates.AwaitingApprovalId);
 
-        public bool IsOrdered => Equals(this.UniqueId, QuoteStates.OrderedId);
+        public bool IsCancelled => Equals(this.UniqueId, PurchaseOrderStates.CancelledId);
 
-        public bool IsCancelled => Equals(this.UniqueId, QuoteStates.CancelledId);
+        public bool IsCompleted => Equals(this.UniqueId, PurchaseOrderStates.CompletedId);
 
-        public bool IsRejected => Equals(this.UniqueId, QuoteStates.RejectedId);
+        public bool IsRejected => Equals(this.UniqueId, PurchaseOrderStates.RejectedId);
+
+        public bool IsOnHold => Equals(this.UniqueId, PurchaseOrderStates.OnHoldId);
+
+        public bool IsInProcess => Equals(this.UniqueId, PurchaseOrderStates.InProcessId);
+
+        public bool IsSent => Equals(this.UniqueId, PurchaseOrderStates.SentId);
+
+        public bool IsFinished => Equals(this.UniqueId, PurchaseOrderStates.FinishedId);
     }
 }

@@ -201,7 +201,7 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191acdc4456396efdddc7b969ca6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 

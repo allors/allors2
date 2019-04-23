@@ -34,13 +34,38 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsProvisional => this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Provisional);
-        
+        public bool NeedsApproval
+        {
+            get
+            {
+                if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
+                {
+                    var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
+                    if (supplierRelationship != null && 
+                        supplierRelationship.NeedsApproval &&
+                        (!supplierRelationship.ExistApprovalThreshold || this.TotalExVat >= supplierRelationship.ApprovalThreshold))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (OrderedBy.PurchaseOrderNeedsApproval &&
+                            (!OrderedBy.ExistPurchaseOrderApprovalThreshold || this.TotalExVat >= OrderedBy.PurchaseOrderApprovalThreshold))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistPurchaseOrderState)
             {
-                this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Provisional;
+                this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
             }
 
             if (this.ExistTakenViaSupplier)
@@ -136,7 +161,31 @@ namespace Allors.Domain
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
 
+            this.DeriveWorkflow();
             this.ResetPrintDocument();
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (this.PurchaseInvoicesWherePurchaseOrder.Count > 0)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+        }
+
+        private void DeriveWorkflow()
+        {
+            this.WorkItemDescription = $"PurchaseOrder: {this.OrderNumber} [{this.TakenViaSupplier?.PartyName}]";
+
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
+            if (this.PurchaseOrderState.IsAwaitingApproval)
+            {
+                if (!openTasks.OfType<PurchaseOrderApproval>().Any())
+                {
+                    new PurchaseOrderApprovalBuilder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                }
+            }
         }
 
         public void AppsPrint(PrintablePrint method)
@@ -175,7 +224,7 @@ namespace Allors.Domain
 
         public void AppsConfirm(OrderConfirm method)
         {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = this.NeedsApproval ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApproval : new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsReject(OrderReject method)
@@ -190,7 +239,12 @@ namespace Allors.Domain
 
         public void AppsApprove(OrderApprove method)
         {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).RequestsApproval;
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
+        }
+
+        public void AppsReopen(OrderReopen method)
+        {
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
         }
 
         public void AppsContinue(OrderContinue method)
@@ -231,6 +285,42 @@ namespace Allors.Domain
                     .WithShipmentItem(shipmentItem)
                     .WithOrderItem(orderItem)
                     .Build();
+            }
+        }
+
+        public void AppsInvoice(PurchaseOrderInvoice method)
+        {
+            if (this.PurchaseInvoicesWherePurchaseOrder.Count == 0)
+            {
+                var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
+                    .WithBilledFrom(this.TakenViaSupplier)
+                    .WithBilledFromContactMechanism(this.TakenViaContactMechanism)
+                    .WithBilledFromContactPerson(this.TakenViaContactPerson)
+                    .WithBilledTo(this.OrderedBy)
+                    .WithBilledToContactPerson(this.BillToContactPerson)
+                    .WithDescription(this.Description)
+                    .WithInvoiceDate(DateTime.UtcNow)
+                    .WithVatRegime(this.VatRegime)
+                    .WithDiscountAdjustment(this.DiscountAdjustment)
+                    .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                    .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                    .WithFee(this.Fee)
+                    .WithCustomerReference(this.CustomerReference)
+                    .Build();
+
+                foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
+                {
+                    var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
+                        .WithAssignedUnitPrice(orderItem.UnitPrice)
+                        .WithPart(orderItem.Part)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithDescription(orderItem.Description)
+                        .WithInternalComment(orderItem.InternalComment)
+                        .WithMessage(orderItem.Message)
+                        .Build();
+
+                    purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+                }
             }
         }
 

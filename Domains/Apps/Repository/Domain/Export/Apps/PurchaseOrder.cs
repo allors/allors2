@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("062bd939-9902-4747-a631-99ea10002156")]
     #endregion
-    public partial class PurchaseOrder : Order, Versioned
+    public partial class PurchaseOrder : Order, Versioned, WorkItem
     {
         #region inherited properties
 
@@ -66,6 +66,9 @@ namespace Allors.Repository
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
+
+        public string WorkItemDescription { get; set; }
+
         #endregion
 
         #region ObjectStates
@@ -217,7 +220,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        public Party PreviousTakenViaSupplier { get; set; }
+        public Organisation PreviousTakenViaSupplier { get; set; }
 
         #region Allors
         [Id("36607a9e-d411-4726-a63c-7622b928bfe8")]
@@ -228,7 +231,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public Party TakenViaSupplier { get; set; }
+        public Organisation TakenViaSupplier { get; set; }
 
         #region Allors
         [Id("4830cfc5-0375-4996-8cd8-27e36c102b65")]
@@ -303,7 +306,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -332,15 +334,22 @@ namespace Allors.Repository
         public void Cancel() { }
 
         public void Complete() { }
+        public void Invoice() { }
+        public void Reopen() { }
 
         public void Print() { }
         #endregion
+
+        #region Allors
+        [Id("2CED78A3-0A7D-475B-82EE-5374D6E65944")]
+        #endregion
+        [Workspace]
+        public void Send() { }
 
         #region Allors
         [Id("08E9783F-4DEE-428B-ADDD-785775AFAA46")]
         #endregion
         [Workspace]
         public void QuickReceive() { }
-
     }
 }

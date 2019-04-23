@@ -30,12 +30,13 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var provisional = new PurchaseOrderStates(this.Session).Provisional;
+            var created = new PurchaseOrderStates(this.Session).Created;
             var onHold = new PurchaseOrderStates(this.Session).OnHold;
-            var requestsApproval = new PurchaseOrderStates(this.Session).RequestsApproval;
-            var inProcess = new PurchaseOrderStates(this.Session).InProcess;
             var cancelled = new PurchaseOrderStates(this.Session).Cancelled;
             var rejected = new PurchaseOrderStates(this.Session).Rejected;
+            var awaitingApproval = new PurchaseOrderStates(this.Session).AwaitingApproval;
+            var inProcess = new PurchaseOrderStates(this.Session).InProcess;
+            var sent = new PurchaseOrderStates(this.Session).Sent;
             var completed = new PurchaseOrderStates(this.Session).Completed;
             var finished = new PurchaseOrderStates(this.Session).Finished;
 
@@ -44,15 +45,22 @@ namespace Allors.Domain
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var confirm = this.Meta.Confirm;
+            var cancel = this.Meta.Cancel;
+            var reopen = this.Meta.Reopen;
+            var send = this.Meta.Send;
             var quickReceive = this.Meta.QuickReceive;
+            var invoice = this.Meta.Invoice;
 
-            config.Deny(this.ObjectType, provisional, quickReceive, approve, @continue);
-            config.Deny(this.ObjectType, requestsApproval, confirm, approve, quickReceive, @continue);
-            config.Deny(this.ObjectType, inProcess, confirm, reject, approve, @continue);
-            config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, quickReceive);
+            config.Deny(this.ObjectType, created, approve, reject, @continue, reopen, send, quickReceive, invoice);
+            config.Deny(this.ObjectType, onHold, approve, hold, confirm, reopen, send, quickReceive, invoice);
+            config.Deny(this.ObjectType, cancelled, approve, reject, hold, @continue, confirm, cancel, send, quickReceive, invoice);
+            config.Deny(this.ObjectType, rejected, approve, reject, hold, @continue, confirm, cancel, send, quickReceive, invoice);
+            config.Deny(this.ObjectType, awaitingApproval, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
+            config.Deny(this.ObjectType, inProcess, approve, reject, @continue, confirm, reopen, quickReceive);
+            config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, confirm, reopen, send);
 
-            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
