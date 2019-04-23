@@ -23,7 +23,7 @@ namespace Angular.Material
         public void Select(string value)
         {
             this.Driver.WaitForAngular();
-            var radioSelector = new ByChained(this.Selector, By.CssSelector($"mat-radio-button[data-allors-radio-display='{value}'] label"));
+            var radioSelector = new ByChained(this.Selector, By.CssSelector($"mat-radio-button[data-allors-radio-value='{value}']"));
             var radio = this.Driver.FindElement(radioSelector);
             radio.Click();
         }
