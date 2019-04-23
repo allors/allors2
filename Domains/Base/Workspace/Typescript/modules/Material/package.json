@@ -12,7 +12,7 @@
     "tc:test": "ng test --watch=false",
     "build-stats": "ng build --aot --optimization --stats-json",
     "stats": "webpack-bundle-analyzer dist/material/stats.json",
-    "tools": "npx tsc --project ./tools/tsconfig.tools.json && node ./out-tsc/tools/tools/main"
+    "autotest": "npx tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main"
   },
   "private": true,
   "dependencies": {

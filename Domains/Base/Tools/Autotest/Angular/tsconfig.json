@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2015",
+    "target": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "dist/out-tsc",
+    "outDir": "out-tsc",
     "sourceMap": true,    
     "declaration": false,
     "emitDecoratorMetadata": true,
