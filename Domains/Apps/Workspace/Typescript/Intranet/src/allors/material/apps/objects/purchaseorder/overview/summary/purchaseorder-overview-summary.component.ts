@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService, Action } from '../../../../../../angular';
 import { PurchaseOrder, PurchaseInvoice} from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';

@@ -51,10 +51,73 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
-
+            return this.PrintPurchaseInvoice();
             //return this.PrintSalesInvoice();
             //return this.PrintWorkTask();
-            return this.MonthlyScheduler();
+            //return this.MonthlyScheduler();
+        }
+
+        private int PrintPurchaseInvoice()
+        {
+            using (var session = this.databaseService.Database.CreateSession())
+            {
+                this.logger.LogInformation("Begin");
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
+                var templateFilePath = "domain/templates/PurchaseInvoice.odt";
+                var templateFileInfo = new FileInfo(templateFilePath);
+                var prefix = string.Empty;
+                while (!templateFileInfo.Exists)
+                {
+                    prefix += "../";
+                    templateFileInfo = new FileInfo(prefix + templateFilePath);
+                }
+
+                var invoice = new PurchaseInvoices(session).Extent().Last();
+                var template = invoice.BilledTo.PurchaseInvoiceTemplate;
+
+                using (var memoryStream = new MemoryStream())
+                using (var fileStream = new FileStream(
+                    templateFileInfo.FullName,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite))
+                {
+                    fileStream.CopyTo(memoryStream);
+                    template.Media.InData = memoryStream.ToArray();
+                }
+
+                session.Derive();
+
+                var images = new Dictionary<string, byte[]> { { "Logo", session.GetSingleton().LogoImage.MediaContent.Data }, };
+
+                if (invoice.ExistInvoiceNumber)
+                {
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(invoice.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var printModel = new Allors.Domain.Print.PurchaseInvoiceModel.Model(invoice);
+                invoice.RenderPrintDocument(template, printModel, images);
+
+                session.Derive();
+
+                var result = invoice.PrintDocument;
+
+                var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var outputFile = File.Create(Path.Combine(desktopDir, "purchaseInvoice.odt"));
+                using (var stream = new MemoryStream(result.Media.MediaContent.Data))
+                {
+                    stream.CopyTo(outputFile);
+                }
+
+                this.logger.LogInformation("End");
+            }
+
+            return ExitCode.Success;
         }
 
         private int PrintSalesInvoice()

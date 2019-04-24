@@ -1,9 +1,10 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService} from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService, Action} from '../../../../../../angular';
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { Sort, Equals } from 'src/allors/framework';
+import { PrintService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,14 +20,19 @@ export class PurchasInvoiceOverviewSummaryComponent {
   invoice: PurchaseInvoice;
   goods: Good[] = [];
 
+  print: Action;
+
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public navigation: NavigationService,
+    public printService: PrintService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
+
+    this.print = printService.print();
 
     panel.name = 'summary';
 
@@ -66,7 +72,10 @@ export class PurchasInvoiceOverviewSummaryComponent {
               PostalBoundary: {
                 Country: x
               }
-            }
+            },
+            PrintDocument: {
+              Media: x
+            },
           },
         }),
         pull.PurchaseInvoice({

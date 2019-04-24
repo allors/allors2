@@ -14,8 +14,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using Allors.Domain.NonLogging;
+using Allors.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Allors.Domain
 {
@@ -93,6 +96,7 @@ namespace Allors.Domain
 
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
+            this.ResetPrintDocument();
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -100,6 +104,35 @@ namespace Allors.Domain
             if (this.ExistSalesInvoiceWherePurchaseInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
+        }
+
+        public void AppsPrint(PrintablePrint method)
+        {
+            if (!method.IsPrinted)
+            {
+                var singleton = this.Strategy.Session.GetSingleton();
+                var logo = this.BilledTo?.ExistLogoImage == true ?
+                    this.BilledTo.LogoImage.MediaContent.Data :
+                    singleton.LogoImage.MediaContent.Data;
+
+                var images = new Dictionary<string, byte[]>
+                {
+                    { "Logo", logo },
+                };
+
+                if (this.ExistInvoiceNumber)
+                {
+                    var session = this.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var model = new Print.PurchaseInvoiceModel.Model(this);
+                this.RenderPrintDocument(this.BilledTo?.PurchaseInvoiceTemplate, model, images);
+
+                this.PrintDocument.Media.FileName = $"{this.InvoiceNumber}.odt";
             }
         }
 
