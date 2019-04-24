@@ -37,6 +37,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
   cancel: Action;
   finish: Action;
   createSalesInvoice: Action;
+  print: Action;
 
   private subscription: Subscription;
 
@@ -62,7 +63,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     this.cancel = methodService.create(allors.context, this.m.PurchaseInvoice.CancelInvoice, { name: 'Cancel' });
     this.finish = methodService.create(allors.context, this.m.PurchaseInvoice.Finish, { name: 'Finish' });
     this.createSalesInvoice = methodService.create(allors.context, this.m.PurchaseInvoice.CreateSalesInvoice, { name: 'Create Sales Invoice' });
-
+    this.print = printService.print();
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe(() => {
       this.table.selection.clear();
@@ -83,7 +84,8 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
         this.approve,
         this.cancel,
         this.finish,
-        this.createSalesInvoice
+        this.createSalesInvoice,
+        this.print
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -133,6 +135,9 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
                 BilledFrom: x,
                 BilledTo: x,
                 PurchaseInvoiceState: x,
+                PrintDocument: {
+                  Media: x
+                },
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

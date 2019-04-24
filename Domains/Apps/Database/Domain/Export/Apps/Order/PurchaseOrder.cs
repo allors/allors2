@@ -252,6 +252,11 @@ namespace Allors.Domain
             this.PurchaseOrderState = this.PreviousPurchaseOrderState;
         }
 
+        public void AppsSend(PurchaseOrderSend method)
+        {
+            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Sent;
+        }
+
         public void AppsQuickReceive(PurchaseOrderQuickReceive method)
         {
             var session = this.strategy.Session;

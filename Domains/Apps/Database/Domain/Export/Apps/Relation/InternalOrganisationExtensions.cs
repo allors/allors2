@@ -42,6 +42,11 @@ namespace Allors.Domain
                 @this.PurchaseOrderTemplate = @this.CreateOpenDocumentTemplate<Print.PurchaseOrderModel.Model>(@this.GetResourceBytes("Templates.PurchaseOrder.odt"));
             }
 
+            if (!@this.ExistPurchaseInvoiceTemplate)
+            {
+                @this.PurchaseInvoiceTemplate = @this.CreateOpenDocumentTemplate<Print.PurchaseInvoiceModel.Model>(@this.GetResourceBytes("Templates.PurchaseInvoice.odt"));
+            }
+
             if (!@this.ExistSalesInvoiceTemplate)
             {
                 @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>(@this.GetResourceBytes("Templates.SalesInvoice.odt"));

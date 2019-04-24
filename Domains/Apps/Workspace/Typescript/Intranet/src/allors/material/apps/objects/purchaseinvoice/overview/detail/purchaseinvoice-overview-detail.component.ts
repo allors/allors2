@@ -121,6 +121,9 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
             CreatedBy: x,
             LastModifiedBy: x,
             PurchaseOrder: x,
+            VatRegime: {
+              VatRate: x
+            },
             BillToEndCustomerContactMechanism: {
               PostalAddress_Country: {
               }

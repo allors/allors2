@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain.Print.PurchaseOrderModel
 {
     public class OrderItemModel
@@ -21,13 +23,14 @@ namespace Allors.Domain.Print.PurchaseOrderModel
         public OrderItemModel(PurchaseOrderItem item)
         {
             this.Part = item.ExistPart ? item.Part?.Name : item.Description;
-            this.Description = item.Description;
+            this.Description = item.ExistPart ? item.Description : string.Empty;
             this.Quantity = item.QuantityOrdered;
             // TODO: Where does the currency come from?
             var currency = "€";
             this.Price = item.UnitPrice.ToString("0.00") + " " + currency;
             this.Amount = item.TotalExVat.ToString("0.00") + " " + currency;
             this.Comment = item.Comment;
+            this.SupplierProductId = item.Part?.SupplierOfferingsWherePart?.FirstOrDefault(v => v.Supplier.Equals(item.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier))?.SupplierProductId;
         }
 
         public string Part { get; }
@@ -36,5 +39,6 @@ namespace Allors.Domain.Print.PurchaseOrderModel
         public string Price { get; }
         public string Amount { get; }
         public string Comment { get; }
+        public string SupplierProductId { get; }
     }
 }
