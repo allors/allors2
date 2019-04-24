@@ -249,7 +249,7 @@ namespace Allors.Domain
 
         public void AppsContinue(OrderContinue method)
         {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = this.PreviousPurchaseOrderState;
         }
 
         public void AppsQuickReceive(PurchaseOrderQuickReceive method)
@@ -293,6 +293,7 @@ namespace Allors.Domain
             if (this.PurchaseInvoicesWherePurchaseOrder.Count == 0)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
+                    .WithPurchaseOrder(this)
                     .WithBilledFrom(this.TakenViaSupplier)
                     .WithBilledFromContactMechanism(this.TakenViaContactMechanism)
                     .WithBilledFromContactPerson(this.TakenViaContactPerson)
@@ -306,6 +307,7 @@ namespace Allors.Domain
                     .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
                     .WithFee(this.Fee)
                     .WithCustomerReference(this.CustomerReference)
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
                     .Build();
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)

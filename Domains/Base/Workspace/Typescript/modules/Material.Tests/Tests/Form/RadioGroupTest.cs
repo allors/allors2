@@ -40,7 +40,7 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            Assert.Equal(before.Length + 1, after.Length);
 
             var data = after.Except(before).First();
 

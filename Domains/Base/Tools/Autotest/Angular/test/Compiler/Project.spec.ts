@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import 'mocha';
-import * as path from 'path';
 
 import { project } from '../../src/config';
 
