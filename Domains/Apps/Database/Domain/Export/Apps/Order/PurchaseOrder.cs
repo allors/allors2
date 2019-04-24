@@ -105,18 +105,18 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.SecurityTokens = new[]
-            {
-                this.strategy.Session.GetSingleton().DefaultSecurityToken,
-                this.OrderedBy.PurchaseOrderApproverSecurityToken
-            };
-
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistOrderedBy && internalOrganisations.Count() == 1)
             {
                 this.OrderedBy = internalOrganisations.First();
             }
+
+            this.SecurityTokens = new[]
+            {
+                this.strategy.Session.GetSingleton().DefaultSecurityToken,
+                this.OrderedBy.PurchaseOrderApproverSecurityToken
+            };
 
             if (!this.ExistOrderNumber)
             {
