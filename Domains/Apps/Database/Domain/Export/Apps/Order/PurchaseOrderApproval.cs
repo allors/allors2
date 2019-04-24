@@ -40,6 +40,7 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            // TODO: Remove this, is managed by TaskExtensions.AssignParticipants (OwnerTokens of participants)
             this.SecurityTokens = new[]
                 {
                     this.strategy.Session.GetSingleton().DefaultSecurityToken,

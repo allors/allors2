@@ -54,6 +54,8 @@
     <None Include="Products\Inventory Storage.cd" />
     <None Include="Products\Overview.cd" />
     <None Include="Relation\Relation.cd" />
+    <None Include="Security\Security.cd" />
+    <None Include="Security\PurchaseOrderApproval.cd" />
     <None Include="Shipment\Overview.cd" />
     <None Include="Shipment\Picking.cd" />
     <None Include="Shipment\Quantity.cd" />

@@ -154,7 +154,8 @@ namespace Domain
 
             this.SetIdentity("approver");
 
-            var acl = new AccessControlList(order.PurchaseOrderApprovalsWherePurchaseOrder.First, approver);
+            var purchaseOrderApproval = order.PurchaseOrderApprovalsWherePurchaseOrder.First;
+            var acl = new AccessControlList(purchaseOrderApproval, approver);
             Assert.True(acl.CanWrite(M.ApproveTask.Comment));
             Assert.True(acl.CanExecute(M.ApproveTask.Approve));
         }
