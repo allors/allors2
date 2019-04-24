@@ -40,6 +40,13 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            this.SecurityTokens = new[]
+                {
+                    this.strategy.Session.GetSingleton().DefaultSecurityToken,
+                    this.PurchaseOrder.OrderedBy.PurchaseOrderApproverSecurityToken
+
+                };
+
             this.Title = "Approval of " + this.PurchaseOrder.WorkItemDescription;
 
             this.WorkItem = this.PurchaseOrder;
