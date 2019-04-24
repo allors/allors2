@@ -1,12 +1,10 @@
 namespace Tests
 {
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.PageObjects;
-
     using Angular;
     using Angular.Html;
-    using Pages;
-    using Pages.Relations;
+
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.PageObjects;
 
     public partial class Sidenav : Page
     {

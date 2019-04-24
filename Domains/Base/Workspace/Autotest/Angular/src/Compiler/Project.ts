@@ -34,6 +34,8 @@ export class Project {
 
     parseErrors: any[] = [];
 
+    mainModule: Module;
+
     constructor(projectPath: string) {
 
         const projectSymbols = new ProjectSymbols(projectPath, new ResourceResolver(), e => this.parseErrors.push(e));
@@ -43,6 +45,8 @@ export class Project {
             this.pipes = projectSymbols.getPipes().map((v) => new Pipe(v));
             this.providers = projectSymbols.getProviders().map((v) => new Provider(v));
             this.directives = projectSymbols.getDirectives().map((v) => new Directive(v));
+
+            this.mainModule = this.modules.find(m => m.isMainModule)
         }
     }
 }

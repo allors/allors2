@@ -5,7 +5,8 @@
       "type": "node",
       "request": "launch",
       "name": "Run main",
-      "program": "${workspaceFolder}/dist/out-tsc/Tools/ng-tools/src/main.js"
+      "preLaunchTask": "Compile",
+      "program": "${workspaceFolder}/out-tsc/src/main.js"
     },
     {
       "type": "node",
