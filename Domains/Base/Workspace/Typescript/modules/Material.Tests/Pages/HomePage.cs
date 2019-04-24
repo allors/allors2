@@ -2,9 +2,9 @@ namespace Pages
 {
     using OpenQA.Selenium;
 
-    public class DashboardPage : MainPage
+    public class HomePage : MainPage
     {
-        public DashboardPage(IWebDriver driver)
+        public HomePage(IWebDriver driver)
             : base(driver)
         {
         }

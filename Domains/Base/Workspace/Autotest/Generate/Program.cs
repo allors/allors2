@@ -33,7 +33,7 @@
         {
             string[,] config =
                 {
-                    { "./Tools/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated" },
+                    { "./Workspace/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated" },
                 };
 
             for (var i = 0; i < config.GetLength(0); i++)

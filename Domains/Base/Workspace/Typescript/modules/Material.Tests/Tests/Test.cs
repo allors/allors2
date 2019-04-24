@@ -85,7 +85,7 @@ namespace Tests
             this.DriverManager.Stop();
         }
 
-        public DashboardPage Login(string userName = "administrator")
+        public HomePage Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
 

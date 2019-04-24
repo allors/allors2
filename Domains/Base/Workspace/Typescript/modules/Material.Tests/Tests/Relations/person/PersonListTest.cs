@@ -10,13 +10,13 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonListTest : Test
     {
-        private PersonListPage page;
+        private PeoplePage page;
 
         public PersonListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToPersonList();
+            this.page = dashboard.Sidenav.NavigateToPeople();
         }
 
         [Fact]

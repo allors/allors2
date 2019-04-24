@@ -4,9 +4,9 @@ namespace Pages.Relations
 
     using Angular.Html;
 
-    public class OrganisationListPage : MainPage
+    public class OrganisationsPage : MainPage
     {
-        public OrganisationListPage(IWebDriver driver)
+        public OrganisationsPage(IWebDriver driver)
             : base(driver)
         {
         }

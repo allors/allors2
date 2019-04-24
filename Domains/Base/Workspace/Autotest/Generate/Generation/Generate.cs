@@ -22,6 +22,7 @@ namespace Allors.Development.Repository.Tasks
     using System.IO;
 
     using Allors.Development.Repository.Generation;
+    using Allors.Meta;
 
     using Autocomplete;
 
@@ -35,7 +36,12 @@ namespace Allors.Development.Repository.Tasks
             var stringTemplate = new StringTemplate(templateFileInfo);
             var outputDirectoryInfo = new DirectoryInfo(output);
 
-            var model = new Model();
+            var model = new Model
+            {
+                MetaPopulation = MetaPopulation.Instance
+            };
+
+            model.LoadMeta(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
             model.LoadMenu(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/menu.json"));
 
             stringTemplate.Generate(model, outputDirectoryInfo, log);
