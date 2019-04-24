@@ -225,6 +225,7 @@ namespace Allors.Repository
         public Template SalesOrderTemplate { get; set; }
 
         public Template PurchaseOrderTemplate { get; set; }
+        public Template PurchaseInvoiceTemplate { get; set; }
 
         public Template SalesInvoiceTemplate { get; set; }
 

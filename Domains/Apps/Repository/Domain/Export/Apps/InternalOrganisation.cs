@@ -487,6 +487,15 @@ namespace Allors.Repository
         Template PurchaseOrderTemplate { get; set; }
 
         #region Allors
+        [Id("EE600466-BF26-4155-9FF1-0B86BA136AD1")]
+        [AssociationId("335979F7-A675-4AE5-AA74-F7C5B051893B")]
+        [RoleId("2F3484ED-F709-493E-960E-F630043611D1")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template PurchaseInvoiceTemplate { get; set; }
+
+        #region Allors
         [Id("A8D44A4A-9C82-44A7-BBBA-117A4F7D261B")]
         [AssociationId("3B55BFB3-5531-4659-A7E1-20D39E68FD59")]
         [RoleId("F9C61F15-C32C-48D1-85E0-490A9F540EB6")]
