@@ -33,6 +33,7 @@ import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/mater
 import { ProductQuoteApprovalEditComponent, ProductQuoteApprovalEditModule } from '../allors/material/apps/objects/productquoteapproval/edit/productquoteapproval-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
+import { PurchaseOrderApprovalEditComponent, PurchaseOrderApprovalEditModule } from '../allors/material/apps/objects/purchaseorderapproval/edit/purchaseorderapproval-edit.module';
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/apps/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
@@ -160,6 +161,7 @@ export const edit = {
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.ProductQuoteApproval]: ProductQuoteApprovalEditComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
+  [ids.PurchaseOrderApproval]: PurchaseOrderApprovalEditComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
@@ -217,6 +219,7 @@ export const edit = {
     ProductTypeEditModule,
     PurchaseInvoiceCreateModule,
     PurchaseInvoiceItemEditModule,
+    PurchaseOrderApprovalEditModule,
     PurchaseOrderCreateModule,
     PurchaseOrderItemEditModule,
     QuoteItemEditModule,
@@ -277,6 +280,7 @@ export const edit = {
     PurchaseInvoiceCreateComponent,
     PurchaseInvoiceItemEditComponent,
     PurchaseOrderCreateComponent,
+    PurchaseOrderApprovalEditComponent,
     PurchaseOrderItemEditComponent,
     ReceiptEditComponent,
     RepeatingSalesInvoiceEditComponent,

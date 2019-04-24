@@ -45,7 +45,7 @@ namespace Allors.Domain
             this.WorkItem = this.PurchaseOrder;
 
             // Lifecycle
-            if (!this.ExistDateClosed && !this.PurchaseOrder.PurchaseOrderState.IsCreated)
+            if (!this.ExistDateClosed && !this.PurchaseOrder.PurchaseOrderState.IsAwaitingApproval)
             {
                 this.DateClosed = this.strategy.Session.Now();
             }
