@@ -98,11 +98,14 @@ namespace Allors.Repository
         public SecurityToken ProductQuoteApproverSecurityToken { get; set; }
         public AccessControl ProductQuoteApproverAccessControl { get; set; }
         public UserGroup ProductQuoteApproverUserGroup { get; set; }
-        public Person[] PurchaseOrderApprovers { get; set; }
-        public SecurityToken PurchaseOrderApproverSecurityToken { get; set; }
-        public AccessControl PurchaseOrderApproverAccessControl { get; set; }
-        public UserGroup PurchaseOrderApproverUserGroup { get; set; }
-
+        public Person[] PurchaseOrderApproversLevel1 { get; set; }
+        public SecurityToken PurchaseOrderApproverLevel1SecurityToken { get; set; }
+        public AccessControl PurchaseOrderApproverLevel1AccessControl { get; set; }
+        public UserGroup PurchaseOrderApproverLevel1UserGroup { get; set; }
+        public Person[] PurchaseOrderApproversLevel2 { get; set; }
+        public SecurityToken PurchaseOrderApproverLevel2SecurityToken { get; set; }
+        public AccessControl PurchaseOrderApproverLevel2AccessControl { get; set; }
+        public UserGroup PurchaseOrderApproverLevel2UserGroup { get; set; }
         public Person[] BlueCollarWorkers { get; set; }
         public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
         public AccessControl BlueCollarWorkerAccessControl { get; set; }
@@ -244,7 +247,8 @@ namespace Allors.Repository
 
         public void StartNewFiscalYear() { }
         public bool PurchaseOrderNeedsApproval { get; set; }
-        public decimal PurchaseOrderApprovalThreshold { get; set; }
+        public decimal PurchaseOrderApprovalThresholdLevel1 { get; set; }
+        public decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
 
         #endregion
 

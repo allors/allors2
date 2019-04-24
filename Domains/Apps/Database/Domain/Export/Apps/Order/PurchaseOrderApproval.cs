@@ -40,20 +40,12 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            // TODO: Remove this, is managed by TaskExtensions.AssignParticipants (OwnerTokens of participants)
-            this.SecurityTokens = new[]
-                {
-                    this.strategy.Session.GetSingleton().DefaultSecurityToken,
-                    this.PurchaseOrder.OrderedBy.PurchaseOrderApproverSecurityToken
-
-                };
-
             this.Title = "Approval of " + this.PurchaseOrder.WorkItemDescription;
 
             this.WorkItem = this.PurchaseOrder;
 
             // Lifecycle
-            if (!this.ExistDateClosed && !this.PurchaseOrder.PurchaseOrderState.IsAwaitingApproval)
+            if (!this.ExistDateClosed && !this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel1)
             {
                 this.DateClosed = this.strategy.Session.Now();
             }
@@ -61,7 +53,7 @@ namespace Allors.Domain
             // Assignments
             var participants = this.ExistDateClosed
                                    ? People.EmptyList
-                                   : this.PurchaseOrder.OrderedBy.PurchaseOrderApprovers;
+                                   : this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel1 ? this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel1 : this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel2;
             this.AssignParticipants(participants);
         }
 

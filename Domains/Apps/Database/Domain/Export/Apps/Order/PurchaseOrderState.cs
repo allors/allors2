@@ -21,7 +21,9 @@ namespace Allors.Domain
     {
         public bool IsCreated => Equals(this.UniqueId, PurchaseOrderStates.CreatedId);
 
-        public bool IsAwaitingApproval => Equals(this.UniqueId, PurchaseOrderStates.AwaitingApprovalId);
+        public bool IsAwaitingApprovalLevel1 => Equals(this.UniqueId, PurchaseOrderStates.AwaitingApprovalLevel1Id);
+
+        public bool IsAwaitingApprovalLevel2 => Equals(this.UniqueId, PurchaseOrderStates.AwaitingApprovalLevel2Id);
 
         public bool IsCancelled => Equals(this.UniqueId, PurchaseOrderStates.CancelledId);
 

@@ -178,7 +178,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsApproved_ThenCheckTransitions()
         {
-            this.SetIdentity("orderProcessor");
+            this.SetIdentity(Users.AdministratorUserName);
 
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             var internalOrganisation = this.InternalOrganisation;
@@ -209,7 +209,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
         {
-            this.SetIdentity("orderProcessor");
+            this.SetIdentity(Users.AdministratorUserName);
 
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             var internalOrganisation = this.InternalOrganisation;
@@ -236,7 +236,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsOnHold_ThenCheckTransitions()
         {
-            this.SetIdentity("orderProcessor");
+            this.SetIdentity(Users.AdministratorUserName);
 
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();

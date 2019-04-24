@@ -365,7 +365,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            this.SetIdentity(Users.AdministratorUserName);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)

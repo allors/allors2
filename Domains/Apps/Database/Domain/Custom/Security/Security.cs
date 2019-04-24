@@ -35,7 +35,8 @@ namespace Allors.Domain
                 security.GrantAdministrator(@class, Operations.Read, Operations.Write, Operations.Execute);
                 security.GrantCreator(@class, Operations.Read, Operations.Write, Operations.Execute);
                 security.GrantProductQuoteApprover(@class, Operations.Read, Operations.Write, Operations.Execute);
-                security.GrantPurchaseOrderApprover(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantPurchaseOrderApproverLevel1(@class, Operations.Read, Operations.Write, Operations.Execute);
+                security.GrantPurchaseOrderApproverLevel2(@class, Operations.Read, Operations.Write, Operations.Execute);
 
                 if (@class.Equals(M.WorkEffortInventoryAssignment.ObjectType))
                 {

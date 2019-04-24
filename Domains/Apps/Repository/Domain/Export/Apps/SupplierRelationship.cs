@@ -59,7 +59,15 @@ namespace Allors.Repository
         [RoleId("1B9652BB-C074-46AB-AA3E-C2645CC1BAFF")]
         #endregion
         [Workspace]
-        public decimal ApprovalThreshold { get; set; }
+        public decimal ApprovalThresholdLevel1 { get; set; }
+
+        #region Allors
+        [Id("3ABDE14F-EEC1-4B45-9846-7896ABC27FBB")]
+        [AssociationId("B673D04F-3ECE-4452-84D6-27E3DC1BC772")]
+        [RoleId("D73494F3-20FC-40A5-94BF-D45004731C5A")]
+        #endregion
+        [Workspace]
+        public decimal ApprovalThresholdLevel2 { get; set; }
 
         #region inherited methods
 

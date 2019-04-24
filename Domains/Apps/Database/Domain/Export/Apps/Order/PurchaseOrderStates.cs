@@ -20,7 +20,8 @@ namespace Allors.Domain
     public partial class PurchaseOrderStates
     {
         public static readonly Guid CreatedId = new Guid("69946F6D-718E-463d-AB36-BF4E3B970210");
-        public static readonly Guid AwaitingApprovalId = new Guid("B870154D-1B95-41E8-BF78-4CF64D23E4E6");
+        public static readonly Guid AwaitingApprovalLevel1Id = new Guid("B870154D-1B95-41E8-BF78-4CF64D23E4E6");
+        public static readonly Guid AwaitingApprovalLevel2Id = new Guid("713C551D-3A39-44A8-AB81-BEEF55173F5A");
         public static readonly Guid CancelledId = new Guid("FC345C8F-7BCC-4571-B353-BF8AF27C57A8");
         public static readonly Guid CompletedId = new Guid("FDF3A1F6-605A-4f62-B463-7900D6782E56");
         public static readonly Guid RejectedId = new Guid("B11913F7-4FFD-44a8-8DDF-36200E910B37");
@@ -33,7 +34,9 @@ namespace Allors.Domain
 
         public PurchaseOrderState Created => this.StateCache[CreatedId];
 
-        public PurchaseOrderState AwaitingApproval => this.StateCache[AwaitingApprovalId];
+        public PurchaseOrderState AwaitingApprovalLevel1 => this.StateCache[AwaitingApprovalLevel1Id];
+
+        public PurchaseOrderState AwaitingApprovalLevel2 => this.StateCache[AwaitingApprovalLevel2Id];
 
         public PurchaseOrderState Cancelled => this.StateCache[CancelledId];
 
@@ -61,8 +64,13 @@ namespace Allors.Domain
                 .Build();
 
             new PurchaseOrderStateBuilder(this.Session)
-                .WithUniqueId(AwaitingApprovalId)
-                .WithName("Awaiting Approval")
+                .WithUniqueId(AwaitingApprovalLevel1Id)
+                .WithName("Awaiting Approval level 1")
+                .Build();
+
+            new PurchaseOrderStateBuilder(this.Session)
+                .WithUniqueId(AwaitingApprovalLevel2Id)
+                .WithName("Awaiting Approval level 2")
                 .Build();
 
             new PurchaseOrderStateBuilder(this.Session)

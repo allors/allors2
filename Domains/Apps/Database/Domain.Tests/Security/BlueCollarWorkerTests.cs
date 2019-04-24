@@ -1,7 +1,7 @@
 using System.Linq;
 using Allors.Meta;
 
-namespace Domain
+namespace Allors.Domain
 {
     using Allors;
     using Allors.Domain;

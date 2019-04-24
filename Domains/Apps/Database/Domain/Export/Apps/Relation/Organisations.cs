@@ -78,12 +78,16 @@ namespace Allors.Domain
             string workEffortPrefix,
             string creditNoteNumberPrefix,
             bool isImmediatelyPicked,
-            bool IsAutomaticallyShipped,
-            bool UseCreditNoteSequence,
+            bool isAutomaticallyShipped,
+            bool useCreditNoteSequence,
             int? requestCounterValue,
             int? quoteCounterValue,
             int? orderCounterValue,
-            int? invoiceCounterValue)
+            int? invoiceCounterValue,
+            bool purchaseOrderNeedsApproval,
+            decimal? purchaseOrderApprovalThresholdLevel1,
+            decimal? purchaseOrderApprovalThresholdLevel2
+            )
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
@@ -122,6 +126,9 @@ namespace Allors.Domain
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithWorkEffortPrefix(workEffortPrefix)
+                .WithPurchaseOrderNeedsApproval(purchaseOrderNeedsApproval)
+                .WithPurchaseOrderApprovalThresholdLevel1(purchaseOrderApprovalThresholdLevel1)
+                .WithPurchaseOrderApprovalThresholdLevel2(purchaseOrderApprovalThresholdLevel2)
                 .Build();
 
             OwnBankAccount defaultCollectionMethod = null;
@@ -230,8 +237,8 @@ namespace Allors.Domain
                 .WithBillingProcess(billingProcess)
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(isImmediatelyPicked)
-                .WithIsAutomaticallyShipped(IsAutomaticallyShipped)
-                .WithUseCreditNoteSequence(UseCreditNoteSequence)
+                .WithIsAutomaticallyShipped(isAutomaticallyShipped)
+                .WithUseCreditNoteSequence(useCreditNoteSequence)
                 .WithInternalOrganisation(organisation)
                 .Build();
 

@@ -69,6 +69,11 @@ namespace Allors.Domain
             this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
         }
 
+        public void CancelFromOrder()
+        {
+            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;
+        }
+
         public void AppsCancel(OrderItemCancel method)
         {
             this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
@@ -156,7 +161,7 @@ namespace Allors.Domain
 
             if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created))
             {
-                if (!this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
+                if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder))
                 {
                     this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
                 }

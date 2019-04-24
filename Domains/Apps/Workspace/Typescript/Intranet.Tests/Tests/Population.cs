@@ -71,12 +71,15 @@ namespace Tests
                 workEffortPrefix: "a-WO-",
                 creditNoteNumberPrefix: "a-CN-",
                 isImmediatelyPicked: true,
-                IsAutomaticallyShipped: true,
-                UseCreditNoteSequence: true,
+                isAutomaticallyShipped: true,
+                useCreditNoteSequence: true,
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 orderCounterValue: 1,
-                invoiceCounterValue: 1);
+                invoiceCounterValue: 1,
+                purchaseOrderNeedsApproval: true,
+                purchaseOrderApprovalThresholdLevel1: 1000M,
+                purchaseOrderApprovalThresholdLevel2: 5000M);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -111,12 +114,15 @@ namespace Tests
                 workEffortPrefix: "d-WO-",
                 creditNoteNumberPrefix: "d-CN-",
                 isImmediatelyPicked: true,
-                IsAutomaticallyShipped: true,
-                UseCreditNoteSequence: true,
+                isAutomaticallyShipped: true,
+                useCreditNoteSequence: true,
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 orderCounterValue: 1,
-                invoiceCounterValue: 1);
+                invoiceCounterValue: 1,
+                purchaseOrderNeedsApproval: false,
+                purchaseOrderApprovalThresholdLevel1: null,
+                purchaseOrderApprovalThresholdLevel2: null);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 

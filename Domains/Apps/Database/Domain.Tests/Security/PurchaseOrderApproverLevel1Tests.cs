@@ -1,12 +1,12 @@
 using Allors.Meta;
 
-namespace Domain
+namespace Allors.Domain
 {
     using Allors;
     using Allors.Domain;
     using Xunit;
    
-    public class PurchaseOrderApproverTests : DomainTest
+    public class PurchaseOrderApproverLevel1Tests : DomainTest
     {
         [Fact]
         public void UserGroup()
@@ -14,12 +14,12 @@ namespace Domain
             var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
             this.Session.Derive(true);
 
-            Assert.True(organisation.ExistPurchaseOrderApproverUserGroup);
+            Assert.True(organisation.ExistPurchaseOrderApproverLevel1UserGroup);
 
-            organisation.RemovePurchaseOrderApproverUserGroup();
+            organisation.RemovePurchaseOrderApproverLevel1UserGroup();
             this.Session.Derive();
 
-            Assert.True(organisation.ExistPurchaseOrderApproverUserGroup);
+            Assert.True(organisation.ExistPurchaseOrderApproverLevel1UserGroup);
         }
 
         [Fact]
@@ -28,17 +28,17 @@ namespace Domain
             var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
             this.Session.Derive(true);
 
-            Assert.True(organisation.ExistPurchaseOrderApproverAccessControl);
-            Assert.Equal(new Roles(this.Session).PurchaseOrderApprover, organisation.PurchaseOrderApproverAccessControl.Role);
-            Assert.Contains(organisation.PurchaseOrderApproverUserGroup, organisation.PurchaseOrderApproverAccessControl.SubjectGroups);
+            Assert.True(organisation.ExistPurchaseOrderApproverLevel1AccessControl);
+            Assert.Equal(new Roles(this.Session).PurchaseOrderApproverLevel1, organisation.PurchaseOrderApproverLevel1AccessControl.Role);
+            Assert.Contains(organisation.PurchaseOrderApproverLevel1UserGroup, organisation.PurchaseOrderApproverLevel1AccessControl.SubjectGroups);
 
-            organisation.RemovePurchaseOrderApproverAccessControl();
+            organisation.RemovePurchaseOrderApproverLevel1AccessControl();
 
             this.Session.Derive(true);
 
-            Assert.True(organisation.ExistPurchaseOrderApproverAccessControl);
-            Assert.Equal(new Roles(this.Session).PurchaseOrderApprover, organisation.PurchaseOrderApproverAccessControl.Role);
-            Assert.Contains(organisation.PurchaseOrderApproverUserGroup, organisation.PurchaseOrderApproverAccessControl.SubjectGroups);
+            Assert.True(organisation.ExistPurchaseOrderApproverLevel1AccessControl);
+            Assert.Equal(new Roles(this.Session).PurchaseOrderApproverLevel1, organisation.PurchaseOrderApproverLevel1AccessControl.Role);
+            Assert.Contains(organisation.PurchaseOrderApproverLevel1UserGroup, organisation.PurchaseOrderApproverLevel1AccessControl.SubjectGroups);
         }
 
         [Fact]
@@ -47,8 +47,8 @@ namespace Domain
             var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
             this.Session.Derive(true);
 
-            Assert.True(organisation.ExistPurchaseOrderApproverSecurityToken);
-            Assert.Contains(organisation.PurchaseOrderApproverAccessControl, organisation.PurchaseOrderApproverSecurityToken.AccessControls);
+            Assert.True(organisation.ExistPurchaseOrderApproverLevel1SecurityToken);
+            Assert.Contains(organisation.PurchaseOrderApproverLevel1AccessControl, organisation.PurchaseOrderApproverLevel1SecurityToken.AccessControls);
         }
 
         [Fact]
@@ -63,11 +63,11 @@ namespace Domain
                 .WithLastName("approver")
                 .Build();
 
-            organisation.AddPurchaseOrderApprover(approver);
+            organisation.AddPurchaseOrderApproversLevel1(approver);
 
             this.Session.Derive(true);
 
-            Assert.Contains(approver, organisation.PurchaseOrderApproverUserGroup.Members);
+            Assert.Contains(approver, organisation.PurchaseOrderApproverLevel1UserGroup.Members);
         }
 
         [Fact]
@@ -78,11 +78,11 @@ namespace Domain
 
             var approver = new PersonBuilder(this.Session)
                 .WithUserName("approver")
-                .WithFirstName("productquote")
+                .WithFirstName("purchaseorder")
                 .WithLastName("approver")
                 .Build();
 
-            organisation.AddPurchaseOrderApprover(approver);
+            organisation.AddPurchaseOrderApproversLevel1(approver);
 
             this.Session.Derive();
 
@@ -108,6 +108,8 @@ namespace Domain
 
             this.Session.Derive();
 
+            Assert.True(order.PurchaseOrderState.IsAwaitingApprovalLevel1);
+
             this.SetIdentity("approver");
 
             var acl = new AccessControlList(order, approver);
@@ -122,11 +124,11 @@ namespace Domain
 
             var approver = new PersonBuilder(this.Session)
                 .WithUserName("approver")
-                .WithFirstName("productquote")
+                .WithFirstName("purchaseorder")
                 .WithLastName("approver")
                 .Build();
 
-            organisation.AddPurchaseOrderApprover(approver);
+            organisation.AddPurchaseOrderApproversLevel1(approver);
 
             this.Session.Derive();
 

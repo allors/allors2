@@ -1,18 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseOrder.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// For more information visit http://www.allors.com/legal
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
 using Allors.Services;
@@ -34,7 +19,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool NeedsApproval
+        public bool NeedsApprovalLevel1
         {
             get
             {
@@ -43,17 +28,27 @@ namespace Allors.Domain
                     var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
                     if (supplierRelationship != null && 
                         supplierRelationship.NeedsApproval &&
-                        (!supplierRelationship.ExistApprovalThreshold || this.TotalExVat >= supplierRelationship.ApprovalThreshold))
+                        (!supplierRelationship.ExistApprovalThresholdLevel1 || this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1))
                     {
                         return true;
                     }
-                    else
+                }
+
+                return false;
+            }
+        }
+
+        public bool NeedsApprovalLevel2
+        {
+            get
+            {
+                if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
+                {
+                    var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
+                    if (supplierRelationship != null &&
+                        supplierRelationship.NeedsApproval && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2)
                     {
-                        if (OrderedBy.PurchaseOrderNeedsApproval &&
-                            (!OrderedBy.ExistPurchaseOrderApprovalThreshold || this.TotalExVat >= OrderedBy.PurchaseOrderApprovalThreshold))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
 
@@ -115,7 +110,8 @@ namespace Allors.Domain
             this.SecurityTokens = new[]
             {
                 this.strategy.Session.GetSingleton().DefaultSecurityToken,
-                this.OrderedBy.PurchaseOrderApproverSecurityToken
+                this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken,
+                this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken
             };
 
             if (!this.ExistOrderNumber)
@@ -185,7 +181,15 @@ namespace Allors.Domain
 
             var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 
-            if (this.PurchaseOrderState.IsAwaitingApproval)
+            if (this.PurchaseOrderState.IsAwaitingApprovalLevel1)
+            {
+                if (!openTasks.OfType<PurchaseOrderApproval>().Any())
+                {
+                    new PurchaseOrderApprovalBuilder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                }
+            }
+
+            if (this.PurchaseOrderState.IsAwaitingApprovalLevel2)
             {
                 if (!openTasks.OfType<PurchaseOrderApproval>().Any())
                 {
@@ -225,16 +229,18 @@ namespace Allors.Domain
 
         public void AppsCancel(OrderCancel method)
         {
+            OnCancelOrReject();
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
         }
 
         public void AppsConfirm(OrderConfirm method)
         {
-            this.PurchaseOrderState = this.NeedsApproval ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApproval : new PurchaseOrderStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = this.NeedsApprovalLevel1 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsReject(OrderReject method)
         {
+            OnCancelOrReject();
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Rejected;
         }
 
@@ -245,7 +251,7 @@ namespace Allors.Domain
 
         public void AppsApprove(OrderApprove method)
         {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = this.NeedsApprovalLevel2 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsReopen(OrderReopen method)
@@ -401,6 +407,14 @@ namespace Allors.Domain
                         totalBasePriceByPart[purchaseOrderItem.Part] += purchaseOrderItem.TotalBasePrice;
                     }
                 }
+            }
+        }
+
+        private void OnCancelOrReject()
+        {
+            foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+            {
+                purchaseOrderItem.CancelFromOrder();
             }
         }
     }

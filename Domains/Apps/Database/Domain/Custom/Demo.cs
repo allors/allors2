@@ -72,12 +72,15 @@ namespace Allors
                 workEffortPrefix: "a-WO-",
                 creditNoteNumberPrefix: "a-CN-",
                 isImmediatelyPicked: true,
-                IsAutomaticallyShipped: true,
-                UseCreditNoteSequence: true,
+                isAutomaticallyShipped: true,
+                useCreditNoteSequence: true,
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 orderCounterValue: 1,
-                invoiceCounterValue: 1);
+                invoiceCounterValue: 1,
+                purchaseOrderNeedsApproval: true,
+                purchaseOrderApprovalThresholdLevel1: 1000M,
+                purchaseOrderApprovalThresholdLevel2: 5000M);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -112,12 +115,16 @@ namespace Allors
                 workEffortPrefix: "a-WO-",
                 creditNoteNumberPrefix: "d-CN-",
                 isImmediatelyPicked: true,
-                IsAutomaticallyShipped: true,
-                UseCreditNoteSequence: true,
+                isAutomaticallyShipped: true,
+                useCreditNoteSequence: true,
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 orderCounterValue: 1,
-                invoiceCounterValue: 1);
+                invoiceCounterValue: 1,
+                purchaseOrderNeedsApproval: false,
+                purchaseOrderApprovalThresholdLevel1: null,
+                purchaseOrderApprovalThresholdLevel2: null);
+
 
             // Give Administrator access
             new EmploymentBuilder(this.Session).WithEmployee(administrator).WithEmployer(allors).Build();
@@ -129,17 +136,17 @@ namespace Allors
             var allorsEmployee1 = this.CreatePerson(allors, "employee1@allors.com", "Allors", "Employee 1", "letmein");
             var allorsEmployee2 = this.CreatePerson(allors, "employee2@allors.com", "Allors", "Employee 2", "letmein");
             var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
-            var allorsPurchaseOrderApprover = this.CreatePerson(allors, "purchaseOrderApprover@allors.com", "Allors", "PurchaseOrderApprover", "letmein");
+            var allorsPurchaseOrderApproverLevel1 = this.CreatePerson(allors, "purchaseOrderApproverLevel1@allors.com", "Allors", "PurchaseOrderApproverLevel1", "letmein");
+            var allorsPurchaseOrderApproverLevel2 = this.CreatePerson(allors, "purchaseOrderApproverLevel2@allors.com", "Allors", "PurchaseOrderApproverLevel2", "letmein");
 
             allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
-            allors.PurchaseOrderApprovers = new[] { allorsPurchaseOrderApprover, administrator };
+            allors.PurchaseOrderApproversLevel1 = new[] { allorsPurchaseOrderApproverLevel1, administrator };
+            allors.PurchaseOrderApproversLevel2 = new[] { allorsPurchaseOrderApproverLevel2, administrator };
 
             var dipuEmployee = this.CreatePerson(dipu, "employee@dipu.com", "first", "dipu employee", "letmein");
             var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
-            var dipuPurchaseOrderApprover = this.CreatePerson(allors, "purchaseOrderApprover@dipu.com", "dipu", "PurchaseOrderApprover", "letmein");
 
             dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
-            dipu.PurchaseOrderApprovers = new[] { dipuPurchaseOrderApprover, administrator };
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")

@@ -129,35 +129,64 @@ namespace Allors.Domain
                     this.ProductQuoteApproverSecurityToken.AddAccessControl(this.ProductQuoteApproverAccessControl);
                 }
 
+                groupName = $"{this.Name} PurchaseOrder approvers level 1";
 
-                groupName = $"{this.Name} PurchaseOrder approvers";
-
-                if (!this.ExistPurchaseOrderApproverSecurityToken)
+                if (!this.ExistPurchaseOrderApproverLevel1SecurityToken)
                 {
-                    this.PurchaseOrderApproverSecurityToken = new SecurityTokenBuilder(session).Build();
+                    this.PurchaseOrderApproverLevel1SecurityToken = new SecurityTokenBuilder(session).Build();
                 }
 
-                if (!this.ExistPurchaseOrderApproverUserGroup)
+                if (!this.ExistPurchaseOrderApproverLevel1UserGroup)
                 {
-                    this.PurchaseOrderApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                    this.PurchaseOrderApproverLevel1UserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
                                                          ?? new UserGroupBuilder(session).Build();
                 }
 
-                if (!groupName.Equals(this.PurchaseOrderApproverUserGroup.Name))
+                if (!groupName.Equals(this.PurchaseOrderApproverLevel1UserGroup.Name))
                 {
-                    this.PurchaseOrderApproverUserGroup.Name = groupName;
+                    this.PurchaseOrderApproverLevel1UserGroup.Name = groupName;
                 }
 
-                if (!this.ExistPurchaseOrderApproverAccessControl)
+                if (!this.ExistPurchaseOrderApproverLevel1AccessControl)
                 {
-                    var role = new Roles(session).PurchaseOrderApprover;
+                    var role = new Roles(session).PurchaseOrderApproverLevel1;
 
-                    this.PurchaseOrderApproverAccessControl =
+                    this.PurchaseOrderApproverLevel1AccessControl =
                         new AccessControlBuilder(session).WithRole(role)
-                            .WithSubjectGroup(this.PurchaseOrderApproverUserGroup)
+                            .WithSubjectGroup(this.PurchaseOrderApproverLevel1UserGroup)
                             .Build();
 
-                    this.PurchaseOrderApproverSecurityToken.AddAccessControl(this.PurchaseOrderApproverAccessControl);
+                    this.PurchaseOrderApproverLevel1SecurityToken.AddAccessControl(this.PurchaseOrderApproverLevel1AccessControl);
+                }
+
+                groupName = $"{this.Name} PurchaseOrder approvers level 2";
+
+                if (!this.ExistPurchaseOrderApproverLevel2SecurityToken)
+                {
+                    this.PurchaseOrderApproverLevel2SecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistPurchaseOrderApproverLevel2UserGroup)
+                {
+                    this.PurchaseOrderApproverLevel2UserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                                                ?? new UserGroupBuilder(session).Build();
+                }
+
+                if (!groupName.Equals(this.PurchaseOrderApproverLevel2UserGroup.Name))
+                {
+                    this.PurchaseOrderApproverLevel2UserGroup.Name = groupName;
+                }
+
+                if (!this.ExistPurchaseOrderApproverLevel2AccessControl)
+                {
+                    var role = new Roles(session).PurchaseOrderApproverLevel2;
+
+                    this.PurchaseOrderApproverLevel2AccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.PurchaseOrderApproverLevel2UserGroup)
+                            .Build();
+
+                    this.PurchaseOrderApproverLevel2SecurityToken.AddAccessControl(this.PurchaseOrderApproverLevel2AccessControl);
                 }
 
                 groupName = $"{this.Name} Blue-collar workers";
@@ -191,7 +220,8 @@ namespace Allors.Domain
                 }
 
                 this.ProductQuoteApproverUserGroup.Members = this.ProductQuoteApprovers.ToArray();
-                this.PurchaseOrderApproverUserGroup.Members = this.PurchaseOrderApprovers.ToArray();
+                this.PurchaseOrderApproverLevel1UserGroup.Members = this.PurchaseOrderApproversLevel1.ToArray();
+                this.PurchaseOrderApproverLevel2UserGroup.Members = this.PurchaseOrderApproversLevel2.ToArray();
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
 
                 #endregion

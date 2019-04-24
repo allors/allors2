@@ -41,9 +41,14 @@ namespace Allors.Domain
             this.Grant(Roles.ProductQuoteApproverId, objectType, operations);
         }
 
-        public void GrantPurchaseOrderApprover(ObjectType objectType, params Operations[] operations)
+        public void GrantPurchaseOrderApproverLevel1(ObjectType objectType, params Operations[] operations)
         {
-            this.Grant(Roles.PurchaseOrderApproverId, objectType, operations);
+            this.Grant(Roles.PurchaseOrderApproverLevel1Id, objectType, operations);
+        }
+
+        public void GrantPurchaseOrderApproverLevel2(ObjectType objectType, params Operations[] operations)
+        {
+            this.Grant(Roles.PurchaseOrderApproverLevel2Id, objectType, operations);
         }
 
         private void AppsOnPreSetup()

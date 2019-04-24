@@ -34,7 +34,8 @@ namespace Allors.Domain
             var onHold = new PurchaseOrderStates(this.Session).OnHold;
             var cancelled = new PurchaseOrderStates(this.Session).Cancelled;
             var rejected = new PurchaseOrderStates(this.Session).Rejected;
-            var awaitingApproval = new PurchaseOrderStates(this.Session).AwaitingApproval;
+            var awaitingApprovalLevel1 = new PurchaseOrderStates(this.Session).AwaitingApprovalLevel1;
+            var awaitingApprovalLevel2 = new PurchaseOrderStates(this.Session).AwaitingApprovalLevel2;
             var inProcess = new PurchaseOrderStates(this.Session).InProcess;
             var sent = new PurchaseOrderStates(this.Session).Sent;
             var completed = new PurchaseOrderStates(this.Session).Completed;
@@ -55,7 +56,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, approve, hold, confirm, reopen, send, quickReceive, invoice);
             config.Deny(this.ObjectType, cancelled, approve, reject, hold, @continue, confirm, cancel, send, quickReceive, invoice);
             config.Deny(this.ObjectType, rejected, approve, reject, hold, @continue, confirm, cancel, send, quickReceive, invoice);
-            config.Deny(this.ObjectType, awaitingApproval, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
+            config.Deny(this.ObjectType, awaitingApprovalLevel1, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
+            config.Deny(this.ObjectType, awaitingApprovalLevel2, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
             config.Deny(this.ObjectType, inProcess, approve, reject, @continue, confirm, reopen, quickReceive);
             config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, confirm, reopen, send);
 
