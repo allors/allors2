@@ -15,14 +15,14 @@ namespace Pages
 
         public Button Button => new Button(this.Driver, By.CssSelector("button"));
 
-        public DashboardPage Login(string userName = "administrator")
+        public HomePage Login(string userName = "administrator")
         {
             this.UserName.Value = userName;
             this.Button.Click();
 
             this.Driver.WaitForAngular();
 
-            return new DashboardPage(this.Driver);
+            return new HomePage(this.Driver);
         }
     }
 }

@@ -13,10 +13,10 @@ import { WorkspaceService } from '../allors/angular';
 import * as relations from '../allors/material/custom/relations';
 import * as tests from '../allors/material/custom/tests';
 
-import { appInit } from './app.init';
+import { appMeta } from './app.meta';
 
 export function appInitFactory(workspaceService: WorkspaceService) {
-  return () => (appInit(workspaceService));
+  return () => (appMeta(workspaceService.metaPopulation));
 }
 
 @NgModule({

@@ -13,13 +13,13 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PeoplePage people;
 
         public PersonEditTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.people = dashboard.Sidenav.NavigateToPeople();
         }
 
         [Fact]

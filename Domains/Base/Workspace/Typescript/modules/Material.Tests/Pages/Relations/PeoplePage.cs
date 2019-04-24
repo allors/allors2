@@ -7,9 +7,9 @@ namespace Pages.Relations
     using Angular.Html;
     using Angular.Material;
 
-    public class PersonListPage : MainPage
+    public class PeoplePage : MainPage
     {
-        public PersonListPage(IWebDriver driver)
+        public PeoplePage(IWebDriver driver)
             : base(driver)
         {
         }

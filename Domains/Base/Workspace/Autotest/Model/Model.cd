@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Autocomplete.MetaExtension" HideInheritanceLine="true">
+    <Position X="3.25" Y="2" Width="1.5" />
+    <Members>
+      <Method Name="LoadMenu" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Export\Base\MetaExtension.cs</FileName>
+      <NewMemberFileName>Export\Base\Model.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autocomplete.MenuItem" HideInheritanceLine="true">
+    <Position X="8.75" Y="2" Width="2" />
+    <Members>
+      <Method Name="CustomLoadMenu" Hidden="true" />
+      <Method Name="Load" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AACCgAAAAAAAAEAAEAAEQAAAAAAIAAAAAIgAQQAAAAA=</HashCode>
+      <FileName>Custom\MenuItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Menu" />
+      <Property Name="Parent" />
+      <Property Name="Children" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Autocomplete.Menu" HideInheritanceLine="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <Members>
+      <Method Name="BaseLoad" Hidden="true" />
+      <Method Name="CustomLoad" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAEAAAAABAAAAAAAAAAAAAAAAAAAAgAAAIAAAA=</HashCode>
+      <FileName>Custom\Menu.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MenuItems" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

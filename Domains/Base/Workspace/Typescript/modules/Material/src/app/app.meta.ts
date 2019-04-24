@@ -1,9 +1,8 @@
 import { Meta } from '../allors/meta';
-import { WorkspaceService } from '../allors/angular';
+import { MetaPopulation } from '../allors/framework';
 
-export function appInit(workspaceService: WorkspaceService) {
+export function appMeta(metaPopulation: MetaPopulation) {
 
-  const { metaPopulation } = workspaceService;
   const m = metaPopulation as Meta;
 
   m.Person.list = '/contacts/people';

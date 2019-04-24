@@ -1,7 +1,5 @@
 namespace Tests.Relations
 {
-    using System.Linq;
-
     using Allors.Domain;
     using Allors.Meta;
     using Pages.Relations;
@@ -11,13 +9,13 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonOverviewTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PeoplePage people;
 
         public PersonOverviewTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.people = dashboard.Sidenav.NavigateToPeople();
         }
 
         [Fact]

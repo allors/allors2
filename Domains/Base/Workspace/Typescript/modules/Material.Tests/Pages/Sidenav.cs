@@ -8,7 +8,7 @@ namespace Tests
     using Pages;
     using Pages.Relations;
 
-    public class Sidenav : Page
+    public partial class Sidenav : Page
     {
         public Sidenav(IWebDriver driver)
         : base(driver)
@@ -18,52 +18,19 @@ namespace Tests
 
         public By Selector { get; }
 
-        public Anchor Home => new Anchor(this.Driver, this.ByHref("/"));
-
-        public Element ContactsGroup => this.Group("Contacts");
-
-        public Anchor People => this.Link("/contacts/people");
-
-        public Anchor Organisations => this.Link("/contacts/organisations");
-
-        public Element TestsGroup => this.Group("Tests");
-
-        public Anchor Form => this.Link("/tests/form");
-
-
         public Button Toggle => new Button(this.Driver, By.CssSelector("a-mat-sidenavtoggle button"));
 
-        public DashboardPage NavigateToHome()
+        private void Navigate(Anchor link)
         {
             this.Driver.WaitForAngular();
 
-            if (!this.Home.IsVisible)
+            if (!link.IsVisible)
             {
                 this.Toggle.Click();
-                this.Driver.WaitForCondition(driver => this.Home.IsVisible);
+                this.Driver.WaitForCondition(driver => link.IsVisible);
             }
 
-            this.Home.Click();
-
-            return new DashboardPage(this.Driver);
-        }
-
-        public PersonListPage NavigateToPersonList()
-        {
-            this.Navigate(this.ContactsGroup, this.People);
-            return new PersonListPage(this.Driver);
-        }
-
-        public OrganisationListPage NavigateToOrganisations()
-        {
-            this.Navigate(this.ContactsGroup, this.Organisations);
-            return new OrganisationListPage(this.Driver);
-        }
-
-        public FormPage NavigateToForm()
-        {
-            this.Navigate(this.TestsGroup, this.Form);
-            return new FormPage(this.Driver);
+            link.Click();
         }
 
         private void Navigate(Element group, Anchor link)
