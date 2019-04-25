@@ -1,53 +1,51 @@
-import { CompileTemplateMetadata, CompileDirectiveMetadata } from "@angular/compiler";
 import { DirectiveSymbol } from "ngast";
+import { PathResolver } from './Helpers';
+
 import { Template } from './Template';
 import { Class } from './Typescript/Class';
 
 export class Directive {
 
-    resolvedMetadata: CompileTemplateMetadata;
-    nonResolvedMetadata: CompileDirectiveMetadata;
-
     name: string;
-    isLocal: boolean;
+    path: string;
     isComponent: boolean;
-    hasSelector: boolean;
+    selector: string;
     template: Template;
-    cls: Class;
+    type: Class;
 
-    constructor(public symbol: DirectiveSymbol) {
+    constructor(public directive: DirectiveSymbol, public pathResolver: PathResolver) {
 
-        this.resolvedMetadata = symbol.getResolvedMetadata();
-        this.nonResolvedMetadata = symbol.getNonResolvedMetadata();
+        const nonResolvedMetadata = this.directive.getNonResolvedMetadata();
+        const resolvedMetadata = this.directive.getResolvedMetadata();
 
-        this.name = symbol.symbol.name;
-        this.isLocal = symbol.symbol.filePath.indexOf('node_modules') === -1;
-        this.isComponent = symbol.isComponent(); 
-        this.hasSelector = this.nonResolvedMetadata.selector !== "ng-component";
+        this.name = directive.symbol.name;
+        this.path = pathResolver.relative(directive.symbol.filePath);
 
-        if (this.isLocal) {
-            if (this.resolvedMetadata && this.resolvedMetadata.template) {
-                this.template = new Template(this);
-            }
+        this.isComponent = directive.isComponent();
+        this.selector = nonResolvedMetadata.selector !== "ng-component" ? nonResolvedMetadata.selector : undefined;
 
-            const classDeclaration = symbol.getNode();
-            if (classDeclaration) {
-                this.cls = new Class(classDeclaration);
-            }
+        if (resolvedMetadata && resolvedMetadata.template) {
+            this.template = new Template(this, resolvedMetadata, pathResolver);
+        }
+
+        const classDeclaration = directive.getNode();
+        if (classDeclaration) {
+            this.type = new Class(classDeclaration);
         }
     }
 
     public toJSON(): any {
 
-        const { name, isLocal, isComponent, hasSelector, template, cls } = this;
+        const { name, path, isComponent, selector, template, type } = this;
 
         return {
+            kind: 'directive',
             name,
-            isLocal,
+            path,
             isComponent,
-            hasSelector,
+            selector,
             template,
-            class: cls,
+            type,
         };
     }
 }

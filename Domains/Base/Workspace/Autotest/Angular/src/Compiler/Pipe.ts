@@ -1,21 +1,24 @@
 import { PipeSymbol } from "ngast";
+import { PathResolver } from './Helpers';
 
 export class Pipe {
-    get name() { return this.symbol.symbol.name; }
+    name: string;
+    path: string;
 
-    get isLocal() { return this.symbol.symbol.filePath.indexOf('node_modules') === -1 }
-
-    constructor(public symbol: PipeSymbol) {
+    constructor(public pipe: PipeSymbol, pathResolver: PathResolver) {
+        this.name = this.pipe.symbol.name;
+        this.path = pathResolver.relative(pipe.symbol.filePath);
     }
 
-    
+
     public toJSON(): any {
 
-        const { name, isLocal } = this;
+        const { name, path } = this;
 
         return {
+            kind: 'pipe',
             name,
-            isLocal,
+            path,
         };
     }
 }

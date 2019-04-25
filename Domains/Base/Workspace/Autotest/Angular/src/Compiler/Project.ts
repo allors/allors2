@@ -1,29 +1,11 @@
-import { ProjectSymbols, ResourceResolver as NgastResourceResolver, ErrorReporter, ModuleSymbol } from 'ngast';
-import { readFile, readFileSync } from 'fs';
+import * as nodePath from 'path';
+import { ProjectSymbols} from 'ngast';
+import { PathResolver, ResourceResolver } from './Helpers';
 
 import { Module } from "./Module";
 import { Pipe } from "./Pipe";
 import { Provider } from "./Provider";
 import { Directive } from "./Directive";
-
-class ResourceResolver implements NgastResourceResolver {
-
-    public get(url: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            readFile(url, 'utf-8', (err, content) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(content);
-                }
-            });
-        });
-    }
-
-    getSync(url: string) {
-        return readFileSync(url).toString();
-    }
-};
 
 export class Project {
 
@@ -33,15 +15,16 @@ export class Project {
     directives: Directive[];
     parseErrors: any[] = [];
 
-    constructor(projectPath: string) {
+    constructor(public pathResolver: PathResolver, tsConfigPath: string) {
 
+        const projectPath = pathResolver.resolve(tsConfigPath);
         const projectSymbols = new ProjectSymbols(projectPath, new ResourceResolver(), e => this.parseErrors.push(e));
 
         if (this.parseErrors.length === 0) {
-            this.modules = projectSymbols.getModules().map((v) => new Module(v));
-            this.pipes = projectSymbols.getPipes().map((v) => new Pipe(v));
-            this.providers = projectSymbols.getProviders().map((v) => new Provider(v));
-            this.directives = projectSymbols.getDirectives().map((v) => new Directive(v));
+            this.modules = projectSymbols.getModules().map((v) => new Module(v, pathResolver));
+            this.pipes = projectSymbols.getPipes().map((v) => new Pipe(v, pathResolver));
+            this.providers = projectSymbols.getProviders().map((v) => new Provider(v, pathResolver));
+            this.directives = projectSymbols.getDirectives().map((v) => new Directive(v,pathResolver));
         }
     }
 
@@ -56,6 +39,7 @@ export class Project {
         }
 
         return {
+            kind: 'project',
             modules,
             pipes,
             providers,

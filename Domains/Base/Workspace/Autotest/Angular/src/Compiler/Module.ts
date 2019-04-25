@@ -1,15 +1,36 @@
 import { ModuleSymbol } from "ngast";
 import { Route } from './Route';
+import { PathResolver } from './Helpers';
+import { Reference } from './Typescript/Reference';
 
 export class Module {
-    get name() { return this.symbol.symbol.name; }
+    name: string;
+    path: string;
+    bootstrapComponents: Reference[];
+    declaredDirectives: Reference[];
+    exportedDirectives: Reference[];
+    exportedPipes: Reference[];
+    declaredPipes: Reference[];
+    importedModules: Reference[];
+    exportedModules: Reference[];
 
-    get isLocal() { return this.symbol.symbol.filePath.indexOf('node_modules') === -1; }
+    routes: Route[];
+    s
+    constructor(public module: ModuleSymbol, pathResolver: PathResolver) {
 
-    get isMainModule() { return this.symbol.getBootstrapComponents().length > 0; }
+        this.name = module.symbol.name;
+        this.path = pathResolver.relative(module.symbol.filePath);
 
-    get routes(): Route[] {
-        const summary = this.symbol.getModuleSummary();
+        this.bootstrapComponents = Reference.fromSymbols(module.getBootstrapComponents(), pathResolver);
+        this.declaredDirectives = Reference.fromSymbols(module.getDeclaredDirectives(), pathResolver);
+        this.exportedDirectives = Reference.fromSymbols(module.getExportedDirectives(), pathResolver);
+        this.exportedPipes = Reference.fromSymbols(module.getExportedPipes(), pathResolver);
+        this.declaredPipes = Reference.fromSymbols(module.getDeclaredPipes(), pathResolver);
+        this.importedModules = Reference.fromSymbols(module.getImportedModules(), pathResolver);
+        this.exportedModules = Reference.fromSymbols(module.getExportedModules(), pathResolver);
+
+        module.getProviders()
+        const summary = this.module.getModuleSummary();
         if (summary) {
             const routes = summary.providers.filter(v => {
                 return v.provider.token.identifier && v.provider.token.identifier.reference.name === 'ROUTES';
@@ -17,27 +38,28 @@ export class Module {
 
             if (routes && routes.length > 0 && routes[0]) {
                 const route = routes[0];
-                if(route.provider && route.provider.useValue){
-                    return route.provider.useValue;
+                if (route.provider && route.provider.useValue) {
+                    this.routes = route.provider.useValue.map((v: any) => new Route(v, pathResolver));
                 }
             }
         }
-
-        return [];
-    }
-
-
-    constructor(public symbol: ModuleSymbol) {
     }
 
     public toJSON(): any {
 
-        const { name, isLocal, isMainModule, routes } = this;
+        const { name, path, bootstrapComponents, declaredDirectives, exportedDirectives, exportedPipes, declaredPipes, importedModules, exportedModules, routes } = this;
 
         return {
+            kind: 'module',
             name,
-            isLocal,
-            isMainModule,
+            path,
+            bootstrapComponents,
+            declaredDirectives,
+            exportedDirectives,
+            exportedPipes,
+            declaredPipes,
+            importedModules,
+            exportedModules,
             routes,
         };
     }
