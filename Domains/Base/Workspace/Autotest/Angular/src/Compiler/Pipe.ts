@@ -7,5 +7,16 @@ export class Pipe {
 
     constructor(public symbol: PipeSymbol) {
     }
+
+    
+    public toJSON(): any {
+
+        const { name, isLocal } = this;
+
+        return {
+            name,
+            isLocal,
+        };
+    }
 }
 

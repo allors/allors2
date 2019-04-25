@@ -1,4 +1,4 @@
-import { ProjectSymbols, ResourceResolver as NgastResourceResolver, ErrorReporter } from 'ngast';
+import { ProjectSymbols, ResourceResolver as NgastResourceResolver, ErrorReporter, ModuleSymbol } from 'ngast';
 import { readFile, readFileSync } from 'fs';
 
 import { Module } from "./Module";
@@ -31,10 +31,7 @@ export class Project {
     pipes: Pipe[];
     providers: Provider[];
     directives: Directive[];
-
     parseErrors: any[] = [];
-
-    mainModule: Module;
 
     constructor(projectPath: string) {
 
@@ -45,9 +42,25 @@ export class Project {
             this.pipes = projectSymbols.getPipes().map((v) => new Pipe(v));
             this.providers = projectSymbols.getProviders().map((v) => new Provider(v));
             this.directives = projectSymbols.getDirectives().map((v) => new Directive(v));
-
-            this.mainModule = this.modules.find(m => m.isMainModule)
         }
+    }
+
+    public toJSON(): any {
+
+        const { modules, pipes, providers, directives } = this;
+
+        if (this.parseErrors.length > 0) {
+            return {
+                parseErrors: this.parseErrors.map((v) => v.toString())
+            }
+        }
+
+        return {
+            modules,
+            pipes,
+            providers,
+            directives,
+        };
     }
 }
 

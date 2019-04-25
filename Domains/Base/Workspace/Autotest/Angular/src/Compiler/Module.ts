@@ -29,5 +29,17 @@ export class Module {
 
     constructor(public symbol: ModuleSymbol) {
     }
+
+    public toJSON(): any {
+
+        const { name, isLocal, isMainModule, routes } = this;
+
+        return {
+            name,
+            isLocal,
+            isMainModule,
+            routes,
+        };
+    }
 }
 
