@@ -19,7 +19,7 @@ export class Attribute implements Node {
         const { name, value } = this;
 
         return {
-            type: 'attribute',
+            kind: 'attribute',
             name,
             value
         };

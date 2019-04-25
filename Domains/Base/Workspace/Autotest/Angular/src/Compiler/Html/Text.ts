@@ -15,7 +15,7 @@ export class Text implements Node {
         const { value } = this;
 
         return {
-            type: 'text',
+            kind: 'text',
             value,
         };
     }

@@ -23,7 +23,7 @@ export class Element implements Node {
         const { name, children, attributes } = this;
 
         return {
-            type: 'element',
+            kind: 'element',
             name,
             children,
             attributes,

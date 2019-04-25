@@ -1,48 +1,45 @@
-import { ClassDeclaration, Decorator } from "typescript";
 import { CompileTemplateMetadata, CompileDirectiveMetadata } from "@angular/compiler";
 import { DirectiveSymbol } from "ngast";
-import { TemplateAstResult } from "ngast/lib/directive-symbol";
 import { Template } from './Template';
+import { Class } from './Typescript/Class';
 
 export class Directive {
 
-    template: Template;
-
     resolvedMetadata: CompileTemplateMetadata;
     nonResolvedMetadata: CompileDirectiveMetadata;
-    // templateAst: TemplateAstResult;
-    // tsNode: ClassDeclaration;
-    // decorators: Decorator[];
-    // decoratorText: string[];
+
+    name: string;
+    isLocal: boolean;
+    isComponent: boolean;
+    hasSelector: boolean;
+    template: Template;
+    cls: Class;
 
     constructor(public symbol: DirectiveSymbol) {
 
         this.resolvedMetadata = symbol.getResolvedMetadata();
         this.nonResolvedMetadata = symbol.getNonResolvedMetadata();
-        // this.templateAst = symbol.getTemplateAst();
-        // this.tsNode = symbol.getNode();
 
-        // if (this.tsNode) {
-        //     this.decorators = this.tsNode.decorators.map((v => v));
-        //     this.decoratorText = this.decorators.map((v) => v.getText())
-        // }
+        this.name = symbol.symbol.name;
+        this.isLocal = symbol.symbol.filePath.indexOf('node_modules') === -1;
+        this.isComponent = symbol.isComponent(); 
+        this.hasSelector = this.nonResolvedMetadata.selector !== "ng-component";
 
-        if (this.isLocal && this.resolvedMetadata && this.resolvedMetadata.template) {
-            this.template = new Template(this);
+        if (this.isLocal) {
+            if (this.resolvedMetadata && this.resolvedMetadata.template) {
+                this.template = new Template(this);
+            }
+
+            const classDeclaration = symbol.getNode();
+            if (classDeclaration) {
+                this.cls = new Class(classDeclaration);
+            }
         }
     }
 
-    get name() { return this.symbol.symbol.name; }
-
-    get isLocal() { return this.symbol.symbol.filePath.indexOf('node_modules') === -1; }
-
-    get isComponent() { return this.symbol.isComponent; }
-
-    get hasSelector() { return this.nonResolvedMetadata.selector !== "ng-component" }
-
     public toJSON(): any {
 
-        const { name, isLocal, isComponent, hasSelector, template } = this;
+        const { name, isLocal, isComponent, hasSelector, template, cls } = this;
 
         return {
             name,
@@ -50,6 +47,7 @@ export class Directive {
             isComponent,
             hasSelector,
             template,
+            class: cls,
         };
     }
 }

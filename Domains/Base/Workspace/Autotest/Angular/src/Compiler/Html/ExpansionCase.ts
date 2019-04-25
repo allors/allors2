@@ -18,7 +18,7 @@ export class ExpansionCase implements Node {
         const { expression, value } = this;
 
         return {
-            type: 'expansionCase',
+            kind: 'expansionCase',
             expression,
             value
         };

@@ -16,7 +16,7 @@ export class Comment implements Node {
         const { value } = this;
 
         return {
-            type: 'comment',
+            kind: 'comment',
             value
         };
     }

@@ -19,7 +19,7 @@ export class Expansion implements Node {
         const { switchValue, cases } = this;
 
         return {
-            type: 'expansion',
+            kind: 'expansion',
             name,
             cases
         };
