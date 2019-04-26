@@ -1,4 +1,9 @@
-﻿namespace Autotest
+﻿// <copyright file="MenuItem.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
+namespace Autotest
 {
     using System;
     using System.Linq;
@@ -50,7 +55,7 @@
                     var child = new MenuItem
                     {
                         Menu = this.Menu,
-                        Parent = this
+                        Parent = this,
                     };
                     child.Load(v);
                     return child;

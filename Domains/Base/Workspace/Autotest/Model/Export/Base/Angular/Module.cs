@@ -1,3 +1,8 @@
+// <copyright file="Module.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Angular
 {
     using System.Linq;
@@ -21,7 +26,7 @@ namespace Autotest.Angular
         public Pipe[] ExportedPipes { get; set; }
 
         public Pipe[] DeclaredPipes { get; set; }
-        
+
         public Module[] ImportedModules { get; set; }
 
         public Module[] ExportedModules { get; set; }

@@ -1,13 +1,15 @@
-﻿using Autotest.Angular;
+﻿// <copyright file="Model.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
 
 namespace Autotest
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     using Allors.Meta;
-
+    using Autotest.Angular;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -18,14 +20,14 @@ namespace Autotest
         public Dictionary<Guid, MetaExtension> MetaExtensions { get; } = new Dictionary<Guid, MetaExtension>();
 
         public Project Project { get; set; }
-        
+
         public Menu Menu { get; set; }
 
         public ValidationLog Validate()
         {
             return new ValidationLog();
         }
-        
+
         public void LoadMetaExtensions(FileInfo fileInfo)
         {
             using (var file = File.OpenText(fileInfo.FullName))
@@ -42,7 +44,7 @@ namespace Autotest
                         {
                             metaExtension = new MetaExtension
                             {
-                                Id = id
+                                Id = id,
                             };
                             this.MetaExtensions.Add(id, metaExtension);
                         }
@@ -62,13 +64,13 @@ namespace Autotest
                 var jsonProject = (JObject)JToken.ReadFrom(reader);
                 this.Project = new Project
                 {
-                    Model = this
+                    Model = this,
                 };
 
                 this.Project.Load(jsonProject);
             }
         }
-        
+
         public void LoadMenu(FileInfo fileInfo)
         {
             using (var file = File.OpenText(fileInfo.FullName))
@@ -78,7 +80,7 @@ namespace Autotest
 
                 this.Menu = new Menu
                 {
-                    Model = this
+                    Model = this,
                 };
                 this.Menu.Load(jsonMenu);
             }

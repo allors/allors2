@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Base\Meta\RelationType.cd" />
-    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">

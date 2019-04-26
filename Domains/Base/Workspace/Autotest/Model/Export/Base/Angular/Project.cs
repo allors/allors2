@@ -1,3 +1,8 @@
+// <copyright file="Project.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -43,7 +48,7 @@ namespace Autotest.Angular
                     {
                         Json = v,
                         Project = this,
-                        Reference = new Reference(v)
+                        Reference = new Reference(v),
                     };
                     return pipe;
                 }).ToArray() : new Pipe[0];
@@ -55,7 +60,7 @@ namespace Autotest.Angular
                     {
                         Json = v,
                         Project = this,
-                        Reference = new Reference(v)
+                        Reference = new Reference(v),
                     };
                     return directive;
                 }).ToArray() : new Directive[0];
@@ -94,7 +99,6 @@ namespace Autotest.Angular
             {
                 provider.BaseLoad();
             }
-
         }
     }
 }

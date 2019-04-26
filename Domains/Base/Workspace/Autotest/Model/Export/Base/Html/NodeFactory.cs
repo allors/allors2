@@ -1,3 +1,8 @@
+// <copyright file="NodeFactory.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Html
 {
     using System;
@@ -6,7 +11,7 @@ namespace Autotest.Html
 
     public static class NodeFactory
     {
-        public static Node Create(JToken json)
+        public static INode Create(JToken json)
         {
             var kind = json["kind"]?.Value<string>();
             switch (kind)

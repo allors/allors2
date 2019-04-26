@@ -1,10 +1,15 @@
+// <copyright file="Element.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Html
 {
     using System.Linq;
 
     using Newtonsoft.Json.Linq;
 
-    public class Element : Node
+    public class Element : INode
     {
         public Element(JToken json)
         {
@@ -15,7 +20,7 @@ namespace Autotest.Html
 
         public string Name { get; set; }
 
-        public Node[] Children { get; set; }
+        public INode[] Children { get; set; }
 
         public Attribute[] Attributes { get; set; }
 
@@ -29,7 +34,7 @@ namespace Autotest.Html
                     var node = NodeFactory.Create(v);
                     node.BaseLoad();
                     return node;
-                }).ToArray() : new Node[0];
+                }).ToArray() : new INode[0];
 
             var jsonAttributes = this.Json["attributes"];
             this.Attributes = jsonAttributes != null ? jsonAttributes.Select(v =>

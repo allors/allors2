@@ -1,7 +1,11 @@
-using Autotest.Typescript;
+// <copyright file="Directive.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
 
 namespace Autotest.Angular
 {
+    using Autotest.Typescript;
     using Newtonsoft.Json.Linq;
 
     public class Directive
@@ -11,7 +15,7 @@ namespace Autotest.Angular
         public JToken Json { get; set; }
 
         public Reference Reference { get; set; }
-        
+
         public bool IsComponent { get; set; }
 
         public string Selector { get; set; }
@@ -24,10 +28,14 @@ namespace Autotest.Angular
         {
             this.IsComponent = this.Json["isComponent"]?.Value<bool>() ?? false;
             this.Selector = this.Json["isComponent"]?.Value<string>();
-            
+
             var jsonTemplate = this.Json["template"];
             this.Template = jsonTemplate != null ? new Template(this, jsonTemplate) : null;
             this.Template?.BaseLoad();
+
+            var typeTemplate = this.Json["type"];
+            this.Type = typeTemplate != null ? new Class(this, typeTemplate) : null;
+            this.Type?.BaseLoad();
         }
     }
 }

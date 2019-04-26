@@ -1,3 +1,8 @@
+// <copyright file="Route.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Angular
 {
     using System.Linq;
@@ -6,6 +11,12 @@ namespace Autotest.Angular
 
     public class Route
     {
+        public Route(Module module, JToken jToken)
+        {
+            this.Module = module;
+            this.Json = jToken;
+        }
+
         public Module Module { get; }
 
         public JToken Json { get; }
@@ -26,12 +37,6 @@ namespace Autotest.Angular
 
         public Route[] Children { get; set; }
 
-        public Route(Module module, JToken jToken)
-        {
-            this.Module = module;
-            this.Json = jToken;
-        }
-
         public void BaseLoad()
         {
             var jsonRoutes = this.Json["routes"];
@@ -39,7 +44,7 @@ namespace Autotest.Angular
                 {
                     var route = new Route(this.Module, v)
                                     {
-                                        Parent = this
+                                        Parent = this,
                                     };
                     route.BaseLoad();
                     return route;

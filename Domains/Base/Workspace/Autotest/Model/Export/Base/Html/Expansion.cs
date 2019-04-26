@@ -1,10 +1,15 @@
+// <copyright file="Expansion.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Html
 {
     using System.Linq;
 
     using Newtonsoft.Json.Linq;
 
-    public class Expansion : Node
+    public class Expansion : INode
     {
         public Expansion(JToken json)
         {

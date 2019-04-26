@@ -1,12 +1,16 @@
+// <copyright file="ExpansionCase.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Html
 {
     using System.Linq;
 
     using Newtonsoft.Json.Linq;
 
-    public class ExpansionCase : Node
+    public class ExpansionCase : INode
     {
-     
         public ExpansionCase(JToken json)
         {
             this.Json = json;
@@ -14,7 +18,7 @@ namespace Autotest.Html
 
         public JToken Json { get; }
 
-        public Node[] Expression { get; set; }
+        public INode[] Expression { get; set; }
 
         public string Value { get; set; }
 
@@ -28,7 +32,7 @@ namespace Autotest.Html
                     var node = NodeFactory.Create(v);
                     node.BaseLoad();
                     return node;
-                }).ToArray() : new Node[0];
+                }).ToArray() : new INode[0];
         }
     }
 }

@@ -1,8 +1,13 @@
+// <copyright file="Comment.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Html
 {
     using Newtonsoft.Json.Linq;
 
-    public class Comment : Node
+    public class Comment : INode
     {
         public Comment(JToken json)
         {

@@ -1,3 +1,8 @@
+// <copyright file="Provider.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 namespace Autotest.Angular
 {
     using Newtonsoft.Json.Linq;
@@ -12,11 +17,11 @@ namespace Autotest.Angular
 
         public string TokenValue { get; set; }
 
-        public Reference UseClass{ get; set; }
+        public Reference UseClass { get; set; }
 
-        public JToken UseExisting{ get; set; }
+        public JToken UseExisting { get; set; }
 
-        public Reference UseFactory{ get; set; }
+        public Reference UseFactory { get; set; }
 
         public bool Multi { get; set; }
 
