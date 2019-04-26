@@ -1,8 +1,8 @@
 import { DirectiveSymbol } from "ngast";
-import { PathResolver } from './Helpers';
+import { PathResolver } from '../Helpers';
 
 import { Template } from './Template';
-import { Class } from './Typescript/Class';
+import { Class } from '../Typescript/Class';
 
 export class Directive {
 

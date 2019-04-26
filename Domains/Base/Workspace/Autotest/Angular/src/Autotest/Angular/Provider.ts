@@ -1,7 +1,6 @@
-import { StaticSymbol } from '@angular/compiler';
 import { ProviderSymbol } from "ngast";
-import { PathResolver } from './Helpers';
-import { Reference } from './Typescript/Reference';
+import { PathResolver } from '../Helpers';
+import { Reference } from './Reference';
 
 export class Provider {
 
@@ -21,10 +20,6 @@ export class Provider {
 
         this.tokenIdentifier = token.identifier ? Reference.fromSymbol(token.identifier.reference, pathResolver) : undefined;
         this.tokenValue = token.value;
-
-        if(metadata.useValue && metadata.useValue.separatorKeyCodes){
-            console.log(metadata.useValue);
-        }
 
         this.useClass = metadata.useClass ? Reference.fromSymbol(metadata.useClass.reference, pathResolver) : undefined;
         this.useValue = Reference.fromValue(metadata.useValue, pathResolver);

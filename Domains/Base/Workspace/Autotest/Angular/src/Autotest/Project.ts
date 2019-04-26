@@ -1,11 +1,10 @@
-import * as nodePath from 'path';
 import { ProjectSymbols} from 'ngast';
 import { PathResolver, ResourceResolver } from './Helpers';
 
-import { Module } from "./Module";
-import { Pipe } from "./Pipe";
-import { Provider } from "./Provider";
-import { Directive } from "./Directive";
+import { Module } from "./Angular/Module";
+import { Pipe } from "./Angular/Pipe";
+import { Provider } from "./Angular/Provider";
+import { Directive } from "./Angular/Directive";
 
 export class Project {
 

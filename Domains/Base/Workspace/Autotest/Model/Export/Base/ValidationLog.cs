@@ -18,7 +18,7 @@
 // </copyright>
 // <summary>Defines the ValidationReport type.</summary>
 //-------------------------------------------------------------------------------------------------
-namespace Autocomplete
+namespace Autotest
 {
     using System.Collections.Generic;
 

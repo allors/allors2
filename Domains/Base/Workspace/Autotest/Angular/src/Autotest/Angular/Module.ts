@@ -1,7 +1,7 @@
 import { ModuleSymbol } from "ngast";
 import { Route } from './Route';
-import { PathResolver } from './Helpers';
-import { Reference } from './Typescript/Reference';
+import { PathResolver } from '../Helpers';
+import { Reference } from './Reference';
 
 export class Module {
     name: string;

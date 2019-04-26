@@ -1,5 +1,5 @@
 import { PipeSymbol } from "ngast";
-import { PathResolver } from './Helpers';
+import { PathResolver } from '../Helpers';
 
 export class Pipe {
     name: string;

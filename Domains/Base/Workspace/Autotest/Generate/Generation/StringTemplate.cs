@@ -32,7 +32,7 @@ namespace Allors.Development.Repository.Generation
     using Storage;
     using System.Xml;
 
-    using Autocomplete;
+    using Autotest;
 
     public class StringTemplate
     {

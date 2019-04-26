@@ -24,7 +24,7 @@ namespace Allors.Development.Repository.Tasks
     using Allors.Development.Repository.Generation;
     using Allors.Meta;
 
-    using Autocomplete;
+    using Autotest;
 
     public static class Generate
     {
@@ -41,7 +41,8 @@ namespace Allors.Development.Repository.Tasks
                 MetaPopulation = MetaPopulation.Instance
             };
 
-            model.LoadMeta(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
+            model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
+            model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/project.json"));
             model.LoadMenu(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/menu.json"));
 
             stringTemplate.Generate(model, outputDirectoryInfo, log);

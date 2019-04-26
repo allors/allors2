@@ -1,5 +1,5 @@
-import { PathResolver } from './Helpers';
-import { Reference } from './Typescript/Reference';
+import { PathResolver } from '../Helpers';
+import { Reference } from './Reference';
 
 export class Route {
   path: string;

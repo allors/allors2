@@ -1,4 +1,6 @@
-﻿namespace Autocomplete
+﻿using Autotest.Angular;
+
+namespace Autotest
 {
     using System;
     using System.Collections.Generic;
@@ -15,21 +17,23 @@
 
         public Dictionary<Guid, MetaExtension> MetaExtensions { get; } = new Dictionary<Guid, MetaExtension>();
 
+        public Project Project { get; set; }
+        
         public Menu Menu { get; set; }
 
         public ValidationLog Validate()
         {
             return new ValidationLog();
         }
-
-        public void LoadMeta(FileInfo fileInfo)
+        
+        public void LoadMetaExtensions(FileInfo fileInfo)
         {
             using (var file = File.OpenText(fileInfo.FullName))
             using (var reader = new JsonTextReader(file))
             {
-                var jsonArray = (JArray)JToken.ReadFrom(reader);
+                var jsonMetaExtensions = (JArray)JToken.ReadFrom(reader);
 
-                foreach (var json in jsonArray)
+                foreach (var json in jsonMetaExtensions)
                 {
                     if (json["id"] != null)
                     {
@@ -50,18 +54,33 @@
             }
         }
 
+        public void LoadProject(FileInfo fileInfo)
+        {
+            using (var file = File.OpenText(fileInfo.FullName))
+            using (var reader = new JsonTextReader(file))
+            {
+                var jsonProject = (JObject)JToken.ReadFrom(reader);
+                this.Project = new Project
+                {
+                    Model = this
+                };
+
+                this.Project.Load(jsonProject);
+            }
+        }
+        
         public void LoadMenu(FileInfo fileInfo)
         {
             using (var file = File.OpenText(fileInfo.FullName))
             using (var reader = new JsonTextReader(file))
             {
-                var jsonArray = (JArray)JToken.ReadFrom(reader);
+                var jsonMenu = (JArray)JToken.ReadFrom(reader);
 
                 this.Menu = new Menu
                 {
                     Model = this
                 };
-                this.Menu.Load(jsonArray);
+                this.Menu.Load(jsonMenu);
             }
         }
     }
