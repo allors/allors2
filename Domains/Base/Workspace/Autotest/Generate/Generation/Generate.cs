@@ -42,7 +42,7 @@ namespace Allors.Development.Repository.Tasks
             };
 
             model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
-            model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/project.json"));
+            model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/dist/project.json"));
             model.LoadMenu(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/menu.json"));
 
             stringTemplate.Generate(model, outputDirectoryInfo, log);
