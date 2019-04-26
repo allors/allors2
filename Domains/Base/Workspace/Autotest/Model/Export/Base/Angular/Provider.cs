@@ -7,7 +7,7 @@ namespace Autotest.Angular
 {
     using Newtonsoft.Json.Linq;
 
-    public class Provider
+    public partial class Provider
     {
         public Project Project { get; set; }
 

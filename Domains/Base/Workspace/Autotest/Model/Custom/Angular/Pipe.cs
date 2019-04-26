@@ -5,18 +5,11 @@
 
 namespace Autotest.Angular
 {
-    using Newtonsoft.Json.Linq;
-
     public partial class Pipe
     {
-        public Project Project { get; set; }
-
-        public JToken Json { get; set; }
-
-        public Reference Reference { get; set; }
-
-        public void BaseLoad()
+        public override string ToString()
         {
+            return this.Reference.ToString();
         }
     }
 }

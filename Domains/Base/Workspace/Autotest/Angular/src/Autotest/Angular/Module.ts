@@ -2,10 +2,12 @@ import { ModuleSymbol } from "ngast";
 import { Route } from './Route';
 import { PathResolver } from '../Helpers';
 import { Reference } from './Reference';
+import { StaticSymbol } from '@angular/compiler';
 
 export class Module {
     name: string;
     path: string;
+
     bootstrapComponents: Reference[];
     declaredDirectives: Reference[];
     exportedDirectives: Reference[];
@@ -14,8 +16,10 @@ export class Module {
     importedModules: Reference[];
     exportedModules: Reference[];
 
+    entryComponents: Reference[];
+
     routes: Route[];
-    s
+
     constructor(public module: ModuleSymbol, pathResolver: PathResolver) {
 
         this.name = module.symbol.name;
@@ -32,6 +36,22 @@ export class Module {
         module.getProviders()
         const summary = this.module.getModuleSummary();
         if (summary) {
+            if (summary.entryComponents && summary.entryComponents.length) {
+                this.entryComponents = Reference.fromSymbols(summary.entryComponents.map((v) => {
+                    if (v.componentType instanceof StaticSymbol) {
+                        return v.componentType;
+                    }
+
+                    if (v.componentFactory instanceof StaticSymbol) {
+                        return v.componentFactory;
+                    }
+
+                    // TODO: find a member that is a StaticSymbol
+                    return undefined;
+
+                }).filter((v) => v), pathResolver);
+            }
+
             const routes = summary.providers.filter(v => {
                 return v.provider.token.identifier && v.provider.token.identifier.reference.name === 'ROUTES';
             });
@@ -47,7 +67,7 @@ export class Module {
 
     public toJSON(): any {
 
-        const { name, path, bootstrapComponents, declaredDirectives, exportedDirectives, exportedPipes, declaredPipes, importedModules, exportedModules, routes } = this;
+        const { name, path, bootstrapComponents, declaredDirectives, exportedDirectives, exportedPipes, declaredPipes, importedModules, exportedModules, entryComponents, routes } = this;
 
         return {
             kind: 'module',
@@ -60,6 +80,7 @@ export class Module {
             declaredPipes,
             importedModules,
             exportedModules,
+            entryComponents,
             routes,
         };
     }

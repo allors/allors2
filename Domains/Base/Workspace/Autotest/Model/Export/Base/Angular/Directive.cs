@@ -8,7 +8,7 @@ namespace Autotest.Angular
     using Autotest.Typescript;
     using Newtonsoft.Json.Linq;
 
-    public class Directive
+    public partial class Directive
     {
         public Project Project { get; set; }
 

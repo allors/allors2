@@ -9,7 +9,7 @@ namespace Autotest.Angular
     using Autotest.Html;
     using Newtonsoft.Json.Linq;
 
-    public class Template
+    public partial class Template
     {
         public Template(Directive directive, JToken json)
         {

@@ -9,7 +9,7 @@ namespace Autotest.Angular
 
     using Newtonsoft.Json.Linq;
 
-    public class Route
+    public partial class Route
     {
         public Route(Module module, JToken jToken)
         {
@@ -39,7 +39,7 @@ namespace Autotest.Angular
 
         public void BaseLoad()
         {
-            var jsonRoutes = this.Json["routes"];
+            var jsonRoutes = this.Json["children"];
             this.Children = jsonRoutes != null ? jsonRoutes.Select(v =>
                 {
                     var route = new Route(this.Module, v)
@@ -49,6 +49,15 @@ namespace Autotest.Angular
                     route.BaseLoad();
                     return route;
                 }).ToArray() : new Route[0];
+
+            this.Path = this.Json["path"]?.Value<string>();
+            this.PathMatch = this.Json["pathMatch"]?.Value<string>();
+            this.RedirectTo = this.Json["redirectTo"]?.Value<string>();
+            this.Outlet = this.Json["outlet"]?.Value<string>();
+            this.Data = this.Json["data"]?.Value<string>();
+
+            var componentId = Angular.Reference.ParseId(this.Json["component"]);
+            this.Component = componentId != null ? this.Module.Project.DirectiveById[componentId] : null;
         }
     }
 }

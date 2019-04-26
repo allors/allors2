@@ -17,6 +17,8 @@ namespace Autotest.Angular
 
         public Dictionary<string, Module> ModuleById { get; set; }
 
+        public Module MainModule { get; set; }
+
         public Pipe[] Pipes { get; set; }
 
         public Dictionary<string, Pipe> PipeById { get; set; }
@@ -99,6 +101,8 @@ namespace Autotest.Angular
             {
                 provider.BaseLoad();
             }
+
+            this.MainModule = this.Modules.First(v => v.BootstrapComponents.Length > 0);
         }
     }
 }

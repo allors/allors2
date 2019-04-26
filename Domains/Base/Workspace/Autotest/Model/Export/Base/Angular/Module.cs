@@ -9,7 +9,7 @@ namespace Autotest.Angular
 
     using Newtonsoft.Json.Linq;
 
-    public class Module
+    public partial class Module
     {
         public Project Project { get; set; }
 
@@ -31,6 +31,8 @@ namespace Autotest.Angular
 
         public Module[] ExportedModules { get; set; }
 
+        public Directive[] EntryComponents { get; set; }
+
         public Route[] Routes { get; set; }
 
         public void BaseLoad()
@@ -42,6 +44,27 @@ namespace Autotest.Angular
                     route.BaseLoad();
                     return route;
                 }).ToArray() : new Route[0];
+
+            var bootstrapComponentIds = Angular.Reference.ParseIds(this.Json["bootstrapComponents"]);
+            var declaredDirectiveIds = Angular.Reference.ParseIds(this.Json["declaredDirectives"]);
+            var exportedDirectiveIds = Angular.Reference.ParseIds(this.Json["exportedDirectives"]);
+            var exportedPipeIds = Angular.Reference.ParseIds(this.Json["exportedPipes"]);
+            var declaredPipeIds = Angular.Reference.ParseIds(this.Json["declaredPipes"]);
+            var importedModuleIds = Angular.Reference.ParseIds(this.Json["importedModules"]);
+            var exportedModuleIds = Angular.Reference.ParseIds(this.Json["exportedModules"]);
+            var entryComponentIds = Angular.Reference.ParseIds(this.Json["entryComponents"]);
+
+            this.BootstrapComponents = bootstrapComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
+            this.DeclaredDirectives = declaredDirectiveIds.Select(v => this.Project.DirectiveById[v]).ToArray();
+            this.ExportedDirectives = exportedDirectiveIds.Select(v => this.Project.DirectiveById[v]).ToArray();
+
+            this.ExportedPipes = exportedPipeIds.Select(v => this.Project.PipeById[v]).ToArray();
+            this.DeclaredPipes = declaredPipeIds.Select(v => this.Project.PipeById[v]).ToArray();
+
+            this.ImportedModules = importedModuleIds.Select(v => this.Project.ModuleById[v]).ToArray();
+            this.ExportedModules = exportedModuleIds.Select(v => this.Project.ModuleById[v]).ToArray();
+
+            this.EntryComponents = entryComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
         }
     }
 }

@@ -5,9 +5,11 @@
 
 namespace Autotest.Angular
 {
+    using System;
+    using System.Linq;
     using Newtonsoft.Json.Linq;
 
-    public class Reference
+    public partial class Reference
     {
         public Reference(JToken json)
         {
@@ -22,5 +24,15 @@ namespace Autotest.Angular
         public string Name { get; }
 
         public string Path { get; }
+
+        internal static string ParseId(JToken json)
+        {
+            return json != null ? new Reference(json).Id : null;
+        }
+
+        internal static string[] ParseIds(JToken json)
+        {
+            return json != null ? json.Select(v => new Reference(v).Id).ToArray() : new string[0];
+        }
     }
 }
