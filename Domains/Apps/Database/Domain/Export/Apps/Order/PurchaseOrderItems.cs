@@ -32,8 +32,8 @@ namespace Allors.Domain
 
             var created = new PurchaseOrderItemStates(this.Session).Created;
             var inProcess = new PurchaseOrderItemStates(this.Session).InProcess;
-            var partiallyReceived = new PurchaseOrderItemStates(this.Session).PartiallyReceived;
-            var received = new PurchaseOrderItemStates(this.Session).Received;
+            var partiallyReceived = new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived;
+            var received = new PurchaseOrderItemShipmentStates(this.Session).Received;
             var cancelled = new PurchaseOrderItemStates(this.Session).Cancelled;
             var rejected = new PurchaseOrderItemStates(this.Session).Rejected;
             var completed = new PurchaseOrderItemStates(this.Session).Completed;

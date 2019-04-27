@@ -346,7 +346,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
@@ -462,6 +462,44 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenOrderItem_WhenObjectShipmentStateIsReceived_ThenReceiveIsNotAllowed()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            this.order.Confirm();
+
+            this.Session.Derive();
+
+            this.order.QuickReceive();
+
+            this.Session.Derive();
+
+            Assert.True(item.PurchaseOrderItemShipmentState.IsReceived);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.QuickReceive));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));
+        }
+
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
@@ -534,7 +572,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanWrite(M.PurchaseOrderItem.Part));
         }

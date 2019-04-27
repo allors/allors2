@@ -522,7 +522,6 @@ namespace Allors.Domain
             }
             #endregion
 
-
             // TODO: Move to versioning
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;

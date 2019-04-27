@@ -72,6 +72,26 @@ namespace Allors.Repository
         public PurchaseOrderState PurchaseOrderState { get; set; }
 
         #region Allors
+        [Id("C14D2C09-056E-4D36-B0CB-5F5471C28CA1")]
+        [AssociationId("223428A0-6A20-4D3F-A3AA-8490E325330A")]
+        [RoleId("FEC45864-A3A4-41CD-B8BB-F603AE6F3732")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public PurchaseOrderShipmentState PurchaseOrderShipmentState { get; set; }
+
+        #region Allors
+        [Id("EABEB07B-871B-4FCC-A38C-51CBAEBD4F35")]
+        [AssociationId("925F905A-CFE4-4272-A4E0-31BD3BE3D2E9")]
+        [RoleId("9EE86C5B-43E5-45E1-9453-BF3FD548771C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public PurchaseOrderPaymentState PurchaseOrderPaymentState { get; set; }
+
+        #region Allors
         [Id("CAE880EC-B266-4CB2-9FD4-2A0F8B0ACBF8")]
         [AssociationId("A1AB9BBA-921A-4CA7-B1A0-A3500BBF769C")]
         [RoleId("5E33CAE0-4522-4A44-8085-3353E0BABB21")]

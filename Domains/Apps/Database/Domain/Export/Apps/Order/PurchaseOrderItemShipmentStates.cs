@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseOrderShipmentStates.cs" company="Allors bvba">
+// <copyright file="PurchaseOrderItemShipmentStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,38 +17,37 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class PurchaseOrderShipmentStates
+    public partial class PurchaseOrderItemShipmentStates
     {
-        public static readonly Guid NotReceivedId = new Guid("32267C1E-FB87-43E5-B2D8-6477FA1CA4C8");
-        public static readonly Guid PartiallyReceivedId = new Guid("77ED251D-B004-41e7-B0C4-9769CF7AE73E");
-        public static readonly Guid ReceivedId = new Guid("BCCB68CE-A517-44c6-ADDA-DBEB0464D575");
+        internal static readonly Guid NotReceivedId = new Guid("CF26D4F9-E8AF-4A1D-9841-73B8C5266117");
+        internal static readonly Guid PartiallyReceivedId = new Guid("C142144A-8CAE-4D2B-A56B-94BAF236227A");
+        internal static readonly Guid ReceivedId = new Guid("AD66619F-BB48-42AF-B019-3E4028AD7B6B");
 
-        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> stateCache;
+        
+        public PurchaseOrderItemShipmentState NotReceived => this.StateCache[NotReceivedId];
 
-        public PurchaseOrderShipmentState NotReceived => this.StateCache[NotReceivedId];
+        public PurchaseOrderItemShipmentState PartiallyReceived => this.StateCache[PartiallyReceivedId];
 
-        public PurchaseOrderShipmentState PartiallyReceived => this.StateCache[PartiallyReceivedId];
+        public PurchaseOrderItemShipmentState Received => this.StateCache[ReceivedId];
 
-        public PurchaseOrderShipmentState Received => this.StateCache[ReceivedId];
-
-
-        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
 
-            new PurchaseOrderShipmentStateBuilder(this.Session)
+            new PurchaseOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(NotReceivedId)
                 .WithName("Not Received")
                 .Build();
 
-            new PurchaseOrderShipmentStateBuilder(this.Session)
+            new PurchaseOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(PartiallyReceivedId)
                 .WithName("Partially Received")
                 .Build();
 
-            new PurchaseOrderShipmentStateBuilder(this.Session)
+            new PurchaseOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(ReceivedId)
                 .WithName("Received")
                 .Build();

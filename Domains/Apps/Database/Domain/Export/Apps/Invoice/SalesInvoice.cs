@@ -229,10 +229,9 @@ namespace Allors.Domain
 
                 foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
                 {
-                    var salesOrder = orderItemBilling.OrderItem.SalesOrderWhereSalesOrderItem;
-                    if (!this.SalesOrders.Contains(salesOrder))
+                    if (orderItemBilling.OrderItem is SalesOrderItem salesOrderItem && !this.SalesOrders.Contains(salesOrderItem.SalesOrderWhereSalesOrderItem))
                     {
-                        this.AddSalesOrder(salesOrder);
+                        this.AddSalesOrder(salesOrderItem.SalesOrderWhereSalesOrderItem);
                     }
                 }
 

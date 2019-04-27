@@ -19,19 +19,15 @@ namespace Allors.Domain
 
     public partial class PurchaseOrderItemStates
     {
-        private static readonly Guid CreatedId = new Guid("57273ADE-A813-40ba-B319-EF8D62AC92B6");
-        private static readonly Guid AwaitingApprovalId = new Guid("BB3F365A-BC0D-44ff-9682-0D9FF910C637");
-        private static readonly Guid CancelledId = new Guid("7342A3E6-69E4-49a7-9C2E-93574BF14072");
-        private static readonly Guid CancelledByOrderId = new Guid("23F051B3-1A9A-4B0A-B6A5-24CB8EBE6248");
-        private static readonly Guid PartiallyReceivedId = new Guid("C4E6F011-3484-4773-8FFF-FE24EF6C231A");
-        private static readonly Guid ReceivedId = new Guid("B2AD8B85-2C31-48fc-9963-9074C764CC7B");
-        private static readonly Guid CompletedId = new Guid("9B338149-43EA-4091-BBD8-C3485337FBC5");
-        private static readonly Guid PaidId = new Guid("97B335DD-AB2C-4b6d-8282-B5E3DE6490BE");
-        private static readonly Guid PartiallyPaidId = new Guid("3AF95B46-77DF-4c65-8693-B1E23B8F1A20");
-        private static readonly Guid RejectedId = new Guid("0CD96679-4699-42de-9AB6-C4DA197F907D");
-        private static readonly Guid OnHoldId = new Guid("BEB5870C-0542-42fa-B2FC-5D2BD21673B7");
-        private static readonly Guid InProcessId = new Guid("9CD110AE-7787-469f-9A3E-F0000E35E588");
-        private static readonly Guid FinishedId = new Guid("4166228F-0ECC-444b-A45E-43794184DBB9");
+        public static readonly Guid CreatedId = new Guid("57273ADE-A813-40ba-B319-EF8D62AC92B6");
+        public static readonly Guid AwaitingApprovalId = new Guid("BB3F365A-BC0D-44ff-9682-0D9FF910C637");
+        public static readonly Guid CancelledId = new Guid("7342A3E6-69E4-49a7-9C2E-93574BF14072");
+        public static readonly Guid CancelledByOrderId = new Guid("23F051B3-1A9A-4B0A-B6A5-24CB8EBE6248");
+        public static readonly Guid CompletedId = new Guid("9B338149-43EA-4091-BBD8-C3485337FBC5");
+        public static readonly Guid RejectedId = new Guid("0CD96679-4699-42de-9AB6-C4DA197F907D");
+        public static readonly Guid OnHoldId = new Guid("BEB5870C-0542-42fa-B2FC-5D2BD21673B7");
+        public static readonly Guid InProcessId = new Guid("9CD110AE-7787-469f-9A3E-F0000E35E588");
+        public static readonly Guid FinishedId = new Guid("4166228F-0ECC-444b-A45E-43794184DBB9");
 
         private UniquelyIdentifiableSticky<PurchaseOrderItemState> stateCache;
 
@@ -44,14 +40,6 @@ namespace Allors.Domain
         public PurchaseOrderItemState CancelledByOrder => this.StateCache[CancelledByOrderId];
 
         public PurchaseOrderItemState Completed => this.StateCache[CompletedId];
-
-        public PurchaseOrderItemState Paid => this.StateCache[PaidId];
-
-        public PurchaseOrderItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
-
-        public PurchaseOrderItemState PartiallyReceived => this.StateCache[PartiallyReceivedId];
-
-        public PurchaseOrderItemState Received => this.StateCache[ReceivedId];
 
         public PurchaseOrderItemState Rejected => this.StateCache[RejectedId];
 
@@ -90,26 +78,6 @@ namespace Allors.Domain
             new PurchaseOrderItemStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(PartiallyReceivedId)
-                .WithName("Partially Received")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(ReceivedId)
-                .WithName("Received")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
                 .Build();
 
             new PurchaseOrderItemStateBuilder(this.Session)
