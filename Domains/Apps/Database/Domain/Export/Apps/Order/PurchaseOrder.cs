@@ -276,6 +276,11 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
+
+            if (this.PurchaseOrderShipmentState.IsReceived)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuickReceive, Operations.Execute));
+            }
         }
 
         private void DeriveWorkflow()

@@ -283,6 +283,7 @@ namespace Allors.Repository
 
         #region Allors
         [Id("10FCCE86-96CC-440F-903A-2BB909373DC0")]
+        [Workspace]
         #endregion
         public void QuickReceive() { }
     }

@@ -200,6 +200,14 @@ namespace Allors.Domain
             #endregion
         }
 
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (this.PurchaseOrderItemShipmentState.IsReceived)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuickReceive, Operations.Execute));
+            }
+        }
+
         public void AppsDeriveVatRegime(IDerivation derivation)
         {
             this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
