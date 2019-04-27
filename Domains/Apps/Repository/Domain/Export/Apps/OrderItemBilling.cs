@@ -20,7 +20,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public SalesOrderItem OrderItem { get; set; }
+        public OrderItem OrderItem { get; set; }
 
         #region Allors
         [Id("23a0d52d-3ec7-4ddf-a300-c0ee46edf41a")]

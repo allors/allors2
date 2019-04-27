@@ -19,11 +19,14 @@ namespace Allors.Domain
 
     public partial class PurchaseOrderPaymentStates
     {
-        private static readonly Guid PaidId = new Guid("4BCF3FA8-5B30-482b-A762-2BF43721E045");
-        private static readonly Guid PartiallyPaidId = new Guid("CB502944-27D9-4aad-9DAC-5D1F5A344D08");
+        public static readonly Guid NotPaidId = new Guid("3DCF7D7D-4CD1-4D68-A909-7BEB672A2179");
+        public static readonly Guid PaidId = new Guid("4BCF3FA8-5B30-482b-A762-2BF43721E045");
+        public static readonly Guid PartiallyPaidId = new Guid("CB502944-27D9-4aad-9DAC-5D1F5A344D08");
 
         private UniquelyIdentifiableSticky<PurchaseOrderPaymentState> stateCache;
-        
+
+        public PurchaseOrderPaymentState NotPaid => this.StateCache[NotPaidId];
+
         public PurchaseOrderPaymentState Paid => this.StateCache[PaidId];
 
         public PurchaseOrderPaymentState PartiallyPaid => this.StateCache[PartiallyPaidId];
@@ -34,6 +37,11 @@ namespace Allors.Domain
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
+
+            new PurchaseOrderPaymentStateBuilder(this.Session)
+                .WithUniqueId(NotPaidId)
+                .WithName("Not Paid")
+                .Build();
 
             new PurchaseOrderPaymentStateBuilder(this.Session)
                 .WithUniqueId(PaidId)

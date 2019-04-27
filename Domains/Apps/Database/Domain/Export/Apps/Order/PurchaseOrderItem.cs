@@ -24,12 +24,16 @@ namespace Allors.Domain
 
     public partial class PurchaseOrderItem
     {
+        #region Transitional
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.PurchaseOrderItem, M.PurchaseOrderItem.PurchaseOrderItemState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+        #endregion
+
+        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
         public string SupplierReference
         {
@@ -84,16 +88,21 @@ namespace Allors.Domain
             this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
         }
 
-        public void AppsComplete(PurchaseOrderItemComplete method)
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Completed;
-        }
-
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistPurchaseOrderItemState)
             {
                 this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
+            }
+
+            if (!this.ExistPurchaseOrderItemShipmentState)
+            {
+                this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
+            }
+
+            if (!this.ExistPurchaseOrderItemPaymentState)
+            {
+                this.PurchaseOrderItemPaymentState = new PurchaseOrderItemPaymentStates(this.Strategy.Session).NotPaid;
             }
         }
 
@@ -114,67 +123,65 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            
+
             this.AppsDeriveVatRegime(derivation);
 
-            this.AppsOnDeriveIsValidOrderItem(derivation);
+            #region States
+            var purchaseOrderItemShipmentStates = new PurchaseOrderItemShipmentStates(derivation.Session);
+            var purchaseOrderItemPaymentStates = new PurchaseOrderItemPaymentStates(derivation.Session);
+            var purchaseOrderItemStates = new PurchaseOrderItemStates(derivation.Session);
 
-            this.AppsOnDeriveCurrentObjectState(derivation);
-        }
-        
-        public void AppsDeriveVatRegime(IDerivation derivation)
-        {
-            this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
-            this.VatRate = this.VatRegime?.VatRate;
-        }
-
-        public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
-        {
-            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
+            if (this.IsValid)
             {
-                this.PurchaseOrderWherePurchaseOrderItem.RemoveValidOrderItem(this);
-
-                if (!this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled)
-                    && !this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
+                // ShipmentState
+                var quantityReceived = 0M;
+                foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereOrderItem)
                 {
-                    this.PurchaseOrderWherePurchaseOrderItem.AddValidOrderItem(this);
+                    quantityReceived += shipmentReceipt.QuantityAccepted;
                 }
-            }
-        }
 
-        public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            var order = this.PurchaseOrderWherePurchaseOrderItem;
+                this.QuantityReceived = quantityReceived;
 
-            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled))
-            {
-                this.Cancel();
-            }
-
-            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).InProcess))
-            {
-                if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Created))
+                if (this.QuantityReceived == 0)
                 {
-                    this.Confirm();
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
                 }
-            }
-
-            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created))
-            {
-                if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder))
+                else
                 {
-                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
+                    this.PurchaseOrderItemShipmentState = this.QuantityReceived < this.QuantityOrdered ?
+                        purchaseOrderItemShipmentStates.PartiallyReceived:
+                        purchaseOrderItemShipmentStates.Received;
                 }
-            }
 
-            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Completed))
-            {
-                this.Complete();
-            }
+                // PaymentState
+                var orderBilling = this.OrderItemBillingsWhereOrderItem.Select(v => v.InvoiceItem).OfType<SalesInvoiceItem>().ToArray();
 
-            if (order.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Finished))
-            {
-                this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Finished;
+                if (orderBilling.Any())
+                {
+                    if (orderBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    {
+                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.Paid;
+                    }
+                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    {
+                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.NotPaid;
+                    }
+                    else
+                    {
+                        this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.PartiallyPaid;
+                    }
+                }
+
+                // PurchaseOrderItem States
+                if (this.PurchaseOrderItemShipmentState.IsReceived)
+                {
+                    this.PurchaseOrderItemState = purchaseOrderItemStates.Completed;
+                }
+
+                if (this.PurchaseOrderItemState.IsCompleted && this.PurchaseOrderItemPaymentState.IsPaid)
+                {
+                    this.PurchaseOrderItemState = purchaseOrderItemStates.Finished;
+                }
             }
 
             if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
@@ -189,6 +196,14 @@ namespace Allors.Domain
             {
                 this.AppsOnDeriveQuantities(derivation);
             }
+
+            #endregion
+        }
+
+        public void AppsDeriveVatRegime(IDerivation derivation)
+        {
+            this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
+            this.VatRate = this.VatRegime?.VatRate;
         }
 
         public void AppsOnDeriveDeliveryDate(IDerivation derivation)
@@ -200,7 +215,7 @@ namespace Allors.Domain
             else if (this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.HasValue)
             {
                 this.DeliveryDate = this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
-            }            
+            }
         }
 
         public void AppsOnDerivePrices()
@@ -228,35 +243,6 @@ namespace Allors.Domain
             this.TotalVat = this.UnitVat * this.QuantityOrdered;
             this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
-        }
-
-        public void AppsOnDeriveCurrentShipmentStatus(IDerivation derivation)
-        {
-            var quantityReceived = 0M;
-            foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereOrderItem)
-            {
-                quantityReceived += shipmentReceipt.QuantityAccepted;
-            }
-
-            this.QuantityReceived = quantityReceived;
-
-            if (quantityReceived > 0)
-            {
-                if (quantityReceived < this.QuantityOrdered)
-                {
-                   this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).PartiallyReceived;
-                }
-                else
-                {
-                    this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Completed;
-                }
-            }
-
-            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
-            {
-                var purchaseOrder = (PurchaseOrder)this.PurchaseOrderWherePurchaseOrderItem;
-                purchaseOrder.AppsOnDerivePurchaseOrderState(derivation);
-            }
         }
 
         public void AppsOnDeriveQuantities(IDerivation derivation)

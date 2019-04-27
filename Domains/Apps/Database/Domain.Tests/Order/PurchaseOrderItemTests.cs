@@ -346,7 +346,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
@@ -534,7 +534,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanWrite(M.PurchaseOrderItem.Part));
         }
