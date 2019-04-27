@@ -10,7 +10,7 @@ namespace Angular.Material
     using OpenQA.Selenium.Support.PageObjects;
 
     public class MaterialAutocomplete
-    : Component
+    : Directive
     {
         public MaterialAutocomplete(IWebDriver driver, RoleType roleType)
         : base(driver)
@@ -37,7 +37,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialAutocomplete<T> : MaterialAutocomplete where T : Page
+    public class MaterialAutocomplete<T> : MaterialAutocomplete where T : Component
     {
         public MaterialAutocomplete(T page, RoleType roleType)
             : base(page.Driver, roleType)

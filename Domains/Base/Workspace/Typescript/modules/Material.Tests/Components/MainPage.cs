@@ -6,7 +6,7 @@ namespace Pages
 
     using Angular;
 
-    public abstract class MainPage : Page
+    public abstract class MainPage : Component
     {
         protected MainPage(IWebDriver driver) : base(driver)
         {

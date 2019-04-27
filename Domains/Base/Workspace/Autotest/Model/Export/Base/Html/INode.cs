@@ -7,6 +7,8 @@ namespace Autotest.Html
 {
     public interface INode
     {
+        INode Parent { get; set; }
+
         void BaseLoad();
     }
 }

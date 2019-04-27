@@ -21,7 +21,11 @@ namespace Autotest.Angular
 
         public string Id { get; }
 
+        public bool IsLocal => !this.Path.Contains("node_modules/");
+
         public string Name { get; }
+
+        public string Namespace => this.Path?.Substring(0, this.Path.LastIndexOf("/")).Replace("/", ".");
 
         public string Path { get; }
 

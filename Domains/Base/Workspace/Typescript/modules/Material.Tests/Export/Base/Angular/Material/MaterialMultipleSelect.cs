@@ -8,7 +8,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialMultipleSelect : Component
+    public class MaterialMultipleSelect : Directive
     {
         public MaterialMultipleSelect(IWebDriver driver, RoleType roleType) : base(driver)
         {
@@ -52,7 +52,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialMultipleSelect<T> : MaterialMultipleSelect where T : Page
+    public class MaterialMultipleSelect<T> : MaterialMultipleSelect where T : Component
     {
         public MaterialMultipleSelect(T page, RoleType roleType)
             : base(page.Driver, roleType)

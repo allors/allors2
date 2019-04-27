@@ -6,7 +6,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialTableRow : Component
+    public class MaterialTableRow : Directive
     {
         public MaterialTableRow(IWebDriver driver, IWebElement element)
         : base(driver)
@@ -33,7 +33,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialTableRow<T> : MaterialTableRow where T : Page
+    public class MaterialTableRow<T> : MaterialTableRow where T : Component
     {
         public MaterialTableRow(T page, IWebElement element)
             : base(page.Driver, element)

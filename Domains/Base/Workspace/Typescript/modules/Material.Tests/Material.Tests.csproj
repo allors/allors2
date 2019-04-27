@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -41,6 +41,10 @@
     <ProjectReference Include="..\..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\..\Database\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\..\Database\Services\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="generated\" />
   </ItemGroup>
 
 </Project>

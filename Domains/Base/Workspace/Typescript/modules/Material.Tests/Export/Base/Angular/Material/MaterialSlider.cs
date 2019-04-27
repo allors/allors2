@@ -10,7 +10,7 @@ namespace Angular.Material
     using OpenQA.Selenium.Interactions;
 
     public class MaterialSlider
-    : Component
+    : Directive
     {
         public MaterialSlider(IWebDriver driver, RoleType roleType)
         : base(driver)
@@ -36,7 +36,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialSlider<T> : MaterialSlider where T : Page
+    public class MaterialSlider<T> : MaterialSlider where T : Component
     {
         public MaterialSlider(T page, RoleType roleType)
             : base(page.Driver, roleType)

@@ -6,7 +6,7 @@ namespace Tests
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public partial class Sidenav : Page
+    public partial class Sidenav : Component
     {
         public Sidenav(IWebDriver driver)
         : base(driver)

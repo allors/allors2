@@ -4,7 +4,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Anchor : Component
+    public class Anchor : Directive
     {
         public Anchor(IWebDriver driver, By selector)
         : base(driver)
@@ -26,7 +26,7 @@ namespace Angular.Html
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class Anchor<T> : Anchor where T : Page
+    public class Anchor<T> : Anchor where T : Component
     {
         public Anchor(T page, By selector)
             : base(page.Driver, selector)

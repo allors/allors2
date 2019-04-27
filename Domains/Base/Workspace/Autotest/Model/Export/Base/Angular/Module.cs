@@ -5,33 +5,39 @@
 
 namespace Autotest.Angular
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
-
+    using Autotest.Html;
     using Newtonsoft.Json.Linq;
 
     public partial class Module
     {
-        public Project Project { get; set; }
-
-        public JToken Json { get; set; }
-
-        public Reference Reference { get; set; }
-
         public Directive[] BootstrapComponents { get; set; }
 
         public Directive[] DeclaredDirectives { get; set; }
 
-        public Directive[] ExportedDirectives { get; set; }
-
-        public Pipe[] ExportedPipes { get; set; }
+        public Directive[] DeclaredEntryComponents { get; set; }
 
         public Pipe[] DeclaredPipes { get; set; }
 
-        public Module[] ImportedModules { get; set; }
+        public Directive[] EntryComponents { get; set; }
+
+        public Directive[] ExportedDirectives { get; set; }
 
         public Module[] ExportedModules { get; set; }
 
-        public Directive[] EntryComponents { get; set; }
+        public Pipe[] ExportedPipes { get; set; }
+
+        public Module[] ImportedModules { get; set; }
+
+        public JToken Json { get; set; }
+
+        public Project Project { get; set; }
+
+        public Reference Reference { get; set; }
+
+        public Directive[] RoutedComponents { get; set; }
 
         public Route[] Routes { get; set; }
 
@@ -65,6 +71,26 @@ namespace Autotest.Angular
             this.ExportedModules = exportedModuleIds.Select(v => this.Project.ModuleById[v]).ToArray();
 
             this.EntryComponents = entryComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
+
+            var flattenedRoutes = this.Routes.SelectMany(v => v.Flattened).ToArray();
+            this.RoutedComponents = flattenedRoutes.Where(v => v.Component != null).Select(v => v.Component).Distinct().ToArray();
+            this.DeclaredEntryComponents = this.EntryComponents.Except(this.RoutedComponents).Except(this.BootstrapComponents).ToArray();
+        }
+
+        public Directive LookupComponent(Element element)
+        {
+            var declaredDirectives = this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.DeclaredDirectives));
+
+            var names = new[] { element.Name }.Concat(element.Attributes.Select(v => v.Name));
+            var component = declaredDirectives.FirstOrDefault(v => names.Contains(v.Selector) || names.Contains(v.ExportAs));
+
+            if (component == null)
+            {
+                var attributeNames = element.Attributes.Select(v => $"{element}[{v.Name}]");
+                component = declaredDirectives.FirstOrDefault(v => attributeNames.Any(w => v.Selector?.Contains(w) ?? false));
+            }
+
+            return component;
         }
     }
 }

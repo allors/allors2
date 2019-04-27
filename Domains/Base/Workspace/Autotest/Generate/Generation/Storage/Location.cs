@@ -1,19 +1,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Location.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
-// 
+//
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
-// 
+//
 // The LGPL License is included in the file lgpl.txt.
 // The Allors License is an addendum to your contract.
-// 
+//
 // Allors Platform is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -22,6 +22,7 @@ namespace Allors.Development.Repository.Storage
 {
     using System;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Threading;
 
     public class Location
@@ -48,6 +49,8 @@ namespace Allors.Development.Repository.Storage
 
         private static void Save(FileInfo fileInfo, string fileContents)
         {
+            Exception exception = null;
+
             for (var i = 0; i < RetryCount; i++)
             {
                 try
@@ -56,14 +59,15 @@ namespace Allors.Development.Repository.Storage
                     fileInfo.CreationTime = DateTime.UtcNow;
                     return;
                 }
-                catch
+                catch (Exception e)
                 {
+                    exception = e;
                     Thread.Sleep(100 * i);
                     fileInfo.Refresh();
                 }
             }
 
-            throw new Exception("Could not save " + fileInfo.FullName);
+            throw exception;
         }
     }
 }

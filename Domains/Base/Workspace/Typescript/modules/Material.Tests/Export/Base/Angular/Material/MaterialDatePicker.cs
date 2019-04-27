@@ -11,7 +11,7 @@ namespace Angular.Material
     using OpenQA.Selenium.Support.PageObjects;
 
     public class MaterialDatePicker
-    : Component
+    : Directive
     {
         public MaterialDatePicker(IWebDriver driver, RoleType roleType)
         : base(driver)
@@ -60,7 +60,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialDatePicker<T> : MaterialDatePicker where T : Page
+    public class MaterialDatePicker<T> : MaterialDatePicker where T : Component
     {
         public MaterialDatePicker(T page, RoleType roleType)
             : base(page.Driver, roleType)

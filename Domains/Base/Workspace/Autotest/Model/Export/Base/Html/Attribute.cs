@@ -7,16 +7,19 @@ namespace Autotest.Html
 {
     using Newtonsoft.Json.Linq;
 
-    public class Attribute : INode
+    public partial class Attribute : INode
     {
-        public Attribute(JToken json)
+        public Attribute(JToken json, INode parent)
         {
             this.Json = json;
+            this.Parent = parent;
         }
 
         public JToken Json { get; }
 
         public string Name { get; set; }
+
+        public INode Parent { get; set; }
 
         public string Value { get; set; }
 

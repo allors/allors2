@@ -9,18 +9,21 @@ namespace Autotest.Html
 
     using Newtonsoft.Json.Linq;
 
-    public class Expansion : INode
+    public partial class Expansion : INode
     {
-        public Expansion(JToken json)
+        public Expansion(JToken json, INode parent)
         {
             this.Json = json;
+            this.Parent = parent;
         }
+
+        public ExpansionCase[] ExpansionCases { get; set; }
 
         public JToken Json { get; }
 
-        public string SwitchValue { get; set; }
+        public INode Parent { get; set; }
 
-        public ExpansionCase[] ExpansionCases { get; set; }
+        public string SwitchValue { get; set; }
 
         public void BaseLoad()
         {
@@ -29,7 +32,7 @@ namespace Autotest.Html
             var jsonExpansionCases = this.Json["expansionCases"];
             this.ExpansionCases = jsonExpansionCases != null ? jsonExpansionCases.Select(v =>
                 {
-                    var expansionCase = new ExpansionCase(v);
+                    var expansionCase = new ExpansionCase(v, this);
                     expansionCase.BaseLoad();
                     return expansionCase;
                 }).ToArray() : new ExpansionCase[0];

@@ -4,7 +4,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Input : Component
+    public class Input : Directive
     {
         public Input(IWebDriver driver, By selector = null, string formControlName = null)
             : base(driver)
@@ -43,7 +43,7 @@ namespace Angular.Html
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class Input<T> : Input where T : Page
+    public class Input<T> : Input where T : Component
     {
         public Input(T page, By selector = null, string formControlName = null)
             : base(page.Driver, selector, formControlName)

@@ -6,7 +6,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialListItem : Component
+    public class MaterialListItem : Directive
     {
         public MaterialListItem(IWebDriver driver, IWebElement element)
         : base(driver)
@@ -24,7 +24,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialListItem<T> : MaterialListItem where T : Page
+    public class MaterialListItem<T> : MaterialListItem where T : Component
     {
         public MaterialListItem(T page, IWebElement element)
             : base(page.Driver, element)

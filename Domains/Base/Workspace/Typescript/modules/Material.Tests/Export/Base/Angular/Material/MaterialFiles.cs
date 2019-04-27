@@ -10,7 +10,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialFiles : Component
+    public class MaterialFiles : Directive
     {
         public MaterialFiles(IWebDriver driver, RoleType roleType)
             : base(driver)
@@ -42,7 +42,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FilesMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialFiles<T> : MaterialFiles where T : Page
+    public class MaterialFiles<T> : MaterialFiles where T : Component
     {
         public MaterialFiles(T page, RoleType roleType)
             : base(page.Driver, roleType)

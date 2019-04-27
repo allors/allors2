@@ -1,19 +1,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="StringTemplate.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
-// 
+//
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
-// 
+//
 // The LGPL License is included in the file lgpl.txt.
 // The Allors License is an addendum to your contract.
-// 
+//
 // Allors Platform is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // <summary>
@@ -36,18 +36,17 @@ namespace Allors.Development.Repository.Generation
 
     public class StringTemplate
     {
+        private const string DirectiveKey = "directive";
+        private const string GenerationKey = "generation";
+        private const string InputKey = "input";
+        private const string MenuKey = "menu";
+        private const string ModelKey = "model";
+        private const string OutputKey = "output";
+        private const string TemplateConfiguration = "TemplateConfiguration";
         private const string TemplateId = "TemplateId";
+        private const string TemplateKey = "template";
         private const string TemplateName = "TemplateName";
         private const string TemplateVersion = "TemplateVersion";
-        private const string TemplateConfiguration = "TemplateConfiguration";
-
-        private const string TemplateKey = "template";
-        private const string ModelKey = "model";
-        private const string InputKey = "input";
-        private const string OutputKey = "output";
-        private const string GenerationKey = "generation";
-        private const string MenuKey = "menu";
-
         private readonly FileInfo fileInfo;
 
         internal StringTemplate(FileInfo fileInfo)
@@ -126,6 +125,17 @@ namespace Allors.Development.Repository.Generation
                             case MenuKey:
                                 template.Add(MenuKey, model.Menu);
                                 break;
+
+                            default:
+
+                                var project = model.Project;
+
+                                if (project.DirectiveById.TryGetValue(input, out var directive))
+                                {
+                                    template.Add(DirectiveKey, directive);
+                                }
+
+                                break;
                         }
                     }
 
@@ -159,7 +169,7 @@ namespace Allors.Development.Repository.Generation
                 this.log.Error(msg, msg.ToString());
             }
 
-            public void RuntimeError(TemplateMessage msg)
+            public void InternalError(TemplateMessage msg)
             {
                 this.log.Error(msg, msg.ToString());
             }
@@ -169,7 +179,7 @@ namespace Allors.Development.Repository.Generation
                 this.log.Error(msg, msg.ToString());
             }
 
-            public void InternalError(TemplateMessage msg)
+            public void RuntimeError(TemplateMessage msg)
             {
                 this.log.Error(msg, msg.ToString());
             }

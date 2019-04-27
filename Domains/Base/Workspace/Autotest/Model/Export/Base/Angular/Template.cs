@@ -19,11 +19,13 @@ namespace Autotest.Angular
 
         public Directive Directive { get; }
 
+        public Element[] Elements { get; set; }
+
+        public INode[] Html { get; set; }
+
         public JToken Json { get; }
 
-        private string Url { get; set; }
-
-        private INode[] Html { get; set; }
+        public string Url { get; set; }
 
         public void BaseLoad()
         {
@@ -32,10 +34,12 @@ namespace Autotest.Angular
             var jsonHtml = this.Json["html"];
             this.Html = jsonHtml != null ? jsonHtml.Select(v =>
                 {
-                    var node = NodeFactory.Create(v);
+                    var node = NodeFactory.Create(v, null);
                     node.BaseLoad();
                     return node;
                 }).ToArray() : new INode[0];
+
+            this.Elements = this.Html.OfType<Element>().SelectMany(v => v.Flattened).ToArray();
         }
     }
 }

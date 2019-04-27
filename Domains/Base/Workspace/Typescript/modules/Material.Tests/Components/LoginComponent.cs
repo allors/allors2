@@ -1,16 +1,13 @@
-namespace Pages
+namespace src.app.auth
 {
     using OpenQA.Selenium;
 
     using Angular;
     using Angular.Html;
+    using Pages;
 
-    public class LoginPage : Page
+    public partial class LoginComponent
     {
-        public LoginPage(IWebDriver driver) : base(driver)
-        {
-        }
-
         public Input UserName => new Input(this.Driver, formControlName: "userName");
 
         public Button Button => new Button(this.Driver, By.CssSelector("button"));

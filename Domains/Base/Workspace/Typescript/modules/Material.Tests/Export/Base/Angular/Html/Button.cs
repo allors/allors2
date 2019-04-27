@@ -4,7 +4,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Button : Component
+    public class Button : Directive
     {
         public Button(IWebDriver driver, By selector)
         : base(driver)
@@ -24,7 +24,7 @@ namespace Angular.Html
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class Button<T> : Button where T : Page
+    public class Button<T> : Button where T : Component
     {
         public Button(T page, By selector)
             : base(page.Driver, selector)

@@ -3,7 +3,7 @@
   <Class Name="Autotest.Html.Attribute" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\Attribute.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -11,7 +11,7 @@
   <Class Name="Autotest.Html.Comment" BaseTypeListCollapsed="true">
     <Position X="7.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\Comment.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -19,30 +19,30 @@
   <Class Name="Autotest.Html.Element" BaseTypeListCollapsed="true">
     <Position X="3.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAQQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAQQAAAAAAAAAAAAAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\Element.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Children" />
       <Property Name="Attributes" />
+      <Property Name="Children" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Autotest.Html.Expansion" BaseTypeListCollapsed="true">
     <Position X="9.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\Expansion.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Cases" />
+      <Property Name="ExpansionCases" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Autotest.Html.ExpansionCase" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="12.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAgAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\ExpansionCase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -50,16 +50,16 @@
   <Class Name="Autotest.Html.Text" BaseTypeListCollapsed="true">
     <Position X="5.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Export\Base\Html\Text.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Interface Name="Autotest.Html.Node" Collapsed="true">
-    <Position X="7" Y="1" Width="1.5" />
+  <Interface Name="Autotest.Html.INode">
+    <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Export\Base\Html\Node.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Export\Base\Html\INode.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

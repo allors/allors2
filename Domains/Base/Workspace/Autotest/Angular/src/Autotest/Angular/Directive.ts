@@ -10,6 +10,7 @@ export class Directive {
     path: string;
     isComponent: boolean;
     selector: string;
+    exportAs: string;
     template: Template;
     type: Class;
 
@@ -23,6 +24,7 @@ export class Directive {
 
         this.isComponent = directive.isComponent();
         this.selector = nonResolvedMetadata.selector !== "ng-component" ? nonResolvedMetadata.selector : undefined;
+        this.exportAs = nonResolvedMetadata.exportAs;
 
         if (resolvedMetadata && resolvedMetadata.template) {
             this.template = new Template(this, resolvedMetadata, pathResolver);
@@ -36,7 +38,7 @@ export class Directive {
 
     public toJSON(): any {
 
-        const { name, path, isComponent, selector, template, type } = this;
+        const { name, path, isComponent, selector, exportAs, template, type } = this;
 
         return {
             kind: 'directive',
@@ -44,6 +46,7 @@ export class Directive {
             path,
             isComponent,
             selector,
+            exportAs,
             template,
             type,
         };

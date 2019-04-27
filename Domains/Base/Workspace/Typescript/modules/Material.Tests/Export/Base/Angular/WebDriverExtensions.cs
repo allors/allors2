@@ -5,7 +5,7 @@ namespace Angular
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.UI;
 
-    public static partial class PageExtensions
+    public static partial class WebDriverExtensions
     {
         public static void WaitForAngular(this IWebDriver driver)
         {

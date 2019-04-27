@@ -5,22 +5,22 @@ namespace Angular.Html
 
     public static partial class PageExtensions
     {
-        public static Anchor<T> Anchor<T>(this T @this, By selector) where T : Page
+        public static Anchor<T> Anchor<T>(this T @this, By selector) where T : Component
         {
             return new Anchor<T>(@this, selector);
         }
 
-        public static Button<T> Button<T>(this T @this, By selector) where T : Page
+        public static Button<T> Button<T>(this T @this, By selector) where T : Component
         {
             return new Button<T>(@this, selector);
         }
 
-        public static Element<T> Element<T>(this T @this, By selector) where T : Page
+        public static Element<T> Element<T>(this T @this, By selector) where T : Component
         {
             return new Element<T>(@this, selector);
         }
 
-        public static Input<T> Input<T>(this T @this, By selector = null, string formControlName = null) where T : Page
+        public static Input<T> Input<T>(this T @this, By selector = null, string formControlName = null) where T : Component
         {
             return new Input<T>(@this, selector, formControlName);
         }

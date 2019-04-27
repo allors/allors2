@@ -5,29 +5,44 @@
 
 namespace Autotest.Angular
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Autotest.Html;
     using Newtonsoft.Json.Linq;
 
     public partial class Project
     {
-        public Model Model { get; set; }
-
-        public Module[] Modules { get; set; }
-
-        public Dictionary<string, Module> ModuleById { get; set; }
-
-        public Module MainModule { get; set; }
-
-        public Pipe[] Pipes { get; set; }
-
-        public Dictionary<string, Pipe> PipeById { get; set; }
+        public Dictionary<string, Directive> DirectiveById { get; set; }
 
         public Directive[] Directives { get; set; }
 
-        public Dictionary<string, Directive> DirectiveById { get; set; }
+        public Directive[] LocalDeclaredEntryComponents { get; set; }
+
+        public Module[] LocalModules { get; set; }
+
+        public Directive[] LocalRoutedComponents { get; set; }
+
+        public Module MainModule { get; set; }
+
+        public Model Model { get; set; }
+
+        public Dictionary<string, Module> ModuleById { get; set; }
+
+        public Module[] Modules { get; set; }
+
+        public Dictionary<string, Pipe> PipeById { get; set; }
+
+        public Pipe[] Pipes { get; set; }
 
         public Provider[] Providers { get; set; }
+
+        internal Directive LookupComponent(Directive container, Element element)
+        {
+            var declaringModule = this.Modules.First(v => v.DeclaredDirectives.Contains(container));
+            var component = declaringModule.LookupComponent(element);
+            return component;
+        }
 
         private void BaseLoad(JObject jsonProject)
         {
@@ -103,6 +118,12 @@ namespace Autotest.Angular
             }
 
             this.MainModule = this.Modules.First(v => v.BootstrapComponents.Length > 0);
+
+            this.LocalModules = this.Modules.Where(v => v.Reference.IsLocal).ToArray();
+
+            this.LocalRoutedComponents = this.Modules.SelectMany(v => v.RoutedComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
+
+            this.LocalDeclaredEntryComponents = this.Modules.SelectMany(v => v.DeclaredEntryComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
         }
     }
 }

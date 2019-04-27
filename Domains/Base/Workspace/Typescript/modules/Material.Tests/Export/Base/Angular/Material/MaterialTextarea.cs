@@ -8,7 +8,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialTextArea : Component
+    public class MaterialTextArea : Directive
     {
         public MaterialTextArea(IWebDriver driver, RoleType roleType)
         : base(driver)
@@ -40,7 +40,7 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialTextArea<T> : MaterialTextArea where T : Page
+    public class MaterialTextArea<T> : MaterialTextArea where T : Component
     {
         public MaterialTextArea(T page, RoleType roleType)
             : base(page.Driver, roleType)
