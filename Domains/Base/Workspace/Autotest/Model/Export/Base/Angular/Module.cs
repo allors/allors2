@@ -5,7 +5,6 @@
 
 namespace Autotest.Angular
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Autotest.Html;
@@ -28,6 +27,14 @@ namespace Autotest.Angular
         public Module[] ExportedModules { get; set; }
 
         public Pipe[] ExportedPipes { get; set; }
+
+        public Directive[] FlattenedDeclaredDirectives
+        {
+            get
+            {
+                return this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.DeclaredDirectives)).ToArray();
+            }
+        }
 
         public Module[] ImportedModules { get; set; }
 
@@ -77,20 +84,25 @@ namespace Autotest.Angular
             this.DeclaredEntryComponents = this.EntryComponents.Except(this.RoutedComponents).Except(this.BootstrapComponents).ToArray();
         }
 
-        public Directive LookupComponent(Element element)
+        public Directive[] LookupAttributeDirectives(Element element)
         {
-            var declaredDirectives = this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.DeclaredDirectives));
+            var names = element.Attributes.Select(v => v.Name);
+            var component = this.FlattenedDeclaredDirectives.FirstOrDefault(v => names.Contains(v.ExportAs));
 
-            var names = new[] { element.Name }.Concat(element.Attributes.Select(v => v.Name));
-            var component = declaredDirectives.FirstOrDefault(v => names.Contains(v.Selector) || names.Contains(v.ExportAs));
-
-            if (component == null)
+            if (component != null)
+            {
+                return new[] { component };
+            }
+            else
             {
                 var attributeNames = element.Attributes.Select(v => $"{element}[{v.Name}]");
-                component = declaredDirectives.FirstOrDefault(v => attributeNames.Any(w => v.Selector?.Contains(w) ?? false));
+                return this.FlattenedDeclaredDirectives.Where(v => attributeNames.Any(w => v.Selector?.Contains(w) ?? false)).ToArray();
             }
+        }
 
-            return component;
+        public Directive LookupComponent(Element element)
+        {
+            return this.FlattenedDeclaredDirectives.FirstOrDefault(v => Equals(element.Name, v.Selector) || Equals(element.Name, v.ExportAs));
         }
     }
 }

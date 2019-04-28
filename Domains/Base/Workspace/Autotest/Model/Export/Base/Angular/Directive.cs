@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Autotest.Testers;
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -14,6 +16,15 @@ namespace Autotest.Angular
     public partial class Directive
     {
         public Dictionary<Element, Directive> ComponentByElement { get; set; }
+
+        public Module DeclaringModule
+        {
+            get { return this.Project.Modules.First(v => v.DeclaredDirectives.Contains(this)); }
+        }
+
+        public Dictionary<Element, Directive[]> AttributeDirectivesByElement { get; set; }
+
+        public Element[] ElementsWithDirectives { get; set; }
 
         public string ExportAs { get; set; }
 
@@ -28,6 +39,8 @@ namespace Autotest.Angular
         public string Selector { get; set; }
 
         public Template Template { get; set; }
+
+        public Tester[] Testers { get; set; }
 
         public Class Type { get; set; }
 
@@ -45,14 +58,56 @@ namespace Autotest.Angular
             this.Type = typeTemplate != null ? new Class(this, typeTemplate) : null;
             this.Type?.BaseLoad();
 
-            this.ComponentByElement = this.Template?.Elements
-                .Select(v => new
+            if (this.Template != null)
+            {
+                this.ComponentByElement = this.Template.Elements
+                    .Select(v => new
+                    {
+                        element = v,
+                        component = this.DeclaringModule.LookupComponent(v),
+                    })
+                    .Where(v => v.component != null)
+                    .ToDictionary(v => v.element, v => v.component);
+
+                this.AttributeDirectivesByElement = this.Template.Elements
+                    .Select(v => new
+                    {
+                        element = v,
+                        directives = this.DeclaringModule.LookupAttributeDirectives(v),
+                    })
+                    .Where(v => v.directives.Length > 0)
+                    .ToDictionary(v => v.element, v => v.directives);
+
+                foreach (var kvp in this.ComponentByElement)
                 {
-                    element = v,
-                    component = this.Project.LookupComponent(this, v),
-                })
-                .Where(v => v.component != null)
-                .ToDictionary(v => v.element, v => v.component);
+                    kvp.Key.Component = kvp.Value;
+                }
+
+                foreach (var kvp in this.AttributeDirectivesByElement)
+                {
+                    kvp.Key.AttributeDirectives = kvp.Value;
+                }
+
+                foreach (var element in this.ComponentByElement.Keys.Union(this.AttributeDirectivesByElement.Keys))
+                {
+                    this.ComponentByElement.TryGetValue(element, out var component);
+                    this.AttributeDirectivesByElement.TryGetValue(element, out var attributeDirectives);
+
+                    element.Directives = new[] {component}
+                        .Concat(attributeDirectives ?? new Directive[0])
+                        .Where(v => v != null)
+                        .ToArray();
+                }
+
+                this.ElementsWithDirectives = this.Template.Elements
+                    .Where(v => v.Directives != null && v.Directives.Length > 0)
+                    .ToArray();
+
+                this.Testers = this.ElementsWithDirectives
+                    .Select(TesterFactory.Create)
+                    .Where(v => v != null)
+                    .ToArray();
+            }
         }
     }
 }

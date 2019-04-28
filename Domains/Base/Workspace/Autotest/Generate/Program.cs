@@ -11,7 +11,7 @@
         {
             string[,] config =
                 {
-                    { "./Workspace/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated/menu" },
+                    { "./Workspace/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated/sidenav" },
                     { "./Workspace/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated/components" },
                 };
 

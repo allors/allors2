@@ -24,9 +24,19 @@ namespace $directive.Reference.Namespace$
 
     public partial class $directive.Reference.Name$ : Component
     {
-        protected $directive.Reference.Name$(IWebDriver driver) : base(driver)
+        public $directive.Reference.Name$(IWebDriver driver) : base(driver)
         {
         }
+
+$directive.Testers:{tester|$tester(tester)$}; separator="\n"$	
     }
 }
+>>
+
+tester(tester) ::= <<
+   
+$if(tester.IsInput)$
+        public Angular.Html.Input $tester.Name$ => new Angular.Html.Input(this.Driver, formControlName: "$tester.Name$");
+$endif$
+
 >>

@@ -3,9 +3,10 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Autotest.Angular;
+
 namespace Autotest.Html
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json.Linq;
@@ -24,13 +25,7 @@ namespace Autotest.Html
 
         public Element[] ElementChildren => this.Children.OfType<Element>().ToArray();
 
-        public Element[] Flattened
-        {
-            get
-            {
-                return this.Flatten(this.ElementChildren).Concat(new[] { this }).ToArray();
-            }
-        }
+        public Element[] Flattened => this.Flatten(this.ElementChildren).Concat(new[] {this}).ToArray();
 
         public JToken Json { get; }
 
@@ -38,25 +33,35 @@ namespace Autotest.Html
 
         public INode Parent { get; set; }
 
+        public Directive Component { get; set; }
+
+        public Directive[] AttributeDirectives { get; set; }
+
+        public Directive[] Directives { get; set; }
+
         public void BaseLoad()
         {
             this.Name = this.Json["name"]?.Value<string>();
 
             var jsonChildren = this.Json["children"];
-            this.Children = jsonChildren != null ? jsonChildren.Select(v =>
+            this.Children = jsonChildren != null
+                ? jsonChildren.Select(v =>
                 {
                     var node = NodeFactory.Create(v, this);
                     node.BaseLoad();
                     return node;
-                }).ToArray() : new INode[0];
+                }).ToArray()
+                : new INode[0];
 
             var jsonAttributes = this.Json["attributes"];
-            this.Attributes = jsonAttributes != null ? jsonAttributes.Select(v =>
+            this.Attributes = jsonAttributes != null
+                ? jsonAttributes.Select(v =>
                 {
                     var attribute = new Attribute(v, this);
                     attribute.BaseLoad();
                     return attribute;
-                }).ToArray() : new Attribute[0];
+                }).ToArray()
+                : new Attribute[0];
         }
 
         private IEnumerable<Element> Flatten(IEnumerable<Element> elements)

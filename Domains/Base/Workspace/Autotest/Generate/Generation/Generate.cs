@@ -17,6 +17,7 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // -------------------------------------------------------------------------------------------------
+
 namespace Allors.Development.Repository.Tasks
 {
     using System.IO;

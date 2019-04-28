@@ -11,10 +11,9 @@ namespace Tests
         }
 
         [Fact]
-        public async void Title()
+        public void Title()
         {
             this.Login();
-
 
             Assert.Equal("Dashboard", this.Driver.Title);
         }

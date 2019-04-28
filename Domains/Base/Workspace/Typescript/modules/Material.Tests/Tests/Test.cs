@@ -17,6 +17,7 @@ namespace Tests
     using OpenQA.Selenium;
 
     using ObjectFactory = Allors.ObjectFactory;
+    using src.app.auth;
 
     public abstract class Test : IDisposable
     {
@@ -57,10 +58,10 @@ namespace Tests
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration
-                                    {
-                                        ConnectionString = appConfiguration["ConnectionStrings:DefaultConnection"],
-                                        ObjectFactory = objectFactory,
-                                    };
+            {
+                ConnectionString = appConfiguration["ConnectionStrings:DefaultConnection"],
+                ObjectFactory = objectFactory,
+            };
 
             var database = new Database(serviceProvider, configuration);
 
@@ -74,11 +75,11 @@ namespace Tests
             this.Session.Commit();
         }
 
-        public ISession Session { get; set; }
+        public IWebDriver Driver => this.DriverManager.Driver;
 
         public DriverManager DriverManager { get; }
 
-        public IWebDriver Driver => this.DriverManager.Driver;
+        public ISession Session { get; set; }
 
         public virtual void Dispose()
         {
@@ -89,7 +90,7 @@ namespace Tests
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
 
-            var page = new LoginPage(this.Driver);
+            var page = new LoginComponent(this.Driver);
             return page.Login();
         }
     }

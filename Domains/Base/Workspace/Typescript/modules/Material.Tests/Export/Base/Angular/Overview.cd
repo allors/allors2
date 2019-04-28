@@ -13,12 +13,9 @@
       <HashCode>AAQAAAAAAAIAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>Export\Base\Angular\Directive.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Driver" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Angular.WebDriverExtensions">
-    <Position X="15.25" Y="1" Width="1.75" />
+    <Position X="13" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Export\Base\Angular\WebDriverExtensions.cs</FileName>
@@ -27,69 +24,65 @@
   <Class Name="Tests.Sidenav" Collapsed="true">
     <Position X="7.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAoAEAAJIAAEAAAAACAAAAABAQAABAAAIAQQAEAAAA=</HashCode>
-      <FileName>generated\menu\sidenav.g.cs</FileName>
+      <HashCode>AIAAAEAABAAAAAAAAAAAAAAAAAAAABAAAAAQQAAAAAA=</HashCode>
+      <FileName>Components\Sidenav.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.MainPage" Collapsed="true">
     <Position X="11.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\MainPage.cs</FileName>
+      <FileName>Components\MainPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.OrganisationEditPage" Collapsed="true">
     <Position X="5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\Relations\OrganisationEditPage.cs</FileName>
+      <FileName>Components\Relations\OrganisationEditPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.OrganisationsPage" Collapsed="true">
     <Position X="7.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\Relations\OrganisationsPage.cs</FileName>
+      <FileName>Components\Relations\OrganisationsPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.PeoplePage" Collapsed="true">
     <Position X="9.5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAg=</HashCode>
-      <FileName>Pages\Relations\PeoplePage.cs</FileName>
+      <FileName>Components\Relations\PeoplePage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.PersonEditPage" Collapsed="true">
     <Position X="11.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAMAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
-      <FileName>Pages\Relations\PersonEditPage.cs</FileName>
+      <FileName>Components\Relations\PersonEditPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.PersonOverviewPage" Collapsed="true">
     <Position X="14" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\Relations\PersonOverviewPage.cs</FileName>
+      <FileName>Components\Relations\PersonOverviewPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.Relations.FormPage" Collapsed="true">
     <Position X="16.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAIQAAAAAABAAQAAAAAAAAAAEAQABAAAAAAFCBYA=</HashCode>
-      <FileName>Pages\Tests\FormPage.cs</FileName>
+      <FileName>Components\Tests\FormPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pages.HomePage" Collapsed="true">
     <Position X="18.5" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\HomePage.cs</FileName>
+      <FileName>Components\HomePage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="OpenQA.Selenium.IWebDriver">
-    <Position X="13" Y="1" Width="2" />
-    <TypeIdentifier />
-  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

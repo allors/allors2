@@ -37,13 +37,6 @@ namespace Autotest.Angular
 
         public Provider[] Providers { get; set; }
 
-        internal Directive LookupComponent(Directive container, Element element)
-        {
-            var declaringModule = this.Modules.First(v => v.DeclaredDirectives.Contains(container));
-            var component = declaringModule.LookupComponent(element);
-            return component;
-        }
-
         private void BaseLoad(JObject jsonProject)
         {
             var jsonModules = jsonProject["modules"];
