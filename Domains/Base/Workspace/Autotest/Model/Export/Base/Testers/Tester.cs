@@ -1,4 +1,5 @@
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using Autotest.Html;
 
 namespace Autotest.Testers
@@ -6,14 +7,13 @@ namespace Autotest.Testers
     public abstract partial class Tester
     {
         public Element Element { get; }
-
-        public bool IsInput => this.Element.Name == "input";
-
-        public string Name => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == "formcontrolname")?.Value;
         
         protected Tester(Element element)
         {
             this.Element = element;
         }
+        
+        public bool this[string typeCheck] => string.Equals($"is{this.Element.Name}", typeCheck, StringComparison.OrdinalIgnoreCase) || 
+                                              string.Equals($"is{this.GetType().Name}", typeCheck, StringComparison.OrdinalIgnoreCase);
     }
 }

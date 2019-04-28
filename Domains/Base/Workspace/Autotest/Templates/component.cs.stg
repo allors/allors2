@@ -34,9 +34,9 @@ $directive.Testers:{tester|$tester(tester)$}; separator="\n"$
 >>
 
 tester(tester) ::= <<
-   
+  
 $if(tester.IsInput)$
-        public Angular.Html.Input $tester.Name$ => new Angular.Html.Input(this.Driver, formControlName: "$tester.Name$");
+        public Angular.Html.Input $tester.Name; format="cap"$ => new Angular.Html.Input(this.Driver, formControlName: "$tester.Name$");
 $endif$
 
 >>

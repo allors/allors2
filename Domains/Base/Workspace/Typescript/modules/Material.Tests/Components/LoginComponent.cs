@@ -8,8 +8,6 @@ namespace src.app.auth
 
     public partial class LoginComponent
     {
-        public Input UserName => new Input(this.Driver, formControlName: "userName");
-
         public Button Button => new Button(this.Driver, By.CssSelector("button"));
 
         public HomePage Login(string userName = "administrator")
