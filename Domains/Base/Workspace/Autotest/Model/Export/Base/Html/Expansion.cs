@@ -6,20 +6,23 @@
 namespace Autotest.Html
 {
     using System.Linq;
-
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public partial class Expansion : INode
     {
-        public Expansion(JToken json, INode parent)
+        public Expansion(JToken json, Template template, INode parent)
         {
             this.Json = json;
+            this.Template = template;
             this.Parent = parent;
         }
 
         public ExpansionCase[] ExpansionCases { get; set; }
 
         public JToken Json { get; }
+
+        public Template Template { get; }
 
         public INode Parent { get; set; }
 
@@ -32,7 +35,7 @@ namespace Autotest.Html
             var jsonExpansionCases = this.Json["expansionCases"];
             this.ExpansionCases = jsonExpansionCases != null ? jsonExpansionCases.Select(v =>
                 {
-                    var expansionCase = new ExpansionCase(v, this);
+                    var expansionCase = new ExpansionCase(v, this.Template, this);
                     expansionCase.BaseLoad();
                     return expansionCase;
                 }).ToArray() : new ExpansionCase[0];

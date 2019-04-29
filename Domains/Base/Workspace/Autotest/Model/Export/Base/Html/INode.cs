@@ -5,9 +5,13 @@
 
 namespace Autotest.Html
 {
+    using Autotest.Angular;
+
     public interface INode
     {
-        INode Parent { get; set; }
+        Template Template { get; }
+
+        INode Parent { get; }
 
         void BaseLoad();
     }

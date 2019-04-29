@@ -11,7 +11,7 @@ namespace Pages.Relations
         {
         }
 
-        public Input Name => new Input(this.Driver, formControlName: "name");
+        public Input Name => new Input(this.Driver, By.CssSelector($"input[formcontrolname='name']"));
 
         public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
     }

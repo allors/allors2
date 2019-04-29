@@ -1,7 +1,7 @@
-using Autotest.Html;
-
 namespace Autotest.Testers
 {
+    using Autotest.Html;
+
     public partial class TesterFactory
     {
         private static Tester BaseCreate(Element element)

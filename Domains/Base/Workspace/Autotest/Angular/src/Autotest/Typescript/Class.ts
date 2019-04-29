@@ -3,13 +3,12 @@ import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElem
 import { Property } from './Property';
 import { Member } from './Member';
 import { Method } from './Method';
-import { Decorator } from './Decorator';
 
 export class Class {
 
     name: string;
 
-    decorators: Decorator[];
+    decorators: string[];
 
     members: Member[];
 
@@ -17,7 +16,7 @@ export class Class {
 
         this.name = classDeclaration.name.text;
 
-        this.decorators = classDeclaration.decorators.map((v) => new Decorator(v));
+        this.decorators = classDeclaration.decorators.map((v) => v.getText());
 
         this.members = classDeclaration.members.map((v) => {
 

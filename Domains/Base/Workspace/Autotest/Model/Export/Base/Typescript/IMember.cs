@@ -7,5 +7,6 @@ namespace Autotest.Typescript
 {
     public interface IMember
     {
+        void BaseLoad();
     }
 }

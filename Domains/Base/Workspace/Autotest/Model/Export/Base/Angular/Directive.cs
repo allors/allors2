@@ -3,13 +3,13 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using Autotest.Testers;
-
 namespace Autotest.Angular
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Autotest.Html;
+    using Autotest.Testers;
     using Autotest.Typescript;
     using Newtonsoft.Json.Linq;
 
@@ -43,6 +43,8 @@ namespace Autotest.Angular
         public Tester[] Testers { get; set; }
 
         public Class Type { get; set; }
+
+        public string Scope { get; set; }
 
         public void BaseLoad()
         {
@@ -107,6 +109,20 @@ namespace Autotest.Angular
                     .Select(Autotest.Testers.TesterFactory.Create)
                     .Where(v => v != null)
                     .ToArray();
+
+                if (this.Type != null)
+                {
+                    var decorator = "@HostBinding('attr.data-test-scope')";
+                    var testScopeProperty = this.Type.Members.OfType<Property>()
+                        .FirstOrDefault(v => v.Decorators.Contains(decorator));
+                    if (testScopeProperty != null)
+                    {
+                        if (testScopeProperty.Initializer.Equals("this.constructor.name"))
+                        {
+                            this.Scope = this.Type.Name;
+                        }
+                    }
+                }
             }
         }
     }

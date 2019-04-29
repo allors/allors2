@@ -6,10 +6,15 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
 
   <PropertyGroup>
     <noWarn>1701;1702;1705;1591</noWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
 
   <ItemGroup>

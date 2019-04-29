@@ -34,7 +34,7 @@ namespace Autotest.Angular
             var jsonHtml = this.Json["html"];
             this.Html = jsonHtml != null ? jsonHtml.Select(v =>
                 {
-                    var node = NodeFactory.Create(v, null);
+                    var node = NodeFactory.Create(v, this, null);
                     node.BaseLoad();
                     return node;
                 }).ToArray() : new INode[0];

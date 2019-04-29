@@ -5,29 +5,46 @@
 
 namespace Autotest.Typescript
 {
-    using System;
+    using System.Linq;
     using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public class Class
     {
-        private Directive directive;
-        private JToken typeTemplate;
-
-        public Class(Directive directive, JToken typeTemplate)
+        public Class(Directive directive, JToken json)
         {
-            this.directive = directive;
-            this.typeTemplate = typeTemplate;
+            this.Directive = directive;
+            this.Json = json;
         }
+
+        public Directive Directive { get; set; }
+
+        public JToken Json { get; set; }
 
         public string Name { get; set; }
 
-        public Decorator[] Decorators { get; set; }
+        public string[] Decorators { get; set; }
 
-        private IMember[] Members { get; set; }
+        public IMember[] Members { get; set; }
 
         internal void BaseLoad()
         {
+            this.Name = this.Json["name"]?.Value<string>();
+
+            var jsonDecorators = this.Json["decorators"];
+            this.Decorators = jsonDecorators != null
+                ? jsonDecorators.Select(v => v.Value<string>()).ToArray()
+                : new string[0];
+
+            var jsonMembers = this.Json["members"];
+            this.Members = jsonMembers != null
+                ? jsonMembers.Select(v =>
+                {
+                    var member = MemberFactory.Create(v);
+                    member.BaseLoad();
+                    return member;
+                }).ToArray()
+                : new IMember[0];
         }
     }
 }

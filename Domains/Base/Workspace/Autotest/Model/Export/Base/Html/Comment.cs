@@ -5,17 +5,21 @@
 
 namespace Autotest.Html
 {
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public partial class Comment : INode
     {
-        public Comment(JToken json, INode parent)
+        public Comment(JToken json, Template template, INode parent)
         {
             this.Json = json;
+            this.Template = template;
             this.Parent = parent;
         }
 
         public JToken Json { get; }
+
+        public Template Template { get; }
 
         public INode Parent { get; set; }
 

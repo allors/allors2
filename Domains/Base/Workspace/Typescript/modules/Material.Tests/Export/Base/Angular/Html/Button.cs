@@ -1,3 +1,5 @@
+using OpenQA.Selenium.Support.PageObjects;
+
 namespace Angular.Html
 {
     using System.Diagnostics.CodeAnalysis;
@@ -6,10 +8,10 @@ namespace Angular.Html
 
     public class Button : Directive
     {
-        public Button(IWebDriver driver, By selector)
+        public Button(IWebDriver driver, params By[] selectors)
         : base(driver)
         {
-            this.Selector = selector;
+            this.Selector = selectors.Length == 1 ? selectors[0] : new ByChained(selectors);
         }
 
         public By Selector { get; }
@@ -26,8 +28,8 @@ namespace Angular.Html
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class Button<T> : Button where T : Component
     {
-        public Button(T page, By selector)
-            : base(page.Driver, selector)
+        public Button(T page, params By[] selectors)
+            : base(page.Driver, selectors)
         {
             this.Page = page;
         }

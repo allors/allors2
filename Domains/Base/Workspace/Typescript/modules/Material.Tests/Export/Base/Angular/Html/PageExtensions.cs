@@ -20,9 +20,9 @@ namespace Angular.Html
             return new Element<T>(@this, selector);
         }
 
-        public static Input<T> Input<T>(this T @this, By selector = null, string formControlName = null) where T : Component
+        public static Input<T> Input<T>(this T @this, params By[] selectors) where T : Component
         {
-            return new Input<T>(@this, selector, formControlName);
+            return new Input<T>(@this, selectors);
         }
     }
 }

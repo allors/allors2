@@ -3,19 +3,24 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Autotest.Angular;
+
 namespace Autotest.Html
 {
     using Newtonsoft.Json.Linq;
 
     public partial class Attribute : INode
     {
-        public Attribute(JToken json, INode parent)
+        public Attribute(JToken json, Template template, INode parent)
         {
             this.Json = json;
+            Template = template;
             this.Parent = parent;
         }
 
         public JToken Json { get; }
+
+        public Template Template { get; }
 
         public string Name { get; set; }
 

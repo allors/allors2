@@ -35,11 +35,11 @@ $directive.Testers:{tester|$tester(tester)$}; separator="\n"$
 tester(tester) ::= <<
   
 $if(tester.IsInput)$
-        public Angular.Html.Input $tester.Name; format="cap"$ => new Angular.Html.Input(this.Driver, formControlName: "$tester.Name$");
+        public Angular.Html.Input $tester.Name; format="cap"$ => new Angular.Html.Input(this.Driver, $tester.Selector$);
 $endif$
 
 $if(tester.IsButton)$
-        public Angular.Html.Button $tester.Name$ => new Angular.Html.Button(this.Driver, By.XPath(@"//button[normalize-space()=""$tester.Value$""]"));
+        public Angular.Html.Button $tester.Name; format="cap"$ => new Angular.Html.Button(this.Driver, $tester.Selector$);
 $endif$
 
 >>

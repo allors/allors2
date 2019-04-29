@@ -3,21 +3,23 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using Autotest.Angular;
-
 namespace Autotest.Html
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public partial class Element : INode
     {
-        public Element(JToken json, INode parent)
+        public Element(JToken json, Template template, INode parent)
         {
             this.Json = json;
+            this.Template = template;
             this.Parent = parent;
         }
+
+        public Template Template { get; }
 
         public Attribute[] Attributes { get; set; }
 
@@ -33,7 +35,7 @@ namespace Autotest.Html
 
         public string Name { get; set; }
 
-        public INode Parent { get; set; }
+        public INode Parent { get; }
 
         public Directive Component { get; set; }
 
@@ -43,11 +45,21 @@ namespace Autotest.Html
 
         public string InnerText
         {
+            get { return string.Join(string.Empty, this.FlattenedText.Select(v => v.Value)); }
+        }
+
+        public Element[] Ancestors
+        {
             get
             {
-                return string.Join(string.Empty, this.FlattenedText.Select(v => v.Value));
+                var parentElement = (Element) this.Parent;
+                return parentElement != null
+                    ? new[] {parentElement}.Concat(parentElement.Ancestors).ToArray()
+                    : new Element[0];
             }
         }
+
+        public string Scope => this.Component?.Scope;
 
         public void BaseLoad()
         {
@@ -57,7 +69,7 @@ namespace Autotest.Html
             this.Children = jsonChildren != null
                 ? jsonChildren.Select(v =>
                 {
-                    var node = NodeFactory.Create(v, this);
+                    var node = NodeFactory.Create(v, this.Template, this);
                     node.BaseLoad();
                     return node;
                 }).ToArray()
@@ -67,7 +79,7 @@ namespace Autotest.Html
             this.Attributes = jsonAttributes != null
                 ? jsonAttributes.Select(v =>
                 {
-                    var attribute = new Attribute(v, this);
+                    var attribute = new Attribute(v, this.Template, this);
                     attribute.BaseLoad();
                     return attribute;
                 }).ToArray()
@@ -76,7 +88,8 @@ namespace Autotest.Html
 
         private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)
         {
-            return nodes.SelectMany(v => v is Element element ? new[]{v}.Concat(this.Flatten(element.Children)) : new[]{v});
+            return nodes.SelectMany(v =>
+                v is Element element ? new[] {v}.Concat(this.Flatten(element.Children)) : new[] {v});
         }
     }
 }

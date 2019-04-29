@@ -6,27 +6,27 @@
 namespace Autotest.Html
 {
     using System;
-
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public static class NodeFactory
     {
-        public static INode Create(JToken json, INode parent)
+        public static INode Create(JToken json, Template template, INode parent)
         {
             var kind = json["kind"]?.Value<string>();
             switch (kind)
             {
                 case "element":
-                    return new Element(json, parent);
+                    return new Element(json, template, parent);
 
                 case "text":
-                    return new Text(json, parent);
+                    return new Text(json, template, parent);
 
                 case "comment":
-                    return new Comment(json, parent);
+                    return new Comment(json, template, parent);
 
                 case "expansion":
-                    return new Expansion(json, parent);
+                    return new Expansion(json, template, parent);
 
                 default:
                     throw new Exception($"Unknown kind: {kind}");

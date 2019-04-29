@@ -1,3 +1,5 @@
+using OpenQA.Selenium.Support.PageObjects;
+
 namespace Angular.Html
 {
     using System.Diagnostics.CodeAnalysis;
@@ -6,17 +8,10 @@ namespace Angular.Html
 
     public class Input : Directive
     {
-        public Input(IWebDriver driver, By selector = null, string formControlName = null)
+        public Input(IWebDriver driver, params By[] selectors)
             : base(driver)
         {
-            if (selector != null)
-            {
-                this.Selector = selector;
-            }
-            else if (formControlName != null)
-            {
-                this.Selector = By.CssSelector($"input[formcontrolname='{formControlName}']");
-            }
+            this.Selector = selectors.Length == 1 ? selectors[0] : new ByChained(selectors);
         }
 
         public By Selector { get; }
@@ -45,8 +40,8 @@ namespace Angular.Html
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class Input<T> : Input where T : Component
     {
-        public Input(T page, By selector = null, string formControlName = null)
-            : base(page.Driver, selector, formControlName)
+        public Input(T page, params By[] selectors)
+            : base(page.Driver, selectors)
         {
             this.Page = page;
         }

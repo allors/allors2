@@ -10,6 +10,12 @@ import { AuthenticationService } from '../../allors/angular';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnDestroy {
+
+  public loginFormGhost = this.formBuilder.group({
+    password: ['', Validators.required],
+    userName: ['', Validators.required],
+  });
+
   public loginForm = this.formBuilder.group({
     password: ['', Validators.required],
     userName: ['', Validators.required],

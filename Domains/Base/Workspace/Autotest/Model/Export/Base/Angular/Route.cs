@@ -24,13 +24,7 @@ namespace Autotest.Angular
 
         public JToken Data { get; set; }
 
-        public Route[] Flattened
-        {
-            get
-            {
-                return this.Flatten(this.Children).Concat(new[] { this }).ToArray();
-            }
-        }
+        public Route[] Flattened => this.Flatten(this.Children).Concat(new[] { this }).ToArray();
 
         public JToken Json { get; }
 
