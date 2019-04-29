@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, HostBinding } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -17,11 +17,15 @@ export class LoginComponent implements OnDestroy {
 
   private subscription: Subscription;
 
+  @HostBinding('attr.data-test-scope')
+  private testScope = this.constructor.name;
+
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
-  ) {}
+  ) {
+  }
 
   public login(event) {
     const userName = this.loginForm.controls.userName.value;

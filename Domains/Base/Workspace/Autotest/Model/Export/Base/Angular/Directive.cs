@@ -104,7 +104,7 @@ namespace Autotest.Angular
                     .ToArray();
 
                 this.Testers = this.ElementsWithDirectives
-                    .Select(TesterFactory.Create)
+                    .Select(Autotest.Testers.TesterFactory.Create)
                     .Where(v => v != null)
                     .ToArray();
             }

@@ -3,31 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "..\..\..\Database\Meta\Meta.csproj", "{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Database\Meta\Meta.csproj", "{BA6EFCFE-CB7F-4994-A5A4-C11DDAAC32DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "..\..\..\Database\Domain\Domain.csproj", "{B6C2E17B-53E1-44A4-9299-5350CC854E65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Database\Domain\Domain.csproj", "{B6C2E17B-53E1-44A4-9299-5350CC854E65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "..\..\..\Database\Resources\Resources.csproj", "{A10683F7-B261-4770-81C6-BB589E768ACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Database\Resources\Resources.csproj", "{A10683F7-B261-4770-81C6-BB589E768ACB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Framework", "..\..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Framework", "..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj", "{5B4E2D7C-8EF8-45F5-BFB2-E595C401A95F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Memory", "..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Memory", "..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj", "{CB9B7108-C8F3-459C-B2DA-88187C84CFC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Object.SqlClient", "..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Object.SqlClient", "..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj", "{06BC1665-8FE8-4F04-9E80-EC2D54404BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{09BC5334-44E4-4CA1-9055-C12249937D16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Allors", "Allors", "{2713A504-DE9E-4F69-9343-8DB74E822AE9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "..\..\..\Database\Services\Services.csproj", "{7858E92D-2B88-40E3-8DB5-A1210C02B2E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Database\Services\Services.csproj", "{7858E92D-2B88-40E3-8DB5-A1210C02B2E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{1472DABE-1DCD-4D47-B779-1A90E3A6D325}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document", "..\..\..\Document\Allors.Document\Allors.Document.csproj", "{76C17250-66FB-4339-A29D-F09CE330CDC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document", "Document\Allors.Document\Allors.Document.csproj", "{76C17250-66FB-4339-A29D-F09CE330CDC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Material.Tests", "Material.Tests\Material.Tests.csproj", "{046B96A9-6117-4D9F-95F0-147AF56B9FEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Material.Tests", "Workspace\Typescript\modules\Material.Tests\Material.Tests.csproj", "{046B96A9-6117-4D9F-95F0-147AF56B9FEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{0C80F92F-963B-4C6E-89D5-E28CCC6D3C3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{0C80F92F-963B-4C6E-89D5-E28CCC6D3C3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

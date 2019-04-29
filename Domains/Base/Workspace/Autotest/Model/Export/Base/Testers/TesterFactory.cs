@@ -10,6 +10,9 @@ namespace Autotest.Testers
             {
                 case "input":
                     return new InputTester(element);
+                
+                case "button":
+                    return new ButtonTester(element);
             }
 
             return null;

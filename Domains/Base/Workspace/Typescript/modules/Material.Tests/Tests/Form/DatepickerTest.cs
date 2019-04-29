@@ -2,7 +2,6 @@ namespace Tests
 {
     using System.Globalization;
     using System.Linq;
-    using System.Threading;
 
     using Allors;
     using Allors.Domain;

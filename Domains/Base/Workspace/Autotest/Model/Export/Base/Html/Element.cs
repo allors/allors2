@@ -23,9 +23,11 @@ namespace Autotest.Html
 
         public INode[] Children { get; set; }
 
-        public Element[] ElementChildren => this.Children.OfType<Element>().ToArray();
+        public Element[] FlattenedElements => this.Flattened.OfType<Element>().ToArray();
 
-        public Element[] Flattened => this.Flatten(this.ElementChildren).Concat(new[] {this}).ToArray();
+        public Text[] FlattenedText => this.Flattened.OfType<Text>().ToArray();
+
+        public INode[] Flattened => this.Flatten(this.Children).Concat(new[] {this}).ToArray();
 
         public JToken Json { get; }
 
@@ -38,6 +40,14 @@ namespace Autotest.Html
         public Directive[] AttributeDirectives { get; set; }
 
         public Directive[] Directives { get; set; }
+
+        public string InnerText
+        {
+            get
+            {
+                return string.Join(string.Empty, this.FlattenedText.Select(v => v.Value));
+            }
+        }
 
         public void BaseLoad()
         {
@@ -64,9 +74,9 @@ namespace Autotest.Html
                 : new Attribute[0];
         }
 
-        private IEnumerable<Element> Flatten(IEnumerable<Element> elements)
+        private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)
         {
-            return elements.SelectMany(v => this.Flatten(v.ElementChildren)).Concat(elements);
+            return nodes.SelectMany(v => v is Element element ? new[]{v}.Concat(this.Flatten(element.Children)) : new[]{v});
         }
     }
 }

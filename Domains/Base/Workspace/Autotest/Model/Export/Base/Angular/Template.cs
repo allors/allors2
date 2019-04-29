@@ -39,7 +39,7 @@ namespace Autotest.Angular
                     return node;
                 }).ToArray() : new INode[0];
 
-            this.Elements = this.Html.OfType<Element>().SelectMany(v => v.Flattened).ToArray();
+            this.Elements = this.Html.OfType<Element>().SelectMany(v => v.FlattenedElements).ToArray();
         }
     }
 }
