@@ -6,12 +6,12 @@ namespace Pages
 
     using Tests;
 
-    public abstract class MainPage : Page
+    public abstract class MainPage : Component
     {
         protected MainPage(IWebDriver driver) : base(driver)
         {
         }
-        
+
         public Sidenav Sidenav => new Sidenav(this.Driver);
     }
 }

@@ -24,7 +24,7 @@ namespace Tests
     using Pages.SerialisedItemCharacteristicTest;
     using Pages.WorkEffortOverviewTests;
 
-    public class Sidenav : Page
+    public class Sidenav : Component
     {
         public Sidenav(IWebDriver driver)
         : base(driver)
@@ -32,96 +32,53 @@ namespace Tests
             this.Selector = By.CssSelector("mat-sidenav");
         }
 
-        public By Selector { get; }
-
-        public Anchor Home => this.Anchor(this.ByHref("/"));
-
-        public Element ContactsGroup => this.Group("Contacts");
-
-        public Anchor People => this.Link(M.Person.ObjectType);
-        
-        public Anchor Organisations => this.Link(M.Organisation.ObjectType);
-
-        public Anchor CommunicationEvents => this.Link(M.CommunicationEvent.ObjectType);
-
-        public Element PurchasingGroup => this.Group("Purchasing");
-
-        public Element SalesGroup => this.Group("Sales");
-
-        public Anchor RequestsForQuote => this.Link(M.RequestForQuote.ObjectType);
-
-        public Anchor ProductQuotes => this.Link(M.ProductQuote.ObjectType);
-
-        public Anchor SalesOrders => this.Link(M.SalesOrder.ObjectType);
-
-        public Element ProductsGroup => this.Group("Products");
-
-        public Anchor Goods => this.Link(M.Good.ObjectType);
-
-        public Anchor Parts => this.Link(M.Part.ObjectType);
+        public Element AccountingGroup => this.Group("Accounting");
 
         public Anchor Catalogues => this.Link(M.Catalogue.ObjectType);
 
         public Anchor Categories => this.Link(M.ProductCategory.ObjectType);
 
+        public Anchor CommunicationEvents => this.Link(M.CommunicationEvent.ObjectType);
+
+        public Element ContactsGroup => this.Group("Contacts");
+
+        public Anchor Goods => this.Link(M.Good.ObjectType);
+
+        public Anchor Home => this.Anchor(this.ByHref("/"));
+
+        public Anchor Organisations => this.Link(M.Organisation.ObjectType);
+
+        public Anchor Parts => this.Link(M.Part.ObjectType);
+
+        public Anchor People => this.Link(M.Person.ObjectType);
+
         public Anchor ProductCharacteristics => this.Link(M.SerialisedItemCharacteristic.ObjectType);
+
+        public Anchor ProductQuotes => this.Link(M.ProductQuote.ObjectType);
+
+        public Element ProductsGroup => this.Group("Products");
 
         public Anchor ProductTypes => this.Link(M.ProductType.ObjectType);
 
-        public Element AccountingGroup => this.Group("Accounting");
-
         public Anchor PurchaseInvoices => this.Link(M.PurchaseInvoice.ObjectType);
+
+        public Element PurchasingGroup => this.Group("Purchasing");
+
+        public Anchor RequestsForQuote => this.Link(M.RequestForQuote.ObjectType);
+
+        public Element SalesGroup => this.Group("Sales");
 
         public Anchor SalesInvoices => this.Link(M.SalesInvoice);
 
-        public Element WorkEffortsGroup => this.Group("WorkEfforts");
+        public Anchor SalesOrders => this.Link(M.SalesOrder.ObjectType);
 
-        public Anchor WorkEfforts => this.Link(M.WorkEffort.ObjectType);
+        public By Selector { get; }
 
         public Button Toggle => this.Button(By.CssSelector("button[aria-label='Toggle sidenav']"));
 
-        public DashboardPage NavigateToHome()
-        {
-            this.Home.Click();
+        public Anchor WorkEfforts => this.Link(M.WorkEffort.ObjectType);
 
-            return new DashboardPage(this.Driver);
-        }
-
-        public CommunicationEventListPage NavigateToCommunicationEventList()
-        {
-            this.Navigate(this.ContactsGroup, this.CommunicationEvents);
-            return new CommunicationEventListPage(this.Driver);
-        }
-
-        public PersonListPage NavigateToPersonList()
-        {
-            this.Navigate(this.ContactsGroup, this.People);
-            return new PersonListPage(this.Driver);
-        }
-
-        public OrganisationListPage NavigateToOrganisationList()
-        {
-            this.Navigate(this.ContactsGroup, this.Organisations);
-            return new OrganisationListPage(this.Driver);
-        }
-
-        public RequestForQuoteListPage NavigateToRequestForQuoteList()
-        {
-            this.Navigate(this.SalesGroup, this.RequestsForQuote);
-            return new RequestForQuoteListPage(this.Driver);
-        }
-
-        public ProductQuoteListPage NavigateToProductQuoteList()
-        {
-            this.Navigate(this.SalesGroup, this.ProductQuotes);
-            return new ProductQuoteListPage(this.Driver);
-        }
-
-        public SalesOrderListPage NavigateToSalesOrderList()
-        {
-            this.Navigate(this.SalesGroup, this.SalesOrders);
-            return new SalesOrderListPage(this.Driver);
-        }
+        public Element WorkEffortsGroup => this.Group("WorkEfforts");
 
         public CatalogueListPage NavigateToCatalogueList()
         {
@@ -135,16 +92,47 @@ namespace Tests
             return new ProductCategorieListPage(this.Driver);
         }
 
+        public CommunicationEventListPage NavigateToCommunicationEventList()
+        {
+            this.Navigate(this.ContactsGroup, this.CommunicationEvents);
+            return new CommunicationEventListPage(this.Driver);
+        }
+
         public GoodListPage NavigateToGoodList()
         {
             this.Navigate(this.ProductsGroup, this.Goods);
             return new GoodListPage(this.Driver);
         }
 
+        public DashboardPage NavigateToHome()
+        {
+            this.Home.Click();
+
+            return new DashboardPage(this.Driver);
+        }
+
+        public OrganisationListPage NavigateToOrganisationList()
+        {
+            this.Navigate(this.ContactsGroup, this.Organisations);
+            return new OrganisationListPage(this.Driver);
+        }
+
+        public PersonListPage NavigateToPersonList()
+        {
+            this.Navigate(this.ContactsGroup, this.People);
+            return new PersonListPage(this.Driver);
+        }
+
         public SerialisedItemCharacteristicListPage NavigateToProductCharacteristicList()
         {
             this.Navigate(this.ProductsGroup, this.ProductCharacteristics);
             return new SerialisedItemCharacteristicListPage(this.Driver);
+        }
+
+        public ProductQuoteListPage NavigateToProductQuoteList()
+        {
+            this.Navigate(this.SalesGroup, this.ProductQuotes);
+            return new ProductQuoteListPage(this.Driver);
         }
 
         public ProductTypeListPage NavigateToProductTypeList()
@@ -159,10 +147,22 @@ namespace Tests
             return new PurchaseInvoiceListPage(this.Driver);
         }
 
+        public RequestForQuoteListPage NavigateToRequestForQuoteList()
+        {
+            this.Navigate(this.SalesGroup, this.RequestsForQuote);
+            return new RequestForQuoteListPage(this.Driver);
+        }
+
         public SalesInvoiceListPage NavigateToSalesInvoiceList()
         {
             this.Navigate(this.SalesGroup, this.SalesInvoices);
             return new SalesInvoiceListPage(this.Driver);
+        }
+
+        public SalesOrderListPage NavigateToSalesOrderList()
+        {
+            this.Navigate(this.SalesGroup, this.SalesOrders);
+            return new SalesOrderListPage(this.Driver);
         }
 
         public WorkEffortListPage NavigateToWorkEffortList()
@@ -171,22 +171,14 @@ namespace Tests
             return new WorkEffortListPage(this.Driver);
         }
 
-        private void Navigate(Element group, Anchor link)
+        private By ByHref(string href)
         {
-            this.Driver.WaitForAngular();
+            return new ByChained(this.Selector, By.CssSelector($"a[href='{href}']"));
+        }
 
-            if (!link.IsVisible)
-            {
-                if (!group.IsVisible)
-                {
-                    this.Toggle.Click();
-                    this.Driver.WaitForCondition(driver => @group.IsVisible);
-                }
-               
-                group.Click();
-            }
-
-            link.Click();
+        private By ByObjectType(ObjectType objectType)
+        {
+            return new ByChained(this.Selector, By.CssSelector($"a[data-allors-id='{objectType.IdAsNumberString}']"));
         }
 
         private Element Group(string name)
@@ -204,14 +196,22 @@ namespace Tests
             return new Anchor(this.Driver, this.ByObjectType(objectType));
         }
 
-        private By ByHref(string href)
+        private void Navigate(Element group, Anchor link)
         {
-            return new ByChained(this.Selector, By.CssSelector($"a[href='{href}']"));
-        }
+            this.Driver.WaitForAngular();
 
-        private By ByObjectType(ObjectType objectType)
-        {
-            return new ByChained(this.Selector, By.CssSelector($"a[data-allors-id='{objectType.IdAsNumberString}']"));
+            if (!link.IsVisible)
+            {
+                if (!group.IsVisible)
+                {
+                    this.Toggle.Click();
+                    this.Driver.WaitForCondition(driver => @group.IsVisible);
+                }
+
+                group.Click();
+            }
+
+            link.Click();
         }
     }
 }

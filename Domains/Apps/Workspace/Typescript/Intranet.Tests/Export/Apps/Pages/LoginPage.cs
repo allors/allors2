@@ -5,15 +5,15 @@ namespace Pages.ApplicationTests
 
     using OpenQA.Selenium;
 
-    public class LoginPage : Page
+    public class LoginPage : Component
     {
         public LoginPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public Input<LoginPage> UserName => this.Input(formControlName: "userName");
-
         public Button<LoginPage> Button => this.Button(By.CssSelector("button"));
+
+        public Input<LoginPage> UserName => this.Input(formControlName: "userName");
 
         public DashboardPage Login(string userName = "administrator")
         {
