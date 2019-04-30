@@ -4,9 +4,10 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("1D7EE206-1EF9-479D-8458-B44C2CB131AA")]
+    [Id("AC2A9DE8-9368-4BD5-9114-7F14DE98027B")]
     #endregion
-    public partial class PurchaseOrderApproval : ApproveTask
+    [Plural("PurchaseOrderApprovalsLevel2")]
+    public partial class PurchaseOrderApprovalLevel2 : ApproveTask
     {
         #region inherited properties
 
@@ -38,9 +39,9 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("230DE3B0-637D-4311-AF2B-A909134F710E")]
-        [AssociationId("D28D41C7-1BA5-48CF-B9C6-DE73EF3F13D2")]
-        [RoleId("4B899ECF-F36B-480E-B35C-1593AE8D162B")]
+        [Id("FC25DD98-D812-4FF0-8C5A-83CF77E6C3E7")]
+        [AssociationId("C6C8B22E-E882-429B-B856-91D0F74852B9")]
+        [RoleId("57A368CE-1670-4142-8604-23550040F6E8")]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         #endregion

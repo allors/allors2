@@ -61,6 +61,8 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
               object: this.data.id,
               include: {
                 PurchaseOrderItemState: x,
+                PurchaseOrderItemShipmentState: x,
+                PurchaseOrderItemPaymentState: x,
                 Part: x,
                 SerialisedItem: x,
                 VatRate: x,

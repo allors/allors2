@@ -40,9 +40,7 @@ export class PurchaseOrderItemOverviewPanelComponent {
   edit: Action;
   cancel: Action;
   reject: Action;
-  confirm: Action;
-  approve: Action;
-  continue: Action;
+  quickReceive: Action;
 
   get createData(): ObjectData {
     return {
@@ -77,8 +75,7 @@ export class PurchaseOrderItemOverviewPanelComponent {
     this.edit = editService.edit();
     this.cancel = methodService.create(allors.context, this.m.PurchaseOrderItem.Cancel, { name: 'Cancel' });
     this.reject = methodService.create(allors.context, this.m.PurchaseOrderItem.Reject, { name: 'Reject' });
-    this.confirm = methodService.create(allors.context, this.m.PurchaseOrderItem.Confirm, { name: 'Confirm' });
-    this.approve = methodService.create(allors.context, this.m.PurchaseOrderItem.Approve, { name: 'Approve' });
+    this.quickReceive = methodService.create(allors.context, this.m.PurchaseOrderItem.QuickReceive, { name: 'QuickReceive' });
 
     const sort = true;
     this.table = new Table({
@@ -95,8 +92,7 @@ export class PurchaseOrderItemOverviewPanelComponent {
         this.delete,
         this.cancel,
         this.reject,
-        this.confirm,
-        this.approve,
+        this.quickReceive
       ],
       defaultAction: this.edit,
       autoSort: true,

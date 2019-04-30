@@ -244,6 +244,11 @@ namespace Allors.Domain
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.OnHold;
                 }
 
+                if (this.PurchaseOrderState.IsSent && purchaseOrderItem.PurchaseOrderItemState.IsInProcess)
+                {
+                    purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Sent;
+                }
+
                 if (this.PurchaseOrderState.IsFinished)
                 {
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Finished;
@@ -291,17 +296,17 @@ namespace Allors.Domain
 
             if (this.PurchaseOrderState.IsAwaitingApprovalLevel1)
             {
-                if (!openTasks.OfType<PurchaseOrderApproval>().Any())
+                if (!openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
                 {
-                    new PurchaseOrderApprovalBuilder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                    new PurchaseOrderApprovalLevel1Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
                 }
             }
 
             if (this.PurchaseOrderState.IsAwaitingApprovalLevel2)
             {
-                if (!openTasks.OfType<PurchaseOrderApproval>().Any())
+                if (!openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
                 {
-                    new PurchaseOrderApprovalBuilder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                    new PurchaseOrderApprovalLevel2Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
                 }
             }
         }
@@ -359,7 +364,19 @@ namespace Allors.Domain
 
         public void AppsApprove(OrderApprove method)
         {
-            this.PurchaseOrderState = this.NeedsApprovalLevel2 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
+            this.PurchaseOrderState = this.NeedsApprovalLevel2 && this.PurchaseOrderState.IsAwaitingApprovalLevel1 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
+
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
+            if (openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
+            {
+                openTasks.First().DateClosed = this.strategy.Session.Now();
+            }
+
+            if (openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
+            {
+                openTasks.First().DateClosed = this.strategy.Session.Now();
+            }
         }
 
         public void AppsReopen(OrderReopen method)
@@ -391,25 +408,28 @@ namespace Allors.Domain
 
             foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
             {
-                var shipmentItem = new ShipmentItemBuilder(session)
-                    .WithPart(orderItem.Part)
-                    .WithQuantity(orderItem.QuantityOrdered)
-                    .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
-                    .Build();
+                if (orderItem.PurchaseOrderItemShipmentState.IsNotReceived)
+                {
+                    var shipmentItem = new ShipmentItemBuilder(session)
+                        .WithPart(orderItem.Part)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
+                        .Build();
 
-                shipment.AddShipmentItem(shipmentItem);
+                    shipment.AddShipmentItem(shipmentItem);
 
-                new OrderShipmentBuilder(session)
-                    .WithOrderItem(orderItem)
-                    .WithShipmentItem(shipmentItem)
-                    .WithQuantity(orderItem.QuantityOrdered)
-                    .Build();
+                    new OrderShipmentBuilder(session)
+                        .WithOrderItem(orderItem)
+                        .WithShipmentItem(shipmentItem)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .Build();
 
-                new ShipmentReceiptBuilder(session)
-                    .WithQuantityAccepted(orderItem.QuantityOrdered)
-                    .WithShipmentItem(shipmentItem)
-                    .WithOrderItem(orderItem)
-                    .Build();
+                    new ShipmentReceiptBuilder(session)
+                        .WithQuantityAccepted(orderItem.QuantityOrdered)
+                        .WithShipmentItem(shipmentItem)
+                        .WithOrderItem(orderItem)
+                        .Build();
+                }
             }
         }
 

@@ -27,6 +27,7 @@ namespace Allors.Domain
         public static readonly Guid RejectedId = new Guid("0CD96679-4699-42de-9AB6-C4DA197F907D");
         public static readonly Guid OnHoldId = new Guid("BEB5870C-0542-42fa-B2FC-5D2BD21673B7");
         public static readonly Guid InProcessId = new Guid("9CD110AE-7787-469f-9A3E-F0000E35E588");
+        public static readonly Guid SentId = new Guid("9A707175-547D-4B2F-9780-1750E7878A59");
         public static readonly Guid FinishedId = new Guid("4166228F-0ECC-444b-A45E-43794184DBB9");
 
         private UniquelyIdentifiableSticky<PurchaseOrderItemState> stateCache;
@@ -48,6 +49,8 @@ namespace Allors.Domain
         public PurchaseOrderItemState OnHold => this.StateCache[OnHoldId];
 
         public PurchaseOrderItemState InProcess => this.StateCache[InProcessId];
+
+        public PurchaseOrderItemState Sent => this.StateCache[SentId];
 
         private UniquelyIdentifiableSticky<PurchaseOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session));
 
@@ -93,6 +96,11 @@ namespace Allors.Domain
             new PurchaseOrderItemStateBuilder(this.Session)
                 .WithUniqueId(InProcessId)
                 .WithName("In Process")
+                .Build();
+
+            new PurchaseOrderItemStateBuilder(this.Session)
+                .WithUniqueId(SentId)
+                .WithName("Sent")
                 .Build();
 
             new PurchaseOrderItemStateBuilder(this.Session)
