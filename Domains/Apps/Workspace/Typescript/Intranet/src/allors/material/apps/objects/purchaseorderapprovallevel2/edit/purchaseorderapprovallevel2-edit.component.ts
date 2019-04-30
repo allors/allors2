@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 
 import { Saved, ContextService, MetaService, RefreshService, Invoked, Action } from '../../../../../angular';
-import { PurchaseOrderApproval } from '../../../../../domain';
+import { PurchaseOrderApprovalLevel2 } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../base/services/object';
 import { PrintService } from '../../../services/actions/print/print.service';
@@ -13,10 +13,10 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { SaveService } from 'src/allors/material';
 
 @Component({
-  templateUrl: './purchaseorderapproval-edit.component.html',
+  templateUrl: './purchaseorderapprovallevel2-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseOrderApprovalEditComponent implements OnInit, OnDestroy {
+export class PurchaseOrderApprovalLevel2EditComponent implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -25,14 +25,14 @@ export class PurchaseOrderApprovalEditComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
 
-  purchaseOrderApproval: PurchaseOrderApproval;
+  purchaseOrderApproval: PurchaseOrderApprovalLevel2;
 
   print: Action;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public dialogRef: MatDialogRef<PurchaseOrderApprovalEditComponent>,
+    public dialogRef: MatDialogRef<PurchaseOrderApprovalLevel2EditComponent>,
     public metaService: MetaService,
     public printService: PrintService,
     public refreshService: RefreshService,
@@ -41,7 +41,7 @@ export class PurchaseOrderApprovalEditComponent implements OnInit, OnDestroy {
 
     this.m = this.metaService.m;
 
-    this.print = printService.print(this.m.PurchaseOrderApproval.PurchaseOrder);
+    this.print = printService.print(this.m.PurchaseOrderApprovalLevel2.PurchaseOrder);
   }
 
   public ngOnInit(): void {
@@ -53,7 +53,7 @@ export class PurchaseOrderApprovalEditComponent implements OnInit, OnDestroy {
         switchMap(([]) => {
 
           const pulls = [
-            pull.PurchaseOrderApproval({
+            pull.PurchaseOrderApprovalLevel2({
               object: this.data.id,
               include: {
                 PurchaseOrder: {
@@ -72,7 +72,7 @@ export class PurchaseOrderApprovalEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.purchaseOrderApproval = loaded.objects.PurchaseOrderApproval as PurchaseOrderApproval;
+        this.purchaseOrderApproval = loaded.objects.PurchaseOrderApprovalLevel2 as PurchaseOrderApprovalLevel2;
 
         this.title = this.purchaseOrderApproval.Title;
       });

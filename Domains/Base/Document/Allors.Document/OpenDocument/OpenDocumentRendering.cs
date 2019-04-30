@@ -100,7 +100,7 @@ namespace Allors.Document.OpenDocument
                         var manifestNs = element.GetNamespaceOfPrefix("manifest");
                         var fullPath = element.GetAttribute("full-path", manifestNs);
                         
-                        foreach (var image in this.images.Where(v => v.OriginalFullPath.Equals(fullPath)))
+                        foreach (var image in this.images?.Where(v => v.OriginalFullPath.Equals(fullPath)))
                         {
                             var newElement = (XmlElement)element.Clone();
                             documentElement.AppendChild(newElement);
@@ -118,7 +118,7 @@ namespace Allors.Document.OpenDocument
                 }
             }
 
-            foreach (var image in this.images.Where(v => v.OriginalFullPath != null))
+            foreach (var image in this.images?.Where(v => v.OriginalFullPath != null))
             {
                 this.fileByFileName.Add(image.FullPath, image.Contents);
             }

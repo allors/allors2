@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using Meta;
 
-    public partial class PurchaseOrderApprovals
+    public partial class PurchaseOrderApprovalsLevel2
     {
 
         protected override void AppsSecure(Security config)

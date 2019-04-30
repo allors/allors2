@@ -50,6 +50,7 @@ export class PurchaseOrderOverviewSummaryComponent {
             TakenViaSupplier: x,
             PurchaseOrderState: x,
             PurchaseOrderShipmentState: x,
+            PurchaseOrderPaymentState: x,
             CreatedBy: x,
             LastModifiedBy: x,
             PrintDocument: {

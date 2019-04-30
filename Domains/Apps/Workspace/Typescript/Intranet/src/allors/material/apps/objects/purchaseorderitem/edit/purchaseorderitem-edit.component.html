@@ -3,9 +3,10 @@
   <h3 mat-dialog-title>{{title}}</h3>
 
   <div mat-dialog-content>
-
     <div class="row" *ngIf="!orderItem.isNew">
       <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.PurchaseOrderItemState" display="Name" label="Status"></a-mat-static>
+      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.PurchaseOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
+      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.PurchaseOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
     </div>
 
     <div class="row">

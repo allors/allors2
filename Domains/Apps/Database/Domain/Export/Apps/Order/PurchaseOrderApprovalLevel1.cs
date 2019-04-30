@@ -2,16 +2,16 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    public partial class PurchaseOrderApproval
+    public partial class PurchaseOrderApprovalLevel1
     {
-        public void AppsApprove(PurchaseOrderApprovalApprove method)
+        public void AppsApprove(PurchaseOrderApprovalLevel1Approve method)
         {
             this.AssignPerformer();
 
             this.PurchaseOrder.Approve();
         }
 
-        public void AppsReject(PurchaseOrderApprovalReject method)
+        public void AppsReject(PurchaseOrderApprovalLevel1Reject method)
         {
             this.AssignPerformer();
 

@@ -73,6 +73,39 @@ namespace Allors.Domain
             this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
         }
 
+        public void AppsQuickReceive(PurchaseOrderItemQuickReceive method)
+        {
+            var session = this.strategy.Session;
+
+            //Shipment receipt
+            var shipment = new PurchaseShipmentBuilder(session)
+                .WithShipmentMethod(new ShipmentMethods(session).Ground)
+                .WithReceiver(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
+                .WithShipFromParty(this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier)
+                .WithFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
+                .Build();
+
+            var shipmentItem = new ShipmentItemBuilder(session)
+                .WithPart(this.Part)
+                .WithQuantity(this.QuantityOrdered)
+                .WithContentsDescription($"{this.QuantityOrdered} * {this.Part.Name}")
+                .Build();
+
+            shipment.AddShipmentItem(shipmentItem);
+
+            new OrderShipmentBuilder(session)
+                .WithOrderItem(this)
+                .WithShipmentItem(shipmentItem)
+                .WithQuantity(this.QuantityOrdered)
+                .Build();
+
+            new ShipmentReceiptBuilder(session)
+                .WithQuantityAccepted(this.QuantityOrdered)
+                .WithShipmentItem(shipmentItem)
+                .WithOrderItem(this)
+                .Build();
+        }
+
         public void CancelFromOrder()
         {
             this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;

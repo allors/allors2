@@ -18,15 +18,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { PurchaseOrderApprovalEditComponent } from './purchaseorderapproval-edit.component';
-export { PurchaseOrderApprovalEditComponent } from './purchaseorderapproval-edit.component';
+import { PurchaseOrderApprovalLevel1EditComponent } from './purchaseorderapprovallevel1-edit.component';
+export { PurchaseOrderApprovalLevel1EditComponent } from './purchaseorderapprovallevel1-edit.component';
 
 @NgModule({
   declarations: [
-    PurchaseOrderApprovalEditComponent,
+    PurchaseOrderApprovalLevel1EditComponent,
   ],
   exports: [
-    PurchaseOrderApprovalEditComponent,
+    PurchaseOrderApprovalLevel1EditComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -64,4 +64,4 @@ export { PurchaseOrderApprovalEditComponent } from './purchaseorderapproval-edit
     RouterModule,
   ],
 })
-export class PurchaseOrderApprovalEditModule { }
+export class PurchaseOrderApprovalLevel1EditModule { }
