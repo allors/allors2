@@ -1,22 +1,24 @@
+using src.allors.material.custom.relations.people;
+
 namespace Tests.Relations
 {
     using Allors.Domain;
     using Allors.Meta;
 
-    using Pages.Relations;
+    
 
     using Xunit;
 
     [Collection("Test collection")]
     public class PersonListTest : Test
     {
-        private PeoplePage page;
+        private src.allors.material.custom.relations.people.PeopleComponent page;
 
         public PersonListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToPeople();
+            this.Login();
+            this.page = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

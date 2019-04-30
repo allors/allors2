@@ -1,25 +1,25 @@
+using src.allors.material.custom.tests.form;
+
 namespace Tests
 {
     using System.Linq;
 
-    using Allors;
     using Allors.Domain;
 
     using Angular;
-    using Pages.Relations;
 
     using Xunit;
 
     [Collection("Test collection")]
     public class InputTest : Test
     {
-        private readonly FormPage page;
+        private readonly FormComponent page;
 
         public InputTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToForm();
+            this.Login();
+            this.page = this.Sidenav.NavigateToForm();
         }
         
         [Fact]

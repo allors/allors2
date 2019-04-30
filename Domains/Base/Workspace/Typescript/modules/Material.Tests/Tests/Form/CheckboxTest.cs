@@ -1,3 +1,5 @@
+using src.allors.material.custom.tests.form;
+
 namespace Tests
 {
     using System.Linq;
@@ -6,20 +8,20 @@ namespace Tests
     using Allors.Meta;
 
     using Angular;
-    using Pages.Relations;
+    
 
     using Xunit;
 
     [Collection("Test collection")]
     public class CheckboxTest : Test
     {
-        private readonly FormPage page;
+        private readonly FormComponent page;
 
         public CheckboxTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToForm();
+            this.Login();
+            this.page = this.Sidenav.NavigateToForm();
         }
 
         [Fact]

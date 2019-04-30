@@ -1,4 +1,6 @@
-namespace Pages.Relations
+using Angular;
+
+namespace src.allors.material.custom.tests.form
 {
     using Allors.Meta;
 
@@ -7,13 +9,8 @@ namespace Pages.Relations
     using Angular.Html;
     using Angular.Material;
 
-    public class FormPage : MainPage
+    public partial class FormComponent 
     {
-        public FormPage(IWebDriver driver)
-            : base(driver)
-        {
-        }
-
         public MaterialInput String => new MaterialInput(this.Driver, roleType: M.Data.String);
 
         public MaterialDatePicker Date => new MaterialDatePicker(this.Driver, roleType: M.Data.Date);

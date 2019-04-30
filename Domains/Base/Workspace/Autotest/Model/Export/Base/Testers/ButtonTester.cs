@@ -13,8 +13,6 @@ namespace Autotest.Testers
 
         public string Value => this.Element.InnerText;
 
-        public override string Selector => this.Scope != null
-            ? $@"By.XPath(@""//button[normalize-space()=""""{this.Value}"""" and ancestor::*[@data-test-scope][1]/@data-test-scope='{this.Scope}']"")"
-            : $@"By.XPath(@""//button[normalize-space()=""""{this.Value}""""]"")";
+        public override string Selector => $@"By.XPath(@""//button[normalize-space()='{this.Value}'{this.ByScope}]"")";
     }
 }

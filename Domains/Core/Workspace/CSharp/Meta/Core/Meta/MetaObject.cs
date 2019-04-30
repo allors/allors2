@@ -18,12 +18,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Meta
 {
     using System;
-    using System.Reflection;
 
     /// <summary>
     /// Base class for Meta objects.

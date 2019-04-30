@@ -19,15 +19,12 @@
 // <summary>Defines the Domain type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Meta
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     public sealed partial class MetaPopulation : IMetaPopulation
     {

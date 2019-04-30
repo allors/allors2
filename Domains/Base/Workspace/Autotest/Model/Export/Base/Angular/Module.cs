@@ -3,9 +3,10 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System.Collections.Generic;
+
 namespace Autotest.Angular
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Autotest.Html;
     using Newtonsoft.Json.Linq;
@@ -48,6 +49,8 @@ namespace Autotest.Angular
 
         public Route[] Routes { get; set; }
 
+        public Route[] FlattenedRoutes { get; set; }
+
         public void BaseLoad()
         {
             var jsonRoutes = this.Json["routes"];
@@ -57,6 +60,12 @@ namespace Autotest.Angular
                     route.BaseLoad();
                     return route;
                 }).ToArray() : new Route[0];
+
+            var pathByRedirectTo = new Dictionary<string, string>();
+            foreach (var route in this.Routes)
+            {
+                route.CreateFullPath("/", pathByRedirectTo);
+            }
 
             var bootstrapComponentIds = Angular.Reference.ParseIds(this.Json["bootstrapComponents"]);
             var declaredDirectiveIds = Angular.Reference.ParseIds(this.Json["declaredDirectives"]);
@@ -79,8 +88,8 @@ namespace Autotest.Angular
 
             this.EntryComponents = entryComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
 
-            var flattenedRoutes = this.Routes.SelectMany(v => v.Flattened).ToArray();
-            this.RoutedComponents = flattenedRoutes.Where(v => v.Component != null).Select(v => v.Component).Distinct().ToArray();
+            this.FlattenedRoutes = this.Routes.SelectMany(v => v.Flattened).ToArray();
+            this.RoutedComponents = this.FlattenedRoutes.Where(v => v.Component != null).Select(v => v.Component).Distinct().ToArray();
             this.DeclaredEntryComponents = this.EntryComponents.Except(this.RoutedComponents).Except(this.BootstrapComponents).ToArray();
         }
 

@@ -20,8 +20,6 @@
 
 namespace Allors.Meta
 {
-    using System;
-
     public abstract partial class OperandType : DomainObject
     {
         public OperandType(MetaPopulation metaPopulation)

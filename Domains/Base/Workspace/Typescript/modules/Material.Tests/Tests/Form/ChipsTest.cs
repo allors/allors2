@@ -1,3 +1,5 @@
+using src.allors.material.custom.tests.form;
+
 namespace Tests
 {
     using System.Linq;
@@ -6,23 +8,19 @@ namespace Tests
     using Allors.Meta;
 
     using Angular;
-    using Pages;
-    using Pages.Relations;
 
     using Xunit;
 
     [Collection("Test collection")]
     public class ChipsTest : Test
     {
-        private readonly Sidenav sidenav;
-
-        private readonly FormPage page;
+        private readonly FormComponent page;
 
         public ChipsTest(TestFixture fixture)
             : base(fixture)
         {
-            this.sidenav = this.Login().Sidenav;
-            this.page = this.sidenav.NavigateToForm();
+            this.Login();
+            this.page = this.Sidenav.NavigateToForm();
         }
 
         [Fact]

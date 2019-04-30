@@ -19,8 +19,6 @@
 // <summary>Defines the ObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Meta
 {
     using System.Collections.Generic;
