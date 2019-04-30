@@ -21,8 +21,6 @@
 
 namespace Allors.Meta
 {
-    using System;
-
     /// <summary>
     /// The names for unit ObjectTypes.
     /// </summary>

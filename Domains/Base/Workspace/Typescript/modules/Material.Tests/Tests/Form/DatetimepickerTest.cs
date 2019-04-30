@@ -1,28 +1,27 @@
+using src.allors.material.custom.tests.form;
+
 namespace Tests
 {
     using System;
     using System.Linq;
 
-    using Allors;
     using Allors.Domain;
 
     using Angular;
-    using Pages.Relations;
 
     using Xunit;
 
     [Collection("Test collection")]
     public class DatetimepickerTest : Test
     {
-        private FormPage page;
+        private FormComponent page;
 
         public DatetimepickerTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToForm();
+            this.Login();
+            this.page = this.Sidenav.NavigateToForm();
         }
-
 
         [Fact]
         public void Populated()
@@ -35,8 +34,8 @@ namespace Tests
                 data.DateTime = expected;
                 this.Session.Commit();
 
-                var homePage = this.page.Sidenav.NavigateToHome();
-                this.page = homePage.Sidenav.NavigateToForm();
+                this.Sidenav.NavigateToHome();
+                this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.Datetime.Value;
                 Assert.Equal(expected, actual);
@@ -48,8 +47,8 @@ namespace Tests
                 data.DateTime = expected;
                 this.Session.Commit();
 
-                var homePage = this.page.Sidenav.NavigateToHome();
-                this.page = homePage.Sidenav.NavigateToForm();
+                this.Sidenav.NavigateToHome();
+                this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.Datetime.Value;
                 Assert.Equal(expected, actual);

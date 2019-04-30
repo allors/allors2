@@ -5,10 +5,8 @@
 
 namespace Autotest.Angular
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Autotest.Html;
     using Newtonsoft.Json.Linq;
 
     public partial class Project
@@ -36,6 +34,11 @@ namespace Autotest.Angular
         public Pipe[] Pipes { get; set; }
 
         public Provider[] Providers { get; set; }
+
+        public Route FindRouteForFullPath(string fullPath)
+        {
+            return this.MainModule.FlattenedRoutes.FirstOrDefault(v => v.FullPaths.Contains(fullPath));
+        }
 
         private void BaseLoad(JObject jsonProject)
         {

@@ -1,3 +1,6 @@
+using src.app.dashboard;
+using src.app.main;
+
 namespace Tests
 {
     using System;
@@ -9,7 +12,7 @@ namespace Tests
     using Allors.Meta;
     using Allors.Services;
 
-    using Pages;
+    
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -81,12 +84,14 @@ namespace Tests
 
         public ISession Session { get; set; }
 
+        public Sidenav Sidenav => new MainComponent(this.Driver).Sidenav;
+
         public virtual void Dispose()
         {
             this.DriverManager.Stop();
         }
 
-        public HomePage Login(string userName = "administrator")
+        public DashboardComponent Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
 

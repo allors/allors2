@@ -20,8 +20,6 @@
 
 namespace Allors.Meta
 {
-    using System;
-
     public abstract partial class PropertyType : OperandType
     {
         protected PropertyType(MetaPopulation metaPopulation)

@@ -5,8 +5,6 @@
 
 namespace Autotest.Angular
 {
-    using System;
-    using Autotest.Html;
     using Newtonsoft.Json.Linq;
 
     public partial class Project

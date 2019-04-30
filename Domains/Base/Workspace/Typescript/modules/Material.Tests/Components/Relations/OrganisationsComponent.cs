@@ -1,16 +1,13 @@
-namespace Pages.Relations
+using Angular;
+
+namespace src.allors.material.custom.relations.organisations
 {
     using OpenQA.Selenium;
 
     using Angular.Html;
 
-    public class OrganisationsPage : MainPage
+    public partial class OrganisationsComponent 
     {
-        public OrganisationsPage(IWebDriver driver)
-            : base(driver)
-        {
-        }
-
         public Input Name => new Input(this.Driver, By.CssSelector($"input[formcontrolname='name']"));
 
         public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));

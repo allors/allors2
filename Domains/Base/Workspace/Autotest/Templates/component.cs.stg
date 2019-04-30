@@ -33,13 +33,13 @@ $directive.Testers:{tester|$tester(tester)$}; separator="\n"$
 >>
 
 tester(tester) ::= <<
-  
 $if(tester.IsInput)$
-        public Angular.Html.Input $tester.Name; format="cap"$ => new Angular.Html.Input(this.Driver, $tester.Selector$);
+        public Angular.Html.Input $tester.PropertyName$ => new Angular.Html.Input(this.Driver, $tester.Selector$);
 $endif$
-
 $if(tester.IsButton)$
-        public Angular.Html.Button $tester.Name; format="cap"$ => new Angular.Html.Button(this.Driver, $tester.Selector$);
+        public Angular.Html.Button $tester.PropertyName$ => new Angular.Html.Button(this.Driver, $tester.Selector$);
 $endif$
-
+$if(tester.IsAllorsMaterialSideMenuComponent)$
+        public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);
+$endif$
 >>

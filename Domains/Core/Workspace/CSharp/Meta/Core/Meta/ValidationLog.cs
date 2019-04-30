@@ -19,8 +19,6 @@
 // <summary>Defines the ValidationReport type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Meta
 {
     using System;

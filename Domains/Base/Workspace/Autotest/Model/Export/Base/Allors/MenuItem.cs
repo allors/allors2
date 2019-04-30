@@ -3,6 +3,9 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Allors.Meta;
+using Autotest.Angular;
+
 namespace Autotest
 {
     using System;
@@ -19,6 +22,15 @@ namespace Autotest
         public string AssignedLink { get; set; }
 
         public MenuItem[] Children { get; set; }
+
+        public Menu Menu { get; set; }
+
+        public MenuItem Parent { get; set; }
+
+        public Model Model => this.Menu.Model;
+
+        public ObjectType ObjectType => (ObjectType)(this.Id.HasValue ? this.Model.MetaPopulation.Find(this.Id.Value) : null);
+
 
         public MetaExtension MetaExtension
         {
@@ -37,6 +49,16 @@ namespace Autotest
         public string Title => this.AssignedTitle ?? this.ObjectType?.PluralName;
 
         public string Link => this.AssignedLink ?? this.MetaExtension?.List;
+
+        public Directive Component
+        {
+            get
+            {
+                var link = this.Link;
+                var route = this.Menu.Model.Project.FindRouteForFullPath(link);
+                return route?.Component;
+            }
+        }
 
         public void BaseLoadMenu(JObject json)
         {

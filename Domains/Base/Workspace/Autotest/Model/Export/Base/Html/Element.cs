@@ -29,7 +29,7 @@ namespace Autotest.Html
 
         public Text[] FlattenedText => this.Flattened.OfType<Text>().ToArray();
 
-        public INode[] Flattened => this.Flatten(this.Children).Concat(new[] {this}).ToArray();
+        public INode[] Flattened => this.Flatten(this.Children).Concat(new[] { this }).ToArray();
 
         public JToken Json { get; }
 
@@ -52,14 +52,20 @@ namespace Autotest.Html
         {
             get
             {
-                var parentElement = (Element) this.Parent;
+                var parentElement = (Element)this.Parent;
                 return parentElement != null
-                    ? new[] {parentElement}.Concat(parentElement.Ancestors).ToArray()
+                    ? new[] { parentElement }.Concat(parentElement.Ancestors).ToArray()
                     : new Element[0];
             }
         }
 
-        public string Scope => this.Component?.Scope;
+        public string Scope
+        {
+            get
+            {
+                return this.Component?.Scope ?? this.Attributes.FirstOrDefault(v => v.Name == "data-test-scope")?.Value;
+            }
+        }
 
         public void BaseLoad()
         {
@@ -89,7 +95,7 @@ namespace Autotest.Html
         private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)
         {
             return nodes.SelectMany(v =>
-                v is Element element ? new[] {v}.Concat(this.Flatten(element.Children)) : new[] {v});
+                v is Element element ? new[] { v }.Concat(this.Flatten(element.Children)) : new[] { v });
         }
     }
 }

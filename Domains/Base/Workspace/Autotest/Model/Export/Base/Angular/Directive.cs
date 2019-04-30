@@ -5,7 +5,6 @@
 
 namespace Autotest.Angular
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Autotest.Html;

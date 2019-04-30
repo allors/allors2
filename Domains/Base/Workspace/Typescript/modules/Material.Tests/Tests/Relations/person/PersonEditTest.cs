@@ -1,10 +1,11 @@
+using src.allors.material.custom.relations.people;
+using src.allors.material.custom.relations.people.person;
+
 namespace Tests.Relations
 {
     using System.Linq;
 
     using Allors.Domain;
-
-    using Pages.Relations;
 
     using Angular;
 
@@ -13,13 +14,13 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonEditTest : Test
     {
-        private readonly PeoplePage people;
+        private readonly PeopleComponent people;
 
         public PersonEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPeople();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
@@ -35,7 +36,7 @@ namespace Tests.Relations
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var personEditPage = new PersonEditPage(this.Driver);
+            var personEditPage = new PersonComponent(this.Driver);
 
             personEditPage.FirstName.Set("Jos")
                           .LastName.Set("Smos")
@@ -60,7 +61,7 @@ namespace Tests.Relations
             var before = new People(this.Session).Extent().ToArray();
             var person = before.First(v => v.FullName == "John Doe");
 
-            var page = this.people.Select(person).Edit();
+            var page = this.people.Select(person).EditAndNavigate();
 
             page.FirstName.Set("Jos")
                 .LastName.Set("Smos")

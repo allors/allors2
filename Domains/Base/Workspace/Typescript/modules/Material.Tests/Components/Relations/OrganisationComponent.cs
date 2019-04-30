@@ -1,4 +1,4 @@
-namespace Pages.Relations
+namespace src.allors.material.custom.relations.organisations.organisation
 {
     using Allors.Meta;
 
@@ -7,13 +7,8 @@ namespace Pages.Relations
     using Angular.Html;
     using Angular.Material;
 
-    public class OrganisationEditPage : MainPage
+    public partial class OrganisationComponent 
     {
-        public OrganisationEditPage(IWebDriver driver)
-            : base(driver)
-        {
-        }
-
         public MaterialInput Name => new MaterialInput(this.Driver, roleType: M.Organisation.Name);
         
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));

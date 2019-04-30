@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System.Text.RegularExpressions;
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -40,6 +42,8 @@ namespace Autotest.Angular
 
         public string RedirectTo { get; set; }
 
+        public string[] FullPaths { get; set; }
+
         public void BaseLoad()
         {
             var jsonRoutes = this.Json["children"];
@@ -61,6 +65,36 @@ namespace Autotest.Angular
 
             var componentId = Angular.Reference.ParseId(this.Json["component"]);
             this.Component = componentId != null ? this.Module.Project.DirectiveById[componentId] : null;
+        }
+
+        public void CreateFullPath(string parentPath, Dictionary<string, string> pathByRedirectTo)
+        {
+            var path = parentPath + this.Path;
+
+            if (this.RedirectTo != null)
+            {
+                pathByRedirectTo[this.RedirectTo] = path;
+                this.FullPaths = new string[0];
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(this.Path))
+                {
+                    this.FullPaths = pathByRedirectTo.TryGetValue(path, out var redirectTo) ?
+                        new[] { redirectTo, path } :
+                        new[] { path };
+                }
+                else
+                {
+                    this.FullPaths = new string[0];
+                }
+            }
+
+            var childParentPath = path.EndsWith("/") ? path : path + "/";
+            foreach (var child in this.Children)
+            {
+                child.CreateFullPath(childParentPath, pathByRedirectTo);
+            }
         }
 
         private IEnumerable<Route> Flatten(IEnumerable<Route> routes)
