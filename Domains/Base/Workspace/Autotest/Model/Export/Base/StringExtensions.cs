@@ -3,11 +3,10 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using System.Linq;
-
 namespace Autotest
 {
     using System;
+    using System.Linq;
 
     public static partial class StringExtensions
     {

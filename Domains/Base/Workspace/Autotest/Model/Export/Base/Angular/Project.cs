@@ -108,6 +108,11 @@ namespace Autotest.Angular
                 directive.BaseLoad();
             }
 
+            foreach (var directive in this.Directives)
+            {
+                directive.BaseLoadTemplate();
+            }
+
             foreach (var provider in this.Providers)
             {
                 provider.BaseLoad();

@@ -13,6 +13,6 @@ namespace Autotest.Testers
         public override string Name => this.Element.Attributes
             .FirstOrDefault(v => v.Name?.ToLowerInvariant() == "formcontrolname")?.Value;
 
-        public override string Selector => $@"By.XPath(@""//input[@formcontrolname='{this.Name}'{this.ByScope}]"")";
+        public string Selector => $@"By.XPath(@""//input[@formcontrolname='{this.Name}'{this.ByScope}]"")";
     }
 }

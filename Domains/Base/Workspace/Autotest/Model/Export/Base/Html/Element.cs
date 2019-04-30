@@ -94,8 +94,7 @@ namespace Autotest.Html
 
         private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)
         {
-            return nodes.SelectMany(v =>
-                v is Element element ? new[] { v }.Concat(this.Flatten(element.Children)) : new[] { v });
+            return nodes.SelectMany(v => v is Element element ? new[] { v }.Concat(this.Flatten(element.Children)) : new[] { v });
         }
     }
 }

@@ -3,14 +3,12 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using Allors.Meta;
-using Autotest.Angular;
-
 namespace Autotest
 {
     using System;
     using System.Linq;
-
+    using Allors.Meta;
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public partial class MenuItem

@@ -11,9 +11,14 @@ namespace Angular.Material
     public class MaterialInput : Directive
     {
         public MaterialInput(IWebDriver driver, RoleType roleType)
-        : base(driver)
+        : this(driver, By.CssSelector($"a-mat-input *[data-allors-roletype='{roleType.IdAsNumberString}'] input"))
         {
-            this.Selector = By.CssSelector($"a-mat-input *[data-allors-roletype='{roleType.IdAsNumberString}'] input");
+        }
+
+        public MaterialInput(IWebDriver driver, By selector)
+            : base(driver)
+        {
+            this.Selector = selector;
         }
 
         public By Selector { get; }

@@ -1,5 +1,7 @@
 namespace Autotest.Testers
 {
+    using System;
+    using System.Linq;
     using Autotest.Html;
 
     public partial class TesterFactory
@@ -13,6 +15,11 @@ namespace Autotest.Testers
 
                 case "button":
                     return new ButtonTester(element);
+            }
+
+            if (element.Attributes.Any(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase)))
+            {
+                return new RoleFieldTester(element);
             }
 
             if (element.Component != null)

@@ -1,5 +1,3 @@
-using Angular;
-
 namespace src.allors.material.custom.tests.form
 {
     using Allors.Meta;
@@ -11,8 +9,6 @@ namespace src.allors.material.custom.tests.form
 
     public partial class FormComponent 
     {
-        public MaterialInput String => new MaterialInput(this.Driver, roleType: M.Data.String);
-
         public MaterialDatePicker Date => new MaterialDatePicker(this.Driver, roleType: M.Data.Date);
 
         public MaterialDatetimePicker Datetime => new MaterialDatetimePicker(this.Driver, roleType: M.Data.DateTime);

@@ -20,6 +20,8 @@ component(model, directive) ::= <<
 namespace $directive.Reference.Namespace$
 {
     using OpenQA.Selenium;
+    using Angular.Material;
+
 
     public partial class $directive.Reference.Name$ : Angular.Component
     {
@@ -41,5 +43,8 @@ $if(tester.IsButton)$
 $endif$
 $if(tester.IsAllorsMaterialSideMenuComponent)$
         public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);
+$endif$
+$if(tester.IsAllorsMaterialInputComponent)$
+        public Angular.Material.MaterialInput<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialInput(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$);
 $endif$
 >>

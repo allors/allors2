@@ -3,12 +3,10 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using Autotest.Angular;
-
 namespace Autotest.Html
 {
     using System.Linq;
-
+    using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 
     public partial class ExpansionCase : INode

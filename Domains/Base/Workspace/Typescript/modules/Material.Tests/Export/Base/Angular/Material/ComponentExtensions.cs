@@ -6,7 +6,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public static partial class PageExtensions
+    public static partial class ComponentExtensions
     {
         public static MaterialAutocomplete<T> MaterialAutocomplete<T>(this T @this, RoleType roleType) where T : Component
         {

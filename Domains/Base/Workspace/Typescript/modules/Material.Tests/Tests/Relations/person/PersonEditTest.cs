@@ -40,7 +40,7 @@ namespace Tests.Relations
 
             personEditPage.FirstName.Set("Jos")
                           .LastName.Set("Smos")
-                          .Save.Click();
+                          .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -65,7 +65,7 @@ namespace Tests.Relations
 
             page.FirstName.Set("Jos")
                 .LastName.Set("Smos")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

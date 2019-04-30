@@ -3,8 +3,6 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using System.Text.RegularExpressions;
-
 namespace Autotest.Angular
 {
     using System.Collections.Generic;

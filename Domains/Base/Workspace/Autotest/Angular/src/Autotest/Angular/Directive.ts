@@ -34,6 +34,10 @@ export class Directive {
         if (classDeclaration) {
             this.type = new Class(classDeclaration);
         }
+
+        if(this.name === 'MatToolbar'){
+            console.log(this.name);
+        }
     }
 
     public toJSON(): any {

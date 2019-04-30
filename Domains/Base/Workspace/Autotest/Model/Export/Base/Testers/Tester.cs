@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-
 namespace Autotest.Testers
 {
     using System;
@@ -19,8 +17,6 @@ namespace Autotest.Testers
         public abstract string Name { get; }
 
         public string PropertyName => this.ElementScopes.Aggregate(this.Name.Capitalize(), (current, scope) => scope.Capitalize() + "_" + current);
-
-        public abstract string Selector { get; }
 
         public string[] ElementScopes => this.Element.Ancestors.Where(v => v.Scope != null).Select(v => v.Scope).ToArray();
 
@@ -57,7 +53,7 @@ namespace Autotest.Testers
                 var elementName = this.Element.Name;
 
                 return string.Equals($"is{typeName}", typeCheck, StringComparison.OrdinalIgnoreCase) ||
-                       (componentName != null && string.Equals($"is{componentName}", typeCheck,StringComparison.OrdinalIgnoreCase)) ||
+                       (componentName != null && string.Equals($"is{componentName}", typeCheck, StringComparison.OrdinalIgnoreCase)) ||
                        string.Equals($"is{elementName}", typeCheck, StringComparison.OrdinalIgnoreCase);
 
             }

@@ -7,6 +7,7 @@ namespace Autotest.Angular
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using Autotest.Html;
     using Autotest.Testers;
     using Autotest.Typescript;
@@ -14,6 +15,11 @@ namespace Autotest.Angular
 
     public partial class Directive
     {
+        private static Regex[] StringRegexes = {
+            new Regex(@"^'(.*)'$"),
+            new Regex(@"^""(.*)""$"),
+        };
+
         public Dictionary<Element, Directive> ComponentByElement { get; set; }
 
         public Module DeclaringModule
@@ -58,7 +64,10 @@ namespace Autotest.Angular
             var typeTemplate = this.Json["type"];
             this.Type = typeTemplate != null ? new Class(this, typeTemplate) : null;
             this.Type?.BaseLoad();
+        }
 
+        public void BaseLoadTemplate()
+        {
             if (this.Template != null)
             {
                 this.ComponentByElement = this.Template.Elements
@@ -94,7 +103,7 @@ namespace Autotest.Angular
                     this.ComponentByElement.TryGetValue(element, out var component);
                     this.AttributeDirectivesByElement.TryGetValue(element, out var attributeDirectives);
 
-                    element.Directives = new[] {component}
+                    element.Directives = new[] { component }
                         .Concat(attributeDirectives ?? new Directive[0])
                         .Where(v => v != null)
                         .ToArray();
@@ -116,9 +125,22 @@ namespace Autotest.Angular
                         .FirstOrDefault(v => v.Decorators.Contains(decorator));
                     if (testScopeProperty != null)
                     {
-                        if (testScopeProperty.Initializer.Equals("this.constructor.name"))
+                        var initializer = testScopeProperty.Initializer;
+                        if (initializer.Equals("this.constructor.name"))
                         {
                             this.Scope = this.Type.Name;
+                        }
+                        else
+                        {
+                            foreach (var regex in StringRegexes)
+                            {
+                                var match = regex.Match(initializer);
+                                if (match.Success)
+                                {
+                                    this.Scope = match.Groups[1].Value;
+                                    break;
+                                }
+                            }
                         }
                     }
                 }

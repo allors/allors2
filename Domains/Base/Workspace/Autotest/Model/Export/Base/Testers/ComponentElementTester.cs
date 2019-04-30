@@ -1,5 +1,3 @@
-using System;
-
 namespace Autotest.Testers
 {
     using System.Linq;
@@ -18,7 +16,7 @@ namespace Autotest.Testers
 
         public override string Name => this.IdAttribute?.Value ?? this.NameAttribute?.Value ?? this.Element.Name;
 
-        public override string Selector
+        public string Selector
         {
             get
             {

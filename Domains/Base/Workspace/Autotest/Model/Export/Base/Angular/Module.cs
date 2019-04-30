@@ -3,10 +3,9 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace Autotest.Angular
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Autotest.Html;
     using Newtonsoft.Json.Linq;
@@ -29,11 +28,12 @@ namespace Autotest.Angular
 
         public Pipe[] ExportedPipes { get; set; }
 
-        public Directive[] FlattenedDeclaredDirectives
+        public Directive[] Directives
         {
             get
             {
-                return this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.DeclaredDirectives)).ToArray();
+                var directives = this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.ExportedDirectives)).Distinct().ToArray();
+                return directives;
             }
         }
 
@@ -93,10 +93,15 @@ namespace Autotest.Angular
             this.DeclaredEntryComponents = this.EntryComponents.Except(this.RoutedComponents).Except(this.BootstrapComponents).ToArray();
         }
 
+        public Directive LookupComponent(Element element)
+        {
+            return this.Directives.FirstOrDefault(v => Equals(element.Name, v.Selector) || Equals(element.Name, v.ExportAs));
+        }
+
         public Directive[] LookupAttributeDirectives(Element element)
         {
             var names = element.Attributes.Select(v => v.Name);
-            var component = this.FlattenedDeclaredDirectives.FirstOrDefault(v => names.Contains(v.ExportAs));
+            var component = this.Directives.FirstOrDefault(v => names.Contains(v.ExportAs));
 
             if (component != null)
             {
@@ -105,13 +110,8 @@ namespace Autotest.Angular
             else
             {
                 var attributeNames = element.Attributes.Select(v => $"{element}[{v.Name}]");
-                return this.FlattenedDeclaredDirectives.Where(v => attributeNames.Any(w => v.Selector?.Contains(w) ?? false)).ToArray();
+                return this.Directives.Where(v => attributeNames.Any(w => v.Selector?.Contains(w) ?? false)).ToArray();
             }
-        }
-
-        public Directive LookupComponent(Element element)
-        {
-            return this.FlattenedDeclaredDirectives.FirstOrDefault(v => Equals(element.Name, v.Selector) || Equals(element.Name, v.ExportAs));
         }
     }
 }

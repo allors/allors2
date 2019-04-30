@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, DoCheck } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startWith } from 'rxjs/operators';
 
 import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
