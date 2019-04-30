@@ -156,7 +156,7 @@ namespace Allors.Domain
 
             this.SetIdentity("approver");
 
-            var purchaseOrderApproval = order.PurchaseOrderApprovalsWherePurchaseOrder.First;
+            var purchaseOrderApproval = order.PurchaseOrderApprovalsLevel1WherePurchaseOrder.First;
             var acl = new AccessControlList(purchaseOrderApproval, approver);
             Assert.True(acl.CanWrite(M.ApproveTask.Comment));
             Assert.True(acl.CanExecute(M.ApproveTask.Approve));
