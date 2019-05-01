@@ -11,11 +11,14 @@ namespace Angular.Material
     public class MaterialSlideToggle
     : Directive
     {
-        public MaterialSlideToggle(IWebDriver driver, RoleType roleType)
+        public MaterialSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.InputSelector = By.CssSelector($"mat-slide-toggle[data-allors-roletype='{roleType.IdAsNumberString}'] input");
-            this.ContainerSelector = By.CssSelector($"mat-slide-toggle[data-allors-roletype='{roleType.IdAsNumberString}']");
+            var inputXPath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            this.InputSelector = By.XPath(inputXPath);
+
+            var containerXPath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            this.ContainerSelector = By.XPath(containerXPath);
         }
 
         public By InputSelector { get; }
@@ -58,8 +61,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialSlideToggle<T> : MaterialSlideToggle where T : Component
     {
-        public MaterialSlideToggle(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialSlideToggle(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

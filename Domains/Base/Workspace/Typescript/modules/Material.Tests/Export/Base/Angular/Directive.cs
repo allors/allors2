@@ -1,4 +1,3 @@
-
 namespace Angular
 {
     using System.Linq;
@@ -24,7 +23,7 @@ namespace Angular
 
             return string.Empty;
         }
-
+        
         protected void ScrollToElement(IWebElement element)
         {
             //const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";

@@ -11,10 +11,11 @@ namespace Angular.Material
 
     public class MaterialChips : Directive
     {
-        public MaterialChips(IWebDriver driver, RoleType roleType)
+        public MaterialChips(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)
         {
-            this.Selector = By.CssSelector($"a-mat-chips *[data-allors-roletype='{roleType.IdAsNumberString}']");
+            var xpath = $"//a-mat-chips{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
+            this.Selector = By.XPath(xpath);
         }
 
         public By Selector { get; }
@@ -47,8 +48,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialChips<T> : MaterialChips where T : Component
     {
-        public MaterialChips(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialChips(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

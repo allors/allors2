@@ -43,7 +43,43 @@ $endif$
 $if(tester.IsAllorsMaterialSideMenuComponent)$
         public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);
 $endif$
-$if(tester.IsAllorsMaterialInputComponent)$
+$if(tester.IsAllorsMaterialAutocompleteComponent)$
+        public Angular.Material.MaterialAutocomplete<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialAutocomplete(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialCheckboxComponent)$
+        public Angular.Material.MaterialCheckbox<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialCheckbox(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialChipsComponent)$
+        public Angular.Material.MaterialChips<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialChips(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialDatePickerComponent)$
+        public Angular.Material.MaterialDatePicker<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialDatePicker(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialDatetimePickerComponent)$
+        public Angular.Material.MaterialDatetimePicker<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialDatetimePicker(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialFileComponent)$
+        public Angular.Material.MaterialFile<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialFile(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialFilesComponent)$
+        public Angular.Material.MaterialFiles<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialFiles(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialInputComponentComponent)$
         public Angular.Material.MaterialInput<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialInput(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialRadioGroupComponent)$
+        public Angular.Material.MaterialRadioGroup<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialRadioGroup(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialSelectComponent)$
+        public Angular.Material.MaterialSelect<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialSelect(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialSliderComponent)$
+        public Angular.Material.MaterialSlider<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialSlider(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialSlideToggleComponent)$
+        public Angular.Material.MaterialSlideToggle<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialSlideToggle(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsAllorsMaterialTextAreaComponent)$
+        public Angular.Material.MaterialTextArea<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialTextArea(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 >>

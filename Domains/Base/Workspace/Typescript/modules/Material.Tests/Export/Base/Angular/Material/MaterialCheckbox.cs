@@ -9,13 +9,13 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialCheckbox
-    : Directive
+    public class MaterialCheckbox: Directive
     {
-        public MaterialCheckbox(IWebDriver driver, RoleType roleType)
+        public MaterialCheckbox(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"a-mat-checkbox *[data-allors-roletype='{roleType.IdAsNumberString}']");
+            var xpath = $"//a-mat-checkbox{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
+            this.Selector = By.XPath(xpath);
         }
 
         public By Selector { get; }
@@ -58,8 +58,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialCheckbox<T> : MaterialCheckbox where T : Component
     {
-        public MaterialCheckbox(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialCheckbox(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

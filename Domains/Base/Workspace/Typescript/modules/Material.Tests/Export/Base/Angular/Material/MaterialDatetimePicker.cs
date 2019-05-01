@@ -12,10 +12,11 @@ namespace Angular.Material
     public class MaterialDatetimePicker
     : Directive
     {
-        public MaterialDatetimePicker(IWebDriver driver, RoleType roleType)
+        public MaterialDatetimePicker(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"div[data-allors-roletype='{roleType.IdAsNumberString}'] input");
+            var xpath = $"//a-mat-datetimepicker{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            this.Selector = By.XPath(xpath);
         }
 
         public By Selector { get; }
@@ -107,8 +108,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialDatetimePicker<T> : MaterialDatetimePicker where T : Component
     {
-        public MaterialDatetimePicker(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialDatetimePicker(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

@@ -12,10 +12,11 @@ namespace Angular.Material
     public class MaterialSlider
     : Directive
     {
-        public MaterialSlider(IWebDriver driver, RoleType roleType)
+        public MaterialSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"a-mat-slider *[data-allors-roletype='{roleType.IdAsNumberString}'] mat-slider");
+            var xpath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider";
+            this.Selector = By.XPath(xpath);
         }
 
         public By Selector { get; }
@@ -38,8 +39,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialSlider<T> : MaterialSlider where T : Component
     {
-        public MaterialSlider(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialSlider(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

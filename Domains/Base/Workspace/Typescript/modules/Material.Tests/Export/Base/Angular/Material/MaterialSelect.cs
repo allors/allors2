@@ -8,12 +8,15 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialMultipleSelect : Directive
+    public class MaterialSelect : Directive
     {
-        public MaterialMultipleSelect(IWebDriver driver, RoleType roleType) : base(driver)
+        public MaterialSelect(IWebDriver driver, RoleType roleType, params string[] scopes) : base(driver)
         {
-            this.ArrowSelector = By.CssSelector($"mat-select[data-allors-roletype='{roleType.IdAsNumberString}'] .mat-select-arrow");
-            this.ValueTextSelector = By.CssSelector($"mat-select[data-allors-roletype='{roleType.IdAsNumberString}'] .mat-select-value-text");
+            var arrowXPath = $"//a-mat-select{this.ByScopePredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]";
+            this.ArrowSelector = By.XPath(arrowXPath);
+
+            var valueTextXPath = $"//a-mat-select{this.ByScopePredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]";
+            this.ValueTextSelector = By.XPath(valueTextXPath);
         }
 
         public string Value
@@ -24,6 +27,19 @@ namespace Angular.Material
                 var element = this.Driver.FindElement(this.ValueTextSelector);
                 var property = element.Text;
                 return property;
+            }
+
+            set
+            {
+                this.Driver.WaitForAngular();
+                var arrow = this.Driver.FindElement(this.ArrowSelector);
+                this.ScrollToElement(arrow);
+                arrow.Click();
+
+                this.Driver.WaitForAngular();
+                var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{value}'] span");
+                var option = this.Driver.FindElement(optionSelector);
+                option.Click();
             }
         }
 
@@ -52,10 +68,10 @@ namespace Angular.Material
     }
 
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialMultipleSelect<T> : MaterialMultipleSelect where T : Component
+    public class MaterialSelect<T> : MaterialSelect where T : Component
     {
-        public MaterialMultipleSelect(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialSelect(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

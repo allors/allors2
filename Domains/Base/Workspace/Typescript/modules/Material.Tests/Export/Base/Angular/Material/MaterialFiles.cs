@@ -12,10 +12,11 @@ namespace Angular.Material
 
     public class MaterialFiles : Directive
     {
-        public MaterialFiles(IWebDriver driver, RoleType roleType)
+        public MaterialFiles(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)
         {
-            this.Selector = By.CssSelector($"a-mat-files *[data-allors-roletype='{roleType.IdAsNumberString}']");
+            var xpath = $"//a-mat-files{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
+            this.Selector = By.XPath(xpath);
         }
 
         public By Selector { get; }
@@ -44,8 +45,8 @@ namespace Angular.Material
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FilesMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     public class MaterialFiles<T> : MaterialFiles where T : Component
     {
-        public MaterialFiles(T page, RoleType roleType)
-            : base(page.Driver, roleType)
+        public MaterialFiles(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
         {
             this.Page = page;
         }

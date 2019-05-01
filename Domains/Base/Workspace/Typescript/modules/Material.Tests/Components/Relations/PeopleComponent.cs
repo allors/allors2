@@ -1,8 +1,7 @@
-using Angular;
-using src.allors.material.custom.relations.people.person;
-
 namespace src.allors.material.custom.relations.people
 {
+    using src.allors.material.custom.relations.people.person;
+
     using Allors.Domain;
 
     using OpenQA.Selenium;

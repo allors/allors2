@@ -37,7 +37,7 @@ namespace Tests
                 this.Sidenav.NavigateToHome();
                 this.page = this.Sidenav.NavigateToForm();
 
-                var actual = this.page.Datetime.Value;
+                var actual = this.page.NewDatetime.Value;
                 Assert.Equal(expected, actual);
             }
 
@@ -50,7 +50,7 @@ namespace Tests
                 this.Sidenav.NavigateToHome();
                 this.page = this.Sidenav.NavigateToForm();
 
-                var actual = this.page.Datetime.Value;
+                var actual = this.page.NewDatetime.Value;
                 Assert.Equal(expected, actual);
             }
         }
@@ -61,7 +61,7 @@ namespace Tests
             var before = new Datas(this.Session).Extent().ToArray();
 
             var date = new DateTime(2018, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-            this.page.Datetime.Value = date;
+            this.page.NewDatetime.Value = date;
 
             this.page.Save.Click();
 
@@ -84,12 +84,12 @@ namespace Tests
             var before = new Datas(this.Session).Extent().ToArray();
 
             var date = new DateTime(2019, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-            this.page.Datetime.Value = date;
+            this.page.NewDatetime.Value = date;
 
             this.page.Save.Click();
 
             date = new DateTime(2019, 1, 1, 18, 0, 0, DateTimeKind.Utc);
-            this.page.Datetime.Value = date;
+            this.page.NewDatetime.Value = date;
 
             this.page.Save.Click();
 
