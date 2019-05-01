@@ -14,9 +14,13 @@ namespace Autotest.Testers
 
         public Element Element { get; }
 
+        public int? Index { get; set; }
+
         public abstract string Name { get; }
 
-        public string PropertyName => this.ElementScopes.Aggregate(this.Name.Capitalize(), (current, scope) => scope.Capitalize() + "_" + current);
+        public string ScopedName => this.ElementScopes.Aggregate(this.Name.Capitalize(), (current, scope) => scope.Capitalize() + "_" + current);
+
+        public string PropertyName => this.Index.HasValue ? $"{this.ScopedName}_{this.Index}" : this.ScopedName;
 
         public string[] ElementScopes => this.Element.Ancestors.Where(v => v.Scope != null).Select(v => v.Scope).ToArray();
 

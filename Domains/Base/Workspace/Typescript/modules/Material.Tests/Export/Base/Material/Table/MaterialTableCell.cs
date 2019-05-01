@@ -6,7 +6,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialTableCell : Directive
+    public class MaterialTableCell : Component
     {
         public MaterialTableCell(IWebDriver driver, IWebElement element)
         : base(driver)

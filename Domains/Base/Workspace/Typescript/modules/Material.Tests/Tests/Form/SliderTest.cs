@@ -31,7 +31,7 @@ namespace Tests
 
             this.page.Slider.Select(1, 20, 10);
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
 
     public class MaterialSlideToggle
-    : Directive
+    : Component
     {
         public MaterialSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

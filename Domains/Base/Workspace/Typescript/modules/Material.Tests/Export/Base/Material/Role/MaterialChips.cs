@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialChips : Directive
+    public class MaterialChips : Component
     {
         public MaterialChips(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)

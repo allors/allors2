@@ -4,7 +4,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Anchor : Directive
+    public class Anchor : Component
     {
         public Anchor(IWebDriver driver, By selector)
         : base(driver)

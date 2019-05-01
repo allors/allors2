@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialCheckbox: Directive
+    public class MaterialCheckbox: Component
     {
         public MaterialCheckbox(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

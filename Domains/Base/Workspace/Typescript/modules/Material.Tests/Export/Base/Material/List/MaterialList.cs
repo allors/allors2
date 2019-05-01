@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialList : Directive
+    public class MaterialList : Component
     {
         public MaterialList(IWebDriver driver, By selector = null)
             : base(driver)

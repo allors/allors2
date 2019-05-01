@@ -8,7 +8,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialSelect : Directive
+    public class MaterialSelect : Component
     {
         public MaterialSelect(IWebDriver driver, RoleType roleType, params string[] scopes) : base(driver)
         {

@@ -29,7 +29,7 @@ namespace Tests
 
             this.page.TextArea.Value = "Hello";
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

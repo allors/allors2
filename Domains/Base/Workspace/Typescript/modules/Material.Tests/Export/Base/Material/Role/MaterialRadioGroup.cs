@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialRadioGroup : Directive
+    public class MaterialRadioGroup : Component
     {
         public MaterialRadioGroup(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)

@@ -3,7 +3,7 @@
   <Class Name="Autotest.Html.Attribute" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="3" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAQAQAAAAAAAAAAAAgAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAEAAAAQAQAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Custom\Html\Attribute.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -11,7 +11,7 @@
   <Class Name="Autotest.Html.Comment" BaseTypeListCollapsed="true">
     <Position X="9.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAEAAAAQAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Custom\Html\Comment.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -32,7 +32,7 @@
   <Class Name="Autotest.Html.Expansion" BaseTypeListCollapsed="true">
     <Position X="11.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAQQQAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAEAAQQQAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
       <FileName>Custom\Html\Expansion.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -43,7 +43,7 @@
   <Class Name="Autotest.Html.ExpansionCase" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAQAAAgAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAEAAAAQAAAAAAAAAAQAAAgAAIAAgA=</HashCode>
       <FileName>Custom\Html\ExpansionCase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -51,7 +51,7 @@
   <Class Name="Autotest.Html.Text" BaseTypeListCollapsed="true">
     <Position X="7.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAEAAAAQAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
       <FileName>Custom\Html\Text.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -59,7 +59,7 @@
   <Class Name="Autotest.Angular.Directive">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIEAAACAAEAACCAEAAAACACIAAIAAAAEAQAAQAIAAgA=</HashCode>
+      <HashCode>IIEAAACAAkAACCAEAAAACACIAAIAAAAEAQAAAAIAggA=</HashCode>
       <FileName>Custom\Angular\Directive.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -69,18 +69,27 @@
   <Class Name="Autotest.Angular.Template">
     <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAEAAAQAAAAAAAABAAACAAAAAIAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAAABAAEAIAAAAAAAAAABAAACAAAAAIAAgA=</HashCode>
       <FileName>Custom\Angular\Template.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Directive" />
-      <Property Name="Elements" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Autotest.Testers.Tester">
+    <Position X="3" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAACAACQgAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Export\Base\Testers\Tester.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Element" />
     </ShowAsAssociation>
   </Class>
   <Interface Name="Autotest.Html.INode">
     <Position X="8.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>Export\Base\Html\INode.cs</FileName>
     </TypeIdentifier>
   </Interface>

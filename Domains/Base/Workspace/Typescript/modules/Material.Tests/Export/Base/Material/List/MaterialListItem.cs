@@ -6,7 +6,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialListItem : Directive
+    public class MaterialListItem : Component
     {
         public MaterialListItem(IWebDriver driver, IWebElement element)
         : base(driver)

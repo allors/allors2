@@ -10,7 +10,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
 
     public class MaterialDatetimePicker
-    : Directive
+    : Component
     {
         public MaterialDatetimePicker(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

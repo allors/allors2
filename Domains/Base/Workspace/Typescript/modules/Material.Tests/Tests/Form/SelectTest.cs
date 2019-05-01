@@ -31,9 +31,9 @@ namespace Tests
 
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.AutoCompleteFilter.Select("jane", "jane@doe.org");
+            this.page.AutocompleteFilter.Select("jane", "jane@doe.org");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -10,7 +10,7 @@ namespace Angular.Material
     using OpenQA.Selenium.Interactions;
 
     public class MaterialSlider
-    : Directive
+    : Component
     {
         public MaterialSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

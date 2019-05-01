@@ -29,7 +29,7 @@ namespace Tests
 
             this.page.File.Upload("logo.png");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -50,11 +50,11 @@ namespace Tests
 
             this.page.File.Upload("logo.png");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
             
             this.page.File.Remove();
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

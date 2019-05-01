@@ -1,13 +1,11 @@
+using Angular.Html;
 using src.allors.material.custom.tests.form;
 
 namespace Tests
 {
     using System.Linq;
-
     using Allors.Domain;
-
     using Angular;
-
     using Xunit;
 
     [Collection("Test collection")]
@@ -21,7 +19,7 @@ namespace Tests
             this.Login();
             this.page = this.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         public void Initial()
         {
@@ -29,7 +27,7 @@ namespace Tests
 
             this.page.String.Value = "Hello";
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

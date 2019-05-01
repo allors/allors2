@@ -35,7 +35,7 @@ namespace Tests
             var date = this.Session.Now();
             this.page.Date.Value = date;
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -64,7 +64,7 @@ $endif$
 $if(tester.IsAllorsMaterialFilesComponent)$
         public Angular.Material.MaterialFiles<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialFiles(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
-$if(tester.IsAllorsMaterialInputComponentComponent)$
+$if(tester.IsAllorsMaterialInputComponent)$
         public Angular.Material.MaterialInput<$directive.Reference.Name$> $tester.PropertyName$ => this.MaterialInput(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.PropertyName$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 $if(tester.IsAllorsMaterialRadioGroupComponent)$

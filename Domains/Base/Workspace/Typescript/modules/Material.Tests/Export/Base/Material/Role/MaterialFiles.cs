@@ -10,12 +10,12 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialFile : Directive
+    public class MaterialFiles : Component
     {
-        public MaterialFile(IWebDriver driver, RoleType roleType, params string[] scopes)
+        public MaterialFiles(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)
         {
-            var xpath = $"//a-mat-file{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
+            var xpath = $"//a-mat-files{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
             this.Selector = By.XPath(xpath);
         }
 
@@ -42,10 +42,10 @@ namespace Angular.Material
         }
     }
 
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class MaterialFile<T> : MaterialFile where T : Component
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FilesMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    public class MaterialFiles<T> : MaterialFiles where T : Component
     {
-        public MaterialFile(T page, RoleType roleType, params string[] scopes)
+        public MaterialFiles(T page, RoleType roleType, params string[] scopes)
             : base(page.Driver, roleType, scopes)
         {
             this.Page = page;

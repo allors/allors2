@@ -1,9 +1,6 @@
-using Angular;
-
 namespace src.allors.material.custom.relations.organisations
 {
     using OpenQA.Selenium;
-
     using Angular.Html;
 
     public partial class OrganisationsComponent 

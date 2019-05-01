@@ -5,7 +5,7 @@ namespace Angular.Material
     using Angular;
     using OpenQA.Selenium;
 
-    public class MaterialInput : Directive
+    public class MaterialInput : Component
     {
         public MaterialInput(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

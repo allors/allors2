@@ -8,7 +8,7 @@ namespace Angular.Material
 
     using OpenQA.Selenium;
 
-    public class MaterialTextArea : Directive
+    public class MaterialTextArea : Component
     {
         public MaterialTextArea(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

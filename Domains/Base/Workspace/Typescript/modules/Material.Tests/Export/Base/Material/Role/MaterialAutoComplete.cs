@@ -7,7 +7,7 @@ namespace Angular.Material
     using OpenQA.Selenium.Support.PageObjects;
 
     public class MaterialAutocomplete
-    : Directive
+    : Component
     {
         public MaterialAutocomplete(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)

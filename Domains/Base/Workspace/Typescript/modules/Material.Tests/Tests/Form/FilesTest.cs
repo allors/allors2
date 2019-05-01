@@ -8,8 +8,8 @@ namespace Tests
     using Allors.Meta;
 
     using Angular;
-    
-    
+
+
 
     using Xunit;
 
@@ -30,9 +30,9 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Files.Upload("logo.png");
+            this.page.MultipleFiles.Upload("logo.png");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -51,11 +51,11 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Files.Upload("logo.png");
+            this.page.MultipleFiles.Upload("logo.png");
 
-            this.page.Files.Upload("logo2.png");
+            this.page.MultipleFiles.Upload("logo2.png");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -70,19 +70,18 @@ namespace Tests
             Assert.Equal(2, data.MultipleFiles.Count);
         }
 
-
         [Fact]
         public void Remove()
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Files.Upload("logo.png");
+            this.page.MultipleFiles.Upload("logo.png");
 
-            this.page.Save.Click();
-            
-            this.page.Files.Remove();
+            this.page.SAVE.Click();
 
-            this.page.Save.Click();
+            this.page.MultipleFiles.Remove();
+
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

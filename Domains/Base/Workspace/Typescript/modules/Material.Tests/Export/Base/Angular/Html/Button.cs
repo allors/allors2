@@ -6,7 +6,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Button : Directive
+    public class Button : Component
     {
         public Button(IWebDriver driver, params By[] selectors)
         : base(driver)

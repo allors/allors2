@@ -33,7 +33,7 @@ namespace Tests
 
             this.page.Checkbox.Value = true;
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

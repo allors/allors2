@@ -6,7 +6,7 @@ namespace Angular.Html
 
     using OpenQA.Selenium;
 
-    public class Input : Directive
+    public class Input : Component
     {
         public Input(IWebDriver driver, params By[] selectors)
             : base(driver)

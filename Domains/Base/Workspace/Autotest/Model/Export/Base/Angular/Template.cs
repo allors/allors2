@@ -19,7 +19,7 @@ namespace Autotest.Angular
 
         public Directive Directive { get; }
 
-        public Element[] Elements { get; set; }
+        public Element[] FlattenedElements { get; set; }
 
         public INode[] Html { get; set; }
 
@@ -39,7 +39,7 @@ namespace Autotest.Angular
                     return node;
                 }).ToArray() : new INode[0];
 
-            this.Elements = this.Html.OfType<Element>().SelectMany(v => v.FlattenedElements).ToArray();
+            this.FlattenedElements = this.Html.OfType<Element>().SelectMany(v => v.FlattenedElements).ToArray();
         }
     }
 }

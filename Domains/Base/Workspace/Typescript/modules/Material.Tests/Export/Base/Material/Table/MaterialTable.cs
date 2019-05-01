@@ -9,7 +9,7 @@ namespace Angular.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialTable : Directive
+    public class MaterialTable : Component
     {
         public MaterialTable(IWebDriver driver, By selector = null)
             : base(driver)

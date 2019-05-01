@@ -1,9 +1,8 @@
 namespace Angular.Html
 {
-
     using OpenQA.Selenium;
 
-    public static partial class PageExtensions
+    public static partial class ComponentExtensions
     {
         public static Anchor<T> Anchor<T>(this T @this, By selector) where T : Component
         {

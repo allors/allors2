@@ -35,7 +35,7 @@ namespace Tests
 
             this.page.RadioGroup.Select("one");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

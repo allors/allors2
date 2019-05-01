@@ -1,9 +1,7 @@
 namespace Angular.Material
 {
     using Allors.Meta;
-
     using Angular;
-
     using OpenQA.Selenium;
 
     public static partial class ComponentExtensions
@@ -62,7 +60,7 @@ namespace Angular.Material
         {
             return new MaterialRadioGroup<T>(@this, roleType, scopes);
         }
-        
+
         public static MaterialSlider<T> MaterialSlider<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
             return new MaterialSlider<T>(@this, roleType, scopes);

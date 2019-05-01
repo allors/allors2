@@ -32,7 +32,7 @@ namespace Tests
 
             this.page.Chips.Add("jane", "jane@doe.org");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -58,7 +58,7 @@ namespace Tests
 
             this.page.Chips.Add("john", "john@doe.org");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -80,11 +80,11 @@ namespace Tests
 
             this.page.Chips.Add("jane", "jane@doe.org");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
             
             this.page.Chips.Remove("jane@doe.org");
 
-            this.page.Save.Click();
+            this.page.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
