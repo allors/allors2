@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like } from '../../../../framework';
-import { Invoked, MediaService, ContextService, NavigationService, AllorsFilterService, MetaService } from '../../../../angular';
+import { Invoked, MediaService, ContextService, NavigationService, AllorsFilterService, MetaService, TestScope } from '../../../../angular';
 import { Person } from '../../../../domain';
 import { TableRow, Sorter, AllorsMaterialDialogService } from '../../../../material';
 
@@ -23,7 +23,7 @@ interface Row extends TableRow {
   templateUrl: './people.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PeopleComponent implements OnInit, OnDestroy {
+export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'People';
 
@@ -50,6 +50,8 @@ export class PeopleComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
     titleService: Title) {
+
+    super();
 
     titleService.setTitle(this.title);
 

@@ -22,7 +22,8 @@
     "ejs": "^2.6.1",
     "moment": "^2.24.0",
     "ngast": "^0.2.4",
-    "rxjs": "~6.3.3"
+    "rxjs": "~6.3.3",
+    "tsutils": "^3.10.0"
   },
   "devDependencies": {
     "@types/chai": "latest",

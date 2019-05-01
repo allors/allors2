@@ -1,8 +1,11 @@
-import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration } from 'typescript';
+import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, Program, NodeArray, TypeChecker } from 'typescript';
+import * as tsutils from "tsutils";
 
 import { Property } from './Property';
 import { Member } from './Member';
 import { Method } from './Method';
+import { flatten } from '@angular/compiler';
+
 
 export class Class {
 
@@ -12,13 +15,16 @@ export class Class {
 
     members: Member[];
 
-    constructor(classDeclaration: ClassDeclaration) {
+    constructor(classDeclaration: ClassDeclaration, program: Program) {
 
         this.name = classDeclaration.name.text;
 
         this.decorators = classDeclaration.decorators.map((v) => v.getText());
+        
+        const flattenedMembers = new Array<ClassElement>();
+        this.flattenMembers(flattenedMembers, classDeclaration, program.getTypeChecker());
 
-        this.members = classDeclaration.members.map((v) => {
+        this.members = flattenedMembers.map((v) => {
 
             if (isPropertyDeclaration(v)) {
                 return new Property(v as PropertyDeclaration);
@@ -30,7 +36,6 @@ export class Class {
 
             return undefined;
         }).filter((v) => v);
-
     }
 
     public toJSON(): any {
@@ -42,6 +47,28 @@ export class Class {
             name,
             members,
         };
+    }
+
+    private flattenMembers(members: ClassElement[], classDeclaration: ClassDeclaration, typeChecker: TypeChecker){
+         
+        if(classDeclaration.heritageClauses){
+            classDeclaration.heritageClauses.forEach((heritageClause) => {
+                heritageClause.types.forEach((heritageClauseType) =>{
+                    let type = typeChecker.getTypeFromTypeNode(heritageClauseType)
+                    if (tsutils.isTypeReference(type)) {
+                        let declarations = type.target.symbol.declarations
+                        for (const declaration of declarations) {
+                            if (tsutils.isClassDeclaration(declaration)) {
+                                const baseClass = declaration;
+                                this.flattenMembers(members, baseClass, typeChecker);
+                            }
+                        }
+                    }
+                })
+            });
+        }
+
+        members.push(...classDeclaration.members);
     }
 }
 

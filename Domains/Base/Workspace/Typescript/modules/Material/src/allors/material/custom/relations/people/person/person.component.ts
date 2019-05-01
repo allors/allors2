@@ -7,13 +7,13 @@ import { switchMap } from 'rxjs/operators';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { Loaded, ContextService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
 
 @Component({
   templateUrl: './person.component.html',
   providers: [ContextService]
 })
-export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
@@ -28,6 +28,8 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     private metaService: MetaService,
     private titleService: Title,
     private route: ActivatedRoute) {
+
+    super();
 
     this.title = 'Person';
     this.titleService.setTitle(this.title);

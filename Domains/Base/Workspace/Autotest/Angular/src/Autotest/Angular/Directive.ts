@@ -3,6 +3,7 @@ import { PathResolver } from '../Helpers';
 
 import { Template } from './Template';
 import { Class } from '../Typescript/Class';
+import { Program } from 'typescript';
 
 export class Directive {
 
@@ -14,7 +15,7 @@ export class Directive {
     template: Template;
     type: Class;
 
-    constructor(public directive: DirectiveSymbol, public pathResolver: PathResolver) {
+    constructor(public directive: DirectiveSymbol, public pathResolver: PathResolver, public program: Program) {
 
         const nonResolvedMetadata = this.directive.getNonResolvedMetadata();
         const resolvedMetadata = this.directive.getResolvedMetadata();
@@ -32,11 +33,7 @@ export class Directive {
 
         const classDeclaration = directive.getNode();
         if (classDeclaration) {
-            this.type = new Class(classDeclaration);
-        }
-
-        if(this.name === 'MatToolbar'){
-            console.log(this.name);
+            this.type = new Class(classDeclaration, this.program);
         }
     }
 

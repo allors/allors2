@@ -43,9 +43,9 @@ namespace Angular.Material
             return new MaterialFiles<T>(@this, roleType);
         }
 
-        public static MaterialInput<T> MaterialInput<T>(this T @this, RoleType roleType) where T : Component
+        public static MaterialInput<T> MaterialInput<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialInput<T>(@this, roleType);
+            return new MaterialInput<T>(@this, roleType, scopes);
         }
 
         public static MaterialList<T> MaterialList<T>(this T @this, By selector = null) where T : Component

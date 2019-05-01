@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
+import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { Meta } from '../../../../../meta';
   templateUrl: './organisation.component.html',
   providers: [ContextService]
 })
-export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   title: string;
 
@@ -36,6 +36,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     private titleService: Title,
     private route: ActivatedRoute,
   ) {
+    super();
 
     this.title = 'Organisation';
     this.titleService.setTitle(this.title);

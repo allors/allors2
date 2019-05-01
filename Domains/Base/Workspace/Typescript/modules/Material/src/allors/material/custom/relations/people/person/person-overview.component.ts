@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Loaded, ContextService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { Meta } from '../../../../../meta';
   templateUrl: './person-overview.component.html',
   providers: [ContextService]
 })
-export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonOverviewComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   public m: Meta;
   public person: Person;
@@ -28,6 +28,8 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     private metaService: MetaService,
     private titleService: Title,
     private route: ActivatedRoute) {
+
+    super();
 
     this.title = 'Person Overview';
     this.titleService.setTitle(this.title);

@@ -1,15 +1,15 @@
-import { Component, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { AuthenticationService } from '../../allors/angular';
+import { AuthenticationService, TestScope } from '../../allors/angular';
 
 @Component({
   templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent extends TestScope implements OnDestroy {
 
   public loginFormGhost = this.formBuilder.group({
     password: ['', Validators.required],
@@ -23,14 +23,12 @@ export class LoginComponent implements OnDestroy {
 
   private subscription: Subscription;
 
-  @HostBinding('attr.data-test-scope')
-  private testScope = this.constructor.name;
-
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
   ) {
+    super();
   }
 
   public login(event) {

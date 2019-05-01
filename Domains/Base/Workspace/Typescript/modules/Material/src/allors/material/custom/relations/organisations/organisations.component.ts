@@ -5,7 +5,7 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like } from '../../../../framework';
-import { ContextService, NavigationService, AllorsFilterService, RefreshService, Action, MetaService } from '../../../../angular';
+import { ContextService, NavigationService, AllorsFilterService, RefreshService, Action, MetaService, TestScope } from '../../../../angular';
 import { Table, TableRow, Sorter } from '../../../../material';
 
 import { DeleteService, OverviewService } from '../../../../material';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './organisations.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class OrganisationsComponent implements OnInit, OnDestroy {
+export class OrganisationsComponent extends TestScope implements OnInit, OnDestroy {
 
   title = 'Organisations';
 
@@ -40,6 +40,8 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     public overviewService: OverviewService,
     public navigation: NavigationService,
     private titleService: Title) {
+
+    super();
 
     this.titleService.setTitle(this.title);
 

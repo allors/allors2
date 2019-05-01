@@ -14,3 +14,4 @@ export * from './navigation';
 export * from './panels';
 export * from './refresh';
 export * from './state';
+export * from './test';

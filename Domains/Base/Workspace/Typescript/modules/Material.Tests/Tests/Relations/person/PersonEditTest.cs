@@ -1,15 +1,12 @@
-using src.allors.material.custom.relations.people;
-using src.allors.material.custom.relations.people.person;
 
 namespace Tests.Relations
 {
     using System.Linq;
-
     using Allors.Domain;
-
     using Angular;
-
     using Xunit;
+    using src.allors.material.custom.relations.people;
+    using src.allors.material.custom.relations.people.person;
 
     [Collection("Test collection")]
     public class PersonEditTest : Test

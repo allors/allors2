@@ -8,13 +8,13 @@ import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
-import { Loaded, ContextService, MetaService } from '../../../../../angular';
+import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
   providers: [ContextService]
 })
-export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrganisationOverviewComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
@@ -30,6 +30,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private metaService: MetaService,
     private titleService: Title,
     private route: ActivatedRoute) {
+    super();
 
     this.title = 'Organisation Overview';
     this.titleService.setTitle(this.title);

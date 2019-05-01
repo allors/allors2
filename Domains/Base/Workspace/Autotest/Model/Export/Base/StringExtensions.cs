@@ -10,10 +10,7 @@ namespace Autotest
 
     public static partial class StringExtensions
     {
-        public static string RemoveWhitespace(this string value)
-        {
-            return string.Join(string.Empty, value.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
-        }
+        public static string RemoveWhitespace(this string value) => string.Concat(value.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
 
         public static string Capitalize(this string value)
         {

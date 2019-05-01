@@ -10,14 +10,14 @@ import { switchMap } from 'rxjs/operators';
 import { Meta } from '../../../../meta';
 import { Person, Data, Organisation } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
-import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
+import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../angular';
 import { RadioGroupOption } from '../../../../material';
 
 @Component({
   templateUrl: './form.component.html',
   providers: [ContextService]
 })
-export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FormComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
   public m: Meta;
@@ -45,6 +45,8 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     private titleService: Title,
     private route: ActivatedRoute,
   ) {
+
+    super();
 
     this.title = 'Form';
     this.titleService.setTitle(this.title);
