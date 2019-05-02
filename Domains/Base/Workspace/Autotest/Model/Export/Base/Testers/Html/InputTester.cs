@@ -9,10 +9,6 @@ namespace Autotest.Testers
 
         private static readonly string FormControlNameAttribute = "formControlName".ToLowerInvariant();
 
-        private static readonly string FormControlAttribute = "[formControl]".ToLowerInvariant();
-
-        private static readonly string NgModelAttribute = "[(ngModel)]".ToLowerInvariant();
-
         public InputTester(Element element)
             : base(element)
         {
