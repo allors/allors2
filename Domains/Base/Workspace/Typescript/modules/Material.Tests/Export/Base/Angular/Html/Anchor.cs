@@ -17,12 +17,12 @@ namespace Angular.Html
         {
             switch (kind.ToLowerInvariant())
             {
-                case "routerlink":
-                    this.Selector = By.XPath($"//button[@[routerLink]='{value}'{ByScopesAnd(scopes)}]");
-                    break;
-
                 case "innertext":
                     this.Selector = By.XPath($"//button[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
+                case "routerlink":
+                    this.Selector = By.XPath($"//button[@ng-reflect-router-link='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 default:

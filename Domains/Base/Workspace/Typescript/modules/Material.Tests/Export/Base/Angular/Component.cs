@@ -27,7 +27,7 @@ namespace Angular
 
         public string ByScopesAnd(string[] scopes)
         {
-            return string.Join("and ", scopes);
+            return string.Concat(ByScopesExpressions(scopes).Select(v=>$" and {v}"));
         }
 
         protected void ScrollToElement(IWebElement element)

@@ -19,15 +19,7 @@ namespace Angular.Html
             switch (kind.ToLowerInvariant())
             {
                 case "formcontrolname":
-                    this.Selector = By.XPath($"//input[@formControlName='{value}'{ByScopesAnd(scopes)}]");
-                    break;
-
-                case "formcontrol":
-                    this.Selector = By.XPath($"//input[@[formControl]='{value}'{ByScopesAnd(scopes)}]");
-                    break;
-
-                case "ngmodel":
-                    this.Selector = By.XPath($"//input[@[ngModel]='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($"//input[@formcontrolname='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 default:
