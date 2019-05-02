@@ -28,6 +28,10 @@ namespace Angular.Material
             var radio = this.Driver.FindElement(radioSelector);
             this.ScrollToElement(radio);
             radio.Click();
+            this.Driver.WaitForAngular();
+            radio.SendKeys(Keys.Space);
+            this.Driver.WaitForAngular();
+            radio.SendKeys(Keys.Enter);
         }
     }
 
