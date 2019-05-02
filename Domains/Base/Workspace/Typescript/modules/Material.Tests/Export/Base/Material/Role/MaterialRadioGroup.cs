@@ -26,6 +26,7 @@ namespace Angular.Material
             this.Driver.WaitForAngular();
             var radioSelector = new ByChained(this.Selector, By.CssSelector($"mat-radio-button[data-allors-radio-value='{value}']"));
             var radio = this.Driver.FindElement(radioSelector);
+            this.ScrollToElement(radio);
             radio.Click();
         }
     }
