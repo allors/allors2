@@ -12,6 +12,25 @@ namespace Angular.Html
             this.Selector = selector;
         }
 
+        public Anchor(IWebDriver driver, string kind, string value, params string[] scopes)
+            : base(driver)
+        {
+            switch (kind.ToLowerInvariant())
+            {
+                case "routerlink":
+                    this.Selector = By.XPath($"//button[@[routerLink]='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
+                case "innertext":
+                    this.Selector = By.XPath($"//button[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
+                default:
+                    this.Selector = By.XPath($"//button'{ByScopesPredicate(scopes)}");
+                    break;
+            }
+        }
+
         public By Selector { get; }
 
         public bool IsVisible => this.SelectorIsVisible(this.Selector);

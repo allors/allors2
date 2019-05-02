@@ -8,6 +8,13 @@ namespace Autotest.Testers
     {
         private static Tester BaseCreate(Element element)
         {
+            // Allors
+            if (element.Attributes.Any(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase)))
+            {
+                return new RoleFieldTester(element);
+            }
+
+            // Angular
             switch (element.Name)
             {
                 case "input":
@@ -15,11 +22,9 @@ namespace Autotest.Testers
 
                 case "button":
                     return new ButtonTester(element);
-            }
 
-            if (element.Attributes.Any(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase)))
-            {
-                return new RoleFieldTester(element);
+                case "a":
+                    return new AnchorTester(element);
             }
 
             if (element.Component != null)

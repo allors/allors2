@@ -21,7 +21,7 @@ namespace $directive.Reference.Namespace$
 {
     using OpenQA.Selenium;
     using Angular.Material;
-
+    
     public partial class $directive.Reference.Name$ : Angular.Component
     {
         public $directive.Reference.Name$(IWebDriver driver) : base(driver)
@@ -35,10 +35,13 @@ $directive.Testers:{tester|$tester(tester)$}; separator="\n"$
 
 tester(tester) ::= <<
 $if(tester.IsInput)$
-        public Angular.Html.Input $tester.PropertyName$ => new Angular.Html.Input(this.Driver, $tester.Selector$);
+        public Angular.Html.Input $tester.PropertyName$ => new Angular.Html.Input(this.Driver, "$tester.Kind$", "$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 $if(tester.IsButton)$
-        public Angular.Html.Button $tester.PropertyName$ => new Angular.Html.Button(this.Driver, $tester.Selector$);
+        public Angular.Html.Button $tester.PropertyName$ => new Angular.Html.Button(this.Driver, "$tester.Kind$", "$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$if(tester.IsA)$
+        public Angular.Html.Anchor $tester.PropertyName$ => new Angular.Html.Anchor(this.Driver, "$tester.Kind$", "$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 $if(tester.IsAllorsMaterialSideMenuComponent)$
         public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);

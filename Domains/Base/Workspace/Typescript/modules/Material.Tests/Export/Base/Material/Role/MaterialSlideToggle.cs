@@ -14,10 +14,10 @@ namespace Angular.Material
         public MaterialSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var inputXPath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            var inputXPath = $"//a-mat-slider{this.ByScopesPredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
             this.InputSelector = By.XPath(inputXPath);
 
-            var containerXPath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            var containerXPath = $"//a-mat-slider{this.ByScopesPredicate(scopes)}//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
             this.ContainerSelector = By.XPath(containerXPath);
         }
 

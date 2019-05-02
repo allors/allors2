@@ -3,14 +3,16 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+
+
 namespace Autotest
 {
-    using System;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public static partial class StringExtensions
     {
-        public static string RemoveWhitespace(this string value) => string.Concat(value.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+        private static Regex NonAlphaNumericRegex => new Regex("[^a-zA-Z0-9]");
 
         public static string Capitalize(this string value)
         {
@@ -21,5 +23,9 @@ namespace Autotest
 
             return value;
         }
+
+        public static string ToAlphaNumeric(this string value) => !string.IsNullOrEmpty(value) ? NonAlphaNumericRegex.Replace(value, string.Empty) : value;
+
+        public static string EmptyToNull(this string value) => string.IsNullOrEmpty(value) ? null : value;
     }
 }

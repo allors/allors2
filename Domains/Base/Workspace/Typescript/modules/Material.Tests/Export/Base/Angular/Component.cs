@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Angular
 {
     using System.Linq;
@@ -13,17 +15,21 @@ namespace Angular
 
         public IWebDriver Driver { get; }
 
-        public string ByScopePredicate(string[] scopes)
+        public static string[] ByScopesExpressions(params string[] scopes)
         {
-            if (scopes.Length > 0)
-            {
-                var expressions = scopes.Select((v, i) => $"ancestor::*[@data-test-scope][{i + 1}]/@data-test-scope='{v}'");
-                return $"[{string.Join(" and ", expressions)}]";
-            }
-
-            return string.Empty;
+            return scopes.Select((v, i) => $"ancestor::*[@data-test-scope][{i + 1}]/@data-test-scope='{v}'").ToArray();
         }
-        
+
+        public string ByScopesPredicate(string[] scopes)
+        {
+            return scopes.Length > 0 ? $"[{string.Join(" and ", ByScopesExpressions(scopes))}]" : string.Empty;
+        }
+
+        public string ByScopesAnd(string[] scopes)
+        {
+            return string.Join("and ", scopes);
+        }
+
         protected void ScrollToElement(IWebElement element)
         {
             //const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";

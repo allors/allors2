@@ -15,7 +15,7 @@ namespace Angular.Material
         public MaterialFile(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)
         {
-            var xpath = $"//a-mat-file{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
+            var xpath = $"//a-mat-file{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
             this.Selector = By.XPath(xpath);
         }
 

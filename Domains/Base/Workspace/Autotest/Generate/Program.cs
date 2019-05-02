@@ -1,4 +1,6 @@
-﻿namespace Allors
+﻿using System.Linq.Expressions;
+
+namespace Allors
 {
     using System;
     using System.IO;
@@ -9,26 +11,40 @@
     {
         private static int Default()
         {
-            string[,] config =
+            try
+            {
+
+                string[,] config =
                 {
-                    { "./Workspace/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated/sidenav" },
-                    { "./Workspace/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/modules/Material.Tests/generated/components" },
+                    {
+                        "./Workspace/Autotest/Templates/sidenav.cs.stg",
+                        "./Workspace/Typescript/modules/Material.Tests/generated/sidenav"
+                    },
+                    {
+                        "./Workspace/Autotest/Templates/component.cs.stg",
+                        "./Workspace/Typescript/modules/Material.Tests/generated/components"
+                    },
                 };
 
-            for (var i = 0; i < config.GetLength(0); i++)
-            {
-                var template = config[i, 0];
-                var output = config[i, 1];
-
-                Console.WriteLine($"{template} -> {output}");
-
-                RemoveDirectory(output);
-
-                var log = Generate.Execute(template, output);
-                if (log.ErrorOccured)
+                for (var i = 0; i < config.GetLength(0); i++)
                 {
-                    return 1;
+                    var template = config[i, 0];
+                    var output = config[i, 1];
+
+                    Console.WriteLine($"{template} -> {output}");
+
+                    RemoveDirectory(output);
+
+                    var log = Generate.Execute(template, output);
+                    if (log.ErrorOccured)
+                    {
+                        return 1;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e + e.StackTrace);
             }
 
             return 0;

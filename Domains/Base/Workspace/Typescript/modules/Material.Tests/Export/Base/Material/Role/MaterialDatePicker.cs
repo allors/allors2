@@ -15,7 +15,7 @@ namespace Angular.Material
         public MaterialDatePicker(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-datepicker{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            var xpath = $"//a-mat-datepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
             this.Selector = By.XPath(xpath);
         }
 

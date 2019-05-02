@@ -10,7 +10,7 @@ namespace Angular.Material
         public MaterialInput(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-input{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
+            var xpath = $"//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
             this.Selector = By.XPath(xpath);
         }
 

@@ -15,7 +15,7 @@ namespace Angular.Material
         public MaterialSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-slider{this.ByScopePredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider";
+            var xpath = $"//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider";
             this.Selector = By.XPath(xpath);
         }
 

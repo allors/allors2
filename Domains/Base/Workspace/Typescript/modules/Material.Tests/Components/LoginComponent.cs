@@ -7,7 +7,7 @@ namespace src.app.auth
     {
         public DashboardComponent Login(string userName = "administrator")
         {
-            this.UserName.Value = userName;
+            this.Username.Value = userName;
             this.SignIn.Click();
 
             this.Driver.WaitForAngular();

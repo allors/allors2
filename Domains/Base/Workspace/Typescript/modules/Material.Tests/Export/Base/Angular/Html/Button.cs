@@ -14,6 +14,21 @@ namespace Angular.Html
             this.Selector = selectors.Length == 1 ? selectors[0] : new ByChained(selectors);
         }
 
+        public Button(IWebDriver driver, string kind, string value, params string[] scopes)
+            : base(driver)
+        {
+            switch (kind.ToLowerInvariant())
+            {
+                case "innertext":
+                    this.Selector = By.XPath($"//button[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
+                default:
+                    this.Selector = By.XPath($"//button'{ByScopesPredicate(scopes)}");
+                    break;
+            }
+        }
+
         public By Selector { get; }
 
         public void Click()

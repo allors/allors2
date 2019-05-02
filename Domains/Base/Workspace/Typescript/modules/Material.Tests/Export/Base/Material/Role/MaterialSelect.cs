@@ -12,10 +12,10 @@ namespace Angular.Material
     {
         public MaterialSelect(IWebDriver driver, RoleType roleType, params string[] scopes) : base(driver)
         {
-            var arrowXPath = $"//a-mat-select{this.ByScopePredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]";
+            var arrowXPath = $"//a-mat-select{this.ByScopesPredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]";
             this.ArrowSelector = By.XPath(arrowXPath);
 
-            var valueTextXPath = $"//a-mat-select{this.ByScopePredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]";
+            var valueTextXPath = $"//a-mat-select{this.ByScopesPredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]";
             this.ValueTextSelector = By.XPath(valueTextXPath);
         }
 

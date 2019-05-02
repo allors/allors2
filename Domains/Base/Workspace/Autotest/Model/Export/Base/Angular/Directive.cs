@@ -29,6 +29,8 @@ namespace Autotest.Angular
 
         public Dictionary<Element, Directive[]> AttributeDirectivesByElement { get; set; }
 
+        public Element[] FlattenedElements { get; private set; }
+
         public Element[] FlattenedElementsWithDirectives { get; set; }
 
         public string ExportAs { get; set; }
@@ -70,7 +72,8 @@ namespace Autotest.Angular
         {
             if (this.Template != null)
             {
-                this.ComponentByElement = this.Template.FlattenedElements
+                this.FlattenedElements = this.Template.FlattenedElements;
+                this.ComponentByElement = this.FlattenedElements
                     .Select(v => new
                     {
                         element = v,
@@ -79,7 +82,7 @@ namespace Autotest.Angular
                     .Where(v => v.component != null)
                     .ToDictionary(v => v.element, v => v.component);
 
-                this.AttributeDirectivesByElement = this.Template.FlattenedElements
+                this.AttributeDirectivesByElement = this.FlattenedElements
                     .Select(v => new
                     {
                         element = v,
@@ -109,12 +112,12 @@ namespace Autotest.Angular
                         .ToArray();
                 }
 
-                this.FlattenedElementsWithDirectives = this.Template.FlattenedElements
+                this.FlattenedElementsWithDirectives = this.FlattenedElements
                     .Where(v => v.Directives != null && v.Directives.Length > 0)
                     .ToArray();
 
-                this.Testers = this.FlattenedElementsWithDirectives
-                    .Select(Autotest.Testers.TesterFactory.Create)
+                this.Testers = this.FlattenedElements
+                    .Select(TesterFactory.Create)
                     .Where(v => v != null)
                     .ToArray();
 
@@ -126,8 +129,6 @@ namespace Autotest.Angular
                         item.Index = ++index;
                     }
                 }
-
-
 
                 if (this.Type != null)
                 {
