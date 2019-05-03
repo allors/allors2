@@ -1,21 +1,21 @@
-import { ProjectSymbols} from 'ngast';
+import { ProjectSymbols } from 'ngast';
 import { PathResolver, ResourceResolver } from './Helpers';
 
 import { Module } from "./Angular/Module";
 import { Pipe } from "./Angular/Pipe";
 import { Provider } from "./Angular/Provider";
 import { Directive } from "./Angular/Directive";
-import { Program, TypeChecker } from 'typescript';
+import { Program } from './Typescript/Program';
 
 export class Project {
 
+    program: Program;
     modules: Module[];
     pipes: Pipe[];
     providers: Provider[];
     directives: Directive[];
-    parseErrors: any[] = [];
 
-    program: Program;
+    parseErrors: any[] = [];
 
     constructor(public pathResolver: PathResolver, tsConfigPath: string) {
 
@@ -24,18 +24,18 @@ export class Project {
 
         if (this.parseErrors.length === 0) {
 
-            this.program = (projectSymbols as any).program;
+            this.program = new Program(projectSymbols, pathResolver);
 
             this.modules = projectSymbols.getModules().map((v) => new Module(v, pathResolver));
             this.pipes = projectSymbols.getPipes().map((v) => new Pipe(v, pathResolver));
             this.providers = projectSymbols.getProviders().map((v) => new Provider(v, pathResolver));
-            this.directives = projectSymbols.getDirectives().map((v) => new Directive(v,pathResolver, this.program));
+            this.directives = projectSymbols.getDirectives().map((v) => new Directive(v, pathResolver, this.program));
         }
     }
 
     public toJSON(): any {
 
-        const { modules, pipes, providers, directives } = this;
+        const { program, modules, pipes, providers, directives } = this;
 
         if (this.parseErrors.length > 0) {
             return {
@@ -45,10 +45,11 @@ export class Project {
 
         return {
             kind: 'project',
-            modules,
-            pipes,
-            providers,
-            directives,
+            program,
+            // modules,
+            // pipes,
+            // providers,
+            // directives,
         };
     }
 }

@@ -1,33 +1,38 @@
-import { PropertyDeclaration } from 'typescript';
+import * as ts from 'typescript';
+import * as tsutils from "tsutils";
 
 import { Member } from './Member';
+import { Program } from './Program';
+import { TypeReference } from './TypeReference';
 
 export class Property implements Member {
 
     name: string;
-    type: string;
+    typeReference: TypeReference;
     decorators: string[];
     initializer: string;
 
-    constructor(declaration: PropertyDeclaration) {
+    constructor(declaration: ts.PropertyDeclaration, program: Program) {
+
+        const { typeChecker } = program;
 
         this.name = declaration.name.getText();
         if (declaration.type) {
-            this.type = declaration.type.getText();
+            this.typeReference = new TypeReference(declaration.type, program);
         }
 
-        this.decorators = declaration.decorators ? declaration.decorators.map(v=>v.getText()) : undefined;
+        this.decorators = declaration.decorators ? declaration.decorators.map(v => v.getText()) : undefined;
         this.initializer = declaration.initializer ? declaration.initializer.getText() : undefined;
     }
 
     public toJSON(): any {
 
-        const { name, type, decorators, initializer } = this;
+        const { name, typeReference, decorators, initializer } = this;
 
         return {
             kind: 'property',
             name,
-            type,
+            typeReference,
             decorators,
             initializer
         };

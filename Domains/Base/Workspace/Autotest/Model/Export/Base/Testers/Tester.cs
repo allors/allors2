@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 namespace Autotest.Testers
 {
     using System;
@@ -16,11 +18,13 @@ namespace Autotest.Testers
 
         public int? Index { get; set; }
 
-        public abstract string Name { get; }
+        public abstract string PropertyName { get; }
 
-        public string ScopedName => this.ElementScopes.Aggregate(this.Name.Capitalize(), (current, scope) => scope.Capitalize() + "_" + current);
+        public string ScopedPropertyName => this.ElementScopes.Aggregate(this.PropertyName.Capitalize(), (current, scope) => scope.Capitalize() + "_" + current);
 
-        public string PropertyName => this.Index.HasValue ? $"{this.ScopedName}_{this.Index}" : this.ScopedName;
+        public string IndexedScopedPropertyName => this.Index.HasValue ? $"{this.ScopedPropertyName}_{this.Index}" : this.ScopedPropertyName;
+
+        public string Name => this.IndexedScopedPropertyName;
 
         public string[] ElementScopes => this.Element.Ancestors.Where(v => v.Scope != null).Select(v => v.Scope).ToArray();
 
@@ -54,7 +58,7 @@ namespace Autotest.Testers
             {
                 var typeName = this.GetType().Name;
                 var componentName = this.Element.Component?.Type?.Name;
-                var elementName = this.Element.Name;
+                var elementName = this.Element.PropertyName;
 
                 return string.Equals($"is{typeName}", typeCheck, StringComparison.OrdinalIgnoreCase) ||
                        (componentName != null && string.Equals($"is{componentName}", typeCheck, StringComparison.OrdinalIgnoreCase)) ||

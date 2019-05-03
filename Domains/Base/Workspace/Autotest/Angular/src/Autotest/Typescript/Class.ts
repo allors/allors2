@@ -1,37 +1,52 @@
-import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, Program, NodeArray, TypeChecker } from 'typescript';
+import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, TypeChecker, InterfaceDeclaration } from 'typescript';
 import * as tsutils from "tsutils";
 
 import { Property } from './Property';
 import { Member } from './Member';
 import { Method } from './Method';
-import { flatten } from '@angular/compiler';
+import { Program } from './Program';
+import { Type } from './Type';
 
+export class Class implements Type {
 
-export class Class {
-
-    name: string;
+    base: Class;
 
     decorators: string[];
 
     members: Member[];
 
-    constructor(classDeclaration: ClassDeclaration, program: Program) {
+    constructor(public name: string, private declaration: ClassDeclaration, private program: Program) {
+        program.typeByName[name] = this;
 
-        this.name = classDeclaration.name.text;
+        if(this.declaration.decorators){
+            this.decorators = this.declaration.decorators.map((v) => v.getText());
+        }
 
-        this.decorators = classDeclaration.decorators.map((v) => v.getText());
-        
-        const flattenedMembers = new Array<ClassElement>();
-        this.flattenMembers(flattenedMembers, classDeclaration, program.getTypeChecker());
+        const { typeChecker } = program;
+        if (this.declaration.heritageClauses) {
+            this.declaration.heritageClauses.forEach((heritageClause) => {
+                heritageClause.types.forEach((heritageClauseType) => {
+                    let type = typeChecker.getTypeFromTypeNode(heritageClauseType)
+                    if (tsutils.isTypeReference(type)) {
+                        let declarations = type.target.getSymbol().declarations
+                        for (const declaration of declarations) {
+                            if (tsutils.isClassDeclaration(declaration)) {
+                                this.base = this.program.lookupOrMap(declaration) as Class;
+                            }
+                        }
+                    }
+                })
+            });
+        }
 
-        this.members = flattenedMembers.map((v) => {
+        this.members = this.declaration.members.map((v) => {
 
             if (isPropertyDeclaration(v)) {
-                return new Property(v as PropertyDeclaration);
+                return new Property(v, this.program);
             }
 
             if (isMethodDeclaration(v)) {
-                return new Method(v as MethodDeclaration);
+                return new Method(v);
             }
 
             return undefined;
@@ -40,35 +55,15 @@ export class Class {
 
     public toJSON(): any {
 
-        const { name, members } = this;
+        const { name, decorators, base, members } = this;
 
         return {
             kind: 'class',
             name,
+            base,
+            decorators,
             members,
         };
-    }
-
-    private flattenMembers(members: ClassElement[], classDeclaration: ClassDeclaration, typeChecker: TypeChecker){
-         
-        if(classDeclaration.heritageClauses){
-            classDeclaration.heritageClauses.forEach((heritageClause) => {
-                heritageClause.types.forEach((heritageClauseType) =>{
-                    let type = typeChecker.getTypeFromTypeNode(heritageClauseType)
-                    if (tsutils.isTypeReference(type)) {
-                        let declarations = type.target.symbol.declarations
-                        for (const declaration of declarations) {
-                            if (tsutils.isClassDeclaration(declaration)) {
-                                const baseClass = declaration;
-                                this.flattenMembers(members, baseClass, typeChecker);
-                            }
-                        }
-                    }
-                })
-            });
-        }
-
-        members.push(...classDeclaration.members);
     }
 }
 

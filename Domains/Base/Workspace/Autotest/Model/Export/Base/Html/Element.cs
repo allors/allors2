@@ -8,6 +8,7 @@ namespace Autotest.Html
     using System.Collections.Generic;
     using System.Linq;
     using Autotest.Angular;
+    using Humanizer;
     using Newtonsoft.Json.Linq;
 
     public partial class Element : INode
@@ -34,6 +35,8 @@ namespace Autotest.Html
         public JToken Json { get; }
 
         public string Name { get; set; }
+
+        public string PropertyName => this.Name.Dehumanize();
 
         public INode Parent { get; }
 
