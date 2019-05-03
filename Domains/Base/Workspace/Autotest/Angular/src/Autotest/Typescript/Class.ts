@@ -46,7 +46,7 @@ export class Class implements Type {
             }
 
             if (isMethodDeclaration(v)) {
-                return new Method(v);
+                return new Method(v, this.program);
             }
 
             return undefined;

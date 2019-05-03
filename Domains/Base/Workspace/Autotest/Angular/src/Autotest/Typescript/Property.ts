@@ -3,22 +3,20 @@ import * as tsutils from "tsutils";
 
 import { Member } from './Member';
 import { Program } from './Program';
-import { TypeReference } from './TypeReference';
+import { TypeRef } from './TypeRef';
 
 export class Property implements Member {
 
     name: string;
-    typeReference: TypeReference;
+    typeRef: TypeRef;
     decorators: string[];
     initializer: string;
 
     constructor(declaration: ts.PropertyDeclaration, program: Program) {
 
-        const { typeChecker } = program;
-
         this.name = declaration.name.getText();
         if (declaration.type) {
-            this.typeReference = new TypeReference(declaration.type, program);
+            this.typeRef = new TypeRef(declaration.type, program);
         }
 
         this.decorators = declaration.decorators ? declaration.decorators.map(v => v.getText()) : undefined;
@@ -27,12 +25,12 @@ export class Property implements Member {
 
     public toJSON(): any {
 
-        const { name, typeReference, decorators, initializer } = this;
+        const { name, typeRef, decorators, initializer } = this;
 
         return {
             kind: 'property',
             name,
-            typeReference,
+            typeRef,
             decorators,
             initializer
         };

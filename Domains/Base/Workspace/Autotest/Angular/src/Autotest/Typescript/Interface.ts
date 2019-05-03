@@ -27,7 +27,7 @@ export class Interface implements Type {
             }
 
             if (isMethodDeclaration(v)) {
-                return new Method(v as MethodDeclaration);
+                return new Method(v as MethodDeclaration, this.program);
             }
 
             return undefined;
