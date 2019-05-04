@@ -121,7 +121,7 @@ namespace Autotest.Angular
                     .Where(v => v != null)
                     .ToArray();
 
-                foreach (var grouping in this.Testers.GroupBy(v => v.ScopedPropertyName).Where(v => v.Count() > 1))
+                foreach (var grouping in this.Testers.GroupBy(v => v.ScopedName).Where(v => v.Count() > 1))
                 {
                     var index = 0;
                     foreach (var item in grouping)

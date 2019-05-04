@@ -90,7 +90,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }, []),
         switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [

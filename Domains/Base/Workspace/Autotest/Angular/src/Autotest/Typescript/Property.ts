@@ -1,36 +1,33 @@
-import * as ts from 'typescript';
-import * as tsutils from "tsutils";
+import { PropertyDeclaration } from 'typescript';
 
 import { Member } from './Member';
-import { Program } from './Program';
-import { TypeRef } from './TypeRef';
 
 export class Property implements Member {
 
     name: string;
-    typeRef: TypeRef;
+    type: string;
     decorators: string[];
     initializer: string;
 
-    constructor(declaration: ts.PropertyDeclaration, program: Program) {
+    constructor(declaration: PropertyDeclaration) {
 
         this.name = declaration.name.getText();
         if (declaration.type) {
-            this.typeRef = new TypeRef(declaration.type, program);
+            this.type = declaration.type.getText();
         }
 
-        this.decorators = declaration.decorators ? declaration.decorators.map(v => v.getText()) : undefined;
+        this.decorators = declaration.decorators ? declaration.decorators.map(v=>v.getText()) : undefined;
         this.initializer = declaration.initializer ? declaration.initializer.getText() : undefined;
     }
 
     public toJSON(): any {
 
-        const { name, typeRef, decorators, initializer } = this;
+        const { name, type, decorators, initializer } = this;
 
         return {
             kind: 'property',
             name,
-            typeRef,
+            type,
             decorators,
             initializer
         };

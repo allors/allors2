@@ -16,7 +16,7 @@ namespace Autotest.Testers
 
         public string FormControlName => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == FormControlNameAttribute)?.Value;
 
-        public override string PropertyName
+        public override string Name
         {
             get
             {

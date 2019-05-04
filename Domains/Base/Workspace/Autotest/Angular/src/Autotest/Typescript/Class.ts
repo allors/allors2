@@ -1,52 +1,37 @@
-import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, TypeChecker, InterfaceDeclaration } from 'typescript';
+import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, Program, NodeArray, TypeChecker } from 'typescript';
 import * as tsutils from "tsutils";
 
 import { Property } from './Property';
 import { Member } from './Member';
 import { Method } from './Method';
-import { Program } from './Program';
-import { Type } from './Type';
+import { flatten } from '@angular/compiler';
 
-export class Class implements Type {
 
-    base: Class;
+export class Class {
+
+    name: string;
 
     decorators: string[];
 
     members: Member[];
 
-    constructor(public name: string, private declaration: ClassDeclaration, private program: Program) {
-        program.typeByName[name] = this;
+    constructor(classDeclaration: ClassDeclaration, program: Program) {
 
-        if(this.declaration.decorators){
-            this.decorators = this.declaration.decorators.map((v) => v.getText());
-        }
+        this.name = classDeclaration.name.text;
 
-        const { typeChecker } = program;
-        if (this.declaration.heritageClauses) {
-            this.declaration.heritageClauses.forEach((heritageClause) => {
-                heritageClause.types.forEach((heritageClauseType) => {
-                    let type = typeChecker.getTypeFromTypeNode(heritageClauseType)
-                    if (tsutils.isTypeReference(type)) {
-                        let declarations = type.target.getSymbol().declarations
-                        for (const declaration of declarations) {
-                            if (tsutils.isClassDeclaration(declaration)) {
-                                this.base = this.program.lookupOrMap(declaration) as Class;
-                            }
-                        }
-                    }
-                })
-            });
-        }
+        this.decorators = classDeclaration.decorators.map((v) => v.getText());
+        
+        const flattenedMembers = new Array<ClassElement>();
+        this.flattenMembers(flattenedMembers, classDeclaration, program.getTypeChecker());
 
-        this.members = this.declaration.members.map((v) => {
+        this.members = flattenedMembers.map((v) => {
 
             if (isPropertyDeclaration(v)) {
-                return new Property(v, this.program);
+                return new Property(v as PropertyDeclaration);
             }
 
             if (isMethodDeclaration(v)) {
-                return new Method(v, this.program);
+                return new Method(v as MethodDeclaration);
             }
 
             return undefined;
@@ -55,15 +40,35 @@ export class Class implements Type {
 
     public toJSON(): any {
 
-        const { name, decorators, base, members } = this;
+        const { name, members } = this;
 
         return {
             kind: 'class',
             name,
-            base,
-            decorators,
             members,
         };
+    }
+
+    private flattenMembers(members: ClassElement[], classDeclaration: ClassDeclaration, typeChecker: TypeChecker){
+         
+        if(classDeclaration.heritageClauses){
+            classDeclaration.heritageClauses.forEach((heritageClause) => {
+                heritageClause.types.forEach((heritageClauseType) =>{
+                    let type = typeChecker.getTypeFromTypeNode(heritageClauseType)
+                    if (tsutils.isTypeReference(type)) {
+                        let declarations = type.target.symbol.declarations
+                        for (const declaration of declarations) {
+                            if (tsutils.isClassDeclaration(declaration)) {
+                                const baseClass = declaration;
+                                this.flattenMembers(members, baseClass, typeChecker);
+                            }
+                        }
+                    }
+                })
+            });
+        }
+
+        members.push(...classDeclaration.members);
     }
 }
 

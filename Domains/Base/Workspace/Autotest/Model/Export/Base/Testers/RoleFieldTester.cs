@@ -37,6 +37,6 @@ namespace Autotest.Testers
 
         private string RoleTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase))?.Value;
 
-        public override string PropertyName => this.RoleType?.PropertyName;
+        public override string Name => this.RoleType?.PropertyName;
     }
 }

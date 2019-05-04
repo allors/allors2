@@ -1,9 +1,9 @@
 import { DirectiveSymbol } from "ngast";
 import { PathResolver } from '../Helpers';
 
-import { Program } from '../Typescript/Program';
-import { Type } from '../Typescript/Type';
 import { Template } from './Template';
+import { Class } from '../Typescript/Class';
+import { Program } from 'typescript';
 
 export class Directive {
 
@@ -13,7 +13,7 @@ export class Directive {
     selector: string;
     exportAs: string;
     template: Template;
-    type: Type;
+    type: Class;
 
     constructor(public directive: DirectiveSymbol, public pathResolver: PathResolver, public program: Program) {
 
@@ -33,7 +33,7 @@ export class Directive {
 
         const classDeclaration = directive.getNode();
         if (classDeclaration) {
-            this.type = this.program.lookupOrMap(classDeclaration)
+            this.type = new Class(classDeclaration, this.program);
         }
     }
 
@@ -49,7 +49,7 @@ export class Directive {
             selector,
             exportAs,
             template,
-            type: type ? type.name : null,
+            type,
         };
     }
 }

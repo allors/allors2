@@ -16,7 +16,7 @@ namespace Autotest.Testers
 
         public string InnerText => this.Element.InnerText.Trim().EmptyToNull();
 
-        public override string PropertyName => (this.Value.ToAlphaNumeric() ?? this.RouterLink.ToAlphaNumeric()).Capitalize();
+        public override string Name => (this.Value.ToAlphaNumeric() ?? this.RouterLink.ToAlphaNumeric()).Capitalize();
 
         public string Kind
         {

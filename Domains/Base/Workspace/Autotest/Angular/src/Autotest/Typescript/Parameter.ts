@@ -1,28 +1,26 @@
 import { ParameterDeclaration } from 'typescript';
-import { TypeRef } from './TypeRef';
-import { Program } from './Program';
 
 export class Parameter {
 
     name: string;
-    typeRef: TypeRef;
+    type: string;
 
-    constructor(declaration: ParameterDeclaration, program: Program) {
+    constructor(declaration: ParameterDeclaration) {
 
         this.name = declaration.name.getText();
         if (declaration.type) {
-            this.typeRef = new TypeRef(declaration.type, program);
+            this.type = declaration.type.getText();
         }
     }
 
     public toJSON(): any {
 
-        const { name, typeRef } = this;
+        const { name, type } = this;
 
         return {
             kind: 'parameter',
             name,
-            typeRef,
+            type,
         };
     }
 }
