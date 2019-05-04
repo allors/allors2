@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './telecommunicationsnumber-create.component.html',
   providers: [ContextService]
 })
-export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestroy {
+export class TelecommunicationsNumberCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -39,6 +39,7 @@ export class TelecommunicationsNumberCreateComponent implements OnInit, OnDestro
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, ContactMechanism, PartyContactMechanism, Organisation, OrganisationContactRelationship, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './partycontactmechanism-edit.component.html',
   providers: [ContextService]
 })
-export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
+export class PartyContactmechanismEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,6 +38,8 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -165,7 +167,7 @@ export class PartyContactmechanismEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

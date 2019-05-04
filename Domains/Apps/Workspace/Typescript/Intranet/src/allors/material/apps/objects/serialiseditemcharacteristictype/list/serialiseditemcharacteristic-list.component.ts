@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { SerialisedItemCharacteristicType, UnitOfMeasure, IUnitOfMeasure } from '../../../../../domain';
@@ -21,7 +21,7 @@ interface Row extends TableRow {
   templateUrl: './serialiseditemcharacteristic-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class SerialisedItemCharacteristicListComponent implements OnInit, OnDestroy {
+export class SerialisedItemCharacteristicListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Product Characteristics';
 
@@ -44,6 +44,8 @@ export class SerialisedItemCharacteristicListComponent implements OnInit, OnDest
     public mediaService: MediaService,
     titleService: Title,
   ) {
+    super();
+
     titleService.setTitle(this.title);
 
     this.edit = editService.edit();

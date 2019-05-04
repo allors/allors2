@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, TestScope } from '../../../../../angular';
 import { ProductQuote, Quote, Good, SalesOrder } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
@@ -13,7 +13,7 @@ import { InternalOrganisationId } from '../../../../../angular/apps/state';
   templateUrl: './productquote-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class ProductQuoteOverviewComponent implements AfterViewInit, OnDestroy {
+export class ProductQuoteOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Quote';
 
@@ -33,6 +33,7 @@ export class ProductQuoteOverviewComponent implements AfterViewInit, OnDestroy {
     public injector: Injector,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

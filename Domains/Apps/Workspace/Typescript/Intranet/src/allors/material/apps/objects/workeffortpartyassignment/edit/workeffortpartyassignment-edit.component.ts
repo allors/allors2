@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkEffortPartyAssignment, Person, WorkEffort, Party, Employment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './workeffortpartyassignment-edit.component.html',
   providers: [ContextService]
 })
-export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy {
+export class WorkEffortPartyAssignmentEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,7 +38,9 @@ export class WorkEffortPartyAssignmentEditComponent implements OnInit, OnDestroy
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private internalOrganisationId: InternalOrganisationId) {
+    private internalOrganisationId: InternalOrganisationId
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

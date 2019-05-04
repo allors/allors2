@@ -3,9 +3,10 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System;
+
 namespace Autotest.Angular
 {
-    using System;
     using System.Linq;
     using Newtonsoft.Json.Linq;
 
@@ -25,7 +26,20 @@ namespace Autotest.Angular
 
         public string Name { get; }
 
-        public string Namespace => this.Path?.Substring(0, this.Path.LastIndexOf("/")).Replace("/", ".");
+        public string Namespace
+        {
+            get
+            {
+                if (this.Path != null)
+                {
+                    var unescapedNamespace = this.Path.Substring(0, this.Path.LastIndexOf("/")).Replace("/", ".");
+                    var escapedNamespace = string.Join(".", unescapedNamespace.Split('.').Select(v => v.EscapeReservedKeyword()));
+                    return escapedNamespace;
+                }
+
+                return string.Empty;
+            }
+        }
 
         public string Path { get; }
 

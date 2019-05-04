@@ -18,6 +18,14 @@ namespace Angular.Html
         {
             switch (kind.ToLowerInvariant())
             {
+                case "id":
+                    this.Selector = By.XPath($"//input[@id='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
+                case "name":
+                    this.Selector = By.XPath($"//input[@name='{value}'{ByScopesAnd(scopes)}]");
+                    break;
+
                 case "formcontrolname":
                     this.Selector = By.XPath($"//input[@formcontrolname='{value}'{ByScopesAnd(scopes)}]");
                     break;
@@ -56,6 +64,12 @@ namespace Angular.Html
     {
         public Input(T page, params By[] selectors)
             : base(page.Driver, selectors)
+        {
+            this.Page = page;
+        }
+
+        public Input(T page, string kind, string value, params string[] scopes)
+            : base(page.Driver, kind, value, scopes)
         {
             this.Page = page;
         }

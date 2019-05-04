@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship, CommunicationEventState, InternalOrganisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './facetofacecommunication-edit.component.html',
   providers: [ContextService]
 })
-export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
+export class FaceToFaceCommunicationEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -43,6 +43,8 @@ export class FaceToFaceCommunicationEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
   }

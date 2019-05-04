@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure, Locale } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -14,7 +14,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   templateUrl: './serialiseditemcharacteristic-edit.component.html',
   providers: [ContextService]
 })
-export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDestroy {
+export class SerialisedItemCharacteristicEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public title: string;
   public subTitle: string;
@@ -40,7 +40,8 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -136,7 +137,7 @@ export class SerialisedItemCharacteristicEditComponent implements OnInit, OnDest
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

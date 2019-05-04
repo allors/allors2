@@ -23,5 +23,11 @@ namespace Angular.Html
         {
             return new Input<T>(@this, selectors);
         }
+
+        // TODO: Remove
+        public static Input<T> Input<T>(this T @this, string formControlName) where T : Component
+        {
+            return new Input<T>(@this, "formControlName", formControlName);
+        }
     }
 }

@@ -16,15 +16,15 @@ namespace Pages.LetterCorrespondenceTests
         {
         }
 
-        public MaterialSingleSelect<LetterCorrespondenceEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSelect<LetterCorrespondenceEditPage> EventState => this.MaterialSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect<LetterCorrespondenceEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialSelect<LetterCorrespondenceEditPage> Purposes => this.MaterialSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect<LetterCorrespondenceEditPage> PostalAddress => this.MaterialSingleSelect(roleType: M.LetterCorrespondence.PostalAddress);
+        public MaterialSelect<LetterCorrespondenceEditPage> PostalAddress => this.MaterialSelect(roleType: M.LetterCorrespondence.PostalAddress);
 
-        public MaterialSingleSelect<LetterCorrespondenceEditPage> FromParty => this.MaterialSingleSelect(roleType: M.LetterCorrespondence.FromParty);
+        public MaterialSelect<LetterCorrespondenceEditPage> FromParty => this.MaterialSelect(roleType: M.LetterCorrespondence.FromParty);
 
-        public MaterialSingleSelect<LetterCorrespondenceEditPage> ToParty => this.MaterialSingleSelect(roleType: M.LetterCorrespondence.ToParty);
+        public MaterialSelect<LetterCorrespondenceEditPage> ToParty => this.MaterialSelect(roleType: M.LetterCorrespondence.ToParty);
 
         public MaterialInput<LetterCorrespondenceEditPage> Subject => this.MaterialInput(roleType: M.CommunicationEvent.Subject);
 

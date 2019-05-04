@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
@@ -16,7 +16,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: './worktask-create.component.html',
   providers: [ContextService]
 })
-export class WorkTaskCreateComponent implements OnInit, OnDestroy {
+export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -51,6 +51,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId
   ) {
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);

@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
@@ -27,7 +27,7 @@ interface Row extends TableRow {
   templateUrl: './part-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PartListComponent implements OnInit, OnDestroy {
+export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Parts';
 
@@ -50,7 +50,9 @@ export class PartListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private filtersService: FiltersService,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 

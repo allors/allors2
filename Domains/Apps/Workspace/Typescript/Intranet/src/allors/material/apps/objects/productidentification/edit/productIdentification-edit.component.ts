@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { ProductIdentification, ProductIdentificationType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -13,7 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './productidentification-edit.component.html',
   providers: [ContextService]
 })
-export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
+export class ProductIdentificationEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -32,7 +32,9 @@ export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -110,7 +112,7 @@ export class ProductIdentificationEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

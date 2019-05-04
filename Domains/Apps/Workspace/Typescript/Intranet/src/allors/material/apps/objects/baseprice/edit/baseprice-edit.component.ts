@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation, Organisation, NonUnifiedGood } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './baseprice-edit.component.html',
   providers: [ContextService]
 })
-export class BasepriceEditComponent implements OnInit, OnDestroy {
+export class BasepriceEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,6 +38,8 @@ export class BasepriceEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId) {
+
+    super();
 
     this.m = this.metaService.m;
   }

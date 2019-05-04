@@ -3,7 +3,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './productcategory-edit.component.html',
   providers: [ContextService]
 })
-export class ProductCategoryEditComponent implements OnInit, OnDestroy {
+export class ProductCategoryEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
   public title: string;
@@ -37,6 +37,7 @@ export class ProductCategoryEditComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

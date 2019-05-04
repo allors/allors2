@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { RequestForQuote, Quote } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest } from '../../../../../framework';
   templateUrl: './requestforquote-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestroy {
+export class RequestForQuoteOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Request For Quote';
 
@@ -31,6 +31,7 @@ export class RequestForQuoteOverviewComponent implements AfterViewInit, OnDestro
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

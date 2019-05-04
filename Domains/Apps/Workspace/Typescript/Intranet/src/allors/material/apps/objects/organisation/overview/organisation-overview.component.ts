@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest } from '../../../../../framework';
   templateUrl: './organisation-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class OrganisationOverviewComponent implements AfterViewInit, OnDestroy {
+export class OrganisationOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Organisation';
 
@@ -30,6 +30,7 @@ export class OrganisationOverviewComponent implements AfterViewInit, OnDestroy {
     public injector: Injector,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

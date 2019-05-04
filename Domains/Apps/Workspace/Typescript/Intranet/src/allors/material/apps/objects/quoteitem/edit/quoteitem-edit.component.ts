@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
 import { ObjectData } from '../../../../../material/base/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
@@ -15,7 +15,7 @@ import { SaveService, FiltersService } from '../../../../../material';
   templateUrl: './quoteitem-edit.component.html',
   providers: [ContextService]
 })
-export class QuoteItemEditComponent implements OnInit, OnDestroy {
+export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -47,6 +47,8 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public snackBar: MatSnackBar
   ) {
+    super();
+
     this.m = this.metaService.m;
   }
 

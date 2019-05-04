@@ -22,11 +22,11 @@ namespace Pages.NonUnifiedGood
 
         public MaterialDatePicker<NonUnifiedGoodEditPage> SalesDiscontinuationDate  => this.MaterialDatePicker(roleType: M.Good.SalesDiscontinuationDate);
 
-        public MaterialSingleSelect<NonUnifiedGoodEditPage> Part => this.MaterialSingleSelect(roleType: M.NonUnifiedGood.Part);
+        public MaterialSelect<NonUnifiedGoodEditPage> Part => this.MaterialSelect(roleType: M.NonUnifiedGood.Part);
 
-        public MaterialSingleSelect<NonUnifiedGoodEditPage> Brand => this.MaterialSingleSelect(roleType: M.Part.Brand);
+        public MaterialSelect<NonUnifiedGoodEditPage> Brand => this.MaterialSelect(roleType: M.Part.Brand);
 
-        public MaterialSingleSelect<NonUnifiedGoodEditPage> Model => this.MaterialSingleSelect(roleType: M.Part.Model);
+        public MaterialSelect<NonUnifiedGoodEditPage> Model => this.MaterialSelect(roleType: M.Part.Model);
 
         public Button<NonUnifiedGoodEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

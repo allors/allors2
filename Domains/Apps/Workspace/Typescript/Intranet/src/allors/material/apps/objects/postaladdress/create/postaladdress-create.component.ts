@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './postaladdress-create.component.html',
   providers: [ContextService]
 })
-export class PostalAddressCreateComponent implements OnInit, OnDestroy {
+export class PostalAddressCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -39,6 +39,8 @@ export class PostalAddressCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
   }

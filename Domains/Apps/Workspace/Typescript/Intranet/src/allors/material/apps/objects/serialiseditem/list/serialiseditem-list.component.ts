@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model } from '../../../../../domain';
@@ -28,7 +28,7 @@ interface Row extends TableRow {
   templateUrl: './serialiseditem-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class SerialisedItemListComponent implements OnInit, OnDestroy {
+export class SerialisedItemListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Serialised Assets';
 
@@ -48,8 +48,9 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 
@@ -155,7 +156,7 @@ export class SerialisedItemListComponent implements OnInit, OnDestroy {
       rentedby: { search: partySearch, display: (v: Party) => v && v.displayName },
       brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
       model: { search: modelSearch, display: (v: Model) => v && v.Name },
-  });
+    });
 
     const sorter = new Sorter(
       {

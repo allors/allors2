@@ -16,13 +16,13 @@ namespace Pages.FaceToFaceCommunicationTests
         {
         }
 
-        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSelect<FaceToFaceCommunicationEditPage> EventState => this.MaterialSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect<FaceToFaceCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialSelect<FaceToFaceCommunicationEditPage> Purposes => this.MaterialSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.FaceToFaceCommunication.FromParty);
+        public MaterialSelect<FaceToFaceCommunicationEditPage> FromParty => this.MaterialSelect(roleType: M.FaceToFaceCommunication.FromParty);
 
-        public MaterialSingleSelect<FaceToFaceCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.FaceToFaceCommunication.ToParty);
+        public MaterialSelect<FaceToFaceCommunicationEditPage> ToParty => this.MaterialSelect(roleType: M.FaceToFaceCommunication.ToParty);
 
         public MaterialInput<FaceToFaceCommunicationEditPage> Location => this.MaterialInput(roleType: M.FaceToFaceCommunication.Location);
 

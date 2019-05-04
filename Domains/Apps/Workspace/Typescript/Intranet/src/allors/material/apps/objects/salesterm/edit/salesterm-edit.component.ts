@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import {  Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -13,7 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './salesterm-edit.component.html',
   providers: [ContextService]
 })
-export class SalesTermEditComponent implements OnInit, OnDestroy {
+export class SalesTermEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -32,7 +32,8 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -111,7 +112,7 @@ export class SalesTermEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

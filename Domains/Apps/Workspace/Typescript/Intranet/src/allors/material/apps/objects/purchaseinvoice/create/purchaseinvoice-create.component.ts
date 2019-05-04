@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, PurchaseOrder } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { ObjectData, SaveService, FiltersService } from '../../../../../material
   templateUrl: './purchaseinvoice-create.component.html',
   providers: [ContextService]
 })
-export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -82,6 +82,7 @@ export class PurchaseInvoiceCreateComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

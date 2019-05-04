@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy, Self, OnInit, OnDestroy } from '@an
 import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { Title } from '@angular/platform-browser';
 
-import { ContextService, MetaService, RefreshService, UserId } from '../../../../angular';
+import { ContextService, MetaService, RefreshService, UserId, TestScope } from '../../../../angular';
 import { Equals, PullRequest } from '../../../../framework';
 import { TimeEntry, WorkEffort } from '../../../../domain';
 import { ObjectService, SaveService } from '../../../../material';
@@ -29,7 +29,7 @@ export interface WorkEffortModel {
   templateUrl: 'timesheet-app.component.html',
   providers: [ContextService]
 })
-export class TimesheetAppComponent implements OnInit, OnDestroy {
+export class TimesheetAppComponent extends TestScope implements OnInit, OnDestroy {
 
   title = 'Timesheet';
 
@@ -52,7 +52,9 @@ export class TimesheetAppComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private objectService: ObjectService,
     private userId: UserId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
   }

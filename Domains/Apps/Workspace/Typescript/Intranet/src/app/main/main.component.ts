@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { Loaded, ContextService, MetaService, AllorsBarcodeService, InternalOrganisationId } from '../../allors/angular';
+import { Loaded, ContextService, MetaService, AllorsBarcodeService, InternalOrganisationId, TestScope } from '../../allors/angular';
 import { Equals, PullRequest, ObjectType } from '../../allors/framework';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
@@ -18,7 +18,7 @@ import { environment } from '../../environments/environment';
   templateUrl: './main.component.html',
   providers: [ContextService]
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent extends TestScope implements OnInit, OnDestroy {
   selectedInternalOrganisation: Organisation;
   internalOriganisations: Organisation[];
 
@@ -40,7 +40,9 @@ export class MainComponent implements OnInit, OnDestroy {
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService,
     private internalOrganisationId: InternalOrganisationId,
-  ) { }
+  ) {
+    super();
+  }
 
   public ngOnInit(): void {
     menu.forEach(menuItem => {

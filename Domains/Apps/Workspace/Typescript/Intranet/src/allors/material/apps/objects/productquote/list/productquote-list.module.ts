@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule} from '../../../..';
 
 import { ProductQuoteListComponent } from './productquote-list.component';
-export { ProductQuoteListComponent as ProductQuotesOverviewComponent } from './productquote-list.component';
+export { ProductQuoteListComponent } from './productquote-list.component';
 
 @NgModule({
   declarations: [

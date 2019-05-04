@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton, Organisation } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material/base/services/save';
   templateUrl: './catalogue-edit.component.html',
   providers: [ContextService]
 })
-export class CatalogueEditComponent implements OnInit, OnDestroy {
+export class CatalogueEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -41,6 +41,8 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
     private fetcher: FetcherService) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -121,7 +123,7 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

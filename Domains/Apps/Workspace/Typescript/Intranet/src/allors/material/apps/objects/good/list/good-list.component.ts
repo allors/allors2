@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Filter, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedGood, UnifiedGood } from '../../../../../domain';
@@ -25,7 +25,7 @@ interface Row extends TableRow {
   templateUrl: './good-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class GoodListComponent implements OnInit, OnDestroy {
+export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Goods';
 
@@ -45,8 +45,9 @@ export class GoodListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-
     titleService: Title) {
+
+    super();
 
     titleService.setTitle(this.title);
 

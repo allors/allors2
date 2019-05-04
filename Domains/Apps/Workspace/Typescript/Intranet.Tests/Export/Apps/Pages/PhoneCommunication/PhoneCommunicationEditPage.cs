@@ -16,15 +16,15 @@ namespace Pages.PhoneCommunicationTests
         {
         }
 
-        public MaterialSingleSelect<PhoneCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSelect<PhoneCommunicationEditPage> EventState => this.MaterialSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect<PhoneCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialSelect<PhoneCommunicationEditPage> Purposes => this.MaterialSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect<PhoneCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.PhoneCommunication.FromParty);
+        public MaterialSelect<PhoneCommunicationEditPage> FromParty => this.MaterialSelect(roleType: M.PhoneCommunication.FromParty);
 
-        public MaterialSingleSelect<PhoneCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.PhoneCommunication.ToParty);
+        public MaterialSelect<PhoneCommunicationEditPage> ToParty => this.MaterialSelect(roleType: M.PhoneCommunication.ToParty);
 
-        public MaterialSingleSelect<PhoneCommunicationEditPage> PhoneNumber => this.MaterialSingleSelect(roleType: M.PhoneCommunication.PhoneNumber);
+        public MaterialSelect<PhoneCommunicationEditPage> PhoneNumber => this.MaterialSelect(roleType: M.PhoneCommunication.PhoneNumber);
 
         public MaterialSlideToggle<PhoneCommunicationEditPage> LeftVoiceMail => this.MaterialSlideToggle(roleType: M.PhoneCommunication.LeftVoiceMail);
 

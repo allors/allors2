@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Enumeration, ElectronicAddress } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './webaddress-edit.component.html',
   providers: [ContextService]
 })
-export class WebAddressEditComponent implements OnInit, OnDestroy {
+export class WebAddressEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -31,7 +31,9 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private internalOrganisationId: InternalOrganisationId) {
+    private internalOrganisationId: InternalOrganisationId
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -88,7 +90,7 @@ export class WebAddressEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

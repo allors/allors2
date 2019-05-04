@@ -21,6 +21,8 @@ namespace Autotest.Angular
 
         public Directive[] LocalRoutedComponents { get; set; }
 
+        public Directive[] LocalEntryComponents { get; set; }
+
         public Module MainModule { get; set; }
 
         public Model Model { get; set; }
@@ -123,6 +125,8 @@ namespace Autotest.Angular
             this.LocalModules = this.Modules.Where(v => v.Reference.IsLocal).ToArray();
 
             this.LocalRoutedComponents = this.Modules.SelectMany(v => v.RoutedComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
+
+            this.LocalEntryComponents = this.Modules.SelectMany(v => v.EntryComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
 
             this.LocalDeclaredEntryComponents = this.Modules.SelectMany(v => v.DeclaredEntryComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
         }

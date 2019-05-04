@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, NavigationService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -15,7 +15,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './phonecommunication-edit.component.html',
   providers: [ContextService]
 })
-export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
+export class PhoneCommunicationEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -48,6 +48,8 @@ export class PhoneCommunicationEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
   }

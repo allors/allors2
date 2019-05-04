@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   templateUrl: './producttype-edit.component.html',
   providers: [ContextService]
 })
-export class ProductTypeEditComponent implements OnInit, OnDestroy {
+export class ProductTypeEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public title: string;
   public subTitle: string;
@@ -34,6 +34,8 @@ export class ProductTypeEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
   }

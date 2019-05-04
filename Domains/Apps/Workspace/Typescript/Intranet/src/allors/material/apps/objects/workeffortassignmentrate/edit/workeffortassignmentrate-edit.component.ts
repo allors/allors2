@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { WorkEffortAssignmentRate, TimeFrequency, RateType, WorkEffort, WorkEffortPartyAssignment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
@@ -14,7 +14,7 @@ import { SaveService } from 'src/allors/material/base/services/save';
   templateUrl: './workeffortassignmentrate-edit.component.html',
   providers: [ContextService]
 })
-export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy {
+export class WorkEffortAssignmentRateEditComponent extends TestScope implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -36,7 +36,8 @@ export class WorkEffortAssignmentRateEditComponent implements OnInit, OnDestroy 
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

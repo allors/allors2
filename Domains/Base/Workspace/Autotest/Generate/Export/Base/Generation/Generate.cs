@@ -29,22 +29,13 @@ namespace Allors.Development.Repository.Tasks
 
     public static class Generate
     {
-        public static Log Execute(string template, string output)
+        public static Log Execute(string template, string output, Model model)
         {
             var log = new GenerateLog();
 
             var templateFileInfo = new FileInfo(template);
             var stringTemplate = new StringTemplate(templateFileInfo);
             var outputDirectoryInfo = new DirectoryInfo(output);
-
-            var model = new Model
-            {
-                MetaPopulation = MetaPopulation.Instance
-            };
-
-            model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
-            model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/dist/project.json"));
-            model.LoadMenu(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/menu.json"));
 
             stringTemplate.Generate(model, outputDirectoryInfo, log);
 

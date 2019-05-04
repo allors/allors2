@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   templateUrl: './requestforquote-create.component.html',
   providers: [ContextService]
 })
-export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
+export class RequestForQuoteCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -45,7 +45,9 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
     private refreshService: RefreshService,
     private saveService: SaveService,
     private fetcher: FetcherService,
-    private internalOrganisationId: InternalOrganisationId) {
+    private internalOrganisationId: InternalOrganisationId
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -99,8 +101,8 @@ export class RequestForQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   get originatorIsPerson(): boolean {

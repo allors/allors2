@@ -1,0 +1,19 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "search.useIgnoreFiles": false,
+    "search.exclude": {
+        ".vscode/chrome": true,
+        "lib": true,
+        "dist": true,
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/tmp": true
+    },
+    "cSpell.words": [
+        "Gast",
+        "Organisation",
+        "allors",
+        "ngast"
+    ]
+}

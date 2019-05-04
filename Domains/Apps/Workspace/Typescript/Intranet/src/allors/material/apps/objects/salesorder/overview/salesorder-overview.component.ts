@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest, Sort, Equals } from '../../../../../framework';
   templateUrl: './salesorder-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
+export class SalesOrderOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Sales Order';
 
@@ -37,6 +37,7 @@ export class SalesOrderOverviewComponent implements AfterViewInit, OnDestroy {
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

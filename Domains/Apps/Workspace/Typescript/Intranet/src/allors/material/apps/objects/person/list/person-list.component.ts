@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Person, Country } from '../../../../../domain';
@@ -25,7 +25,7 @@ interface Row extends TableRow {
   templateUrl: './person-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PersonListComponent implements OnInit, OnDestroy {
+export class PersonListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'People';
 
@@ -45,8 +45,9 @@ export class PersonListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 
@@ -115,7 +116,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ]),
+        }, [, , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

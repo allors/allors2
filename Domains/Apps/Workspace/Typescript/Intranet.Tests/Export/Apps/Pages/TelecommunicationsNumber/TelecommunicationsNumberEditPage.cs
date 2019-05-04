@@ -16,7 +16,7 @@ namespace Pages.TelecommunicationsNumberTests
         {
         }
 
-        public MaterialMultipleSelect<TelecommunicationsNumberEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialSelect<TelecommunicationsNumberEditPage> ContactPurposes => this.MaterialSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
         public MaterialInput<TelecommunicationsNumberEditPage> CountryCode => this.MaterialInput(roleType: M.TelecommunicationsNumber.CountryCode);
 
@@ -24,7 +24,7 @@ namespace Pages.TelecommunicationsNumberTests
 
         public MaterialInput<TelecommunicationsNumberEditPage> ContactNumber => this.MaterialInput(roleType: M.TelecommunicationsNumber.ContactNumber);
 
-        public MaterialSingleSelect<TelecommunicationsNumberEditPage> ContactMechanismType => this.MaterialSingleSelect(roleType: M.TelecommunicationsNumber.ContactMechanismType);
+        public MaterialSelect<TelecommunicationsNumberEditPage> ContactMechanismType => this.MaterialSelect(roleType: M.TelecommunicationsNumber.ContactMechanismType);
 
         public MaterialTextArea<TelecommunicationsNumberEditPage> Description => this.MaterialTextArea(roleType: M.ContactMechanism.Description);
 

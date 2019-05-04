@@ -1,3 +1,5 @@
+using System;
+
 namespace Autotest.Testers
 {
     using System.Linq;
@@ -5,6 +7,8 @@ namespace Autotest.Testers
 
     public partial class InputTester : Tester
     {
+        private const string IdAttribute = "id";
+
         private const string NameAttribute = "name";
 
         private static readonly string FormControlNameAttribute = "formControlName".ToLowerInvariant();
@@ -14,22 +18,29 @@ namespace Autotest.Testers
         {
         }
 
-        public string FormControlName => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == FormControlNameAttribute)?.Value;
+        public string IdAttributeValue => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == IdAttribute)?.Value;
 
-        public override string Name
-        {
-            get
-            {
-                var name = this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == NameAttribute)?.Value;
-                return (name ?? this.FormControlName).Capitalize();
-            }
-        }
+        public string NameAttributeValue => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == NameAttribute)?.Value;
+
+        public string FormControlNameAttributeValue => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == FormControlNameAttribute)?.Value;
+
+        public override string PropertyName => (this.IdAttributeValue ?? this.NameAttributeValue ?? this.FormControlNameAttributeValue ?? "Input").Capitalize();
 
         public string Kind
         {
             get
             {
-                if (this.FormControlName != null)
+                if (this.IdAttributeValue != null)
+                {
+                    return "Id";
+                }
+
+                if (this.NameAttributeValue != null)
+                {
+                    return "Name";
+                }
+
+                if (this.FormControlNameAttributeValue != null)
                 {
                     return "FormControlName";
                 }
@@ -38,17 +49,6 @@ namespace Autotest.Testers
             }
         }
 
-        public string Value
-        {
-            get
-            {
-                if (this.FormControlName != null)
-                {
-                    return this.FormControlName;
-                }
-
-                return string.Empty;
-            }
-        }
+        public string Value => this.IdAttributeValue ?? this.NameAttributeValue ?? this.FormControlNameAttributeValue ?? string.Empty;
     }
 }

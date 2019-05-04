@@ -6,7 +6,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { PurchaseInvoice } from '../../../../../domain';
 import { And, Like, PullRequest, Equals } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService } from '../../../../../material';
@@ -24,7 +24,7 @@ interface Row extends TableRow {
   templateUrl: './purchaseinvoice-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceListComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -53,7 +53,9 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
     public overviewService: OverviewService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 

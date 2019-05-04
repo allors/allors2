@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { RepeatingSalesInvoice, TimeFrequency, DayOfWeek, SalesInvoice } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   providers: [ContextService]
 
 })
-export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
+export class RepeatingSalesInvoiceEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -35,6 +35,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     public refreshService: RefreshService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

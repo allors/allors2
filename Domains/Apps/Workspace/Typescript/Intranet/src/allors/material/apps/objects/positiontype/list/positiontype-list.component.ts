@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PositionType } from '../../../../../domain';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './positiontype-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PositionTypesOverviewComponent implements OnInit, OnDestroy {
+export class PositionTypesOverviewComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Position Types';
 
@@ -43,6 +43,8 @@ export class PositionTypesOverviewComponent implements OnInit, OnDestroy {
     public mediaService: MediaService,
     titleService: Title,
   ) {
+    super();
+
     titleService.setTitle(this.title);
 
     this.edit = editService.edit();

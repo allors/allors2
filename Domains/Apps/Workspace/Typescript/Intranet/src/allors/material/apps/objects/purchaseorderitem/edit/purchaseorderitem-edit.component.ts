@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './purchaseorderitem-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
+export class PurchaseOrderItemEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -42,6 +42,7 @@ export class PurchaseOrderItemEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private snackBar: MatSnackBar,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

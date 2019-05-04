@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, AllorsFilterService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, AllorsFilterService, TestScope } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
@@ -18,7 +18,7 @@ import { ObjectData } from '../../../../../material/base/services/object';
   templateUrl: './productquote-create.component.html',
   providers: [ContextService]
 })
-export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
+export class ProductQuoteCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -48,6 +48,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -139,8 +141,8 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private update(party: Party) {

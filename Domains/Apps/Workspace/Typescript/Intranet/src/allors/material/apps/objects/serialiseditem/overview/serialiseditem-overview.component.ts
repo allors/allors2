@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Meta } from '../../../../../meta';
-import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { SerialisedItem, Part, Party } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
@@ -13,7 +13,7 @@ import { PullRequest } from '../../../../../framework';
   templateUrl: './serialiseditem-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class SerialisedItemOverviewComponent implements AfterViewInit, OnDestroy {
+export class SerialisedItemOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   readonly m: Meta;
   title = 'Asset';
@@ -34,6 +34,7 @@ export class SerialisedItemOverviewComponent implements AfterViewInit, OnDestroy
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     this.m = this.metaService.m;
     titleService.setTitle(this.title);

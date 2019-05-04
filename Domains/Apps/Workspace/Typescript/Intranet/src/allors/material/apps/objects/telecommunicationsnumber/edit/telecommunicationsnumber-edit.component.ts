@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { SaveService } from '../../../../../material';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './telecommunicationsnumber-edit.component.html',
   providers: [ContextService]
 })
-export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy {
+export class TelecommunicationsNumberEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -32,7 +32,8 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -91,7 +92,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

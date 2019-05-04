@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
@@ -16,7 +16,7 @@ import { SaveService, FiltersService } from '../../../../../material';
   providers: [ContextService]
 
 })
-export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
+export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -50,6 +50,8 @@ export class SalesInvoiceItemEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     private saveService: SaveService,
   ) {
+    super();
+
     this.m = this.metaService.m;
 
     this.goodsFacilityFilter = new SearchFactory({

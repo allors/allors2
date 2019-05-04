@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Humanizer;
+
 namespace Autotest.Html
 {
     using System.Collections.Generic;
@@ -35,6 +37,8 @@ namespace Autotest.Html
 
         public string Name { get; set; }
 
+        public string PropertyName => this.Name.Dehumanize();
+        
         public INode Parent { get; }
 
         public Directive Component { get; set; }

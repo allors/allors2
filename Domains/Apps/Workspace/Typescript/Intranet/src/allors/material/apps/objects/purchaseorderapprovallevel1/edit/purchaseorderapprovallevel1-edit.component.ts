@@ -2,7 +2,7 @@ import { PrintDocument } from '../../../../../domain/generated/PrintDocument.g';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, Invoked, Action } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, Invoked, Action, TestScope } from '../../../../../angular';
 import { PurchaseOrderApprovalLevel1 } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../base/services/object';
@@ -16,7 +16,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './purchaseorderapprovallevel1-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseOrderApprovalLevel1EditComponent implements OnInit, OnDestroy {
+export class PurchaseOrderApprovalLevel1EditComponent extends TestScope implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -38,6 +38,7 @@ export class PurchaseOrderApprovalLevel1EditComponent implements OnInit, OnDestr
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

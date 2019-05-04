@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -19,7 +19,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   templateUrl: './organisation-create.component.html',
   providers: [ContextService]
 })
-export class OrganisationCreateComponent implements OnInit, OnDestroy {
+export class OrganisationCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -60,6 +60,8 @@ export class OrganisationCreateComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);

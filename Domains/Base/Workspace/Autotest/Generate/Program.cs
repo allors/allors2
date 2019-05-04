@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using Allors.Meta;
+using Autotest;
 
 namespace Allors
 {
@@ -9,7 +11,7 @@ namespace Allors
 
     internal class Program
     {
-        private static int Default()
+        private static int Default(Model model)
         {
             try
             {
@@ -35,7 +37,7 @@ namespace Allors
 
                     RemoveDirectory(output);
 
-                    var log = Generate.Execute(template, output);
+                    var log = Generate.Execute(template, output, model);
                     if (log.ErrorOccured)
                     {
                         return 1;
@@ -54,13 +56,22 @@ namespace Allors
         {
             try
             {
+                var model = new Model
+                {
+                    MetaPopulation = MetaPopulation.Instance
+                };
+
+                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/meta.json"));
+                model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/dist/project.json"));
+                model.LoadMenu(new FileInfo("./Workspace/Typescript/modules/Material/dist/autotest/menu.json"));
+
                 switch (args.Length)
                 {
                     case 0:
-                        return Default();
+                        return Default(model);
 
                     case 2:
-                        return Generate.Execute(args[0], args[1]).ErrorOccured ? 1 : 0;
+                        return Generate.Execute(args[0], args[1], model).ErrorOccured ? 1 : 0;
 
                     default:
                         return 1;

@@ -20,15 +20,15 @@ namespace Pages.PartyRelationshipTests
 
         public MaterialDatePicker<PartyRelationshipEditPage> ThroughDate => this.MaterialDatePicker(roleType: M.PartyRelationship.ThroughDate);
 
-        public MaterialSingleSelect<PartyRelationshipEditPage> Employer => this.MaterialSingleSelect(roleType: M.Employment.Employer);
+        public MaterialSelect<PartyRelationshipEditPage> Employer => this.MaterialSelect(roleType: M.Employment.Employer);
 
-        public MaterialSingleSelect<PartyRelationshipEditPage> Employee => this.MaterialSingleSelect(roleType: M.Employment.Employee);
+        public MaterialSelect<PartyRelationshipEditPage> Employee => this.MaterialSelect(roleType: M.Employment.Employee);
 
-        public MaterialSingleSelect<PartyRelationshipEditPage> Contact => this.MaterialSingleSelect(roleType: M.OrganisationContactRelationship.Contact);
+        public MaterialSelect<PartyRelationshipEditPage> Contact => this.MaterialSelect(roleType: M.OrganisationContactRelationship.Contact);
 
-        public MaterialSingleSelect<PartyRelationshipEditPage> Organisation => this.MaterialSingleSelect(roleType: M.OrganisationContactRelationship.Organisation);
+        public MaterialSelect<PartyRelationshipEditPage> Organisation => this.MaterialSelect(roleType: M.OrganisationContactRelationship.Organisation);
 
-        public MaterialMultipleSelect<PartyRelationshipEditPage> ContactKinds => this.MaterialMultipleSelect(roleType: M.OrganisationContactRelationship.ContactKinds);
+        public MaterialSelect<PartyRelationshipEditPage> ContactKinds => this.MaterialSelect(roleType: M.OrganisationContactRelationship.ContactKinds);
 
         public Button<PartyRelationshipEditPage> Save => this.Button(By.XPath("//button/span[contains(text(), 'SAVE')]"));
 

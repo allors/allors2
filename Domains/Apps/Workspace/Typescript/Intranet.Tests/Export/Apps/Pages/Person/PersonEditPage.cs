@@ -16,11 +16,11 @@ namespace Pages.PersonTests
         {
         }
 
-        public MaterialSingleSelect<PersonEditPage> Salutation => this.MaterialSingleSelect(roleType: M.Person.Salutation);
+        public MaterialSelect<PersonEditPage> Salutation => this.MaterialSelect(roleType: M.Person.Salutation);
 
-        public MaterialSingleSelect<PersonEditPage> Gender => this.MaterialSingleSelect(roleType: M.Person.Gender);
+        public MaterialSelect<PersonEditPage> Gender => this.MaterialSelect(roleType: M.Person.Gender);
 
-        public MaterialSingleSelect<PersonEditPage> Locale => this.MaterialSingleSelect(roleType: M.Person.Locale);
+        public MaterialSelect<PersonEditPage> Locale => this.MaterialSelect(roleType: M.Person.Locale);
 
         public MaterialInput<PersonEditPage> FirstName => this.MaterialInput(roleType: M.Person.FirstName);
 

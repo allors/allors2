@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './webaddress-create.component.html',
   providers: [ContextService]
 })
-export class WebAddressCreateComponent implements OnInit, OnDestroy {
+export class WebAddressCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -37,7 +37,9 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private internalOrganisationId: InternalOrganisationId) {
+    private internalOrganisationId: InternalOrganisationId
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -99,7 +101,7 @@ export class WebAddressCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

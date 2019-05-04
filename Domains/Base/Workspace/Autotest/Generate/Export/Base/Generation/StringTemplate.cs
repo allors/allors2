@@ -98,9 +98,10 @@ namespace Allors.Development.Repository.Generation
 
             try
             {
-                TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
-
-                templateGroup.ErrorManager = new ErrorManager(new LogAdapter(log));
+                TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$')
+                {
+                    ErrorManager = new ErrorManager(new LogAdapter(log))
+                };
                 templateGroup.RegisterRenderer(typeof(string), new StringRenderer());
 
                 var configurationTemplate = templateGroup.GetInstanceOf(TemplateConfiguration);

@@ -16,11 +16,11 @@ namespace Pages.SerialisedItemTests
         {
         }
 
-        public MaterialSingleSelect<SerialisedItemEditPage> Salutation => this.MaterialSingleSelect(roleType: M.Person.Salutation);
+        public MaterialSelect<SerialisedItemEditPage> Salutation => this.MaterialSelect(roleType: M.Person.Salutation);
 
-        public MaterialSingleSelect<SerialisedItemEditPage> Gender => this.MaterialSingleSelect(roleType: M.Person.Gender);
+        public MaterialSelect<SerialisedItemEditPage> Gender => this.MaterialSelect(roleType: M.Person.Gender);
 
-        public MaterialSingleSelect<SerialisedItemEditPage> Locale => this.MaterialSingleSelect(roleType: M.Person.Locale);
+        public MaterialSelect<SerialisedItemEditPage> Locale => this.MaterialSelect(roleType: M.Person.Locale);
 
         public MaterialInput<SerialisedItemEditPage> FirstName => this.MaterialInput(roleType: M.Person.FirstName);
 

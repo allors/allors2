@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { Part, Organisation, SupplierOffering, RatingType, Ordinal, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './supplieroffering-edit.component.html',
   providers: [ContextService]
 })
-export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
+export class SupplierOfferingEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -42,6 +42,7 @@ export class SupplierOfferingEditComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

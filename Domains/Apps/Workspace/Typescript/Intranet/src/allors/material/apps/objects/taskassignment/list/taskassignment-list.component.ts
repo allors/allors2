@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { AllorsFilterService,  MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, EditService } from '../../../..';
 import { TaskAssignment } from '../../../../../domain';
 import { ObjectService } from '../../../../base/services/object';
@@ -21,7 +21,7 @@ interface Row extends TableRow {
   templateUrl: './taskassignment-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class TaskAssignmentListComponent implements OnInit, OnDestroy {
+export class TaskAssignmentListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Tasks';
 
@@ -41,7 +41,9 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private userId: UserId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 
@@ -72,7 +74,7 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Equals({propertyType: m.TaskAssignment.User, object: this.userId.value}),
+      new Equals({ propertyType: m.TaskAssignment.User, object: this.userId.value }),
       new ContainedIn({
         propertyType: m.TaskAssignment.Task,
         extent: new Filter({
@@ -99,7 +101,7 @@ export class TaskAssignmentListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ]),
+        }, [, , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

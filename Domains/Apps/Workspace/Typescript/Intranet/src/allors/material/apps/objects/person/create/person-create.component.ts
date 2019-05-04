@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: './person-create.component.html',
   providers: [ContextService]
 })
-export class PersonCreateComponent implements OnInit, OnDestroy {
+export class PersonCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -58,6 +58,8 @@ export class PersonCreateComponent implements OnInit, OnDestroy {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);

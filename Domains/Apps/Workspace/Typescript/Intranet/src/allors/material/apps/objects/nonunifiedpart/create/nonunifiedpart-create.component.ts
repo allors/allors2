@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/c
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
 import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -15,7 +15,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
   templateUrl: './nonunifiedpart-create.component.html',
   providers: [ContextService]
 })
-export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
+export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -56,7 +56,9 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private snackBar: MatSnackBar,
     private fetcher: FetcherService
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -191,8 +193,8 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public update(): void {
@@ -206,8 +208,8 @@ export class NonUnifiedPartCreateComponent implements OnInit, OnDestroy {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private onSave() {

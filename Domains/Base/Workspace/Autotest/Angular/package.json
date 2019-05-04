@@ -13,7 +13,7 @@
     "lint-fix": "tslint --fix --project ./tsconfig.json",
     "test": "npm run build && mocha ./out-tsc/**/*.spec.js",
     "tc:test": "npm run build && mocha --reporter mocha-teamcity-reporter ./out-tsc/**/*.spec.js",
-    "autotest": "npm run build && node ./out-tsc/src/main"
+    "autotest": "npm run build && node ./out-tsc/src/main && npx rimraf ./out-tsc"
   },
   "dependencies": {
     "@angular/compiler": "~7.2.0",
@@ -33,6 +33,7 @@
     "istanbul": "latest",
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
+    "rimraf": "^2.6.3",
     "ts-node": "latest",
     "typescript": "~3.2.2"
   }

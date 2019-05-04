@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, tap, delay } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Person, Employment } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest } from '../../../../../framework';
   templateUrl: './person-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
+export class PersonOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Person';
 
@@ -31,6 +31,7 @@ export class PersonOverviewComponent implements AfterViewInit, OnDestroy {
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

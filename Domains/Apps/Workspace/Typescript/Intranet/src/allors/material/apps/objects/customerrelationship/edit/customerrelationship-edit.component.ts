@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CustomerRelationship, Organisation, Party } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './customerrelationship-edit.component.html',
   providers: [ContextService]
 })
-export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
+export class CustomerRelationshipEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -36,7 +36,9 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -114,6 +116,7 @@ export class CustomerRelationshipEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
-  }}
+        this.saveService.errorHandler
+      );
+  }
+}

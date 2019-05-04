@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System.Threading;
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -46,6 +48,8 @@ namespace Autotest.Angular
         public Reference Reference { get; set; }
 
         public Directive[] RoutedComponents { get; set; }
+
+        public Directive[] ScopedComponents { get; set; }
 
         public Route[] Routes { get; set; }
 

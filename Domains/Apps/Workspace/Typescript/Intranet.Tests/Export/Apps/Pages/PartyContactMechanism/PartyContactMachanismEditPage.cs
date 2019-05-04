@@ -20,7 +20,7 @@ namespace Pages.PartyContactMachanismTests
 
         public MaterialDatePicker<PartyContactMachanismEditPage> ThroughDate => this.MaterialDatePicker(roleType: M.PartyContactMechanism.ThroughDate);
 
-        public MaterialMultipleSelect<PartyContactMachanismEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialSelect<PartyContactMachanismEditPage> ContactPurposes => this.MaterialSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
         public MaterialInput<PartyContactMachanismEditPage> Address1 => this.MaterialInput(roleType: M.PostalAddress.Address1);
 
@@ -32,7 +32,7 @@ namespace Pages.PartyContactMachanismTests
 
         public MaterialInput<PartyContactMachanismEditPage> PostalCode => this.MaterialInput(roleType: M.PostalBoundary.PostalCode);
 
-        public MaterialSingleSelect<PartyContactMachanismEditPage> Country => this.MaterialSingleSelect(roleType: M.PostalBoundary.Country);
+        public MaterialSelect<PartyContactMachanismEditPage> Country => this.MaterialSelect(roleType: M.PostalBoundary.Country);
 
         public MaterialSlideToggle<PartyContactMachanismEditPage> UseAsDefault => this.MaterialSlideToggle(roleType: M.PartyContactMechanism.UseAsDefault);
 

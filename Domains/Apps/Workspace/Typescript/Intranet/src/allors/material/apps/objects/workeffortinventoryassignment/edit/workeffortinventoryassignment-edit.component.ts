@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './workeffortinventoryassignment-edit.component.html',
   providers: [ContextService]
 })
-export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDestroy {
+export class WorkEffortInventoryAssignmentEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,7 +38,9 @@ export class WorkEffortInventoryAssignmentEditComponent implements OnInit, OnDes
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, Saved, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, Saved, FetcherService, TestScope } from '../../../../../angular';
 import { InternalOrganisation, InventoryItem, InventoryItemTransaction, InventoryTransactionReason, Facility, Lot, SerialisedInventoryItem, SerialisedItem, Part, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { ObjectData, SaveService } from '../../../../../material';
   templateUrl: './inventoryitemtransaction-edit.component.html',
   providers: [ContextService]
 })
-export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy {
+export class InventoryItemTransactionEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -50,7 +50,9 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     private saveService: SaveService,
     private fetcher: FetcherService,
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -172,8 +174,8 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public facilityAdded(facility: Facility): void {

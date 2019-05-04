@@ -7,7 +7,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
 import { SalesOrder, Party, SalesOrderState, SerialisedItem, Product } from '../../../../../domain';
@@ -26,7 +26,7 @@ interface Row extends TableRow {
   templateUrl: './salesorder-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class SalesOrderListComponent implements OnInit, OnDestroy {
+export class SalesOrderListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Sales Orders';
 
@@ -55,6 +55,8 @@ export class SalesOrderListComponent implements OnInit, OnDestroy {
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
+
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);

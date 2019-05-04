@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, DeleteService, EditService } from '../../../..';
 
 import { CommunicationEvent } from '../../../../../domain';
@@ -26,7 +26,7 @@ interface Row extends TableRow {
   templateUrl: './communicationevent-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class CommunicationEventListComponent implements OnInit, OnDestroy {
+export class CommunicationEventListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Communications';
 
@@ -46,7 +46,9 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     public editService: EditService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 
@@ -102,7 +104,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ]),
+        }, [, , , ,]),
         switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [

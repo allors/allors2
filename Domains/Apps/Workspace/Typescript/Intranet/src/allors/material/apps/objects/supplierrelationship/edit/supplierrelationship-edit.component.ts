@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { SupplierRelationship, Organisation } from '../../../../../domain/';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './supplierrelationship-edit.component.html',
   providers: [ContextService]
 })
-export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
+export class SupplierRelationshipEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -36,7 +36,8 @@ export class SupplierRelationshipEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
     private fetcher: FetcherService
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

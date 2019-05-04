@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { PositionType } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
@@ -14,7 +14,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './positiontype-edit.component.html',
   providers: [ContextService]
 })
-export class PositionTypeEditComponent implements OnInit, OnDestroy {
+export class PositionTypeEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public title: string;
   public subTitle: string;
@@ -33,6 +33,7 @@ export class PositionTypeEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

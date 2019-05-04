@@ -7,7 +7,7 @@ import { Subscription, combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, ISessionObject, Or, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute, SearchFactory, Action, AllorsBarcodeService, UserId } from '../../../../../angular';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, NavigationActivatedRoute, SearchFactory, Action, AllorsBarcodeService, UserId, TestScope } from '../../../../../angular';
 import { SaveService, Table, EditService, ObjectData } from '../../../..';
 
 import { WorkEffort, TimeEntry, WorkEffortInventoryAssignment, TimeSheet, RateType, InventoryItem, UnifiedGood, NonUnifiedPart } from '../../../../../domain';
@@ -24,7 +24,7 @@ export interface Row {
   templateUrl: './workorder-detail.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
+export class WorkerOrderDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   title = 'Work Orders - Detail';
 
@@ -56,7 +56,9 @@ export class WorkerOrderDetailComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     private saveService: SaveService,
     private userId: UserId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 

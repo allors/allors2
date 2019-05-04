@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './workeffortfixedassetassignment-edit.component.html',
   providers: [ContextService]
 })
-export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDestroy {
+export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,7 +38,9 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -147,7 +149,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent implements OnInit, OnDe
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { ContextService, NavigationService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { Good } from 'src/allors/domain/generated';
   templateUrl: './nonunifiedgood-create.component.html',
   providers: [ContextService]
 })
-export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
+export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
   good: Good;
@@ -49,6 +49,8 @@ export class NonUnifiedGoodCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService
   ) {
+
+    super();
 
     this.m = this.metaService.m;
   }

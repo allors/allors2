@@ -16,17 +16,17 @@ namespace Pages.EmailCommunicationTests
         {
         }
 
-        public MaterialSingleSelect<EmailCommunicationEditPage> EventState => this.MaterialSingleSelect(roleType: M.CommunicationEvent.CommunicationEventState);
+        public MaterialSelect<EmailCommunicationEditPage> EventState => this.MaterialSelect(roleType: M.CommunicationEvent.CommunicationEventState);
 
-        public MaterialMultipleSelect<EmailCommunicationEditPage> Purposes => this.MaterialMultipleSelect(roleType: M.CommunicationEvent.EventPurposes);
+        public MaterialSelect<EmailCommunicationEditPage> Purposes => this.MaterialSelect(roleType: M.CommunicationEvent.EventPurposes);
 
-        public MaterialSingleSelect<EmailCommunicationEditPage> FromParty => this.MaterialSingleSelect(roleType: M.EmailCommunication.FromParty);
+        public MaterialSelect<EmailCommunicationEditPage> FromParty => this.MaterialSelect(roleType: M.EmailCommunication.FromParty);
 
-        public MaterialSingleSelect<EmailCommunicationEditPage> ToParty => this.MaterialSingleSelect(roleType: M.EmailCommunication.ToParty);
+        public MaterialSelect<EmailCommunicationEditPage> ToParty => this.MaterialSelect(roleType: M.EmailCommunication.ToParty);
 
-        public MaterialSingleSelect<EmailCommunicationEditPage> FromEmail => this.MaterialSingleSelect(roleType: M.EmailCommunication.FromEmail);
+        public MaterialSelect<EmailCommunicationEditPage> FromEmail => this.MaterialSelect(roleType: M.EmailCommunication.FromEmail);
 
-        public MaterialSingleSelect<EmailCommunicationEditPage> ToEmail => this.MaterialSingleSelect(roleType: M.EmailCommunication.ToEmail);
+        public MaterialSelect<EmailCommunicationEditPage> ToEmail => this.MaterialSelect(roleType: M.EmailCommunication.ToEmail);
 
         public MaterialInput<EmailCommunicationEditPage> Subject => this.MaterialInput(roleType: M.EmailTemplate.SubjectTemplate);
 

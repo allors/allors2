@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, TestScope } from '../../../../../angular';
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
@@ -13,7 +13,7 @@ import { InternalOrganisationId } from '../../../../../angular/apps/state';
   templateUrl: './purchaseinvoice-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class PurchasInvoiceOverviewComponent implements AfterViewInit, OnDestroy {
+export class PurchasInvoiceOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Purchase Invoice';
 
@@ -33,6 +33,7 @@ export class PurchasInvoiceOverviewComponent implements AfterViewInit, OnDestroy
     public injector: Injector,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

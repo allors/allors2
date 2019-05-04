@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Employment, Party, Organisation, Person } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -16,7 +16,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './employment-edit.component.html',
   providers: [ContextService]
 })
-export class EmploymentEditComponent implements OnInit, OnDestroy {
+export class EmploymentEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -41,6 +41,8 @@ export class EmploymentEditComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
     private fetcher: FetcherService) {
+
+    super();
 
     this.m = this.metaService.m;
   }

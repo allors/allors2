@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, ContainedIn, Filter, Exists, Not, Or } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId, TestScope } from '../../../../../angular';
 
 import { WorkEffortPartyAssignment, WorkEffort, TimeEntry, Person } from '../../../../../domain';
 
@@ -26,7 +26,7 @@ export interface WorkEffortModel {
   templateUrl: './workorder-master.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
+export class WorkerOrderMasterComponent extends TestScope implements OnInit, OnDestroy {
 
   title = 'Work Orders';
 
@@ -45,7 +45,9 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     private userId: UserId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
   }
@@ -69,8 +71,8 @@ export class WorkerOrderMasterComponent implements OnInit, OnDestroy {
                   extent: new Filter({
                     objectType: m.WorkEffortState,
                     predicate: new Or([
-                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: 'c082cd605c5f4948bdb106bd9c385751'}),
-                      new Equals({propertyType: m.WorkEffortState.UniqueId, value: '7a83df7b99184b108f9948896f9db105'}),
+                      new Equals({ propertyType: m.WorkEffortState.UniqueId, value: 'c082cd605c5f4948bdb106bd9c385751' }),
+                      new Equals({ propertyType: m.WorkEffortState.UniqueId, value: '7a83df7b99184b108f9948896f9db105' }),
                     ])
                   })
                 })

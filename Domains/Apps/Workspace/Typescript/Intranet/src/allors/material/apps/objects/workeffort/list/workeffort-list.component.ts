@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals } from '../../../../../framework';
 import { WorkEffort } from '../../../../../domain';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
@@ -26,7 +26,7 @@ interface Row extends TableRow {
   templateUrl: './workeffort-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class WorkEffortListComponent implements OnInit, OnDestroy {
+export class WorkEffortListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Work Orders';
 
@@ -48,7 +48,9 @@ export class WorkEffortListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 

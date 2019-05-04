@@ -20,7 +20,6 @@ import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 
-
 import { RequestForQuoteCreateComponent } from './requestforquote-create.component';
 export { RequestForQuoteCreateComponent } from './requestforquote-create.component';
 

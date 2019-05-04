@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService, FiltersService } from '../../../../../material';
   templateUrl: './salesinvoice-create.component.html',
   providers: [ContextService]
 })
-export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
+export class SalesInvoiceCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
   public title = 'Add Sales Invoice';
@@ -84,6 +84,7 @@ export class SalesInvoiceCreateComponent implements OnInit, OnDestroy {
     public internalOrganisationId: InternalOrganisationId,
     private fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

@@ -27,29 +27,32 @@ $menu.MenuItems:{menuItem|$menuItem(menuItem)$}; separator="\n"$
 >>
 
 menuItem(menuItem) ::= <<
-        // $menuItem.Title$
+        // $menuItem.PropertyName$
 $if(!menuItem.Parent)$
 $if(menuItem.Link)$
-        public Angular.Html.Anchor $menuItem.Title$ => this.Link("$menuItem.Link$");
+        public Angular.Html.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
 
-        public $menuItem.Component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.Title$()
+$if(menuItem.Component)$
+        public $menuItem.Component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.PropertyName$()
         {
-            this.Navigate(this.$menuItem.Title$);
+            this.Navigate(this.$menuItem.PropertyName$);
             return new $menuItem.component.Reference.Namespace$.$menuItem.Component.Reference.Name$(this.Driver);
         }
-
+$endif$
 $else$
-        public Angular.Html.Element $menuItem.Title$Group => this.Group("$menuItem.Title$");
+        public Angular.Html.Element $menuItem.PropertyName$Group => this.Group("$menuItem.Title$");
 
 $endif$
 $else$
-        public Angular.Html.Anchor $menuItem.Title$ => this.Link("$menuItem.Link$");
+        public Angular.Html.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
 
-        public $menuItem.component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.Title$()
+$if(menuItem.Component)$
+        public $menuItem.component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.PropertyName$()
         {
-            this.Navigate(this.$menuItem.Parent.Title$Group, this.$menuItem.Title$);
+            this.Navigate(this.$menuItem.Parent.PropertyName$Group, this.$menuItem.PropertyName$);
             return new $menuItem.component.Reference.Namespace$.$menuItem.Component.Reference.Name$(this.Driver);
         }
+$endif$
 $endif$
 
 $menuItem.Children:{menuItem|$menuItem(menuItem)$}; separator="\n"$	

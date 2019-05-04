@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService } from '../../../..';
 
 import { Catalogue, CatScope } from '../../../../../domain';
@@ -21,7 +21,7 @@ interface Row extends TableRow {
   templateUrl: './catalogue-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class CataloguesOverviewComponent implements OnInit, OnDestroy {
+export class CataloguesListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Catalogues';
 
@@ -43,7 +43,9 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 

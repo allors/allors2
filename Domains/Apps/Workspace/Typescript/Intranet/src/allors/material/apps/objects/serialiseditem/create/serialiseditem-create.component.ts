@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SaveService, FiltersService, ObjectData } from '../../../../../material';
-import {  ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: './serialiseditem-create.component.html',
   providers: [ContextService]
 })
-export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
+export class SerialisedItemCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
   serialisedItem: SerialisedItem;
@@ -48,7 +48,8 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -146,7 +147,7 @@ export class SerialisedItemCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

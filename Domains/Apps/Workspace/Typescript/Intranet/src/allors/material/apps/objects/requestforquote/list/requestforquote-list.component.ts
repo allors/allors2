@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Request, RequestState, Party } from '../../../../../domain';
@@ -25,7 +25,7 @@ interface Row extends TableRow {
   templateUrl: './requestforquote-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class RequestForQuoteListComponent implements OnInit, OnDestroy {
+export class RequestForQuoteListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Requests';
 
@@ -47,6 +47,8 @@ export class RequestForQuoteListComponent implements OnInit, OnDestroy {
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
+
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);

@@ -20,13 +20,13 @@ namespace Pages.OrganisationTests
 
         public MaterialInput<OrganisationEditPage> TaxNumber => this.MaterialInput(roleType: M.Organisation.TaxNumber);
 
-        public MaterialSingleSelect<OrganisationEditPage> LegalForm => this.MaterialSingleSelect(roleType: M.Organisation.LegalForm);
+        public MaterialSelect<OrganisationEditPage> LegalForm => this.MaterialSelect(roleType: M.Organisation.LegalForm);
 
-        public MaterialSingleSelect<OrganisationEditPage> Locale => this.MaterialSingleSelect(roleType: M.Organisation.Locale);
+        public MaterialSelect<OrganisationEditPage> Locale => this.MaterialSelect(roleType: M.Organisation.Locale);
 
-        public MaterialMultipleSelect<OrganisationEditPage> IndustryClassifications => this.MaterialMultipleSelect(roleType: M.Organisation.IndustryClassifications);
+        public MaterialSelect<OrganisationEditPage> IndustryClassifications => this.MaterialSelect(roleType: M.Organisation.IndustryClassifications);
 
-        public MaterialMultipleSelect<OrganisationEditPage> CustomClassifications => this.MaterialMultipleSelect(roleType: M.Organisation.CustomClassifications);
+        public MaterialSelect<OrganisationEditPage> CustomClassifications => this.MaterialSelect(roleType: M.Organisation.CustomClassifications);
 
         public MaterialSlideToggle<OrganisationEditPage> IsManufacturer => this.MaterialSlideToggle(roleType: M.Organisation.IsManufacturer);
 

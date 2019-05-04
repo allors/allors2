@@ -16,7 +16,7 @@ namespace Pages.ElectronicAddressTests
         {
         }
 
-        public MaterialMultipleSelect<ElectronicAddressEditPage> ContactPurposes => this.MaterialMultipleSelect(M.PartyContactMechanism.ContactPurposes);
+        public MaterialSelect<ElectronicAddressEditPage> ContactPurposes => this.MaterialSelect(M.PartyContactMechanism.ContactPurposes);
 
         public MaterialInput<ElectronicAddressEditPage> ElectronicAddressString => this.MaterialInput(M.ElectronicAddress.ElectronicAddressString);
 

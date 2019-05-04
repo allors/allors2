@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkTask } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest, Pull } from '../../../../../framework';
   templateUrl: './worktask-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class WorkTaskOverviewComponent implements AfterViewInit, OnDestroy {
+export class WorkTaskOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   readonly m: Meta;
   title = 'WorkTask';
@@ -31,6 +31,7 @@ export class WorkTaskOverviewComponent implements AfterViewInit, OnDestroy {
     private internalOrganistationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

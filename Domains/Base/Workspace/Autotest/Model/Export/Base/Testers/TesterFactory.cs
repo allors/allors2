@@ -25,6 +25,9 @@ namespace Autotest.Testers
 
                 case "a":
                     return new AnchorTester(element);
+
+                case "a-mat-table":
+                    return new AllorsMaterialTableTester(element);
             }
 
             if (element.Component != null)

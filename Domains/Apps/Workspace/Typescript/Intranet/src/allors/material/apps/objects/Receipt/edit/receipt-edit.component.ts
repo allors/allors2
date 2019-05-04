@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { Receipt, SalesInvoice, PaymentApplication } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './receipt-edit.component.html',
   providers: [ContextService]
 })
-export class ReceiptEditComponent implements OnInit, OnDestroy {
+export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -33,7 +33,9 @@ export class ReceiptEditComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ReceiptEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    private saveService: SaveService) {
+    private saveService: SaveService
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

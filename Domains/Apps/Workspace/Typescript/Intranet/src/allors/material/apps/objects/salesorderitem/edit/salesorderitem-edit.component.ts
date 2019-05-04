@@ -3,7 +3,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { ObjectData, SaveService, FiltersService } from '../../../../../material
   templateUrl: './salesorderitem-edit.component.html',
   providers: [ContextService]
 })
-export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
+export class SalesOrderItemEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -49,6 +49,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

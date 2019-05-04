@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, EmailAddress, EmailCommunication, EmailTemplate, Party, Person, Organisation, CommunicationEventState, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -15,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './emailcommunication-edit.component.html',
   providers: [ContextService]
 })
-export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
+export class EmailCommunicationEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -49,6 +48,8 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -341,7 +342,7 @@ export class EmailCommunicationEditComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 }

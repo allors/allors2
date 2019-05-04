@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import {  ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ObjectData } from '../../../../../material/base/services/object';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship, Facility } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
@@ -15,7 +15,7 @@ import { SaveService, FiltersService } from '../../../../../material';
   templateUrl: './purchaseorder-create.component.html',
   providers: [ContextService]
 })
-export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
+export class PurchaseOrderCreateComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -57,6 +57,7 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId) {
+    super();
 
     this.m = this.metaService.m;
   }
@@ -132,8 +133,8 @@ export class PurchaseOrderCreateComponent implements OnInit, OnDestroy {
 
         this.dialogRef.close(data);
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public supplierAdded(organisation: Organisation): void {

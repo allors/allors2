@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using Humanizer;
+
 namespace Autotest
 {
     using System;
@@ -27,8 +29,9 @@ namespace Autotest
 
         public Model Model => this.Menu.Model;
 
-        public ObjectType ObjectType => (ObjectType)(this.Id.HasValue ? this.Model.MetaPopulation.Find(this.Id.Value) : null);
+        public string PropertyName => this.Title.Dehumanize();
 
+        public ObjectType ObjectType => (ObjectType)(this.Id.HasValue ? this.Model.MetaPopulation.Find(this.Id.Value) : null);
 
         public MetaExtension MetaExtension
         {

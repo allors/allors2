@@ -16,7 +16,7 @@ namespace Pages.PostalAddressTests
         {
         }
 
-        public MaterialMultipleSelect<PostalAddressEditPage> ContactPurposes => this.MaterialMultipleSelect(roleType: M.PartyContactMechanism.ContactPurposes);
+        public MaterialSelect<PostalAddressEditPage> ContactPurposes => this.MaterialSelect(roleType: M.PartyContactMechanism.ContactPurposes);
 
         public MaterialInput<PostalAddressEditPage> Address1 => this.MaterialInput(roleType: M.PostalAddress.Address1);
 
@@ -28,7 +28,7 @@ namespace Pages.PostalAddressTests
 
         public MaterialInput<PostalAddressEditPage> PostalCode => this.MaterialInput(roleType: M.PostalBoundary.PostalCode);
 
-        public MaterialSingleSelect<PostalAddressEditPage> Country => this.MaterialSingleSelect(roleType: M.PostalBoundary.Country);
+        public MaterialSelect<PostalAddressEditPage> Country => this.MaterialSelect(roleType: M.PostalBoundary.Country);
 
         public MaterialTextArea<PostalAddressEditPage> Description => this.MaterialTextArea(roleType: M.ContactMechanism.Description);
 

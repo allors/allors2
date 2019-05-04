@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
@@ -25,7 +25,7 @@ interface Row extends TableRow {
   templateUrl: './unifiedgood-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class UnifiedGoodListComponent implements OnInit, OnDestroy {
+export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Unified Goods';
 
@@ -46,7 +46,9 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
-    titleService: Title) {
+    titleService: Title
+  ) {
+    super();
 
     titleService.setTitle(this.title);
 
@@ -128,7 +130,7 @@ export class UnifiedGoodListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [,,,,,]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

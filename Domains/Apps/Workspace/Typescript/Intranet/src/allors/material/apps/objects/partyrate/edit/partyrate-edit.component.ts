@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { PartyRate, TimeFrequency, RateType, Party } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   templateUrl: './partyrate-edit.component.html',
   providers: [ContextService]
 })
-export class PartyRateEditComponent implements OnInit, OnDestroy {
+export class PartyRateEditComponent extends TestScope implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -35,6 +35,7 @@ export class PartyRateEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

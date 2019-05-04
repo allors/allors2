@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId } from '../../../../../angular';
+import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Good } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 
@@ -12,7 +12,7 @@ import { PullRequest, Pull } from '../../../../../framework';
   templateUrl: './nonunifiedgood-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class NonUnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy {
+export class NonUnifiedGoodOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Good';
 
@@ -30,6 +30,7 @@ export class NonUnifiedGoodOverviewComponent implements AfterViewInit, OnDestroy
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title,
   ) {
+    super();
 
     titleService.setTitle(this.title);
   }

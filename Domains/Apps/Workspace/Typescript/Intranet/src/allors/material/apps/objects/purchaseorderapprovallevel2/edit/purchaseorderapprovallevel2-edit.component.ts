@@ -2,7 +2,7 @@ import { PrintDocument } from '../../../../../domain/generated/PrintDocument.g';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, Invoked, Action } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, Invoked, Action, TestScope } from '../../../../../angular';
 import { PurchaseOrderApprovalLevel2 } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../base/services/object';
@@ -16,7 +16,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './purchaseorderapprovallevel2-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseOrderApprovalLevel2EditComponent implements OnInit, OnDestroy {
+export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -38,6 +38,7 @@ export class PurchaseOrderApprovalLevel2EditComponent implements OnInit, OnDestr
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 
@@ -92,7 +93,7 @@ export class PurchaseOrderApprovalLevel2EditComponent implements OnInit, OnDestr
     this.saveAndInvoke(this.allors.context.invoke(this.purchaseOrderApproval.Reject));
   }
 
-  saveAndInvoke(methodCall: Observable<Invoked> ): void {
+  saveAndInvoke(methodCall: Observable<Invoked>): void {
 
     this.allors.context
       .save()

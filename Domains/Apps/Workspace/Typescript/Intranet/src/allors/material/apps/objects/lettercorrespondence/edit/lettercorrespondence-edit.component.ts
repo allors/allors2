@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './lettercorrespondence-edit.component.html',
   providers: [ContextService]
 })
-export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
+export class LetterCorrespondenceEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -46,7 +46,9 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public navigation: NavigationService,
     private internalOrganisationId: InternalOrganisationId,
-    ) {
+  ) {
+
+    super();
 
     this.m = this.metaService.m;
   }
@@ -356,16 +358,16 @@ export class LetterCorrespondenceEditComponent implements OnInit, OnDestroy {
   public save(): void {
 
     this.allors.context.save()
-    .subscribe(
-      () => {
-        const data: IObject = {
-          id: this.communicationEvent.id,
-          objectType: this.communicationEvent.objectType,
-        };
+      .subscribe(
+        () => {
+          const data: IObject = {
+            id: this.communicationEvent.id,
+            objectType: this.communicationEvent.objectType,
+          };
 
-        this.dialogRef.close(data);
-      },
-      this.saveService.errorHandler
-    );
+          this.dialogRef.close(data);
+        },
+        this.saveService.errorHandler
+      );
   }
 }

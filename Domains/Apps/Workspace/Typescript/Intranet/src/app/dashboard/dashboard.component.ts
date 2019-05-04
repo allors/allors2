@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { TestScope } from '../../allors/angular';
 
 interface Item {
   title: string;
@@ -12,11 +13,15 @@ interface Item {
   styleUrls: ['./dashboard.component.scss'],
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends TestScope implements OnInit {
 
   apps: Item[];
 
-  constructor(private titleService: Title) {
+  constructor(
+    private titleService: Title
+  ) {
+    super();
+
     this.titleService.setTitle('Dashboard');
   }
 

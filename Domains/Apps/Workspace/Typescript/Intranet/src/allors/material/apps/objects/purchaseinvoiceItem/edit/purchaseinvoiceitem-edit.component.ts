@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
   templateUrl: './purchaseinvoiceitem-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceItemEditComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -43,6 +43,8 @@ export class PurchaseInvoiceItemEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
+
     this.m = this.metaService.m;
   }
 
