@@ -31,7 +31,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(DateTime.UtcNow.Year + 1)
+                .WithExpirationYear(this.Session.Now().Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
@@ -57,7 +57,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(DateTime.UtcNow.Year + 1)
+                .WithExpirationYear(this.Session.Now().Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
@@ -79,7 +79,7 @@ namespace Allors.Domain
         {
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(DateTime.UtcNow.Year + 1)
+                .WithExpirationYear(this.Session.Now().Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
@@ -94,8 +94,8 @@ namespace Allors.Domain
             this.Session.Derive();
             Assert.True(paymentMethod.IsActive);
 
-            creditCard.ExpirationYear = DateTime.UtcNow.Year;
-            creditCard.ExpirationMonth = DateTime.UtcNow.Month;
+            creditCard.ExpirationYear = this.Session.Now().Year;
+            creditCard.ExpirationMonth = this.Session.Now().Month;
 
             this.Session.Derive();
             Assert.False(paymentMethod.IsActive);
@@ -122,7 +122,7 @@ namespace Allors.Domain
 
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(DateTime.UtcNow.Year + 1)
+                .WithExpirationYear(this.Session.Now().Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
@@ -173,7 +173,7 @@ namespace Allors.Domain
 
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
-                .WithExpirationYear(DateTime.UtcNow.Year + 1)
+                .WithExpirationYear(this.Session.Now().Year + 1)
                 .WithExpirationMonth(03)
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())

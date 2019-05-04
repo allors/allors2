@@ -38,7 +38,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
             
@@ -51,7 +51,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
-            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
 
@@ -69,7 +69,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 
-                .WithFromDate(DateTime.UtcNow.AddDays(1))
+                .WithFromDate(this.Session.Now().AddDays(1))
                 .Build();
 
             this.Session.Derive();
@@ -86,8 +86,8 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 
-                .WithFromDate(DateTime.UtcNow.AddDays(-10))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddDays(-10))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             this.Session.Derive();
@@ -105,7 +105,7 @@ namespace Allors.Domain
 
             var customer1 = new PersonBuilder(this.Session).WithLastName("customer1").Build();
             var customerRelationship1 = new CustomerRelationshipBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithCustomer(customer1)
                 .Build();
 
@@ -116,7 +116,7 @@ namespace Allors.Domain
             Assert.Equal(1007, partyFinancial1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.Session).WithLastName("customer2").Build();
-            var customerRelationship2 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
+            var customerRelationship2 = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer2).Build();
 
             this.Session.Derive();
 
@@ -124,7 +124,7 @@ namespace Allors.Domain
             Assert.Equal(1015, partyFinancial2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.Session).WithLastName("customer3").Build();
-            var customerRelationship3 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
+            var customerRelationship3 = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer3).Build();
 
             this.Session.Derive();
 
@@ -161,7 +161,7 @@ namespace Allors.Domain
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer2)
                 .WithInternalOrganisation(internalOrganisation2)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             Session.Derive();
@@ -177,7 +177,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             Session.Derive();
 
@@ -243,7 +243,7 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now().AddDays(-31)).WithCustomer(customer).Build();
 
             Session.Derive();
 
@@ -260,7 +260,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
-                .WithInvoiceDate(DateTime.UtcNow.AddDays(-30))
+                .WithInvoiceDate(this.Session.Now().AddDays(-30))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
@@ -270,7 +270,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
-                .WithInvoiceDate(DateTime.UtcNow.AddDays(-5))
+                .WithInvoiceDate(this.Session.Now().AddDays(-5))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(200M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
@@ -287,7 +287,7 @@ namespace Allors.Domain
 
             Assert.Equal(80, partyFinancial.AmountOverDue);
 
-            invoice2.InvoiceDate = DateTime.UtcNow.AddDays(-10);
+            invoice2.InvoiceDate = this.Session.Now().AddDays(-10);
 
             this.Session.Derive();
 

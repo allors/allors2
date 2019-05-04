@@ -71,7 +71,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithFromDate(DateTime.UtcNow);
+            builder.WithFromDate(this.Session.Now());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -100,7 +100,7 @@ namespace Allors.Domain
                 .WithDescription("baseprice")
                 .WithPrice(10)
                 .WithProduct(virtualGood)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -119,7 +119,7 @@ namespace Allors.Domain
                 .WithDescription("baseprice")
                 .WithPrice(10)
                 .WithProduct(physicalGood)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             Assert.False(physicalGood.ExistVirtualProductPriceComponents);
@@ -153,7 +153,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithFromDate(DateTime.UtcNow);
+            builder.WithFromDate(this.Session.Now());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -204,7 +204,7 @@ namespace Allors.Domain
                 .WithDescription("discount")
                 .WithPrice(10)
                 .WithProduct(virtualService)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -227,7 +227,7 @@ namespace Allors.Domain
                 .WithDescription("discount")
                 .WithPrice(10)
                 .WithProduct(physicalService)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             Assert.False(physicalService.ExistVirtualProductPriceComponents);
@@ -261,7 +261,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithFromDate(DateTime.UtcNow);
+            builder.WithFromDate(this.Session.Now());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -308,7 +308,7 @@ namespace Allors.Domain
                 .WithDescription("surcharge")
                 .WithPrice(10)
                 .WithProduct(virtualService)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -331,7 +331,7 @@ namespace Allors.Domain
                 .WithDescription("surcharge")
                 .WithPrice(10)
                 .WithProduct(physicalService)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             Assert.False(physicalService.ExistVirtualProductPriceComponents);

@@ -160,7 +160,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -173,7 +173,7 @@ namespace Allors.Domain
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithDeliveryDate(DateTime.UtcNow)
+                .WithDeliveryDate(this.Session.Now())
                 .Build();
 
             var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good1).WithQuantityOrdered(30).WithAssignedUnitPrice(15).Build();

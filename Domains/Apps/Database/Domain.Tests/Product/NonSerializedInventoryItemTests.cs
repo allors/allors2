@@ -145,19 +145,19 @@ namespace Allors.Domain
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
             this.Session.Commit();
 
-            var order1 = CreateSalesOrder(customer, customer, DateTime.UtcNow);
+            var order1 = CreateSalesOrder(customer, customer, this.Session.Now());
             var salesItem1 = CreateSalesOrderItem("item1", good, 10, 15);
             var salesItem2 = CreateSalesOrderItem("item2", good, 20, 15);
 
             order1.AddSalesOrderItem(salesItem1);
             order1.AddSalesOrderItem(salesItem2);
 
-            var order2 = CreateSalesOrder(customer, customer, DateTime.UtcNow.AddDays(1));
+            var order2 = CreateSalesOrder(customer, customer, this.Session.Now().AddDays(1));
             var salesItem3 = CreateSalesOrderItem("item3", good, 10, 15);
             var salesItem4 = CreateSalesOrderItem("item4", good, 20, 15);
 
@@ -295,11 +295,11 @@ namespace Allors.Domain
             var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = this.InternalOrganisation;
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
             
             this.Session.Derive();
 
-            var order = CreateSalesOrder(customer, customer, DateTime.UtcNow, false);
+            var order = CreateSalesOrder(customer, customer, this.Session.Now(), false);
             var salesItem = CreateSalesOrderItem("item1", good, 10, 15);
 
             // Act
@@ -337,7 +337,7 @@ namespace Allors.Domain
         //    new SupplierRelationshipBuilder(this.DatabaseSession)
         //        .WithSingleton(internalOrganisation)
         //        .WithSupplier(supplier)
-        //        .WithFromDate(DateTime.UtcNow)
+        //        .WithFromDate(this.Session.Now())
         //        .Build();
 
         //    var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
@@ -362,7 +362,7 @@ namespace Allors.Domain
         //        .Build();
 
         //    var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
-        //        .WithFromDate(DateTime.UtcNow)
+        //        .WithFromDate(this.Session.Now())
         //        .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
         //        .WithPrice(1)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)

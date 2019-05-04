@@ -39,8 +39,8 @@ namespace Allors.Domain
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
             Assert.Equal(new PurchaseOrderStates(this.Session).Created, order.PurchaseOrderState);
-            Assert.Equal(DateTime.UtcNow.Date, order.OrderDate.Date);
-            Assert.Equal(DateTime.UtcNow.Date, order.EntryDate.Date);
+            Assert.Equal(this.Session.Now().Date, order.OrderDate.Date);
+            Assert.Equal(this.Session.Now().Date, order.EntryDate.Date);
             Assert.Equal(order.PreviousTakenViaSupplier, order.TakenViaSupplier);
         }
 

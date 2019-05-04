@@ -44,8 +44,8 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            var today = DateTimeFactory.CreateDateTime(DateTime.UtcNow);
-            var tomorrow = DateTimeFactory.CreateDateTime(DateTime.UtcNow.AddDays(1));
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
             var hour = new TimeFrequencies(this.Session).Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)
@@ -86,8 +86,8 @@ namespace Allors.Domain
             internalOrganisation.RequireExistingWorkEffortPartyAssignment = true;
             this.Session.Derive(true);
 
-            var today = DateTimeFactory.CreateDateTime(DateTime.UtcNow);
-            var tomorrow = DateTimeFactory.CreateDateTime(DateTime.UtcNow.AddDays(1));
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
             var hour = new TimeFrequencies(this.Session).Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)

@@ -19,13 +19,19 @@ namespace Allors.Domain
 
     public partial class PurchaseInvoiceStates
     {
-        private static readonly Guid InProcessId = new Guid("C6501188-7145-4abd-85FC-BEF746C74E9E");
-        private static readonly Guid ReceivedId = new Guid("FC9EC85B-2419-4c97-92F6-45F5C6D3DF61");
-        private static readonly Guid PaidId = new Guid("2982C8BE-657E-4594-BCAF-98997AFEA9F8");
-        private static readonly Guid CancelledId = new Guid("60650051-F1F1-4dd6-90C8-5E744093D2EE");
-        private static readonly Guid FinishedId = new Guid("26E27DDC-0782-4C29-B4BE-FF1E7AEE788A");
+        public static readonly Guid CreatedId = new Guid("102F4080-1D12-4090-9196-F42C094C38CA");
+        public static readonly Guid AwaitingApprovalId = new Guid("FE3A30A9-0174-4534-A11E-E772112E9760");
+        public static readonly Guid InProcessId = new Guid("C6501188-7145-4abd-85FC-BEF746C74E9E");
+        public static readonly Guid ReceivedId = new Guid("FC9EC85B-2419-4c97-92F6-45F5C6D3DF61");
+        public static readonly Guid PaidId = new Guid("2982C8BE-657E-4594-BCAF-98997AFEA9F8");
+        public static readonly Guid CancelledId = new Guid("60650051-F1F1-4dd6-90C8-5E744093D2EE");
+        public static readonly Guid RejectedId = new Guid("26E27DDC-0782-4C29-B4BE-FF1E7AEE788A");
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceState> stateCache;
+
+        public PurchaseInvoiceState Created => this.StateCache[CreatedId];
+
+        public PurchaseInvoiceState AwaitingApproval => this.StateCache[AwaitingApprovalId];
 
         public PurchaseInvoiceState InProcess => this.StateCache[InProcessId];
 
@@ -35,13 +41,23 @@ namespace Allors.Domain
 
         public PurchaseInvoiceState Cancelled => this.StateCache[CancelledId];
 
-        public PurchaseInvoiceState Finished => this.StateCache[FinishedId];
+        public PurchaseInvoiceState Rejected => this.StateCache[RejectedId];
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseInvoiceState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
+
+            new PurchaseInvoiceStateBuilder(this.Session)
+                .WithUniqueId(CreatedId)
+                .WithName("Created")
+                .Build();
+
+            new PurchaseInvoiceStateBuilder(this.Session)
+                .WithUniqueId(AwaitingApprovalId)
+                .WithName("AwaitingApproval")
+                .Build();
 
             new PurchaseInvoiceStateBuilder(this.Session)
                 .WithUniqueId(InProcessId)
@@ -64,8 +80,8 @@ namespace Allors.Domain
                 .Build();
 
             new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(FinishedId)
-                .WithName("Finished")
+                .WithUniqueId(RejectedId)
+                .WithName("Rejected")
                 .Build();
         }
     }

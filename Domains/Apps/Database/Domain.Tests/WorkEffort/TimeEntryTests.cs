@@ -48,7 +48,7 @@ namespace Allors.Domain
             Assert.True(derivation.HasErrors);
 
             //// Re-arrange
-            var tomorrow = DateTime.UtcNow.AddDays(1);
+            var tomorrow = this.Session.Now().AddDays(1);
             timeEntry.ThroughDate = tomorrow;
 
             // Act

@@ -30,11 +30,28 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
+            var created = new PurchaseInvoiceItemStates(this.Session).Created;
+            var awaitingApproval = new PurchaseInvoiceItemStates(this.Session).AwaitingApproval;
+            var inProcess = new PurchaseInvoiceItemStates(this.Session).InProcess;
+            var received = new PurchaseInvoiceItemStates(this.Session).Received;
             var paid = new PurchaseInvoiceItemStates(this.Session).Paid;
             var cancelled = new PurchaseInvoiceItemStates(this.Session).Cancelled;
+            var cancelledByinvoice = new PurchaseInvoiceItemStates(this.Session).CancelledByinvoice;
+            var rejected = new PurchaseInvoiceItemStates(this.Session).Rejected;
 
-            config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
+            var cancel = this.Meta.Cancel;
+            var reject = this.Meta.Reject;
+            var delete = this.Meta.Delete;
+
+            config.Deny(this.ObjectType, created, cancel, reject);
+            config.Deny(this.ObjectType, awaitingApproval, cancel, delete);
+            config.Deny(this.ObjectType, inProcess, delete);
+
+            config.Deny(this.ObjectType, inProcess, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelledByinvoice, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, paid, Operations.Execute, Operations.Write);
         }
     }
 }

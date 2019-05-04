@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PartyRelationshipExtensions.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoiceState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,14 +17,20 @@ namespace Allors.Domain
 {
     using System;
 
-    public static partial class PartyRelationshipExtensions
+    public partial class PurchaseInvoiceState
     {
-        public static void AppsOnBuild(this PartyRelationship @this, ObjectOnBuild method)
-        {
-            if (!@this.ExistFromDate)
-            {
-                @this.FromDate = @this.Strategy.Session.Now();
-            }
-        }
+        public bool IsCreated => this.UniqueId == PurchaseInvoiceStates.CreatedId;
+
+        public bool IsAwaitingApproval => this.UniqueId == PurchaseInvoiceStates.AwaitingApprovalId;
+
+        public bool IsInProcess => this.UniqueId == PurchaseInvoiceStates.InProcessId;
+
+        public bool IsReceived => this.UniqueId == PurchaseInvoiceStates.ReceivedId;
+
+        public bool IsPaid => this.UniqueId == PurchaseInvoiceStates.PaidId;
+
+        public bool IsCancelled => this.UniqueId == PurchaseInvoiceStates.CancelledId;
+
+        public bool IsRejected => this.UniqueId == PurchaseInvoiceStates.RejectedId;
     }
 }

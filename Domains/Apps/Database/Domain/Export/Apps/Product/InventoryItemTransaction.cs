@@ -24,7 +24,7 @@ namespace Allors.Domain
         {
             if (!this.ExistTransactionDate)
             {
-                this.TransactionDate = DateTime.UtcNow;
+                this.TransactionDate = this.strategy.Session.Now();
             }
         }
 

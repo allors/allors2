@@ -37,21 +37,41 @@ namespace Allors.Domain
 
         public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
 
+        public bool NeedsApproval
+        {
+            get
+            {
+                if (this.ExistPurchaseOrder)
+                {
+                    if (this.TotalExVat != this.PurchaseOrder.TotalExVat)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistPurchaseInvoiceState)
             {
-                this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Received;
+                this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Created;
             }
 
             if (!this.ExistInvoiceDate)
             {
-                this.InvoiceDate = DateTime.UtcNow;
+                this.InvoiceDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = DateTime.UtcNow;
+                this.EntryDate = this.strategy.Session.Now();
             }
         }
 
@@ -94,8 +114,50 @@ namespace Allors.Domain
                 }
             }
 
+            var validInvoiceItems = this.PurchaseInvoiceItems.Where(v => v.IsValid).ToArray();
+            this.ValidInvoiceItems = validInvoiceItems;
+
+            #region States
+            var purchaseInvoiceStates = new PurchaseInvoiceStates(this.Strategy.Session);
+            var purchaseInvoiceItemStates = new PurchaseInvoiceItemStates(this.Strategy.Session);
+
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in ValidInvoiceItems)
+            {
+                if (this.PurchaseInvoiceState.IsCreated)
+                {
+                    if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsCancelledByInvoice)
+                    {
+                        purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Created;
+                    }
+                }
+
+                if (this.PurchaseInvoiceState.IsInProcess && purchaseInvoiceItem.PurchaseInvoiceItemState.IsCreated)
+                {
+                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.InProcess;
+                }
+
+                if (this.PurchaseInvoiceState.IsPaid && purchaseInvoiceItem.PurchaseInvoiceItemState.IsInProcess)
+                {
+                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
+                }
+
+                if (this.PurchaseInvoiceState.IsCancelled)
+                {
+                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Cancelled;
+                }
+
+                if (this.PurchaseInvoiceState.IsRejected)
+                {
+                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Rejected;
+                }
+            }
+            #endregion
+
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
+
+
+            this.DeriveWorkflow();
             this.ResetPrintDocument();
         }
 
@@ -104,6 +166,21 @@ namespace Allors.Domain
             if (this.ExistSalesInvoiceWherePurchaseInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
+        }
+
+        private void DeriveWorkflow()
+        {
+            this.WorkItemDescription = $"PurchaseInvoice: {this.InvoiceNumber} [{this.BilledFrom?.PartyName}]";
+
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
+            if (this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                if (!openTasks.OfType<PurchaseInvoiceApproval>().Any())
+                {
+                    new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
+                }
             }
         }
 
@@ -136,7 +213,6 @@ namespace Allors.Domain
             }
         }
 
-
         public void AppsCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
         {
             var derivation = new Derivation(this.Strategy.Session);
@@ -152,7 +228,7 @@ namespace Allors.Domain
                 .WithShipToAddress(this.ShipToEndCustomerAddress)
                 .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
-                .WithInvoiceDate(DateTime.UtcNow)
+                .WithInvoiceDate(this.strategy.Session.Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
                 .WithDiscountAdjustment(this.DiscountAdjustment)
@@ -212,24 +288,89 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsConfirm(PurchaseInvoiceConfirm method)
+        {
+            this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
+        }
+
+        public void AppsCancel(PurchaseInvoiceCancel method)
+        {
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Cancelled;
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
+            {
+                purchaseInvoiceItem.CancelFromInvoice();
+            }
+        }
+
+        public void AppsReject(PurchaseInvoiceReject method)
+        {
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Rejected;
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
+            {
+                purchaseInvoiceItem.Reject();
+            }
+        }
+
         public void AppsApprove(PurchaseInvoiceApprove method)
         {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
-        }
 
-        public void AppsCancelInvoice(PurchaseInvoiceCancelInvoice method)
-        {
-            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Cancelled;
-        }
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 
-        public void AppsFinish(PurchaseInvoiceFinish method)
-        {
-            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Finished;
+            if (openTasks.OfType<PurchaseInvoiceApproval>().Any())
+            {
+                openTasks.First().DateClosed = this.strategy.Session.Now();
+            }
+
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
+            {
+                if (purchaseInvoiceItem.ExistPart)
+                {
+                    var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.Single(v =>
+                        v.Supplier.Equals(this.BilledFrom) && v.FromDate <= this.strategy.Session.Now() &&
+                        (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()));
+
+                    if (previousOffering != null)
+                    {
+                        if (purchaseInvoiceItem.UnitBasePrice != previousOffering.Price)
+                        {
+                            previousOffering.ThroughDate = this.strategy.Session.Now();
+
+                            var newOffering = new SupplierOfferingBuilder(this.strategy.Session)
+                                .WithSupplier(this.BilledFrom)
+                                .WithPart(purchaseInvoiceItem.Part)
+                                .WithPrice(purchaseInvoiceItem.UnitBasePrice)
+                                .WithFromDate(this.strategy.Session.Now())
+                                .WithComment(previousOffering.Comment)
+                                .WithMinimalOrderQuantity(previousOffering.MinimalOrderQuantity)
+                                .WithPreference(previousOffering.Preference)
+                                .WithQuantityIncrements(previousOffering.QuantityIncrements)
+                                .WithRating(previousOffering.Rating)
+                                .WithStandardLeadTime(previousOffering.StandardLeadTime)
+                                .WithSupplierProductId(previousOffering.SupplierProductId)
+                                .WithSupplierProductName(previousOffering.SupplierProductName)
+                                .WithUnitOfMeasure(previousOffering.UnitOfMeasure)
+                                .Build();
+
+                            newOffering.LocalisedComments = previousOffering.LocalisedComments;
+                        }
+                    }
+                    else
+                    {
+                        new SupplierOfferingBuilder(this.strategy.Session)
+                            .WithSupplier(this.BilledFrom)
+                            .WithPart(purchaseInvoiceItem.Part)
+                            .WithPrice(purchaseInvoiceItem.UnitBasePrice)
+                            .WithFromDate(this.strategy.Session.Now())
+                            .Build();
+                    }
+                }
+            }
         }
 
         public void AppsOnDeriveInvoiceItems(IDerivation derivation)
         {
-            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
                 purchaseInvoiceItem.AppsOnDerivePrices();
             }

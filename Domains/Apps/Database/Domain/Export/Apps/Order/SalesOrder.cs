@@ -96,12 +96,12 @@ namespace Allors.Domain
 
             if (!this.ExistOrderDate)
             {
-                this.OrderDate = DateTime.UtcNow;
+                this.OrderDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = DateTime.UtcNow;
+                this.EntryDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistPartiallyShip)
@@ -769,7 +769,7 @@ namespace Allors.Domain
                     .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                     .WithDescription(this.Description)
                     .WithStore(this.Store)
-                    .WithInvoiceDate(DateTime.UtcNow)
+                    .WithInvoiceDate(this.strategy.Session.Now())
                     .WithSalesChannel(this.SalesChannel)
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                     .WithVatRegime(this.VatRegime)

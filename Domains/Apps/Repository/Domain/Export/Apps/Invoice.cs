@@ -262,5 +262,16 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalFee { get; set; }
+
+        #region Allors
+        [Id("BBA2D4EA-D31F-4C68-8935-2AC3CC1A267D")]
+        [AssociationId("CE243EC9-8607-4B06-8749-5BC779BD12DF")]
+        [RoleId("997B1E33-048F-4358-8495-E495653706F6")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        InvoiceItem[] ValidInvoiceItems { get; set; }
     }
 }

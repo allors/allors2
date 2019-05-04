@@ -37,7 +37,7 @@ namespace Allors.Domain
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(this.contact)
                 .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
                 .Build();
 
             this.Session.Derive();
@@ -94,7 +94,7 @@ namespace Allors.Domain
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(new PersonBuilder(this.Session).WithLastName("contact 2").Build())
                 .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -113,14 +113,14 @@ namespace Allors.Domain
             Assert.Single(usergroup.Members);
             Assert.True(usergroup.Members.Contains(this.contact));
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
+            this.organisationContactRelationship.FromDate = this.Session.Now().AddDays(+1);
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.Session.Derive();
 
             Assert.Equal(0, usergroup.Members.Count);
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow;
+            this.organisationContactRelationship.FromDate = this.Session.Now();
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.Session.Derive();
@@ -128,8 +128,8 @@ namespace Allors.Domain
             Assert.Single(usergroup.Members);
             Assert.True(usergroup.Members.Contains(this.contact));
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
-            this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            this.organisationContactRelationship.FromDate = this.Session.Now().AddDays(-2);
+            this.organisationContactRelationship.ThroughDate = this.Session.Now().AddDays(-1);
 
             this.Session.Derive();
 

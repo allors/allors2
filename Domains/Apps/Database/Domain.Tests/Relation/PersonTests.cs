@@ -46,12 +46,12 @@ namespace Allors.Domain
 
             var employment = new EmploymentBuilder(this.Session)
                 .WithEmployee(salesRep)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
 
-            Assert.True(salesRep.AppsIsActiveEmployee(DateTime.UtcNow));
+            Assert.True(salesRep.AppsIsActiveEmployee(this.Session.Now()));
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
-                .WithFromDate(DateTime.UtcNow.Date)
+                .WithFromDate(this.Session.Now().Date)
                 .Build();
 
             this.Session.Derive();
@@ -116,8 +116,8 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
-                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
-                .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithFromDate(this.Session.Now().Date.AddDays(-1))
+                .WithThroughDate(this.Session.Now().Date.AddDays(-1))
                 .Build();
 
             this.Session.Derive();
@@ -134,7 +134,7 @@ namespace Allors.Domain
 
             var employment = new EmploymentBuilder(this.Session)
                 .WithEmployee(person)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -181,8 +181,8 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation1)
-                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
-                .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithFromDate(this.Session.Now().Date.AddDays(-1))
+                .WithThroughDate(this.Session.Now().Date.AddDays(-1))
                 .Build();
 
             var contactMechanism1 = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("111").WithContactNumber("222").Build();
@@ -205,7 +205,7 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation2)
-                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithFromDate(this.Session.Now().Date.AddDays(-1))
                 .Build();
 
             var contactMechanism2 = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("222").WithContactNumber("333").Build();

@@ -118,17 +118,17 @@ namespace Allors
                 var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").Build();
                 var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
 
-                new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
+                new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
 
-                new SupplierRelationshipBuilder(session).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).WithFromDate(DateTime.UtcNow).Build();
+                new SupplierRelationshipBuilder(session).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
 
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(purchaser).WithEmployer(internalOrganisation).Build();
+                new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(purchaser).WithEmployer(internalOrganisation).Build();
 
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(salesrep).WithEmployer(internalOrganisation).Build();
+                new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(salesrep).WithEmployer(internalOrganisation).Build();
 
-                new EmploymentBuilder(session).WithFromDate(DateTime.UtcNow).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
+                new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
 
-                new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
+                new SalesRepRelationshipBuilder(session).WithFromDate(session.Now()).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
                 var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
 

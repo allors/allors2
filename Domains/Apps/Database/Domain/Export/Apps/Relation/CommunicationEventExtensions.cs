@@ -66,18 +66,18 @@ namespace Allors.Domain
 
             if (!@this.ExistCommunicationEventState)
             {
-                if (!@this.ExistActualStart || (@this.ExistActualStart && @this.ActualStart > DateTime.UtcNow))
+                if (!@this.ExistActualStart || (@this.ExistActualStart && @this.ActualStart > @this.Strategy.Session.Now()))
                 {
                     @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Scheduled;
                 }
 
-                if (@this.ExistActualStart && @this.ActualStart <= DateTime.UtcNow &&
-                    (@this.ExistActualEnd && @this.ActualEnd > DateTime.UtcNow || !@this.ExistActualEnd))
+                if (@this.ExistActualStart && @this.ActualStart <= @this.Strategy.Session.Now() &&
+                    (@this.ExistActualEnd && @this.ActualEnd > @this.Strategy.Session.Now() || !@this.ExistActualEnd))
                 {
                     @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).InProgress;
                 }
 
-                if (@this.ExistActualEnd && @this.ActualEnd <= DateTime.UtcNow)
+                if (@this.ExistActualEnd && @this.ActualEnd <= @this.Strategy.Session.Now())
                 {
                     @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
                 }
@@ -196,8 +196,8 @@ namespace Allors.Domain
                 {
                     foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
                     {
-                        if (organisationContactRelationship.FromDate <= DateTime.UtcNow &&
-                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= DateTime.UtcNow))
+                        if (organisationContactRelationship.FromDate <= @this.Strategy.Session.Now() &&
+                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= @this.Strategy.Session.Now()))
                         {
                             var organisation = organisationContactRelationship.Organisation;
                             @this.AddInvolvedParty(organisation);

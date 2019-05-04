@@ -28,6 +28,8 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
+
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public void AppsOnBuild(ObjectOnBuild method)
@@ -121,6 +123,21 @@ namespace Allors.Domain
                 this.TotalExVat = this.UnitPrice * this.Quantity;
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
             }
+        }
+
+        public void CancelFromInvoice()
+        {
+            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).CancelledByinvoice;
+        }
+
+        public void AppsCancel(PurchaseInvoiceItemCancel method)
+        {
+            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Cancelled;
+        }
+
+        public void AppsReject(PurchaseInvoiceItemReject method)
+        {
+            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
         }
 
         private SurchargeAdjustment GetSurchargeAdjustment()

@@ -33,7 +33,7 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
         #endregion
 
-        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
+        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
 
         public string SupplierReference
         {

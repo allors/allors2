@@ -100,7 +100,7 @@ namespace Allors.Domain
                                 .WithBilledFrom(group.Key)
                                 .WithBillToCustomer(customer)
                                 .WithBillToContactMechanism(customer.ExistBillingAddress ? customer.BillingAddress : customer.GeneralCorrespondence)
-                                .WithInvoiceDate(DateTime.UtcNow)
+                                .WithInvoiceDate(session.Now())
                                 .WithSalesInvoiceType(new SalesInvoiceTypes(session).SalesInvoice)
                                 .Build();
                         }

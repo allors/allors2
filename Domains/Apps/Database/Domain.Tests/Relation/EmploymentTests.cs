@@ -38,7 +38,7 @@ namespace Allors.Domain
 
             this.employment = new EmploymentBuilder(this.Session)
                 .WithEmployee(this.employee)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -68,7 +68,7 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
-                .WithFromDate(DateTime.UtcNow.AddDays(1))
+                .WithFromDate(this.Session.Now().AddDays(1))
                 .Build();
 
             this.Session.Derive();
@@ -84,8 +84,8 @@ namespace Allors.Domain
 
             new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
-                .WithFromDate(DateTime.UtcNow.AddDays(-10))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddDays(-10))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             this.Session.Derive();

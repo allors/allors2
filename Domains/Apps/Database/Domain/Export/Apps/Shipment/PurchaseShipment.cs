@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             if (!this.ExistEstimatedArrivalDate)
             {
-                this.EstimatedArrivalDate = DateTime.UtcNow.Date;
+                this.EstimatedArrivalDate = this.strategy.Session.Now().Date;
             }
         }
 

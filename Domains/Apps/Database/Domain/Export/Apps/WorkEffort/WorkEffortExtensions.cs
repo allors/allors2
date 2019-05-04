@@ -254,7 +254,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(@this.Customer)
                 .WithBillToContactMechanism(@this.Customer.ExistBillingAddress ? @this.Customer.BillingAddress : @this.Customer.GeneralCorrespondence)
                 .WithBillToContactPerson(@this.ContactPerson)
-                .WithInvoiceDate(DateTime.UtcNow)
+                .WithInvoiceDate(@this.Strategy.Session.Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(@this.Strategy.Session).SalesInvoice)
                 .Build();
 

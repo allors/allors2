@@ -96,7 +96,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             var good = new NonUnifiedGoodBuilder(this.Session)
@@ -116,7 +116,7 @@ namespace Allors.Domain
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrice(1)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -144,7 +144,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             var good = new NonUnifiedGoodBuilder(this.Session)
@@ -166,7 +166,7 @@ namespace Allors.Domain
                 .WithSupplier(supplier)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithPrice(1)
                 .Build();
 

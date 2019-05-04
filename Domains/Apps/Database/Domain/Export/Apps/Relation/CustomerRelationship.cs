@@ -69,7 +69,7 @@ namespace Allors.Domain
                         customerOrganisation.ContactsUserGroup.RemoveMember(contact);
                     }
 
-                    if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                    if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                     {
                         foreach (Person currentContact in customerOrganisation.CurrentContacts)
                         {
@@ -78,12 +78,12 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
                     this.InternalOrganisation.AddActiveCustomer(this.Customer);
                 }
 
-                if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
+                if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
                     this.InternalOrganisation.RemoveActiveCustomer(this.Customer);
                 }

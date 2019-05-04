@@ -140,7 +140,7 @@ namespace Allors.Domain
 
             organisation.StartNewFiscalYear();
 
-            var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 01, 01).Date;
+            var fromDate = DateTimeFactory.CreateDate(this.Session.Now().Year, 01, 01).Date;
             var month = organisation.ActualAccountingPeriod;
 
             Assert.Equal(1, month.PeriodNumber);
@@ -189,7 +189,7 @@ namespace Allors.Domain
 
             organisation.StartNewFiscalYear();
 
-            var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 05, 15).Date;
+            var fromDate = DateTimeFactory.CreateDate(this.Session.Now().Year, 05, 15).Date;
             var month = organisation.ActualAccountingPeriod;
 
             Assert.Equal(1, month.PeriodNumber);
