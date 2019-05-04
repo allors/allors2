@@ -244,7 +244,7 @@ namespace Allors.Domain
             }
 
             @this.CurrentPartyContactMechanisms = @this.PartyContactMechanisms
-                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .ToArray();
 
             @this.InactivePartyContactMechanisms = @this.PartyContactMechanisms
@@ -254,7 +254,7 @@ namespace Allors.Domain
             var allPartyRelationshipsWhereParty = @this.PartyRelationshipsWhereParty;
 
             @this.CurrentPartyRelationships = allPartyRelationshipsWhereParty
-                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .ToArray();
 
             @this.InactivePartyRelationships = allPartyRelationshipsWhereParty
@@ -262,7 +262,7 @@ namespace Allors.Domain
                 .ToArray();
 
             @this.CurrentSalesReps = @this.SalesRepRelationshipsWhereCustomer
-                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .Select(v => v.SalesRepresentative)
                 .ToArray();
 
@@ -270,7 +270,7 @@ namespace Allors.Domain
 
             foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
             {
-                if (@this.AppsIsActiveCustomer(customerRelationship.InternalOrganisation, DateTime.UtcNow))
+                if (@this.AppsIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
                 {
                     customerRelationship.InternalOrganisation.AddActiveCustomer(@this);
                 }
@@ -340,7 +340,7 @@ namespace Allors.Domain
                     {
                         var dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod);
 
-                        if (DateTime.UtcNow > dueDate)
+                        if (@this.Strategy.Session.Now() > dueDate)
                         {
                             partyFinancial.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
                         }
@@ -386,7 +386,7 @@ namespace Allors.Domain
         {
             foreach (CustomerRelationship customerRelationship in party.CustomerRelationshipsWhereCustomer)
             {
-                if (party.AppsIsActiveCustomer(customerRelationship.InternalOrganisation, DateTime.UtcNow))
+                if (party.AppsIsActiveCustomer(customerRelationship.InternalOrganisation, party.Strategy.Session.Now()))
                 {
                     customerRelationship.InternalOrganisation.AddActiveCustomer(party);
                 }

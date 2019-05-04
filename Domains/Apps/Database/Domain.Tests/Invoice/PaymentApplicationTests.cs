@@ -79,7 +79,7 @@ namespace Allors.Domain
 
             var receipt = new ReceiptBuilder(this.Session)
                 .WithAmount(100)
-                .WithEffectiveDate(DateTime.UtcNow)
+                .WithEffectiveDate(this.Session.Now())
                 .Build();
 
             var paymentApplication = new PaymentApplicationBuilder(this.Session)

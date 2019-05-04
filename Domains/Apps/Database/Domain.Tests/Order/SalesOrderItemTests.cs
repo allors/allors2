@@ -106,7 +106,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithCustomer(this.billToCustomer).Build();
@@ -171,14 +171,14 @@ namespace Allors.Domain
                 .WithPart(this.part)
                 .WithSupplier(this.supplier)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithPrice(7)
                 .WithCurrency(euro)
                 .Build();
 
             this.virtualGoodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithSupplier(this.supplier)
                 .WithPrice(8)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -198,61 +198,61 @@ namespace Allors.Domain
                 .WithGeographicBoundary(mechelen)
                 .WithProduct(this.good)
                 .WithPrice(8)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             // previous basePrice for good
             new BasePriceBuilder(this.Session).WithDescription("previous good")
                 .WithProduct(this.good)
                 .WithPrice(8)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             // future basePrice for good
             new BasePriceBuilder(this.Session).WithDescription("future good")
                 .WithProduct(this.good)
                 .WithPrice(11)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now().AddYears(1))
                 .Build();
 
             this.currentGoodBasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current good")
                 .WithProduct(this.good)
                 .WithPrice(10)
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
                 .Build();
 
             // previous basePrice for feature1
             new BasePriceBuilder(this.Session).WithDescription("previous feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(0.5M)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             // future basePrice for feature1
             new BasePriceBuilder(this.Session).WithDescription("future feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2.5M)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now().AddYears(1))
                 .Build();
 
             new BasePriceBuilder(this.Session)
                 .WithDescription("current feature1")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2)
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
                 .Build();
 
             // previous basePrice for feature2
             new BasePriceBuilder(this.Session).WithDescription("previous feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(2)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             // future basePrice for feature2
@@ -260,15 +260,15 @@ namespace Allors.Domain
                 .WithDescription("future feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(4)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now().AddYears(1))
                 .Build();
 
             this.currentFeature2BasePrice = new BasePriceBuilder(this.Session)
                 .WithDescription("current feature2")
                 .WithProductFeature(this.feature2)
                 .WithPrice(3)
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
                 .Build();
 
             // previous basePrice for good with feature1
@@ -276,8 +276,8 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(4)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();
 
             // future basePrice for good with feature1
@@ -286,7 +286,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(6)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now().AddYears(1))
                 .Build();
 
             this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.Session)
@@ -294,15 +294,15 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(5)
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
                 .Build();
 
             new BasePriceBuilder(this.Session)
                 .WithDescription("current variant good2")
                 .WithProduct(this.variantGood2)
                 .WithPrice(11)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -417,7 +417,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(1)
-                .WithAssignedDeliveryDate(DateTime.UtcNow.AddMonths(1))
+                .WithAssignedDeliveryDate(this.Session.Now().AddMonths(1))
                 .Build();
 
             salesOrder.AddSalesOrderItem(orderItem);
@@ -437,7 +437,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.Session).Export)
-                .WithDeliveryDate(DateTime.UtcNow.AddMonths(1))
+                .WithDeliveryDate(this.Session.Now().AddMonths(1))
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -594,14 +594,14 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             var good2PurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.part)
                 .WithSupplier(this.supplier)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithPrice(7)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -1420,20 +1420,20 @@ namespace Allors.Domain
                 .WithSalesRepresentative(salesrep1)
                 .WithCustomer(this.order.ShipToCustomer)
                 .WithProductCategory(childProductCategory)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep2)
                 .WithCustomer(this.order.ShipToCustomer)
                 .WithProductCategory(parentProductCategory)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep3)
                 .WithCustomer(this.order.ShipToCustomer)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             this.Session.Derive();
@@ -1472,13 +1472,13 @@ namespace Allors.Domain
                 .WithSalesRepresentative(salesrep2)
                 .WithCustomer(this.order.ShipToCustomer)
                 .WithProductCategory(parentProductCategory)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep3)
                 .WithCustomer(this.order.ShipToCustomer)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             this.Session.Derive();
@@ -1517,20 +1517,20 @@ namespace Allors.Domain
                 .WithSalesRepresentative(salesrep1)
                 .WithCustomer(this.order.ShipToCustomer)
                 .WithProductCategory(childProductCategory)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep2)
                 .WithCustomer(this.order.ShipToCustomer)
                 .WithProductCategory(parentProductCategory)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep3)
                 .WithCustomer(this.order.ShipToCustomer)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)

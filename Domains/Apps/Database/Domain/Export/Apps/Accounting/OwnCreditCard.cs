@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (this.ExistCreditCard)
             {
-                if (this.CreditCard.ExpirationYear <= DateTime.UtcNow.Year && this.CreditCard.ExpirationMonth <= DateTime.UtcNow.Month)
+                if (this.CreditCard.ExpirationYear <= this.strategy.Session.Now().Year && this.CreditCard.ExpirationMonth <= this.strategy.Session.Now().Month)
                 {
                     this.IsActive = false;
                 }

@@ -31,6 +31,7 @@ import { ProductCategoryEditComponent, ProductCategoryEditModule } from '../allo
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { ProductTypeEditComponent, ProductTypeEditModule } from '../allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import { ProductQuoteApprovalEditComponent, ProductQuoteApprovalEditModule } from '../allors/material/apps/objects/productquoteapproval/edit/productquoteapproval-edit.module';
+import { PurchaseInvoiceApprovalEditComponent, PurchaseInvoiceApprovalEditModule } from '../allors/material/apps/objects/purchaseinvoiceapproval/edit/purchaseinvoiceapproval-edit.module';
 import { PurchaseInvoiceCreateComponent, PurchaseInvoiceCreateModule } from '../allors/material/apps/objects/purchaseinvoice/create/purchaseinvoice-create.module';
 import { PurchaseInvoiceItemEditComponent, PurchaseInvoiceItemEditModule } from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import { PurchaseOrderApprovalLevel1EditComponent, PurchaseOrderApprovalLevel1EditModule } from '../allors/material/apps/objects/purchaseorderapprovallevel1/edit/purchaseorderapprovallevel1-edit.module';
@@ -161,6 +162,7 @@ export const edit = {
   [ids.ProductNumber]: ProductIdentificationEditComponent,
   [ids.ProductType]: ProductTypeEditComponent,
   [ids.ProductQuoteApproval]: ProductQuoteApprovalEditComponent,
+  [ids.PurchaseInvoiceApproval]: PurchaseInvoiceApprovalEditComponent,
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.PurchaseOrderApprovalLevel1]: PurchaseOrderApprovalLevel1EditComponent,
   [ids.PurchaseOrderApprovalLevel2]: PurchaseOrderApprovalLevel2EditComponent,
@@ -219,6 +221,7 @@ export const edit = {
     ProductQuoteApprovalEditModule,
     ProductQuoteCreateModule,
     ProductTypeEditModule,
+    PurchaseInvoiceApprovalEditModule,
     PurchaseInvoiceCreateModule,
     PurchaseInvoiceItemEditModule,
     PurchaseOrderApprovalLevel1EditModule,
@@ -280,6 +283,7 @@ export const edit = {
     ProductQuoteApprovalEditComponent,
     ProductQuoteCreateComponent,
     ProductTypeEditComponent,
+    PurchaseInvoiceApprovalEditComponent,
     PurchaseInvoiceCreateComponent,
     PurchaseInvoiceItemEditComponent,
     PurchaseOrderCreateComponent,

@@ -136,17 +136,21 @@ namespace Allors
             var allorsEmployee1 = this.CreatePerson(allors, "employee1@allors.com", "Allors", "Employee 1", "letmein");
             var allorsEmployee2 = this.CreatePerson(allors, "employee2@allors.com", "Allors", "Employee 2", "letmein");
             var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
+            var allorsPurchaseInvoiceApprover = this.CreatePerson(allors, "purchaseInvoiceApprover@allors.com", "Allors", "PurchaseInvoiceApprover", "letmein");
             var allorsPurchaseOrderApproverLevel1 = this.CreatePerson(allors, "purchaseOrderApproverLevel1@allors.com", "Allors", "PurchaseOrderApproverLevel1", "letmein");
             var allorsPurchaseOrderApproverLevel2 = this.CreatePerson(allors, "purchaseOrderApproverLevel2@allors.com", "Allors", "PurchaseOrderApproverLevel2", "letmein");
 
             allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
+            allors.PurchaseInvoiceApprovers = new[] { allorsPurchaseInvoiceApprover, administrator };
             allors.PurchaseOrderApproversLevel1 = new[] { allorsPurchaseOrderApproverLevel1, administrator };
             allors.PurchaseOrderApproversLevel2 = new[] { allorsPurchaseOrderApproverLevel2, administrator };
 
             var dipuEmployee = this.CreatePerson(dipu, "employee@dipu.com", "first", "dipu employee", "letmein");
             var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
+            var dipuPurchaseInvoiceApprover = this.CreatePerson(allors, "purchaseInvoiceApprover@allors.com", "dipu", "PurchaseInvoiceApprover", "letmein");
 
             dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
+            dipu.PurchaseInvoiceApprovers = new[] { dipuPurchaseInvoiceApprover, administrator };
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -369,21 +373,21 @@ namespace Allors
                 new CustomerRelationshipBuilder(this.Session)
                     .WithCustomer(acme)
                     .WithInternalOrganisation(allors)
-                    .WithFromDate(DateTime.UtcNow)
+                    .WithFromDate(this.Session.Now())
                     .Build();
 
                 new OrganisationContactRelationshipBuilder(this.Session)
                     .WithOrganisation(acme)
                     .WithContact(contact1)
                     .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                    .WithFromDate(DateTime.UtcNow)
+                    .WithFromDate(this.Session.Now())
                     .Build();
 
                 new OrganisationContactRelationshipBuilder(this.Session)
                     .WithOrganisation(acme)
                     .WithContact(contact2)
                     .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                    .WithFromDate(DateTime.UtcNow)
+                    .WithFromDate(this.Session.Now())
                     .Build();
 
                 new FaceToFaceCommunicationBuilder(this.Session)
@@ -393,7 +397,7 @@ namespace Allors
                     .WithFromParty(contact1)
                     .WithToParty(contact2)
                     .WithOwner(administrator)
-                    .WithActualStart(DateTime.UtcNow)
+                    .WithActualStart(this.Session.Now())
                     .Build();
 
                 new EmailCommunicationBuilder(this.Session)
@@ -403,7 +407,7 @@ namespace Allors
                     .WithToEmail(email2)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
-                    .WithActualStart(DateTime.UtcNow)
+                    .WithActualStart(this.Session.Now())
                     .Build();
 
                 new LetterCorrespondenceBuilder(this.Session)
@@ -413,7 +417,7 @@ namespace Allors
                     .WithToParty(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
-                    .WithActualStart(DateTime.UtcNow)
+                    .WithActualStart(this.Session.Now())
                     .Build();
 
                 new PhoneCommunicationBuilder(this.Session)
@@ -423,7 +427,7 @@ namespace Allors
                     .WithToParty(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithOwner(administrator)
-                    .WithActualStart(DateTime.UtcNow)
+                    .WithActualStart(this.Session.Now())
                     .Build();
 
                 var requestForQuote = new RequestForQuoteBuilder(this.Session)
@@ -571,7 +575,7 @@ line2")
                 new SupplierRelationshipBuilder(this.Session)
                     .WithSupplier(supplier)
                     .WithInternalOrganisation(allors)
-                    .WithFromDate(DateTime.UtcNow)
+                    .WithFromDate(this.Session.Now())
                     .Build();
 
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
@@ -780,7 +784,7 @@ line2")
                 .WithOrganisation(organisation)
                 .WithContact(person)
                 .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             new UserGroups(this.Session).Creators.AddMember(person);

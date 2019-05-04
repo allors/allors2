@@ -39,7 +39,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
             var internalOrganisation = this.InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 

@@ -33,6 +33,7 @@ namespace Allors.Domain
             var created = new PurchaseOrderItemStates(this.Session).Created;
             var onHold = new PurchaseOrderItemStates(this.Session).OnHold;
             var cancelled = new PurchaseOrderItemStates(this.Session).Cancelled;
+            var cancelledByOrder = new PurchaseOrderItemStates(this.Session).CancelledByOrder;
             var rejected = new PurchaseOrderItemStates(this.Session).Rejected;
             var awaitingApproval = new PurchaseOrderItemStates(this.Session).AwaitingApproval;
             var inProcess = new PurchaseOrderItemStates(this.Session).InProcess;
@@ -63,6 +64,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelledByOrder, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute);

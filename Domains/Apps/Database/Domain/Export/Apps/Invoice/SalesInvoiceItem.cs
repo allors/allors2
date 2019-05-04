@@ -16,6 +16,8 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public bool IsValid => !this.SalesInvoiceItemState.IsCancelled;
+
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);

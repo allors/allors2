@@ -86,14 +86,14 @@ namespace Allors.Domain
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {
-                if (supplierOffering.FromDate <= DateTime.UtcNow
-                    && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
+                if (supplierOffering.FromDate <= this.strategy.Session.Now()
+                    && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.strategy.Session.Now()))
                 {
                     this.AddSuppliedBy(supplierOffering.Supplier);
                 }
 
-                if (supplierOffering.FromDate > DateTime.UtcNow
-                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
+                if (supplierOffering.FromDate > this.strategy.Session.Now()
+                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < this.strategy.Session.Now()))
                 {
                     this.RemoveSuppliedBy(supplierOffering.Supplier);
                 }

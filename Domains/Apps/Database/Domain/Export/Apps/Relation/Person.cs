@@ -77,7 +77,7 @@ namespace Allors.Domain
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
 
             this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships
-                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .Where(v => v.FromDate <= this.strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()))
                 .ToArray();
 
             this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
@@ -85,7 +85,7 @@ namespace Allors.Domain
                 .ToArray();
             
             this.CurrentPartyContactMechanisms = this.PartyContactMechanisms
-                .Where(v => v.FromDate > DateTime.UtcNow || (v.ExistThroughDate && v.ThroughDate < DateTime.UtcNow))
+                .Where(v => v.FromDate > this.strategy.Session.Now() || (v.ExistThroughDate && v.ThroughDate < this.strategy.Session.Now()))
                 .ToArray();
             
             this.InactivePartyContactMechanisms = this.PartyContactMechanisms
@@ -200,8 +200,8 @@ namespace Allors.Domain
             {
                 this.RemoveCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
 
-                if (partyContactMechanism.FromDate <= DateTime.UtcNow &&
-                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
+                if (partyContactMechanism.FromDate <= this.strategy.Session.Now() &&
+                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= this.strategy.Session.Now()))
                 {
                     this.AddCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
                 }

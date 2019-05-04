@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, Invoked, RefreshService, Action} from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, Invoked, RefreshService, Action } from '../../../../../../angular';
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
@@ -99,12 +99,30 @@ export class PurchasInvoiceOverviewSummaryComponent {
     };
   }
 
+  public confirm(): void {
+
+    this.panel.manager.context.invoke(this.invoice.Confirm)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
+      });
+  }
+
   public cancel(): void {
 
-    this.panel.manager.context.invoke(this.invoice.CancelInvoice)
+    this.panel.manager.context.invoke(this.invoice.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+      });
+  }
+
+  public reopen(): void {
+
+    this.panel.manager.context.invoke(this.invoice.Reopen)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       });
   }
 
@@ -117,22 +135,22 @@ export class PurchasInvoiceOverviewSummaryComponent {
       });
   }
 
-  public finish(invoice: PurchaseInvoice): void {
+  public reject(): void {
 
-    this.panel.manager.context.invoke(invoice.Finish)
+    this.panel.manager.context.invoke(this.invoice.Reject)
       .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
+      });
+  }
+
+  public createSalesInvoice(invoice: PurchaseInvoice): void {
+
+    this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       });
-    }
-
-    public createSalesInvoice(invoice: PurchaseInvoice): void {
-
-      this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
-        .subscribe((invoked: Invoked) => {
-          this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
-          this.refreshService.refresh();
-        });
-      }
   }
+}
 

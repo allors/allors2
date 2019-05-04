@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SalesInvoiceItemState.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoiceItemState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,20 +17,22 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class SalesInvoiceItemState
+    public partial class PurchaseInvoiceItemState
     {
-        public bool IsSent => this.UniqueId == SalesInvoiceItemStates.SentId;
+        public bool IsCreated => this.UniqueId == PurchaseInvoiceItemStates.CreatedId;
 
-        public bool IsPaid => this.UniqueId == SalesInvoiceItemStates.PaidId;
+        public bool IsAwaitingApproval => this.UniqueId == PurchaseInvoiceItemStates.AwaitingApprovalId;
 
-        public bool IsNotPaid => this.UniqueId == SalesInvoiceItemStates.NotPaidId;
+        public bool IsInProcess => this.UniqueId == PurchaseInvoiceItemStates.InProcessId;
 
-        public bool IsPartiallyPaid => this.UniqueId == SalesInvoiceItemStates.PartiallyPaidId;
+        public bool IsReceived => this.UniqueId == PurchaseInvoiceItemStates.ReceivedId;
 
-        public bool IsReadyForPosting => this.UniqueId == SalesInvoiceItemStates.ReadyForPostingId;
+        public bool IsPaid => this.UniqueId == PurchaseInvoiceItemStates.PaidId;
 
-        public bool IsWrittenOff => this.UniqueId == SalesInvoiceItemStates.WrittenOffId;
+        public bool IsRejected => this.UniqueId == PurchaseInvoiceItemStates.RejectedId;
 
-        public bool IsCancelled => this.UniqueId == SalesInvoiceItemStates.CancelledId;
+        public bool IsCancelled => this.UniqueId == PurchaseInvoiceItemStates.CancelledId;
+
+        public bool IsCancelledByInvoice => this.UniqueId == PurchaseInvoiceItemStates.CancelledByInvoiceId;
     }
 }

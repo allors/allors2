@@ -41,12 +41,12 @@ namespace Allors.Domain
             this.good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(this.billToCustomer).Build();
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithCurrency(euro)
                 .WithPrice(7)
@@ -56,8 +56,8 @@ namespace Allors.Domain
                 .WithDescription("current good")
                 .WithProduct(this.good)
                 .WithPrice(10)
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
                 .Build();
 
             this.Session.Derive();
@@ -69,7 +69,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var receipt = new ReceiptBuilder(this.Session).WithEffectiveDate(DateTime.UtcNow).Build();
+            var receipt = new ReceiptBuilder(this.Session).WithEffectiveDate(this.Session.Now()).Build();
 
             Assert.True(receipt.ExistUniqueId);
         }
@@ -100,7 +100,7 @@ namespace Allors.Domain
             new ReceiptBuilder(this.Session)
                 .WithAmount(50)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(item2).WithAmountApplied(50).Build())
-                .WithEffectiveDate(DateTime.UtcNow)
+                .WithEffectiveDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -114,7 +114,7 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(item1).WithAmountApplied(100).Build())
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(item2).WithAmountApplied(150).Build())
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(item3).WithAmountApplied(100).Build())
-                .WithEffectiveDate(DateTime.UtcNow)
+                .WithEffectiveDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -156,7 +156,7 @@ namespace Allors.Domain
 
             var receipt = new ReceiptBuilder(this.Session)
                 .WithAmount(100)
-                .WithEffectiveDate(DateTime.UtcNow)
+                .WithEffectiveDate(this.Session.Now())
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(50).Build())
                 .Build();
 

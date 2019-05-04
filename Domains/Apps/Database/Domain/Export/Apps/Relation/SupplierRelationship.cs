@@ -82,12 +82,12 @@ namespace Allors.Domain
         {
             if (this.ExistSupplier)
             {
-                if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
                     this.InternalOrganisation.AddActiveSupplier(this.Supplier);
                 }
 
-                if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
+                if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
                     this.InternalOrganisation.RemoveActiveSupplier(this.Supplier);
                 }
@@ -102,8 +102,8 @@ namespace Allors.Domain
                 {
                     foreach (OrganisationContactRelationship contactRelationship in this.Supplier.OrganisationContactRelationshipsWhereOrganisation)
                     {
-                        if (contactRelationship.FromDate <= DateTime.UtcNow &&
-                            (!contactRelationship.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
+                        if (contactRelationship.FromDate <= this.strategy.Session.Now() &&
+                            (!contactRelationship.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                         {
                             if (!this.Supplier.ContactsUserGroup.Members.Contains(contactRelationship.Contact))
                             {

@@ -46,12 +46,12 @@ namespace Allors.Domain
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
                 .WithContact(this.contact)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.supplierRelationship = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
                 .Build();
 
             this.Session.Derive();
@@ -127,7 +127,7 @@ namespace Allors.Domain
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier2)
                 .WithInternalOrganisation(internalOrganisation2)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -174,14 +174,14 @@ namespace Allors.Domain
             Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(+1);
+            this.organisationContactRelationship.FromDate = this.Session.Now().AddDays(+1);
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.Session.Derive();
 
             Assert.Equal(0, this.supplierRelationship.Supplier.ContactsUserGroup.Members.Count);
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddSeconds(-1);
+            this.organisationContactRelationship.FromDate = this.Session.Now().AddSeconds(-1);
             this.organisationContactRelationship.RemoveThroughDate();
 
             this.Session.Derive();
@@ -189,8 +189,8 @@ namespace Allors.Domain
             Assert.Single(this.supplierRelationship.Supplier.ContactsUserGroup.Members);
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
 
-            this.organisationContactRelationship.FromDate = DateTime.UtcNow.AddDays(-2);
-            this.organisationContactRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            this.organisationContactRelationship.FromDate = this.Session.Now().AddDays(-2);
+            this.organisationContactRelationship.ThroughDate = this.Session.Now().AddDays(-1);
 
             this.Session.Derive();
 
@@ -206,7 +206,7 @@ namespace Allors.Domain
             var contactRelationship2 = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
                 .WithContact(contact2)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -215,7 +215,7 @@ namespace Allors.Domain
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(this.contact));
             Assert.True(this.supplierRelationship.Supplier.ContactsUserGroup.Members.Contains(contact2));
 
-            contactRelationship2.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            contactRelationship2.ThroughDate = this.Session.Now().AddDays(-1);
 
             this.Session.Derive();
 
@@ -233,7 +233,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationshipToCome_WhenDeriving_ThenInternalOrganisationSuppliersDosNotContainSupplier()
         {
-            this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(1);
+            this.supplierRelationship.FromDate = this.Session.Now().AddDays(1);
             this.Session.Derive();
 
             Assert.False(InternalOrganisation.ActiveSuppliers.Contains(supplier));
@@ -242,8 +242,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationshipThatHasEnded_WhenDeriving_ThenInternalOrganisationSuppliersDosNotContainSupplier()
         {
-            this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(-10);
-            this.supplierRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            this.supplierRelationship.FromDate = this.Session.Now().AddDays(-10);
+            this.supplierRelationship.ThroughDate = this.Session.Now().AddDays(-1);
 
             this.Session.Derive();
 

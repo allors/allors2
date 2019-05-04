@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7d7e4b6d-eebd-460c-b771-a93cd8d64bce")]
     #endregion
-    public partial class PurchaseInvoice : Invoice, Versioned
+    public partial class PurchaseInvoice : Invoice, Versioned, WorkItem
     {
         #region inherited properties
 
@@ -49,6 +49,7 @@ namespace Allors.Repository
         
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
+        public InvoiceItem[] ValidInvoiceItems { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -57,6 +58,7 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         public PrintDocument PrintDocument { get; set; }
+        public string WorkItemDescription { get; set; }
 
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
@@ -303,22 +305,34 @@ namespace Allors.Repository
         public PurchaseOrder PurchaseOrder { get; set; }
 
         #region Allors
+        [Id("797A9C2C-A2CF-4AE3-8395-B2F25D0F40C1")]
+        #endregion
+        [Workspace]
+        public void Confirm() { }
+
+        #region Allors
         [Id("B188B7B5-BA61-4FF5-9D9A-812E22F8A289")]
         #endregion
         [Workspace]
         public void Approve() { }
 
         #region Allors
+        [Id("55DA112F-F7BF-4400-B1FD-7A87A7B3C67B")]
+        #endregion
+        [Workspace]
+        public void Reject() { }
+
+        #region Allors
         [Id("07A2BE5F-5686-4B0A-8B05-8875FA277622")]
         #endregion
         [Workspace]
-        public void CancelInvoice() { }
+        public void Cancel() { }
 
         #region Allors
-        [Id("79C4C934-91B0-457C-8E4D-7ADED062F188")]
+        [Id("2D4FDE1F-FE36-4880-9B95-ACFE1B20C085")]
         #endregion
         [Workspace]
-        public void Finish() { }
+        public void Reopen() { }
 
         #region Allors
         [Id("422DD593-DECC-40FD-9216-D5A25458B59F")]

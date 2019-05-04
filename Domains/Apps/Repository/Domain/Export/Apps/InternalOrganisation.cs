@@ -691,6 +691,46 @@ namespace Allors.Repository
         UserGroup PurchaseOrderApproverLevel2UserGroup { get; set; }
 
         #region Allors
+        [Id("2BC6D816-9E25-4C77-8EAA-1BF06344120A")]
+        [AssociationId("07082144-6C1D-41D5-B857-C6959FCB2E38")]
+        [RoleId("196DD6E5-0CF4-40CB-B80A-A7F513CEB88C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        Person[] PurchaseInvoiceApprovers { get; set; }
+
+        #region Allors
+        [Id("2A6EE4F7-3050-4A16-A79B-6E2DA53F8DD9")]
+        [AssociationId("F59FB11B-5647-4D5E-995F-C76A5AA85144")]
+        [RoleId("7B38F58F-BAB4-4C4A-B0B1-B242834CA7F9")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        SecurityToken PurchaseInvoiceApproverSecurityToken { get; set; }
+
+        #region Allors
+        [Id("7AF73021-5B87-46F4-B27E-F846273873E4")]
+        [AssociationId("B04A2937-5BC4-41C2-A8B0-D65F17888235")]
+        [RoleId("A81909A8-7088-4112-9537-1C6D764C327F")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        AccessControl PurchaseInvoiceApproverAccessControl { get; set; }
+
+        #region Allors
+        [Id("A86793A1-4607-451F-B9D3-61287A7341CB")]
+        [AssociationId("BA20137C-DBD5-4AD1-8224-B4440D94319B")]
+        [RoleId("B8BB7A3E-981C-4C9A-AF97-4C4D656A5871")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        UserGroup PurchaseInvoiceApproverUserGroup { get; set; }
+
+        #region Allors
         [Id("7886C66E-CC9F-44A5-BABC-3E0B987F25E2")]
         [AssociationId("F109EE89-68AC-44B6-951A-AE75A0A0DED4")]
         [RoleId("0F56D4C6-E1E3-4936-A96C-AC23FF41A8B5")]

@@ -44,7 +44,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -82,7 +82,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -114,7 +114,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -161,7 +161,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(glAccount)
                 .Build();
 
@@ -272,7 +272,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount1 = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -286,7 +286,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount2 = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount2)
                 .Build();
 
@@ -324,7 +324,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount1 = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -338,7 +338,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount2 = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount2)
                 .Build();
 
@@ -382,7 +382,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 
@@ -420,7 +420,7 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
+                .WithFromDate(this.Session.Now())
                 .WithGeneralLedgerAccount(generalLedgerAccount1)
                 .Build();
 

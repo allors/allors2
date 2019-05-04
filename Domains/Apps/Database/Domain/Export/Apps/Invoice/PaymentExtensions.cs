@@ -26,7 +26,7 @@ namespace Allors.Domain
         {
             if (!@this.ExistEffectiveDate)
             {
-                @this.EffectiveDate = DateTime.UtcNow;
+                @this.EffectiveDate = @this.Strategy.Session.Now();
             }
         }
 

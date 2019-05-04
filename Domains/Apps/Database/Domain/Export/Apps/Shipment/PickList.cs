@@ -54,7 +54,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCreationDate)
             {
-                this.CreationDate = DateTime.UtcNow;
+                this.CreationDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistPickListState)

@@ -121,7 +121,7 @@ namespace Allors.Domain
 
             if (!this.ExistEstimatedShipDate)
             {
-                this.EstimatedShipDate = DateTime.UtcNow.Date;
+                this.EstimatedShipDate = this.strategy.Session.Now().Date;
             }
 
             if (!this.ExistShipmentNumber && this.ExistStore)
@@ -258,7 +258,7 @@ namespace Allors.Domain
             if (this.CanShip)
             {
                 this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Shipped;
-                this.EstimatedShipDate = DateTime.UtcNow.Date;
+                this.EstimatedShipDate = this.strategy.Session.Now().Date;
 
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
@@ -316,7 +316,7 @@ namespace Allors.Domain
                             .WithShipToEndCustomer(salesOrder.ShipToEndCustomer)
                             .WithShipToEndCustomerAddress(salesOrder.ShipToEndCustomerAddress)
                             .WithShipToEndCustomerContactPerson(salesOrder.ShipToEndCustomerContactPerson)
-                            .WithInvoiceDate(DateTime.UtcNow)
+                            .WithInvoiceDate(this.strategy.Session.Now())
                             .WithSalesChannel(salesOrder.SalesChannel)
                             .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                             .WithVatRegime(salesOrder.VatRegime)
@@ -539,8 +539,8 @@ namespace Allors.Domain
             {
                 foreach (ShippingAndHandlingComponent shippingAndHandlingComponent in new ShippingAndHandlingComponents(this.Strategy.Session).Extent())
                 {
-                    if (shippingAndHandlingComponent.FromDate <= DateTime.UtcNow &&
-                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= DateTime.UtcNow))
+                    if (shippingAndHandlingComponent.FromDate <= this.strategy.Session.Now() &&
+                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= this.strategy.Session.Now()))
                     {
                         if (ShippingAndHandlingComponents.AppsIsEligible(shippingAndHandlingComponent, this))
                         {

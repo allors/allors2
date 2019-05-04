@@ -62,7 +62,7 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
-                .WithFromDate(DateTime.UtcNow.Date)
+                .WithFromDate(this.Session.Now().Date)
                 .Build();
 
             this.Session.Derive();
@@ -85,8 +85,8 @@ namespace Allors.Domain
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
-                .WithFromDate(DateTime.UtcNow.Date.AddDays(-1))
-                .WithThroughDate(DateTime.UtcNow.Date.AddDays(-1))
+                .WithFromDate(this.Session.Now().Date.AddDays(-1))
+                .WithThroughDate(this.Session.Now().Date.AddDays(-1))
                 .Build();
 
             this.Session.Derive();

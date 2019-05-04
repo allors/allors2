@@ -82,12 +82,12 @@ namespace Allors.Domain
 
             if (!this.ExistOrderDate)
             {
-                this.OrderDate = DateTime.UtcNow;
+                this.OrderDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = DateTime.UtcNow;
+                this.EntryDate = this.strategy.Session.Now();
             }
         }
 
@@ -342,8 +342,11 @@ namespace Allors.Domain
 
         public void AppsCancel(OrderCancel method)
         {
-            OnCancelOrReject();
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
+            foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+            {
+                purchaseOrderItem.CancelFromOrder();
+            }
         }
 
         public void AppsConfirm(OrderConfirm method)
@@ -353,8 +356,11 @@ namespace Allors.Domain
 
         public void AppsReject(OrderReject method)
         {
-            OnCancelOrReject();
             this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Rejected;
+            foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+            {
+                purchaseOrderItem.Reject();
+            }
         }
 
         public void AppsHold(OrderHold method)
@@ -445,7 +451,7 @@ namespace Allors.Domain
                     .WithBilledTo(this.OrderedBy)
                     .WithBilledToContactPerson(this.BillToContactPerson)
                     .WithDescription(this.Description)
-                    .WithInvoiceDate(DateTime.UtcNow)
+                    .WithInvoiceDate(this.strategy.Session.Now())
                     .WithVatRegime(this.VatRegime)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
                     .WithSurchargeAdjustment(this.SurchargeAdjustment)
@@ -521,14 +527,6 @@ namespace Allors.Domain
                         totalBasePriceByPart[purchaseOrderItem.Part] += purchaseOrderItem.TotalBasePrice;
                     }
                 }
-            }
-        }
-
-        private void OnCancelOrReject()
-        {
-            foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
-            {
-                purchaseOrderItem.CancelFromOrder();
             }
         }
     }

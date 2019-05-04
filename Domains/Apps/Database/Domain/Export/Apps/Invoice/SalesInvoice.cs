@@ -100,12 +100,12 @@ namespace Allors.Domain
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = DateTime.UtcNow;
+                this.EntryDate = this.strategy.Session.Now();
             }
 
             if (!this.ExistInvoiceDate)
             {
-                this.InvoiceDate = DateTime.UtcNow;
+                this.InvoiceDate = this.strategy.Session.Now();
             }
 
             if (this.ExistBillToCustomer)
@@ -129,7 +129,7 @@ namespace Allors.Domain
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
+                    if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
                     {
                         derivation.AddDependency(this, customerRelationship);
                     }
@@ -142,7 +142,7 @@ namespace Allors.Domain
 
                 foreach (CustomerRelationship customerRelationship in customerRelationships)
                 {
-                    if (customerRelationship.FromDate <= DateTime.UtcNow && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= DateTime.UtcNow))
+                    if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
                     {
                         derivation.AddDependency(this, customerRelationship);
                     }
@@ -265,16 +265,19 @@ namespace Allors.Domain
                 this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
             }
 
+            var validInvoiceItems = this.SalesInvoiceItems.Where(v => v.IsValid).ToArray();
+            this.ValidInvoiceItems = validInvoiceItems;
+
             #region Pricing
             var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.InvoiceDate);
 
-            var quantityByProduct = this.SalesInvoiceItems
+            var quantityByProduct = validInvoiceItems
                 .Where(v => v.ExistProduct)
                 .GroupBy(v => v.Product)
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.Quantity));
 
             // First run to calculate price
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            foreach (SalesInvoiceItem salesInvoiceItem in validInvoiceItems)
             {
                 decimal quantityOrdered = 0;
 
@@ -286,13 +289,13 @@ namespace Allors.Domain
                 this.CalculatePrices(derivation, salesInvoiceItem, currentPriceComponents, quantityOrdered, 0);
             }
 
-            var totalBasePriceByProduct = this.SalesInvoiceItems
+            var totalBasePriceByProduct = validInvoiceItems
                 .Where(v => v.ExistProduct)
                 .GroupBy(v => v.Product)
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.TotalBasePrice));
 
             // Second run to calculate price (because of order value break)
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            foreach (SalesInvoiceItem salesInvoiceItem in validInvoiceItems)
             {
                 decimal quantityOrdered = 0;
                 decimal totalBasePrice = 0;
@@ -319,7 +322,7 @@ namespace Allors.Domain
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
 
-                foreach (SalesInvoiceItem item in this.SalesInvoiceItems)
+                foreach (SalesInvoiceItem item in validInvoiceItems)
                 {
                     this.TotalBasePrice += item.TotalBasePrice;
                     this.TotalDiscount += item.TotalDiscount;
@@ -404,7 +407,7 @@ namespace Allors.Domain
                 decimal totalUnitBasePrice = 0;
                 decimal totalListPrice = 0;
 
-                foreach (SalesInvoiceItem item1 in this.SalesInvoiceItems)
+                foreach (SalesInvoiceItem item1 in validInvoiceItems)
                 {
                     if (item1.TotalExVat > 0)
                     {
@@ -420,7 +423,7 @@ namespace Allors.Domain
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
             var salesInvoiceStates = new SalesInvoiceStates(derivation.Session);
 
-            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+            foreach (SalesInvoiceItem invoiceItem in validInvoiceItems)
             {
                 if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
                     !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
@@ -440,15 +443,15 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.SalesInvoiceItems.Any()
+            if (validInvoiceItems.Any()
                 && !this.SalesInvoiceState.Equals(salesInvoiceStates.Cancelled) 
                 && !this.SalesInvoiceState.Equals(salesInvoiceStates.WrittenOff))
             {
-                if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.Paid))
+                if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsPaid))
                 {
                     this.SalesInvoiceState = salesInvoiceStates.Paid;
                 }
-                else if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.NotPaid))
+                else if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsNotPaid))
                 {
                     this.SalesInvoiceState = salesInvoiceStates.NotPaid;
                 }
@@ -480,7 +483,7 @@ namespace Allors.Domain
                     this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
                 }
 
-                foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+                foreach (SalesInvoiceItem invoiceItem in validInvoiceItems)
                 {
                     if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
                         !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
@@ -498,7 +501,7 @@ namespace Allors.Domain
             }
             #endregion
 
-            this.SalesReps = this.InvoiceItems
+            this.SalesReps = validInvoiceItems
             .Cast<SalesInvoiceItem>()
             .SelectMany(v => v.SalesReps)
             .Distinct()
@@ -560,7 +563,7 @@ namespace Allors.Domain
                     .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
                     .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                     .WithDescription(this.Description)
-                    .WithInvoiceDate(DateTime.UtcNow)
+                    .WithInvoiceDate(this.strategy.Session.Now())
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Strategy.Session).PurchaseInvoice)
                     .WithVatRegime(this.VatRegime)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
@@ -632,7 +635,7 @@ namespace Allors.Domain
                 .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
-                .WithInvoiceDate(DateTime.UtcNow)
+                .WithInvoiceDate(this.strategy.Session.Now())
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
@@ -751,7 +754,7 @@ namespace Allors.Domain
                 .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
-                .WithInvoiceDate(DateTime.UtcNow)
+                .WithInvoiceDate(this.strategy.Session.Now())
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).CreditNote)
                 .WithVatRegime(this.VatRegime)

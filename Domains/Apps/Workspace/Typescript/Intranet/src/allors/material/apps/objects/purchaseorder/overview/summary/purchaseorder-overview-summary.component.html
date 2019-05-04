@@ -43,8 +43,8 @@
 
   <mat-card-actions>
     <button *ngIf="order.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
-    <!-- <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
-    <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button> -->
+    <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
+    <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>
     <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
     <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
     <button *ngIf="order.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>

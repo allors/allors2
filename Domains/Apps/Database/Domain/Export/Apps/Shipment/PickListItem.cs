@@ -51,7 +51,7 @@ namespace Allors.Domain
 
                 foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
                 {
-                    itemIssuance.IssuanceDateTime = DateTime.UtcNow;
+                    itemIssuance.IssuanceDateTime = this.strategy.Session.Now();
                     foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
                     {
                         if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)

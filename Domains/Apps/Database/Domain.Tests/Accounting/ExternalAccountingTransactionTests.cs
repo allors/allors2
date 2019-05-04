@@ -50,14 +50,14 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithEntryDate(DateTime.UtcNow);
+            builder.WithEntryDate(this.Session.Now());
             taxDue = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithTransactionDate(DateTime.UtcNow.AddYears(1));
+            builder.WithTransactionDate(this.Session.Now().AddYears(1));
             taxDue = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);

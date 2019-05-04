@@ -30,8 +30,8 @@ namespace Allors.Domain
 
                 foreach (SalesRepRelationship salesRepRelationship in tempQualifier.SalesRepRelationshipsWhereCustomer)
                 {
-                    if (salesRepRelationship.FromDate <= DateTime.UtcNow &&
-                        (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= DateTime.UtcNow))
+                    if (salesRepRelationship.FromDate <= this.strategy.Session.Now() &&
+                        (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= this.strategy.Session.Now()))
                     {
                         tempQualifier.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
                     }

@@ -33,8 +33,8 @@ namespace Allors.Domain
         {
             var budget = new OperatingBudgetBuilder(this.Session)
                 .WithDescription("Budget")
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1))
                 .Build();
 
             this.Session.Derive();
@@ -48,8 +48,8 @@ namespace Allors.Domain
         {
             var budget = new OperatingBudgetBuilder(this.Session)
                 .WithDescription("Budget")
-                .WithFromDate(DateTime.UtcNow)
-                .WithThroughDate(DateTime.UtcNow.AddYears(1))
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1))
                 .Build();
 
             this.Session.Derive();

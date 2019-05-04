@@ -37,7 +37,7 @@ namespace Allors.Domain
             var customerRelationship = new CustomerRelationshipBuilder(this.Session)
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithCustomer(party)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
                 .Build();
 
             this.Session.Derive();
@@ -48,7 +48,7 @@ namespace Allors.Domain
             var supplierRelationship = new SupplierRelationshipBuilder(this.Session)
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithSupplier(party)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
+                .WithFromDate(this.Session.Now().AddYears(-1))
                 .Build();
 
             this.Session.Derive();
@@ -57,7 +57,7 @@ namespace Allors.Domain
             Assert.Contains(supplierRelationship, party.CurrentPartyRelationships);
             Assert.Empty(party.InactivePartyRelationships);
 
-            customerRelationship.ThroughDate = DateTime.UtcNow.AddDays(-1);
+            customerRelationship.ThroughDate = this.Session.Now().AddDays(-1);
 
             this.Session.Derive();
 

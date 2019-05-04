@@ -106,6 +106,10 @@ namespace Allors.Repository
         public SecurityToken PurchaseOrderApproverLevel2SecurityToken { get; set; }
         public AccessControl PurchaseOrderApproverLevel2AccessControl { get; set; }
         public UserGroup PurchaseOrderApproverLevel2UserGroup { get; set; }
+        public Person[] PurchaseInvoiceApprovers { get; set; }
+        public SecurityToken PurchaseInvoiceApproverSecurityToken { get; set; }
+        public AccessControl PurchaseInvoiceApproverAccessControl { get; set; }
+        public UserGroup PurchaseInvoiceApproverUserGroup { get; set; }
         public Person[] BlueCollarWorkers { get; set; }
         public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
         public AccessControl BlueCollarWorkerAccessControl { get; set; }

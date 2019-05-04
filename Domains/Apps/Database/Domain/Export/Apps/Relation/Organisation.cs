@@ -189,6 +189,36 @@ namespace Allors.Domain
                     this.PurchaseOrderApproverLevel2SecurityToken.AddAccessControl(this.PurchaseOrderApproverLevel2AccessControl);
                 }
 
+                groupName = $"{this.Name} PurchaseInvoice approvers";
+
+                if (!this.ExistPurchaseInvoiceApproverSecurityToken)
+                {
+                    this.PurchaseInvoiceApproverSecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistPurchaseInvoiceApproverUserGroup)
+                {
+                    this.PurchaseInvoiceApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                                                ?? new UserGroupBuilder(session).Build();
+                }
+
+                if (!groupName.Equals(this.PurchaseInvoiceApproverUserGroup.Name))
+                {
+                    this.PurchaseInvoiceApproverUserGroup.Name = groupName;
+                }
+
+                if (!this.ExistPurchaseInvoiceApproverAccessControl)
+                {
+                    var role = new Roles(session).PurchaseInvoiceApprover;
+
+                    this.PurchaseInvoiceApproverAccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.PurchaseInvoiceApproverUserGroup)
+                            .Build();
+
+                    this.PurchaseInvoiceApproverSecurityToken.AddAccessControl(this.PurchaseInvoiceApproverAccessControl);
+                }
+
                 groupName = $"{this.Name} Blue-collar workers";
 
                 if (!this.ExistBlueCollarWorkerSecurityToken)
@@ -222,6 +252,7 @@ namespace Allors.Domain
                 this.ProductQuoteApproverUserGroup.Members = this.ProductQuoteApprovers.ToArray();
                 this.PurchaseOrderApproverLevel1UserGroup.Members = this.PurchaseOrderApproversLevel1.ToArray();
                 this.PurchaseOrderApproverLevel2UserGroup.Members = this.PurchaseOrderApproversLevel2.ToArray();
+                this.PurchaseInvoiceApproverUserGroup.Members = this.PurchaseInvoiceApprovers.ToArray();
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
 
                 #endregion
@@ -240,7 +271,7 @@ namespace Allors.Domain
             var allContacts = allContactRelationships.Select(v => v.Contact);
 
             this.CurrentOrganisationContactRelationships = allContactRelationships
-                .Where(v => v.FromDate <= DateTime.UtcNow && (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
+                .Where(v => v.FromDate <= this.strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()))
                 .ToArray();
 
             this.InactiveOrganisationContactRelationships = allContactRelationships

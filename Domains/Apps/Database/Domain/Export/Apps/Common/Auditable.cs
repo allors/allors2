@@ -14,13 +14,13 @@
                 var changeSet = derivation.ChangeSet;
                 if (changeSet.Created.Contains(@this.Id))
                 {
-                    @this.CreationDate = DateTime.UtcNow;
+                    @this.CreationDate = @this.Strategy.Session.Now();
                     @this.CreatedBy = user;
                 }
 
                 if (changeSet.Associations.Contains(@this.Id))
                 {
-                    @this.LastModifiedDate = DateTime.UtcNow;
+                    @this.LastModifiedDate = @this.Strategy.Session.Now();
                     @this.LastModifiedBy = user;
                 }
             }

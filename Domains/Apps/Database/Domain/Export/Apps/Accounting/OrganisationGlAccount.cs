@@ -90,7 +90,7 @@ namespace Allors.Domain
         {
             if (!this.ExistFromDate)
             {
-                this.FromDate = DateTime.UtcNow;
+                this.FromDate = this.strategy.Session.Now();
             }
 
             this.HasBankStatementTransactions = false;

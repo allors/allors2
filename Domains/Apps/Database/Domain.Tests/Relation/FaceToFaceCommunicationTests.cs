@@ -34,7 +34,7 @@ namespace Allors.Domain
                 .WithSubject("subject")
                 .WithFromParty(new PersonBuilder(this.Session).WithLastName("participant1").Build())
                 .WithToParty(new PersonBuilder(this.Session).WithLastName("participant2").Build())
-                .WithActualStart(DateTime.UtcNow)
+                .WithActualStart(this.Session.Now())
                 .Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -58,7 +58,7 @@ namespace Allors.Domain
                 .WithSubject("subject")
                 .WithFromParty(participant1)
                 .WithToParty(participant2)
-                .WithActualStart(DateTime.UtcNow)
+                .WithActualStart(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -84,7 +84,7 @@ namespace Allors.Domain
                 .WithSubject("subject")
                 .WithFromParty(participant1)
                 .WithToParty(participant2)
-                .WithActualStart(DateTime.UtcNow)
+                .WithActualStart(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -111,7 +111,7 @@ namespace Allors.Domain
                 .WithSubject("subject")
                 .WithFromParty(participant1)
                 .WithToParty(participant2)
-                .WithActualStart(DateTime.UtcNow)
+                .WithActualStart(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
@@ -135,7 +135,7 @@ namespace Allors.Domain
                 .WithSubject("subject")
                 .WithFromParty(participant1)
                 .WithToParty(participant2)
-                .WithActualStart(DateTime.UtcNow)
+                .WithActualStart(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
