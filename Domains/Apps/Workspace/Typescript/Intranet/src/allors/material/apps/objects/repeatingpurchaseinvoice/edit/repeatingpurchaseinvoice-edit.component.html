@@ -1,0 +1,29 @@
+<form *ngIf="repeatinginvoice" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingPurchaseInvoice.Frequency"
+        [options]="frequencies" display="Name"></a-mat-select>
+      <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingPurchaseInvoice.DayOfWeek"
+        [options]="daysOfWeek" display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-datepicker class="col-md" [object]="repeatinginvoice"
+        [roleType]="m.RepeatingPurchaseInvoice.NextExecutionDate"></a-mat-datepicker>
+      <a-mat-datepicker class="col-md" [object]="repeatinginvoice"
+        [roleType]="m.RepeatingPurchaseInvoice.FinalExecutionDate"></a-mat-datepicker>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit"
+      [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

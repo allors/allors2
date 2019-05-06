@@ -15,15 +15,6 @@
 
 
   <mat-card-content>
-    <div *ngIf="order" (click)="navigation.overview(order)" style="cursor: pointer;">
-      <div style="color: grey">
-        Purchase Order
-      </div>
-      <div>
-        {{order.OrderNumber}}
-      </div>
-    </div>
-
     <div (click)="navigation.overview(invoice.BilledFrom)" style="cursor: pointer;">
       <div style="color: grey">
         Billed from
@@ -50,6 +41,15 @@
       </div>
       <div>
         {{invoice.BillToEndCustomer?.displayName}}
+      </div>
+    </div>
+
+    <div *ngFor="let order of orders" (click)="navigation.overview(order)" style="cursor: pointer;">
+      <div style="color: grey">
+        Order
+      </div>
+      <div>
+        {{order.OrderNumber}}
       </div>
     </div>
   </mat-card-content>

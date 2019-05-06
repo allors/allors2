@@ -7,8 +7,6 @@
     <div class="row">
       <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes"
         display="Name"></a-mat-select>
-      <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder" [options]="orders"
-        display="OrderNumber"></a-mat-select>
     </div>
 
     <div class="row">
@@ -297,10 +295,7 @@
     </div>
 
     <div class="row">
-      <a-mat-static class="col-md" *ngIf="invoice.PurchaseOrder?.Comment" [object]="invoice.PurchaseOrder" [roleType]="m.PurchaseOrder.Comment"></a-mat-static>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment"></a-mat-textarea>
-      <a-mat-static class="col-md" *ngIf="invoice.PurchaseOrder?.InternalComment" [object]="invoice.PurchaseOrder"
-        [roleType]="m.PurchaseOrder.InternalComment"></a-mat-static>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"></a-mat-textarea>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.Message"></a-mat-textarea>
     </div>

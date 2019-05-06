@@ -300,9 +300,9 @@ namespace Allors.Repository
         [RoleId("CBCAB42E-08A8-49C7-94F1-D89E7B20B9DD")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
-        public PurchaseOrder PurchaseOrder { get; set; }
+        public PurchaseOrder[] PurchaseOrders { get; set; }
 
         #region Allors
         [Id("797A9C2C-A2CF-4AE3-8395-B2F25D0F40C1")]

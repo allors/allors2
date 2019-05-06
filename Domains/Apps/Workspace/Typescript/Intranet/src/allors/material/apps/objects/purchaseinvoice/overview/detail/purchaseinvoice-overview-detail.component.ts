@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseOrder, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
@@ -20,7 +20,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
 
   readonly m: Meta;
 
-  order: PurchaseOrder;
   invoice: PurchaseInvoice;
   goods: Good[] = [];
 
@@ -28,7 +27,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   purchaseInvoiceTypes: PurchaseInvoiceType[];
-  orders: PurchaseOrder[];
 
   billedFromContacts: Person[] = [];
   billedFromContactMechanisms: ContactMechanism[] = [];
@@ -120,7 +118,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            PurchaseOrder: x,
             VatRegime: {
               VatRate: x
             },
@@ -135,13 +132,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
             }
           },
         }),
-        pull.PurchaseInvoice({
-          name: purchaseOrderPullName,
-          object: id,
-          fetch: {
-            PurchaseOrder: x
-          }
-        }),
         pull.Good({
           name: goodPullName,
           sort: new Sort(m.Good.Name)
@@ -152,7 +142,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     panel.onPulled = (loaded) => {
       this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
       this.goods = loaded.collections[goodPullName] as Good[];
-      this.order = loaded.objects[purchaseOrderPullName] as PurchaseOrder;
     };
   }
 
@@ -186,14 +175,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
-                PurchaseOrder: x,
                 VatRegime: x
-              }
-            }),
-            pull.PurchaseInvoice({
-              object: id,
-              fetch: {
-                PurchaseOrder: x,
               }
             }),
             pull.VatRate(),
@@ -227,7 +209,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
         this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
-        this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
 
         if (this.invoice.BilledFrom) {
           this.updateBilledFrom(this.invoice.BilledFrom);
@@ -442,8 +423,6 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
           this.invoice.BilledFromContactPerson = null;
           this.previousBilledFrom = this.invoice.BilledFrom;
         }
-
-        this.orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);

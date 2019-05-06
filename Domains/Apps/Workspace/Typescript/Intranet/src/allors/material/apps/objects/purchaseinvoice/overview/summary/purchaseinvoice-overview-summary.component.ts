@@ -16,7 +16,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
 
   m: Meta;
 
-  order: PurchaseOrder;
+  orders: PurchaseOrder[];
   invoice: PurchaseInvoice;
   goods: Good[] = [];
 
@@ -63,7 +63,6 @@ export class PurchasInvoiceOverviewSummaryComponent {
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            PurchaseOrder: x,
             BillToEndCustomerContactMechanism: {
               PostalAddress_Country: {
               }
@@ -82,7 +81,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
           name: purchaseOrderPullName,
           object: id,
           fetch: {
-            PurchaseOrder: x
+            PurchaseOrders: x
           }
         }),
         pull.Good({
@@ -95,7 +94,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
     panel.onPulled = (loaded) => {
       this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
       this.goods = loaded.collections[goodPullName] as Good[];
-      this.order = loaded.objects[purchaseOrderPullName] as PurchaseOrder;
+      this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
     };
   }
 

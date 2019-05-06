@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, PurchaseOrder } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -25,7 +25,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
   vatRegimes: VatRegime[];
   purchaseInvoiceTypes: PurchaseInvoiceType[];
   internalOrganisation: Organisation;
-  orders: PurchaseOrder[];
 
   billedFromContacts: Person[] = [];
   billedFromContactMechanisms: ContactMechanism[] = [];
@@ -325,12 +324,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentContacts: x,
         }
       }),
-      pull.PurchaseOrder(
-        {
-          predicate: new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, object: party }),
-          sort: new Sort(m.PurchaseOrder.OrderNumber),
-        }
-      ),
     ];
 
     this.allors.context
@@ -342,8 +335,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           this.invoice.BilledFromContactPerson = null;
           this.previousBilledFrom = this.invoice.BilledFrom;
         }
-
-        this.orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);

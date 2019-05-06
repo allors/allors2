@@ -41,9 +41,10 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.ExistPurchaseOrder)
+                if (this.PurchaseOrders.Any())
                 {
-                    if (this.TotalExVat != this.PurchaseOrder.TotalExVat)
+                    var orderTotal = this.PurchaseInvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(o => o.OrderItem).Sum(i => i.TotalExVat);
+                    if (this.TotalExVat != orderTotal)
                     {
                         return true;
                     }

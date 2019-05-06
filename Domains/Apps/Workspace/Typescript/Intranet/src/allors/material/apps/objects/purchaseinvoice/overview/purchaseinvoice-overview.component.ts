@@ -71,7 +71,7 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
                 PurchaseInvoiceState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
-                PurchaseOrder: x,
+                PurchaseOrders: x,
                 BillToEndCustomerContactMechanism: {
                   PostalAddress_Country: {
                   }
@@ -82,12 +82,6 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
                   }
                 }
               },
-            }),
-            pull.PurchaseInvoice({
-              object: id,
-              fetch: {
-                PurchaseOrder: x
-              }
             }),
             pull.Good({
               sort: new Sort(m.Good.Name)

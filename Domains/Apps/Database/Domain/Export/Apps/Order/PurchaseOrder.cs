@@ -441,7 +441,7 @@ namespace Allors.Domain
 
         public void AppsInvoice(PurchaseOrderInvoice method)
         {
-            if (this.PurchaseInvoicesWherePurchaseOrder.Count == 0)
+            if (this.PurchaseInvoicesWherePurchaseOrder.Any())
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithPurchaseOrder(this)
@@ -473,6 +473,13 @@ namespace Allors.Domain
                         .Build();
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+
+                    new OrderItemBillingBuilder(this.Strategy.Session)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithAmount(orderItem.TotalBasePrice)
+                        .WithOrderItem(orderItem)
+                        .WithInvoiceItem(invoiceItem)
+                        .Build();
                 }
             }
         }

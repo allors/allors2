@@ -40,6 +40,7 @@ import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allo
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/apps/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { ReceiptEditComponent, ReceiptEditModule } from '../allors/material/apps/objects/receipt/edit/receipt-edit.module';
+import { RepeatingPurchaseInvoiceEditComponent, RepeatingPurchaseInvoiceEditModule } from '../allors/material/apps/objects/repeatingpurchaseinvoice/edit/repeatingpurchaseinvoice-edit.module';
 import { RepeatingSalesInvoiceEditComponent, RepeatingSalesInvoiceEditModule } from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
@@ -108,6 +109,7 @@ export const create = {
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
+  [ids.RepeatingPurchaseInvoice]: RepeatingPurchaseInvoiceEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
@@ -169,6 +171,7 @@ export const edit = {
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
+  [ids.RepeatingPurchaseInvoice]: RepeatingPurchaseInvoiceEditComponent,
   [ids.RepeatingSalesInvoice]: RepeatingSalesInvoiceEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
@@ -230,6 +233,7 @@ export const edit = {
     PurchaseOrderItemEditModule,
     QuoteItemEditModule,
     ReceiptEditModule,
+    RepeatingPurchaseInvoiceEditModule,
     RepeatingSalesInvoiceEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
@@ -291,6 +295,7 @@ export const edit = {
     PurchaseOrderApprovalLevel2EditComponent,
     PurchaseOrderItemEditComponent,
     ReceiptEditComponent,
+    RepeatingPurchaseInvoiceEditComponent,
     RepeatingSalesInvoiceEditComponent,
     QuoteItemEditComponent,
     RequestItemEditComponent,
