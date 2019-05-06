@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.LetterCorrespondenceTests
 {
     using System.Linq;
@@ -15,7 +17,7 @@ namespace Tests.LetterCorrespondenceTests
     [Collection("Test collection")]
     public class PersonLetterCorrespondenceEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
 
         public PersonLetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)

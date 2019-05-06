@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.ElectronicAddressTests
 {
     using System;
@@ -18,7 +20,7 @@ namespace Tests.ElectronicAddressTests
     [Collection("Test collection")]
     public class WebAddressEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
         
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)

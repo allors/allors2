@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PartyRelationshipTests
 {
     using System.Linq;
@@ -17,7 +19,7 @@ namespace Tests.PartyRelationshipTests
     [Collection("Test collection")]
     public class CustomerRelationshipEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
 
         public CustomerRelationshipEditTest(TestFixture fixture)
             : base(fixture)

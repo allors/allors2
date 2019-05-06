@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PostalAddressTests
 {
     using System.Linq;
@@ -15,7 +17,7 @@ namespace Tests.PostalAddressTests
     [Collection("Test collection")]
     public class PostalAddressEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly PostalAddress editContactMechanism;
 

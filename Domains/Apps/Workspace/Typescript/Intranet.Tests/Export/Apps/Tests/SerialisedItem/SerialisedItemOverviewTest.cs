@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.SerialisedItemTests
 {
     using Allors.Domain;
@@ -10,7 +12,7 @@ namespace Tests.SerialisedItemTests
     [Collection("Test collection")]
     public class SerialisedItemOverviewTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         public SerialisedItemOverviewTest(TestFixture fixture)
             : base(fixture)

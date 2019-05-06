@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PhoneCommunicationTests
 {
     using System;
@@ -18,7 +20,7 @@ namespace Tests.PhoneCommunicationTests
     [Collection("Test collection")]
     public class PersonPhoneCommunicationEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly PartyContactMechanism anotherPhoneNumber;
 

@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.FaceToFaceCommunicationTests
 {
     using System.Linq;
@@ -15,7 +17,7 @@ namespace Tests.FaceToFaceCommunicationTests
     [Collection("Test collection")]
     public class PersonFaceToFaceCommunicationEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
 
         public PersonFaceToFaceCommunicationEditTest(TestFixture fixture)
             : base(fixture)

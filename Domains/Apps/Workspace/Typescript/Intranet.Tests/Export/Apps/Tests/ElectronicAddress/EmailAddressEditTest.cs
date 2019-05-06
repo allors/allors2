@@ -1,27 +1,24 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.ElectronicAddressTests
 {
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
-
     using Angular;
-
-    using Pages.ElectronicAddressTests;
     using Pages.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class EmailAddressEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
 
         public EmailAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.personListPage = dashboard.Sidenav.NavigateToPeople()();
         }
 
         [Fact]

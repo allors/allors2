@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PersonTests
 {
     using Allors.Domain;
@@ -10,7 +12,7 @@ namespace Tests.PersonTests
     [Collection("Test collection")]
     public class PersonOverviewTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         public PersonOverviewTest(TestFixture fixture)
             : base(fixture)

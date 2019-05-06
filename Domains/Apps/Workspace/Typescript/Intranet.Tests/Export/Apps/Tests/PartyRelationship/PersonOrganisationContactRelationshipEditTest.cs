@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PartyRelationshipTests
 {
     using System.Linq;
@@ -16,7 +18,7 @@ namespace Tests.PartyRelationshipTests
     [Collection("Test collection")]
     public class PersonOrganisationContactRelationshipEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly OrganisationContactRelationship editPartyRelationship;
 

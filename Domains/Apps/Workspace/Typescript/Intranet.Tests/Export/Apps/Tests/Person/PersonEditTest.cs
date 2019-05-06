@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PersonTests
 {
     using System.Linq;
@@ -14,7 +16,7 @@ namespace Tests.PersonTests
     [Collection("Test collection")]
     public class PersonEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         public PersonEditTest(TestFixture fixture)
             : base(fixture)

@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.EmailCommunicationTests
 {
     using System.Linq;
@@ -15,7 +17,7 @@ namespace Tests.EmailCommunicationTests
     [Collection("Test collection")]
     public class PersonEmailCommunicationEditTest : Test
     {
-        private PersonListPage personListPage;
+        private PersonListComponent personListPage;
 
         public PersonEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)

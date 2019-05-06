@@ -1,22 +1,20 @@
 namespace Tests.CommunicationEventTests
 {
+    using src.allors.material.apps.objects.communicationevent.list;
     using Allors.Domain;
     using Allors.Meta;
-
-    using Pages.CommunicationEventTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class CommunicationEventListTest : Test
     {
-        private readonly CommunicationEventListPage page;
+        private readonly CommunicationEventListComponent page;
 
         public CommunicationEventListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToCommunicationEventList();
+            this.page = dashboard.Sidenav.NavigateToCommunicationEvents();
         }
 
         [Fact]
