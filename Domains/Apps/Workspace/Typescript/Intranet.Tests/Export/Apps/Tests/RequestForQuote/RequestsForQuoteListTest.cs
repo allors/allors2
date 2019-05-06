@@ -8,8 +8,8 @@ namespace Tests.RequestsForQuoteTest
         public RequestsForQuoteListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToRequestForQuoteList();
+            this.Login();
+            this.Sidenav.NavigateToRequestsForQuote();
         }
 
         [Fact]

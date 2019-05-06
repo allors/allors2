@@ -1,22 +1,21 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.OrganisationTests
 {
     using Allors.Domain;
     using Allors.Meta;
-
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationListTest : Test
     {
-        private OrganisationListPage page;
+        private OrganisationListComponent page;
 
         public OrganisationListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.page = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

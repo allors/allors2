@@ -40,8 +40,8 @@ namespace Tests.PartyContactMachanismTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

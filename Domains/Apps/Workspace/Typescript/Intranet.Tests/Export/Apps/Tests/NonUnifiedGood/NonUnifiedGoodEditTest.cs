@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.good.list;
+
 namespace Tests.NonUnifiedGood
 {
     using System.Linq;
@@ -7,20 +9,18 @@ namespace Tests.NonUnifiedGood
     using Angular;
 
     using Pages.NonUnifiedGood;
-    using Pages.ProductTest;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class NonUnifiedGoodEditTest : Test
     {
-        private readonly GoodListPage goods;
+        private readonly GoodListComponent goods;
 
         public NonUnifiedGoodEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.goods = dashboard.Sidenav.NavigateToGoodList();
+            this.Login();
+            this.goods = this.Sidenav.NavigateToGoods();
         }
 
         [Fact]

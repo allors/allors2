@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.FaceToFaceCommunicationTests
 {
     using System.Linq;
@@ -15,13 +17,13 @@ namespace Tests.FaceToFaceCommunicationTests
     [Collection("Test collection")]
     public class OrganisationFaceToFaceCommunicationEditTest : Test
     {
-        private readonly OrganisationListPage organisationListPage;
+        private readonly OrganisationListComponent organisationListPage;
 
         public OrganisationFaceToFaceCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisationListPage = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

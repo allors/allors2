@@ -17,8 +17,8 @@ namespace Tests.PersonTests
         public PersonListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.page = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

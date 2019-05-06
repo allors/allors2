@@ -8,8 +8,8 @@ namespace Tests.SerialisedItemCharacteristicTest
         public SerialisedItemCharacteristicListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToProductCharacteristicList();
+            this.Login();
+            this.Sidenav.NavigateToCharacteristics();
         }
 
         [Fact]

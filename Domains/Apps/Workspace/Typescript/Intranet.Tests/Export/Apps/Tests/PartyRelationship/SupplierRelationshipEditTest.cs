@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.PartyRelationshipTests
 {
     using System.Linq;
@@ -17,7 +19,7 @@ namespace Tests.PartyRelationshipTests
     [Collection("Test collection")]
     public class SupplierRelationshipEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
+        private readonly OrganisationListComponent organisations;
 
         private readonly PartyRelationship editPartyRelationship;
 
@@ -41,8 +43,8 @@ namespace Tests.PartyRelationshipTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisations = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

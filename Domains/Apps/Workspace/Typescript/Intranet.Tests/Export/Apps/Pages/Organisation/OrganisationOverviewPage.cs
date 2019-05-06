@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.emailcommunication.edit;
+
 namespace Pages.OrganisationTests
 {
     using Allors.Domain;
@@ -8,7 +10,6 @@ namespace Pages.OrganisationTests
     using OpenQA.Selenium;
 
     using Pages.ApplicationTests;
-    using Pages.EmailCommunicationTests;
     using Pages.FaceToFaceCommunicationTests;
     using Pages.LetterCorrespondenceTests;
     using Pages.PartyRelationshipTests;
@@ -77,7 +78,7 @@ namespace Pages.OrganisationTests
             return new FaceToFaceCommunicationEditPage(this.Driver);
         }
 
-        public EmailCommunicationEditPage NewEmailCommunication()
+        public EmailCommunicationEditComponent NewEmailCommunication()
         {
             this.CommunicationEventPanel.Click();
 
@@ -85,10 +86,10 @@ namespace Pages.OrganisationTests
 
             this.BtnEmailCommunication.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
-        public EmailCommunicationEditPage SelectEmailCommunication(CommunicationEvent communication)
+        public EmailCommunicationEditComponent SelectEmailCommunication(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -96,7 +97,7 @@ namespace Pages.OrganisationTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
         public LetterCorrespondenceEditPage NewLetterCorrespondence()

@@ -24,8 +24,8 @@ namespace Tests.PartyRelationshipTests
         public CustomerRelationshipEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

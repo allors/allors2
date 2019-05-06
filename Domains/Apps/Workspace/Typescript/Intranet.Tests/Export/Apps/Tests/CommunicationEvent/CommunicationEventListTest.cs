@@ -13,8 +13,8 @@ namespace Tests.CommunicationEventTests
         public CommunicationEventListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToCommunicationEvents();
+            this.Login();
+            this.page = this.Sidenav.NavigateToCommunicationEvents();
         }
 
         [Fact]

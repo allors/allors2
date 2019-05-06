@@ -25,8 +25,8 @@ namespace Tests.ElectronicAddressTests
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Tests.ElectronicAddressTests
             page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -80,7 +80,7 @@ namespace Tests.ElectronicAddressTests
 
             page.ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

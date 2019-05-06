@@ -15,14 +15,12 @@ namespace Pages.ApplicationTests
 
         public Input<LoginPage> UserName => this.Input(formControlName: "userName");
 
-        public DashboardPage Login(string userName = "administrator")
+        public void Login(string userName = "administrator")
         {
             this.UserName.Set(userName);
             this.Button.Click();
 
             this.Driver.WaitForAngular();
-
-            return new DashboardPage(this.Driver);
         }
     }
 }

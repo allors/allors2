@@ -22,8 +22,8 @@ namespace Tests.LetterCorrespondenceTests
         public PersonLetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

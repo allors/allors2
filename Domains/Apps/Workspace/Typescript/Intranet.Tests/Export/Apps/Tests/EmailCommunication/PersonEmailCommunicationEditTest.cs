@@ -22,8 +22,8 @@ namespace Tests.EmailCommunicationTests
         public PersonEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
@@ -46,14 +46,14 @@ namespace Tests.EmailCommunicationTests
             var personOverview = this.personListPage.Select(person);
             var page = personOverview.NewEmailCommunication();
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)
                 .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
                 .ToParty.Set(person.PartyName)
                 .ToEmail.Set(personEmailAddress.ElectronicAddressString)
-                .Subject.Set("subject")
-                .Body.Set("body")
+                .SubjectTemplate.Set("subject")
+                .BodyTemplate.Set("body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
@@ -111,14 +111,14 @@ namespace Tests.EmailCommunicationTests
 
             var page = personOverview.SelectEmailCommunication(editCommunicationEvent);
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(person.PartyName)
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)
                 .ToParty.Set(employee.PartyName)
                 .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
-                .Subject.Set("new subject")
-                .Body.Set("new body")
+                .SubjectTemplate.Set("new subject")
+                .BodyTemplate.Set("new body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))

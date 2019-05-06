@@ -1,3 +1,5 @@
+using src.app.main;
+
 namespace Tests
 {
     using System;
@@ -131,16 +133,18 @@ namespace Tests
 
         public IWebDriver Driver => this.DriverManager.Driver;
 
+        public Sidenav Sidenav => new MainComponent(this.Driver).Sidenav;
+
         public virtual void Dispose()
         {
             this.DriverManager.Stop();
         }
 
-        public DashboardPage Login(string userName = "administrator")
+        public void Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
             var page = new LoginPage(this.Driver);
-            return page.Login();
+            page.Login();
         }
     }
 }

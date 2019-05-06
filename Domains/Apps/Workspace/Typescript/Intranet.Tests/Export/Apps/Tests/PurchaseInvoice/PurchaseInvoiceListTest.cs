@@ -8,8 +8,8 @@ namespace Tests.PurchaseInvoiceTest
         public PurchaseInvoiceListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToPurchaseInvoiceList();
+            this.Login();
+            this.Sidenav.NavigateToPurchaseInvoices();
         }
 
         [Fact]

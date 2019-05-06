@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.EmailCommunicationTests
 {
     using System.Linq;
@@ -8,20 +10,18 @@ namespace Tests.EmailCommunicationTests
 
     using Angular;
 
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationEmailCommunicationEditTest : Test
     {
-        private readonly OrganisationListPage organisationListPage;
+        private readonly OrganisationListComponent organisationListPage;
 
         public OrganisationEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisationListPage = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]
@@ -45,14 +45,14 @@ namespace Tests.EmailCommunicationTests
             var organisationOverviewPage = this.organisationListPage.Select(organisation);
             var page = organisationOverviewPage.NewEmailCommunication();
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)
                 .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
                 .ToParty.Set(contact.PartyName)
                 .ToEmail.Set(personEmailAddress.ElectronicAddressString)
-                .Subject.Set("subject")
-                .Body.Set("body")
+                .SubjectTemplate.Set("subject")
+                .BodyTemplate.Set("body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
@@ -111,14 +111,14 @@ namespace Tests.EmailCommunicationTests
 
             var page = this.organisationListPage.Select(organisation).SelectEmailCommunication(editCommunicationEvent);
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(contact.PartyName)
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)
                 .ToParty.Set(employee.PartyName)
                 .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
-                .Subject.Set("new subject")
-                .Body.Set("new body")
+                .SubjectTemplate.Set("new subject")
+                .BodyTemplate.Set("new body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))

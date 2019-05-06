@@ -1,3 +1,6 @@
+using src.allors.material.apps.objects.emailaddress.edit;
+using src.allors.material.apps.objects.emailcommunication.edit;
+
 namespace Pages.PersonTests
 {
     using Allors.Domain;
@@ -8,8 +11,6 @@ namespace Pages.PersonTests
     using OpenQA.Selenium;
 
     using Pages.ApplicationTests;
-    using Pages.ElectronicAddressTests;
-    using Pages.EmailCommunicationTests;
     using Pages.FaceToFaceCommunicationTests;
     using Pages.LetterCorrespondenceTests;
     using Pages.PartyRelationshipTests;
@@ -90,7 +91,7 @@ namespace Pages.PersonTests
             return new FaceToFaceCommunicationEditPage(this.Driver);
         }
 
-        public EmailCommunicationEditPage NewEmailCommunication()
+        public EmailCommunicationEditComponent NewEmailCommunication()
         {
             this.CommunicationEventPanel.Click();
 
@@ -98,10 +99,10 @@ namespace Pages.PersonTests
 
             this.BtnEmailCommunication.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
-        public EmailCommunicationEditPage SelectEmailCommunication(CommunicationEvent communication)
+        public EmailCommunicationEditComponent SelectEmailCommunication(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -109,7 +110,7 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
         public LetterCorrespondenceEditPage NewLetterCorrespondence()
@@ -200,7 +201,7 @@ namespace Pages.PersonTests
             return new TelecommunicationsNumberEditPage(this.Driver);
         }
 
-        public ElectronicAddressEditPage NewEmailAddress()
+        public EmailAddressEditComponent NewEmailAddress()
         {
             this.ContactMechanismPanel.Click();
 
@@ -208,10 +209,10 @@ namespace Pages.PersonTests
 
             this.BtnEmailAddress.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
-        public ElectronicAddressEditPage SelectElectronicAddress(ContactMechanism contactMechanism)
+        public EmailAddressEditComponent SelectElectronicAddress(ContactMechanism contactMechanism)
         {
             this.ContactMechanismPanel.Click();
 
@@ -219,10 +220,10 @@ namespace Pages.PersonTests
             var cell = row.FindCell("contact");
             cell.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
-        public ElectronicAddressEditPage NewWebAddress()
+        public EmailAddressEditComponent NewWebAddress()
         {
             this.ContactMechanismPanel.Click();
 
@@ -230,7 +231,7 @@ namespace Pages.PersonTests
 
             this.BtnWebAddress.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
         public PartyRelationshipEditPage NewCustomerRelationship()

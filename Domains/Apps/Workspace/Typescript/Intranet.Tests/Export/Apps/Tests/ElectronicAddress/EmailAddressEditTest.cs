@@ -1,4 +1,3 @@
-using src.allors.material.apps.objects.person.list;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -6,8 +5,9 @@ namespace Tests.ElectronicAddressTests
     using Allors;
     using Allors.Domain;
     using Angular;
-    using Pages.PersonTests;
     using Xunit;
+
+    using src.allors.material.apps.objects.person.list;
 
     [Collection("Test collection")]
     public class EmailAddressEditTest : Test
@@ -17,8 +17,8 @@ namespace Tests.ElectronicAddressTests
         public EmailAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPeople()();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Tests.ElectronicAddressTests
             page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
                 .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -71,7 +71,7 @@ namespace Tests.ElectronicAddressTests
 
             page.ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -8,8 +8,8 @@ namespace Tests.SalesOrderTest
         public SalesOrderListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToSalesOrderList();
+            this.Login();
+            this.Sidenav.NavigateToSalesOrders();
         }
 
         [Fact]

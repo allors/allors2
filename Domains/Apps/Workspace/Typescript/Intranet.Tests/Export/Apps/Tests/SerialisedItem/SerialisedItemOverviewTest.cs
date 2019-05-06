@@ -1,11 +1,9 @@
-using src.allors.material.apps.objects.person.list;
-
 namespace Tests.SerialisedItemTests
 {
     using Allors.Domain;
     using Allors.Meta;
 
-    using Pages.PersonTests;
+    using src.allors.material.apps.objects.person.list;
 
     using Xunit;
 
@@ -17,8 +15,8 @@ namespace Tests.SerialisedItemTests
         public SerialisedItemOverviewTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
