@@ -13,6 +13,10 @@ namespace Autotest.Html
 
         INode Parent { get; }
 
+        Scope InScope { get; }
+
         void BaseLoad();
+
+        void SetInScope(Scope rootScope);
     }
 }

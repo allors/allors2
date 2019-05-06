@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.PartyRelationshipTests
 {
     using System.Linq;
@@ -7,16 +9,12 @@ namespace Tests.PartyRelationshipTests
 
     using Angular;
 
-    using Pages.OrganisationTests;
-
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationOrganisationContactRelationshipEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
+        private readonly OrganisationListComponent organisations;
 
         private readonly OrganisationContactRelationship editPartyRelationship;
 
@@ -39,8 +37,8 @@ namespace Tests.PartyRelationshipTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisations = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

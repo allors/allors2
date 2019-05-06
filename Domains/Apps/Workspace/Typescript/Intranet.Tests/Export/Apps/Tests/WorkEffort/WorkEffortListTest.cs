@@ -8,8 +8,8 @@ namespace Tests.WorkEffortOverviewTests
         public WorkEffortListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToWorkEffortList();
+            this.Login();
+            this.Sidenav.NavigateToWorkEfforts();
         }
 
         [Fact]

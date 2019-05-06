@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.SerialisedItemTests
 {
     using System.Linq;
@@ -17,13 +19,13 @@ namespace Tests.SerialisedItemTests
     [Collection("Test collection")]
     public class SerialisedItemEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         public SerialisedItemEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

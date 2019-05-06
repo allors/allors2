@@ -1,5 +1,3 @@
-using System;
-
 namespace Autotest.Testers
 {
     using System.Linq;

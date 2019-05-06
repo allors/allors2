@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.LetterCorrespondenceTests
 {
     using System.Linq;
@@ -15,13 +17,13 @@ namespace Tests.LetterCorrespondenceTests
     [Collection("Test collection")]
     public class OrganisationLetterCorrespondenceEditTest : Test
     {
-        private readonly OrganisationListPage organisationListPage;
+        private readonly OrganisationListComponent organisationListPage;
 
         public OrganisationLetterCorrespondenceEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisationListPage = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]
@@ -47,18 +49,18 @@ namespace Tests.LetterCorrespondenceTests
 
             var page = this.organisationListPage.Select(organisation).NewLetterCorrespondence();
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(employee.PartyName)
-                .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
                 .Subject.Set("subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .Comment.Set("comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -121,18 +123,18 @@ namespace Tests.LetterCorrespondenceTests
 
             var page = organisationOverviewPage.SelectLetterCorrespondence(editCommunicationEvent);
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(employee.PartyName)
-                .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .Comment.Set("new comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

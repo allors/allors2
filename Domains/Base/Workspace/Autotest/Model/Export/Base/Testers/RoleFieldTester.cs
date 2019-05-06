@@ -12,6 +12,8 @@ namespace Autotest.Testers
         {
         }
 
+        private const string NameAttribute = "attr.data-allors-name";
+
         public RoleType RoleType
         {
             get
@@ -35,8 +37,40 @@ namespace Autotest.Testers
             }
         }
 
+        public string NameAttributeValue => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == NameAttribute)?.Value;
+
         private string RoleTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase))?.Value;
 
-        public override string PropertyName => this.RoleType?.PropertyName;
+        public override string PropertyName
+        {
+            get
+            {
+                if (this.NameAttributeValue != null)
+                {
+                    return this.NameAttributeValue;
+                }
+
+                if (this.RoleType != null)
+                {
+                    var samePropertyName = this.Element.Template.Directive.Testers
+                        .OfType<RoleFieldTester>()
+                        .Any(v => v != this &&
+                                  v.Element.InScope == this.Element.InScope &&
+                                  v.RoleType != null &&
+                                  v.RoleType.PropertyName == this.RoleType.PropertyName &&
+                                  v.RoleType.AssociationType.ObjectType != this.RoleType.AssociationType.ObjectType);
+
+                    if (samePropertyName)
+                    {
+                        var fullPropertyName = this.RoleType.AssociationType.ObjectType.Name + this.RoleType.PropertyName;
+                        return fullPropertyName;
+                    }
+
+                    return this.RoleType?.PropertyName;
+                }
+
+                return null;
+            }
+        }
     }
 }

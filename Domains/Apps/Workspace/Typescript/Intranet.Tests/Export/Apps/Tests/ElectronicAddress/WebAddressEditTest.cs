@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.ElectronicAddressTests
 {
     using System;
@@ -18,13 +20,13 @@ namespace Tests.ElectronicAddressTests
     [Collection("Test collection")]
     public class WebAddressEditTest : Test
     {
-        private readonly PersonListPage personListPage;
+        private readonly PersonListComponent personListPage;
         
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.personListPage = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]
@@ -41,7 +43,7 @@ namespace Tests.ElectronicAddressTests
             page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -78,7 +80,7 @@ namespace Tests.ElectronicAddressTests
 
             page.ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

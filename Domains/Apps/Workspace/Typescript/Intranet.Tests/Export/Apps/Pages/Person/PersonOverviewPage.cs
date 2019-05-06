@@ -1,3 +1,8 @@
+using src.allors.material.apps.objects.emailaddress.edit;
+using src.allors.material.apps.objects.emailcommunication.edit;
+using src.allors.material.apps.objects.facetofacecommunication.edit;
+using src.allors.material.apps.objects.lettercorrespondence.edit;
+
 namespace Pages.PersonTests
 {
     using Allors.Domain;
@@ -7,11 +12,6 @@ namespace Pages.PersonTests
 
     using OpenQA.Selenium;
 
-    using Pages.ApplicationTests;
-    using Pages.ElectronicAddressTests;
-    using Pages.EmailCommunicationTests;
-    using Pages.FaceToFaceCommunicationTests;
-    using Pages.LetterCorrespondenceTests;
     using Pages.PartyRelationshipTests;
     using Pages.PhoneCommunicationTests;
     using Pages.PostalAddressTests;
@@ -68,7 +68,7 @@ namespace Pages.PersonTests
             return new PersonEditPage(this.Driver);
         }
 
-        public FaceToFaceCommunicationEditPage NewFaceToFaceCommunication()
+        public FaceToFaceCommunicationEditComponent NewFaceToFaceCommunication()
         {
             this.CommunicationEventPanel.Click();
 
@@ -76,10 +76,10 @@ namespace Pages.PersonTests
 
             this.BtnFaceToFaceCommunication.Click();
 
-            return new FaceToFaceCommunicationEditPage(this.Driver);
+            return new FaceToFaceCommunicationEditComponent(this.Driver);
         }
 
-        public FaceToFaceCommunicationEditPage SelectFaceToFaceCommunication(CommunicationEvent communication)
+        public FaceToFaceCommunicationEditComponent SelectFaceToFaceCommunication(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -87,10 +87,10 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new FaceToFaceCommunicationEditPage(this.Driver);
+            return new FaceToFaceCommunicationEditComponent(this.Driver);
         }
 
-        public EmailCommunicationEditPage NewEmailCommunication()
+        public EmailCommunicationEditComponent NewEmailCommunication()
         {
             this.CommunicationEventPanel.Click();
 
@@ -98,10 +98,10 @@ namespace Pages.PersonTests
 
             this.BtnEmailCommunication.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
-        public EmailCommunicationEditPage SelectEmailCommunication(CommunicationEvent communication)
+        public EmailCommunicationEditComponent SelectEmailCommunication(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -109,10 +109,10 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new EmailCommunicationEditPage(this.Driver);
+            return new EmailCommunicationEditComponent(this.Driver);
         }
 
-        public LetterCorrespondenceEditPage NewLetterCorrespondence()
+        public LetterCorrespondenceEditComponent NewLetterCorrespondence()
         {
             this.CommunicationEventPanel.Click();
 
@@ -120,10 +120,10 @@ namespace Pages.PersonTests
 
             this.BtnLetterCorrespondence.Click();
 
-            return new LetterCorrespondenceEditPage(this.Driver);
+            return new LetterCorrespondenceEditComponent(this.Driver);
         }
 
-        public LetterCorrespondenceEditPage SelectLetterCorrespondence(CommunicationEvent communication)
+        public LetterCorrespondenceEditComponent SelectLetterCorrespondence(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -131,7 +131,7 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new LetterCorrespondenceEditPage(this.Driver);
+            return new LetterCorrespondenceEditComponent(this.Driver);
         }
 
         public PhoneCommunicationEditPage NewPhoneCommunication()
@@ -200,7 +200,7 @@ namespace Pages.PersonTests
             return new TelecommunicationsNumberEditPage(this.Driver);
         }
 
-        public ElectronicAddressEditPage NewEmailAddress()
+        public EmailAddressEditComponent NewEmailAddress()
         {
             this.ContactMechanismPanel.Click();
 
@@ -208,10 +208,10 @@ namespace Pages.PersonTests
 
             this.BtnEmailAddress.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
-        public ElectronicAddressEditPage SelectElectronicAddress(ContactMechanism contactMechanism)
+        public EmailAddressEditComponent SelectElectronicAddress(ContactMechanism contactMechanism)
         {
             this.ContactMechanismPanel.Click();
 
@@ -219,10 +219,10 @@ namespace Pages.PersonTests
             var cell = row.FindCell("contact");
             cell.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
-        public ElectronicAddressEditPage NewWebAddress()
+        public EmailAddressEditComponent NewWebAddress()
         {
             this.ContactMechanismPanel.Click();
 
@@ -230,7 +230,7 @@ namespace Pages.PersonTests
 
             this.BtnWebAddress.Click();
 
-            return new ElectronicAddressEditPage(this.Driver);
+            return new EmailAddressEditComponent(this.Driver);
         }
 
         public PartyRelationshipEditPage NewCustomerRelationship()

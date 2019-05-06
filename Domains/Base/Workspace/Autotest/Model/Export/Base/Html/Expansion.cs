@@ -26,6 +26,8 @@ namespace Autotest.Html
 
         public INode Parent { get; set; }
 
+        public Scope InScope { get; set; }
+
         public string SwitchValue { get; set; }
 
         public void BaseLoad()
@@ -39,6 +41,17 @@ namespace Autotest.Html
                     expansionCase.BaseLoad();
                     return expansionCase;
                 }).ToArray() : new ExpansionCase[0];
+        }
+
+        public void SetInScope(Scope scope)
+        {
+            this.InScope = scope;
+            scope.Nodes.Add(this);
+
+            foreach (var expansionCase in this.ExpansionCases)
+            {
+                expansionCase.SetInScope(scope);
+            }
         }
     }
 }

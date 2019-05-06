@@ -1,19 +1,19 @@
+
 namespace Tests.CatalogueTests
 {
-    using Pages.CatalogueTests;
-
+    using src.allors.material.apps.objects.catalogue.list;
     using Xunit;
 
     [Collection("Test collection")]
     public class CatalogueListTest : Test
     {
-        private readonly CatalogueListPage page;
+        private readonly CataloguesListComponent page;
 
         public CatalogueListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToCatalogueList();
+            this.Login();
+            this.page = this.Sidenav.NavigateToCatalogues();
         }
 
         [Fact]

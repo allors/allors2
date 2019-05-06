@@ -8,8 +8,8 @@ namespace Tests.ProductCategoryTest
         public ProductCategoryListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToCategoryList();
+            this.Login();
+            this.Sidenav.NavigateToProductCategories();
         }
 
         [Fact]

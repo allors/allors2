@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.OrganisationTests
 {
     using Allors.Domain;
@@ -10,13 +12,13 @@ namespace Tests.OrganisationTests
     [Collection("Test collection")]
     public class OrganisationOverviewTest : Test
     {
-        private readonly OrganisationListPage organisationListPage;
+        private readonly OrganisationListComponent organisationListPage;
 
         public OrganisationOverviewTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.organisationListPage = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisationListPage = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System;
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -120,6 +122,12 @@ namespace Autotest.Angular
                     .Select(TesterFactory.Create)
                     .Where(v => v != null)
                     .ToArray();
+
+                var rootScope = new Scope { Name = this.Scope };
+                foreach (var node in this.Template.Html)
+                {
+                    node.SetInScope(rootScope);
+                }
 
                 foreach (var grouping in this.Testers.GroupBy(v => v.ScopedPropertyName).Where(v => v.Count() > 1))
                 {

@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PartyRelationshipTests
 {
     using System.Linq;
@@ -15,7 +17,7 @@ namespace Tests.PartyRelationshipTests
     [Collection("Test collection")]
     public class PersonEmploymentEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly Employment editPartyRelationship;
 
@@ -41,8 +43,8 @@ namespace Tests.PartyRelationshipTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

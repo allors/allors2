@@ -18,7 +18,7 @@ import { AllorsMaterialFilesModule } from '../../../../../base/components/role/f
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/role/datepicker';
 
 import { NonUnifiedGoodOverviewDetailComponent } from './nonunifiedgood-overview-detail.component';
-export { NonUnifiedGoodOverviewDetailComponent as GoodOverviewDetailComponent } from './nonunifiedgood-overview-detail.component';
+export { NonUnifiedGoodOverviewDetailComponent } from './nonunifiedgood-overview-detail.component';
 
 @NgModule({
   declarations: [

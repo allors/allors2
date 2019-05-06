@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.organisation.list;
+
 namespace Tests.PhoneCommunicationTests
 {
     using System.Linq;
@@ -8,16 +10,12 @@ namespace Tests.PhoneCommunicationTests
 
     using Angular;
 
-    using Pages.OrganisationTests;
-
-    using Tests.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
     public class OrganisationPhoneCommunicationEditTest : Test
     {
-        private readonly OrganisationListPage organisations;
+        private readonly OrganisationListComponent organisations;
 
         private readonly PartyContactMechanism organisationPhoneNumber;
 
@@ -51,8 +49,8 @@ namespace Tests.PhoneCommunicationTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.organisations = dashboard.Sidenav.NavigateToOrganisationList();
+            this.Login();
+            this.organisations = this.Sidenav.NavigateToOrganisations();
         }
 
         [Fact]

@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.TelecommunicationsNumberTests
 {
     using System;
@@ -18,7 +20,7 @@ namespace Tests.TelecommunicationsNumberTests
     [Collection("Test collection")]
     public class TelecommunicationsNumberEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly TelecommunicationsNumber editContactMechanism;
 
@@ -40,8 +42,8 @@ namespace Tests.TelecommunicationsNumberTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

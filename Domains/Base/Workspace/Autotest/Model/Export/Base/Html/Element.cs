@@ -3,13 +3,12 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using Humanizer;
-
 namespace Autotest.Html
 {
     using System.Collections.Generic;
     using System.Linq;
     using Autotest.Angular;
+    using Humanizer;
     using Newtonsoft.Json.Linq;
 
     public partial class Element : INode
@@ -38,7 +37,7 @@ namespace Autotest.Html
         public string Name { get; set; }
 
         public string PropertyName => this.Name.Dehumanize();
-        
+
         public INode Parent { get; }
 
         public Directive Component { get; set; }
@@ -71,6 +70,8 @@ namespace Autotest.Html
             }
         }
 
+        public Scope InScope { get; set; }
+
         public void BaseLoad()
         {
             this.Name = this.Json["name"]?.Value<string>();
@@ -94,6 +95,26 @@ namespace Autotest.Html
                     return attribute;
                 }).ToArray()
                 : new Attribute[0];
+        }
+
+        public void SetInScope(Scope scope)
+        {
+            this.InScope = scope;
+            scope.Nodes.Add(this);
+
+            foreach (var text in this.FlattenedText)
+            {
+                text.SetInScope(scope);
+            }
+
+            if (!string.IsNullOrEmpty(this.Scope))
+            {
+                var newScope = new Scope { Name = this.Scope };
+                foreach (var child in this.Children)
+                {
+                    child.SetInScope(newScope);
+                }
+            }
         }
 
         private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)

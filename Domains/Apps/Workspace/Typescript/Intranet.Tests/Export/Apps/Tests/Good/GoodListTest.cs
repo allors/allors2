@@ -8,8 +8,8 @@ namespace Tests.ProductTest
         public GoodListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToGoodList();
+            this.Login();
+            this.Sidenav.NavigateToGoods();
         }
 
         [Fact]

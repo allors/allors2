@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PartyContactMachanismTests
 {
     using System.Linq;
@@ -13,7 +15,7 @@ namespace Tests.PartyContactMachanismTests
     [Collection("Test collection")]
     public class PartyContactMechanismEditTest : Test
     {
-        private readonly PersonListPage people;
+        private readonly PersonListComponent people;
 
         private readonly PartyContactMechanism editPartyContactMechanism;
 
@@ -38,8 +40,8 @@ namespace Tests.PartyContactMachanismTests
             this.Session.Derive();
             this.Session.Commit();
 
-            var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.people = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

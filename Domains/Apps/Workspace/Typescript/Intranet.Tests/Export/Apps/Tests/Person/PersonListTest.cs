@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.list;
+
 namespace Tests.PersonTests
 {
     using Allors.Domain;
@@ -10,13 +12,13 @@ namespace Tests.PersonTests
     [Collection("Test collection")]
     public class PersonListTest : Test
     {
-        private PersonListPage page;
+        private PersonListComponent page;
 
         public PersonListTest(TestFixture fixture)
             : base(fixture)
         {
-            var dashboard = this.Login();
-            this.page = dashboard.Sidenav.NavigateToPersonList();
+            this.Login();
+            this.page = this.Sidenav.NavigateToPeople();
         }
 
         [Fact]

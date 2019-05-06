@@ -10,6 +10,8 @@ namespace Autotest.Html
 
     public partial class Text : INode
     {
+        public Scope InScope { get; set; }
+
         public Text(JToken json, Template template, INode parent)
         {
             this.Json = json;
@@ -28,6 +30,12 @@ namespace Autotest.Html
         public void BaseLoad()
         {
             this.Value = this.Json["value"]?.Value<string>();
+        }
+
+        public void SetInScope(Scope scope)
+        {
+            this.InScope = scope;
+            scope.Nodes.Add(this);
         }
     }
 }
