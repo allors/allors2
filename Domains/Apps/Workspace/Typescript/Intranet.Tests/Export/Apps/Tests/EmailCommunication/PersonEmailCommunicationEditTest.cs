@@ -58,7 +58,7 @@ namespace Tests.EmailCommunicationTests
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -123,7 +123,7 @@ namespace Tests.EmailCommunicationTests
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

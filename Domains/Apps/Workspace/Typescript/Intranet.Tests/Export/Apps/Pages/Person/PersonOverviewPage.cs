@@ -1,5 +1,7 @@
 using src.allors.material.apps.objects.emailaddress.edit;
 using src.allors.material.apps.objects.emailcommunication.edit;
+using src.allors.material.apps.objects.facetofacecommunication.edit;
+using src.allors.material.apps.objects.lettercorrespondence.edit;
 
 namespace Pages.PersonTests
 {
@@ -10,9 +12,6 @@ namespace Pages.PersonTests
 
     using OpenQA.Selenium;
 
-    using Pages.ApplicationTests;
-    using Pages.FaceToFaceCommunicationTests;
-    using Pages.LetterCorrespondenceTests;
     using Pages.PartyRelationshipTests;
     using Pages.PhoneCommunicationTests;
     using Pages.PostalAddressTests;
@@ -69,7 +68,7 @@ namespace Pages.PersonTests
             return new PersonEditPage(this.Driver);
         }
 
-        public FaceToFaceCommunicationEditPage NewFaceToFaceCommunication()
+        public FaceToFaceCommunicationEditComponent NewFaceToFaceCommunication()
         {
             this.CommunicationEventPanel.Click();
 
@@ -77,10 +76,10 @@ namespace Pages.PersonTests
 
             this.BtnFaceToFaceCommunication.Click();
 
-            return new FaceToFaceCommunicationEditPage(this.Driver);
+            return new FaceToFaceCommunicationEditComponent(this.Driver);
         }
 
-        public FaceToFaceCommunicationEditPage SelectFaceToFaceCommunication(CommunicationEvent communication)
+        public FaceToFaceCommunicationEditComponent SelectFaceToFaceCommunication(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -88,7 +87,7 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new FaceToFaceCommunicationEditPage(this.Driver);
+            return new FaceToFaceCommunicationEditComponent(this.Driver);
         }
 
         public EmailCommunicationEditComponent NewEmailCommunication()
@@ -113,7 +112,7 @@ namespace Pages.PersonTests
             return new EmailCommunicationEditComponent(this.Driver);
         }
 
-        public LetterCorrespondenceEditPage NewLetterCorrespondence()
+        public LetterCorrespondenceEditComponent NewLetterCorrespondence()
         {
             this.CommunicationEventPanel.Click();
 
@@ -121,10 +120,10 @@ namespace Pages.PersonTests
 
             this.BtnLetterCorrespondence.Click();
 
-            return new LetterCorrespondenceEditPage(this.Driver);
+            return new LetterCorrespondenceEditComponent(this.Driver);
         }
 
-        public LetterCorrespondenceEditPage SelectLetterCorrespondence(CommunicationEvent communication)
+        public LetterCorrespondenceEditComponent SelectLetterCorrespondence(CommunicationEvent communication)
         {
             this.CommunicationEventPanel.Click();
 
@@ -132,7 +131,7 @@ namespace Pages.PersonTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            return new LetterCorrespondenceEditPage(this.Driver);
+            return new LetterCorrespondenceEditComponent(this.Driver);
         }
 
         public PhoneCommunicationEditPage NewPhoneCommunication()

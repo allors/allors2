@@ -1,11 +1,11 @@
 
+using src.allors.material.apps.objects.nonunifiedgood.create;
+
 namespace src.allors.material.apps.objects.good.list
 {
     using Angular.Html;
 
     using OpenQA.Selenium;
-
-    using Pages.NonUnifiedGood;
 
     public partial class GoodListComponent
     {
@@ -13,13 +13,13 @@ namespace src.allors.material.apps.objects.good.list
 
         public Button<GoodListComponent> NewNonUnifiedGoodButton => this.Button(By.CssSelector("button[data-allors-class='NonUnifiedGood']"));
 
-        public NonUnifiedGoodEditPage NewNonUnifiedGood()
+        public NonUnifiedGoodCreateComponent NewNonUnifiedGood()
         {
             this.AddNew.Click();
 
             this.NewNonUnifiedGoodButton.Click();
 
-            return new NonUnifiedGoodEditPage(this.Driver);
+            return new NonUnifiedGoodCreateComponent(this.Driver);
         }
     }
 }

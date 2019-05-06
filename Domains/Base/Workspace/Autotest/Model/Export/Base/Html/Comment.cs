@@ -25,9 +25,17 @@ namespace Autotest.Html
 
         public string Value { get; set; }
 
+        public Scope InScope { get; set; }
+
         public void BaseLoad()
         {
             this.Value = this.Json["value"]?.Value<string>();
+        }
+
+        public void SetInScope(Scope scope)
+        {
+            this.InScope = scope;
+            scope.Nodes.Add(this);
         }
     }
 }

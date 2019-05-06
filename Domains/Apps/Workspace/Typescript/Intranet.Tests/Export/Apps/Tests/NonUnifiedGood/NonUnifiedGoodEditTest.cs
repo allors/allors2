@@ -1,3 +1,4 @@
+
 using src.allors.material.apps.objects.good.list;
 
 namespace Tests.NonUnifiedGood
@@ -7,8 +8,6 @@ namespace Tests.NonUnifiedGood
     using Allors.Domain;
 
     using Angular;
-
-    using Pages.NonUnifiedGood;
     using Xunit;
 
     [Collection("Test collection")]
@@ -33,7 +32,7 @@ namespace Tests.NonUnifiedGood
             page.Name.Set("Mercedes Vito")
                 .Description.Set("Vans. Born to run.")
                 .Part.Set("finished good")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

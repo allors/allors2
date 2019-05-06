@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, TestScope } from '../../../../../../angular';
 import { NonUnifiedGood } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
@@ -9,7 +9,7 @@ import { Meta } from '../../../../../../meta';
   templateUrl: './nonunifiedgood-overview-summary.component.html',
   providers: [PanelService]
 })
-export class NonUnifiedGoodOverviewSummaryComponent {
+export class NonUnifiedGoodOverviewSummaryComponent extends TestScope {
 
   m: Meta;
 
@@ -18,7 +18,9 @@ export class NonUnifiedGoodOverviewSummaryComponent {
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
-    public navigation: NavigationService) {
+    public navigation: NavigationService
+  ) {
+    super();
 
     this.m = this.metaService.m;
 

@@ -43,15 +43,18 @@ $endif$
 $if(tester.IsA)$
         public Angular.Html.Anchor $tester.Name$ => new Angular.Html.Anchor(this.Driver, "$tester.Kind$", @"$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
+$if(tester.Element.Template.Directive.Scope)$
+$if(!tester.RoleType)$
 $if(tester.IsAMatTable)$
         public Angular.Material.MaterialTable $tester.Name$ => new Angular.Material.MaterialTable(this.Driver, $tester.Selector$);
-$endif$
-$if(tester.IsAMatList)$
+$elseif(tester.IsAMatList)$
         public Angular.Material.MaterialList $tester.Name$ => new Angular.Material.MaterialList(this.Driver, $tester.Selector$);
-$endif$
-$if(tester.IsAllorsMaterialSideMenuComponent)$
+$elseif(tester.IsAllorsMaterialSideMenuComponent)$
         public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);
+$else$
+    public $tester.Element.Template.Directive.Reference.Namespace$.$tester.Element.Template.Directive.Reference.Name$ $tester.Name$ => new $tester.Element.Template.Directive.Reference.Namespace$.$tester.Element.Template.Directive.Reference.Name$(this.Driver$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
+$else$
 $if(tester.IsAllorsMaterialAutocompleteComponent)$
         public Angular.Material.MaterialAutocomplete<$directive.Reference.Name$> $tester.Name$ => this.MaterialAutocomplete(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
@@ -74,21 +77,13 @@ $if(tester.IsAllorsMaterialFilesComponent)$
         public Angular.Material.MaterialFiles<$directive.Reference.Name$> $tester.Name$ => this.MaterialFiles(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 $if(tester.IsAllorsMaterialInputComponent)$
-$if(tester.roleType)$
         public Angular.Material.MaterialInput<$directive.Reference.Name$> $tester.Name$ => this.MaterialInput(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
-$else$
-        XXX $tester.Element.Name$ | $tester.PropertyName$ | $tester.Kind$ | $tester.Value$
-$endif$
 $endif$
 $if(tester.IsAllorsMaterialRadioGroupComponent)$
         public Angular.Material.MaterialRadioGroup<$directive.Reference.Name$> $tester.Name$ => this.MaterialRadioGroup(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
 $endif$
 $if(tester.IsAllorsMaterialSelectComponent)$
-$if(tester.roleType)$
         public Angular.Material.MaterialSelect<$directive.Reference.Name$> $tester.Name$ => this.MaterialSelect(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
-$else$
-        XXX $tester.Element.Name$ | $tester.PropertyName$ 
-$endif$
 $endif$
 $if(tester.IsAllorsMaterialSliderComponent)$
         public Angular.Material.MaterialSlider<$directive.Reference.Name$> $tester.Name$ => this.MaterialSlider(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
@@ -98,5 +93,7 @@ $if(tester.IsAllorsMaterialSlideToggleComponent)$
 $endif$
 $if(tester.IsAllorsMaterialTextAreaComponent)$
         public Angular.Material.MaterialTextArea<$directive.Reference.Name$> $tester.Name$ => this.MaterialTextArea(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
+$endif$
+$endif$
 $endif$
 >>

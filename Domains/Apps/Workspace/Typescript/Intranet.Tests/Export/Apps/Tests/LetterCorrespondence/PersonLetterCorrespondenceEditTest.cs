@@ -56,18 +56,18 @@ namespace Tests.LetterCorrespondenceTests
 
             var page = this.personListPage.Select(person).NewLetterCorrespondence();
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)
                 .ToParty.Set(person.PartyName)
-                .PostalAddress.Set("home sweet home 0000 suncity Belgium")
+                .FromPostalAddress.Set("home sweet home 0000 suncity Belgium")
                 .Subject.Set("subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .Comment.Set("comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -132,18 +132,18 @@ namespace Tests.LetterCorrespondenceTests
 
             var page = personOverview.SelectLetterCorrespondence(editCommunicationEvent);
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(person.PartyName)
                 .ToParty.Set(employee.PartyName)
-                .PostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .Comment.Set("new comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

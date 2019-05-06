@@ -40,8 +40,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var personOverview = this.personListPage.Select(person);
             var page = personOverview.NewFaceToFaceCommunication();
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .Location.Set("location")
                 .Subject.Set("subject")
                 .FromParty.Set(employee.PartyName)
@@ -50,7 +50,7 @@ namespace Tests.FaceToFaceCommunicationTests
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -97,8 +97,8 @@ namespace Tests.FaceToFaceCommunicationTests
 
             var page = this.personListPage.Select(person).SelectFaceToFaceCommunication(editCommunicationEvent);
 
-            page.EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)
+            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)
                 .Location.Set("new location")
                 .Subject.Set("new subject")
                 .FromParty.Set(secondEmployee.PartyName)
@@ -107,7 +107,7 @@ namespace Tests.FaceToFaceCommunicationTests
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
