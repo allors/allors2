@@ -5,6 +5,7 @@ using src.allors.material.apps.objects.lettercorrespondence.edit;
 using src.allors.material.apps.objects.person.create;
 using src.allors.material.apps.objects.phonecommunication.edit;
 using src.allors.material.apps.objects.postaladdress.edit;
+using src.allors.material.apps.objects.telecommunicationsnumber.edit;
 using src.app.main;
 
 namespace src.allors.material.apps.objects.person.overview
@@ -15,7 +16,6 @@ namespace src.allors.material.apps.objects.person.overview
     using OpenQA.Selenium;
 
     using Pages.PartyRelationshipTests;
-    using Pages.TelecommunicationsNumberTests;
 
     public partial class PersonOverviewComponent 
     {

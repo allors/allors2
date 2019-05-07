@@ -95,7 +95,7 @@ namespace Tests.TelecommunicationsNumberTests
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

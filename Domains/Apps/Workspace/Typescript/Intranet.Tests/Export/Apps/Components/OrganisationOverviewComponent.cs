@@ -11,8 +11,6 @@ namespace src.allors.material.apps.objects.organisation.overview
     using Components;
 
     using OpenQA.Selenium;
-
-    using Pages.ApplicationTests;
     using Pages.PartyRelationshipTests;
 
     public partial class OrganisationOverviewComponent

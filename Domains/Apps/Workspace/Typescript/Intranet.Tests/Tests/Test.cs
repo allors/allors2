@@ -1,3 +1,4 @@
+using src.app.auth;
 using src.app.main;
 
 namespace Tests
@@ -19,9 +20,6 @@ namespace Tests
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.Extensions;
-
-    using Pages.ApplicationTests;
-
     using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Test : IDisposable
@@ -143,7 +141,7 @@ namespace Tests
         public void Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
-            var page = new LoginPage(this.Driver);
+            var page = new LoginComponent(this.Driver);
             page.Login();
         }
     }
