@@ -54,13 +54,12 @@ namespace Tests.TelecommunicationsNumberTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewTelecommunicationsNumber();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
-                .CountryCode.Set("111")
+            page.CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

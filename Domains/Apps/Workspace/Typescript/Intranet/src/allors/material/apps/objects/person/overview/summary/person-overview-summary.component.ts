@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, TestScope } from '../../../../../../angular';
 import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
@@ -9,7 +9,7 @@ import { Meta } from '../../../../../../meta';
   templateUrl: './person-overview-summary.component.html',
   providers: [PanelService]
 })
-export class PersonOverviewSummaryComponent {
+export class PersonOverviewSummaryComponent extends TestScope {
 
   m: Meta;
 
@@ -20,7 +20,9 @@ export class PersonOverviewSummaryComponent {
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
-    public navigation: NavigationService) {
+    public navigation: NavigationService
+  ) {
+    super();
 
     this.m = this.metaService.m;
 
