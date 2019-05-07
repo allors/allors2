@@ -8,8 +8,6 @@ namespace Tests.SerialisedItemTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.PersonTests;
     using Pages.SerialisedItemTests;
 
     using Tests.PersonTests;
@@ -82,7 +80,7 @@ namespace Tests.SerialisedItemTests
                 .Gender.Set(new GenderTypes(this.Session).Male.Name)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
                 .Comment.Set("unpleasant person")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

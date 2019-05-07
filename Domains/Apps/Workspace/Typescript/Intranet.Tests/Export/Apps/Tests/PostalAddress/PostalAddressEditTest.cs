@@ -9,9 +9,6 @@ namespace Tests.PostalAddressTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]
@@ -59,15 +56,14 @@ namespace Tests.PostalAddressTests
             var personOverview = this.people.Select(person);
             var page = personOverview.NewPostalAddress();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
-                .Address1.Set("addressline 1")
+            page.Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
                 .PostalCode.Set("postalcode")
                 .Country.Set(country.Name)
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -110,7 +106,7 @@ namespace Tests.PostalAddressTests
                 .PostalCode.Set("postalcode")
                 .Country.Set(country.Name)
                 .Description.Set("description")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

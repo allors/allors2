@@ -1,3 +1,4 @@
+using src.allors.material.apps.objects.person.create;
 using src.allors.material.apps.objects.person.list;
 
 namespace Tests.PersonTests
@@ -8,9 +9,6 @@ namespace Tests.PersonTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]
@@ -31,7 +29,7 @@ namespace Tests.PersonTests
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonEditComponent(this.Driver);
+            var page = new PersonCreateComponent(this.Driver);
 
             page.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
@@ -40,7 +38,7 @@ namespace Tests.PersonTests
                 .Function.Set("CEO")
                 .Gender.Set(new GenderTypes(this.Session).Male.Name)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -79,7 +77,7 @@ namespace Tests.PersonTests
                 .Gender.Set(new GenderTypes(this.Session).Male.Name)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
                 .Comment.Set("unpleasant person")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

@@ -48,5 +48,7 @@ $elseif(tester.IsAllorsMaterialSideMenuComponent)$
         public Tests.Sidenav Sidenav => new Tests.Sidenav(this.Driver);
 $elseif(tester.IsRoleFieldTester)$
         public Components.$tester.Type$<$directive.Reference.Name$> $tester.Name$ => this.$tester.Type$(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
+$elseif(tester.Element.Scope)$
+        public $tester.Element.Template.Directive.Reference.Namespace$.$tester.Element.Template.Directive.Reference.Name$ $tester.Name$ => new $tester.Element.Template.Directive.Reference.Namespace$.$tester.Element.Template.Directive.Reference.Name$(this.Driver);
 $endif$
 >>

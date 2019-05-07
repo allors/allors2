@@ -9,9 +9,6 @@ namespace Tests.PartyRelationshipTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]

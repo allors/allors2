@@ -1,9 +1,11 @@
 using src.allors.material.apps.objects.emailcommunication.edit;
 using src.allors.material.apps.objects.facetofacecommunication.edit;
 using src.allors.material.apps.objects.lettercorrespondence.edit;
+using src.allors.material.apps.objects.organisation.create;
+using src.allors.material.apps.objects.phonecommunication.edit;
 using src.app.main;
 
-namespace Pages.OrganisationTests
+namespace src.allors.material.apps.objects.organisation.overview
 {
     using Allors.Domain;
     using Components;
@@ -12,15 +14,9 @@ namespace Pages.OrganisationTests
 
     using Pages.ApplicationTests;
     using Pages.PartyRelationshipTests;
-    using Pages.PhoneCommunicationTests;
 
-    public class OrganisationOverviewComponent : MainComponent
+    public partial class OrganisationOverviewComponent
     {
-        public OrganisationOverviewComponent(IWebDriver driver)
-            : base(driver)
-        {
-        }
-
         public Element<OrganisationOverviewComponent> DetailPanel => this.Element(By.CssSelector("div[data-allors-panel='detail']"));
 
         public Element<OrganisationOverviewComponent> CommunicationEventPanel => this.Element(By.CssSelector("div[data-allors-panel='communicationevent']"));
@@ -49,10 +45,10 @@ namespace Pages.OrganisationTests
 
         public Anchor<OrganisationOverviewComponent> List => this.Anchor(By.LinkText("Organisations"));
 
-        public OrganisationEditComponent Edit()
+        public OrganisationCreateComponent Edit()
         {
             this.DetailPanel.Click();
-            return new OrganisationEditComponent(this.Driver);
+            return new OrganisationCreateComponent(this.Driver);
         }
 
         public FaceToFaceCommunicationEditComponent NewFaceToFaceCommunication()

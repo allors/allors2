@@ -7,9 +7,6 @@ namespace Tests.PartyContactMachanismTests
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
-    using Pages.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]

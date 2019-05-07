@@ -7,8 +7,6 @@ namespace Pages.PartyRelationshipTests
 
     using OpenQA.Selenium;
 
-    using Pages.ApplicationTests;
-
     public class PartyRelationshipEditComponent : MainComponent
     {
         public PartyRelationshipEditComponent(IWebDriver driver)

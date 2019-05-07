@@ -9,9 +9,6 @@ namespace Tests.FaceToFaceCommunicationTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]

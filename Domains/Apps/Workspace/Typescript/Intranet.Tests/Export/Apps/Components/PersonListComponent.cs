@@ -1,6 +1,7 @@
+using src.allors.material.apps.objects.person.overview;
+
 namespace src.allors.material.apps.objects.person.list
 {
-    using Pages.PersonTests;
     using Allors.Domain;
     using Components;
     using OpenQA.Selenium;

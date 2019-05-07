@@ -4,9 +4,6 @@ namespace Tests.OrganisationTests
 {
     using Allors.Domain;
     using Allors.Meta;
-
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]

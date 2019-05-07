@@ -1,11 +1,10 @@
 using Components;
 using OpenQA.Selenium;
-using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.organisation.overview;
 
 namespace src.allors.material.apps.objects.organisation.list
 {
     using Allors.Domain;
-    using Pages.OrganisationTests;
 
     public partial class OrganisationListComponent 
     {

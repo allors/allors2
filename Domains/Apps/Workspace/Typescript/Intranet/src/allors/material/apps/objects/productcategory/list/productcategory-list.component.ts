@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './productcategory-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class ProductCategoriesOverviewComponent extends TestScope implements OnInit, OnDestroy {
+export class ProductCategorieListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Categories';
 

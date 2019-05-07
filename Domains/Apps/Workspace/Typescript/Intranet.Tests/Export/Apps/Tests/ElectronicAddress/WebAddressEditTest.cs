@@ -10,9 +10,6 @@ namespace Tests.ElectronicAddressTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.PersonTests;
-
     using Tests.PersonTests;
 
     using Xunit;

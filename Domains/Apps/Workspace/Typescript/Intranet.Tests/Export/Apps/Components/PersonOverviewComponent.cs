@@ -2,9 +2,12 @@ using src.allors.material.apps.objects.emailaddress.edit;
 using src.allors.material.apps.objects.emailcommunication.edit;
 using src.allors.material.apps.objects.facetofacecommunication.edit;
 using src.allors.material.apps.objects.lettercorrespondence.edit;
+using src.allors.material.apps.objects.person.create;
+using src.allors.material.apps.objects.phonecommunication.edit;
+using src.allors.material.apps.objects.postaladdress.edit;
 using src.app.main;
 
-namespace Pages.PersonTests
+namespace src.allors.material.apps.objects.person.overview
 {
     using Allors.Domain;
     using Components;
@@ -12,17 +15,10 @@ namespace Pages.PersonTests
     using OpenQA.Selenium;
 
     using Pages.PartyRelationshipTests;
-    using Pages.PhoneCommunicationTests;
-    using Pages.PostalAddressTests;
     using Pages.TelecommunicationsNumberTests;
 
-    public class PersonOverviewComponent : MainComponent
+    public partial class PersonOverviewComponent 
     {
-        public PersonOverviewComponent(IWebDriver driver)
-            : base(driver)
-        {
-        }
-
         public Element<PersonOverviewComponent> DetailPanel => this.Element(By.CssSelector("div[data-allors-panel='detail']"));
 
         public Element<PersonOverviewComponent> CommunicationEventPanel => this.Element(By.CssSelector("div[data-allors-panel='communicationevent']"));
@@ -61,10 +57,10 @@ namespace Pages.PersonTests
 
         public Anchor<PersonOverviewComponent> List => this.Anchor(By.LinkText("People"));
 
-        public PersonEditComponent Edit()
+        public PersonCreateComponent Edit()
         {
             this.DetailPanel.Click();
-            return new PersonEditComponent(this.Driver);
+            return new PersonCreateComponent(this.Driver);
         }
 
         public FaceToFaceCommunicationEditComponent NewFaceToFaceCommunication()

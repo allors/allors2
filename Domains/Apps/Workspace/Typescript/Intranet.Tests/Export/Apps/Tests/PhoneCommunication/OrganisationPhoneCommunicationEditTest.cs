@@ -69,18 +69,18 @@ namespace Tests.PhoneCommunicationTests
             var page = organisationOverviewPage.NewPhoneCommunication();
 
             page.LeftVoiceMail.Set(true)
-                .EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .Subject.Set("subject")
                 .FromParty.Set(contact.PartyName)
                 .ToParty.Set(employee.PartyName)
-                .PhoneNumber.Set("+1 123 456")
+                .FromPhoneNumber.Set("+1 123 456")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .Comment.Set("comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -121,18 +121,18 @@ namespace Tests.PhoneCommunicationTests
             var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
 
             page.LeftVoiceMail.Set(false)
-                .EventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .Purposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(firstEmployee.PartyName)
-                .PhoneNumber.Set("+1 111 222")
+                .FromPhoneNumber.Set("+1 111 222")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 25))
                 .Comment.Set("new comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

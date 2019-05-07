@@ -1,3 +1,4 @@
+using src.allors.material.apps.objects.organisation.create;
 using src.allors.material.apps.objects.organisation.list;
 
 namespace Tests.OrganisationTests
@@ -9,9 +10,6 @@ namespace Tests.OrganisationTests
     using Allors.Meta;
 
     using Components;
-
-    using Pages.OrganisationTests;
-
     using Xunit;
 
     [Collection("Test collection")]
@@ -39,7 +37,7 @@ namespace Tests.OrganisationTests
             this.organisationListPage.AddNew.Click();
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var page = new OrganisationEditComponent(this.Driver);
+            var page = new OrganisationCreateComponent(this.Driver);
 
             page.Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")
@@ -50,7 +48,7 @@ namespace Tests.OrganisationTests
                 .IsManufacturer.Set(true)
                 .IsInternalOrganisation.Set(true)
                 .Comment.Set("comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -99,7 +97,7 @@ namespace Tests.OrganisationTests
                 .IsManufacturer.Set(true)
                 .IsInternalOrganisation.Set(true)
                 .Comment.Set("comment")
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

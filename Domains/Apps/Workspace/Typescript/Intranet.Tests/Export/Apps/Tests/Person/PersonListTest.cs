@@ -4,9 +4,6 @@ namespace Tests.PersonTests
 {
     using Allors.Domain;
     using Allors.Meta;
-
-    using Pages.PersonTests;
-
     using Xunit;
 
     [Collection("Test collection")]
