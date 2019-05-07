@@ -72,6 +72,7 @@ namespace Allors.Domain
             string outgoingShipmentNumberPrefix,
             string salesInvoiceNumberPrefix,
             string salesOrderNumberPrefix,
+            string purchaseOrderNumberPrefix,
             string requestNumberPrefix,
             string quoteNumberPrefix,
             string productNumberPrefix,
@@ -83,6 +84,7 @@ namespace Allors.Domain
             int? requestCounterValue,
             int? quoteCounterValue,
             int? orderCounterValue,
+            int? purchaseOrderCounterValue,
             int? invoiceCounterValue,
             bool purchaseOrderNeedsApproval,
             decimal? purchaseOrderApprovalThresholdLevel1,
@@ -114,7 +116,7 @@ namespace Allors.Domain
                     .Build();
             }
 
-            var organisation = new OrganisationBuilder(session)
+            var internalOrganisation = new OrganisationBuilder(session)
                 .WithIsInternalOrganisation(true)
                 .WithTaxNumber(taxNumber)
                 .WithName(name)
@@ -126,42 +128,48 @@ namespace Allors.Domain
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithWorkEffortPrefix(workEffortPrefix)
+                .WithPurchaseOrderNumberPrefix(purchaseOrderNumberPrefix)
                 .WithPurchaseOrderNeedsApproval(purchaseOrderNeedsApproval)
                 .WithPurchaseOrderApprovalThresholdLevel1(purchaseOrderApprovalThresholdLevel1)
                 .WithPurchaseOrderApprovalThresholdLevel2(purchaseOrderApprovalThresholdLevel2)
                 .Build();
 
+            if (purchaseOrderCounterValue != null)
+            {
+                internalOrganisation.PurchaseOrderCounter = new CounterBuilder(session).WithValue(purchaseOrderCounterValue).Build();
+            }
+
             OwnBankAccount defaultCollectionMethod = null;
             if (bankAccount != null)
             {
-                organisation.AddBankAccount(bankAccount);
+                internalOrganisation.AddBankAccount(bankAccount);
                 defaultCollectionMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankAccount).WithDescription("Huisbank").Build();
-                organisation.DefaultCollectionMethod = defaultCollectionMethod;
+                internalOrganisation.DefaultCollectionMethod = defaultCollectionMethod;
             }
 
             if (requestCounterValue != null)
             {
-                organisation.RequestCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
+                internalOrganisation.RequestCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
             }
 
             if (quoteCounterValue != null)
             {
-                organisation.QuoteCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
+                internalOrganisation.QuoteCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
             }
 
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(email)
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
                 .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
                 .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(session).ShippingAddress)
                 .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(webSite)
                 .WithContactPurpose(new ContactMechanismPurposes(session).InternetAddress)
@@ -179,7 +187,7 @@ namespace Allors.Domain
 
             if (phoneNumber1 != null)
             {
-                organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                     .WithUseAsDefault(true)
                     .WithContactMechanism(phoneNumber1)
                     .WithContactPurpose(phone1Purpose)
@@ -198,7 +206,7 @@ namespace Allors.Domain
 
             if (phoneNumber2 != null)
             {
-                organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                     .WithUseAsDefault(true)
                     .WithContactMechanism(phoneNumber2)
                     .WithContactPurpose(phone2Purpose)
@@ -212,7 +220,7 @@ namespace Allors.Domain
                 var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
                 var content = File.ReadAllBytes(fileInfo.FullName);
                 var image = new MediaBuilder(session).WithFileName(fileName).WithInData(content).Build();
-                organisation.LogoImage = image;
+                internalOrganisation.LogoImage = image;
             }
 
             Facility facility = null;
@@ -221,7 +229,7 @@ namespace Allors.Domain
                 facility = new FacilityBuilder(session)
                     .WithName(facilityName)
                     .WithFacilityType(new FacilityTypes(session).Warehouse)
-                    .WithOwner(organisation)
+                    .WithOwner(internalOrganisation)
                     .Build();
             }
 
@@ -239,7 +247,7 @@ namespace Allors.Domain
                 .WithIsImmediatelyPicked(isImmediatelyPicked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
                 .WithUseCreditNoteSequence(useCreditNoteSequence)
-                .WithInternalOrganisation(organisation)
+                .WithInternalOrganisation(internalOrganisation)
                 .Build();
 
             if (defaultCollectionMethod == null)
@@ -266,7 +274,7 @@ namespace Allors.Domain
                 store.SalesInvoiceCounter = new CounterBuilder(session).WithValue(invoiceCounterValue).Build();
             }
 
-            return organisation;
+            return internalOrganisation;
         }
     }
 }

@@ -129,7 +129,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber();
+                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber(this.OrderDate.Year);
             }
 
             if (!this.ExistCurrency)
@@ -441,10 +441,9 @@ namespace Allors.Domain
 
         public void AppsInvoice(PurchaseOrderInvoice method)
         {
-            if (this.PurchaseInvoicesWherePurchaseOrder.Any())
+            if (!this.PurchaseInvoicesWherePurchaseOrder.Any())
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
-                    .WithPurchaseOrder(this)
                     .WithBilledFrom(this.TakenViaSupplier)
                     .WithBilledFromContactMechanism(this.TakenViaContactMechanism)
                     .WithBilledFromContactPerson(this.TakenViaContactPerson)
@@ -461,6 +460,8 @@ namespace Allors.Domain
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
                     .Build();
 
+                purchaseInvoice.AddPurchaseOrder(this);
+
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
                     var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
@@ -471,6 +472,15 @@ namespace Allors.Domain
                         .WithInternalComment(orderItem.InternalComment)
                         .WithMessage(orderItem.Message)
                         .Build();
+
+                    if (invoiceItem.ExistPart)
+                    {
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
+                    }
+                    else
+                    {
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).WorkDone;
+                    }
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
 

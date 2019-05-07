@@ -30,4 +30,4 @@ export { ProductQuoteListComponent } from './productquote-list.component';
     AllorsMaterialTableModule,
   ],
 })
-export class ProductQuotesOverviewModule {}
+export class ProductQuotesListModule {}

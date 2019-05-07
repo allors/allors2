@@ -45,7 +45,7 @@ namespace Allors.Domain
 
             if (!@this.ExistQuoteNumber && @this.ExistIssuer)
             {
-                @this.QuoteNumber = @this.Issuer.NextQuoteNumber();
+                @this.QuoteNumber = @this.Issuer.NextQuoteNumber(@this.Strategy.Session.Now().Year);
             }
 
             @this.Price = 0;

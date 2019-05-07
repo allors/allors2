@@ -103,7 +103,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber();
+                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
             }
 
             Organisation supplier = this.BilledFrom as Organisation;
