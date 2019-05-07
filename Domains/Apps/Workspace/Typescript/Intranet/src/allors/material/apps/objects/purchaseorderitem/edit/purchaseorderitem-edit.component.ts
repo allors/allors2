@@ -23,7 +23,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   title: string;
   order: PurchaseOrder;
   orderItem: PurchaseOrderItem;
-  parts: Part[];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   discount: number;
@@ -32,6 +31,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   supplierOffering: SupplierOffering;
 
   private subscription: Subscription;
+  parts: Set<Part>;
 
   constructor(
     @Self() public allors: ContextService,
@@ -137,7 +137,12 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.parts = this.supplierOfferings.filter(v => v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now))).map(v => v.Part);
+        const parts = this.supplierOfferings
+                      .filter(v => v.Supplier === this.order.TakenViaSupplier && v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
+                      .map(v => v.Part)
+                      .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+
+        this.parts = new Set(parts);
 
         if (isCreate) {
           this.title = 'Add Order Item';

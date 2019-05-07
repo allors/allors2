@@ -77,33 +77,39 @@ namespace Allors.Domain
         {
             var session = this.strategy.Session;
 
-            //Shipment receipt
-            var shipment = new PurchaseShipmentBuilder(session)
-                .WithShipmentMethod(new ShipmentMethods(session).Ground)
-                .WithReceiver(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
-                .WithShipFromParty(this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier)
-                .WithFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
-                .Build();
+            if (this.ExistPart)
+            {
+                var shipment = new PurchaseShipmentBuilder(session)
+                    .WithShipmentMethod(new ShipmentMethods(session).Ground)
+                    .WithReceiver(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
+                    .WithShipFromParty(this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier)
+                    .WithFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
+                    .Build();
 
-            var shipmentItem = new ShipmentItemBuilder(session)
-                .WithPart(this.Part)
-                .WithQuantity(this.QuantityOrdered)
-                .WithContentsDescription($"{this.QuantityOrdered} * {this.Part.Name}")
-                .Build();
+                var shipmentItem = new ShipmentItemBuilder(session)
+                    .WithPart(this.Part)
+                    .WithQuantity(this.QuantityOrdered)
+                    .WithContentsDescription($"{this.QuantityOrdered} * {this.Part.Name}")
+                    .Build();
 
-            shipment.AddShipmentItem(shipmentItem);
+                shipment.AddShipmentItem(shipmentItem);
 
-            new OrderShipmentBuilder(session)
-                .WithOrderItem(this)
-                .WithShipmentItem(shipmentItem)
-                .WithQuantity(this.QuantityOrdered)
-                .Build();
+                new OrderShipmentBuilder(session)
+                    .WithOrderItem(this)
+                    .WithShipmentItem(shipmentItem)
+                    .WithQuantity(this.QuantityOrdered)
+                    .Build();
 
-            new ShipmentReceiptBuilder(session)
-                .WithQuantityAccepted(this.QuantityOrdered)
-                .WithShipmentItem(shipmentItem)
-                .WithOrderItem(this)
-                .Build();
+                new ShipmentReceiptBuilder(session)
+                    .WithQuantityAccepted(this.QuantityOrdered)
+                    .WithShipmentItem(shipmentItem)
+                    .WithOrderItem(this)
+                    .Build();
+            }
+            else
+            {
+                this.QuantityReceived = 1;
+            }
         }
 
         public void CancelFromOrder()
@@ -144,13 +150,13 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
-            {
+            //if (derivation.ChangeSet.Associations.Contains(this.Id))
+            //{
                 if (this.ExistPurchaseOrderWherePurchaseOrderItem)
                 {
                     derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
                 }
-            }
+            //}
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -167,13 +173,16 @@ namespace Allors.Domain
             if (this.IsValid)
             {
                 // ShipmentState
-                var quantityReceived = 0M;
-                foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereOrderItem)
+                if (this.ExistPart)
                 {
-                    quantityReceived += shipmentReceipt.QuantityAccepted;
-                }
+                    var quantityReceived = 0M;
+                    foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereOrderItem)
+                    {
+                        quantityReceived += shipmentReceipt.QuantityAccepted;
+                    }
 
-                this.QuantityReceived = quantityReceived;
+                    this.QuantityReceived = quantityReceived;
+                }
 
                 if (this.QuantityReceived == 0)
                 {

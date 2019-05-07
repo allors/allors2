@@ -24,7 +24,7 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
 
   get nrOfTasks() {
     if (this.tasks) {
-      const count = this.tasks.length;
+      const count = this.tasks.filter(v => !v.DateClosed).length;
       if (count < 99) {
         return count;
       } else if (count < 1000) {

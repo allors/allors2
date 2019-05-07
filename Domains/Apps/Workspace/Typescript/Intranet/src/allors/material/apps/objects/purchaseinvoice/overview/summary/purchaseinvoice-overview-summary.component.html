@@ -44,6 +44,12 @@
       </div>
     </div>
 
+    <div>
+      <div style="color: grey">
+        Total Ex. VAT: {{invoice.TotalExVat}}
+      </div>
+    </div>
+
     <div *ngFor="let order of orders" (click)="navigation.overview(order)" style="cursor: pointer;">
       <div style="color: grey">
         Order

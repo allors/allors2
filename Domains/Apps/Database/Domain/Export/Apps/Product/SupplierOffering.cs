@@ -36,6 +36,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistCurrency)
+            {
+                this.Currency = this.strategy.Session.GetSingleton().Settings.PreferredCurrency;
+            }
+
             this.AppsOnDeriveInventoryItem(derivation);
         }
 

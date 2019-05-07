@@ -92,7 +92,7 @@ namespace Allors.Domain
 
             var orderCandidates = this.Supplier.PurchaseOrdersWhereTakenViaSupplier
                 .Where(v => v.OrderedBy.Equals(this.InternalOrganisation) &&
-                            v.PreviousPurchaseOrderState.IsSent &&
+                            (v.PurchaseOrderState.IsSent || v.PurchaseOrderState.IsCompleted) &&
                             (v.PurchaseOrderShipmentState.IsReceived || v.PurchaseOrderShipmentState.IsPartiallyReceived));
 
             List<PurchaseOrderItem> orderItemsToBill = new List<PurchaseOrderItem>();
@@ -101,7 +101,7 @@ namespace Allors.Domain
                 foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.PurchaseOrderItems)
                 {
                     if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        purchaseOrderItem.PreviousPurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PreviousPurchaseOrderItemShipmentState.IsPartiallyReceived)
+                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
                     {
                         orderItemsToBill.Add(purchaseOrderItem);
                     }
@@ -129,6 +129,15 @@ namespace Allors.Domain
                         .WithInternalComment(orderItem.InternalComment)
                         .WithMessage(orderItem.Message)
                         .Build();
+
+                    if (invoiceItem.ExistPart)
+                    {
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
+                    }
+                    else
+                    {
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).WorkDone;
+                    }
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
 

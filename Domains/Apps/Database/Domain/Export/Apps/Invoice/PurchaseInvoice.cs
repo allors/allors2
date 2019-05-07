@@ -37,6 +37,8 @@ namespace Allors.Domain
 
         public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
 
+        public Task[] OpenTasks => this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
         public bool NeedsApproval
         {
             get
@@ -44,7 +46,7 @@ namespace Allors.Domain
                 if (this.PurchaseOrders.Any())
                 {
                     var orderTotal = this.PurchaseInvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(o => o.OrderItem).Sum(i => i.TotalExVat);
-                    if (this.TotalExVat != orderTotal)
+                    if (this.TotalExVat > orderTotal)
                     {
                         return true;
                     }
@@ -174,13 +176,12 @@ namespace Allors.Domain
         {
             this.WorkItemDescription = $"PurchaseInvoice: {this.InvoiceNumber} [{this.BilledFrom?.PartyName}]";
 
-            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
-
             if (this.PurchaseInvoiceState.IsAwaitingApproval)
             {
-                if (!openTasks.OfType<PurchaseInvoiceApproval>().Any())
+                if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
                 {
-                    new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
+                    var approval = new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
+                    approval.WorkItem = approval.PurchaseInvoice;
                 }
             }
         }

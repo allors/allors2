@@ -183,7 +183,9 @@ namespace Allors.Domain
             // PurchaseOrder Shipment State
             if (validOrderItems.Any())
             {
-                if (validOrderItems.All(v => v.PurchaseOrderItemShipmentState.IsReceived))
+//                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
+
+                if (validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
                 {
                     this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Received;
                 }
@@ -404,38 +406,45 @@ namespace Allors.Domain
         {
             var session = this.strategy.Session;
 
-            //Shipment receipt
-            var shipment = new PurchaseShipmentBuilder(session)
-                .WithShipmentMethod(new ShipmentMethods(session).Ground)
-                .WithReceiver(this.OrderedBy)
-                .WithShipFromParty(this.TakenViaSupplier)
-                .WithFacility(this.Facility)
-                .Build();
-
-            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
+            if (this.ValidOrderItems.Any(v => ((PurchaseOrderItem)v).ExistPart))
             {
-                if (orderItem.PurchaseOrderItemShipmentState.IsNotReceived)
+                var shipment = new PurchaseShipmentBuilder(session)
+                    .WithShipmentMethod(new ShipmentMethods(session).Ground)
+                    .WithReceiver(this.OrderedBy)
+                    .WithShipFromParty(this.TakenViaSupplier)
+                    .WithFacility(this.Facility)
+                    .Build();
+
+                foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
-                    var shipmentItem = new ShipmentItemBuilder(session)
-                        .WithPart(orderItem.Part)
-                        .WithQuantity(orderItem.QuantityOrdered)
-                        .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
-                        .Build();
+                    if (orderItem.PurchaseOrderItemShipmentState.IsNotReceived && orderItem.ExistPart)
+                    {
+                        var shipmentItem = new ShipmentItemBuilder(session)
+                            .WithPart(orderItem.Part)
+                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
+                            .Build();
 
-                    shipment.AddShipmentItem(shipmentItem);
+                        shipment.AddShipmentItem(shipmentItem);
 
-                    new OrderShipmentBuilder(session)
-                        .WithOrderItem(orderItem)
-                        .WithShipmentItem(shipmentItem)
-                        .WithQuantity(orderItem.QuantityOrdered)
-                        .Build();
+                        new OrderShipmentBuilder(session)
+                            .WithOrderItem(orderItem)
+                            .WithShipmentItem(shipmentItem)
+                            .WithQuantity(orderItem.QuantityOrdered)
+                            .Build();
 
-                    new ShipmentReceiptBuilder(session)
-                        .WithQuantityAccepted(orderItem.QuantityOrdered)
-                        .WithShipmentItem(shipmentItem)
-                        .WithOrderItem(orderItem)
-                        .Build();
+                        new ShipmentReceiptBuilder(session)
+                            .WithQuantityAccepted(orderItem.QuantityOrdered)
+                            .WithShipmentItem(shipmentItem)
+                            .WithOrderItem(orderItem)
+                            .Build();
+                    }
                 }
+            }
+
+            foreach (PurchaseOrderItem orderItem in this.ValidOrderItems.Where(v => !((PurchaseOrderItem)v).ExistPart))
+            {
+                orderItem.QuantityReceived = 1;
             }
         }
 
