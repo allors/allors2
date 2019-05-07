@@ -73,6 +73,7 @@ namespace Allors.Domain
             string salesInvoiceNumberPrefix,
             string salesOrderNumberPrefix,
             string purchaseOrderNumberPrefix,
+            string purchaseInvoiceNumberPrefix,
             string requestNumberPrefix,
             string quoteNumberPrefix,
             string productNumberPrefix,
@@ -86,6 +87,7 @@ namespace Allors.Domain
             int? orderCounterValue,
             int? purchaseOrderCounterValue,
             int? invoiceCounterValue,
+            int? purchaseInvoiceCounterValue,
             bool purchaseOrderNeedsApproval,
             decimal? purchaseOrderApprovalThresholdLevel1,
             decimal? purchaseOrderApprovalThresholdLevel2
@@ -129,6 +131,7 @@ namespace Allors.Domain
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithWorkEffortPrefix(workEffortPrefix)
                 .WithPurchaseOrderNumberPrefix(purchaseOrderNumberPrefix)
+                .WithPurchaseInvoiceNumberPrefix(purchaseInvoiceNumberPrefix)
                 .WithPurchaseOrderNeedsApproval(purchaseOrderNeedsApproval)
                 .WithPurchaseOrderApprovalThresholdLevel1(purchaseOrderApprovalThresholdLevel1)
                 .WithPurchaseOrderApprovalThresholdLevel2(purchaseOrderApprovalThresholdLevel2)
@@ -137,6 +140,11 @@ namespace Allors.Domain
             if (purchaseOrderCounterValue != null)
             {
                 internalOrganisation.PurchaseOrderCounter = new CounterBuilder(session).WithValue(purchaseOrderCounterValue).Build();
+            }
+
+            if (purchaseInvoiceCounterValue != null)
+            {
+                internalOrganisation.PurchaseInvoiceCounter = new CounterBuilder(session).WithValue(purchaseInvoiceCounterValue).Build();
             }
 
             OwnBankAccount defaultCollectionMethod = null;
