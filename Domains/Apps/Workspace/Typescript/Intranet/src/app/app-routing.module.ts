@@ -68,7 +68,7 @@ const modules = [
   RepeatingSalesInvoiceEdit.RepeatingSalesInvoiceEditModule,
   RequestsForQuoteList.RequestForQuoteListModule,
   RequestForQuoteOverview.RequestForQuoteOverviewModule,
-  ProductQuotesOverview.ProductQuotesOverviewModule,
+  ProductQuotesOverview.ProductQuotesListModule,
   ProductQuoteOverview.ProductQuoteOverviewModule,
   RequestItemEdit.RequestItemEditModule,
   QuoteItemEdit.QuoteItemEditModule,
