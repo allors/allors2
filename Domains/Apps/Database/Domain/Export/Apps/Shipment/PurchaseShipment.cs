@@ -96,7 +96,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipmentNumber && this.ExistReceiver)
             {
-                this.ShipmentNumber = this.Receiver.NextShipmentNumber();
+                this.ShipmentNumber = this.Receiver.NextShipmentNumber(this.Strategy.Session.Now().Year);
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

@@ -246,8 +246,8 @@ namespace Allors.Repository
         [RoleId("4A1AD446-2330-4681-89F8-2651B2BF9D61")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        public PurchaseOrder PurchaseOrder { get; set; }
+        [Multiplicity(Multiplicity.ManyToMany)]
+        public PurchaseOrder[] PurchaseOrders { get; set; }
         #region inherited methods
 
         public void OnBuild() { }

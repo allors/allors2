@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import {  NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { Organisation } from '../../../../../domain';
+import { Organisation, SupplierOffering } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
 @Component({
@@ -19,6 +19,7 @@ export class OrganisationOverviewComponent extends TestScope implements AfterVie
   organisation: Organisation;
 
   subscription: Subscription;
+  supplierOfferings: SupplierOffering[];
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -41,7 +42,7 @@ export class OrganisationOverviewComponent extends TestScope implements AfterVie
       .pipe(
         switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const { m, pull } = this.metaService;
+          const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.objectType = m.Organisation;
@@ -53,6 +54,12 @@ export class OrganisationOverviewComponent extends TestScope implements AfterVie
           const pulls = [
             pull.Organisation({
               object: this.panelManager.id,
+            }),
+            pull.Organisation({
+              object: this.panelManager.id,
+              fetch: {
+                SupplierOfferingsWhereSupplier: x
+              }
             })
           ];
 
@@ -68,6 +75,7 @@ export class OrganisationOverviewComponent extends TestScope implements AfterVie
         this.panelManager.onPulled(loaded);
 
         this.organisation = loaded.objects.Organisation as Organisation;
+        this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
       });
   }
 

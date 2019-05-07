@@ -84,7 +84,7 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.supplier = loaded.objects.Organisation as Organisation;
-        this.repeatinginvoice = loaded.objects.RepeatingSalesInvoice as RepeatingPurchaseInvoice;
+        this.repeatinginvoice = loaded.objects.RepeatingPurchaseInvoice as RepeatingPurchaseInvoice;
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         this.daysOfWeek = loaded.collections.DaysOfWeek as DayOfWeek[];
 

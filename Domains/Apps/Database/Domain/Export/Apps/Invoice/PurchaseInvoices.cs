@@ -49,7 +49,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, createSalesInvoice);
             config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, createSalesInvoice);
             config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen);
-            config.Deny(this.ObjectType, inProcess, approve);
+            config.Deny(this.ObjectType, inProcess, approve, confirm, reopen);
             config.Deny(this.ObjectType, received, createSalesInvoice);
 
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);

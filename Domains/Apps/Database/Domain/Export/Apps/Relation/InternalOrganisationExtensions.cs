@@ -201,40 +201,40 @@ namespace Allors.Domain
             return next;
         }
 
-        public static string NextPurchaseInvoiceNumber(this InternalOrganisation @this)
+        public static string NextPurchaseInvoiceNumber(this InternalOrganisation @this, int year)
         {
             var purchaseInvoiceNumber = @this.PurchaseInvoiceCounter.NextValue();
-            return string.Concat(@this.ExistPurchaseInvoiceNumberPrefix ? @this.PurchaseInvoiceNumberPrefix: string.Empty, purchaseInvoiceNumber);
+            return string.Concat(@this.ExistPurchaseInvoiceNumberPrefix ? @this.PurchaseInvoiceNumberPrefix.Replace("{year}", year.ToString()): string.Empty, purchaseInvoiceNumber);
         }
 
-        public static string NextQuoteNumber(this InternalOrganisation @this)
+        public static string NextQuoteNumber(this InternalOrganisation @this, int year)
         {
             var quoteNumber = @this.QuoteCounter.NextValue();
-            return string.Concat(@this.ExistQuoteNumberPrefix ? @this.QuoteNumberPrefix : string.Empty, quoteNumber);
+            return string.Concat(@this.ExistQuoteNumberPrefix ? @this.QuoteNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, quoteNumber);
         }
 
-        public static string NextRequestNumber(this InternalOrganisation @this)
+        public static string NextRequestNumber(this InternalOrganisation @this, int year)
         {
             var requestNumber = @this.RequestCounter.NextValue();
-            return string.Concat(@this.ExistRequestNumberPrefix ? @this.RequestNumberPrefix : string.Empty, requestNumber);
+            return string.Concat(@this.ExistRequestNumberPrefix ? @this.RequestNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, requestNumber);
         }
 
-        public static string NextShipmentNumber(this InternalOrganisation @this)
+        public static string NextShipmentNumber(this InternalOrganisation @this, int year)
         {
             var shipmentNumber = @this.IncomingShipmentCounter.NextValue();
-            return string.Concat(@this.ExistIncomingShipmentNumberPrefix ? @this.IncomingShipmentNumberPrefix : string.Empty, shipmentNumber);
+            return string.Concat(@this.ExistIncomingShipmentNumberPrefix ? @this.IncomingShipmentNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, shipmentNumber);
         }
 
-        public static string NextPurchaseOrderNumber(this InternalOrganisation @this)
+        public static string NextPurchaseOrderNumber(this InternalOrganisation @this, int year)
         {
             var purchaseOrderNumber = @this.PurchaseOrderCounter.NextValue();
-            return string.Concat(@this.ExistPurchaseOrderNumberPrefix? @this.PurchaseOrderNumberPrefix : string.Empty, purchaseOrderNumber);
+            return string.Concat(@this.ExistPurchaseOrderNumberPrefix? @this.PurchaseOrderNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, purchaseOrderNumber);
         }
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this)
             => string.Concat(@this.WorkEffortPrefix, @this.WorkEffortCounter.NextValue());
 
-        public static int NextValidElevenTestNumer(int previous)
+        public static int NextValidElevenTestNumber(int previous)
         {
             var candidate = previous.ToString();
             var valid = false;

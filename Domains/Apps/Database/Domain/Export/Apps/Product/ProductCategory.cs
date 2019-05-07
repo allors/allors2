@@ -23,6 +23,11 @@ namespace Allors.Domain
 
     public partial class ProductCategory
     {
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
         private IEnumerable<ProductCategory> AllSuperJacent
         {
             get

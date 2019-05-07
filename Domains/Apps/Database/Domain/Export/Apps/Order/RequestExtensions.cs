@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (@this.ExistRecipient && !@this.ExistRequestNumber)
             {
-                @this.RequestNumber = @this.Recipient.NextRequestNumber();
+                @this.RequestNumber = @this.Recipient.NextRequestNumber(@this.Strategy.Session.Now().Year);
             }
 
             @this.DeriveInitialObjectState();

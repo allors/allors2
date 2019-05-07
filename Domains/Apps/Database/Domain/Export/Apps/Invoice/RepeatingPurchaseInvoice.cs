@@ -132,6 +132,11 @@ namespace Allors.Domain
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
 
+                    if (!purchaseInvoice.PurchaseOrders.Contains(orderItem.PurchaseOrderWherePurchaseOrderItem))
+                    {
+                        purchaseInvoice.AddPurchaseOrder(orderItem.PurchaseOrderWherePurchaseOrderItem);
+                    }
+
                     new OrderItemBillingBuilder(this.Strategy.Session)
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithAmount(orderItem.TotalBasePrice)
