@@ -1,6 +1,6 @@
 namespace src.app.auth
 {
-    using Angular;
+    using Components;
     using src.app.dashboard;
 
     public partial class LoginComponent

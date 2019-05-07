@@ -7,7 +7,7 @@ namespace Tests.PartyRelationshipTests
     using Allors;
     using Allors.Domain;
 
-    using Angular;
+    using Components;
 
     using Xunit;
 

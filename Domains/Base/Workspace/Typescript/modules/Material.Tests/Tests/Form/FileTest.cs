@@ -6,7 +6,7 @@ namespace Tests
 
     using Allors.Domain;
 
-    using Angular;
+    using Components;
 
     using Xunit;
 

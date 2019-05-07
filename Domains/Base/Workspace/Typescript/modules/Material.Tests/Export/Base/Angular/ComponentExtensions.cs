@@ -1,4 +1,4 @@
-namespace Angular.Html
+namespace Components
 {
     using OpenQA.Selenium;
 

@@ -1,11 +1,10 @@
-using Angular.Html;
 using src.allors.material.custom.tests.form;
 
 namespace Tests
 {
     using System.Linq;
     using Allors.Domain;
-    using Angular;
+    using Components;
     using Xunit;
 
     [Collection("Test collection")]

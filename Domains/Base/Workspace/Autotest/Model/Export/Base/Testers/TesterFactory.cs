@@ -8,12 +8,6 @@ namespace Autotest.Testers
     {
         private static Tester BaseCreate(Element element)
         {
-            // Allors
-            if (element.Attributes.Any(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase)))
-            {
-                return new RoleFieldTester(element);
-            }
-
             // Angular
             switch (element.Name)
             {
@@ -32,6 +26,18 @@ namespace Autotest.Testers
 
             if (element.Component != null)
             {
+                var component = element.Component;
+                if (component.Type != null)
+                {
+                    var type = component.Type;
+
+                    // Allors
+                    if (type.Bases?.Contains("RoleField") == true)
+                    {
+                        return new RoleFieldTester(element);
+                    }
+                }
+
                 return new ComponentElementTester(element);
             }
 

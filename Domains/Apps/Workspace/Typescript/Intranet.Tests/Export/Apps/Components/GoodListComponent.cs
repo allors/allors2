@@ -3,7 +3,7 @@ using src.allors.material.apps.objects.nonunifiedgood.create;
 
 namespace src.allors.material.apps.objects.good.list
 {
-    using Angular.Html;
+    using Components;
 
     using OpenQA.Selenium;
 

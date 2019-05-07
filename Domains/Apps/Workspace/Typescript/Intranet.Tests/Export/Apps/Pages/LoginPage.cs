@@ -1,8 +1,6 @@
 namespace Pages.ApplicationTests
 {
-    using Angular;
-    using Angular.Html;
-
+    using Components;
     using OpenQA.Selenium;
 
     public class LoginPage : Component

@@ -1,9 +1,8 @@
 using OpenQA.Selenium.Support.PageObjects;
 
-namespace Angular.Html
+namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
-
     using OpenQA.Selenium;
 
     public class Button : Component

@@ -4,15 +4,26 @@ namespace Autotest.Testers
     using System.Linq;
     using Allors.Meta;
     using Autotest.Html;
+    using Humanizer;
 
     public partial class RoleFieldTester : Tester
     {
+        private const string IsAMatStaticKey = "IsAMatStatic";
+        private const string NameAttribute = "attr.data-allors-name";
+
         public RoleFieldTester(Element element)
             : base(element)
         {
         }
 
-        private const string NameAttribute = "attr.data-allors-name";
+        public string Type
+        {
+            get
+            {
+                var parts = this.Element.Name.Split('-');
+                return parts[1].Dehumanize() + parts[2].Dehumanize();
+            }
+        }
 
         public RoleType RoleType
         {
@@ -45,6 +56,12 @@ namespace Autotest.Testers
         {
             get
             {
+                if (this.Element.Template.Directive?.Type?.Name == "ProductQuoteCreateComponent" && this.RoleType.PropertyName == "Comment")
+                {
+                    Console.WriteLine();
+                }
+
+
                 if (this.NameAttributeValue != null)
                 {
                     return this.NameAttributeValue;
@@ -52,18 +69,40 @@ namespace Autotest.Testers
 
                 if (this.RoleType != null)
                 {
+                    var propertyName = this.RoleType.PropertyName;
+
                     var samePropertyName = this.Element.Template.Directive.Testers
                         .OfType<RoleFieldTester>()
-                        .Any(v => v != this &&
-                                  v.Element.InScope == this.Element.InScope &&
-                                  v.RoleType != null &&
-                                  v.RoleType.PropertyName == this.RoleType.PropertyName &&
-                                  v.RoleType.AssociationType.ObjectType != this.RoleType.AssociationType.ObjectType);
+                        .Any(v =>
+                        {
+                            if (v != this)
+                            {
+                                if (v.RoleType != null)
+                                {
+                                    if (v.RoleType.PropertyName == propertyName)
+                                    {
+                                        if (v.Element.InScope == this.Element.InScope)
+                                        {
+                                            if (!v[IsAMatStaticKey])
+                                            {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            return false;
+                        });
 
                     if (samePropertyName)
                     {
-                        var fullPropertyName = this.RoleType.AssociationType.ObjectType.Name + this.RoleType.PropertyName;
-                        return fullPropertyName;
+                        if (this[IsAMatStaticKey])
+                        {
+                            return propertyName + "Static";
+                        }
+
+                        return this.RoleType.AssociationType.ObjectType.Name + propertyName;
                     }
 
                     return this.RoleType?.PropertyName;

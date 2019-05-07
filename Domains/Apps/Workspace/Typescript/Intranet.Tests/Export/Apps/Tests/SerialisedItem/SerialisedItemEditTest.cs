@@ -7,7 +7,7 @@ namespace Tests.SerialisedItemTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Angular;
+    using Components;
 
     using Pages.PersonTests;
     using Pages.SerialisedItemTests;
@@ -34,7 +34,7 @@ namespace Tests.SerialisedItemTests
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new SerialisedItemEditPage(this.Driver);
+            var page = new SerialisedItemEditComponent(this.Driver);
 
             page.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")

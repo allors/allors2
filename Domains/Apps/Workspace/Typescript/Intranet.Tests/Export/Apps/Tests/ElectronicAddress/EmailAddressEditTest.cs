@@ -4,7 +4,7 @@ namespace Tests.ElectronicAddressTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
-    using Angular;
+    using Components;
     using Xunit;
 
     using src.allors.material.apps.objects.person.list;

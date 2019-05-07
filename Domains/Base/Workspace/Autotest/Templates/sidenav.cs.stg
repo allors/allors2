@@ -30,7 +30,7 @@ menuItem(menuItem) ::= <<
         // $menuItem.PropertyName$
 $if(!menuItem.Parent)$
 $if(menuItem.Link)$
-        public Angular.Html.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
+        public Components.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
 
 $if(menuItem.Component)$
         public $menuItem.Component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.PropertyName$()
@@ -40,11 +40,11 @@ $if(menuItem.Component)$
         }
 $endif$
 $else$
-        public Angular.Html.Element $menuItem.PropertyName$Group => this.Group("$menuItem.Title$");
+        public Components.Element $menuItem.PropertyName$Group => this.Group("$menuItem.Title$");
 
 $endif$
 $else$
-        public Angular.Html.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
+        public Components.Anchor $menuItem.PropertyName$ => this.Link("$menuItem.Link$");
 
 $if(menuItem.Component)$
         public $menuItem.component.Reference.Namespace$.$menuItem.Component.Reference.Name$ NavigateTo$menuItem.PropertyName$()

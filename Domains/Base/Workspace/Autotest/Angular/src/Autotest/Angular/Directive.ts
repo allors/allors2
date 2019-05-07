@@ -33,7 +33,7 @@ export class Directive {
 
         const classDeclaration = directive.getNode();
         if (classDeclaration) {
-            this.type = new Class(classDeclaration, this.program);
+            this.type = new Class(classDeclaration, this.program, pathResolver);
         }
     }
 

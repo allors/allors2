@@ -8,7 +8,7 @@ namespace Tests.OrganisationTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Angular;
+    using Components;
 
     using Pages.OrganisationTests;
 
@@ -39,7 +39,7 @@ namespace Tests.OrganisationTests
             this.organisationListPage.AddNew.Click();
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var page = new OrganisationEditPage(this.Driver);
+            var page = new OrganisationEditComponent(this.Driver);
 
             page.Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")

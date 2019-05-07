@@ -1,5 +1,5 @@
 
-namespace Angular.Html
+namespace Components
 {
     using OpenQA.Selenium.Support.PageObjects;
     using System.Diagnostics.CodeAnalysis;

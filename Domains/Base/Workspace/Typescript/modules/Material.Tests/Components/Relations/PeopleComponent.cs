@@ -2,11 +2,11 @@ namespace src.allors.material.custom.relations.people
 {
     using src.allors.material.custom.relations.people.person;
     using Allors.Domain;
-    using Angular.Material;
+    using Components;
 
     public partial class PeopleComponent
     {
-        public MaterialTable Table => new MaterialTable(this.Driver);
+        public MatTable Table => new MatTable(this.Driver);
 
         public PersonOverviewComponent Select(Person person)
         {

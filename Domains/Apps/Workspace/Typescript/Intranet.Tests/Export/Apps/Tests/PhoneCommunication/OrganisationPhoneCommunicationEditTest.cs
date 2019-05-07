@@ -8,7 +8,7 @@ namespace Tests.PhoneCommunicationTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Angular;
+    using Components;
 
     using Xunit;
 

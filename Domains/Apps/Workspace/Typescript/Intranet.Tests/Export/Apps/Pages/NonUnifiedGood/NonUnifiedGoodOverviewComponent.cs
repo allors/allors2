@@ -3,8 +3,7 @@ using src.allors.material.apps.objects.nonunifiedgood.create;
 
 namespace src.allors.material.apps.objects.nonunifiedgood.overview
 {
-    using Angular.Html;
-    using Angular.Material;
+    using Components;
 
     using OpenQA.Selenium;
 
@@ -13,7 +12,7 @@ namespace src.allors.material.apps.objects.nonunifiedgood.overview
 
         public Button<NonUnifiedGoodOverviewComponent> EditButton => this.Button(By.XPath("//button/span[contains(text(), 'Edit')]"));
 
-        public MaterialList<NonUnifiedGoodOverviewComponent> List => this.MaterialList();
+        public MatList<NonUnifiedGoodOverviewComponent> List => this.MatList();
 
         public NonUnifiedGoodCreateComponent Edit()
         {

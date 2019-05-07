@@ -7,7 +7,7 @@ namespace Tests.NonUnifiedGood
 
     using Allors.Domain;
 
-    using Angular;
+    using Components;
     using Xunit;
 
     [Collection("Test collection")]

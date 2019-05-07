@@ -1,8 +1,6 @@
 namespace Tests
 {
-    using Angular;
-    using Angular.Html;
-
+    using Components;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Angular
+namespace Components
 {
     using System.Linq;
     using OpenQA.Selenium;

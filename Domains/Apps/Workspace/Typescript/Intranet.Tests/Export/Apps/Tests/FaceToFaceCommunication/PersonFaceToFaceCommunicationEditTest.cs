@@ -8,7 +8,7 @@ namespace Tests.FaceToFaceCommunicationTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Angular;
+    using Components;
 
     using Pages.PersonTests;
 

@@ -23,6 +23,8 @@ namespace Autotest.Typescript
 
         public string Name { get; set; }
 
+        public string[] Bases { get; set; }
+
         public string[] Decorators { get; set; }
 
         public IMember[] Members { get; set; }
@@ -30,6 +32,7 @@ namespace Autotest.Typescript
         internal void BaseLoad()
         {
             this.Name = this.Json["name"]?.Value<string>();
+            this.Bases = (this.Json["bases"] as JArray)?.Select(v => v.Value<string>()).ToArray();
 
             var jsonDecorators = this.Json["decorators"];
             this.Decorators = jsonDecorators != null

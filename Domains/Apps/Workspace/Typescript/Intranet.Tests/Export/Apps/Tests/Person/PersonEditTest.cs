@@ -7,7 +7,7 @@ namespace Tests.PersonTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Angular;
+    using Components;
 
     using Pages.PersonTests;
 
@@ -31,7 +31,7 @@ namespace Tests.PersonTests
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonEditPage(this.Driver);
+            var page = new PersonEditComponent(this.Driver);
 
             page.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")

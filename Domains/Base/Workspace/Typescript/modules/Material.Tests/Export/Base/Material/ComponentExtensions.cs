@@ -1,84 +1,93 @@
-namespace Angular.Material
+namespace Components
 {
     using Allors.Meta;
-    using Angular;
     using OpenQA.Selenium;
 
     public static partial class ComponentExtensions
     {
-        public static MaterialAutocomplete<T> MaterialAutocomplete<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatAutocomplete<T> MatAutocomplete<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialAutocomplete<T>(@this, roleType, scopes);
+            return new MatAutocomplete<T>(@this, roleType, scopes);
         }
 
-        public static MaterialCheckbox<T> MaterialCheckbox<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatCheckbox<T> MatCheckbox<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialCheckbox<T>(@this, roleType, scopes);
+            return new MatCheckbox<T>(@this, roleType, scopes);
         }
 
-        public static MaterialChips<T> MaterialChips<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatChips<T> MatChips<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialChips<T>(@this, roleType, scopes);
+            return new MatChips<T>(@this, roleType, scopes);
         }
 
-        public static MaterialDatePicker<T> MaterialDatePicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatDatepicker<T> MatDatepicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialDatePicker<T>(@this, roleType, scopes);
+            return new MatDatepicker<T>(@this, roleType, scopes);
         }
 
-        public static MaterialDatetimePicker<T> MaterialDatetimePicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatDatetimepicker<T> MatDatetimepicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialDatetimePicker<T>(@this, roleType, scopes);
+            return new MatDatetimepicker<T>(@this, roleType, scopes);
         }
 
-        public static MaterialFile<T> MaterialFile<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatFile<T> MatFile<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialFile<T>(@this, roleType, scopes);
+            return new MatFile<T>(@this, roleType, scopes);
         }
 
-        public static MaterialFiles<T> MaterialFiles<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatFiles<T> MatFiles<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialFiles<T>(@this, roleType, scopes);
+            return new MatFiles<T>(@this, roleType, scopes);
         }
 
-        public static MaterialInput<T> MaterialInput<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatInput<T> MatInput<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialInput<T>(@this, roleType, scopes);
+            return new MatInput<T>(@this, roleType, scopes);
         }
 
-        public static MaterialList<T> MaterialList<T>(this T @this, By selector = null) where T : Component
+        public static MatList<T> MatList<T>(this T @this, By selector = null) where T : Component
         {
-            return new MaterialList<T>(@this, selector);
+            return new MatList<T>(@this, selector);
         }
 
-        public static MaterialSelect<T> MaterialSelect<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatLocalised<T> MatLocalised<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialSelect<T>(@this, roleType, scopes);
+            return new MatLocalised<T>(@this, roleType, scopes);
         }
 
-        public static MaterialRadioGroup<T> MaterialRadioGroup<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatSelect<T> MatSelect<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialRadioGroup<T>(@this, roleType, scopes);
+            return new MatSelect<T>(@this, roleType, scopes);
         }
 
-        public static MaterialSlider<T> MaterialSlider<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatRadiogroup<T> MatRadiogroup<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialSlider<T>(@this, roleType, scopes);
+            return new MatRadiogroup<T>(@this, roleType, scopes);
         }
 
-        public static MaterialSlideToggle<T> MaterialSlideToggle<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatSlider<T> MatSlider<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialSlideToggle<T>(@this, roleType, scopes);
+            return new MatSlider<T>(@this, roleType, scopes);
         }
 
-        public static MaterialTable<T> MaterialTable<T>(this T @this, By selector = null) where T : Component
+        public static MatSlidetoggle<T> MatSlidetoggle<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialTable<T>(@this, selector);
+            return new MatSlidetoggle<T>(@this, roleType, scopes);
         }
 
-        public static MaterialTextArea<T> MaterialTextArea<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        public static MatStatic<T> MatStatic<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
         {
-            return new MaterialTextArea<T>(@this, roleType, scopes);
+            return new MatStatic<T>(@this, roleType, scopes);
+        }
+
+        public static MatTable<T> MatTable<T>(this T @this, By selector = null) where T : Component
+        {
+            return new MatTable<T>(@this, selector);
+        }
+
+        public static MatTextarea<T> MatTextarea<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component
+        {
+            return new MatTextarea<T>(@this, roleType, scopes);
         }
     }
 }

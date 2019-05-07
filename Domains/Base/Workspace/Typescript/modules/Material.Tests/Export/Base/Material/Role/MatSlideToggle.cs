@@ -1,0 +1,74 @@
+namespace Components
+{
+    using System.Diagnostics.CodeAnalysis;
+    using Allors.Meta;
+    using OpenQA.Selenium;
+
+    public class MatSlideToggle
+    : Component
+    {
+        public MatSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
+        : base(driver)
+        {
+            var inputXPath = $"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]//input";
+            this.InputSelector = By.XPath(inputXPath);
+
+            var containerXPath = $"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]";
+            this.ContainerSelector = By.XPath(containerXPath);
+        }
+
+        public By InputSelector { get; }
+
+        public By ContainerSelector { get; }
+
+        public bool Value
+        {
+            get
+            {
+                this.Driver.WaitForAngular();
+                var element = this.Driver.FindElement(this.InputSelector);
+                return element.Selected;
+            }
+
+            set
+            {
+                this.Driver.WaitForAngular();
+                var container = this.Driver.FindElement(this.ContainerSelector);
+                var element = this.Driver.FindElement(this.InputSelector);
+                this.ScrollToElement(container);
+                if (element.Selected)
+                {
+                    if (!value)
+                    {
+                        container.Click();
+                    }
+                }
+                else
+                {
+                    if (value)
+                    {
+                        container.Click();
+                    }
+                }
+            }
+        }
+    }
+
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    public class MatSlidetoggle<T> : MatSlideToggle where T : Component
+    {
+        public MatSlidetoggle(T page, RoleType roleType, params string[] scopes)
+            : base(page.Driver, roleType, scopes)
+        {
+            this.Page = page;
+        }
+
+        public T Page { get; }
+
+        public T Set(bool value)
+        {
+            this.Value = value;
+            return this.Page;
+        }
+    }
+}

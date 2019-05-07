@@ -3,7 +3,7 @@ namespace Tests.Relations
 {
     using System.Linq;
     using Allors.Domain;
-    using Angular;
+    using Components;
     using Xunit;
     using src.allors.material.custom.relations.people;
     using src.allors.material.custom.relations.people.person;
