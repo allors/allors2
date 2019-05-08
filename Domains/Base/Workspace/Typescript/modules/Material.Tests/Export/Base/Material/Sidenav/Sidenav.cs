@@ -14,7 +14,7 @@ namespace Tests
 
         public By Selector { get; }
 
-        public Button Toggle => new Button(this.Driver, By.CssSelector("a-mat-sidenavtoggle button"));
+        public Button Toggle => new Button(this.Driver, By.CssSelector(@"button[aria-label=""Toggle sidenav""]"));
 
         private void Navigate(Anchor link)
         {
