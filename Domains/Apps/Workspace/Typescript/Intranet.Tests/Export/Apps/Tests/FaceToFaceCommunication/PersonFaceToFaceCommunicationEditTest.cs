@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
+using src.allors.material.apps.objects.facetofacecommunication.edit;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.FaceToFaceCommunicationTests
 {
@@ -35,9 +38,13 @@ namespace Tests.FaceToFaceCommunicationTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewFaceToFaceCommunication();
+            personOverview.CommunicationeventOverviewPanel.Click();
+            personOverview.AddNew.Click();
+            personOverview.BtnFaceToFaceCommunication.Click();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
+            faceToFaceCommunicationEditComponent
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .Location.Set("location")
                 .Subject.Set("subject")
@@ -92,9 +99,16 @@ namespace Tests.FaceToFaceCommunicationTests
             
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
-            var page = this.personListPage.Select(person).SelectFaceToFaceCommunication(editCommunicationEvent);
+            var personOverview = this.personListPage.Select(person);
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
+
+            var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver); ;
+            faceToFaceCommunicationEditComponent.CommunicationEventState
+                .Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)
                 .Location.Set("new location")
                 .Subject.Set("new subject")

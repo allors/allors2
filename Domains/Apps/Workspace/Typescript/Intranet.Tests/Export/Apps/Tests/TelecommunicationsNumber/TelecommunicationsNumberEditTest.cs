@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.telecommunicationsnumber.create;
+using src.allors.material.apps.objects.telecommunicationsnumber.edit;
 
 namespace Tests.TelecommunicationsNumberTests
 {
@@ -52,9 +55,13 @@ namespace Tests.TelecommunicationsNumberTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            var page = personOverview.NewTelecommunicationsNumber();
+            personOverview.ContactmechanismOverviewPanel.Click();
+            personOverview.AddNew.Click();
+            personOverview.BtnTelecommunicationsNumber.Click();
 
-            page.CountryCode.Set("111")
+            var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
+            createComponent
+                .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
@@ -87,9 +94,14 @@ namespace Tests.TelecommunicationsNumberTests
 
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectTelecommunicationsNumber(this.editContactMechanism);
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverview.Table.FindRow(this.editContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
 
-            page.CountryCode.Set("111")
+            var editComponent = new TelecommunicationsNumberEditComponent(this.Driver);
+            editComponent
+                .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)

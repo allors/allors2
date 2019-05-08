@@ -3,11 +3,6 @@
 @echo ========
 
 cd %~dp0
-cd .\Workspace\Typescript\Intranet
-
-call npm run autotest
-
-cd %~dp0
 cd .\Workspace\Autotest\Angular
 
 call npm run autotest

@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.person.create;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview.detail;
 
 namespace Tests.PersonTests
 {
@@ -67,7 +68,8 @@ namespace Tests.PersonTests
             var id = person.Id;
 
             var personOverview = this.people.Select(person);
-            var page = personOverview.Edit();
+            personOverview.PersonOverviewDetail.Click();
+            var page = personOverview.PersonOverviewDetail;
 
             page.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")

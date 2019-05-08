@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, NavigationService } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
@@ -21,7 +21,7 @@ interface Row extends TableRow {
   templateUrl: './communicationevent-overview-panel.component.html',
   providers: [PanelService]
 })
-export class CommunicationEventOverviewPanelComponent implements OnInit {
+export class CommunicationEventOverviewPanelComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -48,10 +48,10 @@ export class CommunicationEventOverviewPanelComponent implements OnInit {
     public objectService: ObjectService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-
     public deleteService: DeleteService,
     public editService: EditService
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

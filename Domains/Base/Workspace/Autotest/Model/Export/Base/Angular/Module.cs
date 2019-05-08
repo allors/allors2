@@ -30,14 +30,7 @@ namespace Autotest.Angular
 
         public Pipe[] ExportedPipes { get; set; }
 
-        public Directive[] Directives
-        {
-            get
-            {
-                var directives = this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.ExportedDirectives)).Distinct().ToArray();
-                return directives;
-            }
-        }
+        public Directive[] Directives => this.DeclaredDirectives.Union(this.ImportedModules.SelectMany(v => v.ExportedDirectives)).Distinct().ToArray();
 
         public Module[] ImportedModules { get; set; }
 
@@ -48,8 +41,6 @@ namespace Autotest.Angular
         public Reference Reference { get; set; }
 
         public Directive[] RoutedComponents { get; set; }
-
-        public Directive[] ScopedComponents { get; set; }
 
         public Route[] Routes { get; set; }
 
@@ -72,15 +63,16 @@ namespace Autotest.Angular
             }
 
             var bootstrapComponentIds = Angular.Reference.ParseIds(this.Json["bootstrapComponents"]);
+            var entryComponentIds = Angular.Reference.ParseIds(this.Json["entryComponents"]);
             var declaredDirectiveIds = Angular.Reference.ParseIds(this.Json["declaredDirectives"]);
             var exportedDirectiveIds = Angular.Reference.ParseIds(this.Json["exportedDirectives"]);
             var exportedPipeIds = Angular.Reference.ParseIds(this.Json["exportedPipes"]);
             var declaredPipeIds = Angular.Reference.ParseIds(this.Json["declaredPipes"]);
             var importedModuleIds = Angular.Reference.ParseIds(this.Json["importedModules"]);
             var exportedModuleIds = Angular.Reference.ParseIds(this.Json["exportedModules"]);
-            var entryComponentIds = Angular.Reference.ParseIds(this.Json["entryComponents"]);
 
             this.BootstrapComponents = bootstrapComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
+            this.EntryComponents = entryComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
             this.DeclaredDirectives = declaredDirectiveIds.Select(v => this.Project.DirectiveById[v]).ToArray();
             this.ExportedDirectives = exportedDirectiveIds.Select(v => this.Project.DirectiveById[v]).ToArray();
 
@@ -89,8 +81,6 @@ namespace Autotest.Angular
 
             this.ImportedModules = importedModuleIds.Select(v => this.Project.ModuleById[v]).ToArray();
             this.ExportedModules = exportedModuleIds.Select(v => this.Project.ModuleById[v]).ToArray();
-
-            this.EntryComponents = entryComponentIds.Select(v => this.Project.DirectiveById[v]).ToArray();
 
             this.FlattenedRoutes = this.Routes.SelectMany(v => v.Flattened).ToArray();
             this.RoutedComponents = this.FlattenedRoutes.Where(v => v.Component != null).Select(v => v.Component).Distinct().ToArray();

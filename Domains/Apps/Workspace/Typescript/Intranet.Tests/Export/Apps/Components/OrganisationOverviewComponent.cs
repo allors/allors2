@@ -3,7 +3,6 @@ using src.allors.material.apps.objects.facetofacecommunication.edit;
 using src.allors.material.apps.objects.lettercorrespondence.edit;
 using src.allors.material.apps.objects.organisation.create;
 using src.allors.material.apps.objects.phonecommunication.edit;
-using src.app.main;
 
 namespace src.allors.material.apps.objects.organisation.overview
 {

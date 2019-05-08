@@ -1,4 +1,8 @@
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
+using src.allors.material.apps.objects.webaddress.create;
+using src.allors.material.apps.objects.webaddress.edit;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -35,9 +39,12 @@ namespace Tests.ElectronicAddressTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewWebAddress();
+            personOverview.ContactmechanismOverviewPanel.Click();
+            personOverview.AddNew.Click();
+            personOverview.BtnWebAddress.Click();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+            var webAddressCreateComponent = new WebAddressCreateComponent(this.Driver);
+            webAddressCreateComponent
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -73,9 +80,16 @@ namespace Tests.ElectronicAddressTests
 
             var before = new WebAddresses(this.Session).Extent().ToArray();
 
-            var page = this.personListPage.Select(person).SelectElectronicAddress(editContactMechanism);
+            var personOverview = this.personListPage.Select(person);
 
-            page.ElectronicAddressString.Set("wwww.allors.com")
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverview.Table.FindRow(editContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            var webAddressEdit = new WebAddressEditComponent(this.Driver);
+            webAddressEdit
+                .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();
 

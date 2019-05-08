@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
+using src.allors.material.apps.objects.emailcommunication.edit;
 using src.allors.material.apps.objects.person.list;
 
 namespace Tests.EmailCommunicationTests
@@ -41,9 +43,14 @@ namespace Tests.EmailCommunicationTests
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
             var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewEmailCommunication();
+            personOverview.CommunicationeventOverviewPanel.Click();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            personOverview.AddNew.Click();
+            personOverview.BtnEmailCommunication.Click();
+
+            var emailCommunicationEditComponent = new EmailCommunicationEditComponent(this.Driver);
+            emailCommunicationEditComponent.CommunicationEventState
+                .Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)
                 .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
@@ -106,9 +113,14 @@ namespace Tests.EmailCommunicationTests
 
             var personOverview = this.personListPage.Select(person);
 
-            var page = personOverview.SelectEmailCommunication(editCommunicationEvent);
+            var communicationEventOverview =personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            var emailCommunicationEdit = new EmailCommunicationEditComponent(this.Driver);
+            emailCommunicationEdit
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(person.PartyName)
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)

@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.emailaddress.create;
+using src.allors.material.apps.objects.emailaddress.edit;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -29,9 +31,15 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var page = this.personListPage.Select(person).NewEmailAddress();
+            var personOverviewComponent = this.personListPage.Select(person);
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+            personOverviewComponent.ContactmechanismOverviewPanel.Click();
+
+            personOverviewComponent.AddNew.Click();
+            personOverviewComponent.BtnEmailAddress.Click();
+
+            var emailAddressCreate = new EmailAddressCreateComponent(this.Driver);
+            emailAddressCreate
                 .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -44,7 +52,7 @@ namespace Tests.ElectronicAddressTests
             Assert.Equal(after.Length, before.Length + 1);
 
             var contactMechanism = after.Except(before).First();
-            
+
             Assert.Equal("me@myself.com", contactMechanism.ElectronicAddressString);
             Assert.Equal("description", contactMechanism.Description);
         }
@@ -67,9 +75,16 @@ namespace Tests.ElectronicAddressTests
 
             var before = new EmailAddresses(this.Session).Extent().ToArray();
 
-            var page = this.personListPage.Select(person).SelectElectronicAddress(electronicAddress);
+            var personOverviewComponent = this.personListPage.Select(person);
 
-            page.ElectronicAddressString.Set("me@myself.com")
+            var contactMechanismOverviewPanel = personOverviewComponent.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverviewPanel.Table.FindRow(electronicAddress);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            var emailAddressEditComponent = new EmailAddressEditComponent(this.Driver);
+            emailAddressEditComponent
+                .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();
 

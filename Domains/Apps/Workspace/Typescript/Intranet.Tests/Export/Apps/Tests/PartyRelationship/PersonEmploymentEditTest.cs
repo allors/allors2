@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.employment.edit;
+using src.allors.material.apps.objects.partyrelationship.overview.panel;
 using src.allors.material.apps.objects.person.list;
 
 namespace Tests.PartyRelationshipTests
@@ -52,11 +54,15 @@ namespace Tests.PartyRelationshipTests
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
             var personOverviewPage = this.people.Select(this.employee);
-            var page = personOverviewPage.NewEmployment();
+            personOverviewPage.PartyrelationshipOverviewPanel.Click();
+            personOverviewPage.AddNew.Click();
+            personOverviewPage.BtnEmployment.Click();
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var employmentEditComponent = new EmploymentEditComponent(this.Driver);
+            employmentEditComponent.FromDate
+                .Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -81,11 +87,16 @@ namespace Tests.PartyRelationshipTests
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
             var personOverviewPage = this.people.Select(this.employee);
-            var page = personOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
+            var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            var employmentEditComponent = new EmploymentEditComponent(this.Driver);
+            employmentEditComponent.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

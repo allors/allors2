@@ -34,7 +34,7 @@ namespace Tests.SerialisedItemTests
             var overviewPage = this.people.Select(person);
             Assert.Equal("Person", this.Driver.Title);
 
-            overviewPage.List.Click();
+            overviewPage.People.Click();
 
             Assert.Equal("People", this.Driver.Title);
         }

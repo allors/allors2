@@ -1,4 +1,6 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
 {
@@ -67,9 +69,13 @@ namespace Tests.PhoneCommunicationTests
             var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            var page = personOverview.NewPhoneCommunication();
+            personOverview.CommunicationeventOverviewPanel.Click();
+            personOverview.AddNew.Click();
+            personOverview.BtnPhoneCommunication.Click();
 
-            page.LeftVoiceMail.Set(true)
+            var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
+            phoneCommunicationEditComponent
+                .LeftVoiceMail.Set(true)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .Subject.Set("subject")
@@ -119,9 +125,14 @@ namespace Tests.PhoneCommunicationTests
 
             var personOverview = this.people.Select(person);
 
-            var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.LeftVoiceMail.Set(false)
+            var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
+            phoneCommunicationEditComponent
+                .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromPhoneNumber.Set("+1 111 222")

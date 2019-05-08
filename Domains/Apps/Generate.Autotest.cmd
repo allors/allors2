@@ -28,9 +28,7 @@ call npm run autotest
 cd %~dp0
 
 dotnet restore .\Workspace\Autotest\Autotest.sln
-dotnet msbuild .\Workspace\Autotest\Autotest.sln
-
-dotnet .\Workspace\Autotest\Generate\bin\Debug\netcoreapp2.2\Generate.dll
+dotnet run --project .\Workspace\Autotest\Generate\Generate.csproj
 
 pause
 
