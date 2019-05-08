@@ -37,9 +37,8 @@ namespace Tests.PartyRelationshipTests
             var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverviewComponent = this.personListPage.Select(person);
-            personOverviewComponent.PartyrelationshipOverviewPanel.Click();
-            personOverviewComponent.AddNew.Click();
-            personOverviewComponent.BtnCustomerRelationship.Click();
+            var partyRelationshipOverview = personOverviewComponent.PartyrelationshipOverviewPanel.Click();
+            partyRelationshipOverview.Factory.Create(M.CustomerRelationship);
 
             var customerRelationshipEditComponent = new CustomerRelationshipEditComponent(this.Driver);
             customerRelationshipEditComponent.FromDate

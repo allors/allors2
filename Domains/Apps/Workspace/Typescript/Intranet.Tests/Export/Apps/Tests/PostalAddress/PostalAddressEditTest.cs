@@ -56,9 +56,8 @@ namespace Tests.PostalAddressTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            personOverview.ContactmechanismOverviewPanel.Click();
-            personOverview.AddNew.Click();
-            personOverview.BtnPostalAddress.Click();
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            contactMechanismOverview.Factory.Create(M.PostalAddress);
 
             var postalAddressEditComponent = new PostalAddressEditComponent(this.Driver);
             postalAddressEditComponent.Address1.Set("addressline 1")

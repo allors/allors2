@@ -6,8 +6,6 @@ namespace src.allors.material.apps.objects.person.overview
 
     public partial class PersonOverviewComponent 
     {
-        public Anchor<PersonOverviewComponent> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
-
         public Button<PersonOverviewComponent> BtnFaceToFaceCommunication => this.Button(By.CssSelector("button[data-allors-class='FaceToFaceCommunication']"));
 
         public Button<PersonOverviewComponent> BtnEmailCommunication => this.Button(By.CssSelector("button[data-allors-class='EmailCommunication']"));

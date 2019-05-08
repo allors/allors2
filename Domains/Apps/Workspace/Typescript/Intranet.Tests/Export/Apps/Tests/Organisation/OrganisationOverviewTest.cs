@@ -32,9 +32,9 @@ namespace Tests.OrganisationTests
         public void NavigateToList()
         {
             var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
-            var page = this.organisationListPage.Select(organisation);
+            var organisationOverview = this.organisationListPage.Select(organisation);
 
-            page.List.Click();
+            organisationOverview.Organisations.Click();
 
             Assert.Equal("Organisations", this.Driver.Title);
         }

@@ -39,9 +39,8 @@ namespace Tests.ElectronicAddressTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.personListPage.Select(person);
-            personOverview.ContactmechanismOverviewPanel.Click();
-            personOverview.AddNew.Click();
-            personOverview.BtnWebAddress.Click();
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            contactMechanismOverview.Factory.Create(M.WebAddress);
 
             var webAddressCreateComponent = new WebAddressCreateComponent(this.Driver);
             webAddressCreateComponent

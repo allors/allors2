@@ -55,9 +55,8 @@ namespace Tests.LetterCorrespondenceTests
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
             var personOverviewComponent = this.personListPage.Select(person);
-            personOverviewComponent.CommunicationeventOverviewPanel.Click();
-            personOverviewComponent.AddNew.Click();
-            personOverviewComponent.BtnLetterCorrespondence.Click();
+            var communicationEventOverview = personOverviewComponent.CommunicationeventOverviewPanel.Click();
+            communicationEventOverview.Factory.Create(M.LetterCorrespondence);
 
             var letterCorrespondenceEditComponent = new LetterCorrespondenceEditComponent(this.Driver);
             letterCorrespondenceEditComponent.CommunicationEventState

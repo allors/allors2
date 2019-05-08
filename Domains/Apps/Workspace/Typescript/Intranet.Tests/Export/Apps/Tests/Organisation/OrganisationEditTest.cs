@@ -34,12 +34,12 @@ namespace Tests.OrganisationTests
             this.Session.Derive();
             this.Session.Commit();
 
-            this.organisationListPage.AddNew.Click();
+            this.organisationListPage.Factory.Create(M.Organisation);
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var page = new OrganisationCreateComponent(this.Driver);
-
-            page.Name.Set("new organisation")
+            var organisationCreate = new OrganisationCreateComponent(this.Driver);
+            organisationCreate
+                .Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")
                 .LegalForm.Set(legalForm.Description)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
@@ -85,10 +85,10 @@ namespace Tests.OrganisationTests
             var organisation = before.First(v => v.PartyName.Equals("Acme0"));
             var id = organisation.Id;
 
-            var organisationOverviewPage = this.organisationListPage.Select(organisation);
-            var page = organisationOverviewPage.Edit();
-
-            page.Name.Set("new organisation")
+            var organisationOverview = this.organisationListPage.Select(organisation);
+            var organisationOverviewDetail = organisationOverview.OrganisationOverviewDetail.Click();
+            organisationOverviewDetail
+                .Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")
                 .LegalForm.Set(legalForm.Description)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)

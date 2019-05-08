@@ -73,6 +73,8 @@ $elseif(tester.IsButton)$
         public Components.Button $tester.Name$ => new Components.Button(this.Driver, "$tester.Kind$", @"$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
 $elseif(tester.IsA)$
         public Components.Anchor $tester.Name$ => new Components.Anchor(this.Driver, "$tester.Kind$", @"$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
+$elseif(tester.IsAMatFactoryFab)$
+        public Components.MatFactoryFab $tester.Name$ => new Components.MatFactoryFab(this.Driver, Allors.Meta.M.$tester.ObjectType$.ObjectType, $tester.Selector$);
 $elseif(tester.IsAMatTable)$
         public Components.MatTable $tester.Name$ => new Components.MatTable(this.Driver, $tester.Selector$);
 $elseif(tester.IsAMatList)$

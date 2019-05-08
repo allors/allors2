@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import {  ContextService, MetaService, PanelService, FetcherService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, FetcherService, TestScope } from '../../../../../../angular';
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -17,7 +17,7 @@ import { switchMap, filter } from 'rxjs/operators';
   templateUrl: './organisation-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
+export class OrganisationOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -38,7 +38,9 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     public saveService: SaveService,
     public location: Location,
     private route: ActivatedRoute,
-    private fetcher: FetcherService) {
+    private fetcher: FetcherService
+  ) {
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);

@@ -30,25 +30,9 @@ namespace Autotest.Testers
             this.ElementScopes.Concat(new[] { this.Element.Template.Directive.Scope }).ToArray() :
             this.ElementScopes;
 
-        public string ByScope
-        {
-            get
-            {
-                var byScope = new StringBuilder();
-                var scopes = this.Scopes;
-                if (scopes.Length > 0)
-                {
-                    for (var i = 0; i < scopes.Length; i++)
-                    {
-                        var scope = scopes[i];
-                        var index = i + 1;
-                        byScope.Append($" and ancestor::*[@data-test-scope][{index}]/@data-test-scope='{scope}'");
-                    }
-                }
+        public string ByScopeAnd => string.Concat(this.Scopes.Select((scope, index) => $" and ancestor::*[@data-test-scope][{index + 1}]/@data-test-scope='{scope}'"));
 
-                return byScope.ToString();
-            }
-        }
+        public string ByScope => string.Concat(this.Scopes.Select((scope, index) => $"{(index > 0 ? " and " : string.Empty)}ancestor::*[@data-test-scope][{index + 1}]/@data-test-scope='{scope}'"));
 
         public bool this[string typeCheck]
         {

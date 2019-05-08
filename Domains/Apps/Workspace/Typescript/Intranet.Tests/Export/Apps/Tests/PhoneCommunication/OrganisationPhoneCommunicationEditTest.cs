@@ -1,4 +1,5 @@
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
 {
@@ -66,9 +67,12 @@ namespace Tests.PhoneCommunicationTests
             var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
 
             var organisationOverviewPage = this.organisations.Select(organisation);
-            var page = organisationOverviewPage.NewPhoneCommunication();
+            var communicationEventOverview = organisationOverviewPage.CommunicationeventOverviewPanel.Click();
+            communicationEventOverview.Factory.Create(M.PhoneCommunication);
 
-            page.LeftVoiceMail.Set(true)
+            var phoneCommunication = new PhoneCommunicationEditComponent(organisationOverviewPage.Driver);
+            phoneCommunication
+                .LeftVoiceMail.Set(true)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .Subject.Set("subject")
@@ -118,9 +122,14 @@ namespace Tests.PhoneCommunicationTests
 
             var personOverview = this.organisations.Select(organisation);
 
-            var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.LeftVoiceMail.Set(false)
+            var phoneCommunicationEdit = new PhoneCommunicationEditComponent(personOverview.Driver);
+            phoneCommunicationEdit
+                .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(organisation.PartyName)

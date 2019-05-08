@@ -27,12 +27,12 @@ namespace Tests.PersonTests
         [Fact]
         public void Create()
         {
-            this.people.AddNew.Click();
+            this.people.Factory.Create();
+
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonCreateComponent(this.Driver);
-
-            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            var personCreate = new PersonCreateComponent(this.Driver);
+            personCreate.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")
@@ -68,10 +68,9 @@ namespace Tests.PersonTests
             var id = person.Id;
 
             var personOverview = this.people.Select(person);
-            personOverview.PersonOverviewDetail.Click();
-            var page = personOverview.PersonOverviewDetail;
+            var personOverviewDetail = personOverview.PersonOverviewDetail.Click();
 
-            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            personOverviewDetail.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")

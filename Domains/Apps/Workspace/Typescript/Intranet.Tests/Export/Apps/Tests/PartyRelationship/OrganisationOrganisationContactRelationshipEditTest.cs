@@ -1,3 +1,5 @@
+using Allors.Meta;
+using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
 
 namespace Tests.PartyRelationshipTests
@@ -47,9 +49,12 @@ namespace Tests.PartyRelationshipTests
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
             var organisationOverviewPage = this.organisations.Select(this.organisation);
-            var page = organisationOverviewPage.NewOrganisationContactRelationship();
+            var partyRelationshipOverviewPanelComponent = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
+            partyRelationshipOverviewPanelComponent.Factory.Create(M.OrganisationContactRelationship);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
                 .Contact.Set(this.contact.PartyName)
@@ -78,10 +83,16 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisations.Select(this.organisation);
-            var page = organisationOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
+            var organisationOverview = this.organisations.Select(this.organisation);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipOverview = organisationOverview.PartyrelationshipOverviewPanel.Click();
+            var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverview.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description)
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)

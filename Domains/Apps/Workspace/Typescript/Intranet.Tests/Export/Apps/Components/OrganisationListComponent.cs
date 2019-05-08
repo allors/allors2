@@ -8,8 +8,6 @@ namespace src.allors.material.apps.objects.organisation.list
 
     public partial class OrganisationListComponent 
     {
-        public Anchor<OrganisationListComponent> AddNew => this.Anchor(By.CssSelector("[mat-fab]"));
-
         public OrganisationOverviewComponent Select(Organisation organisation)
         {
             var row = this.Table.FindRow(organisation);

@@ -38,9 +38,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.personListPage.Select(person);
-            personOverview.CommunicationeventOverviewPanel.Click();
-            personOverview.AddNew.Click();
-            personOverview.BtnFaceToFaceCommunication.Click();
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            communicationEventOverview.Factory.Create(M.FaceToFaceCommunication);
 
             var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
             faceToFaceCommunicationEditComponent

@@ -43,10 +43,8 @@ namespace Tests.EmailCommunicationTests
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
             var personOverview = this.personListPage.Select(person);
-            personOverview.CommunicationeventOverviewPanel.Click();
-
-            personOverview.AddNew.Click();
-            personOverview.BtnEmailCommunication.Click();
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            communicationEventOverview.Factory.Create(M.EmailCommunication);
 
             var emailCommunicationEditComponent = new EmailCommunicationEditComponent(this.Driver);
             emailCommunicationEditComponent.CommunicationEventState

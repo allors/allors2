@@ -1,3 +1,4 @@
+using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
 
 namespace Tests.PartyRelationshipTests
@@ -53,9 +54,12 @@ namespace Tests.PartyRelationshipTests
             var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
 
             var organisationOverviewPage = this.organisations.Select(internalOrganisation);
-            var page = organisationOverviewPage.NewCustomerRelationship();
+            var partyRelationshipOverview = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
+            partyRelationshipOverview.Factory.Create(M.CustomerRelationship);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .Save.Click();
 
@@ -81,9 +85,15 @@ namespace Tests.PartyRelationshipTests
             var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
 
             var organisationOverviewPage = this.organisations.Select(internalOrganisation);
-            var page = organisationOverviewPage.SelectPartyRelationship(this.editPartyRelationship);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipOverview = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
+            var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .Save.Click();
 

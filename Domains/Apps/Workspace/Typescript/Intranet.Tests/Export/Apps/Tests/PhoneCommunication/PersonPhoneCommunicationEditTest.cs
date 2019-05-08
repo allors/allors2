@@ -69,9 +69,8 @@ namespace Tests.PhoneCommunicationTests
             var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            personOverview.CommunicationeventOverviewPanel.Click();
-            personOverview.AddNew.Click();
-            personOverview.BtnPhoneCommunication.Click();
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            communicationEventOverview.Factory.Create(M.PhoneCommunication);
 
             var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
             phoneCommunicationEditComponent

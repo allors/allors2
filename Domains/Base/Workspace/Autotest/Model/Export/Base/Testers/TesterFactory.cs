@@ -1,6 +1,5 @@
 namespace Autotest.Testers
 {
-    using System;
     using System.Linq;
     using Autotest.Html;
 
@@ -19,6 +18,9 @@ namespace Autotest.Testers
 
                 case "a":
                     return new AnchorTester(element);
+
+                case "a-mat-factory-fab":
+                    return new AllorsMaterialFactoryFabTester(element);
 
                 case "a-mat-table":
                     return new AllorsMaterialTableTester(element);

@@ -1,3 +1,4 @@
+using Allors.Meta;
 using src.allors.material.apps.objects.emailaddress.create;
 using src.allors.material.apps.objects.emailaddress.edit;
 
@@ -33,10 +34,8 @@ namespace Tests.ElectronicAddressTests
 
             var personOverviewComponent = this.personListPage.Select(person);
 
-            personOverviewComponent.ContactmechanismOverviewPanel.Click();
-
-            personOverviewComponent.AddNew.Click();
-            personOverviewComponent.BtnEmailAddress.Click();
+            var contactMechanismOverview = personOverviewComponent.ContactmechanismOverviewPanel.Click();
+            contactMechanismOverview.Factory.Create(M.EmailAddress);;
 
             var emailAddressCreate = new EmailAddressCreateComponent(this.Driver);
             emailAddressCreate

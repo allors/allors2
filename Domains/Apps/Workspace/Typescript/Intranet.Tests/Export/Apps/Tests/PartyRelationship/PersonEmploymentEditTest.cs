@@ -54,9 +54,8 @@ namespace Tests.PartyRelationshipTests
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
             var personOverviewPage = this.people.Select(this.employee);
-            personOverviewPage.PartyrelationshipOverviewPanel.Click();
-            personOverviewPage.AddNew.Click();
-            personOverviewPage.BtnEmployment.Click();
+            var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
+            partyRelationshipOverview.Factory.Create(M.Employment);
 
             var employmentEditComponent = new EmploymentEditComponent(this.Driver);
             employmentEditComponent.FromDate

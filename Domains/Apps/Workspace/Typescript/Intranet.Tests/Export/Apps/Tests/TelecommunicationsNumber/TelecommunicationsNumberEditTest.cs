@@ -55,9 +55,8 @@ namespace Tests.TelecommunicationsNumberTests
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
             var personOverview = this.people.Select(person);
-            personOverview.ContactmechanismOverviewPanel.Click();
-            personOverview.AddNew.Click();
-            personOverview.BtnTelecommunicationsNumber.Click();
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            contactMechanismOverview.Factory.Create(M.TelecommunicationsNumber);
 
             var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
             createComponent

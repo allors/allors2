@@ -1,4 +1,6 @@
+using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -40,9 +42,13 @@ namespace Tests.PartyRelationshipTests
 
             var before = new Employments(this.Session).Extent().ToArray();
 
-            var page = this.organisationListPage.Select(employer).NewEmployment();
+            var organisationOverview = this.organisationListPage.Select(employer);
+            var partyRelationshipOverview = organisationOverview.PartyrelationshipOverviewPanel.Click();
+            partyRelationshipOverview.Factory.Create(M.Employment);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverview.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .Employee.Set(employee.PartyName)
                 .Save.Click();
@@ -84,9 +90,16 @@ namespace Tests.PartyRelationshipTests
             
             var before = new Employments(this.Session).Extent().ToArray();
 
-            var page = this.organisationListPage.Select(employer).SelectPartyRelationship(editPartyRelationship);
+            var organisationOverview = this.organisationListPage.Select(employer);
 
-            page.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            var partyRelationshipOverview = organisationOverview.PartyrelationshipOverviewPanel.Click();
+            var row = partyRelationshipOverview.Table.FindRow(editPartyRelationship);
+            var cell = row.FindCell("type");
+            cell.Click();
+
+            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverview.Driver);
+            partyRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .Save.Click();
 
