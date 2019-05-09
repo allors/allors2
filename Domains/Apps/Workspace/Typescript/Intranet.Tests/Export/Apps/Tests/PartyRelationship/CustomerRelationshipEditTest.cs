@@ -36,7 +36,8 @@ namespace Tests.PartyRelationshipTests
             var people = new People(this.Session).Extent();
             var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var customerRelationshipEdit = this.personListPage.Select(person).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
+            this.personListPage.Table.DefaultAction(person);
+            var customerRelationshipEdit = new PersonOverviewComponent(this.personListPage.Driver).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
 
             customerRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
@@ -74,7 +75,8 @@ namespace Tests.PartyRelationshipTests
 
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
-            var personOverview = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var partyRelationshipOverview = personOverview.PartyrelationshipOverviewPanel.Click();
             var row = partyRelationshipOverview.Table.FindRow(editPartyRelationship);

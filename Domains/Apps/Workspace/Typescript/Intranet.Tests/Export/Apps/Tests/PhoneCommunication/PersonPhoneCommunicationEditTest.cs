@@ -69,7 +69,8 @@ namespace Tests.PhoneCommunicationTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
 
-            var communicationEventOverview = this.people.Select(person).CommunicationeventOverviewPanel.Click();
+            this.people.Table.DefaultAction(person);
+            var communicationEventOverview = new PersonOverviewComponent(this.people.Driver).CommunicationeventOverviewPanel.Click();
 
             communicationEventOverview
                 .CreatePhoneCommunication()
@@ -121,7 +122,8 @@ namespace Tests.PhoneCommunicationTests
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);

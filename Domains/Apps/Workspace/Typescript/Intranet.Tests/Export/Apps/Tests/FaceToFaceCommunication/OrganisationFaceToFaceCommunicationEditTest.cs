@@ -38,7 +38,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
-            var faceToFaceCommunicationEdit = this.organisationListPage.Select(organisation).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var faceToFaceCommunicationEdit = new OrganisationOverviewComponent(this.organisationListPage.Driver).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
 
             faceToFaceCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
@@ -97,7 +98,8 @@ namespace Tests.FaceToFaceCommunicationTests
             
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
-            var organisationOverview = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);

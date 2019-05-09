@@ -56,9 +56,12 @@ namespace Tests.PostalAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var postalAddressEditComponent = this.people.Select(person).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
+            this.people.Table.DefaultAction(person);
+            var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
 
-            postalAddressEditComponent.Address1.Set("addressline 1")
+            postalAddressEditComponent
+                .ContactPurposes.Toggle("General correspondence address")
+                .Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
@@ -97,7 +100,8 @@ namespace Tests.PostalAddressTests
 
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
 
             var PanelComponent = personOverview.ContactmechanismOverviewPanel.Click();
             var row = PanelComponent.Table.FindRow(this.editContactMechanism);

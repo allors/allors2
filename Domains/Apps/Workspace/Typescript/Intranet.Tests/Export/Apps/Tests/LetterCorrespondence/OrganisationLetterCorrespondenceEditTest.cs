@@ -47,7 +47,8 @@ namespace Tests.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var letterCorrespondenceEdit = this.organisationListPage.Select(organisation).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var letterCorrespondenceEdit = new OrganisationOverviewComponent(this.organisationListPage.Driver).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
             letterCorrespondenceEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
@@ -120,7 +121,8 @@ namespace Tests.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverviewPage = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var communicationEventOverview = organisationOverviewPage.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);

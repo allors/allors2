@@ -43,7 +43,8 @@ namespace Tests.EmailCommunicationTests
 
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var emailCommunicationEdit = this.personListPage.Select(person).CommunicationeventOverviewPanel.Click().CreateEmailCommunication();
+            this.personListPage.Table.DefaultAction(person);
+            var emailCommunicationEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateEmailCommunication();
 
             emailCommunicationEdit
                 .CommunicationEventState
@@ -108,7 +109,8 @@ namespace Tests.EmailCommunicationTests
 
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);

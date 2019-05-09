@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.organisation.create;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 
 namespace Tests.OrganisationTests
 {
@@ -85,7 +86,8 @@ namespace Tests.OrganisationTests
             var organisation = before.First(v => v.PartyName.Equals("Acme0"));
             var id = organisation.Id;
 
-            var organisationOverview = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
             var organisationOverviewDetail = organisationOverview.OrganisationOverviewDetail.Click();
             organisationOverviewDetail
                 .Name.Set("new organisation")

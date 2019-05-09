@@ -55,7 +55,8 @@ namespace Tests.TelecommunicationsNumberTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            this.people.Select(person).ContactmechanismOverviewPanel.Click().CreateTelecommunicationsNumber();
+            this.people.Table.DefaultAction(person);
+            new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreateTelecommunicationsNumber();
 
             var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
             createComponent
@@ -90,7 +91,8 @@ namespace Tests.TelecommunicationsNumberTests
 
             var before = new TelecommunicationsNumbers(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
 
             var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
             var row = contactMechanismOverview.Table.FindRow(this.editContactMechanism);

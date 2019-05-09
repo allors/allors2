@@ -38,9 +38,11 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var webAddressCreate = this.personListPage.Select(person).ContactmechanismOverviewPanel.Click().CreateWebAddress();
+            this.personListPage.Table.DefaultAction(person);
+            var webAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateWebAddress();
 
             webAddressCreate
+                .ContactPurposes.Toggle("General Email Address")
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -76,7 +78,8 @@ namespace Tests.ElectronicAddressTests
 
             var before = new WebAddresses(this.Session).Extent().ToArray();
 
-            var personOverview = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
             var row = contactMechanismOverview.Table.FindRow(editContactMechanism);

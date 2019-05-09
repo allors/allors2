@@ -53,8 +53,9 @@ namespace Tests.LetterCorrespondenceTests
             this.Session.Commit();
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
-            
-            var letterCorrespondenceEdit = this.personListPage.Select(person).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
+
+            this.personListPage.Table.DefaultAction(person);
+            var letterCorrespondenceEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
             letterCorrespondenceEdit.CommunicationEventState
                 .Set(new CommunicationEventStates(this.Session).Completed.Name)
@@ -129,7 +130,8 @@ namespace Tests.LetterCorrespondenceTests
 
             var postalAddress = (PostalAddress)person.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;
 
-            var personOverview = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);

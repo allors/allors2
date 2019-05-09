@@ -21,6 +21,13 @@ namespace Components
             return new MatTableRow(this.Driver, row);
         }
 
+        public void DefaultAction(IObject obj)
+        {
+            var row = this.FindRow(obj);
+            var cell = row.Cells[1];
+            cell.Click();
+        }
+
         protected IWebElement TableRowElement(IObject obj)
         {
             this.Driver.WaitForAngular();

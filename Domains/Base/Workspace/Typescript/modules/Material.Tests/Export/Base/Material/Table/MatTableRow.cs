@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
@@ -18,6 +20,17 @@ namespace Components
             var cell = this.TableCell(name);
             return new MatTableCell(this.Driver, cell);
         }
+
+        public MatTableCell[] Cells
+        {
+            get
+            {
+                var cellPath = By.CssSelector($"td");
+                var cells = this.Element.FindElements(cellPath);
+                return cells.Select(v => new MatTableCell(this.Driver, v)).ToArray();
+            }
+        }
+
 
         protected IWebElement TableCell(string name)
         {

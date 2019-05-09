@@ -1,3 +1,5 @@
+using src.allors.material.apps.objects.person.overview;
+
 namespace Tests.SerialisedItemTests
 {
     using Allors.Domain;
@@ -23,7 +25,8 @@ namespace Tests.SerialisedItemTests
         public void Title()
         {
             var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
-            this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
         }
 
@@ -31,7 +34,8 @@ namespace Tests.SerialisedItemTests
         public void NavigateToList()
         {
             var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
-            var overviewPage = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var overviewPage = new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
 
             overviewPage.People.Click();

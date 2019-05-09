@@ -1,4 +1,5 @@
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 using src.allors.material.apps.objects.organisationcontactrelationship.edit;
 
 namespace Tests.PartyRelationshipTests
@@ -47,7 +48,8 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var partyRelationshipEdit = this.organisations.Select(this.organisation).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
+            this.organisations.Table.DefaultAction(this.organisation);
+            var partyRelationshipEdit = new OrganisationOverviewComponent(this.organisations.Driver).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
 
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
@@ -79,7 +81,8 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var organisationOverview = this.organisations.Select(this.organisation);
+            this.organisations.Table.DefaultAction(this.organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisations.Driver);
 
             var partyRelationshipOverview = organisationOverview.PartyrelationshipOverviewPanel.Click();
             var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);

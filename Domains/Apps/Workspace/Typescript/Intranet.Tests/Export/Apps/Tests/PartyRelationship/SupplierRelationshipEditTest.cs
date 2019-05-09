@@ -1,4 +1,5 @@
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 using src.allors.material.apps.objects.supplierrelationship.edit;
 
 namespace Tests.PartyRelationshipTests
@@ -52,8 +53,9 @@ namespace Tests.PartyRelationshipTests
 
             var extent = new Organisations(this.Session).Extent();
             var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
-            
-            var partyRelationshipEdit = this.organisations.Select(internalOrganisation).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
+
+            this.organisations.Table.DefaultAction(internalOrganisation);
+            var partyRelationshipEdit = new OrganisationOverviewComponent(this.organisations.Driver).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
 
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
@@ -81,7 +83,8 @@ namespace Tests.PartyRelationshipTests
             var extent = new Organisations(this.Session).Extent();
             var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
 
-            var organisationOverviewPage = this.organisations.Select(internalOrganisation);
+            this.organisations.Table.DefaultAction(internalOrganisation);
+            var organisationOverviewPage = new OrganisationOverviewComponent(this.organisations.Driver);
 
             var partyRelationshipOverview = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
             var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);

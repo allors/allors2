@@ -51,7 +51,8 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var organisationContactRelationshipEdit = this.people.Select(this.contact).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
+            this.people.Table.DefaultAction(this.contact);
+            var organisationContactRelationshipEdit = new PersonOverviewComponent(this.people.Driver).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
 
             organisationContactRelationshipEdit.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
@@ -82,7 +83,8 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var personOverviewPage = this.people.Select(this.contact);
+            this.people.Table.DefaultAction(this.contact);
+            var personOverviewPage = new PersonOverviewComponent(this.people.Driver);
 
             var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
             var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);

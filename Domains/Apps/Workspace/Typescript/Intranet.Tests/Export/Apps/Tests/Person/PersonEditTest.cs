@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.person.create;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 using src.allors.material.apps.objects.person.overview.detail;
 
 namespace Tests.PersonTests
@@ -67,7 +68,8 @@ namespace Tests.PersonTests
             var person = before.First(v => v.PartyName.Equals("John0 Doe0"));
             var id = person.Id;
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
             var personOverviewDetail = personOverview.PersonOverviewDetail.Click();
 
             personOverviewDetail.Salutation.Set(new Salutations(this.Session).Mr.Name)

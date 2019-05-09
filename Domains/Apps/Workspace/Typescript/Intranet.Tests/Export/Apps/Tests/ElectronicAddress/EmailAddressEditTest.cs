@@ -34,9 +34,11 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var emailAddressCreate = this.personListPage.Select(person).ContactmechanismOverviewPanel.Click().CreateEmailAddress();
+            this.personListPage.Table.DefaultAction(person);
+            var emailAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateEmailAddress();
 
             emailAddressCreate
+                .ContactPurposes.Toggle("General Phone Number")
                 .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -72,7 +74,8 @@ namespace Tests.ElectronicAddressTests
 
             var before = new EmailAddresses(this.Session).Extent().ToArray();
 
-            var personOverviewComponent = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverviewComponent = new PersonOverviewComponent(this.personListPage.Driver);
 
             var contactMechanismOverviewPanel = personOverviewComponent.ContactmechanismOverviewPanel.Click();
             var row = contactMechanismOverviewPanel.Table.FindRow(electronicAddress);

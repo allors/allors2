@@ -43,8 +43,9 @@ namespace Tests.EmailCommunicationTests
             this.Session.Commit();
 
             var before = new EmailCommunications(this.Session).Extent().ToArray();
-            
-            var organisationOverview = this.organisationListPage.Select(organisation);
+
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
             var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
             var emailCommunicationEdit = communicationEventOverview.CreateEmailCommunication();
 
@@ -113,7 +114,8 @@ namespace Tests.EmailCommunicationTests
             
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var organisationOverview = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);

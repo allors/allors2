@@ -54,7 +54,8 @@ namespace Tests.PartyRelationshipTests
 
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            var employmentEditComponent = this.people.Select(this.employee).PartyrelationshipOverviewPanel.Click().CreateEmployment();
+            this.people.Table.DefaultAction(this.employee);
+            var employmentEditComponent = new PersonOverviewComponent(this.people.Driver).PartyrelationshipOverviewPanel.Click().CreateEmployment();
 
             employmentEditComponent.FromDate
                 .Set(DateTimeFactory.CreateDate(2018, 12, 22))
@@ -83,7 +84,8 @@ namespace Tests.PartyRelationshipTests
 
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            var personOverviewPage = this.people.Select(this.employee);
+            this.people.Table.DefaultAction(this.employee);
+            var personOverviewPage = new PersonOverviewComponent(this.people.Driver);
 
             var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
             var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);

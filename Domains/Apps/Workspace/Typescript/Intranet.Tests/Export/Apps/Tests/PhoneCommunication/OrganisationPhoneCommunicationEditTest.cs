@@ -68,7 +68,8 @@ namespace Tests.PhoneCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
 
-            var phoneCommunication = this.organisations.Select(organisation).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
+            this.organisations.Table.DefaultAction(organisation);
+            var phoneCommunication = new OrganisationOverviewComponent(this.organisations.Driver).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
 
             phoneCommunication
                 .LeftVoiceMail.Set(true)
@@ -119,7 +120,8 @@ namespace Tests.PhoneCommunicationTests
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.organisations.Select(organisation);
+            this.organisations.Table.DefaultAction(organisation);
+            var personOverview = new OrganisationOverviewComponent(this.organisations.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
             var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);
