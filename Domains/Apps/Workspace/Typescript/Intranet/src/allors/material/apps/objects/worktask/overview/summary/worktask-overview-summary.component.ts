@@ -4,7 +4,7 @@ import { WorkTask, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { PrintService } from '../../../../../../../allors/material';
-import { Equals, And, ContainedIn, Filter } from '../../../../../../allors/framework';
+import { Equals, And, ContainedIn, Filter } from '../../../../../../../allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
