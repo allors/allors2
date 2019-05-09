@@ -1,7 +1,4 @@
-using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
-using src.allors.material.apps.objects.organisation.overview;
-using src.allors.material.apps.objects.partyrelationship.overview.panel;
 using src.allors.material.apps.objects.supplierrelationship.edit;
 
 namespace Tests.PartyRelationshipTests

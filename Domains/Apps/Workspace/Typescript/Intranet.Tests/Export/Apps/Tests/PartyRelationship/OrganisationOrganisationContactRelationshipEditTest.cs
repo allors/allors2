@@ -1,9 +1,5 @@
-using Allors.Meta;
-using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
-using src.allors.material.apps.objects.organisation.overview;
 using src.allors.material.apps.objects.organisationcontactrelationship.edit;
-using src.allors.material.apps.objects.partyrelationship.overview.panel;
 
 namespace Tests.PartyRelationshipTests
 {

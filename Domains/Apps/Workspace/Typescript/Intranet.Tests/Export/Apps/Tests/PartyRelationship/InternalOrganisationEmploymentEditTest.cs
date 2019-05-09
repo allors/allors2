@@ -1,8 +1,4 @@
-
-
 using src.allors.material.apps.objects.employment.edit;
-using src.allors.material.apps.objects.organisation.overview;
-using src.allors.material.apps.objects.partyrelationship.overview.panel;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -12,7 +8,6 @@ namespace Tests.PartyRelationshipTests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Pages.PartyRelationshipTests;
     using src.allors.material.apps.objects.organisation.list;
     using Components;
     using Xunit;
