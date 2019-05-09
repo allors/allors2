@@ -10,7 +10,7 @@ import { MainModule } from './main/main.module';
 
 import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/state/internalorganisation-select.module';
 import { AppDialogModule } from './app-dialogs.module';
-import { WorkspaceService } from 'src/allors/angular';
+import { WorkspaceService } from '../allors/angular';
 import { appMeta } from './app.meta';
 
 export function appInitFactory(workspaceService: WorkspaceService) {

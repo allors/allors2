@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './workeffortfixedassetassignment-edit.component.html',

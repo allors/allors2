@@ -6,7 +6,7 @@ import {  ContextService, NavigationService, PanelService, RefreshService, MetaS
 import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector

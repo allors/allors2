@@ -8,7 +8,7 @@ import { RepeatingPurchaseInvoice, TimeFrequency, DayOfWeek, Organisation } from
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../allors/material';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
 
 @Component({

@@ -8,7 +8,7 @@ import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, Produc
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector

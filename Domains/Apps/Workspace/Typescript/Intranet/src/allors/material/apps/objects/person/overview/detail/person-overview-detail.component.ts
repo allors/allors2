@@ -6,7 +6,7 @@ import { ContextService, NavigationService, PanelService, RefreshService, MetaSe
 import { Enumeration, InternalOrganisation, Locale, Organisation, Person } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector

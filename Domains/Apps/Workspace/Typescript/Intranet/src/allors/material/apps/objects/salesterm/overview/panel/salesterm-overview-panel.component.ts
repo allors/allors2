@@ -7,7 +7,6 @@ import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 import { MatSnackBar } from '@angular/material';
 
 import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
-import { RoleType, ConcreteRoleType } from 'src/allors/framework/meta/Data';
 interface Row extends TableRow {
   object: SalesTerm;
   name: string;

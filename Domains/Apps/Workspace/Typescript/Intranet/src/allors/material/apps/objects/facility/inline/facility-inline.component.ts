@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { ContextService, MetaService, FetcherService } from '../../../../../angular';
 import { Facility, FacilityType, Organisation } from '../../../../../domain';
 import { Meta } from '../../../../../meta';
-import { PullRequest, Sort } from 'src/allors/framework';
+import { PullRequest, Sort } from '../../../../../../allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector

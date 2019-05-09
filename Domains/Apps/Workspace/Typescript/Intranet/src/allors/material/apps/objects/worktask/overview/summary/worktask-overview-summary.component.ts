@@ -3,8 +3,8 @@ import { PanelService, NavigationService, MetaService, RefreshService, Invoked, 
 import { WorkTask, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
-import { PrintService } from 'src/allors/material';
-import { Equals, And, ContainedIn, Filter } from 'src/allors/framework';
+import { PrintService } from '../../../../../../../allors/material';
+import { Equals, And, ContainedIn, Filter } from '../../../../../../allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
