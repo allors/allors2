@@ -1,6 +1,9 @@
 using Allors.Meta;
 using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
+using src.allors.material.apps.objects.organisationcontactrelationship.edit;
+using src.allors.material.apps.objects.partyrelationship.overview.panel;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -48,17 +51,14 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisations.Select(this.organisation);
-            var partyRelationshipOverviewPanelComponent = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
-            partyRelationshipOverviewPanelComponent.Factory.Create(M.OrganisationContactRelationship);
+            var partyRelationshipEdit = this.organisations.Select(this.organisation).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
 
-            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
                 .Contact.Set(this.contact.PartyName)
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -90,14 +90,14 @@ namespace Tests.PartyRelationshipTests
             var cell = row.FindCell("type");
             cell.Click();
 
-            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverview.Driver);
+            var partyRelationshipEdit = new OrganisationContactRelationshipEditComponent(organisationOverview.Driver);
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description)
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact.Description)
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

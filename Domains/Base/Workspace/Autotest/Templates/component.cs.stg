@@ -65,7 +65,6 @@ $directive.Testers:{tester|$tester(tester)$}; separator="\n"$
 }
 >>
 
-
 tester(tester) ::= <<
 $if(tester.IsInput)$
         public Components.Input $tester.Name$ => new Components.Input(this.Driver, "$tester.Kind$", @"$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
@@ -75,6 +74,7 @@ $elseif(tester.IsA)$
         public Components.Anchor $tester.Name$ => new Components.Anchor(this.Driver, "$tester.Kind$", @"$tester.Value$"$tester.Scopes:{scope|, "$scope$"}$);
 $elseif(tester.IsAMatFactoryFab)$
         public Components.MatFactoryFab $tester.Name$ => new Components.MatFactoryFab(this.Driver, Allors.Meta.M.$tester.ObjectType$.ObjectType, $tester.Selector$);
+$tester.Factories:{factory|$factory(factory)$}; separator="\n"$	
 $elseif(tester.IsAMatTable)$
         public Components.MatTable $tester.Name$ => new Components.MatTable(this.Driver, $tester.Selector$);
 $elseif(tester.IsAMatList)$
@@ -85,5 +85,15 @@ $elseif(tester.IsRoleFieldTester)$
         public Components.$tester.Type$<$directive.Reference.Name$> $tester.Name$ => this.$tester.Type$(Allors.Meta.M.$tester.RoleType.AssociationType.ObjectType.Name$.$tester.RoleType.Name$$tester.Scopes:{scope|, "$scope$"}$);
 $elseif(tester.Element.Component && tester.Element.Scope)$
         public $tester.Element.Component.Reference.Namespace$.$tester.Element.Component.Reference.Name$ $tester.Name$ => new $tester.Element.Component.Reference.Namespace$.$tester.Element.Component.Reference.Name$(this.Driver, $tester.Selector$);
+$endif$
+>>
+
+factory(factory) ::= <<
+$if(factory.Component)$
+        public $factory.Component.Reference.Namespace$.$factory.Component.Reference.Name$ Create$factory.class.name$()
+        {
+            this.$factory.tester.Name$.Create(Allors.Meta.M.$factory.class.Name$);
+            return new $factory.Component.Reference.Namespace$.$factory.Component.Reference.Name$(this.Driver);
+        }
 $endif$
 >>

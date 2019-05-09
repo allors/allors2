@@ -45,11 +45,9 @@ namespace Tests.EmailCommunicationTests
             var before = new EmailCommunications(this.Session).Extent().ToArray();
             
             var organisationOverview = this.organisationListPage.Select(organisation);
-
             var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.EmailCommunication);
+            var emailCommunicationEdit = communicationEventOverview.CreateEmailCommunication();
 
-            var emailCommunicationEdit = new EmailCommunicationEditComponent(organisationOverview.Driver);
             emailCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)

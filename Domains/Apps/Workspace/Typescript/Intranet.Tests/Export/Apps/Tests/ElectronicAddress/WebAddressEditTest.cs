@@ -38,12 +38,9 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.personListPage.Select(person);
-            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
-            contactMechanismOverview.Factory.Create(M.WebAddress);
+            var webAddressCreate = this.personListPage.Select(person).ContactmechanismOverviewPanel.Click().CreateWebAddress();
 
-            var webAddressCreateComponent = new WebAddressCreateComponent(this.Driver);
-            webAddressCreateComponent
+            webAddressCreate
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();

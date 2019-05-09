@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using Autotest.Angular;
+
 namespace Autotest.Testers
 {
     using System;
@@ -7,6 +10,8 @@ namespace Autotest.Testers
 
     public partial class AllorsMaterialFactoryFabTester : Tester
     {
+        public Model Model => this.Element.Template.Directive.Project.Model;
+
         public AllorsMaterialFactoryFabTester(Element element)
             : base(element)
         {
@@ -14,7 +19,7 @@ namespace Autotest.Testers
 
         public override string PropertyName => "Factory";
 
-        public ObjectType ObjectType
+        public Composite ObjectType
         {
             get
             {
@@ -24,7 +29,7 @@ namespace Autotest.Testers
                     var parts = objectTypeAttributeValue.Split('.');
                     var objectTypeName = parts[parts.Length - 1];
 
-                    var metaPopulation = this.Element.Template.Directive.Project.Model.MetaPopulation;
+                    var metaPopulation = this.Model.MetaPopulation;
                     var objectType = metaPopulation.Composites.FirstOrDefault(v => string.Equals(v.Name, objectTypeName, StringComparison.OrdinalIgnoreCase));
 
                     return objectType;
@@ -34,8 +39,47 @@ namespace Autotest.Testers
             }
         }
 
+        public Factory[] Factories
+        {
+            get
+            {
+                var classes = this.ObjectType.Classes.Where(v => this.Model.MetaExtensions[v.Id].Create != null);
+                return classes.Select(v => new Factory(this, v)).ToArray();
+            }
+        }
+
         public string Selector => $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")";
 
         private string ObjectTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[objectType]", StringComparison.OrdinalIgnoreCase))?.Value;
+
+
+        public class Factory
+        {
+            public AllorsMaterialFactoryFabTester Tester { get; }
+
+            public Class Class { get; }
+
+            public Directive Component
+            {
+                get
+                {
+                    var metaExtension = this.Tester.Model.MetaExtensions[this.Class.Id];
+                    var component = metaExtension.Create;
+                    if (component != null)
+                    {
+                        var entryComponents = this.Tester.Model.Project.LocalEntryComponents;
+                        return entryComponents.FirstOrDefault(v => v.Type?.Name == component);
+                    }
+
+                    return null;
+                }
+            }
+
+            public Factory(AllorsMaterialFactoryFabTester tester, Class @class)
+            {
+                this.Tester = tester;
+                this.Class = @class;
+            }
+        }
     }
 }

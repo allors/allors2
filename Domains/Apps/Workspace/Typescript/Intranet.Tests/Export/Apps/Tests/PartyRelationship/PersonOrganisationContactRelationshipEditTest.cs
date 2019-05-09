@@ -2,6 +2,7 @@ using Allors.Meta;
 using src.allors.material.apps.objects.organisationcontactrelationship.edit;
 using src.allors.material.apps.objects.partyrelationship.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -50,12 +51,9 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new OrganisationContactRelationships(this.Session).Extent().ToArray();
 
-            var personOverviewPage = this.people.Select(this.contact);
-            var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
-            partyRelationshipOverview.Factory.Create(M.OrganisationContactRelationship);
+            var organisationContactRelationshipEdit = this.people.Select(this.contact).PartyrelationshipOverviewPanel.Click().CreateOrganisationContactRelationship();
 
-            var organisationContactRelationshipEditComponent = new OrganisationContactRelationshipEditComponent(this.Driver);
-            organisationContactRelationshipEditComponent.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            organisationContactRelationshipEdit.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
                 .Organisation.Set(this.organisation.PartyName)

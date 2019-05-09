@@ -53,13 +53,10 @@ namespace Tests.LetterCorrespondenceTests
             this.Session.Commit();
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
+            
+            var letterCorrespondenceEdit = this.personListPage.Select(person).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
-            var personOverviewComponent = this.personListPage.Select(person);
-            var communicationEventOverview = personOverviewComponent.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.LetterCorrespondence);
-
-            var letterCorrespondenceEditComponent = new LetterCorrespondenceEditComponent(this.Driver);
-            letterCorrespondenceEditComponent.CommunicationEventState
+            letterCorrespondenceEdit.CommunicationEventState
                 .Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)

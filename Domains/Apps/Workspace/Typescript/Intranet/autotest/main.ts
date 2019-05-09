@@ -37,8 +37,8 @@ fs.writeFileSync('./dist/autotest/menu.json', JSON.stringify(menu));
 
 console.log('- Dialogs');
 
-const create = Object.keys(createDialogs).map((v) => createDialogs[v].name);
-const edit = Object.keys(editDialogs).map((v) => editDialogs[v].name);
+const create = Object.keys(createDialogs).map((v) => ({ id: v, component: createDialogs[v].name }));
+const edit = Object.keys(editDialogs).map((v) => ({ id: v, component: editDialogs[v].name }));
 
 const dialogs = {
   create,

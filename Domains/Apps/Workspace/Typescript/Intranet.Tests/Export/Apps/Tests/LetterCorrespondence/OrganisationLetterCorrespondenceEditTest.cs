@@ -1,3 +1,4 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.lettercorrespondence.edit;
 using src.allors.material.apps.objects.organisation.list;
 using src.allors.material.apps.objects.organisation.overview;
@@ -46,11 +47,8 @@ namespace Tests.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var organisationOverview = this.organisationListPage.Select(organisation);
-            var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.LetterCorrespondence);
+            var letterCorrespondenceEdit = this.organisationListPage.Select(organisation).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
-            var letterCorrespondenceEdit = new LetterCorrespondenceEditComponent(organisationOverview.Driver);
             letterCorrespondenceEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)

@@ -6,6 +6,8 @@
 namespace Autotest
 {
     using System;
+    using System.Collections.Generic;
+    using Newtonsoft.Json.Linq;
 
     public partial class MetaExtension
     {
@@ -14,5 +16,30 @@ namespace Autotest
         public string List { get; set; }
 
         public string Overview { get; set; }
+
+        public string Create { get; set; }
+
+        public string Edit { get; set; }
+
+        public static void Load(Dictionary<Guid, MetaExtension> metaExtensions, JArray jsonMetaExtensions, Action<MetaExtension, JToken> setter)
+        {
+            foreach (var json in jsonMetaExtensions)
+            {
+                if (json["id"] != null)
+                {
+                    Guid.TryParse(json["id"].Value<string>(), out var id);
+                    if (!metaExtensions.TryGetValue(id, out var metaExtension))
+                    {
+                        metaExtension = new MetaExtension
+                        {
+                            Id = id,
+                        };
+                        metaExtensions.Add(id, metaExtension);
+                    }
+
+                    setter(metaExtension, json);
+                }
+            }
+        }
     }
 }

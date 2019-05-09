@@ -28,9 +28,9 @@ namespace Tests.NonUnifiedGood
         public void Create()
         {
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
+            
+            var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
-            this.goods.Factory.Create(M.NonUnifiedGood);
-            var nonUnifiedGoodCreate = new NonUnifiedGoodCreateComponent(this.goods.Driver);
             nonUnifiedGoodCreate
                 .Name.Set("Mercedes Vito")
                 .Description.Set("Vans. Born to run.")

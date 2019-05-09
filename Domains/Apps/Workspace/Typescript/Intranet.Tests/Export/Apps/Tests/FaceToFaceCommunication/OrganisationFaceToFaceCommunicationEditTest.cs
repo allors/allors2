@@ -1,3 +1,4 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.facetofacecommunication.edit;
 using src.allors.material.apps.objects.organisation.list;
 using src.allors.material.apps.objects.organisation.overview;
@@ -37,11 +38,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First;
 
-            var personOverview = this.organisationListPage.Select(organisation);
-            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.FaceToFaceCommunication);
+            var faceToFaceCommunicationEdit = this.organisationListPage.Select(organisation).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
 
-            var faceToFaceCommunicationEdit = new FaceToFaceCommunicationEditComponent(personOverview.Driver);
             faceToFaceCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)

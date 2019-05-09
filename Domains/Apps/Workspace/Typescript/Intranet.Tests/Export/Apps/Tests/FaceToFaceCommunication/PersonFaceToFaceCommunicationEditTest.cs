@@ -37,12 +37,9 @@ namespace Tests.FaceToFaceCommunicationTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.personListPage.Select(person);
-            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.FaceToFaceCommunication);
+            var faceToFaceCommunicationEdit = this.personListPage.Select(person).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
 
-            var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
-            faceToFaceCommunicationEditComponent
+            faceToFaceCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .Location.Set("location")

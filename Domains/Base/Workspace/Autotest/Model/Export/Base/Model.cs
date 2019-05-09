@@ -35,24 +35,13 @@ namespace Autotest
             {
                 var jsonMetaExtensions = (JArray)JToken.ReadFrom(reader);
 
-                foreach (var json in jsonMetaExtensions)
+                void Setter(MetaExtension metaExtension, JToken json)
                 {
-                    if (json["id"] != null)
-                    {
-                        Guid.TryParse(json["id"].Value<string>(), out var id);
-                        if (!this.MetaExtensions.TryGetValue(id, out var metaExtension))
-                        {
-                            metaExtension = new MetaExtension
-                            {
-                                Id = id,
-                            };
-                            this.MetaExtensions.Add(id, metaExtension);
-                        }
-
-                        metaExtension.List = json["list"]?.Value<string>();
-                        metaExtension.Overview = json["overview"]?.Value<string>();
-                    }
+                    metaExtension.List = json["list"]?.Value<string>();
+                    metaExtension.Overview = json["overview"]?.Value<string>();
                 }
+
+                MetaExtension.Load(this.MetaExtensions, jsonMetaExtensions, Setter);
             }
         }
 
@@ -83,6 +72,32 @@ namespace Autotest
                     Model = this,
                 };
                 this.Menu.Load(jsonMenu);
+            }
+        }
+
+        public void LoadDialogs(FileInfo fileInfo)
+        {
+            using (var file = File.OpenText(fileInfo.FullName))
+            using (var reader = new JsonTextReader(file))
+            {
+                var jsonDialogs = JToken.ReadFrom(reader);
+
+                var create = jsonDialogs["create"] as JArray;
+                var edit = jsonDialogs["create"] as JArray;
+
+                void CreateSetter(MetaExtension metaExtension, JToken json)
+                {
+                    metaExtension.Create = json["component"]?.Value<string>();
+                }
+
+                MetaExtension.Load(this.MetaExtensions, create, CreateSetter);
+
+                void EditSetter(MetaExtension metaExtension, JToken json)
+                {
+                    metaExtension.Edit = json["component"]?.Value<string>();
+                }
+
+                MetaExtension.Load(this.MetaExtensions, edit, EditSetter);
             }
         }
     }

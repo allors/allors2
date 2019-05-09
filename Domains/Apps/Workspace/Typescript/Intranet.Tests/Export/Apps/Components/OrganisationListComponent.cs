@@ -1,5 +1,3 @@
-using Components;
-using OpenQA.Selenium;
 using src.allors.material.apps.objects.organisation.overview;
 
 namespace src.allors.material.apps.objects.organisation.list

@@ -1,4 +1,6 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 using src.allors.material.apps.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
@@ -66,11 +68,8 @@ namespace Tests.PhoneCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
-            var communicationEventOverview = organisationOverviewPage.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.PhoneCommunication);
+            var phoneCommunication = this.organisations.Select(organisation).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
 
-            var phoneCommunication = new PhoneCommunicationEditComponent(organisationOverviewPage.Driver);
             phoneCommunication
                 .LeftVoiceMail.Set(true)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)

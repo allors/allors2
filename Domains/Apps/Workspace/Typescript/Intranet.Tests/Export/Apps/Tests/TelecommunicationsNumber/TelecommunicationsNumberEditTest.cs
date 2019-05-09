@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 using src.allors.material.apps.objects.telecommunicationsnumber.create;
 using src.allors.material.apps.objects.telecommunicationsnumber.edit;
 
@@ -54,9 +55,7 @@ namespace Tests.TelecommunicationsNumberTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
-            contactMechanismOverview.Factory.Create(M.TelecommunicationsNumber);
+            this.people.Select(person).ContactmechanismOverviewPanel.Click().CreateTelecommunicationsNumber();
 
             var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
             createComponent

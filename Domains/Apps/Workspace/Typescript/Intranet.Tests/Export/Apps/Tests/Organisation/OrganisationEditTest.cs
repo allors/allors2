@@ -33,11 +33,11 @@ namespace Tests.OrganisationTests
 
             this.Session.Derive();
             this.Session.Commit();
-
-            this.organisationListPage.Factory.Create(M.Organisation);
+            
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var organisationCreate = new OrganisationCreateComponent(this.Driver);
+            var organisationCreate = this.organisationListPage.CreateOrganisation();
+
             organisationCreate
                 .Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")

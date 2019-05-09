@@ -27,12 +27,12 @@ namespace Tests.PersonTests
         [Fact]
         public void Create()
         {
-            this.people.Factory.Create();
-
             var before = new People(this.Session).Extent().ToArray();
 
-            var personCreate = new PersonCreateComponent(this.Driver);
-            personCreate.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            var personCreate = this.people.CreatePerson();
+
+            personCreate
+                .Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")

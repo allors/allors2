@@ -1,5 +1,8 @@
 using Pages.PartyRelationshipTests;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
+using src.allors.material.apps.objects.partyrelationship.overview.panel;
+using src.allors.material.apps.objects.supplierrelationship.edit;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -52,16 +55,13 @@ namespace Tests.PartyRelationshipTests
 
             var extent = new Organisations(this.Session).Extent();
             var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
+            
+            var partyRelationshipEdit = this.organisations.Select(internalOrganisation).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
 
-            var organisationOverviewPage = this.organisations.Select(internalOrganisation);
-            var partyRelationshipOverview = organisationOverviewPage.PartyrelationshipOverviewPanel.Click();
-            partyRelationshipOverview.Factory.Create(M.CustomerRelationship);
-
-            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -91,11 +91,11 @@ namespace Tests.PartyRelationshipTests
             var cell = row.FindCell("type");
             cell.Click();
 
-            var partyRelationshipEdit = new PartyRelationshipEditComponent(organisationOverviewPage.Driver);
+            var partyRelationshipEdit = new SupplierRelationshipEditComponent(organisationOverviewPage.Driver);
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Save.Click();
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();

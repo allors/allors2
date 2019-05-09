@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 using src.allors.material.apps.objects.postaladdress.edit;
 
 namespace Tests.PostalAddressTests
@@ -55,11 +56,8 @@ namespace Tests.PostalAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
-            contactMechanismOverview.Factory.Create(M.PostalAddress);
+            var postalAddressEditComponent = this.people.Select(person).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
 
-            var postalAddressEditComponent = new PostalAddressEditComponent(this.Driver);
             postalAddressEditComponent.Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")

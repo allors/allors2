@@ -1,5 +1,6 @@
 using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 using src.allors.material.apps.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
@@ -68,12 +69,10 @@ namespace Tests.PhoneCommunicationTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("Jane0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
-            communicationEventOverview.Factory.Create(M.PhoneCommunication);
+            var communicationEventOverview = this.people.Select(person).CommunicationeventOverviewPanel.Click();
 
-            var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
-            phoneCommunicationEditComponent
+            communicationEventOverview
+                .CreatePhoneCommunication()
                 .LeftVoiceMail.Set(true)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)

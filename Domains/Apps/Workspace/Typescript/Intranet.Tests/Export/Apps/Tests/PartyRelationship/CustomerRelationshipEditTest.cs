@@ -36,13 +36,10 @@ namespace Tests.PartyRelationshipTests
             var people = new People(this.Session).Extent();
             var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverviewComponent = this.personListPage.Select(person);
-            var partyRelationshipOverview = personOverviewComponent.PartyrelationshipOverviewPanel.Click();
-            partyRelationshipOverview.Factory.Create(M.CustomerRelationship);
+            var customerRelationshipEdit = this.personListPage.Select(person).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
 
-            var customerRelationshipEditComponent = new CustomerRelationshipEditComponent(this.Driver);
-            customerRelationshipEditComponent.FromDate
-                .Set(DateTimeFactory.CreateDate(2018, 12, 22))
+            customerRelationshipEdit
+                .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .SAVE.Click();
 

@@ -1,6 +1,7 @@
 using src.allors.material.apps.objects.employment.edit;
 using src.allors.material.apps.objects.partyrelationship.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.PartyRelationshipTests
 {
@@ -53,11 +54,8 @@ namespace Tests.PartyRelationshipTests
 
             var employer = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            var personOverviewPage = this.people.Select(this.employee);
-            var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
-            partyRelationshipOverview.Factory.Create(M.Employment);
+            var employmentEditComponent = this.people.Select(this.employee).PartyrelationshipOverviewPanel.Click().CreateEmployment();
 
-            var employmentEditComponent = new EmploymentEditComponent(this.Driver);
             employmentEditComponent.FromDate
                 .Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
