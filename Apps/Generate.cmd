@@ -15,13 +15,13 @@ rmdir /s /q .\Workspace\Typescript\Intranet\src\allors\domain\generated >nul 2>&
 @echo Repository
 @echo ==========
 
-dotnet restore ..\..\Platform\Repository\Repository.sln
-dotnet msbuild ..\..\Platform\Repository\Repository.sln
+dotnet restore ..\Core\Repository\Repository.sln
+dotnet msbuild ..\Core\Repository\Repository.sln
 
 dotnet restore Repository.sln
 
 cd repository/domain
-dotnet ..\..\..\..\Platform\Repository\Generate\bin\Debug\netcoreapp2.2\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
+dotnet ..\..\..\Core\Repository\Generate\bin\Debug\netcoreapp2.2\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
 cd ../../
 
 @echo ====================

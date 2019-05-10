@@ -50,8 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
-    <ProjectReference Include="..\..\..\Base\Document\Allors.Document\Allors.Document.csproj" />
+    <ProjectReference Include="..\..\..\Base\Database\Document\Allors.Document\Allors.Document.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
   </ItemGroup>

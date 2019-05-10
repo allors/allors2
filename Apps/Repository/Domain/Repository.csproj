@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Platform\Repository\Attributes\Export\**\*.cs"/>
+    <Compile Include="..\..\..\Core\Repository\Attributes\Export\**\*.cs"/>
     <Compile Include="..\..\..\Core\Repository\Domain\Export\**\*.cs"/>
     <Compile Include="..\..\..\Base\Repository\Domain\Export\**\*.cs"/>
   </ItemGroup>

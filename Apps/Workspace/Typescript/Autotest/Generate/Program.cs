@@ -16,11 +16,11 @@
                 string[,] config =
                 {
                     {
-                        "../Base/Workspace/Autotest/Templates/sidenav.cs.stg",
+                        "../Base/Workspace/Typescript/Autotest/Templates/sidenav.cs.stg",
                         "./Workspace/Typescript/Intranet.Tests/generated/sidenav"
                     },
                     {
-                        "../Base/Workspace/Autotest/Templates/component.cs.stg",
+                        "../Base/Workspace/Typescript/Autotest/Templates/component.cs.stg",
                         "./Workspace/Typescript/Intranet.Tests/generated/components"
                     },
                 };
@@ -59,7 +59,7 @@
                 };
 
                 model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/meta.json"));
-                model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/dist/project.json"));
+                model.LoadProject(new FileInfo("./Workspace/Typescript/Autotest/Angular/dist/project.json"));
                 model.LoadMenu(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/menu.json"));
                 model.LoadDialogs(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/dialogs.json"));
 

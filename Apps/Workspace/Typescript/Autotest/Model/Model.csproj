@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Base\Workspace\Autotest\Model\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\..\Base\Workspace\Typescript\Autotest\Model\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CSharp\Meta\Workspace.Meta.csproj" />
+    <ProjectReference Include="..\..\..\CSharp\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
 </Project>

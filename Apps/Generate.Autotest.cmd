@@ -16,7 +16,7 @@ call npm install
 call npm run autotest
 
 cd %~dp0
-cd .\Workspace\Autotest\Angular
+cd .\Workspace\Typescript\Autotest\Angular
 
 call npm install
 call npm run autotest
@@ -27,8 +27,8 @@ call npm run autotest
 
 cd %~dp0
 
-dotnet restore .\Workspace\Autotest\Autotest.sln
-dotnet run --project .\Workspace\Autotest\Generate\Generate.csproj
+dotnet restore .\Workspace\Typescript\Autotest\Autotest.sln
+dotnet run --project .\Workspace\Typescript\Autotest\Generate\Generate.csproj
 
 pause
 

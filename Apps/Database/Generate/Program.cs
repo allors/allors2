@@ -28,11 +28,11 @@
                     { "../Base/Database/Templates/uml.cs.stg", "DataBase/Diagrams/Generated" },
                     //{ "../Base/Database/Templates/uml.java.stg", "DataBase/Diagrams.java/allors" },
 
-                    { "../Base/Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
-                    { "../Base/Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+                    { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
 
-                    { "../Base/Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/Intranet/src/allors/meta/generated" },
-                    { "../Base/Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/Intranet/src/allors/domain/generated" },
+                    { "../Base/Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Intranet/src/allors/meta/generated" },
+                    { "../Base/Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Intranet/src/allors/domain/generated" },
 
                     { "../Base/Workspace/CSharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
                     { "../Base/Workspace/CSharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
