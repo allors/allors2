@@ -14,6 +14,7 @@ import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { VatRegime } from 'src/allors/domain/generated';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -47,6 +48,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
   private subscription: Subscription;
 
   legalForms: LegalForm[];
+  vatRegimes: VatRegime[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -90,6 +92,9 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
             }),
             pull.LegalForm({
               sort: new Sort(m.LegalForm.Description)
+            }),
+            pull.VatRegime({
+              sort: new Sort(m.VatRegime.Name)
             })
           ];
 
@@ -149,6 +154,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8b5e0cee4c9842f18f183638fba943a0');
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8c6d629b1e274520aa8ce8adf93a5095');

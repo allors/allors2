@@ -74,6 +74,8 @@ namespace Allors.Domain
 
             this.PartyName = this.DerivePartyName();
             
+            this.VatRegime = new VatRegimes(this.strategy.Session).PrivatePerson;
+
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
 
             this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships

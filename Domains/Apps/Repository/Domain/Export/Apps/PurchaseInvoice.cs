@@ -305,6 +305,14 @@ namespace Allors.Repository
         public PurchaseOrder[] PurchaseOrders { get; set; }
 
         #region Allors
+        [Id("B1C82298-2ABF-4FF7-BCC1-EF6B77AB6B50")]
+        [AssociationId("CC579E01-EDD4-4E01-9652-29A2E454EBBF")]
+        [RoleId("B4EC06D6-BF85-49DD-8407-07191E7AE41E")]
+        #endregion
+        [Workspace]
+        public DateTime DueDate { get; set; }
+
+        #region Allors
         [Id("797A9C2C-A2CF-4AE3-8395-B2F25D0F40C1")]
         #endregion
         [Workspace]

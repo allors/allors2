@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
-import { ProductCategorieListComponent } from './productcategory-list.component';
-export { ProductCategorieListComponent } from './productcategory-list.component';
+import { ProductCategoryListComponent } from './productcategory-list.component';
+export { ProductCategoryListComponent } from './productcategory-list.component';
 
 @NgModule({
   declarations: [
-    ProductCategorieListComponent,
+    ProductCategoryListComponent,
   ],
   exports: [
-    ProductCategorieListComponent,
+    ProductCategoryListComponent,
   ],
   imports: [
     CommonModule,

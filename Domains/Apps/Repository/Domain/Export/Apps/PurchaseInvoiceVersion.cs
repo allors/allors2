@@ -248,6 +248,14 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         public PurchaseOrder[] PurchaseOrders { get; set; }
+
+        #region Allors
+        [Id("635FC89C-3AD3-4661-BD24-2EA65002940F")]
+        [AssociationId("1D60D829-0348-42F2-977B-BF9DA3631629")]
+        [RoleId("E1F530C1-1579-4671-904F-A6A3821E4E17")]
+        #endregion
+        public DateTime DueDate { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }
