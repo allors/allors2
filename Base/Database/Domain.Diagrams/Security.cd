@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.User" Collapsed="true">
+    <Position X="6.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAQAACBAAAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.AccessControl">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <AssociationLine Name="EffectiveUsers" Type="Allors.Domain.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.643" Y="3.248" />
+        <Point X="4.643" Y="3.573" />
+        <Point X="6.25" Y="3.573" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAACAAAAAEAAAAAAAAAAAAIAAAAAQAAAAAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SubjectGroups" />
+      <Property Name="Subjects" />
+      <Property Name="Role" />
+      <Property Name="EffectivePermissions" />
+      <Property Name="EffectiveUsers" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Permission">
+    <Position X="3.25" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Role">
+    <Position X="3.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Permissions" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.UserGroup" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Members" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SecurityToken">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AccessControls" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Singleton" Collapsed="true">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Guest" Type="Allors.Domain.User" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="0.703" />
+        <Point X="8.125" Y="0.703" />
+        <Point X="8.125" Y="3.496" />
+        <Point X="7.75" Y="3.496" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAoAAAAEAAAAgCoAQAAAAAAAAAAAAQAAAAABAAAAg=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Guest" />
+      <Property Name="DefaultSecurityToken" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.AccessControlledObject">
+    <Position X="0.5" Y="4.25" Width="2" />
+    <AssociationLine Name="DeniedPermissions" Type="Allors.Domain.Permission" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="5.247" />
+        <Point X="1.5" Y="7.688" />
+        <Point X="3.25" Y="7.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DeniedPermissions" />
+      <Property Name="SecurityTokens" />
+    </ShowAsAssociation>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

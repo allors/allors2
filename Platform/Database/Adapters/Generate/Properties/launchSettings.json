@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Generate": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\KoenVanExem\\Documents\\GitHub\\allors2\\Platform\\Database\\Adapters"
-    }
-  }
-}
