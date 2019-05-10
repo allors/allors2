@@ -287,6 +287,11 @@
     </div>
 
     <div class="row">
+      <a-mat-datepicker class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceDate"></a-mat-datepicker>
+      <a-mat-datepicker class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.DueDate"></a-mat-datepicker>
+    </div>
+
+    <div class="row">
       <a-mat-input class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
     </div>
 

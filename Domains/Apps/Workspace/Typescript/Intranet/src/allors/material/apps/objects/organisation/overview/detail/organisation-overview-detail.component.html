@@ -23,9 +23,14 @@
 
         <div class="row">
           <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
-          <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
         </div>
-
+  
+        <div class="row">
+          <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.VatRegime" [options]="vatRegimes"
+            display="Name"></a-mat-select>
+        </div>
+  
         <div class="row">
           <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.LegalForm" [options]="legalForms"
             display="Description"></a-mat-select>

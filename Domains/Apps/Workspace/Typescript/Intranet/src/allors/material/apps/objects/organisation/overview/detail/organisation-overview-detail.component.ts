@@ -10,6 +10,7 @@ import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../material';
 import { switchMap, filter } from 'rxjs/operators';
+import { VatRegime } from 'src/allors/domain/generated';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -30,6 +31,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   legalForms: LegalForm[];
+  vatRegimes: VatRegime[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -100,6 +102,9 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
             }),
             pull.LegalForm({
               sort: new Sort(m.LegalForm.Description)
+            }),
+            pull.VatRegime({
+              sort: new Sort(m.VatRegime.Name)
             })
           ];
 
@@ -115,6 +120,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
       });
   }
 
