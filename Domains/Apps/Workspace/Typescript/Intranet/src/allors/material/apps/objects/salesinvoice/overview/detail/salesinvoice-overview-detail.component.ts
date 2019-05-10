@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService, FiltersService } from '../../../../../../material';
   templateUrl: './salesinvoice-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
+export class SalesInvoiceOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -82,6 +82,7 @@ export class SalesInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { SupplierOffering } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './supplieroffering-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SupplierOfferingOverviewPanelComponent implements OnInit {
+export class SupplierOfferingOverviewPanelComponent extends TestScope implements OnInit {
   currentObjects: SupplierOffering[];
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
@@ -49,10 +49,10 @@ export class SupplierOfferingOverviewPanelComponent implements OnInit {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-
     public deleteService: DeleteService,
     public editService: EditService
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

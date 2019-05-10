@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
 import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, VatRate, ProductIdentificationType, ProductNumber, Facility, InventoryItemKind, SupplierOffering, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -17,7 +17,7 @@ import { SaveService } from '../../../../../../../allors/material';
   templateUrl: './unifiedgood-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
+export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -63,7 +63,9 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
     public navigationService: NavigationService,
     private saveService: SaveService,
     private fetcher: FetcherService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar
+  ) {
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject(new Date());
@@ -312,8 +314,8 @@ export class UnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private onSave() {

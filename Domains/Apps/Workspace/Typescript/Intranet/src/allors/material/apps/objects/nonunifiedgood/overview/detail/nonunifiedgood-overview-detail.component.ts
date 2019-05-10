@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
 import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { SaveService } from '../../../../../../../allors/material';
   templateUrl: './nonunifiedgood-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy {
+export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -51,7 +51,9 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private fetcher: FetcherService) {
+    private fetcher: FetcherService
+  ) {
+    super();
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject(new Date());
@@ -220,8 +222,8 @@ export class NonUnifiedGoodOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public setDirty(): void {

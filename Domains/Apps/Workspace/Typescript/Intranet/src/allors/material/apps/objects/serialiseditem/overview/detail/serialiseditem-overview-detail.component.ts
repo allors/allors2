@@ -5,9 +5,9 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
-import { SaveService, FiltersService} from '../../../../../../material';
+import { SaveService, FiltersService } from '../../../../../../material';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 
@@ -17,7 +17,7 @@ import { Meta } from '../../../../../../meta';
   templateUrl: './serialiseditem-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy {
+export class SerialisedItemOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -45,6 +45,7 @@ export class SerialisedItemOverviewDetailComponent implements OnInit, OnDestroy 
     private snackBar: MatSnackBar,
     private fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

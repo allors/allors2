@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService, TestScope } from '../../../../../../angular';
 import { PurchaseInvoiceItem, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
@@ -22,7 +22,7 @@ interface Row extends TableRow {
   templateUrl: './purchaseinvoiceitem-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class PurchaseInvoiceItemOverviewPanelComponent {
+export class PurchaseInvoiceItemOverviewPanelComponent extends TestScope {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -57,6 +57,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent {
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
+    super();
 
     this.m = this.metaService.m;
 

@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService,  Action, MetaService, ActionTarget, Invoked, ContextService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ActionTarget, Invoked, ContextService, TestScope } from '../../../../../../angular';
 import { QuoteItem, ProductQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
   templateUrl: './quoteitem-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class QuoteItemOverviewPanelComponent {
+export class QuoteItemOverviewPanelComponent extends TestScope {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -57,12 +57,12 @@ export class QuoteItemOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-
     public methodService: MethodService,
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
+    super();
 
     this.m = this.metaService.m;
 
@@ -73,9 +73,9 @@ export class QuoteItemOverviewPanelComponent {
 
     this.delete = deleteService.delete(panel.manager.context);
     this.edit = this.editService.edit();
-    this.cancel = methodService.create(allors.context, this.m.QuoteItem.Cancel, { name: 'Cancel'});
-    this.reject = methodService.create(allors.context, this.m.QuoteItem.Reject, { name: 'Reject'});
-    this.submit = methodService.create(allors.context, this.m.QuoteItem.Submit, { name: 'Submit'});
+    this.cancel = methodService.create(allors.context, this.m.QuoteItem.Cancel, { name: 'Cancel' });
+    this.reject = methodService.create(allors.context, this.m.QuoteItem.Reject, { name: 'Reject' });
+    this.submit = methodService.create(allors.context, this.m.QuoteItem.Submit, { name: 'Submit' });
 
     const sort = true;
     this.table = new Table({

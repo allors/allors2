@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService,  Action, MetaService, Invoked, ContextService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService,  Action, MetaService, Invoked, ContextService, TestScope } from '../../../../../../angular';
 import { RequestItem, RequestForQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
   templateUrl: './requestitem-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class RequestItemOverviewPanelComponent {
+export class RequestItemOverviewPanelComponent extends TestScope {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -57,12 +57,12 @@ export class RequestItemOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-
     public methodService: MethodService,
     public deleteService: DeleteService,
     public editService: EditService,
     public snackBar: MatSnackBar
   ) {
+    super();
 
     this.m = this.metaService.m;
 

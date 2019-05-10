@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService } from '../../../../../../angular';
+import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService, FiltersService } from '../../../../../../material';
   templateUrl: './salesorder-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
+export class SalesOrderOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -91,7 +91,9 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
     private singletonId: SingletonId,
-    private fetcher: FetcherService) {
+    private fetcher: FetcherService
+  ) {
+    super();
 
     this.m = this.metaService.m;
 

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import {  ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
 import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService } from '../../../../../../../allors/material';
   templateUrl: './nonunifiedpart-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy {
+export class NonUnifiedPartOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -58,7 +58,8 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
     private saveService: SaveService,
     private snackBar: MatSnackBar,
     private fetcher: FetcherService
-    ) {
+  ) {
+    super();
 
     this.m = this.metaService.m;
 
@@ -279,8 +280,8 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
       .subscribe(() => {
         this.panel.toggle();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public update(): void {
@@ -294,8 +295,8 @@ export class NonUnifiedPartOverviewDetailComponent implements OnInit, OnDestroy 
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   private onSave() {

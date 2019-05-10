@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService,  Action, MetaService, ActionTarget, Invoked, ContextService, InternalOrganisationId, FetcherService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ActionTarget, Invoked, ContextService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
 import { RepeatingPurchaseInvoice, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -26,7 +26,7 @@ interface Row extends TableRow {
   templateUrl: './repeatingpurchaseinvoice-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class RepeatingPurchaseInvoiceOverviewPanelComponent {
+export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -62,6 +62,7 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent {
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
+    super();
 
     this.m = this.metaService.m;
 
