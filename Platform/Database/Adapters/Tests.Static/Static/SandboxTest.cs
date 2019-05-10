@@ -185,12 +185,12 @@ namespace Allors.Adapters
 
                 Assert.NotNull(schemaExtent);
 
-                Assert.Equal(Data.Protocol.ExtentKind.Filter, schemaExtent.Kind);
+                Assert.Equal(ExtentKind.Filter, schemaExtent.Kind);
 
                 var predicate = schemaExtent.Predicate;
 
                 Assert.NotNull(predicate);
-                Assert.Equal(Data.Protocol.PredicateKind.Equals, predicate.Kind);
+                Assert.Equal(PredicateKind.Equals, predicate.Kind);
                 Assert.Equal("pString", predicate.Parameter);
             }
         }
