@@ -143,7 +143,7 @@ export const routes: Routes = [
           { path: 'parts', component: PartList.PartListComponent },
           { path: 'nonunifiedpart/:id', component: NonUnifiedPartOverview.NonUnifiedPartOverviewComponent },
           { path: 'catalogues', component: CataloguesOverview.CataloguesListComponent },
-          { path: 'productcategories', component: CategoriesOverview.ProductCategorieListComponent },
+          { path: 'productcategories', component: CategoriesOverview.ProductCategoryListComponent },
           { path: 'serialiseditemcharacteristics', component: ProductCharacteristicsOverview.SerialisedItemCharacteristicListComponent },
           { path: 'producttypes', component: ProductTypesOverview.ProductTypesOverviewComponent },
           { path: 'serialiseditems', component: SerialisedItemList.SerialisedItemListComponent },
