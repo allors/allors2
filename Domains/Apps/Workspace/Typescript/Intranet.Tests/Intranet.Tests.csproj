@@ -13,20 +13,6 @@
   </ItemGroup>
 
   
-<ItemGroup>
-  <Compile Remove="Export\Apps\NonUnifiedGood\**" />
-  <EmbeddedResource Remove="Export\Apps\NonUnifiedGood\**" />
-  <None Remove="Export\Apps\NonUnifiedGood\**" />
-</ItemGroup>
-
-  
-<ItemGroup>
-  <Compile Remove="..\..\..\..\Base\Workspace\Typescript\modules\Material.Tests\Export\Base\Components\Extensions\AssemblyExtension.cs" />
-</ItemGroup>
-
-
-
-  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
@@ -43,17 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
-    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
-    <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
-    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
-    <ProjectReference Include="..\..\Autotest\Model\Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -64,6 +39,17 @@
 
   <ItemGroup>
     <Folder Include="generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj" />
+    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
+    <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
+    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>
