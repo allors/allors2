@@ -19,7 +19,7 @@
 // <summary>Defines the Domain type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     public abstract partial class DomainObject : MetaObjectBase
     {

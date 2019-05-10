@@ -18,11 +18,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System.Collections.Generic;
-
-    using Allors.Meta;
     using Allors.Protocol.Data;
 
     public class Contains : IPropertyPredicate

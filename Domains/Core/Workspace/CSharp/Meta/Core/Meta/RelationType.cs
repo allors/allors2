@@ -21,7 +21,7 @@
 
 using System.Linq;
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     using System;
 

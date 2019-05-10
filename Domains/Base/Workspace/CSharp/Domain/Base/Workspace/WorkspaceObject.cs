@@ -1,7 +1,8 @@
-﻿namespace Allors.Workspace
+﻿using Allors.Workspace.Meta;
+
+namespace Allors.Workspace
 {
     using System.Collections.Generic;
-    using Allors.Meta;
     using Allors.Protocol.Remote.Sync;
 
     public class WorkspaceObject

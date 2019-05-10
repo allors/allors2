@@ -18,10 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System.Text;
-    using Allors.Meta;
 
     public class Step
     {

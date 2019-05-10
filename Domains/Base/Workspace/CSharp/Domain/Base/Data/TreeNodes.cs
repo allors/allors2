@@ -18,13 +18,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using Allors.Meta;
 
     public class TreeNodes : IEnumerable<TreeNode>
     {

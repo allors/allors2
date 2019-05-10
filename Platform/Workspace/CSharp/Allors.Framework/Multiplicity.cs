@@ -19,7 +19,7 @@
 //-------------------------------------------------------------------------------------------------
 
 
-namespace Allors
+namespace Allors.Workspace
 {
     public enum Multiplicity
     {

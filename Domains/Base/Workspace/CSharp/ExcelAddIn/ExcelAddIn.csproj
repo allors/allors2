@@ -280,9 +280,9 @@
       <Project>{da4974fe-1b8b-4a61-bc22-0f4508806a75}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Workspace.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
-      <Name>Allors.Framework</Name>
+      <Name>Allors.Workspace</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
       <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>

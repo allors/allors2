@@ -9,7 +9,7 @@ namespace Autotest
 {
     using System;
     using System.Linq;
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
     using Autotest.Angular;
     using Newtonsoft.Json.Linq;
 

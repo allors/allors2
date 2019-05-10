@@ -1,10 +1,11 @@
-﻿namespace Allors.Workspace
+﻿using Allors.Workspace.Meta;
+
+namespace Allors.Workspace
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using Allors.Meta;
     using Allors.Protocol.Remote.Push;
 
     public interface ISessionObject

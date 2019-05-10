@@ -1,18 +1,18 @@
-﻿namespace Allors.Excel.People
+﻿using Allors.Workspace.Meta;
+
+namespace Allors.Excel.People
 {
     using System;
     using System.Linq;
     using System.Windows.Forms;
 
     using Allors.Excel;
-    using Allors.Meta;
     using Allors.Protocol.Remote;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
 
     using Microsoft.Office.Interop.Excel;
 
-    using Filter = Microsoft.Office.Interop.Excel.Filter;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Result = Allors.Workspace.Client.Result;
     using Sheets = Allors.Excel.Sheets;

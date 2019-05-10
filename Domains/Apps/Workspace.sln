@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Domain", "Workspa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Meta", "Workspace\CSharp\Meta\Workspace.Meta.csproj", "{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Framework", "..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj", "{B01846A2-2E2B-4676-BE34-F9E14442F80F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Workspace", "..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Workspace.csproj", "{B01846A2-2E2B-4676-BE34-F9E14442F80F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{FD813B65-0E78-4F1C-8825-7296AE9CC54E}"
 EndProject

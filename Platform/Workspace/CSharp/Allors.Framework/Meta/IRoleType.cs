@@ -19,7 +19,7 @@
 // <summary>Defines the RoleType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     /// <summary>
     /// A <see cref="IRoleType"/> defines the role side of a relation.

@@ -123,11 +123,11 @@ $class.XmlDocComment$
 		{
 		}
 
-		public Allors.Meta.Meta$class.name$ Meta
+		public Allors.Workspace.Meta.Meta$class.name$ Meta
 		{
 			get
 			{
-				return Allors.Meta.Meta$class.SingularName$.Instance;
+				return Allors.Workspace.Meta.Meta$class.SingularName$.Instance;
 			}
 		}
 	

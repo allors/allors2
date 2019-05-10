@@ -19,7 +19,7 @@
 // <summary>Defines the ValidationReport type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     using System;
     using System.Collections.Generic;

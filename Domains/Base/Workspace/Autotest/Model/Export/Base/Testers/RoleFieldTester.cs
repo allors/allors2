@@ -2,7 +2,7 @@ namespace Autotest.Testers
 {
     using System;
     using System.Linq;
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
     using Autotest.Html;
     using Humanizer;
 

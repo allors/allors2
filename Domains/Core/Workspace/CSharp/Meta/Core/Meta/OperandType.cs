@@ -18,7 +18,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     public abstract partial class OperandType : DomainObject
     {

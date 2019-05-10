@@ -18,7 +18,8 @@
 // </copyright>
 // <summary>Defines the ValidationError type.</summary>
 //-------------------------------------------------------------------------------------------------
-namespace Allors.Meta
+
+namespace Allors.Workspace.Meta
 {
     /// <summary>
     /// An error that occurred during validation.

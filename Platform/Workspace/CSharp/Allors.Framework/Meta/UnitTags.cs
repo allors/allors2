@@ -17,7 +17,8 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 //-------------------------------------------------------------------------------------------------
-namespace Allors.Meta
+
+namespace Allors.Workspace.Meta
 {
     /// <summary>
     /// The tags for units.

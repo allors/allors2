@@ -1,6 +1,6 @@
 ﻿namespace Allors
 {
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
     using Autotest;
     using System;
     using System.IO;

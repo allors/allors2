@@ -4,7 +4,7 @@ namespace Tests.Local
 
     using Allors.Workspace;
     using Allors.Workspace.Domain;
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
 
     public class LocalTest : IDisposable
     {

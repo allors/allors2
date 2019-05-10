@@ -18,10 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors
-{
-    using Allors.Meta;
+using Allors.Workspace.Meta;
 
+namespace Allors.Workspace
+{
     public class Sort
     {
         public IRoleType RoleType { get; set; }

@@ -19,7 +19,7 @@
 // <summary>Defines the ObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     using System.Collections.Generic;
     using System.Linq;

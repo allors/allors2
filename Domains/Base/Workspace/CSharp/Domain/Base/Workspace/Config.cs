@@ -18,11 +18,11 @@
 // </copyright>
 // -----------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace
 {
     using Domain;
-
-    using Allors.Meta;
 
     public static partial class Config
     {

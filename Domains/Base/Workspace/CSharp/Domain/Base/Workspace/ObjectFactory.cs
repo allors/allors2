@@ -20,6 +20,7 @@
 //-------------------------------------------------------------------------------------------------
 
 using System.Runtime.CompilerServices;
+using Allors.Workspace.Meta;
 
 namespace Allors.Workspace
 {
@@ -27,8 +28,6 @@ namespace Allors.Workspace
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Allors.Meta;
 
     public class ObjectFactory
     {

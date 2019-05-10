@@ -8,7 +8,7 @@ namespace Autotest
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
     using Autotest.Angular;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;

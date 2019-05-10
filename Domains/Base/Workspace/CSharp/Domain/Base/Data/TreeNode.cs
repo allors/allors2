@@ -18,11 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System.Linq;
-
-    using Allors.Meta;
 
     public class TreeNode
     {

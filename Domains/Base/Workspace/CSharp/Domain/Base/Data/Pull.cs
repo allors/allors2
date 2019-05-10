@@ -18,12 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System;
     using System.Linq;
-
-    using Allors.Meta;
     using Allors.Workspace;
 
     public class Pull

@@ -18,7 +18,7 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
+using Allors.Workspace.Meta;
 
 namespace Allors.Workspace.Data
 {

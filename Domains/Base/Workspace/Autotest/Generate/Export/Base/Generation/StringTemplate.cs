@@ -21,6 +21,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Development.Repository.Generation
 {
     using System;
@@ -110,12 +112,25 @@ namespace Allors.Development.Repository.Generation
                 var configurationXml = new XmlDocument();
                 configurationXml.LoadXml(configurationTemplate.Render());
 
+                var outputs = new HashSet<string>();
+
                 var location = new Location(outputDirectory);
                 foreach (XmlElement generation in configurationXml.DocumentElement.SelectNodes(GenerationKey))
                 {
                     var templateName = generation.GetAttribute(TemplateKey);
                     var template = templateGroup.GetInstanceOf(templateName);
                     var output = generation.GetAttribute(OutputKey);
+
+                    var initialOutput = output;
+                    for (var i = 2; outputs.Contains(output); i++)
+                    {
+                        const char separator = '.';
+                        var split = initialOutput.Split(separator);
+                        split[0] = split[0] + "_" + i;
+                        output = string.Join(separator, split);
+                    }
+
+                    outputs.Add(output);
 
                     template.Add(ModelKey, model);
 

@@ -19,7 +19,7 @@
 // <summary>Defines the Inheritance type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     using System;
     using System.Linq;

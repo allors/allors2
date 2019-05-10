@@ -5,7 +5,7 @@
     using System.Windows.Forms;
 
     using Allors.Excel;
-    using Allors.Meta;
+    using Allors.Workspace.Meta;
     using Allors.Protocol.Remote;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;

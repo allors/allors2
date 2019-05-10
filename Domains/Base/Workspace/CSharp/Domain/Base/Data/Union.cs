@@ -18,12 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using Allors.Workspace.Meta;
+
 namespace Allors.Workspace.Data
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Allors.Meta;
     using Allors.Protocol.Data;
 
     public class Union : IExtentOperator

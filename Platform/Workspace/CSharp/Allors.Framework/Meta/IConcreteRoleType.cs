@@ -1,4 +1,4 @@
-namespace Allors.Meta
+namespace Allors.Workspace.Meta
 {
     public interface IConcreteRoleType
     {

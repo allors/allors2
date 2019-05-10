@@ -50,6 +50,7 @@
     <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
+    <ProjectReference Include="..\..\Autotest\Model\Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,10 @@
     <None Update="appSettings.osx.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="generated\" />
   </ItemGroup>
 
 </Project>
