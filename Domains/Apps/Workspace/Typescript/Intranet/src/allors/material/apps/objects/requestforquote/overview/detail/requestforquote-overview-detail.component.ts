@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -15,7 +15,7 @@ import { SaveService, FiltersService } from '../../../../../../material';
   templateUrl: './requestforquote-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy {
+export class RequestForQuoteOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -42,6 +42,7 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     private saveService: SaveService,
     private fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

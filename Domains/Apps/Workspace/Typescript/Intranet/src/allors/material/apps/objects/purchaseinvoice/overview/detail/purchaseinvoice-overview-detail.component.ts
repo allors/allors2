@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, RefreshService, FetcherService } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { SaveService, FiltersService } from '../../../../../../material';
   templateUrl: './purchaseinvoice-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -83,6 +83,7 @@ export class PurchaseInvoiceOverviewDetailComponent implements OnInit, OnDestroy
     private route: ActivatedRoute,
     public fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

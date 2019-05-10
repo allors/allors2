@@ -1,4 +1,5 @@
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 
 namespace Tests.OrganisationTests
 {
@@ -23,7 +24,8 @@ namespace Tests.OrganisationTests
         {
             var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
 
-            this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             Assert.Equal("Organisation", this.Driver.Title);
         }
@@ -32,9 +34,10 @@ namespace Tests.OrganisationTests
         public void NavigateToList()
         {
             var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
-            var page = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
-            page.List.Click();
+            organisationOverview.Organisations.Click();
 
             Assert.Equal("Organisations", this.Driver.Title);
         }

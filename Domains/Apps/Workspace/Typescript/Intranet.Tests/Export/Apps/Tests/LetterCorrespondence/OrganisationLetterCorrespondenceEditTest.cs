@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
+using src.allors.material.apps.objects.lettercorrespondence.edit;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
 
 namespace Tests.LetterCorrespondenceTests
 {
@@ -44,9 +47,11 @@ namespace Tests.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var page = this.organisationListPage.Select(organisation).NewLetterCorrespondence();
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var letterCorrespondenceEdit = new OrganisationOverviewComponent(this.organisationListPage.Driver).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            letterCorrespondenceEdit
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(employee.PartyName)
@@ -116,11 +121,16 @@ namespace Tests.LetterCorrespondenceTests
 
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
-            var organisationOverviewPage = this.organisationListPage.Select(organisation);
+            this.organisationListPage.Table.DefaultAction(organisation);
+            var organisationOverviewPage = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
-            var page = organisationOverviewPage.SelectLetterCorrespondence(editCommunicationEvent);
+            var communicationEventOverview = organisationOverviewPage.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
+            var letterCorrespondenceEdit = new LetterCorrespondenceEditComponent(organisationOverviewPage.Driver);
+            letterCorrespondenceEdit.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(organisation.PartyName)
                 .ToParty.Set(employee.PartyName)

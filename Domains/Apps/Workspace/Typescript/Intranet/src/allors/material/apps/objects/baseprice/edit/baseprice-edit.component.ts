@@ -9,8 +9,8 @@ import { Good, Part, PriceComponent, InternalOrganisation, Organisation, NonUnif
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData } from 'src/allors/material/base/services/object';
-import { SaveService } from 'src/allors/material';
+import { ObjectData } from '../../../../../../allors/material/base/services/object';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',

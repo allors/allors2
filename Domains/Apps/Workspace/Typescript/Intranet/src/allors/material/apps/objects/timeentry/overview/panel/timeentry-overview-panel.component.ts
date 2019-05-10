@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { TimeEntry } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
@@ -19,7 +19,7 @@ interface Row extends TableRow {
   templateUrl: './timeentry-overview-panel.component.html',
   providers: [PanelService]
 })
-export class TimeEntryOverviewPanelComponent implements OnInit {
+export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -48,6 +48,7 @@ export class TimeEntryOverviewPanelComponent implements OnInit {
     public deleteService: DeleteService,
     public editService: EditService
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

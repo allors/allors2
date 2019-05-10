@@ -1,3 +1,8 @@
+using Allors.Meta;
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
+using src.allors.material.apps.objects.emailaddress.create;
+using src.allors.material.apps.objects.emailaddress.edit;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -29,9 +34,11 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var page = this.personListPage.Select(person).NewEmailAddress();
+            this.personListPage.Table.DefaultAction(person);
+            var emailAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateEmailAddress();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+            emailAddressCreate
+                .ContactPurposes.Toggle("General Phone Number")
                 .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -44,7 +51,7 @@ namespace Tests.ElectronicAddressTests
             Assert.Equal(after.Length, before.Length + 1);
 
             var contactMechanism = after.Except(before).First();
-            
+
             Assert.Equal("me@myself.com", contactMechanism.ElectronicAddressString);
             Assert.Equal("description", contactMechanism.Description);
         }
@@ -67,9 +74,17 @@ namespace Tests.ElectronicAddressTests
 
             var before = new EmailAddresses(this.Session).Extent().ToArray();
 
-            var page = this.personListPage.Select(person).SelectElectronicAddress(electronicAddress);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverviewComponent = new PersonOverviewComponent(this.personListPage.Driver);
 
-            page.ElectronicAddressString.Set("me@myself.com")
+            var contactMechanismOverviewPanel = personOverviewComponent.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverviewPanel.Table.FindRow(electronicAddress);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            var emailAddressEditComponent = new EmailAddressEditComponent(this.Driver);
+            emailAddressEditComponent
+                .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();
 

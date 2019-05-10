@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
-import { NavigationService, Action, PanelService, RefreshService,  MetaService, ActionTarget } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService, MetaService, ActionTarget, TestScope } from '../../../../../../angular';
 import { Meta } from '../../../../../../meta';
 import { InventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { DeleteService, EditService, TableRow, Table, Sorter } from '../../../../..';
@@ -19,7 +19,7 @@ interface Row extends TableRow {
   templateUrl: './serialisedinventoryitem-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SerialisedInventoryItemComponent implements OnInit {
+export class SerialisedInventoryItemComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -49,9 +49,10 @@ export class SerialisedInventoryItemComponent implements OnInit {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     public overviewService: OverviewService,
-
     public deleteService: DeleteService,
-    public editService: EditService) {
+    public editService: EditService
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

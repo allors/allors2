@@ -1,4 +1,8 @@
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
+using src.allors.material.apps.objects.telecommunicationsnumber.create;
+using src.allors.material.apps.objects.telecommunicationsnumber.edit;
 
 namespace Tests.TelecommunicationsNumberTests
 {
@@ -51,10 +55,12 @@ namespace Tests.TelecommunicationsNumberTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var page = personOverview.NewTelecommunicationsNumber();
+            this.people.Table.DefaultAction(person);
+            new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreateTelecommunicationsNumber();
 
-            page.CountryCode.Set("111")
+            var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
+            createComponent
+                .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
@@ -85,11 +91,17 @@ namespace Tests.TelecommunicationsNumberTests
 
             var before = new TelecommunicationsNumbers(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
 
-            var page = personOverview.SelectTelecommunicationsNumber(this.editContactMechanism);
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverview.Table.FindRow(this.editContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
 
-            page.CountryCode.Set("111")
+            var editComponent = new TelecommunicationsNumberEditComponent(this.Driver);
+            editComponent
+                .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
                 .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)

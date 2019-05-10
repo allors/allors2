@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
+using src.allors.material.apps.objects.emailcommunication.edit;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.EmailCommunicationTests
 {
@@ -40,10 +43,12 @@ namespace Tests.EmailCommunicationTests
 
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewEmailCommunication();
+            this.personListPage.Table.DefaultAction(person);
+            var emailCommunicationEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateEmailCommunication();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            emailCommunicationEdit
+                .CommunicationEventState
+                .Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .FromParty.Set(employee.PartyName)
                 .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
@@ -101,14 +106,20 @@ namespace Tests.EmailCommunicationTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.personListPage.Select(person);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
-            var page = personOverview.SelectEmailCommunication(editCommunicationEvent);
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
+            var emailCommunicationEdit = new EmailCommunicationEditComponent(this.Driver);
+            emailCommunicationEdit
+                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(person.PartyName)
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)

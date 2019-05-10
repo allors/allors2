@@ -3,6 +3,8 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
+using System;
+
 namespace Autotest.Angular
 {
     using System.Collections.Generic;
@@ -15,13 +17,15 @@ namespace Autotest.Angular
 
         public Directive[] Directives { get; set; }
 
-        public Directive[] LocalDeclaredEntryComponents { get; set; }
+        public Directive[] LocalNonRoutedScopedComponents { get; set; }
 
         public Module[] LocalModules { get; set; }
 
         public Directive[] LocalRoutedComponents { get; set; }
 
         public Directive[] LocalEntryComponents { get; set; }
+
+        public Directive[] LocalScopedDirectives{ get; set; }
 
         public Module MainModule { get; set; }
 
@@ -112,6 +116,11 @@ namespace Autotest.Angular
 
             foreach (var directive in this.Directives)
             {
+                if (directive.Type?.Name == "PersonOverviewSummaryComponent")
+                {
+                    Console.WriteLine();
+                }
+
                 directive.BaseLoadTemplate();
             }
 
@@ -128,7 +137,9 @@ namespace Autotest.Angular
 
             this.LocalEntryComponents = this.Modules.SelectMany(v => v.EntryComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
 
-            this.LocalDeclaredEntryComponents = this.Modules.SelectMany(v => v.DeclaredEntryComponents).Distinct().Where(v => v.Reference.IsLocal).ToArray();
+            this.LocalScopedDirectives = this.Directives.Where(v => v.Scope != null && v.Reference.IsLocal).ToArray();
+
+            this.LocalNonRoutedScopedComponents = this.LocalScopedDirectives.Except(this.LocalRoutedComponents).ToArray();
         }
     }
 }

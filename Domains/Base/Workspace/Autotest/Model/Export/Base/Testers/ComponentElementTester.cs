@@ -27,7 +27,7 @@ namespace Autotest.Testers
 
                 if (this.NameAttribute != null)
                 {
-                    return $@"By.XPath(@""//{this.Element.Name}[@{this.NameAttribute.Value}='{this.PropertyName}'{this.ByScope}]"")";
+                    return $@"By.XPath(@""//{this.Element.Name}[@{this.NameAttribute.Value}='{this.PropertyName}'{this.ByScopeAnd}]"")";
                 }
 
                 return $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")";

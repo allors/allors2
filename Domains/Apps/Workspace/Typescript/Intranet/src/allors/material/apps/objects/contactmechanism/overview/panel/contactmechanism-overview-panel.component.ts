@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { PartyContactMechanism, ContactMechanism } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
@@ -17,7 +17,7 @@ interface Row extends TableRow {
   templateUrl: './contactmechanism-overview-panel.component.html',
   providers: [PanelService]
 })
-export class ContactMechanismOverviewPanelComponent implements OnInit {
+export class ContactMechanismOverviewPanelComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -43,10 +43,10 @@ export class ContactMechanismOverviewPanelComponent implements OnInit {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
-
     public deleteService: DeleteService,
     public editService: EditService
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

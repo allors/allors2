@@ -2,7 +2,7 @@ import { PrintDocument } from '../../../../../domain/generated/PrintDocument.g';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, Invoked, Action } from '../../../../../angular';
+import { Saved, ContextService, MetaService, RefreshService, Invoked, Action, TestScope } from '../../../../../angular';
 import { PurchaseInvoiceApproval } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../base/services/object';
@@ -10,13 +10,13 @@ import { PrintService } from '../../../services/actions/print/print.service';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './purchaseinvoiceapproval-edit.component.html',
   providers: [ContextService]
 })
-export class PurchaseInvoiceApprovalEditComponent implements OnInit, OnDestroy {
+export class PurchaseInvoiceApprovalEditComponent extends TestScope implements OnInit, OnDestroy {
 
   title: string;
   subTitle: string;
@@ -38,6 +38,7 @@ export class PurchaseInvoiceApprovalEditComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     private saveService: SaveService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 
@@ -92,7 +93,7 @@ export class PurchaseInvoiceApprovalEditComponent implements OnInit, OnDestroy {
     this.saveAndInvoke(this.allors.context.invoke(this.purchaseInvoiceApproval.Reject));
   }
 
-  saveAndInvoke(methodCall: Observable<Invoked> ): void {
+  saveAndInvoke(methodCall: Observable<Invoked>): void {
 
     this.allors.context
       .save()

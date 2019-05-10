@@ -8,7 +8,7 @@ import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { SaveService } from 'src/allors/material/base/services/save';
+import { SaveService } from '../../../../../../allors/material/base/services/save';
 
 @Component({
   templateUrl: './workeffortassignmentrate-edit.component.html',

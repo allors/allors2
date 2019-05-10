@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
 import { WorkEffortInventoryAssignment, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './workeffortinventoryassignment-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnInit {
+export class WorkEffortInventoryAssignmentOverviewPanelComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -49,6 +49,7 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent implements OnIn
     public deleteService: DeleteService,
     public editService: EditService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

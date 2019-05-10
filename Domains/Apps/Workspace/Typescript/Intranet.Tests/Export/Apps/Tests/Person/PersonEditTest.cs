@@ -1,5 +1,7 @@
 using src.allors.material.apps.objects.person.create;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
+using src.allors.material.apps.objects.person.overview.detail;
 
 namespace Tests.PersonTests
 {
@@ -26,12 +28,12 @@ namespace Tests.PersonTests
         [Fact]
         public void Create()
         {
-            this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonCreateComponent(this.Driver);
+            var personCreate = this.people.CreatePerson();
 
-            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            personCreate
+                .Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")
@@ -66,10 +68,11 @@ namespace Tests.PersonTests
             var person = before.First(v => v.PartyName.Equals("John0 Doe0"));
             var id = person.Id;
 
-            var personOverview = this.people.Select(person);
-            var page = personOverview.Edit();
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
+            var personOverviewDetail = personOverview.PersonOverviewDetail.Click();
 
-            page.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            personOverviewDetail.Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")

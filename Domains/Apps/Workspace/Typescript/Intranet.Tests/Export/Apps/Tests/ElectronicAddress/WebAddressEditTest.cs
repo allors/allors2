@@ -1,4 +1,8 @@
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
+using src.allors.material.apps.objects.webaddress.create;
+using src.allors.material.apps.objects.webaddress.edit;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -34,10 +38,11 @@ namespace Tests.ElectronicAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.personListPage.Select(person);
-            var page = personOverview.NewWebAddress();
+            this.personListPage.Table.DefaultAction(person);
+            var webAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateWebAddress();
 
-            page.ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).BillingAddress.Name)
+            webAddressCreate
+                .ContactPurposes.Toggle("General Email Address")
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();
@@ -73,9 +78,17 @@ namespace Tests.ElectronicAddressTests
 
             var before = new WebAddresses(this.Session).Extent().ToArray();
 
-            var page = this.personListPage.Select(person).SelectElectronicAddress(editContactMechanism);
+            this.personListPage.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
-            page.ElectronicAddressString.Set("wwww.allors.com")
+            var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
+            var row = contactMechanismOverview.Table.FindRow(editContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
+
+            var webAddressEdit = new WebAddressEditComponent(this.Driver);
+            webAddressEdit
+                .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();
 

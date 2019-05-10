@@ -3,7 +3,7 @@ import { PanelService, NavigationService, MetaService, Invoked, RefreshService, 
 import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
-import { Sort, Equals } from 'src/allors/framework';
+import { Sort, Equals } from '../../../../../../../allors/framework';
 import { PrintService } from '../../../../../../material';
 
 @Component({

@@ -8,7 +8,7 @@ import { PostalAddress, PostalBoundary, Country, Party, PartyContactMechanism } 
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './postaladdress-edit.component.html',

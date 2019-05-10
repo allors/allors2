@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService,  Action, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { SalesTerm, SalesInvoice, SalesOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
@@ -7,7 +7,6 @@ import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 import { MatSnackBar } from '@angular/material';
 
 import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
-import { RoleType, ConcreteRoleType } from 'src/allors/framework/meta/Data';
 interface Row extends TableRow {
   object: SalesTerm;
   name: string;
@@ -20,7 +19,7 @@ interface Row extends TableRow {
   templateUrl: './salesterm-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SalesTermOverviewPanelComponent {
+export class SalesTermOverviewPanelComponent extends TestScope {
   container: any;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
@@ -57,11 +56,11 @@ export class SalesTermOverviewPanelComponent {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
-
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar
   ) {
+    super();
 
     this.m = this.metaService.m;
 

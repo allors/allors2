@@ -1,4 +1,5 @@
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
 
 namespace Tests.PersonTests
 {
@@ -22,7 +23,8 @@ namespace Tests.PersonTests
         public void Title()
         {
             var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
-            this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
         }
 
@@ -30,10 +32,11 @@ namespace Tests.PersonTests
         public void NavigateToList()
         {
             var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
-            var overviewPage = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var overviewPage = new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
 
-            overviewPage.List.Click();
+            overviewPage.People.Click();
 
             Assert.Equal("People", this.Driver.Title);
         }

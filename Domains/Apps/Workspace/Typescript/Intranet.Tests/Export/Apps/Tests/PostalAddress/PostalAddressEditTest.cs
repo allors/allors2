@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.contactmechanism.overview.panel;
 using src.allors.material.apps.objects.person.list;
+using src.allors.material.apps.objects.person.overview;
+using src.allors.material.apps.objects.postaladdress.edit;
 
 namespace Tests.PostalAddressTests
 {
@@ -53,10 +56,12 @@ namespace Tests.PostalAddressTests
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
 
-            var personOverview = this.people.Select(person);
-            var page = personOverview.NewPostalAddress();
+            this.people.Table.DefaultAction(person);
+            var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
 
-            page.Address1.Set("addressline 1")
+            postalAddressEditComponent
+                .ContactPurposes.Toggle("General correspondence address")
+                .Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
@@ -95,11 +100,16 @@ namespace Tests.PostalAddressTests
 
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 
-            var personOverview = this.people.Select(person);
+            this.people.Table.DefaultAction(person);
+            var personOverview = new PersonOverviewComponent(this.people.Driver);
 
-            var page = personOverview.SelectPostalAddress(this.editContactMechanism);
+            var PanelComponent = personOverview.ContactmechanismOverviewPanel.Click();
+            var row = PanelComponent.Table.FindRow(this.editContactMechanism);
+            var cell = row.FindCell("contact");
+            cell.Click();
 
-            page.Address1.Set("addressline 1")
+            var postalAddressEditComponent = new PostalAddressEditComponent(this.Driver);
+            postalAddressEditComponent.Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")

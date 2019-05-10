@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
+import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../../material';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
@@ -14,7 +14,7 @@ import { Meta } from '../../../../../../meta';
   templateUrl: './worktask-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
+export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -40,7 +40,9 @@ export class WorkTaskOverviewDetailComponent implements OnInit, OnDestroy {
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private fetcher: FetcherService) {
+    private fetcher: FetcherService
+  ) {
+    super();
 
     this.m = this.metaService.m;
 

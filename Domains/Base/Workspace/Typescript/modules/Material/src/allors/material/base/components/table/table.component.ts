@@ -4,7 +4,6 @@ import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { TableRow } from './TableRow';
 import { MatSort } from '@angular/material';
-import { Table } from './Table';
 
 @Component({
   // tslint:disable-next-line:component-selector

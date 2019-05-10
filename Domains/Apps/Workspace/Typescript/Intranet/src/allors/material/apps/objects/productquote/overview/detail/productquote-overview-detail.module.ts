@@ -12,7 +12,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../../base/component
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
-import { AllorsMaterialAutoCompleteModule } from 'src/allors/material/base/components/role/autocomplete';
+import { AllorsMaterialAutoCompleteModule } from '../../../../../../../allors/material/base/components/role/autocomplete';
 
 import { CommunicationEventOverviewPanelModule } from '../../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';

@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService,  MetaService } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
 import { WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, ObjectData } from '../../../../..';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './worktask-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkTaskOverviewPanelComponent implements OnInit {
+export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit {
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -46,8 +46,9 @@ export class WorkTaskOverviewPanelComponent implements OnInit {
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public overviewService: OverviewService,
-
-    public deleteService: DeleteService) {
+    public deleteService: DeleteService
+  ) {
+    super();
 
     this.m = this.metaService.m;
   }

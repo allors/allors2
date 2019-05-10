@@ -1,12 +1,12 @@
 import { Component, Self, Input, OnInit, HostBinding } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, ActionTarget } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, ActionTarget, TestScope } from '../../../../../../angular';
 import { ProductIdentification } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../../../material';
 import { ObjectService, ObjectData } from '../../../../../../material/base/services/object';
 import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
-import { Step } from 'src/allors/framework/database/data/Step';
+import { Step } from '../../../../../../../allors/framework/database/data/Step';
 
 interface Row extends TableRow {
   object: ProductIdentification;
@@ -20,7 +20,7 @@ interface Row extends TableRow {
   templateUrl: './productIdentification-panel.component.html',
   providers: [PanelService]
 })
-export class ProductIdentificationsPanelComponent implements OnInit {
+export class ProductIdentificationsPanelComponent extends TestScope implements OnInit {
   @Input() roleType: RoleType;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
@@ -50,6 +50,7 @@ export class ProductIdentificationsPanelComponent implements OnInit {
     public editService: EditService,
     public deleteService: DeleteService,
   ) {
+    super();
 
     this.m = this.metaService.m;
   }

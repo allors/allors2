@@ -10,7 +10,7 @@ import { Meta } from '../../../../../meta';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',

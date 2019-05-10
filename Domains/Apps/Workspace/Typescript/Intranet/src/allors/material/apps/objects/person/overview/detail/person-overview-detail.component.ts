@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, Person } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from 'src/allors/material';
+import { SaveService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -14,7 +14,7 @@ import { SaveService } from 'src/allors/material';
   templateUrl: './person-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
+export class PersonOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
@@ -36,6 +36,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     private saveService: SaveService,
     private fetcher: FetcherService,
   ) {
+    super();
 
     this.m = this.metaService.m;
 

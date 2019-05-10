@@ -1,4 +1,7 @@
+using src.allors.material.apps.objects.communicationevent.overview.panel;
 using src.allors.material.apps.objects.organisation.list;
+using src.allors.material.apps.objects.organisation.overview;
+using src.allors.material.apps.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
 {
@@ -65,10 +68,11 @@ namespace Tests.PhoneCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
             var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
 
-            var organisationOverviewPage = this.organisations.Select(organisation);
-            var page = organisationOverviewPage.NewPhoneCommunication();
+            this.organisations.Table.DefaultAction(organisation);
+            var phoneCommunication = new OrganisationOverviewComponent(this.organisations.Driver).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
 
-            page.LeftVoiceMail.Set(true)
+            phoneCommunication
+                .LeftVoiceMail.Set(true)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .Subject.Set("subject")
@@ -116,11 +120,17 @@ namespace Tests.PhoneCommunicationTests
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var personOverview = this.organisations.Select(organisation);
+            this.organisations.Table.DefaultAction(organisation);
+            var personOverview = new OrganisationOverviewComponent(this.organisations.Driver);
 
-            var page = personOverview.SelectPhoneCommunication(this.editCommunicationEvent);
+            var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
+            var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);
+            var cell = row.FindCell("description");
+            cell.Click();
 
-            page.LeftVoiceMail.Set(false)
+            var phoneCommunicationEdit = new PhoneCommunicationEditComponent(personOverview.Driver);
+            phoneCommunicationEdit
+                .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
                 .FromParty.Set(organisation.PartyName)

@@ -141,8 +141,8 @@ namespace Tests
         public void Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
-            var page = new LoginComponent(this.Driver);
-            page.Login();
+            var login = new LoginComponent(this.Driver);
+            login.Login();
         }
     }
 }

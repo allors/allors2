@@ -1,8 +1,7 @@
-﻿using Allors.Meta;
-using Autotest;
-
-namespace Allors
+﻿namespace Allors
 {
+    using Allors.Meta;
+    using Autotest;
     using System;
     using System.IO;
 
@@ -14,7 +13,6 @@ namespace Allors
         {
             try
             {
-
                 string[,] config =
                 {
                     {
@@ -63,6 +61,7 @@ namespace Allors
                 model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/meta.json"));
                 model.LoadProject(new FileInfo("./Workspace/Autotest/Angular/dist/project.json"));
                 model.LoadMenu(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/menu.json"));
+                model.LoadDialogs(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/dialogs.json"));
 
                 switch (args.Length)
                 {

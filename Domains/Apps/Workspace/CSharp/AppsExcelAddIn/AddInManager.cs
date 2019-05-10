@@ -3,7 +3,6 @@
     using System;
     using System.Configuration;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
@@ -11,7 +10,6 @@
     using Allors.Workspace;
     using Allors.Workspace.Client;
 
-    using Microsoft.Office.Core;
     using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;

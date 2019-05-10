@@ -4,7 +4,7 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { BasePrice, PriceComponent, SupplierOffering, Part } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { Equals, Sort } from 'src/allors/framework';
+import { Equals, Sort } from '../../../../../../../allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector

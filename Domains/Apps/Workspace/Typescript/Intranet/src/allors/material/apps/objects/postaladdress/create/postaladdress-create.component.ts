@@ -8,8 +8,8 @@ import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContac
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap } from 'rxjs/operators';
-import { ObjectData } from 'src/allors/material/base/services/object';
-import { SaveService } from 'src/allors/material';
+import { ObjectData } from '../../../../../../allors/material/base/services/object';
+import { SaveService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './postaladdress-create.component.html',

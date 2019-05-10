@@ -185,6 +185,7 @@
     <Compile Include="generated\AgreementPricingProgram.g.cs" />
     <Compile Include="generated\AgreementTerm.g.cs" />
     <Compile Include="generated\Amortization.g.cs" />
+    <Compile Include="generated\ApproveTask.g.cs" />
     <Compile Include="generated\AssetAssignmentStatus.g.cs" />
     <Compile Include="generated\Auditable.g.cs" />
     <Compile Include="generated\AutomatedAgent.g.cs" />
@@ -477,6 +478,7 @@
     <Compile Include="generated\ProductNumber.g.cs" />
     <Compile Include="generated\ProductQuality.g.cs" />
     <Compile Include="generated\ProductQuote.g.cs" />
+    <Compile Include="generated\ProductQuoteApproval.g.cs" />
     <Compile Include="generated\ProductQuoteVersion.g.cs" />
     <Compile Include="generated\ProductType.g.cs" />
     <Compile Include="generated\ProfessionalAssignment.g.cs" />
@@ -488,6 +490,7 @@
     <Compile Include="generated\Province.g.cs" />
     <Compile Include="generated\PurchaseAgreement.g.cs" />
     <Compile Include="generated\PurchaseInvoice.g.cs" />
+    <Compile Include="generated\PurchaseInvoiceApproval.g.cs" />
     <Compile Include="generated\PurchaseInvoiceItem.g.cs" />
     <Compile Include="generated\PurchaseInvoiceItemState.g.cs" />
     <Compile Include="generated\PurchaseInvoiceItemVersion.g.cs" />
@@ -495,7 +498,11 @@
     <Compile Include="generated\PurchaseInvoiceType.g.cs" />
     <Compile Include="generated\PurchaseInvoiceVersion.g.cs" />
     <Compile Include="generated\PurchaseOrder.g.cs" />
+    <Compile Include="generated\PurchaseOrderApprovalLevel1.g.cs" />
+    <Compile Include="generated\PurchaseOrderApprovalLevel2.g.cs" />
     <Compile Include="generated\PurchaseOrderItem.g.cs" />
+    <Compile Include="generated\PurchaseOrderItemPaymentState.g.cs" />
+    <Compile Include="generated\PurchaseOrderItemShipmentState.g.cs" />
     <Compile Include="generated\PurchaseOrderItemState.g.cs" />
     <Compile Include="generated\PurchaseOrderItemVersion.g.cs" />
     <Compile Include="generated\PurchaseOrderPaymentState.g.cs" />
@@ -521,6 +528,7 @@
     <Compile Include="generated\Receipt.g.cs" />
     <Compile Include="generated\RecurringCharge.g.cs" />
     <Compile Include="generated\Region.g.cs" />
+    <Compile Include="generated\RepeatingPurchaseInvoice.g.cs" />
     <Compile Include="generated\RepeatingSalesInvoice.g.cs" />
     <Compile Include="generated\Request.g.cs" />
     <Compile Include="generated\RequestForInformation.g.cs" />
@@ -615,7 +623,6 @@
     <Compile Include="generated\SurchargeComponent.g.cs" />
     <Compile Include="generated\Task.g.cs" />
     <Compile Include="generated\TaskAssignment.g.cs" />
-    <Compile Include="generated\TaskList.g.cs" />
     <Compile Include="generated\TaxDocument.g.cs" />
     <Compile Include="generated\TelecommunicationsNumber.g.cs" />
     <Compile Include="generated\Template.g.cs" />
@@ -625,6 +632,7 @@
     <Compile Include="generated\Threshold.g.cs" />
     <Compile Include="generated\TimeAndMaterialsService.g.cs" />
     <Compile Include="generated\TimeEntry.g.cs" />
+    <Compile Include="generated\TimeEntryBilling.g.cs" />
     <Compile Include="generated\TimeFrequency.g.cs" />
     <Compile Include="generated\TimePeriodUsage.g.cs" />
     <Compile Include="generated\TimeSheet.g.cs" />
@@ -657,6 +665,7 @@
     <Compile Include="generated\WebSiteCommunicationVersion.g.cs" />
     <Compile Include="generated\WorkEffort.g.cs" />
     <Compile Include="generated\WorkEffortAssignmentRate.g.cs" />
+    <Compile Include="generated\WorkEffortBilling.g.cs" />
     <Compile Include="generated\WorkEffortFixedAssetAssignment.g.cs" />
     <Compile Include="generated\WorkEffortInventoryAssignment.g.cs" />
     <Compile Include="generated\WorkEffortInventoryAssignmentVersion.g.cs" />
