@@ -34,6 +34,10 @@
         <div class="row">
           <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
           <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.PreferredCurrency" [options]="currencies" display="Name"></a-mat-select>
           <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
         </div>
 

@@ -6,11 +6,12 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship } from '../../../../../domain';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CurrencyIndex } from '@angular/common/src/i18n/locale_data';
 
 @Component({
   templateUrl: './person-create.component.html',
@@ -45,6 +46,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
+  currencies: Currency[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -76,6 +78,10 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.Name),
+            }),
             pull.GenderType({
               predicate: new Equals({ propertyType: m.GenderType.IsActive, value: true }),
               sort: new Sort(m.GenderType.Name),
@@ -109,6 +115,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
         this.organisation = loaded.objects.Organisation as Organisation;
         this.organisations = loaded.collections.Organisations as Organisation[];
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
@@ -121,6 +128,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
         this.person = this.allors.context.create('Person') as Person;
         this.person.CollectiveWorkEffortInvoice = false;
+        this.person.PreferredCurrency = this.internalOrganisation.PreferredCurrency;
 
       });
   }

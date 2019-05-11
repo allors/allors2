@@ -20,7 +20,7 @@ namespace Allors.Domain
     public partial class PurchaseInvoiceTypes
     {
         private static readonly Guid PurchaseInvoiceId = new Guid("D08F0309-A4CB-4ab7-8F75-3BB11DCF3783");
-        private static readonly Guid CustomerReturnId = new Guid("0187D927-81F5-4d6a-9847-58B674AD3E6A");
+        private static readonly Guid PurchaseReturnId = new Guid("0187D927-81F5-4d6a-9847-58B674AD3E6A");
         private static readonly Guid CommissionId = new Guid("92DF3246-CC44-4ab8-94F1-E0039261EA60");
         private static readonly Guid PayrollId = new Guid("5C637EA9-5F0A-4bd7-80BF-FFBA01EC1756");
 
@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         public PurchaseInvoiceType PurchaseInvoice => this.Cache[PurchaseInvoiceId];
 
-        public PurchaseInvoiceType CustomerReturn => this.Cache[CustomerReturnId];
+        public PurchaseInvoiceType PurchaseReturn => this.Cache[PurchaseReturnId];
 
         public PurchaseInvoiceType Commission => this.Cache[CommissionId];
 
@@ -50,9 +50,9 @@ namespace Allors.Domain
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Customer return")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediet nota retour").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CustomerReturnId)
+                .WithName("Purchase return")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aankoop factuur retour").WithLocale(dutchLocale).Build())
+                .WithUniqueId(PurchaseReturnId)
                 .WithIsActive(true)
                 .Build();
             

@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, Person } from '../../../../../../domain';
+import { Enumeration, InternalOrganisation, Locale, Organisation, Person, Currency } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../../allors/material';
@@ -26,6 +26,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
   salutations: Enumeration[];
 
   private subscription: Subscription;
+  currencies: Currency[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -94,6 +95,10 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.Name),
+            }),
             pull.GenderType({
               predicate: new Equals({ propertyType: m.GenderType.IsActive, value: true }),
               sort: new Sort(m.GenderType.Name),
@@ -111,6 +116,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
             pull.Person({
               object: id,
               include: {
+                PreferredCurrency: x,
                 Gender: x,
                 Salutation: x,
                 Locale: x,
@@ -127,6 +133,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
 
         this.person = loaded.objects.Person as Person;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
