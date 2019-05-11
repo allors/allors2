@@ -1,15 +1,13 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService, ActionTarget, Invoked, ContextService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
 import { RepeatingPurchaseInvoice, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
-import { Equals } from '../../../../../../framework';
 import * as moment from 'moment';
 
 import { MatSnackBar } from '@angular/material';
 
 import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
-import { repeat } from 'rxjs/operators';
 
 interface Row extends TableRow {
   object: RepeatingPurchaseInvoice;
@@ -60,7 +58,6 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     public deleteService: DeleteService,
     public snackBar: MatSnackBar,
     private fetcher: FetcherService,
-    private internalOrganisationId: InternalOrganisationId,
   ) {
     super();
 
@@ -96,7 +93,7 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     const pullName = `${panel.name}_${this.m.RepeatingPurchaseInvoice.name}`;
 
     panel.onPull = (pulls) => {
-      const { pull, x, m } = this.metaService;
+      const { pull, x } = this.metaService;
 
       const id = this.panel.manager.id;
 

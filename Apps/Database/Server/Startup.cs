@@ -187,7 +187,7 @@
 
             app.UseAuthentication();
 
-            app.UseCors("AllowAll");
+            app.UseCors("AllowAngular");
 
             app.UseExceptionHandler(appBuilder =>
             {

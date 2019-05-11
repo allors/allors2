@@ -40,7 +40,7 @@ export class DeleteAction implements Action {
   description = () => (this.config && this.config.description) || this.methodType.name;
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {
-      return target.length > 0 ? !(target[0] as Deletable).CanExecuteDelete : true;
+      return target.length > 0 ? !(target[0] as Deletable)[`CanExecute${this.methodType.name}`] : true;
     } else {
       return !(target as Deletable).CanExecuteDelete;
     }
