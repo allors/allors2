@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService, TestScope } from '../../../../../../angular';
 import { RepeatingPurchaseInvoice, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
@@ -57,7 +57,6 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     public editService: EditService,
     public deleteService: DeleteService,
     public snackBar: MatSnackBar,
-    private fetcher: FetcherService,
   ) {
     super();
 
@@ -98,7 +97,6 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
       const id = this.panel.manager.id;
 
       pulls.push(
-        this.fetcher.internalOrganisation,
         pull.Organisation({
           name: pullName,
           object: id,
@@ -116,11 +114,10 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     };
 
     panel.onPulled = (loaded) => {
-
       this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
       const repeatingInvoices = loaded.collections[pullName] as RepeatingPurchaseInvoice[];
-      this.objects = repeatingInvoices.filter(v => v.InternalOrganisation === this.internalOrganisation)
+      this.objects = repeatingInvoices.filter(v => v.InternalOrganisation === this.internalOrganisation);
 
       this.table.data = this.objects.map((v) => {
         return {

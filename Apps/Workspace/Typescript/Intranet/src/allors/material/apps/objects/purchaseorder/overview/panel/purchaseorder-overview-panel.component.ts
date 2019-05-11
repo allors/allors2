@@ -1,18 +1,20 @@
 import { Component, Self, HostBinding } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService } from '../../../../../../angular';
-import { PurchaseOrder } from '../../../../../../domain';
+import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService } from '../../../../../../angular';
+import { PurchaseOrder, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, MethodService } from '../../../../..';
 import { ObjectService, ObjectData } from '../../../../../base/services/object';
 
 interface Row extends TableRow {
   object: PurchaseOrder;
-  type: string;
+  number: string;
   description: string;
   reference: string;
   totalExVat: string;
   state: string;
+  shipmentState: string;
+  paymentState: string;
 }
 
 @Component({
@@ -22,6 +24,7 @@ interface Row extends TableRow {
   providers: [ContextService, PanelService]
 })
 export class PurchaseOrderOverviewPanelComponent extends TestScope {
+  internalOrganisation: Organisation;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -54,6 +57,7 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
     public overviewService: OverviewService,
     public deleteService: DeleteService,
     public printService: PrintService,
+    private fetcher: FetcherService,
   ) {
     super();
 
@@ -74,11 +78,13 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'type', sort },
+        { name: 'number', sort },
         { name: 'description', sort },
         { name: 'reference', sort },
         { name: 'totalExVat', sort },
         { name: 'state', sort },
+        { name: 'shipmentState', sort },
+        { name: 'paymentState', sort },
       ],
       actions: [
         this.overviewService.overview(),
@@ -97,6 +103,7 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
       const { id } = this.panel.manager;
 
       pulls.push(
+        this.fetcher.internalOrganisation,
         pull.Organisation({
           name: pullName,
           object: id,
@@ -104,29 +111,36 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
             PurchaseOrdersWhereTakenViaSupplier: {
               include: {
                 PurchaseOrderState: x,
+                PurchaseOrderShipmentState: x,
                 PurchaseOrderPaymentState: x,
                 PrintDocument: {
                   Media: x
                 },
-              }
+              },
             }
           }
         }));
   };
 
     this.panel.onPulled = (loaded) => {
-      this.objects = loaded.collections[pullName] as PurchaseOrder[];
+      this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+
+      const purchaseOrders = loaded.collections[pullName] as PurchaseOrder[];
+      this.objects = purchaseOrders.filter(v => v.OrderedBy === this.internalOrganisation);
+      this.objects.sort((a, b) => (a.OrderNumber > b.OrderNumber) ? 1 : ((b.OrderNumber > a.OrderNumber) ? -1 : 0));
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            type: v.objectType.name,
+            number: v.OrderNumber,
             description: v.Description,
             reference: v.CustomerReference,
             totalExVat: v.TotalExVat.toString(),
             state: v.PurchaseOrderState.Name,
+            shipmentState: v.PurchaseOrderShipmentState.Name,
+            paymentState: v.PurchaseOrderPaymentState.Name,
           } as Row;
         });
       }

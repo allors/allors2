@@ -35,6 +35,23 @@ namespace Allors.Domain
 
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
 
+        public bool CanInvoice
+        {
+            get
+            {
+                if (this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem &&
+                    this.PurchaseOrderItemShipmentState.IsReceived || this.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!this.ExistPart && this.QuantityReceived == 1))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+
+                }
+            }
+        }
+
         public string SupplierReference
         {
             get

@@ -98,7 +98,7 @@ namespace Allors.Domain
             List<PurchaseOrderItem> orderItemsToBill = new List<PurchaseOrderItem>();
             foreach (PurchaseOrder purchaseOrder in orderCandidates)
             {
-                foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.PurchaseOrderItems)
+                foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.ValidOrderItems)
                 {
                     if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
                         purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))

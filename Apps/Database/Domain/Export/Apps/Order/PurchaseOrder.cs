@@ -58,7 +58,24 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnBuild(ObjectOnBuild method)
+        public bool CanInvoice
+        {
+            get
+            {
+                foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+                {
+                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
+                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public void AppsOnInit(ObjectOnInit method)
         {
             if (!this.ExistPurchaseOrderState)
             {
@@ -75,11 +92,6 @@ namespace Allors.Domain
                 this.PurchaseOrderPaymentState = new PurchaseOrderPaymentStates(this.Strategy.Session).NotPaid;
             }
 
-            if (this.ExistTakenViaSupplier)
-            {
-                this.PreviousTakenViaSupplier = this.TakenViaSupplier;
-            }
-
             if (!this.ExistOrderDate)
             {
                 this.OrderDate = this.strategy.Session.Now();
@@ -88,6 +100,30 @@ namespace Allors.Domain
             if (!this.ExistEntryDate)
             {
                 this.EntryDate = this.strategy.Session.Now();
+            }
+
+            if (!this.ExistOrderedBy)
+            {
+                var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
+                if (internalOrganisations.Count() == 1)
+                {
+                    this.OrderedBy = internalOrganisations.First();
+                }
+            }
+
+            if (!this.ExistOrderNumber)
+            {
+                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber(this.OrderDate.Year);
+            }
+
+            if (!this.ExistCurrency)
+            {
+                this.Currency = this.OrderedBy.PreferredCurrency;
+            }
+
+            if (!this.ExistFacility && this.OrderedBy.StoresWhereInternalOrganisation.Count == 1)
+            {
+                this.Facility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
         }
 
@@ -113,12 +149,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             #region Derivations and Validations
-            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
-            if (!this.ExistOrderedBy && internalOrganisations.Count() == 1)
-            {
-                this.OrderedBy = internalOrganisations.First();
-            }
 
             this.SecurityTokens = new[]
             {
@@ -126,21 +156,6 @@ namespace Allors.Domain
                 this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken,
                 this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken
             };
-
-            if (!this.ExistOrderNumber)
-            {
-                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber(this.OrderDate.Year);
-            }
-
-            if (!this.ExistCurrency)
-            {
-                this.Currency = this.OrderedBy.PreferredCurrency;
-            }
-
-            if (!this.ExistFacility && this.OrderedBy.StoresWhereInternalOrganisation.Count == 1)
-            {
-                this.Facility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
-            }
 
             Organisation supplier = this.TakenViaSupplier as Organisation;
             if (supplier != null)
@@ -279,7 +294,7 @@ namespace Allors.Domain
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            if (this.PurchaseInvoicesWherePurchaseOrder.Count > 0)
+            if (!this.CanInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
@@ -450,7 +465,7 @@ namespace Allors.Domain
 
         public void AppsInvoice(PurchaseOrderInvoice method)
         {
-            if (!this.PurchaseInvoicesWherePurchaseOrder.Any())
+            if (this.CanInvoice)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.TakenViaSupplier)
@@ -473,32 +488,35 @@ namespace Allors.Domain
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
-                    var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
-                        .WithAssignedUnitPrice(orderItem.UnitPrice)
-                        .WithPart(orderItem.Part)
-                        .WithQuantity(orderItem.QuantityOrdered)
-                        .WithDescription(orderItem.Description)
-                        .WithInternalComment(orderItem.InternalComment)
-                        .WithMessage(orderItem.Message)
-                        .Build();
-
-                    if (invoiceItem.ExistPart)
+                    if (orderItem.CanInvoice)
                     {
-                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
-                    }
-                    else
-                    {
-                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).WorkDone;
-                    }
+                        var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
+                            .WithAssignedUnitPrice(orderItem.UnitPrice)
+                            .WithPart(orderItem.Part)
+                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithDescription(orderItem.Description)
+                            .WithInternalComment(orderItem.InternalComment)
+                            .WithMessage(orderItem.Message)
+                            .Build();
 
-                    purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+                        if (invoiceItem.ExistPart)
+                        {
+                            invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
+                        }
+                        else
+                        {
+                            invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).WorkDone;
+                        }
 
-                    new OrderItemBillingBuilder(this.Strategy.Session)
-                        .WithQuantity(orderItem.QuantityOrdered)
-                        .WithAmount(orderItem.TotalBasePrice)
-                        .WithOrderItem(orderItem)
-                        .WithInvoiceItem(invoiceItem)
-                        .Build();
+                        purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+
+                        new OrderItemBillingBuilder(this.Strategy.Session)
+                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithAmount(orderItem.TotalBasePrice)
+                            .WithOrderItem(orderItem)
+                            .WithInvoiceItem(invoiceItem)
+                            .Build();
+                    }
                 }
             }
         }
