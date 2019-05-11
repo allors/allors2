@@ -13,6 +13,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { PaymentOverviewPanelModule } from '../../payment/overview/panel/payment-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
@@ -37,6 +38,7 @@ import { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.comp
     PurchaseInvoiceItemOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
+    PaymentOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,

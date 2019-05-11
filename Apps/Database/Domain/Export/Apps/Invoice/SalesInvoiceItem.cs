@@ -153,6 +153,11 @@ namespace Allors.Domain
             this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
         }
 
+        public void CancelFromInvoice()
+        {
+            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).CancelledByInvoice;
+        }
+
         public void AppsCancel()
         {
             this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;

@@ -610,7 +610,7 @@ namespace Allors.Domain
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Cancelled;
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
-                salesInvoiceItem.AppsCancel();
+                salesInvoiceItem.CancelFromInvoice();
             }
         }
 

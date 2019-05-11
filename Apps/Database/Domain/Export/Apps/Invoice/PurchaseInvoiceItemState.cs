@@ -27,6 +27,10 @@ namespace Allors.Domain
 
         public bool IsReceived => this.UniqueId == PurchaseInvoiceItemStates.ReceivedId;
 
+        public bool IsPartiallyPaid => this.UniqueId == PurchaseInvoiceItemStates.PartiallyPaidId;
+
+        public bool IsNotPaid  => this.UniqueId == PurchaseInvoiceItemStates.NotPaidId;
+
         public bool IsPaid => this.UniqueId == PurchaseInvoiceItemStates.PaidId;
 
         public bool IsRejected => this.UniqueId == PurchaseInvoiceItemStates.RejectedId;

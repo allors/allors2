@@ -124,34 +124,76 @@ namespace Allors.Domain
             var purchaseInvoiceStates = new PurchaseInvoiceStates(this.Strategy.Session);
             var purchaseInvoiceItemStates = new PurchaseInvoiceItemStates(this.Strategy.Session);
 
-            foreach (PurchaseInvoiceItem purchaseInvoiceItem in ValidInvoiceItems)
+            foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
             {
-                if (this.PurchaseInvoiceState.IsCreated)
+                if (!invoiceItem.PurchaseInvoiceItemState.Equals(purchaseInvoiceItemStates.Cancelled) )
                 {
-                    if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsCancelledByInvoice)
+                    if (invoiceItem.AmountPaid == 0)
                     {
-                        purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Created;
+                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.NotPaid;
+                    }
+                    else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid > 0 && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
+                    {
+                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
+                    }
+                    else
+                    {
+                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
                     }
                 }
+            }
 
-                if (this.PurchaseInvoiceState.IsInProcess && purchaseInvoiceItem.PurchaseInvoiceItemState.IsCreated)
+            if (validInvoiceItems.Any()
+                && !this.PurchaseInvoiceState.Equals(purchaseInvoiceStates.Cancelled))
+            {
+                if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsPaid))
                 {
-                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.InProcess;
+                    this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
+                }
+                else if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsNotPaid))
+                {
+                    this.PurchaseInvoiceState = purchaseInvoiceStates.NotPaid;
+                }
+                else
+                {
+                    this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
                 }
 
-                if (this.PurchaseInvoiceState.IsPaid && purchaseInvoiceItem.PurchaseInvoiceItemState.IsInProcess)
+            }
+
+            this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
+
+            //// Perhaps payments are recorded at the item level.
+            if (this.AmountPaid == 0)
+            {
+                this.AmountPaid = this.InvoiceItems.Sum(v => v.AmountPaid);
+            }
+
+            // If disbursements are not matched at invoice level
+            if (this.AmountPaid > 0)
+            {
+                if (this.AmountPaid >= this.TotalIncVat)
                 {
-                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
+                    this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
+                }
+                else
+                {
+                    this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
                 }
 
-                if (this.PurchaseInvoiceState.IsCancelled)
+                foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
                 {
-                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Cancelled;
-                }
-
-                if (this.PurchaseInvoiceState.IsRejected)
-                {
-                    purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Rejected;
+                    if (!invoiceItem.PurchaseInvoiceItemState.Equals(purchaseInvoiceItemStates.Cancelled))
+                    {
+                        if (this.AmountPaid >= this.TotalIncVat)
+                        {
+                            invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
+                        }
+                        else
+                        {
+                            invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
+                        }
+                    }
                 }
             }
             #endregion

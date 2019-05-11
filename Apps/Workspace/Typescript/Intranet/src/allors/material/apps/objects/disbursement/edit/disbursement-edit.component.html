@@ -1,0 +1,19 @@
+<form *ngIf="disbursement" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="disbursement" [roleType]="m.Payment.Amount"></a-mat-input>
+      <a-mat-datepicker class="col-md" [object]="disbursement" [roleType]="m.Payment.EffectiveDate"></a-mat-datepicker>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
+  </div>
+
+</form>

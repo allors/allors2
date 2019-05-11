@@ -7,6 +7,7 @@ import { ids } from '../allors/meta/generated';
 import { BasepriceEditComponent, BasepriceEditModule } from '../allors/material/apps/objects/baseprice/edit/baseprice-edit.module';
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 import { CustomerRelationshipEditComponent, CustomerRelationshipEditModule } from '../allors/material/apps/objects/customerrelationship/edit/customerrelationship-edit.module';
+import { DisbursementEditComponent, DisbursementEditModule } from '../allors/material/apps/objects/disbursement/edit/disbursement-edit.module';
 import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors/material/apps/objects/emailaddress/create/emailaddress-create.module';
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/apps/objects/emailcommunication/edit/emailcommunication-edit.module';
@@ -55,7 +56,7 @@ import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../al
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/apps/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/apps/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
-//import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/apps/objects/timeentry/edit/timeentry-edit.module';
+// import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/apps/objects/timeentry/edit/timeentry-edit.module';
 import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/apps/objects/unifiedgood/create/unifiedgood-create.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/apps/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
@@ -75,6 +76,7 @@ export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
+  [ids.Disbursement]: DisbursementEditComponent,
   [ids.EanIdentification]: ProductIdentificationEditComponent,
   [ids.EmailAddress]: EmailAddressCreateComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
@@ -140,6 +142,7 @@ export const edit = {
   [ids.BasePrice]: BasepriceEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
+  [ids.Disbursement]: DisbursementEditComponent,
   [ids.EanIdentification]: ProductIdentificationEditComponent,
   [ids.EmailAddress]: EmailAddressEditComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
@@ -200,6 +203,7 @@ export const edit = {
     BasepriceEditModule,
     CatalogueEditModule,
     CustomerRelationshipEditModule,
+    DisbursementEditModule,
     EmailAddressCreateModule,
     EmailAddressEditModule,
     EmailCommunicationEditModule,
@@ -263,6 +267,7 @@ export const edit = {
     BasepriceEditComponent,
     CatalogueEditComponent,
     CustomerRelationshipEditComponent,
+    DisbursementEditComponent,
     EmailAddressCreateComponent,
     EmailAddressEditComponent,
     EmailCommunicationEditComponent,

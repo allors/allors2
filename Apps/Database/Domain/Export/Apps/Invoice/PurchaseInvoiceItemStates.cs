@@ -23,6 +23,8 @@ namespace Allors.Domain
         public static readonly Guid AwaitingApprovalId = new Guid("A91953F9-73C8-480E-8097-CA9709DF3E66");
         public static readonly Guid InProcessId = new Guid("72366881-A6CE-455f-80FF-A0E7295F2B8C");
         public static readonly Guid ReceivedId = new Guid("6B1F51FD-C3C6-4bd3-BBF0-1FCC66F8C455");
+        public static readonly Guid PartiallyPaidId = new Guid("DF7A7B6E-293F-432D-BE39-B92612652E29");
+        public static readonly Guid NotPaidId = new Guid("50AB37E3-A74C-44F9-92C2-6AFF42C2BB99");
         public static readonly Guid PaidId = new Guid("EC0FD4B0-C766-453e-98C4-36FEFEC38A69");
         public static readonly Guid RejectedId = new Guid("4F92EA82-7683-4417-945B-5B0434E390A2");
         public static readonly Guid CancelledId = new Guid("B983C7C4-4D18-4b53-966C-371D20DC4B2A");
@@ -37,6 +39,10 @@ namespace Allors.Domain
         public PurchaseInvoiceItemState InProcess => this.StateCache[InProcessId];
 
         public PurchaseInvoiceItemState Received => this.StateCache[ReceivedId];
+
+        public PurchaseInvoiceItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
+
+        public PurchaseInvoiceItemState NotPaid => this.StateCache[NotPaidId];
 
         public PurchaseInvoiceItemState Paid => this.StateCache[PaidId];
 
@@ -70,6 +76,16 @@ namespace Allors.Domain
             new PurchaseInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(ReceivedId)
                 .WithName("Received")
+                .Build();
+
+            new PurchaseInvoiceItemStateBuilder(this.Session)
+                .WithUniqueId(PartiallyPaidId)
+                .WithName("Partially Paid")
+                .Build();
+
+            new PurchaseInvoiceItemStateBuilder(this.Session)
+                .WithUniqueId(NotPaidId)
+                .WithName("Not Paid")
                 .Build();
 
             new PurchaseInvoiceItemStateBuilder(this.Session)
