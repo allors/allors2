@@ -48,6 +48,8 @@ namespace Allors.Domain
                 @this.QuoteNumber = @this.Issuer.NextQuoteNumber(@this.Strategy.Session.Now().Year);
             }
 
+            @this.Currency = @this.Currency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
+
             @this.Price = 0;
             foreach (QuoteItem item in @this.QuoteItems)
             {

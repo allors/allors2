@@ -6,11 +6,11 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, FetcherService, TestScope } from '../../../../../../angular';
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
-import { PullRequest, Sort } from '../../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../material';
 import { switchMap, filter } from 'rxjs/operators';
-import { VatRegime } from 'src/allors/domain/generated';
+import { VatRegime, Currency } from 'src/allors/domain/generated';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -32,6 +32,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
   private subscription: Subscription;
   legalForms: LegalForm[];
   vatRegimes: VatRegime[];
+  currencies: Currency[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -94,6 +95,10 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
             pull.Organisation({ object: id }),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.Name),
+            }),
             pull.CustomOrganisationClassification({
               sort: new Sort(m.CustomOrganisationClassification.Name)
             }),
@@ -116,6 +121,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
 
         this.organisation = loaded.objects.Organisation as Organisation;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];

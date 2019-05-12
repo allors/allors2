@@ -12,14 +12,14 @@
       <div class="row">
         <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.VatRegime" [options]="vatRegimes"
-          display="Name"></a-mat-select>
+                      display="Name"></a-mat-select>
       </div>
 
       <div class="row">
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.LegalForm" [options]="legalForms"
-          display="Description"></a-mat-select>
+                      display="Description"></a-mat-select>
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales"
-          display="Name"></a-mat-select>
+                      display="Name"></a-mat-select>
       </div>
 
       <div class="row">
@@ -28,13 +28,14 @@
             <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
           </mat-select>
         </mat-form-field>
+        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.PreferredCurrency" [options]="currencies" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
         <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
-          [options]="industries" display="Name" label="Industries" multiple="true"></a-mat-select>
-          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.CustomClassifications"
-          [options]="classifications" display="Name" label="Classifications" multiple="true"></a-mat-select>
+                      [options]="industries" display="Name" label="Industries" multiple="true"></a-mat-select>
+        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.CustomClassifications"
+                      [options]="classifications" display="Name" label="Classifications" multiple="true"></a-mat-select>
       </div>
 
       <div class="row">

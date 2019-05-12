@@ -25,14 +25,6 @@ namespace Allors.Domain
     {
         private bool IsDeletable => !this.ExistCurrentContacts;
 
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            if (!this.ExistLocale)
-            {
-                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
-            }
-        }
-
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

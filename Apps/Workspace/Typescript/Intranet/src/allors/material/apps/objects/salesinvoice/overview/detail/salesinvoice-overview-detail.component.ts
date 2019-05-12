@@ -115,6 +115,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             VatRegime: {
               VatRate: x
             },
+            Currency: x,
             BillToCustomer: x,
             BillToContactPerson: x,
             ShipToCustomer: x,
@@ -192,6 +193,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 SalesInvoiceState: x,
+                Currency: x
               },
             }),
             pull.VatRate(),

@@ -347,6 +347,9 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.order.Currency = this.order.ShipToCustomer.PreferredCurrency;
+        this.order.VatRegime = this.order.ShipToCustomer.VatRegime;
       });
   }
 

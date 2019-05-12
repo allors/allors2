@@ -131,6 +131,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               SalesTerms: {
                 TermType: x,
               },
+              Currency: x,
               BillToCustomer: x,
               BillToContactPerson: x,
               ShipToCustomer: x,
@@ -181,6 +182,10 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             name: billingProcessPullName,
             sort: new Sort(m.BillingProcess.Name),
           }),
+          pull.Currency({
+            predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+            sort: new Sort(m.Currency.Name),
+          }),
           pull.SerialisedInventoryItemState({
             name: serialisedInventoryItemStatePullName,
             predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -198,6 +203,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         this.orderItems = loaded.collections[salesOrderPullName] as SalesOrderItem[];
         this.salesInvoice = loaded.objects[salesInvoicePullName] as SalesInvoice;
         this.goods = loaded.collections[goodPullName] as Good[];
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.billingProcesses = loaded.collections[billingProcessPullName] as BillingProcess[];
         this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc264804fc0b20e265afd41fae2');
         this.inventoryItemStates = loaded.collections[serialisedInventoryItemStatePullName] as SerialisedInventoryItemState[];
@@ -224,6 +230,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             pull.SalesOrder({
               object: id,
               include: {
+                Currency: x,
                 Store: x,
                 OriginFacility: x,
                 ShipToCustomer: x,

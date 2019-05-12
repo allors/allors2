@@ -25,7 +25,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        [Derived]
         [Indexed]
         Currency Currency { get; set; }
 

@@ -275,6 +275,10 @@
     </div>
 
     <div class="row">
+      <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.Currency" [options]="currencies" display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
       <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AdvancePayment"></a-mat-input>
       <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-textarea>

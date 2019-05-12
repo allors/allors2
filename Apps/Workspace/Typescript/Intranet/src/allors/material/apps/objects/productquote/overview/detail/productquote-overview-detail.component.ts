@@ -129,6 +129,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
             pull.ProductQuote({
               object: id,
               include: {
+                Currency: x,
                 Receiver: x,
                 FullfillContactMechanism: x,
                 QuoteState: x,
@@ -247,6 +248,8 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
+
+        this.productQuote.Currency = this.productQuote.Receiver.PreferredCurrency;
       });
   }
 }

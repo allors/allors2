@@ -169,7 +169,7 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
       pull.Party({
         object: party,
         fetch: {
-          CurrentContacts: x
+          CurrentContacts: x,
         }
       })
     ];
@@ -187,6 +187,8 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
+
+        this.quote.Currency = this.quote.Receiver.PreferredCurrency;
       });
   }
 }

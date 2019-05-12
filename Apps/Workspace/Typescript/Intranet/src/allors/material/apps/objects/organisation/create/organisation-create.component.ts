@@ -14,7 +14,7 @@ import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { VatRegime } from 'src/allors/domain/generated';
+import { VatRegime, Currency } from 'src/allors/domain/generated';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -49,6 +49,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
 
   legalForms: LegalForm[];
   vatRegimes: VatRegime[];
+  currencies: Currency[];
 
   constructor(
     @Self() private allors: ContextService,
@@ -84,6 +85,10 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
             this.fetcher.locales,
             pull.Organisation({ object: id }),
             pull.OrganisationRole(),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.Name),
+            }),
             pull.CustomOrganisationClassification({
               sort: new Sort(m.CustomOrganisationClassification.Name)
             }),
@@ -148,8 +153,10 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
           this.organisation.IsManufacturer = false;
           this.organisation.IsInternalOrganisation = false;
           this.organisation.CollectiveWorkEffortInvoice = false;
+          this.organisation.PreferredCurrency = this.internalOrganisation.PreferredCurrency;
         }
 
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];

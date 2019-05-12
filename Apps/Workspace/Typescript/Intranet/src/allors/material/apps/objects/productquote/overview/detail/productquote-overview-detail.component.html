@@ -101,6 +101,10 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md-6" [object]="productQuote" [roleType]="m.ProductQuote.Currency" [options]="currencies" display="Name"></a-mat-select>
+        </div>
+  
+        <div class="row">
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.Description"></a-mat-textarea>
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
           <a-mat-textarea class="col-md-12" [object]="productQuote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>

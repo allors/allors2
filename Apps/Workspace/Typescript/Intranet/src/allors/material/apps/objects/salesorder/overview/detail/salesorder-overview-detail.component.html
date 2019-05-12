@@ -303,6 +303,10 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md-6" [object]="order" [roleType]="m.SalesOrder.Currency" [options]="currencies" display="Name"></a-mat-select>
+        </div>
+  
+        <div class="row">
           <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>
         </div>
 

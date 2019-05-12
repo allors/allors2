@@ -389,6 +389,9 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.CurrentContacts as Person[];
+
+        this.invoice.Currency = this.invoice.BillToCustomer.PreferredCurrency;
+        this.invoice.VatRegime = this.invoice.BillToCustomer.VatRegime;
       });
   }
 
