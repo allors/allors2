@@ -28,7 +28,8 @@ var framework = Argument( "framework", "netcoreapp2.2" );
 // PREPARATION
 ///////////////////////////////////////////////////////////////////////////////
 
-GitVersion gitVersion = GitVersion(new GitVersionSettings{ NoFetch = true });
+GitVersion gitVersion = GitVersion(new GitVersionSettings{ NoFetch = true, OutputType = GitVersionOutput.Json });
+GitVersion(new GitVersionSettings{OutPutType = GitVersionOutput.BuildServer});
 var assemblyVersion = gitVersion.AssemblySemVer;
 var packageVersion = gitVersion.NuGetVersion;
 
@@ -185,7 +186,11 @@ var buildTask = Task("Build")
     .IsDependentOn(appsTask);
 
 Task("Default")
-    .IsDependentOn(appsTask);
+    .IsDependentOn(appsTask)
+    .Does(()=>{
+        Information("NuGetVersion: {0}", gitVersion.NuGetVersion);
+        Information("InformationalVersion: {0}", gitVersion.InformationalVersion);
+    });
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
