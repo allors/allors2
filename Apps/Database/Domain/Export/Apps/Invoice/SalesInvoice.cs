@@ -548,7 +548,7 @@ namespace Allors.Domain
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
-                    .WithBilledFrom(this.BilledFrom)
+                    .WithBilledFrom((Organisation) this.BilledFrom)
                     .WithBilledFromContactPerson(this.BilledFromContactPerson)
                     .WithBilledTo((InternalOrganisation)this.BillToCustomer)
                     .WithBilledToContactPerson(this.BillToContactPerson)

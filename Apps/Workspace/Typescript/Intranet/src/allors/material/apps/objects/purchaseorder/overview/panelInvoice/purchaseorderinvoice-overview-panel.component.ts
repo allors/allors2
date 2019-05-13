@@ -1,6 +1,6 @@
 import { Component, Self, HostBinding } from '@angular/core';
 
-import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, ActionTarget } from '../../../../../../angular';
 import { PurchaseOrder, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, MethodService } from '../../../../..';
@@ -19,11 +19,11 @@ interface Row extends TableRow {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'purchaseorder-overview-panel',
-  templateUrl: './purchaseorder-overview-panel.component.html',
+  selector: 'purchaseorderinvoice-overview-panel',
+  templateUrl: './purchaseorderinvoice-overview-panel.component.html',
   providers: [ContextService, PanelService]
 })
-export class PurchaseOrderOverviewPanelComponent extends TestScope {
+export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
   internalOrganisation: Organisation;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
@@ -36,8 +36,9 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
   table: Table<Row>;
 
   delete: Action;
-  invoice: Action;
   edit: Action;
+  invoice: Action;
+  addToInvoice: Action;
 
   get createData(): ObjectData {
     return {
@@ -51,6 +52,7 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public objectService: ObjectService,
+    public factoryService: ObjectService,
     public methodService: MethodService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
@@ -69,7 +71,23 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
     this.panel.expandable = true;
 
     this.delete = this.deleteService.delete(this.panel.manager.context);
-    this.invoice = methodService.create(allors.context, this.m.PurchaseOrder.Invoice, { name: 'Invoice' });
+
+    this.addToInvoice = {
+      name: () => 'Add to invoice',
+      description: () => '',
+      disabled: (target: PurchaseOrder) => {
+        return !target.CanExecuteInvoice;
+      },
+      execute: (target: PurchaseOrder) => {
+        if (!Array.isArray(target)) {
+          this.addFromPurchaseOrder(target);
+        }
+      },
+      result: null
+    };
+    // this.invoice.result.subscribe((v) => {
+    //   this.table.selection.clear();
+    // });
 
     const sort = true;
     this.table = new Table({
@@ -86,7 +104,7 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
       actions: [
         this.overviewService.overview(),
         this.printService.print(),
-        this.invoice
+        this.addToInvoice
       ],
       defaultAction: this.overviewService.overview(),
       autoSort: true,
@@ -105,19 +123,21 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
 
       pulls.push(
         this.fetcher.internalOrganisation,
-        pull.Organisation({
+        pull.PurchaseInvoice({
           name: pullName,
           object: id,
           fetch: {
-            PurchaseOrdersWhereTakenViaSupplier: {
-              include: {
-                PurchaseOrderState: x,
-                PurchaseOrderShipmentState: x,
-                PurchaseOrderPaymentState: x,
-                PrintDocument: {
-                  Media: x
+            BilledFrom: {
+              PurchaseOrdersWhereTakenViaSupplier: {
+                include: {
+                  PurchaseOrderState: x,
+                  PurchaseOrderShipmentState: x,
+                  PurchaseOrderPaymentState: x,
+                  PrintDocument: {
+                    Media: x
+                  },
                 },
-              },
+              }
             }
           }
         }));
@@ -146,5 +166,15 @@ export class PurchaseOrderOverviewPanelComponent extends TestScope {
         });
       }
     };
+  }
+
+  public addFromPurchaseOrder(purchaseOrder: PurchaseOrder): void {
+
+    var a = purchaseOrder;
+  }
+
+  public addFromPurchaseOrders(purchaseOrders: PurchaseOrder[]): void {
+
+    var a = purchaseOrders;
   }
 }
