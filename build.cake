@@ -12,8 +12,7 @@
 // MODULES, TOOLS AND ADDINS
 ///////////////////////////////////////////////////////////////////////////////
 
-#module nuget:?package=Cake.DotNetTool.Module&version=0.3.0
-#tool dotnet:?package=GitVersion.Tool&version=5.0.0-beta2-91
+#tool nuget:?package=GitVersion.CommandLine&version=4.0.0
 #addin nuget:?package=Cake.Npm&version=0.17.0
 #addin nuget:?package=Cake.DoInDirectory&version=3.3.0
 
