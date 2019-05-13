@@ -29,12 +29,7 @@ var framework = Argument( "framework", "netcoreapp2.2" );
 ///////////////////////////////////////////////////////////////////////////////
 
 GitVersion gitVersion = GitVersion(new GitVersionSettings{ NoFetch = true, OutputType = GitVersionOutput.Json });
-GitVersion(new GitVersionSettings{OutPutType = GitVersionOutput.BuildServer});
-var assemblyVersion = gitVersion.AssemblySemVer;
-var packageVersion = gitVersion.NuGetVersion;
-
-var solutions = GetFiles("./**/*.sln");
-var solutionPaths = solutions.Select(solution => solution.GetDirectory());
+GitVersion(new GitVersionSettings{OutputType = GitVersionOutput.BuildServer});
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETTINGS
@@ -55,9 +50,9 @@ var dotNetCoreBuildSettings = new DotNetCoreBuildSettings
         NoIncremental = true,
         NoRestore = true,
         MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .SetVersion(assemblyVersion)
-            .WithProperty("FileVersion", packageVersion)
-            .WithProperty("InformationalVersion", packageVersion)
+            .SetVersion(gitVersion.AssemblySemVer)
+            .WithProperty("FileVersion", gitVersion.NuGetVersion)
+            .WithProperty("InformationalVersion", gitVersion.NuGetVersion)
             .WithProperty("nowarn", "7035")
     };
 
@@ -186,7 +181,7 @@ var buildTask = Task("Build")
     .IsDependentOn(appsTask);
 
 Task("Default")
-    .IsDependentOn(appsTask)
+    .IsDependentOn(buildTask)
     .Does(()=>{
         Information("NuGetVersion: {0}", gitVersion.NuGetVersion);
         Information("InformationalVersion: {0}", gitVersion.InformationalVersion);
