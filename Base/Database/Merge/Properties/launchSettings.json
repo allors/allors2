@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Merge": {
+      "commandName": "Project",
+      "commandLineArgs": "Database\\Resources\\Base Database\\Resources",
+      "workingDirectory": "C:\\Users\\koen\\Documents\\GitHub\\allors2\\Domains\\Base"
+    }
+  }
+}
