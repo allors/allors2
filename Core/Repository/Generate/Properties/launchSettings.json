@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Allors.Generate.Cmd": {
+      "commandName": "Project",
+      "commandLineArgs": "repository.csproj ../../core/repository/templates/meta.cs.stg ../database/meta/generated",
+      "workingDirectory": "C:\\Users\\KoenVanExem\\Documents\\Subversion\\garage\\src\\garage\\Repository"
+    }
+  }
+}
