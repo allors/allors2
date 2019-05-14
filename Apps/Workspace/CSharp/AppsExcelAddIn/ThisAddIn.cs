@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Excel = Microsoft.Office.Interop.Excel;
+using Allors.Excel;
+using NLog;
 using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
 
 namespace AppsExcelAddIn
 {
@@ -13,10 +9,19 @@ namespace AppsExcelAddIn
     {
         public AddInManager AddInManager { get; private set; }
 
-        private async void ThisAddIn_Startup(object sender, System.EventArgs e)
+        public Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
+        private async void ThisAddIn_Startup(object sender, System.EventArgs @event)
         {
-            this.AddInManager = new AddInManager(this.Application, this.CustomTaskPanes, Globals.Factory);
-            await this.AddInManager.Init();
+            try
+            {
+                this.AddInManager = new AddInManager(this.Application, this.CustomTaskPanes, Globals.Factory);
+                await this.AddInManager.Init();
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -34,7 +39,7 @@ namespace AppsExcelAddIn
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }

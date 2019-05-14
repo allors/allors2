@@ -9,7 +9,8 @@
     {
         public static void Handle(this Exception @this)
         {
-            LogManager.GetCurrentClassLogger().Error(@this);
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Error(@this);
             MessageBox.Show(@"System error occured. Please restart.");
         }
     }
