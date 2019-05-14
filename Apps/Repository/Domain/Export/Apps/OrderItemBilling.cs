@@ -7,9 +7,12 @@ namespace Allors.Repository
     #region Allors
     [Id("1f14fdb3-9e0f-4cea-b7c7-3ca2ab898f56")]
     #endregion
-    public partial class OrderItemBilling : Object 
+    public partial class OrderItemBilling : AccessControlledObject 
     {
         #region inherited properties
+
+        public Permission[] DeniedPermissions { get; set; }
+        public SecurityToken[] SecurityTokens { get; set; }
         #endregion
 
         #region Allors
@@ -20,6 +23,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public OrderItem OrderItem { get; set; }
 
         #region Allors
@@ -29,6 +33,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public InvoiceItem InvoiceItem { get; set; }
 
         #region Allors
@@ -39,6 +44,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Amount { get; set; }
         
         #region Allors
@@ -48,6 +54,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Quantity { get; set; }
 
         #region inherited methods
