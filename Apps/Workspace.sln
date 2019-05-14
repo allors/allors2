@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.539
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Domain", "Workspace\CSharp\Domain\Workspace.Domain.csproj", "{94474285-CAFB-4A71-AED2-D6A80564F543}"
 EndProject
@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppsExcelAddIn", "Workspace\CSharp\AppsExcelAddIn\AppsExcelAddIn.csproj", "{15E278BF-C374-4C63-8469-18B71AF991FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\Core\Database\Protocol\Allors.Protocol.csproj", "{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Workspace", "..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj", "{B01846A2-2E2B-4676-BE34-F9E14442F80F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Allors.Workspace", "..\Core\Workspace\CSharp\Framework\Allors.Workspace\Allors.Workspace.csproj", "{B01846A2-2E2B-4676-BE34-F9E14442F80F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj", "{399E472F-356C-4DCD-B8EC-60CC263542AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +42,18 @@ Global
 		{15E278BF-C374-4C63-8469-18B71AF991FA}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
 		{15E278BF-C374-4C63-8469-18B71AF991FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15E278BF-C374-4C63-8469-18B71AF991FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.ImmersiveVSTS|Any CPU.ActiveCfg = Release|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.ImmersiveVSTS|Any CPU.Build.0 = Release|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E472F-356C-4DCD-B8EC-60CC263542AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,8 +62,8 @@ Global
 		{94474285-CAFB-4A71-AED2-D6A80564F543} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 		{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
 		{15E278BF-C374-4C63-8469-18B71AF991FA} = {1543B471-0FF8-445A-B4F4-C961AA49C749}
-		{71FC859C-F4DC-4ADE-B7E3-E39363CC808A} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
 		{B01846A2-2E2B-4676-BE34-F9E14442F80F} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
+		{399E472F-356C-4DCD-B8EC-60CC263542AD} = {E0653FE1-5AED-4C7B-9846-A2C8C8EBD0DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53EAA948-FA5C-4843-99B4-FCF5FB7A9F55}

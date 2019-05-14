@@ -308,11 +308,11 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Core\Database\Protocol\Allors.Protocol.csproj">
-      <Project>{71fc859c-f4dc-4ade-b7e3-e39363cc808a}</Project>
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
+      <Project>{399e472f-356c-4dcd-b8ec-60cc263542ad}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Core\Workspace\CSharp\Framework\Allors.Workspace\Allors.Workspace.csproj">
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Workspace</Name>
     </ProjectReference>
@@ -337,7 +337,7 @@
     <ManifestKeyFile>AppsExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>6335A8411A23CF4347B22FEC734ECA16B72B109E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>99B958C75350CAB19214DBE4C0A3B646F1D1447A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

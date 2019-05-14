@@ -690,11 +690,11 @@
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Core\Database\Protocol\Allors.Protocol.csproj">
-      <Project>{71fc859c-f4dc-4ade-b7e3-e39363cc808a}</Project>
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
+      <Project>{399e472f-356c-4dcd-b8ec-60cc263542ad}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Core\Workspace\CSharp\Framework\Allors.Workspace\Allors.Workspace.csproj">
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Workspace</Name>
     </ProjectReference>
