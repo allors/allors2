@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>GitVersion.CommandLine</id>
+    <version>4.0.0</version>
+    <title>GitVersion.CommandLine</title>
+    <authors>GitTools and Contributors</authors>
+    <owners>GitTools and Contributors</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/GitTools/GitVersion</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/GitTools/GitVersion/master/docs/img/package_icon.png</iconUrl>
+    <description>Derives SemVer information from a repository following GitFlow or GitHubFlow.</description>
+    <releaseNotes>https://github.com/GitTools/GitVersion/releases</releaseNotes>
+    <language>en-AU</language>
+    <tags>Git Versioning GitVersion GitFlowVersion GitFlow GitHubFlow SemVer</tags>
+  </metadata>
+</package>
