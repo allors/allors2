@@ -22,6 +22,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Quantity { get; set; }
 
         #region Allors
@@ -33,6 +34,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Derived]
+        [Workspace]
         public decimal QuantityShipped { get; set; }
 
         #region Allors
@@ -44,6 +46,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Derived]
+        [Workspace]
         public decimal QuantityPicked { get; set; }
 
         #region Allors
@@ -53,6 +56,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Part Part { get; set; }
         
         #region Allors
@@ -61,6 +65,7 @@ namespace Allors.Repository
         [RoleId("b18cc4e1-0be7-48d7-9e92-efc1e3a3edca")]
         #endregion
         [Size(-1)]
+        [Workspace]
         public string ContentsDescription { get; set; }
         
         #region Allors
@@ -70,6 +75,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public Document[] Documents { get; set; }
       
         #region Allors
@@ -79,6 +85,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public ShipmentItem[] InResponseToShipmentItems { get; set; }
         
         #region Allors
@@ -88,6 +95,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public InventoryItem[] InventoryItems { get; set; }
         
         #region Allors
@@ -97,6 +105,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public ProductFeature[] ProductFeatures { get; set; }
 
         #region Allors
@@ -106,6 +115,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Good Good { get; set; }
 
         #region inherited methods

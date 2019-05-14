@@ -10,11 +10,11 @@ import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../fr
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
-import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem } from '../../../../../domain';
+import { PurchaseReturn, Party, PurchaseReturnState, Product, SerialisedItem } from '../../../../../domain';
 import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
-  object: PurchaseOrder;
+  object: PurchaseReturn;
   number: string;
   supplier: string;
   state: string;
@@ -23,21 +23,18 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './purchaseorder-list.component.html',
+  templateUrl: './purchasereturn-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PurchaseOrderListComponent extends TestScope implements OnInit, OnDestroy {
+export class PurchaseReturnListComponent extends TestScope implements OnInit, OnDestroy {
 
-  public title = 'Purchase Orders';
+  public title = 'Purchase Returns';
 
   m: Meta;
 
   table: Table<Row>;
 
   delete: Action;
-  print: Action;
-  ship: Action;
-  invoice: Action;
 
   private subscription: Subscription;
 
@@ -59,7 +56,6 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
     titleService.setTitle(this.title);
 
-    this.print = printService.print();
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
@@ -79,7 +75,6 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       actions: [
         overviewService.overview(),
         this.delete,
-        this.print,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -90,40 +85,29 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseOrder.OrderedBy });
+    const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseReturn.ShipFromParty });
     const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
 
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.PurchaseOrder.OrderNumber, parameter: 'number' }),
-      new Equals({ propertyType: m.PurchaseOrder.CustomerReference, parameter: 'customerReference' }),
-      new Equals({ propertyType: m.PurchaseOrder.PurchaseOrderState, parameter: 'state' }),
-      new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, parameter: 'supplier' }),
+      new Equals({ propertyType: m.PurchaseReturn.ShipmentNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.PurchaseReturn.PurchaseReturnState, parameter: 'state' }),
+      new Equals({ propertyType: m.PurchaseReturn.ShipToParty, parameter: 'supplier' }),
       new ContainedIn({
-        propertyType: m.PurchaseOrder.PurchaseOrderItems,
+        propertyType: m.PurchaseReturn.ShipmentItems,
         extent: new Filter({
-          objectType: m.PurchaseOrderItem,
+          objectType: m.ShipmentItem,
           predicate: new ContainedIn({
-            propertyType: m.PurchaseOrderItem.Part,
+            propertyType: m.ShipmentItem.Part,
             parameter: 'part'
           })
         })
       }),
-      new ContainedIn({
-        propertyType: m.PurchaseOrder.PurchaseOrderItems,
-        extent: new Filter({
-          objectType: m.PurchaseOrderItem,
-          predicate: new ContainedIn({
-            propertyType: m.PurchaseOrderItem.SerialisedItem,
-            parameter: 'serialisedItem'
-          })
-        })
-      })
     ]);
 
     const stateSearch = new SearchFactory({
-      objectType: m.PurchaseOrderState,
-      roleTypes: [m.PurchaseOrderState.Name],
+      objectType: m.PurchaseReturnState,
+      roleTypes: [m.PurchaseReturnState.Name],
     });
 
     const supplierSearch = new SearchFactory({
@@ -139,29 +123,16 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       roleTypes: [m.Organisation.PartyName],
     });
 
-    const productSearch = new SearchFactory({
-      objectType: m.Product,
-      roleTypes: [m.Product.Name],
-    });
-
-    const serialisedItemSearch = new SearchFactory({
-      objectType: m.SerialisedItem,
-      roleTypes: [m.SerialisedItem.ItemNumber],
-    });
-
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
+      state: { search: stateSearch, display: (v: PurchaseReturnState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v && v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseOrder.OrderNumber,
-        customerReference: m.PurchaseOrder.CustomerReference,
-        lastModifiedDate: m.PurchaseOrder.LastModifiedDate,
+        number: m.PurchaseReturn.ShipmentNumber,
+        lastModifiedDate: m.PurchaseReturn.LastModifiedDate,
       }
     );
 
@@ -175,22 +146,19 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , , ,]),
+        }, [ , , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
           supplierPredicate.object = internalOrganisationId;
 
           const pulls = [
-            pull.PurchaseOrder({
+            pull.PurchaseReturn({
               predicate,
               sort: sorter.create(sort),
               include: {
-                PrintDocument: {
-                  Media: x
-                },
-                TakenViaSupplier: x,
-                PurchaseOrderState: x,
+                ShipToParty: x,
+                PurchaseReturnState: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -202,15 +170,14 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        const objects = loaded.collections.PurchaseReturns as PurchaseReturn[];
         this.table.total = loaded.values.PurchaseOrders_total;
-        this.table.data = orders.map((v) => {
+        this.table.data = objects.map((v) => {
           return {
             object: v,
-            number: `${v.OrderNumber}`,
-            supplier: v.TakenViaSupplier.displayName,
-            state: `${v.PurchaseOrderState && v.PurchaseOrderState.Name}`,
-            customerReference: `${v.Description || ''}`,
+            number: `${v.ShipmentNumber}`,
+            supplier: v.ShipToParty.displayName,
+            state: `${v.PurchaseReturnState && v.PurchaseReturnState.Name}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
