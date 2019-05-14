@@ -252,6 +252,15 @@ namespace Allors.Repository
         [Workspace]
         public SerialisedItem SerialisedItem { get; set; }
 
+        #region Allors
+        [Id("56E8D200-1D63-4619-B617-CFA95B9CE07A")]
+        [AssociationId("34D75527-43E6-4114-BB1B-5F26D32AA0EF")]
+        [RoleId("136B01CA-6C76-4350-B9D1-4B293DC19EC1")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool CanInvoice { get; set; }
+
         #region inherited methods
 
 

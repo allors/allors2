@@ -1,9 +1,10 @@
 import { Component, Self, HostBinding } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, ActionTarget } from '../../../../../../angular';
-import { PurchaseOrder, Organisation } from '../../../../../../domain';
+import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, PurchaseInvoiceItem, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, OverviewService, PrintService, MethodService } from '../../../../..';
+import { DeleteService, TableRow, Table, OverviewService, PrintService, SaveService, MethodService } from '../../../../..';
 import { ObjectService, ObjectData } from '../../../../../base/services/object';
 
 interface Row extends TableRow {
@@ -25,6 +26,7 @@ interface Row extends TableRow {
 })
 export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
   internalOrganisation: Organisation;
+  purchaseInvoice: PurchaseInvoice;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -59,6 +61,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     public overviewService: OverviewService,
     public deleteService: DeleteService,
     public printService: PrintService,
+    private saveService: SaveService,
+    private snackBar: MatSnackBar,
     private fetcher: FetcherService,
   ) {
     super();
@@ -116,6 +120,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     }
 
     const pullName = `${this.panel.name}_${this.m.PurchaseOrder.name}`;
+    const invoicePullName = `${this.panel.name}_${this.m.PurchaseInvoice.name}`;
 
     this.panel.onPull = (pulls) => {
       const { x, pull } = this.metaService;
@@ -123,6 +128,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
 
       pulls.push(
         this.fetcher.internalOrganisation,
+        pull.InvoiceItemType(),
         pull.PurchaseInvoice({
           name: pullName,
           object: id,
@@ -133,6 +139,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                   PurchaseOrderState: x,
                   PurchaseOrderShipmentState: x,
                   PurchaseOrderPaymentState: x,
+                  ValidOrderItems: x,
                   PrintDocument: {
                     Media: x
                   },
@@ -140,11 +147,23 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
               }
             }
           }
-        }));
-  };
+        }),
+        pull.PurchaseInvoice({
+          name: invoicePullName,
+          object: id,
+          include: {
+            PurchaseOrders: x,
+            PurchaseInvoiceItems: x
+          }
+        }),
+      )
+    };
 
     this.panel.onPulled = (loaded) => {
       this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+      this.purchaseInvoice = loaded.objects[invoicePullName] as PurchaseInvoice;
+
+      const invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
 
       const purchaseOrders = loaded.collections[pullName] as PurchaseOrder[];
       this.objects = purchaseOrders.filter(v => v.OrderedBy === this.internalOrganisation);
@@ -169,12 +188,42 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
   }
 
   public addFromPurchaseOrder(purchaseOrder: PurchaseOrder): void {
+    const { context } = this.allors;
 
-    var a = purchaseOrder;
+    this.purchaseInvoice.AddPurchaseOrder(purchaseOrder);
+    purchaseOrder.ValidOrderItems.forEach((purchaseOrderItem: PurchaseOrderItem) => {
+      if (purchaseOrderItem.CanInvoice) {
+        let invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
+        invoiceItem.AssignedUnitPrice = purchaseOrderItem.UnitPrice;
+        invoiceItem.Part = purchaseOrderItem.Part;
+        invoiceItem.Quantity = purchaseOrderItem.QuantityOrdered;
+        invoiceItem.Description = purchaseOrderItem.Description;
+        invoiceItem.InternalComment = purchaseOrderItem.InternalComment;
+        invoiceItem.Message = purchaseOrderItem.Message;
+
+        if (invoiceItem.Part) {
+
+        }
+        else {
+
+        }
+      }
+    });
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler
+      );
   }
 
   public addFromPurchaseOrders(purchaseOrders: PurchaseOrder[]): void {
 
-    var a = purchaseOrders;
+    purchaseOrders.forEach(element => {
+      this.addFromPurchaseOrder(element);
+    });
   }
 }
