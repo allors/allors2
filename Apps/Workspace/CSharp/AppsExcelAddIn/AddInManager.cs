@@ -78,7 +78,7 @@
                 this.application.WorkbookActivate += this.ApplicationOnWorkbookActivate;
                 this.application.WorkbookNewSheet += this.ApplicationOnWorkbookNewSheet;
                 this.application.SheetActivate += this.ApplicationOnSheetActivate;
-
+                
                 Globals.Ribbons.Ribbon.Init(this.commands, this.sheets, this.mediator);
 
                 // TODO: Make this lazy

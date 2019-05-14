@@ -221,8 +221,15 @@
     </Compile>
     <Compile Include="AddInManager.cs" />
     <Compile Include="Apps\Commands.cs" />
+    <Compile Include="Apps\Extensions\DataTableExtensions.cs" />
     <Compile Include="Apps\Extensions\ErrorResponseExtensions.cs" />
     <Compile Include="Apps\Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Apps\PurchaseInvoices\DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
     <Compile Include="Apps\Mediator.cs" />
     <Compile Include="Apps\Relation\People\DataSet.cs">
       <DependentUpon>DataSet.xsd</DependentUpon>
@@ -251,6 +258,17 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="AppsExcelAddIn_TemporaryKey.pfx" />
+    <None Include="Apps\PurchaseInvoices\DataSet.xsc">
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Apps\PurchaseInvoices\DataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Apps\PurchaseInvoices\DataSet.xss">
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </None>
     <None Include="Apps\Relation\People\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
@@ -307,6 +325,7 @@
       <Name>Workspace.Meta</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -318,7 +337,7 @@
     <ManifestKeyFile>AppsExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>7738278EC3FDC5946800C97D560D764BC643EFDB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>6335A8411A23CF4347B22FEC734ECA16B72B109E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

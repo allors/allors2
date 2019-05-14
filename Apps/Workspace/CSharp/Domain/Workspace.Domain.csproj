@@ -175,6 +175,7 @@
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Base\Workspace\WorkspaceObject.cs">
       <Link>Base\Workspace\WorkspaceObject.cs</Link>
     </Compile>
+    <Compile Include="Apps\PurchaseInvoiceStates.cs" />
     <Compile Include="generated\AccessControl.g.cs" />
     <Compile Include="generated\AccountingPeriod.g.cs" />
     <Compile Include="generated\AccountingPeriodVersion.g.cs" />
@@ -702,8 +703,6 @@
       <Name>Workspace.Meta</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Apps\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

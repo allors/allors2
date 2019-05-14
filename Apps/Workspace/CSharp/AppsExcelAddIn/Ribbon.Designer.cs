@@ -41,10 +41,13 @@
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.peopleInitializeButton = this.Factory.CreateRibbonButton();
+            this.groupPurchases = this.Factory.CreateRibbonGroup();
+            this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
+            this.groupPurchases.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -57,6 +60,7 @@
             // 
             this.appsTab.Groups.Add(this.group1);
             this.appsTab.Groups.Add(this.group2);
+            this.appsTab.Groups.Add(this.groupPurchases);
             this.appsTab.Label = "Apps";
             this.appsTab.Name = "appsTab";
             // 
@@ -87,9 +91,23 @@
             // 
             // peopleInitializeButton
             // 
-            this.peopleInitializeButton.Label = "Initialize People";
+            this.peopleInitializeButton.Label = "People";
             this.peopleInitializeButton.Name = "peopleInitializeButton";
             this.peopleInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.peopleInitializeButton_Click);
+            // 
+            // groupPurchases
+            // 
+            this.groupPurchases.Items.Add(this.purchaseInvoicesInitializeButton);
+            this.groupPurchases.Label = "Purchases";
+            this.groupPurchases.Name = "groupPurchases";
+            // 
+            // purchaseInvoicesInitializeButton
+            // 
+            this.purchaseInvoicesInitializeButton.Label = "Invoices";
+            this.purchaseInvoicesInitializeButton.Name = "purchaseInvoicesInitializeButton";
+            this.purchaseInvoicesInitializeButton.OfficeImageId = "DataFormSource";
+            this.purchaseInvoicesInitializeButton.ShowImage = true;
+            this.purchaseInvoicesInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.PurchaseInvoicesInitializeButton_Click);
             // 
             // Ribbon
             // 
@@ -106,6 +124,8 @@
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
+            this.groupPurchases.ResumeLayout(false);
+            this.groupPurchases.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -119,6 +139,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton peopleInitializeButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupPurchases;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton purchaseInvoicesInitializeButton;
     }
 
     partial class ThisRibbonCollection

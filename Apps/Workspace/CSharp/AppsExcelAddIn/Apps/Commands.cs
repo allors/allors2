@@ -15,5 +15,11 @@
             var sheet = this.Sheets.CreatePeople();
             await sheet.Refresh();
         }
+
+        public async Task PurchaseInvoicesNew()
+        {
+            var sheet = this.Sheets.CreatePurchaseInvoices();
+            await sheet.Refresh();
+        }
     }
 }
