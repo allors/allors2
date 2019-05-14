@@ -90,7 +90,7 @@ var repositoryTask = Task("Repository")
     });
 });
 
-var appsTask = Task("Apps")
+var databaseTask = Task("Database")
 .IsDependentOn(repositoryTask)
 .Does(() => {
     CleanDirectory("Meta/Generated");
@@ -112,12 +112,25 @@ var appsTask = Task("Apps")
     DotNetCoreBuild(solutionPath, dotNetCoreBuildSettings);
 });
 
+var databaseTestTask = Task("DatabaseTest")
+.IsDependentOn(databaseTask)
+.Does(() => {
+    var dotNetCoreTestSettings = new DotNetCoreTestSettings()
+    {
+        Configuration = configuration,
+        NoBuild = true,
+        NoRestore = true,
+    };
+
+    DotNetCoreTest("Database/Domain.Tests/Domain.Tests.csproj", dotNetCoreTestSettings);
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn(appsTask)
+    .IsDependentOn(databaseTask)
     .Does(()=>{
         Information("NuGetVersion: {0}", gitVersion.NuGetVersion);
         Information("InformationalVersion: {0}", gitVersion.InformationalVersion);
