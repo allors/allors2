@@ -38,11 +38,13 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     table: Table<Row>;
     partItem: InvoiceItemType;
     workItem: InvoiceItemType;
+    orderItemBillings: OrderItemBilling[];
 
     delete: Action;
     edit: Action;
     invoice: Action;
     addToInvoice: Action;
+    removeFromInvoice: Action;
 
     get createData(): ObjectData {
         return {
@@ -91,6 +93,21 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
             },
             result: null
         };
+
+        this.removeFromInvoice = {
+            name: () => 'Remove from invoice',
+            description: () => '',
+            disabled: (target: PurchaseOrder) => {
+                return !this.purchaseInvoice.PurchaseOrders.includes(target);
+            },
+            execute: (target: PurchaseOrder) => {
+                if (!Array.isArray(target)) {
+                    this.removeFromPurchaseOrder(target);
+                }
+            },
+            result: null
+        };
+
         // this.invoice.result.subscribe((v) => {
         //   this.table.selection.clear();
         // });
@@ -110,7 +127,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
             actions: [
                 this.overviewService.overview(),
                 this.printService.print(),
-                this.addToInvoice
+                this.addToInvoice,
+                this.removeFromInvoice
             ],
             defaultAction: this.overviewService.overview(),
             autoSort: true,
@@ -123,6 +141,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
 
         const pullName = `${this.panel.name}_${this.m.PurchaseOrder.name}`;
         const invoicePullName = `${this.panel.name}_${this.m.PurchaseInvoice.name}`;
+        const orderItemBillingPullName = `${this.panel.name}_${this.m.OrderItemBilling.name}`;
 
         this.panel.onPull = (pulls) => {
             const { x, pull } = this.metaService;
@@ -142,7 +161,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                                     PurchaseOrderShipmentState: x,
                                     PurchaseOrderPaymentState: x,
                                     ValidOrderItems: {
-                                        PurchaseOrderItem_Part: x
+                                        PurchaseOrderItem_Part: x,
                                     },
                                     PrintDocument: {
                                         Media: x
@@ -152,6 +171,20 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                         }
                     }
                 }),
+                // pull.PurchaseInvoice({
+                //     name: orderItemBillingPullName,
+                //     object: id,
+                //     fetch: {
+                //         PurchaseInvoiceItems: {
+                //             OrderItemBillingsWhereInvoiceItem: {
+                //                 include: {
+                //                     InvoiceItem: x,
+                //                     OrderItem: x
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }),
                 pull.PurchaseInvoice({
                     name: invoicePullName,
                     object: id,
@@ -159,7 +192,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                         PurchaseOrders: x,
                         PurchaseInvoiceItems: {
                             Part: x,
-                            InvoiceItemType: x
+                            InvoiceItemType: x,
                         }
                     }
                 }),
@@ -169,6 +202,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         this.panel.onPulled = (loaded) => {
             this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
             this.purchaseInvoice = loaded.objects[invoicePullName] as PurchaseInvoice;
+            // this.orderItemBillings = loaded.collections[orderItemBillingPullName] as OrderItemBilling[];
 
             const invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
             this.partItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d57c943119c569ff37959653b');
@@ -227,6 +261,31 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                 orderItemBilling.Amount = purchaseOrderItem.TotalBasePrice;
                 orderItemBilling.OrderItem = purchaseOrderItem;
                 orderItemBilling.InvoiceItem = invoiceItem;
+            }
+        });
+
+        context
+            .save()
+            .subscribe(() => {
+                this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+                this.refreshService.refresh();
+            },
+                this.saveService.errorHandler
+            );
+    }
+
+    public removeFromPurchaseOrder(panelPurchaseOrder: PurchaseOrder): void {
+        const { context } = this.allors;
+
+        const purchaseInvoice = context.get(this.purchaseInvoice.id) as PurchaseInvoice;
+        const purchaseOrder = context.get(panelPurchaseOrder.id) as PurchaseOrder;
+
+        purchaseInvoice.RemovePurchaseOrder(purchaseOrder);
+
+        purchaseOrder.ValidOrderItems.forEach((purchaseOrderItem: PurchaseOrderItem) => {
+            const orderItemBilling = this.orderItemBillings.find(v => v.OrderItem === purchaseOrderItem);
+            if (orderItemBilling) {
+               const dummy = orderItemBilling.InvoiceItem.Delete;
             }
         });
 

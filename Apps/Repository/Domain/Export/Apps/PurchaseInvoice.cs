@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7d7e4b6d-eebd-460c-b771-a93cd8d64bce")]
     #endregion
-    public partial class PurchaseInvoice : Invoice, Versioned, WorkItem
+    public partial class PurchaseInvoice : Invoice, Versioned, WorkItem, Deletable
     {
         #region inherited properties
 
@@ -354,16 +354,15 @@ namespace Allors.Repository
 
         public void OnPostBuild() { }
 
-        public void OnInit()
-        {
-            
-        }
+        public void OnInit() { }
 
         public void OnPreDerive() { }
 
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
+        public void Delete() { }
 
         public void Print() { }
 

@@ -65,7 +65,7 @@ namespace Allors.Domain
                 foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
                 {
                     if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
+                        (purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || !purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
                     {
                         return true;
                     }
@@ -200,7 +200,8 @@ namespace Allors.Domain
             {
 //                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
 
-                if (validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
+                if (validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived) ||
+                    validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
                 {
                     this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Received;
                 }

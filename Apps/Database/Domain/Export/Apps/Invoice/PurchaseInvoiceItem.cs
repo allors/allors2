@@ -129,6 +129,17 @@ namespace Allors.Domain
         {
             this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).CancelledByinvoice;
         }
+        public void AppsDelete(DeletableDelete method)
+        {
+            if (this.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
+            {
+                this.PurchaseInvoiceWherePurchaseInvoiceItem.RemovePurchaseInvoiceItem(this);
+                foreach (OrderItemBilling orderItemBilling in OrderItemBillingsWhereInvoiceItem)
+                {
+                    orderItemBilling.Delete();
+                }
+            }
+        }
 
         public void AppsCancel(PurchaseInvoiceItemCancel method)
         {
