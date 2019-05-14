@@ -31,6 +31,7 @@ import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purcha
 import * as PurchaseInvoiceItemEdit from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import * as PurchaseOrderList from 'src/allors/material/apps/objects/purchaseorder/list/purchaseorder-list.module';
 import * as PurchaseOrderOverview from 'src/allors/material/apps/objects/purchaseorder/overview/purchaseorder-overview.module';
+import * as PurchaseReturnList from 'src/allors/material/apps/objects/purchasereturn/list/purchasereturn-list.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as RepeatingSalesInvoiceEdit from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
@@ -84,6 +85,7 @@ const modules = [
   ProductTypesOverview.ProductTypesOverviewModule,
   PurchaseOrderList.PurchaseOrderListModule,
   PurchaseOrderOverview.PurchaseOrderOverviewModule,
+  PurchaseReturnList.PurchaseReturnListModule,
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
@@ -160,6 +162,7 @@ export const routes: Routes = [
           { path: 'purchaseorder/:id', component: PurchaseOrderOverview.PurchaseOrderOverviewComponent },
           { path: 'purchaseinvoices', component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
           { path: 'purchaseinvoice/:id', component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
+          { path: 'purchasereturns', component: PurchaseReturnList.PurchaseReturnListComponent },
         ],
       },
 
