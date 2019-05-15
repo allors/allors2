@@ -1,9 +1,10 @@
 import { Component, Self, HostBinding } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, ActionTarget } from '../../../../../../angular';
+import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, ActionTarget, InternalOrganisationId } from '../../../../../../angular';
 import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, PurchaseInvoiceItem, Organisation, OrderItemBilling } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
+import { Equals, And, ContainedIn, Filter } from '../../../../../../framework';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, SaveService, MethodService } from '../../../../..';
 import { ObjectService, ObjectData } from '../../../../../base/services/object';
 
@@ -68,6 +69,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         private saveService: SaveService,
         private snackBar: MatSnackBar,
         private fetcher: FetcherService,
+        private internalOrganisationId: InternalOrganisationId,
     ) {
         super();
 
@@ -144,12 +146,19 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         const orderItemBillingPullName = `${this.panel.name}_${this.m.OrderItemBilling.name}`;
 
         this.panel.onPull = (pulls) => {
-            const { x, pull } = this.metaService;
+            const { x, pull, m } = this.metaService;
             const { id } = this.panel.manager;
 
             pulls.push(
                 this.fetcher.internalOrganisation,
                 pull.InvoiceItemType(),
+                pull.PurchaseOrder(
+                    {
+                        predicate: new And([
+                            new Equals({ propertyType: m.PurchaseOrder.OrderedBy, object: internalOrganisationId.value }),
+                        ])
+                    }
+                ),
                 pull.PurchaseInvoice({
                     name: pullName,
                     object: id,
@@ -285,7 +294,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         purchaseOrder.ValidOrderItems.forEach((purchaseOrderItem: PurchaseOrderItem) => {
             const orderItemBilling = this.orderItemBillings.find(v => v.OrderItem === purchaseOrderItem);
             if (orderItemBilling) {
-               const dummy = orderItemBilling.InvoiceItem.Delete;
+                const dummy = orderItemBilling.InvoiceItem.Delete;
             }
         });
 

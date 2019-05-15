@@ -32,7 +32,6 @@ namespace Allors.Domain
 
             var created = new PurchaseInvoiceItemStates(this.Session).Created;
             var awaitingApproval = new PurchaseInvoiceItemStates(this.Session).AwaitingApproval;
-            var inProcess = new PurchaseInvoiceItemStates(this.Session).InProcess;
             var received = new PurchaseInvoiceItemStates(this.Session).Received;
             var paid = new PurchaseInvoiceItemStates(this.Session).Paid;
             var cancelled = new PurchaseInvoiceItemStates(this.Session).Cancelled;
@@ -45,9 +44,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, created, cancel, reject);
             config.Deny(this.ObjectType, awaitingApproval, cancel, delete);
-            config.Deny(this.ObjectType, inProcess, delete);
 
-            config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, cancelledByinvoice, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

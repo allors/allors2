@@ -126,39 +126,45 @@ namespace Allors.Domain
 
             foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
             {
-                if (!invoiceItem.PurchaseInvoiceItemState.Equals(purchaseInvoiceItemStates.Cancelled) )
+                if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
                 {
-                    if (invoiceItem.AmountPaid == 0)
-                    {
-                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.NotPaid;
-                    }
-                    else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid > 0 && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
-                    {
-                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
-                    }
-                    else
-                    {
-                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
-                    }
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Created;
                 }
-            }
-
-            if (validInvoiceItems.Any()
-                && !this.PurchaseInvoiceState.Equals(purchaseInvoiceStates.Cancelled))
-            {
-                if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsPaid))
+                else if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsAwaitingApproval)
                 {
-                    this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.AwaitingApproval;
                 }
-                else if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsNotPaid))
+                else if (invoiceItem.AmountPaid == 0)
                 {
-                    this.PurchaseInvoiceState = purchaseInvoiceStates.NotPaid;
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.NotPaid;
+                }
+                else if (invoiceItem.ExistAmountPaid && invoiceItem.AmountPaid >= invoiceItem.TotalIncVat)
+                {
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
                 }
                 else
                 {
-                    this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
                 }
+            }
 
+            if (validInvoiceItems.Any())
+            {
+                if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsCreated)
+                {
+                    if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsPaid))
+                    {
+                        this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
+                    }
+                    else if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsNotPaid))
+                    {
+                        this.PurchaseInvoiceState = purchaseInvoiceStates.NotPaid;
+                    }
+                    else
+                    {
+                        this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
+                    }
+                }
             }
 
             this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
@@ -183,16 +189,13 @@ namespace Allors.Domain
 
                 foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
                 {
-                    if (!invoiceItem.PurchaseInvoiceItemState.Equals(purchaseInvoiceItemStates.Cancelled))
+                    if (this.AmountPaid >= this.TotalIncVat)
                     {
-                        if (this.AmountPaid >= this.TotalIncVat)
-                        {
-                            invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
-                        }
-                        else
-                        {
-                            invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
-                        }
+                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
+                    }
+                    else
+                    {
+                        invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.PartiallyPaid;
                     }
                 }
             }
@@ -334,7 +337,7 @@ namespace Allors.Domain
 
         public void AppsConfirm(PurchaseInvoiceConfirm method)
         {
-            this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
+            this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;
         }
 
         public void AppsCancel(PurchaseInvoiceCancel method)
@@ -357,7 +360,7 @@ namespace Allors.Domain
 
         public void AppsApprove(PurchaseInvoiceApprove method)
         {
-            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;
 
             var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 

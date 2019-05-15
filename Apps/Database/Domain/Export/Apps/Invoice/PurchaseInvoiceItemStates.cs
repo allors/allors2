@@ -21,7 +21,6 @@ namespace Allors.Domain
     {
         public static readonly Guid CreatedId = new Guid("4821A8FA-4DB8-48E3-A2FA-AFB1C635C1D4");
         public static readonly Guid AwaitingApprovalId = new Guid("A91953F9-73C8-480E-8097-CA9709DF3E66");
-        public static readonly Guid InProcessId = new Guid("72366881-A6CE-455f-80FF-A0E7295F2B8C");
         public static readonly Guid ReceivedId = new Guid("6B1F51FD-C3C6-4bd3-BBF0-1FCC66F8C455");
         public static readonly Guid PartiallyPaidId = new Guid("DF7A7B6E-293F-432D-BE39-B92612652E29");
         public static readonly Guid NotPaidId = new Guid("50AB37E3-A74C-44F9-92C2-6AFF42C2BB99");
@@ -35,8 +34,6 @@ namespace Allors.Domain
         public PurchaseInvoiceItemState Created => this.StateCache[CreatedId];
 
         public PurchaseInvoiceItemState AwaitingApproval => this.StateCache[AwaitingApprovalId];
-
-        public PurchaseInvoiceItemState InProcess => this.StateCache[InProcessId];
 
         public PurchaseInvoiceItemState Received => this.StateCache[ReceivedId];
 
@@ -66,11 +63,6 @@ namespace Allors.Domain
             new PurchaseInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(AwaitingApprovalId)
                 .WithName("Awaiting Approval")
-                .Build();
-
-            new PurchaseInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(InProcessId)
-                .WithName("In Process")
                 .Build();
 
             new PurchaseInvoiceItemStateBuilder(this.Session)
