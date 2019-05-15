@@ -31,6 +31,17 @@ var framework = Argument( "framework", "netcoreapp2.2" );
 GitVersion gitVersion = GitVersion(new GitVersionSettings{ NoFetch = true, OutputType = GitVersionOutput.Json });
 GitVersion(new GitVersionSettings{OutputType = GitVersionOutput.BuildServer});
 
+var repositorySolutionPath = "../Platform/Repository/Repository.sln"; 
+var repositoryGenerateProjectPath = "../Platform/Repository/Generate/Generate.csproj";
+var databaseSolutionPath = "Database.sln"; 
+var databaseGenerateProjectPath = "Database/Generate/Generate.csproj";
+
+var workspaceSolutionPath = "Workspace.sln"; 
+var intranetTestsSolutionPath = "Intranet.Tests.sln"; 
+var intranetTestsProjectPath = "Workspace/Typescript/Intranet.Tests/Intranet.Tests.csproj"; 
+var autotestSolutionPath = "Workspace/Typescript/Autotest/Autotest.sln";
+var autotestGenerateProjectPath = "Workspace/Typescript/Autotest/Generate/Generate.csproj";
+
 ///////////////////////////////////////////////////////////////////////////////
 // SETTINGS
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,8 +60,6 @@ var dotNetCoreRestoreSettings  = new DotNetCoreRestoreSettings
 var dotNetCoreBuildSettings = new DotNetCoreBuildSettings
     {
         Configuration = configuration,
-        NoIncremental = true,
-        NoRestore = true,
         MSBuildSettings = new DotNetCoreMSBuildSettings()
             .SetVersion(gitVersion.AssemblySemVer)
             .WithProperty("FileVersion", gitVersion.NuGetVersion)
@@ -58,6 +67,18 @@ var dotNetCoreBuildSettings = new DotNetCoreBuildSettings
             .WithProperty("nowarn", "7035"),
         Verbosity = DotNetCoreVerbosity.Quiet
     };
+
+var dotNetCoreRunSettings = new DotNetCoreRunSettings
+    {
+        Configuration = configuration,
+        Verbosity = DotNetCoreVerbosity.Quiet
+    };
+
+var msBuildSettings = new MSBuildSettings{
+    Configuration = configuration,
+    ToolVersion = MSBuildToolVersion.VS2019,
+    Verbosity = Verbosity.Minimal
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -79,58 +100,103 @@ Teardown(ctx =>
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
 
-var repositoryTask = Task("Repository")
+var databaseCleanTask = Task("DatabaseClean")
 .Does(() => {
-    DoInDirectory("../Platform/Repository", () =>
-    {
-        var solutionPath = "Repository.sln"; 
-        DotNetCoreClean(solutionPath, dotNetCoreCleanSettings);
-        DotNetCoreRestore(solutionPath, dotNetCoreRestoreSettings);
-        DotNetCoreBuild(solutionPath, dotNetCoreBuildSettings);
-    });
-});
+    DotNetCoreClean(repositorySolutionPath, dotNetCoreCleanSettings);
+    DotNetCoreClean(databaseSolutionPath, dotNetCoreCleanSettings);
 
-var databaseTask = Task("Database")
-.IsDependentOn(repositoryTask)
-.Does(() => {
     CleanDirectory("Meta/Generated");
     CleanDirectory("Domain/Generated");
+});
 
-    var repositorySolutionPath = "repository.sln"; 
-    DotNetCoreClean(repositorySolutionPath, dotNetCoreCleanSettings);
-    DotNetCoreRestore(repositorySolutionPath, dotNetCoreRestoreSettings);
-    DotNetCoreExecute($"../Platform/Repository/Generate/bin/{configuration}/{framework}/Generate.dll", "Repository/Domain/Repository.csproj ../Platform/repository/templates/meta.cs.stg Database/meta/generated");
-
-    var solutionPath = "Database.sln"; 
-    DotNetCoreClean(solutionPath, dotNetCoreCleanSettings);
-    DotNetCoreRestore(solutionPath, dotNetCoreRestoreSettings);
-
-    var generateProjectPath = "Database/Generate/Generate.csproj";
-    DotNetCoreBuild(generateProjectPath, dotNetCoreBuildSettings);
-    DotNetCoreExecute($"Database/Generate/bin/{configuration}/{framework}/Generate.dll");
-
-    DotNetCoreBuild(solutionPath, dotNetCoreBuildSettings);
+var databaseBuildTask = Task("DatabaseBuild")
+.Does(() => {
+    DotNetCoreRun(repositoryGenerateProjectPath, "Repository/Domain/Repository.csproj ../Platform/Repository/templates/meta.cs.stg Database/Meta/generated", dotNetCoreRunSettings);
+    DotNetCoreRun(databaseGenerateProjectPath, string.Empty, dotNetCoreRunSettings);
+    DotNetCoreBuild(databaseSolutionPath, dotNetCoreBuildSettings);
 });
 
 var databaseTestTask = Task("DatabaseTest")
-.IsDependentOn(databaseTask)
 .Does(() => {
     var dotNetCoreTestSettings = new DotNetCoreTestSettings()
     {
         Configuration = configuration,
-        NoBuild = true,
-        NoRestore = true,
     };
 
     DotNetCoreTest("Database/Domain.Tests/Domain.Tests.csproj", dotNetCoreTestSettings);
+});
+
+var workspaceCleanTask = Task("WorkspaceClean")
+.Does(() => {
+    DotNetCoreClean(workspaceSolutionPath, dotNetCoreCleanSettings);
+    DotNetCoreClean(intranetTestsSolutionPath, dotNetCoreCleanSettings);
+
+    void NodeClean(string directory){
+        DoInDirectory(directory, () => {
+            CleanDirectory("node_modules");
+            CleanDirectory("dist");
+        });
+    }
+
+    NodeClean("Workspace/Typescript/Domain");
+    NodeClean("Workspace/Typescript/Intranet");
+    NodeClean("Workspace/Typescript/Autotest/Angular");
+
+    CleanDirectory("Workspace/Typescript/Material.Tests/generated");
+});
+
+var workspaceRestoreTask = Task("WorkspaceRestore")
+.Does(() => {
+    void NodeRestore(string directory){
+        DoInDirectory(directory, () => {
+            NpmInstall();
+        });
+    }
+
+    NodeRestore("Workspace/Typescript/Domain");
+    NodeRestore("Workspace/Typescript/Intranet");
+    NodeRestore("Workspace/Typescript/Autotest/Angular");
+});
+
+var workspaceBuildTask = Task("WorkspaceBuild")
+.IsDependentOn(workspaceRestoreTask)
+.Does(() => {
+    void NodeRunAutotest(string directory){
+        DoInDirectory(directory, () => {
+            NpmRunScript("autotest");
+        });
+    }
+
+    NodeRunAutotest("Workspace/Typescript/Intranet");
+    NodeRunAutotest("Workspace/Typescript/Autotest/Angular");
+
+    DotNetCoreRun(autotestGenerateProjectPath, string.Empty, dotNetCoreRunSettings);
+    NuGetRestore(workspaceSolutionPath);
+    MSBuild(workspaceSolutionPath, msBuildSettings);
+    DotNetCoreBuild(intranetTestsSolutionPath, dotNetCoreBuildSettings);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
+var cleanTask = Task("Clean")
+    .IsDependentOn(databaseCleanTask)
+    .IsDependentOn(workspaceCleanTask);
+
+var buildTask = Task("Build")
+    .IsDependentOn(databaseBuildTask)
+    .IsDependentOn(workspaceBuildTask);
+
+var rebuildTask = Task("Rebuild")
+    .IsDependentOn(cleanTask)
+    .IsDependentOn(buildTask);
+
+var testTask = Task("Test")
+    .IsDependentOn(databaseTestTask);
+
 Task("Default")
-    .IsDependentOn(databaseTask)
+    .IsDependentOn(buildTask)
     .Does(()=>{
         Information("NuGetVersion: {0}", gitVersion.NuGetVersion);
         Information("InformationalVersion: {0}", gitVersion.InformationalVersion);

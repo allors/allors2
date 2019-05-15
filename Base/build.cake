@@ -175,6 +175,7 @@ var workspaceBuildTask = Task("WorkspaceBuild")
     NodeRunAutotest("Workspace/Typescript/Autotest/Angular");
 
     DotNetCoreRun(autotestGenerateProjectPath, string.Empty, dotNetCoreRunSettings);
+    NuGetRestore(workspaceSolutionPath);
     MSBuild(workspaceSolutionPath, msBuildSettings);
     DotNetCoreBuild(materialTestsSolutionPath, dotNetCoreBuildSettings);
 });
