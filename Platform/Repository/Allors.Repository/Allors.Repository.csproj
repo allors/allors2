@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Framework\Allors.Database\Meta\UnitIds.cs" Link="UnitIds.cs" />
+    <Compile Include="..\..\Framework\Allors.Database\Meta\UnitNames.cs" Link="UnitNames.cs" />
+    <Compile Include="..\Domain\Export\Attributes\Multiplicity.cs" Link="Domain\Multiplicity.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Buildalyzer.Workspaces" Version="2.2.0" />
+    <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="StringTemplate4" Version="4.0.8" />
+  </ItemGroup>
+
+</Project>

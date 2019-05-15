@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Database\Framework\Allors.Database\Allors.Database.csproj" />
+    <ProjectReference Include="..\..\..\Platform\Framework\Allors.Database\Allors.Database.csproj" />
   </ItemGroup>
 
 </Project>
