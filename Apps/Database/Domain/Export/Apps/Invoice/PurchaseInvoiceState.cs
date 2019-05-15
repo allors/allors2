@@ -23,8 +23,6 @@ namespace Allors.Domain
 
         public bool IsAwaitingApproval => this.UniqueId == PurchaseInvoiceStates.AwaitingApprovalId;
 
-        public bool IsInProcess => this.UniqueId == PurchaseInvoiceStates.InProcessId;
-
         public bool IsReceived => this.UniqueId == PurchaseInvoiceStates.ReceivedId;
 
         public bool IsPartiallyPaid => this.UniqueId == PurchaseInvoiceStates.PartiallyPaidId;

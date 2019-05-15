@@ -92,7 +92,10 @@ namespace Allors.Excel.PurchaseInvoices
                 this.dataSet.PurchaseInvoice.TotalExVatColumn.ColumnName,
                 this.dataSet.PurchaseInvoice.TotalIncVatColumn.ColumnName,
                 this.dataSet.PurchaseInvoice.CurrencyIsoCodeColumn.ColumnName,
-                this.dataSet.PurchaseInvoice.PurchaseInvoiceStateNameColumn.ColumnName
+                this.dataSet.PurchaseInvoice.PurchaseInvoiceStateNameColumn.ColumnName,
+                this.dataSet.PurchaseInvoice.DueDateColumn.ColumnName,
+                this.dataSet.PurchaseInvoice.PaymentDateColumn.ColumnName,
+                this.dataSet.PurchaseInvoice.InternalCommentColumn.ColumnName
                 );
 
             foreach (var purchaseInvoice in this.PurchaseInvoices)
@@ -108,7 +111,17 @@ namespace Allors.Excel.PurchaseInvoices
                 row.TotalIncVat = purchaseInvoice.TotalIncVat;
                 row.CurrencyIsoCode = purchaseInvoice.Currency?.IsoCode;
                 row.PurchaseInvoiceStateName = purchaseInvoice.PurchaseInvoiceState?.Name;
+                if (purchaseInvoice.ExistDueDate)
+                {
+                    row.DueDate = purchaseInvoice.DueDate.GetValueOrDefault();
+                }
+                else
+                {
+                    row.SetDueDateNull();
+                }
 
+                row.InternalComment = purchaseInvoice.InternalComment;
+                
                 this.dataSet.PurchaseInvoice.Rows.Add(row);
             }
            
@@ -128,6 +141,9 @@ namespace Allors.Excel.PurchaseInvoices
             data[0, ++index] = "Amount";
             data[0, ++index] = "Currency";
             data[0, ++index] = "Status";
+            data[0, ++index] = "Due Date";
+            data[0, ++index] = "Payment Date";
+            data[0, ++index] = "Notes";
 
             headers.Value2 = data;
             headers.Style = "headerStyle";
@@ -136,12 +152,18 @@ namespace Allors.Excel.PurchaseInvoices
             var states = this.PurchaseInvoices.Select(v => v.PurchaseInvoiceState).Distinct().ToArray();
 
             var rowCount = this.PurchaseInvoices.Length;
+            var endRow = rowCount + headers.Rows.Count;
+
+            FormatCondition format = this.Worksheet.Range[$"A2:A{endRow}"].FormatConditions.Add(XlFormatConditionType.xlNoBlanksCondition);
+
+            format.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
+            format.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.DarkSeaGreen);
 
             foreach (PurchaseInvoiceState purchaseInvoiceState in states)
             {
                 if (Equals(purchaseInvoiceState.UniqueId, PurchaseInvoiceStates.PaidId))
                 {
-                    FormatCondition format = this.Worksheet.Range[$"I2:I{rowCount}"].FormatConditions.Add(
+                    format = this.Worksheet.Range[$"I2:I{endRow}"].FormatConditions.Add(
                         XlFormatConditionType.xlCellValue, XlFormatConditionOperator.xlEqual, purchaseInvoiceState.Name);
 
                     format.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
@@ -150,7 +172,7 @@ namespace Allors.Excel.PurchaseInvoices
 
                 if (Equals(purchaseInvoiceState.UniqueId, PurchaseInvoiceStates.AwaitingApprovalId))
                 {
-                    FormatCondition format = this.Worksheet.Range[$"I2:I{rowCount}"].FormatConditions.Add(
+                    format = this.Worksheet.Range[$"I2:I{endRow}"].FormatConditions.Add(
                         XlFormatConditionType.xlCellValue, XlFormatConditionOperator.xlEqual, purchaseInvoiceState.Name);
 
                     format.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.SandyBrown);
@@ -159,7 +181,7 @@ namespace Allors.Excel.PurchaseInvoices
 
                 if (Equals(purchaseInvoiceState.UniqueId, PurchaseInvoiceStates.NotPaidId))
                 {
-                    FormatCondition format = this.Worksheet.Range[$"I2:I{rowCount}"].FormatConditions.Add(
+                    format = this.Worksheet.Range[$"I2:I{endRow}"].FormatConditions.Add(
                         XlFormatConditionType.xlCellValue, XlFormatConditionOperator.xlEqual, purchaseInvoiceState.Name);
 
                     format.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
