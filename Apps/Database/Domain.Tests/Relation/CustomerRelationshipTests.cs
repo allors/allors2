@@ -176,7 +176,7 @@ namespace Allors.Domain
         public void GivenCustomerWithUnpaidInvoices_WhenDeriving_ThenAmountDueIsUpdated()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             Session.Derive();
@@ -242,7 +242,7 @@ namespace Allors.Domain
         public void GivenCustomerWithUnpaidInvoices_WhenDeriving_ThenAmountOverDueIsUpdated()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now().AddDays(-31)).WithCustomer(customer).Build();
 
             Session.Derive();

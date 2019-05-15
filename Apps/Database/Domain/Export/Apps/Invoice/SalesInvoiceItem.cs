@@ -16,7 +16,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsValid => !this.SalesInvoiceItemState.IsCancelled;
+        public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 

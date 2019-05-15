@@ -261,6 +261,103 @@ namespace Allors.Domain
                 .ToArray();
             #endregion
 
+            #region States
+            var salesOrderShipmentStates = new SalesOrderShipmentStates(this.Strategy.Session);
+            var salesOrderPaymentStates = new SalesOrderPaymentStates(this.Strategy.Session);
+            var salesOrderInvoiceStates = new SalesOrderInvoiceStates(this.Strategy.Session);
+
+            var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
+            var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
+            var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
+            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
+
+            // SalesOrder Shipment State
+            if (validOrderItems.Any())
+            {
+                if (validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.Shipped;
+                }
+                else if (validOrderItems.All(v => v.SalesOrderItemShipmentState.NotShipped))
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.NotShipped;
+                }
+                else
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.PartiallyShipped;
+                }
+
+                // SalesOrder Payment State
+                if (validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.Paid;
+                }
+                else if (validOrderItems.All(v => v.SalesOrderItemPaymentState.NotPaid))
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.NotPaid;
+                }
+                else
+                {
+                    this.SalesOrderPaymentState = salesOrderPaymentStates.PartiallyPaid;
+                }
+
+                // SalesOrder Invoice State
+                if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.Invoiced;
+                }
+                else if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.NotInvoiced))
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.NotInvoiced;
+                }
+                else
+                {
+                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.PartiallyInvoiced;
+                }
+
+                // SalesOrder OrderState
+                if (this.SalesOrderShipmentState.Shipped && this.SalesOrderInvoiceState.Invoiced)
+                {
+                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
+                }
+
+                if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
+                {
+                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
+                }
+            }
+
+            // SalesOrderItem States
+            foreach (var salesOrderItem in validOrderItems)
+            {
+                if (this.SalesOrderState.InProcess && 
+                    (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
+                }
+
+                if (this.SalesOrderState.OnHold && salesOrderItem.SalesOrderItemState.InProcess)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.OnHold;
+                }
+
+                if (this.SalesOrderState.Finished)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
+                }
+
+                if (this.SalesOrderState.Cancelled)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Cancelled;
+                }
+
+                if (this.SalesOrderState.Rejected)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Rejected;
+                }
+            }
+            #endregion
+
             #region Pricing
             var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.OrderDate);
 
@@ -421,103 +518,6 @@ namespace Allors.Domain
                         totalUnitBasePrice += item1.UnitBasePrice;
                         totalListPrice += item1.UnitPrice;
                     }
-                }
-            }
-            #endregion
-
-            #region States
-            var salesOrderShipmentStates = new SalesOrderShipmentStates(this.Strategy.Session);
-            var salesOrderPaymentStates = new SalesOrderPaymentStates(this.Strategy.Session);
-            var salesOrderInvoiceStates = new SalesOrderInvoiceStates(this.Strategy.Session);
-
-            var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
-            var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
-            var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
-            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
-
-            // SalesOrder Shipment State
-            if (validOrderItems.Any())
-            {
-                if (validOrderItems.All(v => v.SalesOrderItemShipmentState.Shipped))
-                {
-                    this.SalesOrderShipmentState = salesOrderShipmentStates.Shipped;
-                }
-                else if (validOrderItems.All(v => v.SalesOrderItemShipmentState.NotShipped))
-                {
-                    this.SalesOrderShipmentState = salesOrderShipmentStates.NotShipped;
-                }
-                else
-                {
-                    this.SalesOrderShipmentState = salesOrderShipmentStates.PartiallyShipped;
-                }
-
-                // SalesOrder Payment State
-                if (validOrderItems.All(v => v.SalesOrderItemPaymentState.Paid))
-                {
-                    this.SalesOrderPaymentState = salesOrderPaymentStates.Paid;
-                }
-                else if (validOrderItems.All(v => v.SalesOrderItemPaymentState.NotPaid))
-                {
-                    this.SalesOrderPaymentState = salesOrderPaymentStates.NotPaid;
-                }
-                else
-                {
-                    this.SalesOrderPaymentState = salesOrderPaymentStates.PartiallyPaid;
-                }
-
-                // SalesOrder Invoice State
-                if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.Invoiced))
-                {
-                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.Invoiced;
-                }
-                else if (validOrderItems.All(v => v.SalesOrderItemInvoiceState.NotInvoiced))
-                {
-                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.NotInvoiced;
-                }
-                else
-                {
-                    this.SalesOrderInvoiceState = salesOrderInvoiceStates.PartiallyInvoiced;
-                }
-
-                // SalesOrder OrderState
-                if (this.SalesOrderShipmentState.Shipped && this.SalesOrderInvoiceState.Invoiced)
-                {
-                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-                }
-
-                if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
-                {
-                    this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
-                }
-            }
-
-            // SalesOrderItem States
-            foreach (var salesOrderItem in validOrderItems)
-            {
-                if (this.SalesOrderState.InProcess && 
-                    (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
-                }
-
-                if (this.SalesOrderState.OnHold && salesOrderItem.SalesOrderItemState.InProcess)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.OnHold;
-                }
-
-                if (this.SalesOrderState.Finished)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
-                }
-
-                if (this.SalesOrderState.Cancelled)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Cancelled;
-                }
-
-                if (this.SalesOrderState.Rejected)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Rejected;
                 }
             }
             #endregion

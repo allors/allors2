@@ -74,7 +74,7 @@ namespace Allors.Domain
             new VatRegimeBuilder(this.Session)
                 .WithName("Private Person")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("particulier").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate0)
+                .WithVatRate(vatRate21)
                 .WithUniqueId(PrivatePersonId)
                 .WithIsActive(true)
                 .Build();

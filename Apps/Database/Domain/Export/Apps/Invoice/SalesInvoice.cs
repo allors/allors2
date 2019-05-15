@@ -222,6 +222,8 @@ namespace Allors.Domain
                 }
             }
 
+            this.VatRegime = this.VatRegime ?? this.BillToCustomer?.VatRegime;
+
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesReps = salesInvoiceItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(this.BillToCustomer, v, this.InvoiceDate)).ToArray();

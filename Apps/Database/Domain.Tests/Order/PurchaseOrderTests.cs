@@ -38,6 +38,8 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
+            this.Session.Derive();
+
             Assert.Equal(new PurchaseOrderStates(this.Session).Created, order.PurchaseOrderState);
             Assert.Equal(this.Session.Now().Date, order.OrderDate.Date);
             Assert.Equal(this.Session.Now().Date, order.EntryDate.Date);
@@ -203,7 +205,7 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Reopen));
-            Assert.False(acl.CanExecute(M.PurchaseOrder.QuickReceive));
+            Assert.True(acl.CanExecute(M.PurchaseOrder.QuickReceive));
         }
 
         [Fact]

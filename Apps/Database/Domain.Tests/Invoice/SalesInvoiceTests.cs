@@ -1408,8 +1408,8 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new SalesInvoiceStates(this.Session).Cancelled, invoice.SalesInvoiceState);
-            Assert.Equal(new SalesInvoiceItemStates(this.Session).Cancelled, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
-            Assert.Equal(new SalesInvoiceItemStates(this.Session).Cancelled, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
+            Assert.Equal(new SalesInvoiceItemStates(this.Session).CancelledByInvoice, invoice.SalesInvoiceItems[0].SalesInvoiceItemState);
+            Assert.Equal(new SalesInvoiceItemStates(this.Session).CancelledByInvoice, invoice.SalesInvoiceItems[1].SalesInvoiceItemState);
         }
 
         [Fact]

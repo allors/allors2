@@ -64,13 +64,6 @@ namespace Allors.Domain
             builder.WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Pack);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"));
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithPart(part);

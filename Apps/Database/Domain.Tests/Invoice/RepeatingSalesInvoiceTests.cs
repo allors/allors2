@@ -512,7 +512,11 @@ namespace Allors.Domain
 
             customer.AddPartyContactMechanism(billingAddress);
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+            var mayFourteen2018 = new DateTime(2018, 5, 14, 12, 0, 0, DateTimeKind.Utc);
+            var timeShift = mayFourteen2018 - DateTime.UtcNow;
+            this.TimeShift = timeShift;
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(mayFourteen2018).WithCustomer(customer).Build();
 
             this.Session.Derive();
 
@@ -522,10 +526,6 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
-
-            var mayFourteen2018 = new DateTime(2018, 5, 14, 12, 0, 0, DateTimeKind.Utc);
-            var timeShift = mayFourteen2018 - this.Session.Now();
-            this.TimeShift = timeShift;
 
             var countBefore = new SalesInvoices(this.Session).Extent().Count;
 
@@ -547,7 +547,7 @@ namespace Allors.Domain
             Assert.Single(repeatingInvoice.SalesInvoices);
 
             var mayTwentyOne2018 = new DateTime(2018, 5, 21, 12, 0, 0, DateTimeKind.Utc);
-            timeShift = mayTwentyOne2018 - this.Session.Now();
+            timeShift = mayTwentyOne2018 - DateTime.UtcNow;
             this.TimeShift = timeShift;
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -559,7 +559,7 @@ namespace Allors.Domain
             Assert.Equal(2, repeatingInvoice.SalesInvoices.Count);
 
             var mayTwentyEight2018 = new DateTime(2018, 5, 28, 12, 0, 0, DateTimeKind.Utc);
-            timeShift = mayTwentyEight2018 - this.Session.Now();
+            timeShift = mayTwentyEight2018 - DateTime.UtcNow;
             this.TimeShift = timeShift;
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -572,7 +572,7 @@ namespace Allors.Domain
             Assert.Equal(3, repeatingInvoice.SalesInvoices.Count);
 
             var juneFour2018 = new DateTime(2018, 6, 4, 12, 0, 0, DateTimeKind.Utc);
-            timeShift = juneFour2018 - this.Session.Now();
+            timeShift = juneFour2018 - DateTime.UtcNow;
             this.TimeShift = timeShift;
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -585,7 +585,7 @@ namespace Allors.Domain
             Assert.Equal(4, repeatingInvoice.SalesInvoices.Count);
 
             var juneEleven2018 = new DateTime(2018, 6, 11, 12, 0, 0, DateTimeKind.Utc);
-            timeShift = juneEleven2018 - this.Session.Now();
+            timeShift = juneEleven2018 - DateTime.UtcNow;
             this.TimeShift = timeShift;
 
             Assert.False(this.Session.Derive(false).HasErrors);
