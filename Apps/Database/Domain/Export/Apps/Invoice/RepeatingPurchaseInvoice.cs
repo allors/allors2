@@ -119,8 +119,6 @@ namespace Allors.Domain
 
                 foreach (PurchaseOrderItem orderItem in orderItemsToBill)
                 {
-                    purchaseInvoice.AddPurchaseOrder(orderItem.PurchaseOrderWherePurchaseOrderItem);
-
                     var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
                         .WithAssignedUnitPrice(orderItem.UnitPrice)
                         .WithPart(orderItem.Part)
@@ -140,11 +138,6 @@ namespace Allors.Domain
                     }
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
-
-                    if (!purchaseInvoice.PurchaseOrders.Contains(orderItem.PurchaseOrderWherePurchaseOrderItem))
-                    {
-                        purchaseInvoice.AddPurchaseOrder(orderItem.PurchaseOrderWherePurchaseOrderItem);
-                    }
 
                     new OrderItemBillingBuilder(this.Strategy.Session)
                         .WithQuantity(orderItem.QuantityOrdered)

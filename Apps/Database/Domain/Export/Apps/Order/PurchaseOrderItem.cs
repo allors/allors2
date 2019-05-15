@@ -206,15 +206,15 @@ namespace Allors.Domain
                 }
 
                 // PaymentState
-                var orderBilling = this.OrderItemBillingsWhereOrderItem.Select(v => v.InvoiceItem).OfType<SalesInvoiceItem>().ToArray();
+                var orderBilling = this.OrderItemBillingsWhereOrderItem.Select(v => v.InvoiceItem).OfType<PurchaseInvoiceItem>().ToArray();
 
                 if (orderBilling.Any())
                 {
-                    if (orderBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    if (orderBilling.All(v => v.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsPaid))
                     {
                         this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.Paid;
                     }
-                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    else if (orderBilling.All(v => !v.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsPaid))
                     {
                         this.PurchaseOrderItemPaymentState = purchaseOrderItemPaymentStates.NotPaid;
                     }

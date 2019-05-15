@@ -117,6 +117,8 @@ namespace Allors.Domain
                 }
             }
 
+            this.PurchaseOrders = this.InvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(v => v.OrderItem.OrderWhereValidOrderItem).ToArray();
+
             var validInvoiceItems = this.PurchaseInvoiceItems.Where(v => v.IsValid).ToArray();
             this.ValidInvoiceItems = validInvoiceItems;
 
@@ -150,7 +152,7 @@ namespace Allors.Domain
 
             if (validInvoiceItems.Any())
             {
-                if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsCreated)
+                if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
                 {
                     if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsPaid))
                     {
