@@ -243,10 +243,10 @@
     <None Include="Custom\Relation\People\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="ExcelAddIn_TemporaryKey.pfx" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ExcelAddIn_TemporaryKey.pfx" />
     <None Include="Overview.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -304,7 +304,7 @@
     <ManifestKeyFile>ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>EF6FBD6746EDA80365485CD438DF1302ED4B4709</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>E842C130A6F585223D8A3522347596BF678CA178</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
