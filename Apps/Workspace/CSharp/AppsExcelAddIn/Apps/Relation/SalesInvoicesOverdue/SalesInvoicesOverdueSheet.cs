@@ -1,6 +1,6 @@
 ﻿using Allors.Workspace.Meta;
-using AppsExcelAddIn.Apps.Extensions;
-using AppsExcelAddIn.Apps.Relation.SalesInvoicesOverdue;
+using ExcelAddIn.Apps.Extensions;
+using ExcelAddIn.Apps.Relation.SalesInvoicesOverdue;
 
 namespace Allors.Excel.Relations.CustomersOverdue
 {

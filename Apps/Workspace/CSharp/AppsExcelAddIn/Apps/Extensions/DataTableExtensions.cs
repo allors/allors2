@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppsExcelAddIn.Apps.Extensions
+namespace ExcelAddIn.Apps.Extensions
 {
     public static class DataTableExtensions
     {

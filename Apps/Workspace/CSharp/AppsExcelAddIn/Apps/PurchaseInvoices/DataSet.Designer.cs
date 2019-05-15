@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace AppsExcelAddIn.Apps.PurchaseInvoices {
+namespace ExcelAddIn.Apps.PurchaseInvoices {
     
     
     /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace AppsExcelAddIn
+﻿namespace ExcelAddIn
 {
     partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {

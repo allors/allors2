@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Allors.Workspace.Meta;
-using AppsExcelAddIn;
-using AppsExcelAddIn.Apps.Extensions;
+using ExcelAddIn;
+using ExcelAddIn.Apps.Extensions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using Workspace.Domain.Apps;
@@ -28,7 +28,7 @@ namespace Allors.Excel.InventoryItems
     public class InventoryItemsSheet : Sheet
     {
         private const string InventoryItemsListObjectName = "InventoryItemsListObject";
-        private AppsExcelAddIn.Apps.Inventory.DataSet1 dataSet;
+        private ExcelAddIn.Apps.Inventory.DataSet1 dataSet;
         private ListObject listObject;
         
         public InventoryItemsSheet(Sheets sheets, Worksheet worksheet)
@@ -99,7 +99,7 @@ namespace Allors.Excel.InventoryItems
         
         private void ToListObject()
         {
-            this.dataSet = new AppsExcelAddIn.Apps.Inventory.DataSet1();
+            this.dataSet = new ExcelAddIn.Apps.Inventory.DataSet1();
 
             this.dataSet.InventorItems.SetColumnsOrder(
                 this.dataSet.InventorItems.InternalReferenceColumn.ColumnName,

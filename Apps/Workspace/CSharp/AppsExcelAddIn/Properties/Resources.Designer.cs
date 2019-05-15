@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AppsExcelAddIn.Properties {
+namespace ExcelAddIn.Properties {
     
     
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using AppsExcelAddIn;
+﻿using ExcelAddIn;
 using Microsoft.Office.Interop.Excel;
 
 namespace Allors.Excel

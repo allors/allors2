@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Allors.Workspace.Meta;
-using AppsExcelAddIn;
-using AppsExcelAddIn.Apps.Extensions;
+using ExcelAddIn;
+using ExcelAddIn.Apps.Extensions;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using Workspace.Domain.Apps;
@@ -28,7 +28,7 @@ namespace Allors.Excel.PurchaseInvoices
     public class PurchaseInvoicesSheet : Sheet
     {
         private const string PurchaseInvoicesListObjectName = "PurchaseInvoicesListObject";
-        private AppsExcelAddIn.Apps.PurchaseInvoices.DataSet dataSet;
+        private ExcelAddIn.Apps.PurchaseInvoices.DataSet dataSet;
         private ListObject listObject;
         
         public PurchaseInvoicesSheet(Sheets sheets, Worksheet worksheet)
@@ -99,7 +99,7 @@ namespace Allors.Excel.PurchaseInvoices
         
         private void ToListObject()
         {
-            this.dataSet = new AppsExcelAddIn.Apps.PurchaseInvoices.DataSet();
+            this.dataSet = new ExcelAddIn.Apps.PurchaseInvoices.DataSet();
 
             this.dataSet.PurchaseInvoice.SetColumnsOrder(
                 this.dataSet.PurchaseInvoice.BilledToNameColumn.ColumnName,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 
-namespace AppsExcelAddIn
+namespace ExcelAddIn
 {
     using Allors.Excel;
 

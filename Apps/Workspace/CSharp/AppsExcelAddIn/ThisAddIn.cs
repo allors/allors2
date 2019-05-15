@@ -3,7 +3,7 @@ using Allors.Excel;
 using NLog;
 using Office = Microsoft.Office.Core;
 
-namespace AppsExcelAddIn
+namespace ExcelAddIn
 {
     public partial class ThisAddIn
     {

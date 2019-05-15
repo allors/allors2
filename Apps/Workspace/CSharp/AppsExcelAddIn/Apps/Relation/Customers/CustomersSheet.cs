@@ -1,6 +1,6 @@
 ﻿using Allors.Workspace.Meta;
-using AppsExcelAddIn.Apps.Extensions;
-using AppsExcelAddIn.Apps.Relation.Customers;
+using ExcelAddIn.Apps.Extensions;
+using ExcelAddIn.Apps.Relation.Customers;
 
 namespace Allors.Excel.Customers
 {
