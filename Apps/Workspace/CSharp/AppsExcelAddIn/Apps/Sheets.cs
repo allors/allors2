@@ -1,4 +1,5 @@
-﻿using Allors.Excel.PurchaseInvoices;
+﻿using Allors.Excel.Customers;
+using Allors.Excel.PurchaseInvoices;
 using Microsoft.Office.Interop.Excel;
 
 namespace Allors.Excel
@@ -23,6 +24,32 @@ namespace Allors.Excel
         {
             var worksheet = this.Host.ActiveWorksheet;
 
+            AddCustomStyles();
+
+            worksheet.SetCustomPropertyValue("AllorsType", nameof(PurchaseInvoicesSheet));
+
+            var sheet = new PurchaseInvoicesSheet(this, worksheet);
+            sheet.Workbook = this.Host.Application.ActiveWorkbook;
+
+            this.SheetByVstoWorksheet[worksheet] = sheet;
+            return sheet;
+        }
+
+        public CustomersSheet CreateCustomers()
+        {
+            var worksheet = this.Host.ActiveWorksheet;
+
+            AddCustomStyles();
+
+            worksheet.SetCustomPropertyValue("AllorsType", nameof(CustomersSheet));
+
+            var sheet = new CustomersSheet(this, worksheet);
+            this.SheetByVstoWorksheet[worksheet] = sheet;
+            return sheet;
+        }
+
+        private void AddCustomStyles()
+        {
             Style style = this.Host.ActiveWorkbook.Styles.Add("headerStyle");
             style.Font.Name = "Arial";
             style.Font.Size = 10;
@@ -30,12 +57,6 @@ namespace Allors.Excel
             style.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
             style.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange);
             style.Interior.Pattern = XlPattern.xlPatternSolid;
-
-            worksheet.SetCustomPropertyValue("AllorsType", nameof(PurchaseInvoicesSheet));
-
-            var sheet = new PurchaseInvoicesSheet(this, worksheet);
-            this.SheetByVstoWorksheet[worksheet] = sheet;
-            return sheet;
         }
 
         private Sheet Instantiate(Worksheet worksheet)
@@ -49,6 +70,9 @@ namespace Allors.Excel
 
                 case nameof(PurchaseInvoicesSheet):
                     return new PurchaseInvoicesSheet(this, worksheet);
+
+                case nameof(CustomersSheet):
+                    return new CustomersSheet(this, worksheet);
             }
 
             return null;
