@@ -301,6 +301,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
         [Workspace]
         public PurchaseOrder[] PurchaseOrders { get; set; }
 

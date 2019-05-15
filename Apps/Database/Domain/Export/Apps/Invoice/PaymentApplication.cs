@@ -36,6 +36,10 @@ namespace Allors.Domain
             if (this.ExistInvoiceItem)
             {
                 derivation.AddDependency(this.InvoiceItem, this);
+                foreach (OrderItemBilling orderItemBilling in this.InvoiceItem.OrderItemBillingsWhereInvoiceItem)
+                {
+                    derivation.AddDependency(orderItemBilling.OrderItem, this);
+                }
             }
 
             if (this.ExistInvoice)

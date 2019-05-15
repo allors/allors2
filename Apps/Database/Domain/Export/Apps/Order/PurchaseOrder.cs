@@ -485,8 +485,6 @@ namespace Allors.Domain
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
                     .Build();
 
-                purchaseInvoice.AddPurchaseOrder(this);
-
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
                     if (orderItem.CanInvoice)

@@ -15,7 +15,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/t
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PaymentOverviewPanelModule } from '../../payment/overview/panel/payment-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
-import { PurchaseOrderInvoiceOverviewPanelModule } from '../../purchaseorder/overview/panelinvoice/purchaseorderinvoice-overview-panel.module';
+import { PurchaseOrderInvoiceOverviewPanelModule } from '../../purchaseorder/overview/invoicepanel/purchaseorderinvoice-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
