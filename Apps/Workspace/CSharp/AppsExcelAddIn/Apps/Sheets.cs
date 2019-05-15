@@ -2,6 +2,7 @@
 using Allors.Excel.Customers;
 using Allors.Excel.InventoryItems;
 using Allors.Excel.PurchaseInvoices;
+using Allors.Excel.Relations.CustomersOverdue;
 using Microsoft.Office.Interop.Excel;
 
 namespace Allors.Excel
@@ -62,6 +63,19 @@ namespace Allors.Excel
             this.SheetByVstoWorksheet[worksheet] = sheet;
             return sheet;
         }
+        
+        public SalesInvoicesOverdueSheet CreateSalesInvoicesOverdue()
+        {
+            var worksheet = this.Host.ActiveWorksheet;
+
+            AddCustomStyles();
+
+            worksheet.SetCustomPropertyValue("AllorsType", nameof(SalesInvoicesOverdueSheet));
+
+            var sheet = new SalesInvoicesOverdueSheet(this, worksheet);
+            this.SheetByVstoWorksheet[worksheet] = sheet;
+            return sheet;
+        }
 
         private void AddCustomStyles()
         {
@@ -92,6 +106,9 @@ namespace Allors.Excel
 
                 case nameof(CustomersSheet):
                     return new CustomersSheet(this, worksheet);
+
+                case nameof(SalesInvoicesOverdueSheet):
+                    return new SalesInvoicesOverdueSheet(this, worksheet);
             }
 
             return null;

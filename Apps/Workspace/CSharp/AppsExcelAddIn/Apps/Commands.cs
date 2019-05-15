@@ -57,5 +57,14 @@ namespace Allors.Excel
             var sheet = this.Sheets.CreateInventoryItems();
             await sheet.Refresh();
         }
+
+        
+        public async Task SalesInvoicesOverdueNew()
+        {
+            EnsureEmptyWorksheet();
+
+            var sheet = this.Sheets.CreateSalesInvoicesOverdue();
+            await sheet.Refresh();
+        }
     }
 }

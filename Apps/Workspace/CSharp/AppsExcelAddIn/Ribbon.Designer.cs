@@ -45,6 +45,7 @@
             this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
             this.groupInventory = this.Factory.CreateRibbonGroup();
             this.InventoryItemsButton = this.Factory.CreateRibbonButton();
+            this.SalesInvoicesOverdueButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -90,7 +91,8 @@
             // group2
             // 
             this.group2.Items.Add(this.customerInitializeButton);
-            this.group2.Label = "Relations";
+            this.group2.Items.Add(this.SalesInvoicesOverdueButton);
+            this.group2.Label = "Sales";
             this.group2.Name = "group2";
             // 
             // customerInitializeButton
@@ -129,6 +131,14 @@
             this.InventoryItemsButton.ShowImage = true;
             this.InventoryItemsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.InventoryItemsButton_Click);
             // 
+            // SalesInvoicesOverdueButton
+            // 
+            this.SalesInvoicesOverdueButton.Label = "Customers Overdue";
+            this.SalesInvoicesOverdueButton.Name = "SalesInvoicesOverdueButton";
+            this.SalesInvoicesOverdueButton.OfficeImageId = "DataFormSource";
+            this.SalesInvoicesOverdueButton.ShowImage = true;
+            this.SalesInvoicesOverdueButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SalesInvoicesOverdueButton_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -165,6 +175,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton customerInitializeButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupInventory;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton InventoryItemsButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton SalesInvoicesOverdueButton;
     }
 
     partial class ThisRibbonCollection

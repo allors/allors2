@@ -150,5 +150,24 @@ namespace AppsExcelAddIn
                 e.Handle();
             }
         }
+
+        private void SalesInvoicesOverdueButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        {
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                    {
+                        if (this.Commands != null)
+                        {
+                            await this.Commands.SalesInvoicesOverdueNew();
+                        }
+                    });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
+        }
     }
 }

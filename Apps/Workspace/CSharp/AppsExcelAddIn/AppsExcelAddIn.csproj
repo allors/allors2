@@ -237,6 +237,12 @@
     </Compile>
     <Compile Include="Apps\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
     <Compile Include="Apps\Mediator.cs" />
+    <Compile Include="Apps\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
+    <Compile Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Apps\Relation\Customers\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -291,6 +297,17 @@
     </None>
     <None Include="Apps\PurchaseInvoices\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
     </None>
     <None Include="Apps\Relation\Customers\DataSet1.xsc">
       <DependentUpon>DataSet1.xsd</DependentUpon>
