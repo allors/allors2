@@ -154,25 +154,13 @@ var testNpgsqlTask = Task("TestNpgsql")
 // TASK TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
-var cleanTask = Task("Clean")
-    .IsDependentOn(databaseCleanTask)
-    .IsDependentOn(workspaceCleanTask);
-
-var buildTask = Task("Build")
-    .IsDependentOn(databaseBuildTask)
-    .IsDependentOn(workspaceBuildTask);
-
-var rebuildTask = Task("Rebuild")
-    .IsDependentOn(cleanTask)
-    .IsDependentOn(buildTask);
-
 var testTask = Task("Test")
     .IsDependentOn(testMemoryTask)
     .IsDependentOn(testSqlClientTask)
     .IsDependentOn(testNpgsqlTask);
 
 Task("Default")
-    .IsDependentOn(rebuildTask)
+    .IsDependentOn(adaptersTask)
     .Does(()=>{
         Information("NuGetVersion: {0}", gitVersion.NuGetVersion);
         Information("InformationalVersion: {0}", gitVersion.InformationalVersion);
