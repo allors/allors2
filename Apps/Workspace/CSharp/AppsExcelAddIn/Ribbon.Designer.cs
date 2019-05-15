@@ -43,6 +43,7 @@
             this.peopleInitializeButton = this.Factory.CreateRibbonButton();
             this.groupPurchases = this.Factory.CreateRibbonGroup();
             this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
+            this.customerInitializeButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -86,6 +87,7 @@
             // group2
             // 
             this.group2.Items.Add(this.peopleInitializeButton);
+            this.group2.Items.Add(this.customerInitializeButton);
             this.group2.Label = "Relations";
             this.group2.Name = "group2";
             // 
@@ -108,6 +110,14 @@
             this.purchaseInvoicesInitializeButton.OfficeImageId = "DataFormSource";
             this.purchaseInvoicesInitializeButton.ShowImage = true;
             this.purchaseInvoicesInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.PurchaseInvoicesInitializeButton_Click);
+            // 
+            // customerInitializeButton
+            // 
+            this.customerInitializeButton.Label = "Customers";
+            this.customerInitializeButton.Name = "customerInitializeButton";
+            this.customerInitializeButton.OfficeImageId = "DataFormSource";
+            this.customerInitializeButton.ShowImage = true;
+            this.customerInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomerInitializeButton_Click);
             // 
             // Ribbon
             // 
@@ -141,6 +151,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton peopleInitializeButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupPurchases;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton purchaseInvoicesInitializeButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton customerInitializeButton;
     }
 
     partial class ThisRibbonCollection

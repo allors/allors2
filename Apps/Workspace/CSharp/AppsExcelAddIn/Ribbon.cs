@@ -96,7 +96,7 @@ namespace AppsExcelAddIn
             this.peopleInitializeButton.Enabled = this.Commands.CanNew;
         }
 
-        private void PurchaseInvoicesInitializeButton_Click(object sender, RibbonControlEventArgs eventArgse)
+        private void PurchaseInvoicesInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -106,6 +106,25 @@ namespace AppsExcelAddIn
                         if (this.Commands != null)
                         {
                             await this.Commands.PurchaseInvoicesNew();
+                        }
+                    });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
+        }
+
+        private void CustomerInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        {
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                    {
+                        if (this.Commands != null)
+                        {
+                            await this.Commands.CustomersNew();
                         }
                     });
             }
