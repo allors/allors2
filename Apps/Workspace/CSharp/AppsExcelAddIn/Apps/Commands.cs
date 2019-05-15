@@ -37,7 +37,6 @@ namespace Allors.Excel
                 Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.ActiveSheet;
                 if (Globals.ThisAddIn.Application.WorksheetFunction.CountA(worksheet.Cells) > 0)
                 {
-                    // Always start a new workbook.
                     Globals.ThisAddIn.Application.Workbooks.Add();
                 }
             }
@@ -48,6 +47,14 @@ namespace Allors.Excel
             EnsureEmptyWorksheet();
 
             var sheet = this.Sheets.CreateCustomers();
+            await sheet.Refresh();
+        }
+
+        public async Task InventoryItemsNew()
+        {
+            EnsureEmptyWorksheet();
+
+            var sheet = this.Sheets.CreateInventoryItems();
             await sheet.Refresh();
         }
     }

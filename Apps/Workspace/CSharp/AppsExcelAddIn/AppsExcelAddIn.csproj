@@ -224,6 +224,12 @@
     <Compile Include="Apps\Extensions\DataTableExtensions.cs" />
     <Compile Include="Apps\Extensions\ErrorResponseExtensions.cs" />
     <Compile Include="Apps\Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Apps\Inventory\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\Inventory\InventoryItemsSheet.cs" />
     <Compile Include="Apps\PurchaseInvoices\DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -264,6 +270,17 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="AppsExcelAddIn_TemporaryKey.pfx" />
+    <None Include="Apps\Inventory\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="Apps\Inventory\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Apps\Inventory\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
     <None Include="Apps\PurchaseInvoices\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>

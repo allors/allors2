@@ -92,8 +92,6 @@ namespace AppsExcelAddIn
 
             this.saveButton.Enabled = existSheet && this.Commands.CanSave;
             this.refreshButton.Enabled = existSheet && this.Commands.CanRefresh;
-
-            this.peopleInitializeButton.Enabled = this.Commands.CanNew;
         }
 
         private void PurchaseInvoicesInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
@@ -125,6 +123,25 @@ namespace AppsExcelAddIn
                         if (this.Commands != null)
                         {
                             await this.Commands.CustomersNew();
+                        }
+                    });
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
+        }
+
+        private void InventoryItemsButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        {
+            try
+            {
+                AsyncContext.Run(
+                    async () =>
+                    {
+                        if (this.Commands != null)
+                        {
+                            await this.Commands.InventoryItemsNew();
                         }
                     });
             }

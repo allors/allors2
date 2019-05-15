@@ -40,15 +40,17 @@
             this.saveButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.peopleInitializeButton = this.Factory.CreateRibbonButton();
+            this.customerInitializeButton = this.Factory.CreateRibbonButton();
             this.groupPurchases = this.Factory.CreateRibbonGroup();
             this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
-            this.customerInitializeButton = this.Factory.CreateRibbonButton();
+            this.groupInventory = this.Factory.CreateRibbonGroup();
+            this.InventoryItemsButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.groupPurchases.SuspendLayout();
+            this.groupInventory.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -62,6 +64,7 @@
             this.appsTab.Groups.Add(this.group1);
             this.appsTab.Groups.Add(this.group2);
             this.appsTab.Groups.Add(this.groupPurchases);
+            this.appsTab.Groups.Add(this.groupInventory);
             this.appsTab.Label = "Apps";
             this.appsTab.Name = "appsTab";
             // 
@@ -86,16 +89,17 @@
             // 
             // group2
             // 
-            this.group2.Items.Add(this.peopleInitializeButton);
             this.group2.Items.Add(this.customerInitializeButton);
             this.group2.Label = "Relations";
             this.group2.Name = "group2";
             // 
-            // peopleInitializeButton
+            // customerInitializeButton
             // 
-            this.peopleInitializeButton.Label = "People";
-            this.peopleInitializeButton.Name = "peopleInitializeButton";
-            this.peopleInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.peopleInitializeButton_Click);
+            this.customerInitializeButton.Label = "Customers";
+            this.customerInitializeButton.Name = "customerInitializeButton";
+            this.customerInitializeButton.OfficeImageId = "DataFormSource";
+            this.customerInitializeButton.ShowImage = true;
+            this.customerInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomerInitializeButton_Click);
             // 
             // groupPurchases
             // 
@@ -111,13 +115,19 @@
             this.purchaseInvoicesInitializeButton.ShowImage = true;
             this.purchaseInvoicesInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.PurchaseInvoicesInitializeButton_Click);
             // 
-            // customerInitializeButton
+            // groupInventory
             // 
-            this.customerInitializeButton.Label = "Customers";
-            this.customerInitializeButton.Name = "customerInitializeButton";
-            this.customerInitializeButton.OfficeImageId = "DataFormSource";
-            this.customerInitializeButton.ShowImage = true;
-            this.customerInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomerInitializeButton_Click);
+            this.groupInventory.Items.Add(this.InventoryItemsButton);
+            this.groupInventory.Label = "Inventory";
+            this.groupInventory.Name = "groupInventory";
+            // 
+            // InventoryItemsButton
+            // 
+            this.InventoryItemsButton.Label = "Equipment Stock";
+            this.InventoryItemsButton.Name = "InventoryItemsButton";
+            this.InventoryItemsButton.OfficeImageId = "DataFormSource";
+            this.InventoryItemsButton.ShowImage = true;
+            this.InventoryItemsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.InventoryItemsButton_Click);
             // 
             // Ribbon
             // 
@@ -136,6 +146,8 @@
             this.group2.PerformLayout();
             this.groupPurchases.ResumeLayout(false);
             this.groupPurchases.PerformLayout();
+            this.groupInventory.ResumeLayout(false);
+            this.groupInventory.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -148,10 +160,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton saveButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton peopleInitializeButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupPurchases;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton purchaseInvoicesInitializeButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton customerInitializeButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupInventory;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton InventoryItemsButton;
     }
 
     partial class ThisRibbonCollection

@@ -1,4 +1,6 @@
-﻿using Allors.Excel.Customers;
+﻿using System.Linq;
+using Allors.Excel.Customers;
+using Allors.Excel.InventoryItems;
 using Allors.Excel.PurchaseInvoices;
 using Microsoft.Office.Interop.Excel;
 
@@ -48,15 +50,32 @@ namespace Allors.Excel
             return sheet;
         }
 
+        public InventoryItemsSheet CreateInventoryItems()
+        {
+            var worksheet = this.Host.ActiveWorksheet;
+
+            AddCustomStyles();
+
+            worksheet.SetCustomPropertyValue("AllorsType", nameof(InventoryItemsSheet));
+
+            var sheet = new InventoryItemsSheet(this, worksheet);
+            this.SheetByVstoWorksheet[worksheet] = sheet;
+            return sheet;
+        }
+
         private void AddCustomStyles()
         {
-            Style style = this.Host.ActiveWorkbook.Styles.Add("headerStyle");
-            style.Font.Name = "Arial";
-            style.Font.Size = 10;
-            style.Font.Bold = true;
-            style.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
-            style.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange);
-            style.Interior.Pattern = XlPattern.xlPatternSolid;
+            if (this.Host.ActiveWorkbook.Styles.Cast<Style>().All(v => v.Name != "headerStyle"))
+            {
+                Style style = this.Host.ActiveWorkbook.Styles.Add("headerStyle");
+                style.Font.Name = "Arial";
+                style.Font.Size = 10;
+                style.Font.Bold = true;
+                style.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
+                style.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange);
+                style.Interior.Pattern = XlPattern.xlPatternSolid;
+            }
+          
         }
 
         private Sheet Instantiate(Worksheet worksheet)
