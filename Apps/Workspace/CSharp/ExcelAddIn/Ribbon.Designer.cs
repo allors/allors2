@@ -41,11 +41,12 @@
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.customerInitializeButton = this.Factory.CreateRibbonButton();
+            this.SalesInvoicesOverdueButton = this.Factory.CreateRibbonButton();
             this.groupPurchases = this.Factory.CreateRibbonGroup();
             this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
             this.groupInventory = this.Factory.CreateRibbonGroup();
             this.InventoryItemsButton = this.Factory.CreateRibbonButton();
-            this.SalesInvoicesOverdueButton = this.Factory.CreateRibbonButton();
+            this.buttonLogoff = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -73,6 +74,7 @@
             // 
             this.group1.Items.Add(this.saveButton);
             this.group1.Items.Add(this.refreshButton);
+            this.group1.Items.Add(this.buttonLogoff);
             this.group1.Label = "General";
             this.group1.Name = "group1";
             // 
@@ -103,6 +105,14 @@
             this.customerInitializeButton.ShowImage = true;
             this.customerInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CustomerInitializeButton_Click);
             // 
+            // SalesInvoicesOverdueButton
+            // 
+            this.SalesInvoicesOverdueButton.Label = "Customers Overdue";
+            this.SalesInvoicesOverdueButton.Name = "SalesInvoicesOverdueButton";
+            this.SalesInvoicesOverdueButton.OfficeImageId = "DataFormSource";
+            this.SalesInvoicesOverdueButton.ShowImage = true;
+            this.SalesInvoicesOverdueButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SalesInvoicesOverdueButton_Click);
+            // 
             // groupPurchases
             // 
             this.groupPurchases.Items.Add(this.purchaseInvoicesInitializeButton);
@@ -131,13 +141,11 @@
             this.InventoryItemsButton.ShowImage = true;
             this.InventoryItemsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.InventoryItemsButton_Click);
             // 
-            // SalesInvoicesOverdueButton
+            // buttonLogoff
             // 
-            this.SalesInvoicesOverdueButton.Label = "Customers Overdue";
-            this.SalesInvoicesOverdueButton.Name = "SalesInvoicesOverdueButton";
-            this.SalesInvoicesOverdueButton.OfficeImageId = "DataFormSource";
-            this.SalesInvoicesOverdueButton.ShowImage = true;
-            this.SalesInvoicesOverdueButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SalesInvoicesOverdueButton_Click);
+            this.buttonLogoff.Label = "Logoff";
+            this.buttonLogoff.Name = "buttonLogoff";
+            this.buttonLogoff.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonLogoff_Click);
             // 
             // Ribbon
             // 
@@ -176,6 +184,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupInventory;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton InventoryItemsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton SalesInvoicesOverdueButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonLogoff;
     }
 
     partial class ThisRibbonCollection

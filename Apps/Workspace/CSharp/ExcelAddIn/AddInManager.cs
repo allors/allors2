@@ -1,8 +1,11 @@
-﻿namespace ExcelAddIn
+﻿using System.Net;
+using System.Net.Http;
+using AppsExcelAddIn.Apps;
+
+namespace ExcelAddIn
 {
     using System;
     using System.Configuration;
-    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
@@ -40,6 +43,8 @@
         private Sheets sheets;
         private Commands commands;
 
+        public  bool IsLoggedIn { get; set; }
+
         public AddInManager(Application application, CustomTaskPaneCollection customTaskPanes, ApplicationFactory factory)
         {
             this.application = application;
@@ -53,33 +58,36 @@
         {
             try
             {
-                // Make sure we have a SynchronizationContext
-                var form = new Form();
-
-                var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
-                var httpClient = new HttpClient(httpClientHandler)
+                if (this.database == null)
                 {
-                    BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
-                };
+                    // Make sure we have a SynchronizationContext
+                    var form = new Form();
 
-                this.database = new Database(httpClient);
-                this.workspace = new Workspace(Config.ObjectFactory);
-                this.client = new Client(this.database, this.workspace);
+                    var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
+                    var httpClient = new HttpClient(httpClientHandler)
+                    {
+                        BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
+                    };
 
-                this.host = new Host(this.application, this.customTaskPanes, this.factory);
+                    this.database = new Database(httpClient);
+                    this.workspace = new Workspace(Config.ObjectFactory);
+                    this.client = new Client(this.database, this.workspace);
 
-                this.mediator = new Mediator();
-                this.sheets = new Sheets(this.host, this.client, this.mediator);
-                this.commands = new Commands(this.sheets);
+                    this.host = new Host(this.application, this.customTaskPanes, this.factory);
 
-                this.application.WindowActivate += this.ApplicationOnWindowActivate;
-                this.application.WorkbookOpen += this.ApplicationOnWorkbookOpen;
-                this.application.WorkbookBeforeClose += this.ApplicationOnWorkbookBeforeClose;
-                this.application.WorkbookActivate += this.ApplicationOnWorkbookActivate;
-                this.application.WorkbookNewSheet += this.ApplicationOnWorkbookNewSheet;
-                this.application.SheetActivate += this.ApplicationOnSheetActivate;
-                
-                Globals.Ribbons.Ribbon.Init(this.commands, this.sheets, this.mediator);
+                    this.mediator = new Mediator();
+                    this.sheets = new Sheets(this.host, this.client, this.mediator);
+                    this.commands = new Commands(this.sheets);
+
+                    this.application.WindowActivate += this.ApplicationOnWindowActivate;
+                    this.application.WorkbookOpen += this.ApplicationOnWorkbookOpen;
+                    this.application.WorkbookBeforeClose += this.ApplicationOnWorkbookBeforeClose;
+                    this.application.WorkbookActivate += this.ApplicationOnWorkbookActivate;
+                    this.application.WorkbookNewSheet += this.ApplicationOnWorkbookNewSheet;
+                    this.application.SheetActivate += this.ApplicationOnSheetActivate;
+
+                    Globals.Ribbons.Ribbon.Init(this.commands, this.sheets, this.mediator);
+                }
 
                 // TODO: Make this lazy
                 await this.Login(this.database);
@@ -90,18 +98,65 @@
             }
         }
 
+        public void Logoff()
+        {
+            this.IsLoggedIn = false;
+            this.database.HttpClient.DefaultRequestHeaders.Authorization = null;
+        }
+
         private async Task Login(Database database)
         {
+
             try
             {
-                var environment = ConfigurationManager.AppSettings[EnvironmentKey];
-                var production = environment?.ToLower().Equals("prod") ?? false;
-
-                if (!production)
+                if (!this.IsLoggedIn)
                 {
-                    var user = ConfigurationManager.AppSettings[UserKey] ?? @"administrator";
-                    var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
-                    await database.Login(uri, user, null);
+                    var environment = ConfigurationManager.AppSettings[EnvironmentKey];
+                    var production = environment?.ToLower().Equals("prod") ?? false;
+
+                    if (!production)
+                    {
+                        var user = ConfigurationManager.AppSettings[UserKey] ?? @"administrator";
+                        var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+                        this.IsLoggedIn = await database.Login(uri, user, null);
+                    }
+                    else
+                    {
+                        // Check if there is some sort of automated login
+                        var uri = new Uri("/Ping/Token", UriKind.Relative);
+
+                        HttpResponseMessage response = null;
+                        try
+                        {
+                            response = await database.PostAsJsonAsync(uri, null);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                this.IsLoggedIn = true;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // Catch the Unauthorized exception only
+                            if (response?.StatusCode != HttpStatusCode.Unauthorized)
+                            {
+                                throw;
+                            }
+                        }
+
+                        if (!this.IsLoggedIn)
+                        {
+                            using (var loginForm = new LoginForm())
+                            {
+                                loginForm.Database = database;
+                                loginForm.Uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+                                var result = loginForm.ShowDialog();
+                                if (result == DialogResult.OK)
+                                {
+                                    this.IsLoggedIn = true;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)

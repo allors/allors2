@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Allors.Excel;
 using NLog;
 using Office = Microsoft.Office.Core;
@@ -11,17 +12,26 @@ namespace ExcelAddIn
 
         public Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        private async void ThisAddIn_Startup(object sender, System.EventArgs @event)
+        public async void InitAddInManager()
         {
             try
             {
-                this.AddInManager = new AddInManager(this.Application, this.CustomTaskPanes, Globals.Factory);
+                if (this.AddInManager == null)
+                {
+                    this.AddInManager = new AddInManager(this.Application, this.CustomTaskPanes, Globals.Factory);
+                }
+
                 await this.AddInManager.Init();
             }
             catch (Exception e)
             {
                 e.Handle();
             }
+        }
+
+        private async void ThisAddIn_Startup(object sender, System.EventArgs @event)
+        {
+           
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
