@@ -16,7 +16,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice);
+        public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice || this.SalesInvoiceItemState.IsWrittenOff);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
@@ -161,11 +161,6 @@ namespace Allors.Domain
         public void AppsCancel()
         {
             this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
-        }
-
-        public void AppsSend()
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Sent;
         }
 
         public void AppsDelete(DeletableDelete method)

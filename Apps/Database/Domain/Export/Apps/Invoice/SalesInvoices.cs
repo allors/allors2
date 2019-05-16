@@ -33,7 +33,7 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var sent = new SalesInvoiceStates(this.Session).Sent;
+            var notPaid = new SalesInvoiceStates(this.Session).NotPaid;
             var paid = new SalesInvoiceStates(this.Session).Paid;
             var partiallyPaid = new SalesInvoiceStates(this.Session).PartiallyPaid;
             var writtenOff = new SalesInvoiceStates(this.Session).WrittenOff;
@@ -45,18 +45,18 @@ namespace Allors.Domain
             var writeOff = this.Meta.WriteOff;
             var reopen = this.Meta.Reopen;
             var credit = this.Meta.Credit;
+            var setPaid = this.Meta.SetPaid;
+            var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen);
-
-            config.Deny(this.ObjectType, readyForPosting, reopen, credit);
-            config.Deny(this.ObjectType, sent, Operations.Write);
-            config.Deny(this.ObjectType, sent, send, cancelInvoice);
+            config.Deny(this.ObjectType, readyForPosting, reopen, credit, setPaid);
+            config.Deny(this.ObjectType, notPaid, send, cancelInvoice, reopen, delete);
+            config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen, delete);
             config.Deny(this.ObjectType, paid, Operations.Write);
-            config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen);
+            config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen, setPaid, delete);
             config.Deny(this.ObjectType, writtenOff, Operations.Write);
-            config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff, credit);
+            config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff, credit, setPaid, delete);
             config.Deny(this.ObjectType, cancelled, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff, credit);
+            config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff, credit, setPaid, delete);
         }
     }
 }

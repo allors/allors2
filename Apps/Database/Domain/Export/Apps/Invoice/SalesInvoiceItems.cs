@@ -31,13 +31,11 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var sent = new SalesInvoiceItemStates(this.Session).Sent;
             var paid = new SalesInvoiceItemStates(this.Session).Paid;
             var writtenOff = new SalesInvoiceItemStates(this.Session).WrittenOff;
             var cancelled = new SalesInvoiceItemStates(this.Session).Cancelled;
             var cancelledByOrder = new SalesInvoiceItemStates(this.Session).CancelledByInvoice;
 
-            config.Deny(this.ObjectType, sent, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
