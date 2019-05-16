@@ -427,8 +427,7 @@ namespace Allors.Domain
 
             foreach (SalesInvoiceItem invoiceItem in validInvoiceItems)
             {
-                if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
-                    !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
+                if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.ReadyForPosting))
                 {
                     if (invoiceItem.AmountPaid == 0)
                     {
@@ -445,9 +444,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (validInvoiceItems.Any()
-                && !this.SalesInvoiceState.Equals(salesInvoiceStates.Cancelled) 
-                && !this.SalesInvoiceState.Equals(salesInvoiceStates.WrittenOff))
+            if (validInvoiceItems.Any() && !this.SalesInvoiceState.Equals(salesInvoiceStates.ReadyForPosting) )
             {
                 if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsPaid))
                 {
@@ -541,10 +538,10 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.Store.DeriveNextCreditNoteNumber(this.InvoiceDate.Year);
             }
 
-            this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
+            this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
-                salesInvoiceItem.AppsSend();
+                salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid; ;
             }
 
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)

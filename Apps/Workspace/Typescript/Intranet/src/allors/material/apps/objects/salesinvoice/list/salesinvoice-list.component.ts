@@ -19,6 +19,7 @@ interface Row extends TableRow {
   state: string;
   reference: string;
   description: string;
+  totalExVat: number;
   lastModifiedDate: string;
 }
 
@@ -42,6 +43,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
   copy: Action;
   credit: Action;
   reopen: Action;
+  setPaid: Action;
 
   private subscription: Subscription;
 
@@ -78,6 +80,11 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       this.table.selection.clear();
     });
 
+    this.setPaid = methodService.create(allors.context, this.m.SalesInvoice.SetPaid, { name: 'Set Paid' });
+    this.setPaid.result.subscribe(() => {
+      this.table.selection.clear();
+    });
+
     this.table = new Table({
       selection: true,
       columns: [
@@ -86,6 +93,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'reference', sort: true },
         { name: 'state' },
         { name: 'description', sort: true },
+        { name: 'totalExVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -97,6 +105,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         this.copy,
         this.credit,
         this.reopen,
+        this.setPaid
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -225,6 +234,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
+            totalExVat: v.TotalExVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

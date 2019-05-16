@@ -19,7 +19,6 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceItemStates
     {
-        public static readonly Guid SentId = new Guid("9DC3A779-8734-4c19-BFF5-0DE9F29A584B");
         public static readonly Guid PaidId = new Guid("875AD2E4-BF44-46f4-9CD6-5F5C5BD43ADC");
         public static readonly Guid PartiallyPaidId = new Guid("2C6A00F7-466A-4689-A7E0-2D5660804B15");
         public static readonly Guid NotPaidId = new Guid("9926746F-C1DC-4968-BA85-9D461260DD0C");
@@ -33,8 +32,6 @@ namespace Allors.Domain
         public SalesInvoiceItemState NotPaid => this.StateCache[NotPaidId];
 
         public SalesInvoiceItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
-
-        public SalesInvoiceItemState Sent => this.StateCache[SentId];
 
         public SalesInvoiceItemState Paid => this.StateCache[PaidId];
 
@@ -60,11 +57,6 @@ namespace Allors.Domain
             new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(PartiallyPaidId)
                 .WithName("Partially Paid")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(SentId)
-                .WithName("Sent")
                 .Build();
 
             new SalesInvoiceItemStateBuilder(this.Session)

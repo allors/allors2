@@ -20,7 +20,6 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceStates
     {
-        internal static readonly Guid SentId = new Guid("C2EE7017-5023-4ac8-AD83-F2B9798FD6EA");
         internal static readonly Guid PaidId = new Guid("9B4FC618-CE43-4930-B0EE-B271320FC0B4");
         internal static readonly Guid PartiallyPaidId = new Guid("26BE5583-7016-4B3C-90C1-FB4BB3E2726C");
         internal static readonly Guid NotPaidId = new Guid("E123505A-9DDB-4435-BA56-101A00C27A8D");
@@ -29,8 +28,6 @@ namespace Allors.Domain
         internal static readonly Guid CancelledId = new Guid("3924F84A-515F-4a47-A7F3-361A50D890FB");
 
         private UniquelyIdentifiableSticky<SalesInvoiceState> stateCache;
-
-        public SalesInvoiceState Sent => this.StateCache[SentId];
 
         public SalesInvoiceState NotPaid => this.StateCache[NotPaidId];
 
@@ -52,11 +49,6 @@ namespace Allors.Domain
 
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
-            new SalesInvoiceStateBuilder(this.Session)
-                .WithUniqueId(SentId)
-                .WithName("Sent")
-                .Build();
 
             new SalesInvoiceStateBuilder(this.Session)
                 .WithUniqueId(PaidId)

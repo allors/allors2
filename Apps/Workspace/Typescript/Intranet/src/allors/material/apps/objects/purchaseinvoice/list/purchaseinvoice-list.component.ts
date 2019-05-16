@@ -39,6 +39,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
   reject: Action;
   createSalesInvoice: Action;
   print: Action;
+  setPaid: Action;
 
   private subscription: Subscription;
 
@@ -68,8 +69,14 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     this.reopen = methodService.create(allors.context, this.m.PurchaseInvoice.Reopen, { name: 'Reopen' });
     this.createSalesInvoice = methodService.create(allors.context, this.m.PurchaseInvoice.CreateSalesInvoice, { name: 'Create Sales Invoice' });
     this.print = printService.print();
+
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe(() => {
+      this.table.selection.clear();
+    });
+
+    this.setPaid = methodService.create(allors.context, this.m.PurchaseInvoice.SetPaid, { name: 'Set Paid' });
+    this.setPaid.result.subscribe(() => {
       this.table.selection.clear();
     });
 
@@ -90,7 +97,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         this.reopen,
         this.reject,
         this.createSalesInvoice,
-        this.print
+        this.print,
+        this.setPaid
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,

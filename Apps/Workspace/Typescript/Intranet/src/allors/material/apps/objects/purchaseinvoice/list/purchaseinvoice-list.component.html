@@ -17,6 +17,9 @@
           <mat-toolbar-row>
             <div class="pl-3 mr-auto">{{title}}</div>
             <div>
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Set Paid" (click)="setPaid.execute(table.selected)">
+                <mat-icon>money</mat-icon>
+              </button>
               <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
                 <mat-icon>delete</mat-icon>
               </button>

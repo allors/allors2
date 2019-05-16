@@ -19,8 +19,6 @@ namespace Allors.Domain
 
     public partial class SalesInvoiceState
     {
-        public bool Sent => this.UniqueId == SalesInvoiceStates.SentId;
-
         public bool Paid => this.UniqueId == SalesInvoiceStates.PaidId;
 
         public bool PartiallyPaid => this.UniqueId == SalesInvoiceStates.PartiallyPaidId;

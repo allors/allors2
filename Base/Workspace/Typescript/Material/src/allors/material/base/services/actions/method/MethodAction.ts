@@ -24,7 +24,7 @@ export class DeleteAction implements Action {
       if (methods.length > 0) {
         context.invoke(methods)
           .subscribe((invoked: Invoked) => {
-            snackBar.open('Successfully executed ' + this.name + '.', 'close', { duration: 5000 });
+            snackBar.open('Successfully executed ' + methodType.name + '.', 'close', { duration: 5000 });
             refreshService.refresh();
             this.result.next(true);
           });
@@ -40,9 +40,9 @@ export class DeleteAction implements Action {
   description = () => (this.config && this.config.description) || this.methodType.name;
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {
-      return target.length > 0 ? !(target[0] as Deletable)[`CanExecute${this.methodType.name}`] : true;
+      return target.length > 0 ? target.find(v => v[`CanExecute${this.methodType.name}`]) === undefined : true;
     } else {
-      return !(target as Deletable).CanExecuteDelete;
+      return !target[`CanExecute${this.methodType.name}`];
     }
   }
 }

@@ -13,8 +13,9 @@ interface Row extends TableRow {
   object: SalesInvoiceItem;
   item: string;
   type: string;
-  status: string;
+  state: string;
   quantity: number;
+  totalExVat: number;
 }
 
 @Component({
@@ -77,6 +78,7 @@ export class SalesInvoiceItemOverviewPanelComponent extends TestScope {
         { name: 'type', sort },
         { name: 'state', sort },
         { name: 'quantity', sort },
+        { name: 'totalExVat', sort },
       ],
       actions: [
         this.edit,
@@ -125,8 +127,9 @@ export class SalesInvoiceItemOverviewPanelComponent extends TestScope {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
           type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
-          status: `${v.SalesInvoiceItemState && v.SalesInvoiceItemState.Name}`,
+          state: `${v.SalesInvoiceItemState && v.SalesInvoiceItemState.Name}`,
           quantity: v.Quantity,
+          totalExVat: v.TotalExVat
         } as Row;
       });
     };

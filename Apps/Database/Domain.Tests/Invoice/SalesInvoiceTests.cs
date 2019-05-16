@@ -699,10 +699,12 @@ namespace Allors.Domain
             Assert.True(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.True(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsSent_ThenCheckTransitions()
+        public void GivenSalesInvoice_WhenObjectStateIsNotPaid_ThenCheckTransitions()
         {
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
@@ -718,6 +720,8 @@ namespace Allors.Domain
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -728,6 +732,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(1000M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
@@ -739,12 +744,14 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            Assert.Equal(new SalesInvoiceStates(this.Session).Sent, invoice.SalesInvoiceState);
+            Assert.Equal(new SalesInvoiceStates(this.Session).NotPaid, invoice.SalesInvoiceState);
 
             var acl = new AccessControlList(invoice, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         ////[Fact]
@@ -819,6 +826,8 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         [Fact]
@@ -869,6 +878,8 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         [Fact]
@@ -913,6 +924,8 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         [Fact]
@@ -955,6 +968,8 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
 
         [Fact]

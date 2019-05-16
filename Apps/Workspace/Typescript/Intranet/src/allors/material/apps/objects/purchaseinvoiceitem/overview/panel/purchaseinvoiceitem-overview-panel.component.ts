@@ -12,8 +12,9 @@ interface Row extends TableRow {
   object: PurchaseInvoiceItem;
   item: string;
   type: string;
-  status: string;
+  state: string;
   quantity: number;
+  totalExVat: number;
 }
 
 @Component({
@@ -77,6 +78,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent extends TestScope {
         { name: 'type', sort },
         { name: 'state', sort },
         { name: 'quantity', sort },
+        { name: 'totalExVat', sort },
       ],
       actions: [
         this.edit,
@@ -127,8 +129,9 @@ export class PurchaseInvoiceItemOverviewPanelComponent extends TestScope {
           object: v,
           item: (v.Product && v.Product.Name) || (v.Part && v.Part.Name) || '',
           type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
-          status: `${v.PurchaseInvoiceItemState && v.PurchaseInvoiceItemState.Name}`,
+          state: `${v.PurchaseInvoiceItemState && v.PurchaseInvoiceItemState.Name}`,
           quantity: v.Quantity,
+          totalExVat: v.TotalExVat
         } as Row;
       });
     };

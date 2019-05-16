@@ -21,6 +21,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   goods: Good[] = [];
 
   print: Action;
+  orderTotalExVat: number;
 
   constructor(
     @Self() public panel: PanelService,
@@ -95,6 +96,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
       this.goods = loaded.collections[goodPullName] as Good[];
       this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
+
+      this.orderTotalExVat = this.orders.reduce((partialOrderTotal, order) => partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + item.TotalExVat, 0), 0);
     };
   }
 
