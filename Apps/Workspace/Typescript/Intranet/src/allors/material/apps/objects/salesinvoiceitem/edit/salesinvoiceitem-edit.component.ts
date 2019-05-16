@@ -1,10 +1,12 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part } from '../../../../../domain';
+import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/base/services/object';
 import { Meta } from '../../../../../meta';
@@ -40,6 +42,9 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
 
   private previousProduct;
   private subscription: Subscription;
+  parts: NonUnifiedPart[];
+  partItemType: InvoiceItemType;
+  supplierOffering: SupplierOffering;
 
   constructor(
     @Self() public allors: ContextService,
@@ -140,11 +145,13 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         this.invoiceItem = loaded.objects.SalesInvoiceItem as SalesInvoiceItem;
         this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
         this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
+        this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778273544cb8354fb887ada42ad');
+        this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d57c943119c569ff37959653b');
 
         if (isCreate) {
           this.title = 'Add sales invoice Item';

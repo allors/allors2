@@ -7,7 +7,7 @@ import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem } from '../../../../../domain';
+import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
@@ -15,6 +15,7 @@ import { MethodService } from '../../../../../material/base/services/actions';
 interface Row extends TableRow {
   object: SalesInvoice;
   number: string;
+  type: string;
   billedTo: string;
   state: string;
   reference: string;
@@ -89,6 +90,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       selection: true,
       columns: [
         { name: 'number', sort: true },
+        { name: 'type', sort: true },
         { name: 'billedTo' },
         { name: 'reference', sort: true },
         { name: 'state' },
@@ -119,6 +121,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     const internalOrganisationPredicate = new Equals({ propertyType: m.SalesInvoice.BilledFrom });
     const predicate = new And([
       internalOrganisationPredicate,
+      new Equals({ propertyType: m.SalesInvoice.SalesInvoiceType, parameter: 'type' }),
       new Equals({ propertyType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
       new Equals({ propertyType: m.SalesInvoice.CustomerReference, parameter: 'customerReference' }),
       new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, parameter: 'state' }),
@@ -148,6 +151,11 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       })
     ]);
 
+    const typeSearch = new SearchFactory({
+      objectType: m.SalesInvoiceType,
+      roleTypes: [m.SalesInvoiceType.Name],
+    });
+
     const stateSearch = new SearchFactory({
       objectType: m.SalesInvoiceState,
       roleTypes: [m.SalesInvoiceState.Name],
@@ -170,6 +178,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
+      type: { search: typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
       state: { search: stateSearch, display: (v: SalesInvoiceState) => v && v.Name },
       shipTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
       billTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
@@ -182,6 +191,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     const sorter = new Sorter(
       {
         number: m.SalesInvoice.InvoiceNumber,
+        type: m.SalesInvoice.SalesInvoiceType,
         reference: m.SalesInvoice.CustomerReference,
         description: m.SalesInvoice.Description,
         lastModifiedDate: m.SalesInvoice.LastModifiedDate,
@@ -213,6 +223,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 },
                 BillToCustomer: x,
                 SalesInvoiceState: x,
+                SalesInvoiceType: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -230,6 +241,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
           return {
             object: v,
             number: v.InvoiceNumber,
+            type: `${v.SalesInvoiceType && v.SalesInvoiceType.Name}`,
             billedTo: v.BillToCustomer.displayName,
             state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,

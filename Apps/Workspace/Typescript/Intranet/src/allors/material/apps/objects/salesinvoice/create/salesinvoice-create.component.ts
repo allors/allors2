@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship, SalesInvoiceType } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
@@ -56,6 +56,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   private previousBillToCustomer: Party;
   private previousBillToEndCustomer: Party;
   private subscription: Subscription;
+  salesInvoiceTypes: SalesInvoiceType[];
 
   get billToCustomerIsPerson(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
@@ -102,6 +103,10 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.SalesInvoiceType({
+              predicate: new Equals({ propertyType: m.SalesInvoiceType.IsActive, value: true }),
+              sort: new Sort(m.SalesInvoiceType.Name),
+            })
           ];
 
           return this.allors.context
@@ -114,6 +119,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.salesInvoiceTypes = loaded.collections.SalesInvoiceTypes as SalesInvoiceType[];
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
         this.invoice.BilledFrom = this.internalOrganisation;

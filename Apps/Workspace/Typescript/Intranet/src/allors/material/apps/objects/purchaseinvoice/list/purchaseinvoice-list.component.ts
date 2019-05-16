@@ -6,15 +6,17 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { PurchaseInvoice } from '../../../../../domain';
+import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory } from '../../../../../angular';
+import { PurchaseInvoice, PurchaseInvoiceType } from '../../../../../domain';
 import { And, Like, PullRequest, Equals } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
+import { ɵangular_packages_forms_forms_x } from '@angular/forms';
 
 interface Row extends TableRow {
   object: PurchaseInvoice;
   number: string;
+  type: string;
   billedFrom: string;
   state: string;
   reference: string;
@@ -86,6 +88,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       selection: true,
       columns: [
         { name: 'number', sort: true },
+        { name: 'type', sort: true },
         { name: 'billedFrom' },
         { name: 'state' },
         { name: 'reference', sort: true },
@@ -117,14 +120,24 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseInvoice.BilledTo });
     const predicate = new And([
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceType, parameter: 'type' }),
       internalOrganisationPredicate
     ]);
 
-    this.filterService.init(predicate);
+    const typeSearch = new SearchFactory({
+      objectType: m.PurchaseInvoiceType,
+      roleTypes: [m.PurchaseInvoiceType.Name],
+    });
+
+    this.filterService.init(predicate,
+      {
+        type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
+      });
 
     const sorter = new Sorter(
       {
         number: m.PurchaseInvoice.InvoiceNumber,
+        type: m.PurchaseInvoice.PurchaseInvoiceType,
         reference: m.PurchaseInvoice.CustomerReference,
         dueDate: m.PurchaseInvoice.DueDate,
         totalExVat: m.PurchaseInvoice.TotalExVat,
@@ -155,6 +168,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                 BilledFrom: x,
                 BilledTo: x,
                 PurchaseInvoiceState: x,
+                PurchaseInvoiceType: x,
                 PrintDocument: {
                   Media: x
                 },
@@ -175,6 +189,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
           return {
             object: v,
             number: v.InvoiceNumber,
+            type: `${v.PurchaseInvoiceType && v.PurchaseInvoiceType.Name}`,
             billedFrom: v.BilledFrom.displayName,
             state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,

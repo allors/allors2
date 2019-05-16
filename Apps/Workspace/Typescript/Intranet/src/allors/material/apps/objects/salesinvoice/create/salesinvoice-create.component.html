@@ -5,6 +5,11 @@
   <div mat-dialog-content>
 
     <div class="row">
+      <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceType" [options]="salesInvoiceTypes"
+        display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
       <div class="col-md">
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
