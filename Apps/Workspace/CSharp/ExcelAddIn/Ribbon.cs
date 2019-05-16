@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Office.Tools.Ribbon;
 
 namespace ExcelAddIn
@@ -28,13 +29,16 @@ namespace ExcelAddIn
         {
         }
 
-        private void saveButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void saveButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                         {
+
                             if (this.Commands != null)
                             {
                                 await this.Commands.Save();
@@ -47,13 +51,16 @@ namespace ExcelAddIn
             }
         }
 
-        private void refreshButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void refreshButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                         {
+
                             if (this.Commands != null)
                             {
                                 await this.Commands.Refresh();
@@ -66,22 +73,29 @@ namespace ExcelAddIn
             }
         }
 
-        private void peopleInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void peopleInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
+                    {
+
+                        if (this.Commands != null)
                         {
-                            if (this.Commands != null)
-                            {
-                                await this.Commands.PeopleNew();
-                            }
-                        });
+                            await this.Commands.PeopleNew();
+                        }
+                    });
             }
             catch (Exception e)
             {
                 e.Handle();
+            }
+            finally
+            {
+                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
             }
         }
 
@@ -94,13 +108,16 @@ namespace ExcelAddIn
             this.refreshButton.Enabled = existSheet && this.Commands.CanRefresh;
         }
 
-        private void PurchaseInvoicesInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void PurchaseInvoicesInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                     {
+
                         if (this.Commands != null)
                         {
                             await this.Commands.PurchaseInvoicesNew();
@@ -111,12 +128,18 @@ namespace ExcelAddIn
             {
                 e.Handle();
             }
+            finally
+            {
+                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+            }
         }
 
-        private void CustomerInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void CustomerInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                     {
@@ -130,12 +153,18 @@ namespace ExcelAddIn
             {
                 e.Handle();
             }
+            finally
+            {
+                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+            }
         }
-
-        private void InventoryItemsButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        
+        private async void InventoryItemsButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                     {
@@ -149,12 +178,18 @@ namespace ExcelAddIn
             {
                 e.Handle();
             }
+            finally
+            {
+                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+            }
         }
 
-        private void SalesInvoicesOverdueButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void SalesInvoicesOverdueButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
+                this.EnsureAddInManager();
+
                 AsyncContext.Run(
                     async () =>
                     {
@@ -168,6 +203,28 @@ namespace ExcelAddIn
             {
                 e.Handle();
             }
+            finally
+            {
+                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+            }
+        }
+
+        private void EnsureAddInManager()
+        {
+            AsyncContext.Run(
+                async () =>
+                {
+                    if (Globals.ThisAddIn.AddInManager == null || Globals.ThisAddIn.AddInManager.IsLoggedIn == false)
+                    {
+                        Globals.ThisAddIn.InitAddInManager();
+                    }
+                });
+        }
+
+        private void ButtonLogoff_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.AddInManager?.Logoff();
+            this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
         }
     }
 }
