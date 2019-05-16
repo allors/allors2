@@ -16,8 +16,10 @@ interface Row extends TableRow {
   object: PurchaseInvoice;
   number: string;
   billedFrom: string;
-  status: string;
+  state: string;
   reference: string;
+  dueDate: string;
+  totalExVat: number;
   lastModifiedDate: string;
 }
 @Component({
@@ -87,6 +89,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         { name: 'billedFrom' },
         { name: 'state' },
         { name: 'reference', sort: true },
+        { name: 'dueDate', sort: true },
+        { name: 'totalExVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -102,6 +106,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number'
     });
   }
 
@@ -121,6 +126,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       {
         number: m.PurchaseInvoice.InvoiceNumber,
         reference: m.PurchaseInvoice.CustomerReference,
+        dueDate: m.PurchaseInvoice.DueDate,
+        totalExVat: m.PurchaseInvoice.TotalExVat,
         lastModifiedDate: m.PurchaseInvoice.LastModifiedDate,
       }
     );
@@ -169,8 +176,10 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
             object: v,
             number: v.InvoiceNumber,
             billedFrom: v.BilledFrom.displayName,
-            status: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
+            state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
             reference: `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
+            dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
+            totalExVat: v.TotalExVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

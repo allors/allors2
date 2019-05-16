@@ -20,6 +20,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
     {
         public InvoiceModel(SalesInvoice invoice)
         {
+            this.Title = invoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(invoice.Strategy.Session).CreditNote) ? "CREDIT NOTE" : "INVOICE";
             this.Description = invoice.Description;
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
@@ -38,6 +39,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.PaymentNetDays = invoice.PaymentNetDays;
         }
 
+        public string Title { get; }
         public string Description { get; }
         public string Number { get; }
         public string Date { get; }

@@ -51,8 +51,8 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
-            return this.PrintPurchaseInvoice();
-            //return this.PrintSalesInvoice();
+            //return this.PrintPurchaseInvoice();
+            return this.PrintSalesInvoice();
             //return this.PrintWorkTask();
             //return this.MonthlyScheduler();
         }
@@ -138,7 +138,7 @@ namespace Commands
                     templateFileInfo = new FileInfo(prefix + templateFilePath);
                 }
 
-                var invoice = new SalesInvoices(session).Extent().First;
+                var invoice = new SalesInvoices(session).Extent().Last();
                 var template = invoice.BilledFrom.SalesInvoiceTemplate;
 
                 using (var memoryStream = new MemoryStream())
