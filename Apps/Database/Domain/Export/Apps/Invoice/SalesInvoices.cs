@@ -51,12 +51,15 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, readyForPosting, reopen, credit, setPaid);
             config.Deny(this.ObjectType, notPaid, send, cancelInvoice, reopen, delete);
             config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen, delete);
-            config.Deny(this.ObjectType, paid, Operations.Write);
             config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen, setPaid, delete);
-            config.Deny(this.ObjectType, writtenOff, Operations.Write);
             config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff, credit, setPaid, delete);
-            config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff, credit, setPaid, delete);
+
+            config.Deny(this.ObjectType, notPaid, Operations.Write);
+            config.Deny(this.ObjectType, partiallyPaid, Operations.Write);
+            config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
         }
     }
 }

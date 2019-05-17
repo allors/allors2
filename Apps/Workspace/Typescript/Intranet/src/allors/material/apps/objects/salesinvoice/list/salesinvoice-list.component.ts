@@ -2,15 +2,16 @@ import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { Meta } from '../../../../../meta';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, Subject } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType } from '../../../../../domain';
+import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked } from '../../../../../angular';
+import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService } from '../../../../../material';
+import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
+import { MatSnackBar } from '@angular/material';
 
 interface Row extends TableRow {
   object: SalesInvoice;
@@ -59,6 +60,8 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     public navigation: NavigationService,
     public mediaService: MediaService,
     public refreshService: RefreshService,
+    public dialogService: AllorsMaterialDialogService,
+    public snackBar: MatSnackBar,
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title
   ) {
@@ -81,7 +84,50 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       this.table.selection.clear();
     });
 
-    this.setPaid = methodService.create(allors.context, this.m.SalesInvoice.SetPaid, { name: 'Set Paid' });
+    this.setPaid = {
+      name: () => 'Set as Paid',
+      description: () => '',
+      disabled: (target: SalesInvoice) => {
+        return !target.CanExecuteSetPaid;
+      },
+      execute: (target: SalesInvoice) => {
+
+        const invoices = Array.isArray(target) ? target as SalesInvoice[] : [target as SalesInvoice];
+        const targets = invoices.filter((v) => v.CanExecuteSetPaid);
+
+        if (targets.length > 0) {
+          dialogService
+            .prompt({ placeholder: `Payment date`, promptType: `date` })
+            .subscribe((paymentDate: string) => {
+              if (confirm) {
+                targets.forEach((salesinvoice) => {
+                  const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
+
+                  const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
+                  paymentApplication.Invoice = salesinvoice;
+                  paymentApplication.AmountApplied = amountToPay;
+
+                  if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5B32') {
+                    const receipt = this.allors.context.create('Receipt') as Receipt;
+                    receipt.Amount = amountToPay;
+                    receipt.EffectiveDate = paymentDate;
+                    receipt.Sender = salesinvoice.BilledFrom;
+                    receipt.AddPaymentApplication(paymentApplication);
+                  }
+                });
+
+                this.allors.context.save()
+                  .subscribe(() => {
+                    snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                    refreshService.refresh();
+                  });
+              }
+            });
+        }
+      },
+      result: null
+    };
+
     this.setPaid.result.subscribe(() => {
       this.table.selection.clear();
     });

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDatepicker, MatDatepickerModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 
 import { AllorsMaterialDialogComponent } from './dialog.component';
@@ -27,6 +27,7 @@ export { AllorsMaterialDialogComponent };
     MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
+    MatDatepickerModule
   ],
 })
 export class AllorsMaterialDialogModule {
