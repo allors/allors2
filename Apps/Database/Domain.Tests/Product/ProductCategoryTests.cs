@@ -363,17 +363,12 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.Equal(5, productCategory1.Children.Count);
+            Assert.Equal(2, productCategory1.Children.Count);
             Assert.Contains(productCategory11, productCategory1.Children);
             Assert.Contains(productCategory12, productCategory1.Children);
-            Assert.Contains(productCategory111, productCategory1.Children);
-            Assert.Contains(productCategory121, productCategory1.Children);
-            Assert.Contains(productCategory122, productCategory1.Children);
 
-            Assert.Equal(3, productCategory2.Children.Count);
+            Assert.Equal(1, productCategory2.Children.Count);
             Assert.Contains(productCategory12, productCategory2.Children);
-            Assert.Contains(productCategory121, productCategory2.Children);
-            Assert.Contains(productCategory122, productCategory2.Children);
 
             Assert.Single(productCategory11.Children);
             Assert.Contains(productCategory111, productCategory11.Children);

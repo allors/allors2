@@ -53,7 +53,7 @@ namespace Allors.Domain
                 foreach (ProductCategory child in this.ProductCategoriesWhereParent)
                 {
                     children.Add(child);
-                    children.AddRange(child.ChildList);
+//                    children.AddRange(child.ChildList);
                 }
 
                 return children;
