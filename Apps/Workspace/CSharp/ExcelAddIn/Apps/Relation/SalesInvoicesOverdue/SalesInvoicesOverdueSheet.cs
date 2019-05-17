@@ -108,6 +108,8 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 row.CustomerName = salesInvoice.BillToCustomer?.PartyName;
                 row.InvoiceNumber = salesInvoice.InvoiceNumber;
                 row.InvoiceNumber = salesInvoice.InvoiceNumber;
+
+                // TODO Duedate as derived field?
                 //row.DueDate = ??
                 row.Description = salesInvoice.Description;
                 row.InvoiceType = salesInvoice.SalesInvoiceType?.Name;

@@ -1,4 +1,4 @@
-﻿namespace ExcelAddIn.Apps.Relation.People
+﻿namespace AviacoExcelAddIn.Apps.Relation.People
 {
 
 

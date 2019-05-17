@@ -48,6 +48,7 @@ namespace AppsExcelAddIn.Apps
 
             if (IsLoggedIn)
             {
+                this.UserName = this.textBoxUser.Text;
                 // Close the dialog
                 this.DialogResult = DialogResult.OK;
             }
@@ -56,7 +57,9 @@ namespace AppsExcelAddIn.Apps
                 this.ShowError("Login failed.");
             }
         }
-        
+
+        public string UserName { get; set; }
+
         private void ShowError(string message)
         {
             this.labelErrorMessage.Text = message;
@@ -65,6 +68,7 @@ namespace AppsExcelAddIn.Apps
 
         private void HideError()
         {
+            this.UserName = null;
             this.labelErrorMessage.Text = "";
             this.labelErrorMessage.Visible = false;
         }

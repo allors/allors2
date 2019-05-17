@@ -234,11 +234,6 @@ namespace Allors.Excel.InventoryItems
                 var cells = range.Cells;
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
-
-                //var id = Convert.ToInt64(values[0].ToString());
-                //var puchaseInvoice = (PurchaseInvoice)this.Context.Session.Get(id);
-                //puchaseInvoice.InvoiceNumber = values[2];
-                //puchaseInvoice.CustomerReference = values[3];
             }
         }
 
@@ -247,8 +242,8 @@ namespace Allors.Excel.InventoryItems
             var pull = new Pull
             {
                 Extent = new Workspace.Data.Filter(M.InventoryOwnership.ObjectType),
-                
-                Results = new []
+
+                Results = new[]
                 {
                     new Workspace.Data.Result
                     {
@@ -258,16 +253,35 @@ namespace Allors.Excel.InventoryItems
                                 .Add(M.InventoryOwnership.InternalOrganisation)
                                 .Add(M.InventoryOwnership.InventoryItem, this.InventoryItemTree)
                         }
-                    } , 
+                    } ,
                 }
             };
-            
+
+            //var pull = new Pull
+            //{
+            //    Extent = new Workspace.Data.Filter(M.SerialisedItem.ObjectType),
+
+            //    Results = new[]
+            //    {
+            //        new Workspace.Data.Result
+            //        {
+            //            Fetch = new Fetch()
+            //            {
+            //                Include = new Tree(M.SerialisedItem.Class)
+            //                    .Add(M.SerialisedItem.Ownership)
+
+            //            }
+            //        } ,
+            //    }
+            //};
+
             var result = await this.Load(pull);
             this.InventoryOwnerships = result.GetCollection<InventoryOwnership>("InventoryOwnerships");
         }
 
         private Tree InventoryItemTree
             => new Tree(M.InventoryItem.Interface)
+                .Add(M.InventoryItem.Facility)
                 .Add(M.InventoryItem.Part, this.PartTree)
         ;
 
@@ -286,6 +300,7 @@ namespace Allors.Excel.InventoryItems
             => new Tree(M.SerialisedItem.Class)
                 .Add(M.SerialisedItem.OwnedBy)
                 .Add(M.SerialisedItem.Ownership)
+                .Add(M.SerialisedItem.SuppliedBy)
         ;
     }
 }

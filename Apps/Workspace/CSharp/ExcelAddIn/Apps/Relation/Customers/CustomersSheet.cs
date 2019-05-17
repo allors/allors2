@@ -32,6 +32,7 @@ namespace Allors.Excel.Customers
         public CustomersSheet(Sheets sheets, Worksheet worksheet)
             : base(sheets, worksheet)
         {
+
         }
 
         public Organisation[] Customers { get; private set; }
@@ -90,19 +91,33 @@ namespace Allors.Excel.Customers
                 this.dataSet.Customers.CountryColumn.ColumnName,
                 this.dataSet.Customers.PostalCodeColumn.ColumnName,
                 this.dataSet.Customers.TaxNumberColumn.ColumnName
-                
             );
+
+            // Threat everything as text
+            this.CustomersListObject.Range.NumberFormat = "@";
+
             foreach (var customer in this.Customers)
             {
                 var row = this.dataSet.Customers.NewCustomersRow();
 
                 row.Name = customer.Name;
+                var contactMechanism = customer.PartyContactMechanisms
+                    .Where(v => v.ContactPurposes.Any(w =>
+                        string.Equals(w.Name, "General correspondence address", StringComparison.OrdinalIgnoreCase)))
+                    .FirstOrDefault()?.ContactMechanism;
+
+                if (contactMechanism is PostalAddress)
+                {
+                    var postalAddress = contactMechanism as PostalAddress;
+                    row.Street = postalAddress.Address1;
+                    row.Place = postalAddress.PostalBoundary.Locality;
+                    row.Country = postalAddress.PostalBoundary.Country.Name;
+                    row.PostalCode = postalAddress.PostalBoundary.PostalCode;
+                }
+
                 var contact = customer.CurrentOrganisationContactRelationships.FirstOrDefault()?.Contact;
                 row.ContactName = $"{contact?.Salutation?.Name} {contact?.FirstName} {contact?.LastName}";
-                row.Street = contact?.GeneralCorrespondence?.Description;
-                row.Place = contact?.GeneralCorrespondence?.Description;
-                row.Country = contact?.GeneralCorrespondence?.Description;
-                row.PostalCode = contact?.GeneralCorrespondence?.Description;
+               
                 row.TaxNumber = customer.TaxNumber;
 
                 this.dataSet.Customers.Rows.Add(row);
@@ -111,10 +126,11 @@ namespace Allors.Excel.Customers
 
             this.CustomersListObject.SetDataBinding(this.dataSet, this.dataSet.Customers.TableName);
 
+            
             // Headers
-
             int index = -1;
             var headers = this.CustomersListObject.HeaderRowRange;
+
             var data = new object[headers.Rows.Count, headers.Columns.Count];
             data[0, ++index] = "Bedrijfsnaam";
             data[0, ++index] = "Contact";
@@ -155,6 +171,7 @@ namespace Allors.Excel.Customers
                         Fetch = new Fetch()
                         {
                             Include =  new Tree(M.Organisation.Class)
+                                .Add(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree)
                                 .Add(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree)
                         }
                     }
@@ -163,6 +180,12 @@ namespace Allors.Excel.Customers
             this.result = await this.Load(pull);
             this.Customers = this.result.GetCollection<Organisation>("Organisations");
         }
+
+        private Tree PartyContactMechanismsTree
+            => new Tree(M.PartyContactMechanism.Class)
+                .Add(M.PartyContactMechanism.ContactPurposes)
+                .Add(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree)
+        ;
 
         private Tree CurrentOrganisationContactRelationshipTree
             => new Tree(M.OrganisationContactRelationship.Class)
@@ -174,6 +197,16 @@ namespace Allors.Excel.Customers
             => new Tree(M.Person.Class)
                 .Add(M.Person.Salutation)
                 .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree)
+        ;
+
+        private Tree ContactMechanismTree
+            => new Tree(M.PostalAddress.Class)
+                .Add(M.PostalAddress.PostalBoundary, this.PostalBoundaryTree)
+        ;
+
+        private Tree PostalBoundaryTree
+            => new Tree(M.PostalBoundary.Class)
+                .Add(M.PostalBoundary.Country)
         ;
 
         private Tree GeneralCorrespondenceTree

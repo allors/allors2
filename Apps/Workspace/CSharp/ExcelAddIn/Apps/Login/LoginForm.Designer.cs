@@ -42,49 +42,50 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 41);
+            this.label1.Location = new System.Drawing.Point(11, 48);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 17);
+            this.label1.Size = new System.Drawing.Size(169, 31);
             this.label1.TabIndex = 0;
             this.label1.Text = "User Name:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 70);
+            this.label2.Location = new System.Drawing.Point(13, 102);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 17);
+            this.label2.Size = new System.Drawing.Size(151, 31);
             this.label2.TabIndex = 1;
             this.label2.Text = "Password:";
             // 
             // textBoxUser
             // 
-            this.textBoxUser.Location = new System.Drawing.Point(111, 38);
+            this.textBoxUser.Location = new System.Drawing.Point(187, 45);
             this.textBoxUser.MaxLength = 48;
             this.textBoxUser.Name = "textBoxUser";
-            this.textBoxUser.Size = new System.Drawing.Size(187, 23);
+            this.textBoxUser.Size = new System.Drawing.Size(271, 38);
             this.textBoxUser.TabIndex = 2;
             this.textBoxUser.TextChanged += new System.EventHandler(this.TextBoxUser_TextChanged);
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(3, 3);
+            this.textBoxPassword.Dock = System.Windows.Forms.DockStyle.Left;
+            this.textBoxPassword.Location = new System.Drawing.Point(0, 0);
             this.textBoxPassword.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxPassword.MaxLength = 32;
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(148, 23);
+            this.textBoxPassword.Size = new System.Drawing.Size(271, 38);
             this.textBoxPassword.TabIndex = 3;
             this.textBoxPassword.TextChanged += new System.EventHandler(this.TextBoxPassword_TextChanged);
             // 
             // button1
             // 
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(111, 118);
+            this.button1.Location = new System.Drawing.Point(187, 171);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 27);
+            this.button1.Size = new System.Drawing.Size(138, 51);
             this.button1.TabIndex = 4;
             this.button1.Text = "Login";
             this.button1.UseVisualStyleBackColor = true;
@@ -94,30 +95,31 @@
             // 
             this.labelErrorMessage.AutoSize = true;
             this.labelErrorMessage.ForeColor = System.Drawing.Color.Firebrick;
-            this.labelErrorMessage.Location = new System.Drawing.Point(108, 157);
+            this.labelErrorMessage.Location = new System.Drawing.Point(181, 241);
             this.labelErrorMessage.Name = "labelErrorMessage";
-            this.labelErrorMessage.Size = new System.Drawing.Size(52, 17);
+            this.labelErrorMessage.Size = new System.Drawing.Size(131, 31);
             this.labelErrorMessage.TabIndex = 5;
-            this.labelErrorMessage.Text = "label3";
+            this.labelErrorMessage.Text = "message";
             this.labelErrorMessage.Visible = false;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.buttonTogglePassword);
             this.panel1.Controls.Add(this.textBoxPassword);
-            this.panel1.Location = new System.Drawing.Point(111, 70);
+            this.panel1.Location = new System.Drawing.Point(187, 102);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(187, 31);
+            this.panel1.Size = new System.Drawing.Size(328, 40);
             this.panel1.TabIndex = 6;
             // 
             // buttonTogglePassword
             // 
             this.buttonTogglePassword.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.buttonTogglePassword.Image = global::AppsExcelAddIn.Properties.Resources.icons8_eye_24;
-            this.buttonTogglePassword.Location = new System.Drawing.Point(154, 2);
+            this.buttonTogglePassword.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonTogglePassword.Image = global::AviacoExcelAddIn.Properties.Resources.icons8_eye_24;
+            this.buttonTogglePassword.Location = new System.Drawing.Point(274, 0);
             this.buttonTogglePassword.Name = "buttonTogglePassword";
-            this.buttonTogglePassword.Size = new System.Drawing.Size(30, 25);
+            this.buttonTogglePassword.Size = new System.Drawing.Size(54, 40);
             this.buttonTogglePassword.TabIndex = 7;
             this.buttonTogglePassword.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonTogglePassword.UseVisualStyleBackColor = false;
@@ -127,11 +129,11 @@
             // 
             this.AcceptButton = this.button1;
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.ClientSize = new System.Drawing.Size(334, 209);
+            this.ClientSize = new System.Drawing.Size(580, 363);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.labelErrorMessage);
             this.Controls.Add(this.button1);

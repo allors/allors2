@@ -139,9 +139,7 @@ namespace Allors.Excel.PurchaseInvoices
                 {
                     row.SetDueDateNull();
                 }
-
-                row.InternalComment = purchaseInvoice.InternalComment;
-
+                
                 var payment = GetPayment(purchaseInvoice);
                 if (payment != null)
                 {
@@ -151,6 +149,8 @@ namespace Allors.Excel.PurchaseInvoices
                 {
                    row.SetPaymentDateNull();
                 }
+
+                row.InternalComment = purchaseInvoice.InternalComment;
 
                 this.dataSet.PurchaseInvoice.Rows.Add(row);
             }
