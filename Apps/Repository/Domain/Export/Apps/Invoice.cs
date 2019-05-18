@@ -272,11 +272,5 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         InvoiceItem[] ValidInvoiceItems { get; set; }
-
-        #region Allors
-        [Id("5B7CB737-930E-47F1-ACB2-31BC9C58CA1F")]
-        #endregion
-        [Workspace]
-        void SetPaid ();
     }
 }

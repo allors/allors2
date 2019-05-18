@@ -297,6 +297,11 @@
         </div>
 
         <div class="row">
+          <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DueDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
           <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.Currency" [options]="currencies" display="Name"></a-mat-select>
         </div>
     

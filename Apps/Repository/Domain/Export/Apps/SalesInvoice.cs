@@ -490,6 +490,12 @@ namespace Allors.Repository
         [Workspace]
         public void Reopen() { }
 
+        #region Allors
+        [Id("A2E784E3-B0D0-42FE-8E3C-7217E8948D95")]
+        #endregion
+        [Workspace]
+        public void SetPaid() { }
+
         #region inherited methods
         public void OnBuild() { }
 
@@ -507,8 +513,6 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Print() { }
-
-        public void SetPaid() { }
         #endregion
     }
 }

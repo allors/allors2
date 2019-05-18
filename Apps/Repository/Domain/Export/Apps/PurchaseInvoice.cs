@@ -349,6 +349,12 @@ namespace Allors.Repository
         [Workspace]
         public void CreateSalesInvoice() { }
 
+        #region Allors
+        [Id("4BF977FA-75AF-4D6D-8CD7-7250D527EF61")]
+        #endregion
+        [Workspace]
+        public void SetPaid() { }
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -366,8 +372,6 @@ namespace Allors.Repository
         public void Delete() { }
 
         public void Print() { }
-
-        public void SetPaid() { }
 
         #endregion
     }

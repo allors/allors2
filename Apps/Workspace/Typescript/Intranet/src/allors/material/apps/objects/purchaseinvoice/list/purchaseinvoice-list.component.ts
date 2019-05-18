@@ -6,12 +6,13 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory } from '../../../../../angular';
-import { PurchaseInvoice, PurchaseInvoiceType } from '../../../../../domain';
+import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget } from '../../../../../angular';
+import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt } from '../../../../../domain';
 import { And, Like, PullRequest, Equals } from '../../../../../framework';
-import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService } from '../../../../../material';
+import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
 import { ɵangular_packages_forms_forms_x } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 interface Row extends TableRow {
   object: PurchaseInvoice;
@@ -58,6 +59,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     public deleteService: DeleteService,
     public overviewService: OverviewService,
     public mediaService: MediaService,
+    public dialogService: AllorsMaterialDialogService,
+    public snackBar: MatSnackBar,
     private internalOrganisationId: InternalOrganisationId,
     titleService: Title
   ) {
@@ -79,10 +82,69 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       this.table.selection.clear();
     });
 
-    this.setPaid = methodService.create(allors.context, this.m.PurchaseInvoice.SetPaid, { name: 'Set Paid' });
-    this.setPaid.result.subscribe(() => {
-      this.table.selection.clear();
-    });
+
+    this.setPaid = {
+      name: () => 'Set as Paid',
+      description: () => '',
+      disabled: (target: ActionTarget) => {
+        if (Array.isArray(target)) {
+          const anyDisabled = (target as PurchaseInvoice[]).filter(v => !v.CanExecuteSetPaid);
+          return target.length > 0 ? anyDisabled.length > 0 : true;
+        } else {
+          return !(target as PurchaseInvoice).CanExecuteSetPaid;
+        }
+      },
+      execute: (target: PurchaseInvoice) => {
+
+        const invoices = Array.isArray(target) ? target as PurchaseInvoice[] : [target as PurchaseInvoice];
+        const targets = invoices.filter((v) => v.CanExecuteSetPaid);
+
+        if (targets.length > 0) {
+          dialogService
+            .prompt({ title: `Set Payment Date`, placeholder: `Payment date`, promptType: `date` })
+            .subscribe((paymentDate: string) => {
+              if (paymentDate) {
+                targets.forEach((purchaseInvoice) => {
+                  const amountToPay = purchaseInvoice.TotalIncVat - purchaseInvoice.AmountPaid;
+
+                  if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309a4cb4ab78f753bb11dcf3783' ||
+                    purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d92781f54d6a984758b674ad3e6a') {
+
+                    const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
+                    paymentApplication.Invoice = purchaseInvoice;
+                    paymentApplication.AmountApplied = amountToPay;
+
+                    // purchase invoice
+                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309a4cb4ab78f753bb11dcf3783') {
+                      const disbursement = this.allors.context.create('Disbursement') as Disbursement;
+                      disbursement.Amount = amountToPay;
+                      disbursement.EffectiveDate = paymentDate;
+                      disbursement.Sender = purchaseInvoice.BilledFrom;
+                      disbursement.AddPaymentApplication(paymentApplication);
+                    }
+
+                    // purchase return
+                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d92781f54d6a984758b674ad3e6a') {
+                      const receipt = this.allors.context.create('Receipt') as Receipt;
+                      receipt.Amount = amountToPay;
+                      receipt.EffectiveDate = paymentDate;
+                      receipt.Sender = purchaseInvoice.BilledFrom;
+                      receipt.AddPaymentApplication(paymentApplication);
+                    }
+                  }
+                });
+
+                this.allors.context.save()
+                  .subscribe(() => {
+                    snackBar.open('Successfully set to fully paid.', 'close', { duration: 5000 });
+                    refreshService.refresh();
+                  });
+              }
+            });
+        }
+      },
+      result: null
+    };
 
     this.table = new Table({
       selection: true,

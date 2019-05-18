@@ -46,7 +46,8 @@ export class DeleteAction implements Action {
   description = () => 'Delete';
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {
-      return target.length > 0 ? !(target[0] as Deletable).CanExecuteDelete : true;
+      const anyDisabled = (target as Deletable[]).filter(v => !v.CanExecuteDelete);
+      return target.length > 0 ? anyDisabled.length > 0 : true;
     } else {
       return !(target as Deletable).CanExecuteDelete;
     }

@@ -25,13 +25,13 @@ export class AllorsMaterialDialogComponent {
     this.alert = data.alert;
     this.confirmation = data.confirmation;
     this.prompt = data.prompt;
-    this.promptType = data.promptType || 'string';
 
     const config = data.config;
     this.title = config.title;
     this.message = config.message;
     this.label = config.label;
     this.placeholder = config.placeholder;
+    this.promptType = config.promptType || 'string';
   }
 }
 

@@ -6,7 +6,7 @@ import { Subscription, combineLatest, Subject } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked } from '../../../../../angular';
+import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget } from '../../../../../angular';
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
@@ -84,53 +84,68 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       this.table.selection.clear();
     });
 
-    // this.setPaid = {
-    //   name: () => 'Set as Paid',
-    //   description: () => '',
-    //   disabled: (target: SalesInvoice) => {
-    //     return !target.CanExecuteSetPaid;
-    //   },
-    //   execute: (target: SalesInvoice) => {
+    this.setPaid = {
+      name: () => 'Set as Paid',
+      description: () => '',
+      disabled: (target: ActionTarget) => {
+        if (Array.isArray(target)) {
+          const anyDisabled = (target as SalesInvoice[]).filter(v => !v.CanExecuteSetPaid);
+          return target.length > 0 ? anyDisabled.length > 0 : true;
+        } else {
+          return !(target as SalesInvoice).CanExecuteSetPaid;
+        }
+      },
+      execute: (target: SalesInvoice) => {
 
-    //     const invoices = Array.isArray(target) ? target as SalesInvoice[] : [target as SalesInvoice];
-    //     const targets = invoices.filter((v) => v.CanExecuteSetPaid);
+        const invoices = Array.isArray(target) ? target as SalesInvoice[] : [target as SalesInvoice];
+        const targets = invoices.filter((v) => v.CanExecuteSetPaid);
 
-    //     if (targets.length > 0) {
-    //       dialogService
-    //         .prompt({ placeholder: `Payment date`, promptType: `date` })
-    //         .subscribe((paymentDate: string) => {
-    //           if (confirm) {
-    //             targets.forEach((salesinvoice) => {
-    //               const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
+        if (targets.length > 0) {
+          dialogService
+            .prompt({ title: `Set Payment Date`, placeholder: `Payment date`, promptType: `date` })
+            .subscribe((paymentDate: string) => {
+              if (paymentDate) {
+                targets.forEach((salesinvoice) => {
+                  const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
 
-    //               const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
-    //               paymentApplication.Invoice = salesinvoice;
-    //               paymentApplication.AmountApplied = amountToPay;
+                  if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5b32' ||
+                    salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52e782416db46f89c8c7a5c24d') {
 
-    //               if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5B32') {
-    //                 const receipt = this.allors.context.create('Receipt') as Receipt;
-    //                 receipt.Amount = amountToPay;
-    //                 receipt.EffectiveDate = paymentDate;
-    //                 receipt.Sender = salesinvoice.BilledFrom;
-    //                 receipt.AddPaymentApplication(paymentApplication);
-    //               }
-    //             });
+                    const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
+                    paymentApplication.Invoice = salesinvoice;
+                    paymentApplication.AmountApplied = amountToPay;
 
-    //             this.allors.context.save()
-    //               .subscribe(() => {
-    //                 snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-    //                 refreshService.refresh();
-    //               });
-    //           }
-    //         });
-    //     }
-    //   },
-    //   result: null
-    // };
+                    // sales invoice
+                    if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5b32') {
+                      const receipt = this.allors.context.create('Receipt') as Receipt;
+                      receipt.Amount = amountToPay;
+                      receipt.EffectiveDate = paymentDate;
+                      receipt.Sender = salesinvoice.BilledFrom;
+                      receipt.AddPaymentApplication(paymentApplication);
+                    }
 
-    // this.setPaid.result.subscribe(() => {
-    //   this.table.selection.clear();
-    // });
+                    // credit note
+                    if (salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52e782416db46f89c8c7a5c24d') {
+                      const disbursement = this.allors.context.create('Disbursement') as Disbursement;
+                      disbursement.Amount = amountToPay;
+                      disbursement.EffectiveDate = paymentDate;
+                      disbursement.Sender = salesinvoice.BilledFrom;
+                      disbursement.AddPaymentApplication(paymentApplication);
+                    }
+                  }
+                });
+
+                this.allors.context.save()
+                  .subscribe(() => {
+                    snackBar.open('Successfully set to fully paid.', 'close', { duration: 5000 });
+                    refreshService.refresh();
+                  });
+              }
+            });
+        }
+      },
+      result: null
+    };
 
     this.table = new Table({
       selection: true,
@@ -153,7 +168,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         this.copy,
         this.credit,
         this.reopen,
-        // this.setPaid
+        this.setPaid
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,

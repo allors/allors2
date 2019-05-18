@@ -60,6 +60,15 @@
             </div>
 
             <div class="row">
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentalFromDate"></a-mat-datepicker>
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentalThroughDate"></a-mat-datepicker>
+            </div>
+
+            <div class="row">
+              <a-mat-datepicker class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedReturnDate"></a-mat-datepicker>
+            </div>
+
+            <div class="row">
               <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LastServiceDate"></a-mat-datepicker>
               <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.NextServiceDate"></a-mat-datepicker>
             </div>
