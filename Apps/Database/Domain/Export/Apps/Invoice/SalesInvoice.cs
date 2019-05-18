@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel.Design;
+
 namespace Allors.Domain
 {
     using System;
@@ -73,19 +75,6 @@ namespace Allors.Domain
                 }
 
                 return 0;
-            }
-        }
-
-        public DateTime? DueDate
-        {
-            get
-            {
-                if (this.ExistInvoiceDate)
-                {
-                    return this.InvoiceDate.AddDays(this.PaymentNetDays);
-                }
-
-                return null;
             }
         }
 
@@ -265,6 +254,38 @@ namespace Allors.Domain
             else
             {
                 this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
+            }
+
+            if (this.ExistSalesTerms)
+            {
+                foreach (AgreementTerm term in this.SalesTerms)
+                {
+                    if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
+                    {
+                        if (int.TryParse(term.TermValue, out var netDays))
+                        {
+                            this.PaymentDays = netDays;
+                        }
+                    }
+                }
+            }
+            else if (this.BillToCustomer?.PaymentNetDays().HasValue == true)
+            {
+                this.PaymentDays = this.BillToCustomer.PaymentNetDays().Value;
+            }
+            else if (this.ExistStore && this.Store.ExistPaymentNetDays)
+            {
+                this.PaymentDays = this.Store.PaymentNetDays;
+            }
+
+            if (!this.ExistPaymentDays)
+            {
+                this.PaymentDays = 0;
+            }
+
+            if (this.ExistInvoiceDate)
+            {
+                this.DueDate = this.InvoiceDate.AddDays(this.PaymentNetDays);
             }
 
             var validInvoiceItems = this.SalesInvoiceItems.Where(v => v.IsValid).ToArray();

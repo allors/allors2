@@ -430,6 +430,25 @@ namespace Allors.Repository
         public decimal AdvancePayment{ get; set; }
 
         #region Allors
+        [Id("17ED2D23-0D51-4F04-BBD4-572318E91D82")]
+        [AssociationId("74FF8692-8E25-4C2D-8E85-86A7B7242E82")]
+        [RoleId("240DD9BB-89A9-4B37-B577-4E3B4D02E466")]
+        [Indexed]
+        #endregion
+        [Required]
+        [Workspace]
+        public int PaymentDays { get; set; }
+
+        #region Allors
+        [Id("DB18BDE8-D70F-4E24-8866-D1D46CB0D82B")]
+        [AssociationId("BEC312FE-AB08-4717-8AE6-FF8A2B5F8B39")]
+        [RoleId("F7B9A2F8-77C0-4219-874C-E2D8836FC25F")]
+        #endregion
+        [Derived]
+        [Workspace]
+        public DateTime DueDate { get; set; }
+
+        #region Allors
         [Id("55A60B80-2052-47E6-BD41-2AF414ABB885")]
         #endregion
         [Workspace]

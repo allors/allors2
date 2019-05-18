@@ -84,53 +84,53 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       this.table.selection.clear();
     });
 
-    this.setPaid = {
-      name: () => 'Set as Paid',
-      description: () => '',
-      disabled: (target: SalesInvoice) => {
-        return !target.CanExecuteSetPaid;
-      },
-      execute: (target: SalesInvoice) => {
+    // this.setPaid = {
+    //   name: () => 'Set as Paid',
+    //   description: () => '',
+    //   disabled: (target: SalesInvoice) => {
+    //     return !target.CanExecuteSetPaid;
+    //   },
+    //   execute: (target: SalesInvoice) => {
 
-        const invoices = Array.isArray(target) ? target as SalesInvoice[] : [target as SalesInvoice];
-        const targets = invoices.filter((v) => v.CanExecuteSetPaid);
+    //     const invoices = Array.isArray(target) ? target as SalesInvoice[] : [target as SalesInvoice];
+    //     const targets = invoices.filter((v) => v.CanExecuteSetPaid);
 
-        if (targets.length > 0) {
-          dialogService
-            .prompt({ placeholder: `Payment date`, promptType: `date` })
-            .subscribe((paymentDate: string) => {
-              if (confirm) {
-                targets.forEach((salesinvoice) => {
-                  const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
+    //     if (targets.length > 0) {
+    //       dialogService
+    //         .prompt({ placeholder: `Payment date`, promptType: `date` })
+    //         .subscribe((paymentDate: string) => {
+    //           if (confirm) {
+    //             targets.forEach((salesinvoice) => {
+    //               const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
 
-                  const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
-                  paymentApplication.Invoice = salesinvoice;
-                  paymentApplication.AmountApplied = amountToPay;
+    //               const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
+    //               paymentApplication.Invoice = salesinvoice;
+    //               paymentApplication.AmountApplied = amountToPay;
 
-                  if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5B32') {
-                    const receipt = this.allors.context.create('Receipt') as Receipt;
-                    receipt.Amount = amountToPay;
-                    receipt.EffectiveDate = paymentDate;
-                    receipt.Sender = salesinvoice.BilledFrom;
-                    receipt.AddPaymentApplication(paymentApplication);
-                  }
-                });
+    //               if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5B32') {
+    //                 const receipt = this.allors.context.create('Receipt') as Receipt;
+    //                 receipt.Amount = amountToPay;
+    //                 receipt.EffectiveDate = paymentDate;
+    //                 receipt.Sender = salesinvoice.BilledFrom;
+    //                 receipt.AddPaymentApplication(paymentApplication);
+    //               }
+    //             });
 
-                this.allors.context.save()
-                  .subscribe(() => {
-                    snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                    refreshService.refresh();
-                  });
-              }
-            });
-        }
-      },
-      result: null
-    };
+    //             this.allors.context.save()
+    //               .subscribe(() => {
+    //                 snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+    //                 refreshService.refresh();
+    //               });
+    //           }
+    //         });
+    //     }
+    //   },
+    //   result: null
+    // };
 
-    this.setPaid.result.subscribe(() => {
-      this.table.selection.clear();
-    });
+    // this.setPaid.result.subscribe(() => {
+    //   this.table.selection.clear();
+    // });
 
     this.table = new Table({
       selection: true,
@@ -153,7 +153,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         this.copy,
         this.credit,
         this.reopen,
-        this.setPaid
+        // this.setPaid
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,

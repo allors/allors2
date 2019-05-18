@@ -326,6 +326,21 @@ namespace Allors.Repository
         [Workspace]
         public Store Store { get; set; }
 
+        #region Allors
+        [Id("4D8D082D-2A8A-4D9B-9580-57E9A8166A57")]
+        [AssociationId("0FA7DF62-8830-4D43-A639-2E5D76E6F9C4")]
+        [RoleId("F914A6EE-F5DB-449D-B141-3AF3D5D847BD")]
+        #endregion
+        [Workspace]
+        public int PaymentDays { get; set; }
+
+        #region Allors
+        [Id("F5DB1C05-8EDA-40AA-89EC-388394F8EEEA")]
+        [AssociationId("8DF335B8-5A32-4032-992D-FBE234FE9D76")]
+        [RoleId("8E2239DF-B6FC-4277-97AF-FE6608F83097")]
+        #endregion
+        public DateTime DueDate { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

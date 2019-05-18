@@ -49,7 +49,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         [Workspace]
         public decimal Price { get; set; }
 

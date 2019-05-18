@@ -303,6 +303,30 @@ namespace Allors.Repository
         [Workspace]
         public string CustomerReferenceNumber { get; set; }
 
+        #region Allors
+        [Id("15179D87-D6D8-438A-AB36-E30418DAE2AE")]
+        [AssociationId("103485C1-7BB8-4238-872C-BC83BBE450B8")]
+        [RoleId("55AA0337-3E3F-4A8C-8455-13E82D665692")]
+        #endregion
+        [Workspace]
+        public DateTime RentalFromDate { get; set; }
+
+        #region Allors
+        [Id("83220BB7-AB7D-4CE4-A3FA-1EF13720E167")]
+        [AssociationId("58C01E0A-6FD3-43F3-B885-1F69F47AD531")]
+        [RoleId("A11A996B-C61E-4970-82D9-758F8426254F")]
+        #endregion
+        [Workspace]
+        public DateTime RentalThroughDate { get; set; }
+
+        #region Allors
+        [Id("D5ABF25F-31BB-4406-AC4A-4171E42EF0D7")]
+        [AssociationId("36A67ACC-3BE1-4037-AA67-498A86B9F6C1")]
+        [RoleId("FCC0A100-7E70-4A5C-B763-EEC6916F189B")]
+        #endregion
+        [Workspace]
+        public DateTime ExpectedReturnDate{ get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

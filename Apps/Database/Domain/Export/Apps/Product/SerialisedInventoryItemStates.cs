@@ -25,6 +25,7 @@ namespace Allors.Domain
         private static readonly Guid DefectiveId = new Guid("36F94BB5-D93E-44cc-8F10-37A046002E5B");
         private static readonly Guid ScrapId = new Guid("9D02749B-A30E-4bb4-B016-E1CF96A5F99B");
         private static readonly Guid AvailableId = new Guid("E5AD6F2D-2EDF-4563-8AD4-59EF1211273F");
+        private static readonly Guid NotAvailableId = new Guid("E553F107-FFB1-4F80-9EA0-4C436FD1F736");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
         private UniquelyIdentifiableSticky<SerialisedInventoryItemState> stateCache;
@@ -40,6 +41,8 @@ namespace Allors.Domain
         public SerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
         public SerialisedInventoryItemState Available => this.StateCache[AvailableId];
+
+        public SerialisedInventoryItemState NotAvailable => this.StateCache[NotAvailableId];
 
         public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
 
@@ -82,6 +85,12 @@ namespace Allors.Domain
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AvailableId)
                 .WithName("Available")
+                .WithIsActive(true)
+                .Build();
+
+            new SerialisedInventoryItemStateBuilder(this.Session)
+                .WithUniqueId(NotAvailableId)
+                .WithName("Not Available")
                 .WithIsActive(true)
                 .Build();
 
