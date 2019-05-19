@@ -24,20 +24,20 @@ namespace Allors.Domain
         {
             base.AppsPrepare(setup);
 
-            setup.AddDependency(this.ObjectType, M.CustomerShipmentState);
+            setup.AddDependency(this.ObjectType, M.ShipmentState);
         }
 
         protected override void AppsSecure(Security config)
         {
             base.AppsSecure(config);
 
-            var created = new CustomerShipmentStates(this.Session).Created;
-            var picked = new CustomerShipmentStates(this.Session).Picked;
-            var packed = new CustomerShipmentStates(this.Session).Packed;
-            var shipped = new CustomerShipmentStates(this.Session).Shipped;
-            var delivered = new CustomerShipmentStates(this.Session).Delivered;
-            var cancelled = new CustomerShipmentStates(this.Session).Cancelled;
-            var onHold = new CustomerShipmentStates(this.Session).OnHold;
+            var created = new ShipmentStates(this.Session).Created;
+            var picked = new ShipmentStates(this.Session).Picked;
+            var packed = new ShipmentStates(this.Session).Packed;
+            var shipped = new ShipmentStates(this.Session).Shipped;
+            var delivered = new ShipmentStates(this.Session).Delivered;
+            var cancelled = new ShipmentStates(this.Session).Cancelled;
+            var onHold = new ShipmentStates(this.Session).OnHold;
 
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;

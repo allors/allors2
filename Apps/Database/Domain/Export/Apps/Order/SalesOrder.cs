@@ -683,8 +683,6 @@ namespace Allors.Domain
                         {
                             pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
                                 .WithShipFromAddress(this.TakenBy.ShippingAddress)
-                                .WithBillToParty(this.BillToCustomer)
-                                .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
                                 .WithShipToAddress(address.Key)
                                 .WithShipToParty(address.Value)
                                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Strategy.Session).Build())

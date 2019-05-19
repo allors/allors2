@@ -43,8 +43,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
-            Assert.Equal(shipment.LastCustomerShipmentState, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
+            Assert.Equal(shipment.LastShipmentState, shipment.ShipmentState);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Null(shipment.PreviousCustomerShipmentState);
+            Assert.Null(shipment.PreviousShipmentState);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.Equal(this.InternalOrganisation.ShippingAddress, shipment.ShipFromAddress);
             Assert.Equal(shipment.ShipFromParty, shipment.ShipFromParty);
             Assert.Equal(new Stores(this.Session).FindBy(M.Store.Name, "store"), shipment.Store);
@@ -235,7 +235,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var acl = new AccessControlList(shipment, this.Session.GetUser());
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
@@ -334,13 +334,13 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var acl = new AccessControlList(shipment, this.Session.GetUser());
-            Assert.Equal(new CustomerShipmentStates(this.Session).Shipped, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Shipped, shipment.ShipmentState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
             Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));
         }
 
         [Fact]
-        public void GivenCustomerShipment_WhenAllItemsArePutIntoShipmentPackages_ThenCustomerShipmentStateIsPacked()
+        public void GivenCustomerShipment_WhenAllItemsArePutIntoShipmentPackages_ThenShipmentStateIsPacked()
         {
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
@@ -396,7 +396,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Packed, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
         }
 
         [Fact]
@@ -560,7 +560,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
         }
 
@@ -606,14 +606,14 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
 
             item.QuantityOrdered = 5;
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
         }
 
@@ -662,14 +662,14 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
 
             item.QuantityOrdered = 10;
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
         }
 
@@ -728,18 +728,18 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Packed, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
 
             shipment.Hold();
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
 
             shipment.Ship();
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
         }
 
         [Fact]
@@ -784,13 +784,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
 
             shipment.ReleasedManually = true;
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
         }
 
         [Fact]
@@ -845,19 +845,19 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Picked, shipment.ShipmentState);
 
             shipment.Hold();
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
 
             shipment.Continue();
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Picked, shipment.ShipmentState);
         }
 
         [Fact]
@@ -916,13 +916,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).OnHold, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
 
             shipment.Continue();
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Packed, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
         }
 
         [Fact]
@@ -1008,24 +1008,6 @@ namespace Allors.Domain
 
             Assert.Equal(2, customer.ShipmentsWhereShipToParty.Count);
             Assert.Single(customer.PickListsWhereShipToParty);
-        }
-
-        [Fact]
-        public void GivenCustomerShipment_WhenDeriving_ThenBillFromContactMechanismMustExist()
-        {
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-
-            this.Session.Derive();
-
-            var shipment = new CustomerShipmentBuilder(this.Session)
-                .WithShipToParty(customer)
-                .WithShipToAddress(new PostalAddresses(this.Session).Extent().First)
-                .WithShipmentMethod(new ShipmentMethods(this.Session).Boat)
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(this.InternalOrganisation.BillingAddress, shipment.BillFromContactMechanism);
         }
 
         [Fact]
@@ -1177,7 +1159,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Packed, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
         }
 
         [Fact]
@@ -1252,7 +1234,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Packed, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
         }
 
         [Fact]
@@ -1319,7 +1301,7 @@ namespace Allors.Domain
 
             shipment.Ship();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Picked, shipment.ShipmentState);
         }
 
         [Fact]

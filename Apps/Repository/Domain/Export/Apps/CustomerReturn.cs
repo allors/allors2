@@ -35,9 +35,10 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
+        public ShipmentState PreviousShipmentState { get; set; }
+        public ShipmentState LastShipmentState { get; set; }
+        public ShipmentState ShipmentState { get; set; }
         public ShipmentMethod ShipmentMethod { get; set; }
-
-        public ContactMechanism BillToContactMechanism { get; set; }
 
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
@@ -45,15 +46,16 @@ namespace Allors.Repository
 
         public Document[] Documents { get; set; }
 
-        public Party BillToParty { get; set; }
+        public Person ShipFromContactPerson { get; set; }
+        public Facility ShipFromFacility { get; set; }
 
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
 
-        public ContactMechanism ReceiverContactMechanism { get; set; }
-
         public PostalAddress ShipToAddress { get; set; }
+        public Person ShipToContactPerson { get; set; }
+        public Facility ShipToFacility { get; set; }
 
         public decimal EstimatedShipCost { get; set; }
 
@@ -63,13 +65,9 @@ namespace Allors.Repository
 
         public Carrier Carrier { get; set; }
 
-        public ContactMechanism InquireAboutContactMechanism { get; set; }
-
         public DateTime EstimatedReadyDate { get; set; }
 
         public PostalAddress ShipFromAddress { get; set; }
-
-        public ContactMechanism BillFromContactMechanism { get; set; }
 
         public string HandlingInstruction { get; set; }
 
@@ -81,40 +79,6 @@ namespace Allors.Repository
 
         public DateTime EstimatedArrivalDate { get; set; }
 
-        #endregion
-
-        #region ObjectStates
-        #region CustomerReturnState
-        #region Allors
-        [Id("25DDE41F-7BBF-421A-8A3D-A1F7841DD59F")]
-        [AssociationId("27ACF0AC-57D4-4ADF-909B-843678D75E24")]
-        [RoleId("F3AB7B32-C2BF-4C3C-9AE5-9A192BE98537")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public CustomerReturnState PreviousCustomerReturnState { get; set; }
-
-        #region Allors
-        [Id("15026226-C170-40E9-A22A-DFD1C19AD9A0")]
-        [AssociationId("77F515B2-CED2-43C3-B088-FADEF32792D3")]
-        [RoleId("FA466EA5-DD8B-45C0-9792-1AEB134159B5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public CustomerReturnState LastCustomerReturnState { get; set; }
-
-        #region Allors
-        [Id("458732E6-EC51-4785-80A4-FD2B61E5CE4E")]
-        [AssociationId("59462854-630E-4DAC-B7B7-425479C6E9D0")]
-        [RoleId("509EB4E6-0473-48B6-AC58-B5BFD0A68019")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public CustomerReturnState CustomerReturnState { get; set; }
-        #endregion
         #endregion
 
         #region Versioning

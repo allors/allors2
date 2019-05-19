@@ -84,10 +84,10 @@ namespace Allors.Domain
                 foreach (var customerShipment in this.ShipToParty.ShipmentsWhereShipToParty
                     .OfType<CustomerShipment>()
                     .Where(shipment =>
-                        shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(this.ShipToParty.Strategy.Session).Created)
-                        || shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(this.ShipToParty.Strategy.Session).Picked)
-                        || shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(this.ShipToParty.Strategy.Session).OnHold)
-                        || shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(this.ShipToParty.Strategy.Session).Packed)
+                        shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Created)
+                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picked)
+                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).OnHold)
+                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Packed)
                     ))
                 {
                     if (!derivation.IsCreated(customerShipment))

@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && salesOrderItem != null)
             {
-                var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).CustomerShipmentState.Equals(new CustomerShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+                var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 
                 if (salesOrderItem.QuantityPendingShipment > quantityPendingShipment)
                 {

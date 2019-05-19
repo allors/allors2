@@ -21,16 +21,16 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.Transfer, M.Transfer.TransferState),
+                new TransitionalConfiguration(M.Transfer, M.Transfer.ShipmentState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistTransferState)
+            if (!this.ExistShipmentState)
             {
-                this.TransferState = new TransferStates(this.Strategy.Session).Created;
+                this.ShipmentState = new ShipmentStates(this.Strategy.Session).Created;
             }
         }
 

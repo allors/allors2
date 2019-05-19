@@ -39,10 +39,11 @@ export function appMeta(metaPopulation: MetaPopulation) {
   m.SalesInvoice.list = '/sales/salesinvoices';
   m.SalesInvoice.overview = '/sales/salesinvoice/:id';
 
-  m.PurchaseOrder.list = '/purchasing/purchaseorders';
-  m.PurchaseOrder.overview = '/purchasing/purchaseorder/:id';
   m.PurchaseInvoice.list = '/purchasing/purchaseinvoices';
   m.PurchaseInvoice.overview = '/purchasing/purchaseinvoice/:id';
+  m.PurchaseOrder.list = '/purchasing/purchaseorders';
+  m.PurchaseOrder.overview = '/purchasing/purchaseorder/:id';
+  m.PurchaseReturn.list = '/purchasing/purchasereturns';
 
   m.WorkEffort.list = '/workefforts/workefforts';
   m.WorkTask.overview = '/workefforts/worktask/:id';

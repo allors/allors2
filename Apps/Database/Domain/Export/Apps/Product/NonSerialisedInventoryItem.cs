@@ -114,7 +114,7 @@ namespace Allors.Domain
                 if (shipmentReceipt.ExistShipmentItem)
                 {
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
-                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Delivered))
+                    if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Delivered))
                     {
                         quantityOnHand += shipmentReceipt.QuantityAccepted;
                     }

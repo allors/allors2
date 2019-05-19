@@ -21,25 +21,23 @@ namespace Allors.Repository
 
         public User LastModifiedBy { get; set; }
 
+        public ShipmentState ShipmentState { get; set; }
         public ShipmentMethod ShipmentMethod { get; set; }
-
-        public ContactMechanism BillToContactMechanism { get; set; }
 
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
 
+        public Facility ShipToFacility { get; set; }
         public Document[] Documents { get; set; }
 
-        public Party BillToParty { get; set; }
-
+        public Facility ShipFromFacility { get; set; }
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
 
-        public ContactMechanism ReceiverContactMechanism { get; set; }
-
         public PostalAddress ShipToAddress { get; set; }
+        public Person ShipToContactPerson { get; set; }
 
         public decimal EstimatedShipCost { get; set; }
 
@@ -49,13 +47,10 @@ namespace Allors.Repository
 
         public Carrier Carrier { get; set; }
 
-        public ContactMechanism InquireAboutContactMechanism { get; set; }
-
         public DateTime EstimatedReadyDate { get; set; }
 
         public PostalAddress ShipFromAddress { get; set; }
-
-        public ContactMechanism BillFromContactMechanism { get; set; }
+        public PostalAddress ShipFromContactPerson { get; set; }
 
         public string HandlingInstruction { get; set; }
 
@@ -68,27 +63,6 @@ namespace Allors.Repository
         public DateTime EstimatedArrivalDate { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("15CF6ACD-AF38-43C8-A64A-A7D6FAB3FCC0")]
-        [AssociationId("E449A312-5963-454E-8107-0AE6B06AD566")]
-        [RoleId("BEECCB94-F76C-4D07-94E4-C033172F9899")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public PurchaseShipmentState PurchaseShipmentState { get; set; }
-
-        #region Allors
-        [Id("1BE298F2-F6A4-4F87-BEA5-9D01BB97B1B2")]
-        [AssociationId("A6228FD8-6E88-415D-9659-7660D2A265E3")]
-        [RoleId("B41C7693-05CE-4398-886B-07589F5A2D25")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        public Facility Facility { get; set; }
         
         #region inherited methods
 

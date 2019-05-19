@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("9f3d9ae6-cbbf-4cfb-900d-bc66edccbf95")]
+    [Id("f2d5bb8b-b50f-45e5-accb-c752a4445ad2")]
     #endregion
-    public partial class TransferState : ObjectState 
+    public partial class ShipmentState : ObjectState 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -17,7 +17,6 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         #endregion
-
 
         #region inherited methods
 
@@ -38,6 +37,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule} from '../../../..';
 
-import { PurchaseReturnListComponent } from './purchasereturn-list.component';
-export { PurchaseReturnListComponent } from './purchasereturn-list.component';
+import { ShipmentListComponent } from './shipment-list.component';
+export { ShipmentListComponent } from './shipment-list.component';
 
 @NgModule({
   declarations: [
-    PurchaseReturnListComponent,
+    ShipmentListComponent,
   ],
   exports: [
-    PurchaseReturnListComponent,
+    ShipmentListComponent,
   ],
   imports: [
     CommonModule,
@@ -29,4 +29,4 @@ export { PurchaseReturnListComponent } from './purchasereturn-list.component';
     AllorsMaterialTableModule,
   ],
 })
-export class PurchaseReturnListModule { }
+export class ShipmentListModule { }

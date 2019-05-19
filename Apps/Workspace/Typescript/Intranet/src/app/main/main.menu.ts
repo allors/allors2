@@ -45,6 +45,7 @@ export const menu: MenuItem[] = [
     children: [
       { id: ids.PurchaseOrder },
       { id: ids.PurchaseInvoice },
+      { id: ids.PurchaseReturn },
     ]
   },
   {

@@ -81,9 +81,9 @@ namespace Allors.Domain
             {
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
-                    .WithReceiver(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
+                    .WithShipToParty(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
                     .WithShipFromParty(this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier)
-                    .WithFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
+                    .WithShipToFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
                     .Build();
 
                 var shipmentItem = new ShipmentItemBuilder(session)

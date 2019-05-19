@@ -22,23 +22,20 @@ namespace Allors.Repository
 
         public ShipmentMethod ShipmentMethod { get; set; }
 
-        public ContactMechanism BillToContactMechanism { get; set; }
-
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
 
+        public Facility ShipToFacility { get; set; }
         public Document[] Documents { get; set; }
 
-        public Party BillToParty { get; set; }
-
+        public Facility ShipFromFacility { get; set; }
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
 
-        public ContactMechanism ReceiverContactMechanism { get; set; }
-
         public PostalAddress ShipToAddress { get; set; }
+        public Person ShipToContactPerson { get; set; }
 
         public decimal EstimatedShipCost { get; set; }
 
@@ -48,13 +45,10 @@ namespace Allors.Repository
 
         public Carrier Carrier { get; set; }
 
-        public ContactMechanism InquireAboutContactMechanism { get; set; }
-
         public DateTime EstimatedReadyDate { get; set; }
 
         public PostalAddress ShipFromAddress { get; set; }
-
-        public ContactMechanism BillFromContactMechanism { get; set; }
+        public PostalAddress ShipFromContactPerson { get; set; }
 
         public string HandlingInstruction { get; set; }
 
@@ -76,7 +70,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public CustomerShipmentState CustomerShipmentState { get; set; }
+        public ShipmentState ShipmentState { get; set; }
 
         #region Allors
         [Id("BC2DC6F6-143E-42DA-BFA8-B65A213D61AB")]

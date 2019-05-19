@@ -31,7 +31,6 @@ import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purcha
 import * as PurchaseInvoiceItemEdit from '../allors/material/apps/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import * as PurchaseOrderList from 'src/allors/material/apps/objects/purchaseorder/list/purchaseorder-list.module';
 import * as PurchaseOrderOverview from 'src/allors/material/apps/objects/purchaseorder/overview/purchaseorder-overview.module';
-import * as PurchaseReturnList from 'src/allors/material/apps/objects/purchasereturn/list/purchasereturn-list.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as RepeatingSalesInvoiceEdit from '../allors/material/apps/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
@@ -44,6 +43,7 @@ import * as SalesOrderList from 'src/allors/material/apps/objects/salesorder/lis
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as SerialisedItemList from 'src/allors/material/apps/objects/serialiseditem/list/serialiseditem-list.module';
 import * as SerialisedItemOverview from 'src/allors/material/apps/objects/serialiseditem/overview/serialiseditem-overview.module';
+import * as ShipmentList from 'src/allors/material/apps/objects/shipment/list/shipment-list.module';
 import * as UnifiedGoodList from 'src/allors/material/apps/objects/unifiedgood/list/unifiedgood-list.module';
 import * as UnifiedGoodOverview from 'src/allors/material/apps/objects/unifiedgood/overview/unifiedgood-overview.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
@@ -85,7 +85,6 @@ const modules = [
   ProductTypesOverview.ProductTypesOverviewModule,
   PurchaseOrderList.PurchaseOrderListModule,
   PurchaseOrderOverview.PurchaseOrderOverviewModule,
-  PurchaseReturnList.PurchaseReturnListModule,
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
@@ -93,6 +92,7 @@ const modules = [
   SalesOrderOverview.SalesOrderOverviewModule,
   SerialisedItemList.SerialisedItemListModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
+  ShipmentList.ShipmentListModule,
   TaskAssignmentList.TaskListModule,
   UnifiedGoodList.UnifiedGoodListModule,
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
@@ -162,7 +162,7 @@ export const routes: Routes = [
           { path: 'purchaseorder/:id', component: PurchaseOrderOverview.PurchaseOrderOverviewComponent },
           { path: 'purchaseinvoices', component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
           { path: 'purchaseinvoice/:id', component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
-          { path: 'purchasereturns', component: PurchaseReturnList.PurchaseReturnListComponent },
+          { path: 'shipments', component: ShipmentList.ShipmentListComponent },
         ],
       },
 

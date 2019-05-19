@@ -63,10 +63,10 @@ namespace Allors.Domain
             if (this.ExistShipmentItem && this.ShipmentItem.ExistOrderShipmentsWhereShipmentItem)
             {
                 var purchaseShipment = (PurchaseShipment)this.ShipmentItem.ShipmentWhereShipmentItem;
-                var internalOrganisation = purchaseShipment.Receiver;
+                var internalOrganisation = purchaseShipment.ShipFromParty as InternalOrganisation;
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as PurchaseOrderItem;
 
-                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
+                var facility = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.Facility;
                 if (facility == null)
                 {
                     facility = internalOrganisation?.StoresWhereInternalOrganisation.Count == 1 ? internalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility : null;

@@ -21,25 +21,24 @@ namespace Allors.Repository
 
         public User LastModifiedBy { get; set; }
 
+        public ShipmentState ShipmentState { get; set; }
         public ShipmentMethod ShipmentMethod { get; set; }
 
-        public ContactMechanism BillToContactMechanism { get; set; }
 
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
 
+        public Facility ShipToFacility { get; set; }
         public Document[] Documents { get; set; }
 
-        public Party BillToParty { get; set; }
-
+        public Facility ShipFromFacility { get; set; }
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
 
-        public ContactMechanism ReceiverContactMechanism { get; set; }
-
         public PostalAddress ShipToAddress { get; set; }
+        public Person ShipToContactPerson { get; set; }
 
         public decimal EstimatedShipCost { get; set; }
 
@@ -49,13 +48,10 @@ namespace Allors.Repository
 
         public Carrier Carrier { get; set; }
 
-        public ContactMechanism InquireAboutContactMechanism { get; set; }
-
         public DateTime EstimatedReadyDate { get; set; }
 
         public PostalAddress ShipFromAddress { get; set; }
-
-        public ContactMechanism BillFromContactMechanism { get; set; }
+        public PostalAddress ShipFromContactPerson { get; set; }
 
         public string HandlingInstruction { get; set; }
 
@@ -68,16 +64,6 @@ namespace Allors.Repository
         public DateTime EstimatedArrivalDate { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("5DA86806-5DE6-431A-983E-21884E7A0959")]
-        [AssociationId("FE0774B1-1923-4F4A-9F27-66746491A54B")]
-        [RoleId("66A1A044-EECD-4019-91AB-5332EABECCC2")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public PurchaseReturnState PurchaseReturnState { get; set; }
 
         #region inherited methods
 

@@ -39,6 +39,7 @@ import { PurchaseOrderApprovalLevel1EditComponent, PurchaseOrderApprovalLevel1Ed
 import { PurchaseOrderApprovalLevel2EditComponent, PurchaseOrderApprovalLevel2EditModule } from '../allors/material/apps/objects/purchaseorderapprovallevel2/edit/purchaseorderapprovallevel2-edit.module';
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/apps/objects/purchaseorder/create/purchaseorder-create.module';
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/apps/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
+import { PurchaseReturnCreateComponent, PurchaseReturnCreateModule } from '../allors/material/apps/objects/purchasereturn/create/purchasereturn-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { ReceiptEditComponent, ReceiptEditModule } from '../allors/material/apps/objects/receipt/edit/receipt-edit.module';
 import { RepeatingPurchaseInvoiceEditComponent, RepeatingPurchaseInvoiceEditModule } from '../allors/material/apps/objects/repeatingpurchaseinvoice/edit/repeatingpurchaseinvoice-edit.module';
@@ -109,6 +110,7 @@ export const create = {
   [ids.PurchaseInvoiceItem]: PurchaseInvoiceItemEditComponent,
   [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
+  [ids.PurchaseReturn]: PurchaseReturnCreateComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
   [ids.RepeatingPurchaseInvoice]: RepeatingPurchaseInvoiceEditComponent,
@@ -235,6 +237,7 @@ export const edit = {
     PurchaseOrderApprovalLevel2EditModule,
     PurchaseOrderCreateModule,
     PurchaseOrderItemEditModule,
+    PurchaseReturnCreateModule,
     QuoteItemEditModule,
     ReceiptEditModule,
     RepeatingPurchaseInvoiceEditModule,
@@ -299,6 +302,7 @@ export const edit = {
     PurchaseOrderApprovalLevel1EditComponent,
     PurchaseOrderApprovalLevel2EditComponent,
     PurchaseOrderItemEditComponent,
+    PurchaseReturnCreateComponent,
     ReceiptEditComponent,
     RepeatingPurchaseInvoiceEditComponent,
     RepeatingSalesInvoiceEditComponent,

@@ -426,9 +426,9 @@ namespace Allors.Domain
             {
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
-                    .WithReceiver(this.OrderedBy)
+                    .WithShipToParty(this.OrderedBy)
                     .WithShipFromParty(this.TakenViaSupplier)
-                    .WithFacility(this.Facility)
+                    .WithShipToFacility(this.Facility)
                     .Build();
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)

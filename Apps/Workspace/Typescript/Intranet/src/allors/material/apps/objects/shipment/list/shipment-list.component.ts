@@ -10,25 +10,25 @@ import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../fr
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
-import { PurchaseReturn, Party, PurchaseReturnState, Product, SerialisedItem } from '../../../../../domain';
+import { Shipment, Party, ShipmentState } from '../../../../../domain';
 import { MethodService } from '../../../../../material/base/services/actions';
 
 interface Row extends TableRow {
-  object: PurchaseReturn;
+  object: Shipment;
   number: string;
-  supplier: string;
+  from: string;
+  to: string;
   state: string;
-  customerReference: string;
   lastModifiedDate: string;
 }
 
 @Component({
-  templateUrl: './purchasereturn-list.component.html',
+  templateUrl: './shipment-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class PurchaseReturnListComponent extends TestScope implements OnInit, OnDestroy {
+export class ShipmentListComponent extends TestScope implements OnInit, OnDestroy {
 
-  public title = 'Purchase Returns';
+  public title = 'Shipments';
 
   m: Meta;
 
@@ -63,13 +63,14 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
 
     this.m = this.metaService.m;
 
+    const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number', sort: true },
-        { name: 'supplier' },
-        { name: 'state' },
-        { name: 'customerReference', sort: true },
+        { name: 'number', sort },
+        { name: 'from', sort },
+        { name: 'to', sort },
+        { name: 'state', sort },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -85,16 +86,16 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
 
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseReturn.ShipFromParty });
+    const internalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipFromParty });
     const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
 
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.PurchaseReturn.ShipmentNumber, parameter: 'number' }),
-      new Equals({ propertyType: m.PurchaseReturn.PurchaseReturnState, parameter: 'state' }),
-      new Equals({ propertyType: m.PurchaseReturn.ShipToParty, parameter: 'supplier' }),
+      new Equals({ propertyType: m.Shipment.ShipmentNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.Shipment.ShipmentState, parameter: 'state' }),
+      new Equals({ propertyType: m.Shipment.ShipToParty, parameter: 'supplier' }),
       new ContainedIn({
-        propertyType: m.PurchaseReturn.ShipmentItems,
+        propertyType: m.Shipment.ShipmentItems,
         extent: new Filter({
           objectType: m.ShipmentItem,
           predicate: new ContainedIn({
@@ -106,8 +107,8 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
     ]);
 
     const stateSearch = new SearchFactory({
-      objectType: m.PurchaseReturnState,
-      roleTypes: [m.PurchaseReturnState.Name],
+      objectType: m.ShipmentState,
+      roleTypes: [m.ShipmentState.Name],
     });
 
     const supplierSearch = new SearchFactory({
@@ -125,14 +126,16 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: PurchaseReturnState) => v && v.Name },
+      state: { search: stateSearch, display: (v: ShipmentState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
     });
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseReturn.ShipmentNumber,
-        lastModifiedDate: m.PurchaseReturn.LastModifiedDate,
+        number: m.Shipment.ShipmentNumber,
+        from: m.Shipment.ShipFromParty,
+        to: m.Shipment.ShipToParty,
+        lastModifiedDate: m.Shipment.LastModifiedDate,
       }
     );
 
@@ -153,12 +156,13 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
           supplierPredicate.object = internalOrganisationId;
 
           const pulls = [
-            pull.PurchaseReturn({
+            pull.Shipment({
               predicate,
               sort: sorter.create(sort),
               include: {
                 ShipToParty: x,
-                PurchaseReturnState: x,
+                ShipFromParty: x,
+                ShipmentState: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -170,14 +174,15 @@ export class PurchaseReturnListComponent extends TestScope implements OnInit, On
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const objects = loaded.collections.PurchaseReturns as PurchaseReturn[];
-        this.table.total = loaded.values.PurchaseOrders_total;
+        const objects = loaded.collections.Shipments as Shipment[];
+        this.table.total = loaded.values.Shipments_total;
         this.table.data = objects.map((v) => {
           return {
             object: v,
             number: `${v.ShipmentNumber}`,
-            supplier: v.ShipToParty.displayName,
-            state: `${v.PurchaseReturnState && v.PurchaseReturnState.Name}`,
+            from: v.ShipFromParty.displayName,
+            to: v.ShipToParty.displayName,
+            state: `${v.ShipmentState && v.ShipmentState.Name}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

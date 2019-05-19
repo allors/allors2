@@ -506,10 +506,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Single(customer.ShipmentsWhereBillToParty); 
+            Assert.Single(customer.ShipmentsWhereShipToParty); 
 
-            var customerShipment = (CustomerShipment)customer.ShipmentsWhereBillToParty.First;
-            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, customerShipment.CustomerShipmentState);
+            var customerShipment = (CustomerShipment)customer.ShipmentsWhereShipToParty.First;
+            Assert.Equal(new ShipmentStates(this.Session).Picked, customerShipment.ShipmentState);
         }
     }
 }

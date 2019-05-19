@@ -21,16 +21,16 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.CustomerReturn, M.CustomerReturn.CustomerReturnState),
+                new TransitionalConfiguration(M.CustomerReturn, M.CustomerReturn.ShipmentState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistCustomerReturnState)
+            if (!this.ExistShipmentState)
             {
-                this.CustomerReturnState = new CustomerReturnStates(this.Strategy.Session).Received;
+                this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
             }
         }
 

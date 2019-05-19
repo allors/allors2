@@ -503,7 +503,7 @@ namespace Allors.Domain
             var negativePickList = order.ShipToCustomer.PickListsWhereShipToParty[1];
             Assert.Equal(-10, negativePickList.PickListItems[0].Quantity);
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Cancelled, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Cancelled, shipment.ShipmentState);
         }
 
         [Fact]
@@ -580,7 +580,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)customer.ShipmentsWhereBillToParty[0];
+            var shipment = (CustomerShipment)customer.ShipmentsWhereShipToParty[0];
             Assert.Equal(30, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -590,7 +590,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Created, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
             Assert.Equal(20, pickList.PickListItems[0].Quantity);
 
@@ -598,7 +598,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new CustomerShipmentStates(this.Session).Cancelled, shipment.CustomerShipmentState);
+            Assert.Equal(new ShipmentStates(this.Session).Cancelled, shipment.ShipmentState);
             Assert.Equal(new PickListStates(this.Session).Cancelled, pickList.PickListState);
         }
 
@@ -2312,7 +2312,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = customer.ShipmentsWhereBillToParty.First;
+            var shipment = customer.ShipmentsWhereShipToParty.First;
 
             Assert.Equal(2, shipment.ShipmentItems.Count);
             Assert.Equal(1, item1.OrderShipmentsWhereOrderItem[0].Quantity);

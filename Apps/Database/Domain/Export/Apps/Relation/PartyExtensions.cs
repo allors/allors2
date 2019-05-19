@@ -80,10 +80,10 @@ namespace Allors.Domain
 
             foreach (CustomerShipment shipment in shipments)
             {
-                if (shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Created) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Picked) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).OnHold) ||
-                    shipment.CustomerShipmentState.Equals(new CustomerShipmentStates(party.Strategy.Session).Packed))
+                if (shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Created) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Picked) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).OnHold) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Packed))
                 {
                     return shipment;
                 }
