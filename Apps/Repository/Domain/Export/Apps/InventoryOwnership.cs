@@ -42,7 +42,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public InternalOrganisation InternalOrganisation { get; set; }
+        public Party Owner { get; set; }
 
         #region inherited methods
 

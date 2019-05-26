@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.Equal(this.InternalOrganisation.GeneralCorrespondence, shipment.ShipToAddress);
-            Assert.Equal(shipment.ShipToParty, shipment.ShipToParty);
+            Assert.Equal(this.InternalOrganisation, shipment.ShipToParty);
         }
 
         [Fact]

@@ -165,6 +165,12 @@ namespace Allors.Domain
 
             this.AppsDeriveVatRegime(derivation);
 
+            if (this.Part.InventoryItemKind.Serialised)
+            {
+                derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
+                derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
+            }
+
             if (this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem &&
                 this.PurchaseOrderItemShipmentState.IsReceived || this.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!this.ExistPart && this.QuantityReceived == 1))
             {

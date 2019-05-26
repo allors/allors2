@@ -100,7 +100,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var order = new PurchaseOrderBuilder(this.Session).WithOrderedBy(organisation).WithTakenViaSupplier(supplier).WithBillToContactMechanism(takenViaContactMechanism).Build();
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithOrderedBy(organisation)
+                .WithTakenViaSupplier(supplier)
+                .WithBillToContactMechanism(takenViaContactMechanism)
+                .WithFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
+                .Build();
 
             this.Session.Derive();
 
@@ -146,7 +151,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var order = new PurchaseOrderBuilder(this.Session).WithOrderedBy(organisation).WithTakenViaSupplier(supplier).WithBillToContactMechanism(takenViaContactMechanism).Build();
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithOrderedBy(organisation)
+                .WithTakenViaSupplier(supplier)
+                .WithBillToContactMechanism(takenViaContactMechanism)
+                .WithFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
+                .Build();
 
             this.Session.Derive();
 

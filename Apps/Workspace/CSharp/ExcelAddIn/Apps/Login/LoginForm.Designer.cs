@@ -116,7 +116,7 @@
             // 
             this.buttonTogglePassword.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.buttonTogglePassword.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonTogglePassword.Image = global::AviacoExcelAddIn.Properties.Resources.icons8_eye_24;
+            this.buttonTogglePassword.Image = global::AppsExcelAddIn.Properties.Resources.icons8_eye_24;
             this.buttonTogglePassword.Location = new System.Drawing.Point(274, 0);
             this.buttonTogglePassword.Name = "buttonTogglePassword";
             this.buttonTogglePassword.Size = new System.Drawing.Size(54, 40);

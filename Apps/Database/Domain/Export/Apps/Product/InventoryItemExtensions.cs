@@ -38,19 +38,19 @@ namespace Allors.Domain
         public static void AppsOnDerive(this InventoryItem @this, ObjectOnDerive method)
         {
             var session = @this.Strategy.Session;
-            var internalOrganisations = new Organisations(session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!@this.ExistInventoryOwnershipsWhereInventoryItem && internalOrganisations.Count() == 1)
+            Party owner = (Organisation) @this.Facility.Owner;
+            if (@this is SerialisedInventoryItem item)
+            {
+                owner = item.SerialisedItem.OwnedBy;
+            }
+
+            if (!@this.ExistInventoryOwnershipsWhereInventoryItem && owner != null)
             {
                 new InventoryOwnershipBuilder(session)
                     .WithInventoryItem(@this)
-                    .WithInternalOrganisation(internalOrganisations.First())
+                    .WithOwner(owner)
                     .Build();
-            }
-
-            if (!@this.ExistFacility && internalOrganisations.Count() == 1 && internalOrganisations.Single().StoresWhereInternalOrganisation.Count == 1)
-            {
-                @this.Facility = internalOrganisations.Single().StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
 
             //TODO: Let Sync set Unit of Measure

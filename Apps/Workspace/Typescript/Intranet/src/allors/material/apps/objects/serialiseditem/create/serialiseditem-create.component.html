@@ -33,9 +33,7 @@
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" [options]="currentSuppliers"
-          display="Name"></a-mat-select>
-        <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy" [filter]="filtersService.partiesFilter.create(allors.context)"
+        <a-mat-autocomplete class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy" [filter]="filtersService.partiesFilter.create(allors.context)"
           display="displayName"></a-mat-autocomplete>
       </div>
 

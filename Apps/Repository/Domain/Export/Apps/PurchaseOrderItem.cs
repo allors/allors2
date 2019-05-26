@@ -253,6 +253,15 @@ namespace Allors.Repository
         public SerialisedItem SerialisedItem { get; set; }
 
         #region Allors
+        [Id("5FE65A7F-F7EC-4910-AED7-35C88DED80C7")]
+        [AssociationId("AA17A0CF-63A3-4774-93F2-F61ED4C019EC")]
+        [RoleId("C0987F1A-C202-440B-B352-7A879F30ADBC")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string SerialNumber { get; set; }
+
+        #region Allors
         [Id("56E8D200-1D63-4619-B617-CFA95B9CE07A")]
         [AssociationId("34D75527-43E6-4114-BB1B-5F26D32AA0EF")]
         [RoleId("136B01CA-6C76-4350-B9D1-4B293DC19EC1")]

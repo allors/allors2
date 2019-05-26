@@ -110,7 +110,9 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 OwnedBy: x,
                 RentedBy: x,
                 PrimaryPhoto: x,
-                Photos: x
+                Photos: x,
+                PurchaseOrder: x,
+                SuppliedBy: x
               }
             }),
             this.fetcher.internalOrganisation,

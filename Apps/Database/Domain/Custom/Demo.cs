@@ -240,7 +240,7 @@ namespace Allors
                 .WithPart(finishedGood2)
                 .Build();
 
-            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).WithOwnedBy(allors).Build();
             finishedGood2.AddSerialisedItem(serialisedItem);
 
             new InventoryItemTransactionBuilder(this.Session)

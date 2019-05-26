@@ -78,7 +78,7 @@ namespace Allors.Domain
                     {
                         var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                        this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
+                        this.InventoryItem = inventoryItems.First as InventoryItem;
                     }
                 }
             }

@@ -28,7 +28,7 @@ namespace Allors.Domain
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
                     var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
-                    if (supplierRelationship != null && 
+                    if (supplierRelationship != null &&
                         supplierRelationship.NeedsApproval &&
                         (!supplierRelationship.ExistApprovalThresholdLevel1 || this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1))
                     {
@@ -198,7 +198,7 @@ namespace Allors.Domain
             // PurchaseOrder Shipment State
             if (validOrderItems.Any())
             {
-//                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
+                //                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
 
                 if (validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived) ||
                     validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
@@ -454,6 +454,33 @@ namespace Allors.Domain
                             .WithShipmentItem(shipmentItem)
                             .WithOrderItem(orderItem)
                             .Build();
+
+                        if (orderItem.Part.InventoryItemKind.Serialised)
+                        {
+                            SerialisedItem serialisedItem = orderItem.SerialisedItem;
+                            if (!orderItem.ExistSerialisedItem)
+                            {
+                                serialisedItem = new SerialisedItemBuilder(session)
+                                    .WithSerialNumber(orderItem.SerialNumber)
+                                    .Build();
+
+                                orderItem.Part.AddSerialisedItem(serialisedItem);
+                            }
+
+                            serialisedItem.PurchaseOrder = this;
+                            serialisedItem.OwnedBy = this.OrderedBy;
+                            serialisedItem.SuppliedBy = this.TakenViaSupplier;
+                            serialisedItem.PurchasePrice = orderItem.UnitPrice;
+
+                            new InventoryItemTransactionBuilder(this.strategy.Session)
+                                .WithSerialisedItem(serialisedItem)
+                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
+                                .WithFacility(this.Facility)
+                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Available)
+                                .WithQuantity(1)
+                                .Build();
+                        }
                     }
                 }
             }

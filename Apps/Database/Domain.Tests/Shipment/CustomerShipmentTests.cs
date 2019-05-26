@@ -113,13 +113,6 @@ namespace Allors.Domain
             builder.WithShipmentMethod(new ShipmentMethods(this.Session).Ground);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithShipToAddress(shipToAddress);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 

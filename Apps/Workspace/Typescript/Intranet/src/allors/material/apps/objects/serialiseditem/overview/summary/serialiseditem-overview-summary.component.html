@@ -20,36 +20,32 @@
 
   <mat-card-content>
 
-    <div *ngIf="serialisedItem.OwnedBy" (click)="navigation.overview(serialisedItem.OwnedBy)" style="cursor: pointer;">
-
-      <div (click)="navigation.overview(part)" style="cursor: pointer;">
-        <div style="color: grey">
-          Part
-        </div>
-        <div>
-          {{part?.Name}}
-        </div>
+    <div (click)="navigation.overview(part)" style="cursor: pointer;">
+      <div style="color: grey">
+        Part
       </div>
+      <div>
+        {{part?.Name}}
+      </div>
+    </div>
 
+    <div *ngIf="serialisedItem.OwnedBy" (click)="navigation.overview(serialisedItem.OwnedBy)" style="cursor: pointer;">
       <div>
         <div style="color: grey">
           Owned by
         </div>
         {{serialisedItem.OwnedBy.displayName}}
       </div>
-
     </div>
 
     <div *ngIf="serialisedItem.RentedBy" (click)="navigation.overview(serialisedItem.RentedBy)"
       style="cursor: pointer;">
-
       <div>
         <div style="color: grey">
           Rented by
         </div>
         {{serialisedItem.RentedBy.displayName}}
       </div>
-
     </div>
   </mat-card-content>
 </mat-card>

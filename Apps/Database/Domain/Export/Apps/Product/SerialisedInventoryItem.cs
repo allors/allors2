@@ -92,7 +92,8 @@ namespace Allors.Domain
 
             foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
             {
-                if (shipmentReceipt.ExistShipmentItem)
+                // serialised items are handled via InventoryItemTransactions
+                if (shipmentReceipt.ExistShipmentItem && !shipmentReceipt.ShipmentItem.Part.InventoryItemKind.Serialised)
                 {
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
                     if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Delivered))

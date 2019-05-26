@@ -32,12 +32,12 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistShipFromParty)
+            if (!this.ExistShipToParty)
             {
                 var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
                 if (internalOrganisations.Length == 1)
                 {
-                    this.ShipFromParty = internalOrganisations.First();
+                    this.ShipToParty = internalOrganisations.First();
                 }
             }
 
@@ -80,16 +80,15 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
 
-            this.ShipToAddress = this.ShipToAddress ?? this.ShipFromParty?.ShippingAddress ?? this.ShipFromParty?.GeneralCorrespondence as PostalAddress;
-
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
             var shipToParty = this.ShipToParty as InternalOrganisation;
             if (!this.ExistShipToParty && internalOrganisations.Count() == 1)
             {
                 this.ShipToParty = internalOrganisations.First();
                 shipToParty = internalOrganisations.First();
             }
+
+            this.ShipToAddress = this.ShipToAddress ?? this.ShipToParty?.ShippingAddress ?? this.ShipToParty?.GeneralCorrespondence as PostalAddress;
 
             if (!this.ExistShipToFacility && shipToParty != null)
             {
@@ -101,9 +100,9 @@ namespace Allors.Domain
                 this.ShipmentNumber = shipToParty.NextShipmentNumber(this.Strategy.Session.Now().Year);
             }
 
-            if (!this.ExistShipFromAddress && shipToParty != null)
+            if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
-                this.ShipFromAddress = shipToParty.ShippingAddress;
+                this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
             if (this.ShipmentItems.Any() && this.ShipmentItems.All(v => v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered)))

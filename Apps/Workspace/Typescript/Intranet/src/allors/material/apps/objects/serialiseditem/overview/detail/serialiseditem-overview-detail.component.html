@@ -42,21 +42,21 @@
             <div class="row">
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState"
-                [options]="serialisedItemStates" display="Name"></a-mat-select>
+                            [options]="serialisedItemStates" display="Name"></a-mat-select>
             </div>
 
             <div class="row">
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
-                display="Name"></a-mat-select>
+                            display="Name"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy"
-                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                                  [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">
-              <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" [options]="currentSuppliers"
-                display="Name"></a-mat-select>
+              <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
+              <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name" label="Supplied By"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy"
-                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                                  [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
             </div>
 
             <div class="row">
@@ -94,9 +94,9 @@
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
                     <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedNames"
-                      [locale]="locale"></a-mat-localised-text>
+                                          [locale]="locale"></a-mat-localised-text>
                     <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedDescriptions"
-                      [locale]="locale"></a-mat-localised-text>
+                                          [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -119,20 +119,20 @@
             <div class="row">
               <mat-form-field class="col-md">
                 <input matInput [(ngModel)]="serialisedItem.yearsToGo" name="yearsToGo" placeholder="Years to go"
-                  readonly>
+                       readonly>
               </mat-form-field>
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.DepreciationYears"></a-mat-input>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
               <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
+                           [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
               <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
-                class="col-md-12"></a-mat-textarea>
+                              [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
+                              class="col-md-12"></a-mat-textarea>
             </div>
 
             <div class="row">
@@ -146,8 +146,8 @@
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
                     <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                      [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues"
-                      [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
+                                          [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues"
+                                          [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -160,21 +160,22 @@
           <div class="container-fluid">
             <div class="row pt-3">
               <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-input>
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-input>
+              <a-mat-static class="col" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-static>
+              <a-mat-input class="col" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.AssignedPurchasePrice" label="Purchase Price"></a-mat-input>
             </div>
 
             <div class="row">
               <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ReplacementValue"></a-mat-input>
               <mat-form-field class="col">
                 <input matInput [(ngModel)]="serialisedItem.goingConcern" name="goingConcern" placeholder="Going Concern"
-                  readonly>
+                       readonly>
               </mat-form-field>
             </div>
 
             <div class="row">
               <mat-form-field class="col">
                 <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value"
-                  readonly>
+                       readonly>
               </mat-form-field>
             </div>
 
@@ -191,11 +192,11 @@
             <div class="row">
               <mat-form-field class="col">
                 <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
-                  placeholder="Gross Book Value" readonly>
+                       placeholder="Gross Book Value" readonly>
               </mat-form-field>
               <mat-form-field class="col">
                 <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa"
-                  readonly>
+                       readonly>
               </mat-form-field>
             </div>
           </div>
@@ -221,7 +222,7 @@
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
                     <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedComments"
-                      [locale]="locale"></a-mat-localised-text>
+                                          [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>

@@ -5,9 +5,9 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering } from '../../../../../domain';
-import { PullRequest, Equals, And, LessThan, IObject } from '../../../../../framework';
+import { ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
+import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation } from '../../../../../domain';
+import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -32,6 +32,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   private subscription: Subscription;
   parts: Set<Part>;
+  serialisedItems: SerialisedItem[];
+  serialised: boolean;
+  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
@@ -41,6 +44,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private snackBar: MatSnackBar,
+    private fetcher: FetcherService
   ) {
     super();
 
@@ -58,6 +62,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           const isCreate = this.data.id === undefined;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.PurchaseOrderItem({
               object: this.data.id,
               include: {
@@ -79,7 +84,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                   TakenViaSupplier: {
                     SupplierOfferingsWhereSupplier: {
                       include: {
-                        Part: x
+                        Part: {
+                          InventoryItemKind: x
+                        }
                       }
                     }
                   }
@@ -131,6 +138,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
         const now = moment.utc();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
         this.vatRates = loaded.collections.VatRates as VatRate[];
@@ -138,9 +146,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
         this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         const parts = this.supplierOfferings
-                      .filter(v => v.Supplier === this.order.TakenViaSupplier && v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
-                      .map(v => v.Part)
-                      .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+          .filter(v => v.Supplier === this.order.TakenViaSupplier && v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
+          .map(v => v.Part)
+          .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
         this.parts = new Set(parts);
 
@@ -204,7 +212,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   private updateFromPart(part: Part) {
 
-    const { pull, x, m } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Part(
@@ -215,17 +223,36 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           }
         }
       ),
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SerialisedItems: {
+              include: {
+                OwnedBy: x
+              }
+            }
+          }
+        }
+      ),
     ];
 
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
 
         const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
           && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
           && v.Supplier === this.order.TakenViaSupplier);
 
+        const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+        this.serialisedItems = serialisedItems.filter(v => v.OwnedBy !== this.internalOrganisation);
+
+        if (this.orderItem.SerialisedItem) {
+          this.serialisedItems.push(this.orderItem.SerialisedItem)
+        }
       });
   }
 }

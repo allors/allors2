@@ -238,10 +238,8 @@
     <Compile Include="generated\CustomEngagementItem.g.cs" />
     <Compile Include="generated\CustomerRelationship.g.cs" />
     <Compile Include="generated\CustomerReturn.g.cs" />
-    <Compile Include="generated\CustomerReturnState.g.cs" />
     <Compile Include="generated\CustomerReturnVersion.g.cs" />
     <Compile Include="generated\CustomerShipment.g.cs" />
-    <Compile Include="generated\CustomerShipmentState.g.cs" />
     <Compile Include="generated\CustomerShipmentVersion.g.cs" />
     <Compile Include="generated\CustomOrganisationClassification.g.cs" />
     <Compile Include="generated\DayOfWeek.g.cs" />
@@ -263,7 +261,6 @@
     <Compile Include="generated\DiscountComponent.g.cs" />
     <Compile Include="generated\Document.g.cs" />
     <Compile Include="generated\DropShipment.g.cs" />
-    <Compile Include="generated\DropShipmentState.g.cs" />
     <Compile Include="generated\DropShipmentVersion.g.cs" />
     <Compile Include="generated\DunningType.g.cs" />
     <Compile Include="generated\EanIdentification.g.cs" />
@@ -512,10 +509,8 @@
     <Compile Include="generated\PurchaseOrderState.g.cs" />
     <Compile Include="generated\PurchaseOrderVersion.g.cs" />
     <Compile Include="generated\PurchaseReturn.g.cs" />
-    <Compile Include="generated\PurchaseReturnState.g.cs" />
     <Compile Include="generated\PurchaseReturnVersion.g.cs" />
     <Compile Include="generated\PurchaseShipment.g.cs" />
-    <Compile Include="generated\PurchaseShipmentState.g.cs" />
     <Compile Include="generated\PurchaseShipmentVersion.g.cs" />
     <Compile Include="generated\Qualification.g.cs" />
     <Compile Include="generated\Quote.g.cs" />
@@ -601,6 +596,7 @@
     <Compile Include="generated\ShipmentMethod.g.cs" />
     <Compile Include="generated\ShipmentPackage.g.cs" />
     <Compile Include="generated\ShipmentRouteSegment.g.cs" />
+    <Compile Include="generated\ShipmentState.g.cs" />
     <Compile Include="generated\ShipmentVersion.g.cs" />
     <Compile Include="generated\ShippingAndHandlingCharge.g.cs" />
     <Compile Include="generated\ShippingAndHandlingComponent.g.cs" />
@@ -639,7 +635,6 @@
     <Compile Include="generated\TimePeriodUsage.g.cs" />
     <Compile Include="generated\TimeSheet.g.cs" />
     <Compile Include="generated\Transfer.g.cs" />
-    <Compile Include="generated\TransferState.g.cs" />
     <Compile Include="generated\TransferVersion.g.cs" />
     <Compile Include="generated\UnifiedGood.g.cs" />
     <Compile Include="generated\UnifiedProduct.g.cs" />

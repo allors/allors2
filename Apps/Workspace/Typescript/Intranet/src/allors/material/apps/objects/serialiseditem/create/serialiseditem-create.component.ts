@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { SaveService, FiltersService, ObjectData } from '../../../../../material';
 import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, SupplierRelationship } from '../../../../../domain';
+import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -24,17 +24,14 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
   public title = 'Add Serialised Asset';
 
   locales: Locale[];
-  suppliers: Organisation[];
   ownerships: Ownership[];
   organisations: Organisation[];
   organisationFilter: SearchFactory;
-  activeSuppliers: Organisation[];
   serialisedItemStates: SerialisedItemState[];
   owner: Party;
   part: Part;
   itemPart: Part;
   parts: Part[];
-  currentSuppliers: Set<Organisation>;
 
   private subscription: Subscription;
 
@@ -70,11 +67,6 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
               object: this.data.associationId
             }),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
-            pull.SupplierRelationship({
-              include: {
-                Supplier: x
-              }
-            }),
             pull.Part({
               include: {
                 InventoryItemKind: x,
@@ -97,10 +89,6 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
         this.allors.context.reset();
 
         const now = moment.utc();
-
-        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.owner = loaded.objects.Party as Party;
         this.part = loaded.objects.forPart as Part;
