@@ -38,6 +38,7 @@ namespace Allors.Domain
         public static void AppsOnDerive(this InventoryItem @this, ObjectOnDerive method)
         {
             var session = @this.Strategy.Session;
+            var now = session.Now();
 
             Party owner = (Organisation) @this.Facility.Owner;
             if (@this is SerialisedInventoryItem item)
@@ -45,7 +46,16 @@ namespace Allors.Domain
                 owner = item.SerialisedItem.OwnedBy;
             }
 
-            if (!@this.ExistInventoryOwnershipsWhereInventoryItem && owner != null)
+            foreach (InventoryOwnership inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))
+            {
+                if (!Equals(inventoryOwnership.Owner, owner))
+                {
+                    inventoryOwnership.ThroughDate = now;
+                }
+            }
+
+            var ownerInventoryOwnership = @this.InventoryOwnershipsWhereInventoryItem.FirstOrDefault(v => v.Owner.Equals(owner) && v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now));
+            if (ownerInventoryOwnership == null && owner != null)
             {
                 new InventoryOwnershipBuilder(session)
                     .WithInventoryItem(@this)

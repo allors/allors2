@@ -35,6 +35,19 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(this, this.Meta.OwnedBy) && this.ExistSerialisedInventoryItemsWhereSerialisedItem)
+            {
+                foreach (InventoryItem inventoryItem in this.SerialisedInventoryItemsWhereSerialisedItem)
+                {
+                    derivation.AddDependency( inventoryItem, this);
+                }
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

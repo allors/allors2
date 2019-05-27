@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using Allors.Protocol.Remote;
+using Allors.Workspace;
 using Allors.Workspace.Data;
 using Allors.Workspace.Domain;
 using Allors.Workspace.Meta;
@@ -124,9 +125,11 @@ namespace Allors.Excel.InventoryItems
 
             foreach (var inventoryOwnership in InventoryOwnerships)
             {
-                foreach (SerialisedItem serialisedItem in inventoryOwnership.InventoryItem.Part.SerialisedItems)
+                if (inventoryOwnership.InventoryItem is SerialisedInventoryItem)
                 {
                     var row = dataSet.InventorItems.NewInventorItemsRow();
+
+                    var serialisedItem = ((SerialisedInventoryItem) inventoryOwnership.InventoryItem).SerialisedItem;
 
                     row.InternalReference = serialisedItem.ItemNumber;
                     row.EquipmentCategory = "?";
@@ -248,11 +251,22 @@ namespace Allors.Excel.InventoryItems
 
         private async Task Load()
         {
+            var now = DateTime.UtcNow;
+
             var pulls = new[]
             {
                 new Pull
                 {
-                    Extent = new Filter(M.InventoryOwnership.ObjectType),
+                    Extent = new Filter(M.InventoryOwnership.ObjectType)
+                    {
+                        Predicate = new And(
+                            new LessThan{ RoleType = M.InventoryOwnership.FromDate, Value = now},
+                            new Or(
+                                new Not(new Exists(M.InventoryOwnership.ThroughDate)),
+                                new GreaterThan{ RoleType = M.InventoryOwnership.ThroughDate, Value = now }
+                                )
+                        )
+                    },
 
                     Results = new[]
                     {
@@ -262,7 +276,7 @@ namespace Allors.Excel.InventoryItems
                             {
                                 Include = new Tree(M.InventoryOwnership.Class)
                                     .Add(M.InventoryOwnership.Owner)
-                                    .Add(M.InventoryOwnership.InventoryItem, InventoryItemTree)
+                                    .Add(M.InventoryOwnership.InventoryItem, InventoryItemTree),
                             }
                         }
                     }
