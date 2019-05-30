@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 import { Component, Optional, Output, EventEmitter, Self, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { RoleField, ModelField } from '../../../../../angular';

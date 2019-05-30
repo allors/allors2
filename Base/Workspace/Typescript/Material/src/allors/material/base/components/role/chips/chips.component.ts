@@ -6,7 +6,7 @@ import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith }
 import { ISessionObject } from '../../../../../framework';
 
 import { RoleField } from '../../../../../angular';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   // tslint:disable-next-line:component-selector

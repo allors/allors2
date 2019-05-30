@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AllorsMaterialFooterModule } from '../footer.module';
 
 import { AllorsMaterialFooterSaveCancelComponent } from './savecancel.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 export { AllorsMaterialFooterSaveCancelComponent } from './savecancel.component';
 
 @NgModule({

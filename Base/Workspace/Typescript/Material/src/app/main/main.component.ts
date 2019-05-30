@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { filter } from 'rxjs/operators';
 

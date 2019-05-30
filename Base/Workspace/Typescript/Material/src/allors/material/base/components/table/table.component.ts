@@ -3,7 +3,7 @@ import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { TableRow } from './TableRow';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, throwError } from 'rxjs';
 
 import { ObjectType, ISessionObject, IObject } from '../../../../framework';

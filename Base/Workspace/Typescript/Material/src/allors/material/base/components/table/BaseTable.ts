@@ -1,4 +1,6 @@
-import { MatTableDataSource, PageEvent, Sort } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { Action } from '../../../../angular';

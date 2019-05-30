@@ -1,4 +1,4 @@
-import { Sort } from '@angular/material';
+import { Sort } from '@angular/material/sort';
 
 import { Action } from '../../../../angular';
 

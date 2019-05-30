@@ -1,4 +1,4 @@
-import { Sort } from '@angular/material';
+import { Sort } from '@angular/material/sort';
 
 import { RoleType } from '../../../framework';
 import { Sort as AllorsSort } from './../../../framework';
