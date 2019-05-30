@@ -28,9 +28,9 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild(MatAutocomplete) private autoComplete: MatAutocomplete;
+  @ViewChild(MatAutocomplete, { static: false }) private autoComplete: MatAutocomplete;
 
-  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 

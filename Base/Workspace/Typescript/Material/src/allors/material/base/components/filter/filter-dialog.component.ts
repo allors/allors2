@@ -15,7 +15,7 @@ import { filter } from 'rxjs/operators';
 })
 export class AllorsMaterialFilterDialogComponent implements OnInit {
 
-  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('stepper', { static: true }) stepper: MatStepper;
 
   filterService: AllorsFilterService;
 

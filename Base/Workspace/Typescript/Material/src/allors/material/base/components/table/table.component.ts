@@ -16,7 +16,7 @@ export class AllorsMaterialTableComponent implements OnInit {
   @Input()
   public table: BaseTable;
 
-  @ViewChild(MatSort) matSort: MatSort;
+  @ViewChild(MatSort, { static: true }) matSort: MatSort;
 
   ngOnInit(): void {
     this.table.Init(this.matSort);
