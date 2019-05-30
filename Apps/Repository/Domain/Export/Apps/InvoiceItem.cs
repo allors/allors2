@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d79f734d-4434-4710-a7ea-7d6306f3064f")]
     #endregion
-    public partial interface InvoiceItem : Priceable, Deletable
+    public partial interface InvoiceItem : DelegatedAccessControlledObject, Priceable, Deletable
     {
         #region Allors
         [Id("39CB3BE2-2E0D-4124-8241-866860C2BDC0")]
@@ -99,5 +99,15 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Description { get; set; }
+
+        #region Allors
+        [Id("4B19B32A-1B6F-478A-8376-779A32AB6386")]
+        [AssociationId("663FD9FF-E112-40F6-80A0-05AFE613AA3D")]
+        [RoleId("3D14D8FD-E189-4CDC-8A1F-00203B0BE7E0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Synced]
+        Invoice SyncedInvoice { get; set; }
     }
 }

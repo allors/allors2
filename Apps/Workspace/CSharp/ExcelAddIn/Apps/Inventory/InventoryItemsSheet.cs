@@ -129,7 +129,7 @@ namespace Allors.Excel.InventoryItems
                 {
                     var row = dataSet.InventorItems.NewInventorItemsRow();
 
-                    var serialisedItem = ((SerialisedInventoryItem) inventoryOwnership.InventoryItem).SerialisedItem;
+                    var serialisedItem = ((SerialisedInventoryItem)inventoryOwnership.InventoryItem).SerialisedItem;
 
                     row.InternalReference = serialisedItem.ItemNumber;
                     row.EquipmentCategory = "?";
@@ -293,6 +293,22 @@ namespace Allors.Excel.InventoryItems
                             {
                                 Include = new Tree(M.PurchaseInvoice.Class)
                                     .Add(M.PurchaseInvoice.PurchaseOrders)
+                            }
+                        }
+                    }
+                },
+                new Pull
+                {
+                    Extent = new Filter(M.UnifiedGood.ObjectType),
+
+                    Results = new[]
+                    {
+                        new Result
+                        {
+                            Fetch = new Fetch()
+                            {
+                                Include = new Tree(M.UnifiedGood.Class)
+                                    .Add(M.UnifiedGood.ProductCategoriesExpanded)
                             }
                         }
                     }

@@ -36,6 +36,7 @@ namespace Allors.Repository
         public decimal Quantity { get; set; }
 
         public string Description { get; set; }
+        public Invoice SyncedInvoice { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -231,7 +232,6 @@ namespace Allors.Repository
         [Workspace]
         public Facility Facility{ get; set; }
 
-
         #region Allors
 
         [Id("5EFBB240-3B6B-47C4-8696-C7063ACBE074")]
@@ -260,6 +260,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
+        public void DelegateAccess() { }
 
         #endregion
     }

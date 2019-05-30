@@ -47,6 +47,18 @@ namespace Allors.Domain
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
+
+            this.Sync(this.strategy.Session);
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.Sync(this);
+            }
         }
     }
 }

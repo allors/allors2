@@ -24,6 +24,12 @@ namespace Allors.Domain
 
     public partial class WorkEffortInventoryAssignment
     {
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -86,10 +92,8 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
         {
-            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
         }
 
         private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)

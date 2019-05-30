@@ -106,6 +106,8 @@ namespace Allors.Domain
             {
                 this.SalesInvoiceType = new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice;
             }
+
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -544,9 +546,33 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
+            var singleton = this.strategy.Session.GetSingleton();
+
+            this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (this.ExistBilledFrom)
+            {
+                this.AddSecurityToken(this.BilledFrom.LocalAdministratorSecurityToken);
+            }
+
+            this.Sync(this.strategy.Session);
+
             this.ResetPrintDocument();
         }
-        
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+            {
+                invoiceItem.Sync(this);
+            }
+        }
+
         public void AppsSend(SalesInvoiceSend method)
         {
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))

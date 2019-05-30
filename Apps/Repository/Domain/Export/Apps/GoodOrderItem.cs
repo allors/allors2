@@ -54,7 +54,6 @@ namespace Allors.Repository
 
         public int Quantity { get; set; }
 
-
         #region inherited methods
 
 
@@ -72,8 +71,8 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void DelegateAccess() { }
 
         #endregion
-
     }
 }

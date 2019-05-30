@@ -28,6 +28,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedQuote?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedQuote?.DeniedPermissions.ToArray();
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistQuoteItemState)
@@ -107,6 +113,11 @@ namespace Allors.Domain
         public void AppsSubmit(QuoteItemSubmit method)
         {
             this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
+        }
+
+        public void Sync(Quote quote)
+        {
+            this.SyncedQuote = quote;
         }
     }
 }

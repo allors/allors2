@@ -29,6 +29,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedRequest?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedRequest?.DeniedPermissions.ToArray();
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistRequestItemState)
@@ -59,6 +65,11 @@ namespace Allors.Domain
         public void AppsCancel(RequestItemCancel method)
         {
             this.RequestItemState = new RequestItemStates(this.Strategy.Session).Cancelled;
+        }
+
+        public void Sync(Request request)
+        {
+            this.SyncedRequest = request;
         }
     }
 }

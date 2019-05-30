@@ -34,6 +34,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             var session = this.Strategy.Session;
+            var singleton = session.GetSingleton();
 
             session.Prefetch(this.PrefetchPolicy);
 
@@ -101,12 +102,7 @@ namespace Allors.Domain
                 if (!this.ExistProductQuoteApproverUserGroup)
                 {
                     this.ProductQuoteApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
-                                               ?? new UserGroupBuilder(session).Build();
-                }
-
-                if (!groupName.Equals(this.ProductQuoteApproverUserGroup.Name))
-                {
-                    this.ProductQuoteApproverUserGroup.Name = groupName;
+                                               ?? new UserGroupBuilder(session).WithName(groupName).Build();
                 }
 
                 if (!this.ExistProductQuoteApproverAccessControl)
@@ -131,12 +127,7 @@ namespace Allors.Domain
                 if (!this.ExistPurchaseOrderApproverLevel1UserGroup)
                 {
                     this.PurchaseOrderApproverLevel1UserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
-                                                         ?? new UserGroupBuilder(session).Build();
-                }
-
-                if (!groupName.Equals(this.PurchaseOrderApproverLevel1UserGroup.Name))
-                {
-                    this.PurchaseOrderApproverLevel1UserGroup.Name = groupName;
+                                                         ?? new UserGroupBuilder(session).WithName(groupName).Build();
                 }
 
                 if (!this.ExistPurchaseOrderApproverLevel1AccessControl)
@@ -161,12 +152,7 @@ namespace Allors.Domain
                 if (!this.ExistPurchaseOrderApproverLevel2UserGroup)
                 {
                     this.PurchaseOrderApproverLevel2UserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
-                                                                ?? new UserGroupBuilder(session).Build();
-                }
-
-                if (!groupName.Equals(this.PurchaseOrderApproverLevel2UserGroup.Name))
-                {
-                    this.PurchaseOrderApproverLevel2UserGroup.Name = groupName;
+                                                                ?? new UserGroupBuilder(session).WithName(groupName).Build();
                 }
 
                 if (!this.ExistPurchaseOrderApproverLevel2AccessControl)
@@ -191,12 +177,7 @@ namespace Allors.Domain
                 if (!this.ExistPurchaseInvoiceApproverUserGroup)
                 {
                     this.PurchaseInvoiceApproverUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
-                                                                ?? new UserGroupBuilder(session).Build();
-                }
-
-                if (!groupName.Equals(this.PurchaseInvoiceApproverUserGroup.Name))
-                {
-                    this.PurchaseInvoiceApproverUserGroup.Name = groupName;
+                                                                ?? new UserGroupBuilder(session).WithName(groupName).Build();
                 }
 
                 if (!this.ExistPurchaseInvoiceApproverAccessControl)
@@ -221,12 +202,7 @@ namespace Allors.Domain
                 if (!this.ExistBlueCollarWorkerUserGroup)
                 {
                     this.BlueCollarWorkerUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
-                                                         ?? new UserGroupBuilder(session).Build();
-                }
-
-                if (!groupName.Equals(this.BlueCollarWorkerUserGroup.Name))
-                {
-                    this.BlueCollarWorkerUserGroup.Name = groupName;
+                                                         ?? new UserGroupBuilder(session).WithName(groupName).Build();
                 }
 
                 if (!this.ExistBlueCollarWorkerAccessControl)
@@ -241,11 +217,37 @@ namespace Allors.Domain
                     this.BlueCollarWorkerSecurityToken.AddAccessControl(this.BlueCollarWorkerAccessControl);
                 }
 
+                groupName = $"{this.Name} Local administrators";
+
+                if (!this.ExistLocalAdministratorSecurityToken)
+                {
+                    this.LocalAdministratorSecurityToken = new SecurityTokenBuilder(session).Build();
+                }
+
+                if (!this.ExistLocalAdministratorUserGroup)
+                {
+                    this.LocalAdministratorUserGroup = new UserGroups(session).FindBy(M.UserGroup.Name, groupName)
+                                                     ?? new UserGroupBuilder(session).WithName(groupName).Build();
+                }
+
+                if (!this.ExistLocalAdministratorAccessControl)
+                {
+                    var role = new Roles(session).LocalAdministrator;
+
+                    this.LocalAdministratorAccessControl =
+                        new AccessControlBuilder(session).WithRole(role)
+                            .WithSubjectGroup(this.LocalAdministratorUserGroup)
+                            .Build();
+
+                    this.LocalAdministratorSecurityToken.AddAccessControl(this.LocalAdministratorAccessControl);
+                }
+
                 this.ProductQuoteApproverUserGroup.Members = this.ProductQuoteApprovers.ToArray();
                 this.PurchaseOrderApproverLevel1UserGroup.Members = this.PurchaseOrderApproversLevel1.ToArray();
                 this.PurchaseOrderApproverLevel2UserGroup.Members = this.PurchaseOrderApproversLevel2.ToArray();
                 this.PurchaseInvoiceApproverUserGroup.Members = this.PurchaseInvoiceApprovers.ToArray();
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
+                this.LocalAdministratorUserGroup.Members = this.LocalAdministrators.ToArray();
 
                 #endregion
             }

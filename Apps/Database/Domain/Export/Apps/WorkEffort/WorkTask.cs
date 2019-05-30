@@ -40,11 +40,25 @@ namespace Allors.Domain
             {
                 this.TakenBy = internalOrganisations.First();
             }
+
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             this.ResetPrintDocument();
+
+            var singleton = this.strategy.Session.GetSingleton();
+
+            this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (this.ExistTakenBy)
+            {
+                this.AddSecurityToken(this.TakenBy.BlueCollarWorkerSecurityToken);
+            }
         }
 
         public void AppsPrint(PrintablePrint method)

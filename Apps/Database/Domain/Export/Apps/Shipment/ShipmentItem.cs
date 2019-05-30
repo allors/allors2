@@ -20,6 +20,12 @@ namespace Allors.Domain
 {
     public partial class ShipmentItem
     {
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedShipment?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedShipment?.DeniedPermissions.ToArray();
+        }
+
         public void AppsDelete(DeletableDelete method)
         {
             if (this.ExistItemIssuancesWhereShipmentItem)
@@ -67,6 +73,11 @@ namespace Allors.Domain
                     this.QuantityShipped += packagingContent.Quantity;
                 }
             }
+        }
+
+        public void Sync(Shipment shipment)
+        {
+            this.SyncedShipment = shipment;
         }
     }
 }

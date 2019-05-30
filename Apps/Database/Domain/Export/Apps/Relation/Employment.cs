@@ -63,13 +63,13 @@ namespace Allors.Domain
                 if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
                     this.Employer.AddActiveEmployee(this.Employee);
-                    new UserGroups(this.Strategy.Session).Creators.AddMember(this.Employee);
+                    new UserGroups(this.Strategy.Session).Employees.AddMember(this.Employee);
                 }
 
                 if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
                     this.Employer.RemoveActiveEmployee(this.Employee);
-                    new UserGroups(this.Strategy.Session).Creators.RemoveMember(this.Employee);
+                    new UserGroups(this.Strategy.Session).Employees.RemoveMember(this.Employee);
                 }
             }
 

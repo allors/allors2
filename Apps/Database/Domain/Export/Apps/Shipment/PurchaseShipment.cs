@@ -109,6 +109,18 @@ namespace Allors.Domain
             {
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Delivered;
             }
+
+            this.Sync(this.strategy.Session);
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.Sync(this);
+            }
         }
     }
 }

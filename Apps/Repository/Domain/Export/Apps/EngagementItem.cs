@@ -7,10 +7,8 @@ namespace Allors.Repository
     #region Allors
     [Id("aa3bf631-5aa5-48ab-a249-ef61f640fb72")]
     #endregion
-	public partial interface EngagementItem : AccessControlledObject 
+	public partial interface EngagementItem : DelegatedAccessControlledObject 
     {
-
-
         #region Allors
         [Id("141333b6-2cc9-487e-acc1-86d314f2b30a")]
         [AssociationId("17fbbe0c-7d74-46ba-b5dd-a115536dd1a6")]
@@ -20,7 +18,6 @@ namespace Allors.Repository
         [Indexed]
 
         QuoteItem QuoteItem { get; set; }
-
 
         #region Allors
         [Id("2a187dcd-5004-4722-a0ec-e571cd5b5bc6")]
@@ -128,6 +125,5 @@ namespace Allors.Repository
         [Indexed]
 
         ProductFeature ProductFeature { get; set; }
-
     }
 }

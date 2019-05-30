@@ -28,6 +28,8 @@ namespace Allors.Domain
             {
                 @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
             }
+
+            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
@@ -54,6 +56,18 @@ namespace Allors.Domain
             foreach (QuoteItem item in @this.QuoteItems)
             {
                 @this.Price += item.LineTotal;
+            }
+
+            var singleton = @this.Strategy.Session.GetSingleton();
+
+            @this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (@this.ExistIssuer)
+            {
+                @this.AddSecurityToken(@this.Issuer.LocalAdministratorSecurityToken);
             }
         }
 

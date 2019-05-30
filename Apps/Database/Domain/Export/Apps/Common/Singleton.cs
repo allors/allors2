@@ -48,10 +48,14 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
+            var session = this.Strategy.Session;
+
             if (!this.ExistLogoImage)
             {
                 this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
             }
+
+            this.SalesAccountManagerUserGroup.Members = this.SalesAccountManagers.ToArray();
         }
 
         private byte[] GetResourceBytes(string name)

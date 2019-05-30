@@ -43,10 +43,21 @@ namespace Allors.Domain
                 this.ShipToAddress = this.ShipToParty.ShippingAddress;
             }
 
-
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
             {
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
+            }
+
+            this.Sync(this.strategy.Session);
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.Sync(this);
             }
         }
     }

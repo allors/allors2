@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("e41be1b2-715b-4bc0-b095-ac23d9950ee4")]
     #endregion
-    public partial class AccountingTransactionDetail : AccessControlledObject 
+    public partial class AccountingTransactionDetail : DelegatedAccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -53,21 +53,18 @@ namespace Allors.Repository
         
         #region inherited methods
 
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
 
-        public void OnInit()
-        {
-            
-        }
+        public void OnInit() { }
 
         public void OnPreDerive(){}
 
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void DelegateAccess() { }
 
         #endregion
     }

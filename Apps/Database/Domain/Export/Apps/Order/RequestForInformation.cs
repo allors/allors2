@@ -31,7 +31,17 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
+            this.Sync(this.Strategy.Session);
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (RequestItem requestItem in this.RequestItems)
+            {
+                requestItem.Sync(this);
+            }
         }
     }
 }

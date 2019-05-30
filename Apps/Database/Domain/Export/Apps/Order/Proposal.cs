@@ -25,5 +25,20 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            this.Sync(this.Strategy.Session);
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (QuoteItem quoteItem in this.QuoteItems)
+            {
+                quoteItem.Sync(this);
+            }
+        }
     }
 }

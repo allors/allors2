@@ -138,6 +138,8 @@ namespace Allors.Domain
             {
                 this.OrderNumber = this.Store.DeriveNextSalesOrderNumber(this.OrderDate.Year);
             }
+
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -526,7 +528,31 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
+            var singleton = this.strategy.Session.GetSingleton();
+
+            this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (this.ExistTakenBy)
+            {
+                this.AddSecurityToken(this.TakenBy.LocalAdministratorSecurityToken);
+            }
+
+            this.Sync(this.strategy.Session);
+
             this.ResetPrintDocument();
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (SalesOrderItem orderItem in this.SalesOrderItems)
+            {
+                orderItem.Sync(this);
+            }
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

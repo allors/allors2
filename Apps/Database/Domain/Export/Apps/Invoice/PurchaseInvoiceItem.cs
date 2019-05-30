@@ -28,6 +28,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
+        }
+
         public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
@@ -149,6 +155,11 @@ namespace Allors.Domain
         public void AppsReject(PurchaseInvoiceItemReject method)
         {
             this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
+        }
+
+        public void Sync(Invoice invoice)
+        {
+            this.SyncedInvoice = invoice;
         }
 
         private SurchargeAdjustment GetSurchargeAdjustment()

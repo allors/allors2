@@ -771,6 +771,46 @@ namespace Allors.Repository
         UserGroup BlueCollarWorkerUserGroup { get; set; }
 
         #region Allors
+        [Id("C0484680-5F19-418E-A9D3-A12A94D47B87")]
+        [AssociationId("2BD6B582-D077-4B05-A2C5-FD0228E0F2D3")]
+        [RoleId("09BBD339-AD0D-4F3A-922D-502D6C64976B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        Person[] LocalAdministrators { get; set; }
+
+        #region Allors
+        [Id("8C1AF4A4-19EC-441F-A28B-33C301173C87")]
+        [AssociationId("D413278D-6DFC-4AE4-8C8D-7168E561664C")]
+        [RoleId("8EEA4048-9430-4D22-84E7-97261FFF56B9")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        SecurityToken LocalAdministratorSecurityToken { get; set; }
+
+        #region Allors
+        [Id("FF4343D5-1D2F-4FD0-8A98-50A433013A25")]
+        [AssociationId("26AB333F-5012-48B3-B7C6-EEA4F4123CC4")]
+        [RoleId("E3A36FA7-9D83-4F0D-A442-48A5D0D0177F")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Derived]
+        AccessControl LocalAdministratorAccessControl { get; set; }
+
+        #region Allors
+        [Id("3EA459D1-54D0-49E4-B4FF-E3AB6C2A0A3C")]
+        [AssociationId("20CF98CD-3606-4839-9EDD-B80DDD12276A")]
+        [RoleId("63814BD8-1A7F-40E2-8F2F-CFC2C1ABF8A0")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Indexed]
+        UserGroup LocalAdministratorUserGroup { get; set; }
+
+        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();

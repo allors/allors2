@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b397c075-215a-4d5b-b962-ea48540a64fa")]
     #endregion
-    public partial class BudgetItem : AccessControlledObject 
+    public partial class BudgetItem : DelegatedAccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -52,7 +52,6 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Amount { get; set; }
 
-
         #region inherited methods
 
 
@@ -70,8 +69,8 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void DelegateAccess() { }
 
         #endregion
-
     }
 }

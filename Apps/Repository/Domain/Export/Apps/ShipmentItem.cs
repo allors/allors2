@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d35c33c3-ca15-4b70-b20d-c51ed068626a")]
     #endregion
-    public partial class ShipmentItem : Deletable, AccessControlledObject 
+    public partial class ShipmentItem : Deletable, DelegatedAccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -118,6 +118,16 @@ namespace Allors.Repository
         [Workspace]
         public Good Good { get; set; }
 
+        #region Allors
+        [Id("312FC32F-3EB9-492A-AC69-AEC608A48AF4")]
+        [AssociationId("C0F73EC3-1D93-4C4F-9389-92D6199ED06E")]
+        [RoleId("836ABEF7-F23D-485C-B74B-29D60393D5DF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Synced]
+        public Shipment SyncedShipment { get; set; }
+
         #region inherited methods
 
 
@@ -137,6 +147,7 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Delete(){}
+        public void DelegateAccess() { }
 
         #endregion
     }

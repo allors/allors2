@@ -80,7 +80,20 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             this.DeriveWorkflow();
+
+            this.Sync(this.Strategy.Session);
+
             this.ResetPrintDocument();
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (QuoteItem quoteItem in this.QuoteItems)
+            {
+                quoteItem.Sync(this);
+            }
         }
 
         private void DeriveWorkflow()

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9ffd634a-27b9-46a5-bf77-4ae25a9b9ebf")]
     #endregion
-    public partial class JournalEntryDetail : AccessControlledObject 
+    public partial class JournalEntryDetail : DelegatedAccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -59,6 +59,7 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void DelegateAccess() { }
 
         #endregion
 

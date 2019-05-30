@@ -25,6 +25,11 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
+        public static void AppsOnBuild(this Request @this, ObjectOnBuild method)
+        {
+            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
+        }
+
         public static void AppsOnDerive(this Request @this, ObjectOnDerive method)
         {
             if (!@this.ExistRecipient)
@@ -43,6 +48,18 @@ namespace Allors.Domain
             }
 
             @this.DeriveInitialObjectState();
+
+            var singleton = @this.Strategy.Session.GetSingleton();
+
+            @this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (@this.ExistRecipient)
+            {
+                @this.AddSecurityToken(@this.Recipient.LocalAdministratorSecurityToken);
+            }
         }
 
         public static void DeriveInitialObjectState(this Request @this)

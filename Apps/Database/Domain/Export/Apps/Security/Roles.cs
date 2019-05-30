@@ -29,6 +29,9 @@ namespace Allors.Domain
         public static readonly Guid PurchaseOrderApproverLevel2Id = new Guid("2E5A295D-36CB-498C-A6B4-7E2DCA14B030");
         public static readonly Guid PurchaseInvoiceApproverId = new Guid("79F13FC8-7E8A-4D01-9AC1-089807F97640");
         public static readonly Guid BlueCollarWorkerId = new Guid("3C2D223E-6056-447A-A3F9-AED2413D717D");
+        public static readonly Guid SalesAccountManagerId = new Guid("213B1C2C-742A-4F74-9AE2-9587266D9EB9");
+        public static readonly Guid LocalAdministratorId = new Guid("1F8DCC58-5647-4969-ABF2-C4A380880995");
+        public static readonly Guid EmployeeId = new Guid("A084F8C0-A130-4D2F-8404-8A11D3D93F14");
 
         public Role ProductQuoteApprover => this.Sticky[ProductQuoteApproverId];
 
@@ -40,6 +43,12 @@ namespace Allors.Domain
 
         public Role BlueCollarWorker => this.Sticky[BlueCollarWorkerId];
 
+        public Role SalesAccountManager => this.Sticky[SalesAccountManagerId];
+
+        public Role LocalAdministrator => this.Sticky[LocalAdministratorId];
+
+        public Role Employee => this.Sticky[EmployeeId];
+
         protected override void AppsSetup(Setup config)
         {
             base.AppsSetup(config);
@@ -49,6 +58,9 @@ namespace Allors.Domain
             new RoleBuilder(this.Session).WithName("PurchaseOrder approver level 2").WithUniqueId(PurchaseOrderApproverLevel2Id).Build();
             new RoleBuilder(this.Session).WithName("PurchaseInvoice approver").WithUniqueId(PurchaseInvoiceApproverId).Build();
             new RoleBuilder(this.Session).WithName("Blue-collar worker").WithUniqueId(BlueCollarWorkerId).Build();
+            new RoleBuilder(this.Session).WithName("Sales Account Manager").WithUniqueId(SalesAccountManagerId).Build();
+            new RoleBuilder(this.Session).WithName("Local Administrator").WithUniqueId(LocalAdministratorId).Build();
+            new RoleBuilder(this.Session).WithName("Employee").WithUniqueId(EmployeeId).Build();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Allors.Repository
         public SalesTerm[] SalesTerms { get; set; }
         public string ShippingInstruction { get; set; }
         public OrderItem[] Associations { get; set; }
+        public Order SyncedOrder { get; set; }
         public string Message { get; set; }
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -494,6 +495,7 @@ namespace Allors.Repository
         public void Approve(){}
 
         public void Delete(){}
+        public void DelegateAccess() { }
 
         #endregion
 

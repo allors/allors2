@@ -21,6 +21,12 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
         #endregion
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+        }
+
         public bool IsValid => !(this.SalesOrderItemState.Cancelled || this.SalesOrderItemState.Rejected);
 
         public Part Part
@@ -373,6 +379,11 @@ namespace Allors.Domain
         public void AppsContinue(SalesOrderItemContinue method)
         {
             this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
+        }
+
+        public void Sync(Order order)
+        {
+            this.SyncedOrder = order;
         }
 
         internal void DecreasePendingShipmentQuantity(decimal diff)

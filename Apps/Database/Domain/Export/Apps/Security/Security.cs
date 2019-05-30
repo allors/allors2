@@ -36,6 +36,11 @@ namespace Allors.Domain
             this.GrantExcept(Roles.BlueCollarWorkerId, objectType, excepts, operations);
         }
 
+        public void GrantExceptEmployee(ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations)
+        {
+            this.GrantExcept(Roles.EmployeeId, objectType, excepts, operations);
+        }
+
         public void GrantProductQuoteApprover(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.ProductQuoteApproverId, objectType, operations);
@@ -49,6 +54,16 @@ namespace Allors.Domain
         public void GrantPurchaseOrderApproverLevel2(ObjectType objectType, params Operations[] operations)
         {
             this.Grant(Roles.PurchaseOrderApproverLevel2Id, objectType, operations);
+        }
+
+        public void GrantLocalAdministrator(ObjectType objectType, params Operations[] operations)
+        {
+            this.Grant(Roles.LocalAdministratorId, objectType, operations);
+        }
+
+        public void GrantSalesAccountManager(ObjectType objectType, params Operations[] operations)
+        {
+            this.Grant(Roles.SalesAccountManagerId, objectType, operations);
         }
 
         private void AppsOnPreSetup()

@@ -76,6 +76,8 @@ namespace Allors.Domain
             {
                 this.EntryDate = this.strategy.Session.Now();
             }
+
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -206,9 +208,33 @@ namespace Allors.Domain
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
 
-
             this.DeriveWorkflow();
+
+            var singleton = this.strategy.Session.GetSingleton();
+
+            this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (this.ExistBilledTo)
+            {
+                this.AddSecurityToken(this.BilledTo.LocalAdministratorSecurityToken);
+            }
+
+            this.Sync(this.strategy.Session);
+
             this.ResetPrintDocument();
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
+            {
+                invoiceItem.Sync(this);
+            }
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

@@ -16,6 +16,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
+        }
+
         public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice || this.SalesInvoiceItemState.IsWrittenOff);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
@@ -183,6 +189,11 @@ namespace Allors.Domain
                 method.Result = this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
                     || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
             }
+        }
+
+        public void Sync(Invoice invoice)
+        {
+            this.SyncedInvoice = invoice;
         }
     }
 }

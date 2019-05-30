@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8ba98e1b-1d4d-46b1-bf27-bb2bf53501fd")]
     #endregion
-    public partial interface AgreementItem : AccessControlledObject 
+    public partial interface AgreementItem : DelegatedAccessControlledObject 
     {
         #region Allors
         [Id("3ad6eaac-8cc3-4738-9a5b-617386e296c8")]

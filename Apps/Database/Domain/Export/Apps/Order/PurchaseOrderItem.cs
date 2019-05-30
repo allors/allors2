@@ -33,6 +33,12 @@ namespace Allors.Domain
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
         #endregion
 
+        public void AppsDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+        }
+
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
 
         public string SupplierReference
@@ -341,6 +347,11 @@ namespace Allors.Domain
                     inventoryItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
+        }
+
+        public void Sync(Order order)
+        {
+            this.SyncedOrder = order;
         }
     }
 }

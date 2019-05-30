@@ -75,6 +75,11 @@ namespace Allors.Domain
             }
         }
 
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
+        }
+
         public void AppsOnInit(ObjectOnInit method)
         {
             if (!this.ExistPurchaseOrderState)
@@ -290,7 +295,32 @@ namespace Allors.Domain
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
 
             this.DeriveWorkflow();
+
+            var singleton = this.strategy.Session.GetSingleton();
+
+            this.SecurityTokens = new[]
+            {
+                singleton.DefaultSecurityToken
+            };
+
+            if (this.ExistOrderedBy)
+            {
+                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
+            }
+
+            this.Sync(this.Strategy.Session);
+
             this.ResetPrintDocument();
+        }
+
+        private void Sync(ISession session)
+        {
+            //session.Prefetch(this.SyncPrefetch, this);
+
+            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
+            {
+                orderItem.Sync(this);
+            }
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

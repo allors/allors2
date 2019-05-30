@@ -114,6 +114,10 @@ namespace Allors.Repository
         public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
         public AccessControl BlueCollarWorkerAccessControl { get; set; }
         public UserGroup BlueCollarWorkerUserGroup { get; set; }
+        public Person[] LocalAdministrators { get; set; }
+        public SecurityToken LocalAdministratorSecurityToken { get; set; }
+        public AccessControl LocalAdministratorAccessControl { get; set; }
+        public UserGroup LocalAdministratorUserGroup { get; set; }
 
         public GeneralLedgerAccount GlAccount { get; set; }
 

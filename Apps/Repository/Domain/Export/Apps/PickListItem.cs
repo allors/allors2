@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7fec090e-3d4a-4ec7-895f-4b30d01f59bb")]
     #endregion
-    public partial class PickListItem : AccessControlledObject, Deletable 
+    public partial class PickListItem : DelegatedAccessControlledObject, Deletable 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -65,6 +65,7 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Delete(){}
+        public void DelegateAccess() { }
         #endregion
     }
 }

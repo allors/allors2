@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("daf83fcc-832e-4d5e-ba71-5a08f42355db")]
     #endregion
-    public partial class RequestItem : AccessControlledObject, Commentable, Transitional, Versioned, Deletable
+    public partial class RequestItem : DelegatedAccessControlledObject, Commentable, Transitional, Versioned, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -203,6 +203,16 @@ namespace Allors.Repository
         [Workspace]
         public DateTime RequiredByDate { get; set; }
 
+        #region Allors
+        [Id("A6AF9B26-D056-4CD4-BAFA-357EE754AB9A")]
+        [AssociationId("F7F54E9D-EBED-4003-A3E4-329F108C159B")]
+        [RoleId("AD7B1789-7BF2-404B-990A-D715559610F8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Synced]
+        public Request SyncedRequest { get; set; }
+
         #region inherited methods
 
 
@@ -222,6 +232,7 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         public void Delete() {}
+        public void DelegateAccess() { }
 
         #endregion
 

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("01fc58a0-89b8-4dc0-97f9-5f628b9c9577")]
     #endregion
-    public partial class QuoteItem : Commentable, AccessControlledObject, Transitional, Versioned, Deletable
+    public partial class QuoteItem : Commentable, DelegatedAccessControlledObject, Transitional, Versioned, Deletable
     {
         #region inherited properties
 
@@ -238,6 +238,16 @@ namespace Allors.Repository
         public RequestItem RequestItem { get; set; }
 
         #region Allors
+        [Id("06C27EDA-0DF1-4318-BC57-D62F8BF32B0C")]
+        [AssociationId("48040485-66EC-4599-96B0-6685783245FF")]
+        [RoleId("E5A7A323-B3F2-449E-A276-C28656EE6F0D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Synced]
+        public Quote SyncedQuote { get; set; }
+
+        #region Allors
         [Id("F8746889-097A-4C4E-BB55-511F0A8E3B41")]
         [AssociationId("9704CE4F-2FC9-4F11-A612-90A65D2E93C4")]
         [RoleId("F5A70A81-ADBE-4BFB-A3E0-045E1F7EB4E2")]
@@ -265,6 +275,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
+        public void DelegateAccess() { }
 
         #endregion
 
