@@ -4,13 +4,17 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "out-tsc",
-    "sourceMap": true,    
+    "sourceMap": true,
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
   "exclude": []
 }

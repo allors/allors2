@@ -17,6 +17,8 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "preserveSymlinks": true,
+    "resolveJsonModule": true
   }
 }

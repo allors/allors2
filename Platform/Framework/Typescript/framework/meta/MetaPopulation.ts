@@ -69,7 +69,7 @@ export class MetaPopulation {
     // Implemented interfaces
     dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
       const metaObjectType = this.metaObjectById[dataObjectType.id] as ObjectType;
-      metaObjectType.interfaces = dataObjectType.interfaces.map((v) => this.objectTypeByName[v]);
+      metaObjectType.interfaces = dataObjectType.interfaces ? dataObjectType.interfaces.map((v) => this.objectTypeByName[v]) : [];
     });
 
     // RelationTypes
@@ -94,7 +94,7 @@ export class MetaPopulation {
       roleType.isOne = dataRoleType.isOne;
       roleType.isRequired = dataRoleType.isRequired;
 
-      dataRelationType.concreteRoleTypes.forEach((dataConcreteRoleType) => {
+      dataRelationType.concreteRoleTypes && dataRelationType.concreteRoleTypes.forEach((dataConcreteRoleType) => {
         const concreteRoleType = new ConcreteRoleType(this);
         concreteRoleType.relationType = relationType;
         concreteRoleType.roleType = roleType;

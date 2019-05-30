@@ -11,7 +11,6 @@ import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CurrencyIndex } from '@angular/common/src/i18n/locale_data';
 
 @Component({
   templateUrl: './person-create.component.html',
