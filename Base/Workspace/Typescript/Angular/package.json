@@ -1,6 +1,6 @@
 {
   "name": "angular",
-  "version": "2.0.0",
+  "version": "0.9.0",
   "scripts": {
     "postinstall": "node ./postinstall.js",
     "ng": "ng",
@@ -8,8 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "tc:test": "ng test --watch=false --reporters=teamcity"
+    "e2e": "ng e2e",
+    "lint-fix": "tslint --fix --project ./tsconfig.json"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +21,8 @@
     "@angular/platform-browser": "~8.0.0",
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
-    "core-js": "^2.5.4",
+    "rxjs": "~6.4.0",
     "moment": "^2.24.0",
-    "rxjs": "~6.5.2",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
@@ -33,22 +32,20 @@
     "@angular/compiler-cli": "~8.0.0",
     "@angular/language-service": "~8.0.0",
     "@types/node": "~8.9.4",
-    "@types/jasmine": "~2.8.8",
+    "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "codelyzer": "^5.0.1",
-    "jasmine-core": "~2.99.1",
-    "jasmine-expect": "^4.0.1",
+    "codelyzer": "^5.0.0",
+    "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.0.0",
+    "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-teamcity-reporter": "^1.1.0",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
     "lnk": "^1.1.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tslint": "~5.11.0",
-    "typescript": "~3.4.5"
+    "tslint": "~5.15.0",
+    "typescript": "~3.4.3"
   }
 }
