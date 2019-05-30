@@ -12,7 +12,7 @@ import { And, Like, PullRequest, Equals } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
 import { ɵangular_packages_forms_forms_x } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Row extends TableRow {
   object: PurchaseInvoice;

@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSidenav, MatExpansionPanelDescription } from '@angular/material';
+import { MatExpansionPanelDescription } from '@angular/material/expansion';
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';

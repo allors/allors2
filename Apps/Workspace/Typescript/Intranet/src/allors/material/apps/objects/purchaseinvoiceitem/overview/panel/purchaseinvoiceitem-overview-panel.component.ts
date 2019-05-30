@@ -4,7 +4,7 @@ import { PurchaseInvoiceItem, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
 

@@ -2,7 +2,7 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, RefreshService, Invoked, Action } from '../../../../../../angular';
 import { WorkTask, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService } from '../../../../../../../allors/material';
 import { Equals, And, ContainedIn, Filter } from '../../../../../../../allors/framework';
 

@@ -13,7 +13,7 @@ import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { VatRegime, Currency } from 'src/allors/domain/generated';
 
 @Component({

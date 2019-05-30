@@ -2,7 +2,7 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
 import { ProductQuote, SalesOrder, RequestForQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService } from '../../../../../../material';
 
 @Component({

@@ -5,7 +5,7 @@ import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
 import * as moment from 'moment';
 
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
 

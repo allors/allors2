@@ -9,7 +9,8 @@ import { ObjectData } from '../../../../base/services/object';
 import { PrintService } from '../../../services/actions/print/print.service';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveService } from '../../../../../../allors/material';
 
 @Component({
