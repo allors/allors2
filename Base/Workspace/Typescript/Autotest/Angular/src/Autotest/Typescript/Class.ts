@@ -17,7 +17,7 @@ export class Class {
         const typeChecker = program.getTypeChecker();
 
         this.name = classDeclaration.name.text;
-        this.decorators = classDeclaration.decorators.map((v) => v.getText());
+        this.decorators = classDeclaration.decorators ? classDeclaration.decorators.map((v) => v.getText()) : [];
 
         const flattenedMembers = new Array<ClassElement>();
         this.flattenMembers(flattenedMembers, classDeclaration, typeChecker);
