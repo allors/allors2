@@ -235,6 +235,14 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           }
         }
       ),
+      pull.Part(
+        {
+          object: part,
+          include: {
+            InventoryItemKind: x,
+          }
+        }
+      ),
     ];
 
     this.allors.context
