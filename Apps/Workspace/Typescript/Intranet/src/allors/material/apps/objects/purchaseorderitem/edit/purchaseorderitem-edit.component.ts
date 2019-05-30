@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription, combineLatest } from 'rxjs';
 

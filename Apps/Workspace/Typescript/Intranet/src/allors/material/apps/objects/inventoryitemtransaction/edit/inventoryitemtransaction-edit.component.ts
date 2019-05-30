@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, Saved, FetcherService, TestScope } from '../../../../../angular';

@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AllorsFilterService } from '../../../../angular/base/filter';
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
@@ -12,7 +12,7 @@ import { FilterField } from '../../../../angular/base/filter/FilterField';
 })
 export class AllorsMaterialFilterComponent {
 
-  @ViewChild('toolBar') toolBar: ElementRef;
+  @ViewChild('toolBar', { static: true }) toolBar: ElementRef;
 
   constructor(
     public filterService: AllorsFilterService,

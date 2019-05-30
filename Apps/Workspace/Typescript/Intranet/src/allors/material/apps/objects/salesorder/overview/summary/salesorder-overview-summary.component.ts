@@ -2,7 +2,7 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
 import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
 import { PrintService } from '../../../../../../material';
 

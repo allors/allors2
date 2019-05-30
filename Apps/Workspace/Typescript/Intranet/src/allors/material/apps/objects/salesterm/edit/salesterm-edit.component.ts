@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';

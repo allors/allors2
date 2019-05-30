@@ -11,7 +11,7 @@ import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesI
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/base/services/actions';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Row extends TableRow {
   object: SalesInvoice;

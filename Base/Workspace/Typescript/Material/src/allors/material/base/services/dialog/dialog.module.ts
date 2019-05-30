@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AllorsMaterialDialogService } from './dialog.service';
 export { AllorsMaterialDialogService } from './dialog.service';

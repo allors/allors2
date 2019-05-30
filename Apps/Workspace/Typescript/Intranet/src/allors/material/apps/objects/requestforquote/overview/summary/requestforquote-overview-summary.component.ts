@@ -2,7 +2,7 @@ import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, RefreshService, Invoked} from '../../../../../../angular';
 import { RequestForQuote, ProductQuote, Quote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   // tslint:disable-next-line:component-selector

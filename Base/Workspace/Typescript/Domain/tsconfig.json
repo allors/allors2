@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "outDir": "dist/out-tsc",
     "sourceMap": true,
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": []

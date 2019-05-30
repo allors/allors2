@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription, combineLatest } from 'rxjs';
 
@@ -8,7 +9,6 @@ import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder, Purch
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData } from '../../../../../material/base/services/object';
-import { increaseElementDepthCount } from '@angular/core/src/render3/state';
 import { SaveService } from '../../../../../../allors/material';
 import { switchMap, map } from 'rxjs/operators';
 

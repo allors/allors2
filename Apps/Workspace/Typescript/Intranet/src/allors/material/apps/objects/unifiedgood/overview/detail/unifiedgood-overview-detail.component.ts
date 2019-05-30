@@ -8,7 +8,7 @@ import { ContextService, NavigationService, PanelService, RefreshService, MetaSe
 import { Locale, Organisation, UnifiedGood, ProductCategory, ProductType, Brand, Model, VatRate, ProductIdentificationType, ProductNumber, Facility, InventoryItemKind, SupplierOffering, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveService } from '../../../../../../../allors/material';
 
 @Component({

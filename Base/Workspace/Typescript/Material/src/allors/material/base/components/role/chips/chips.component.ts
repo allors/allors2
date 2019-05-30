@@ -6,7 +6,7 @@ import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith }
 import { ISessionObject } from '../../../../../framework';
 
 import { RoleField } from '../../../../../angular';
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -28,9 +28,9 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, O
   public filteredOptions: Observable<ISessionObject[]>;
 
   public searchControl: FormControl = new FormControl();
-  @ViewChild('searchInput') searchInput: ElementRef;
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
-  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);

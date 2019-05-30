@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { MatSnackBar, MatTableDataSource, MatSort, MatDialog, Sort, PageEvent } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
@@ -89,7 +93,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, []),
+        }, [, , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

@@ -7,7 +7,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './producttype-edit.component.html',

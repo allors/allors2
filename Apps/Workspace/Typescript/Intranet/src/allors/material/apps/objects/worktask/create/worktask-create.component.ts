@@ -10,7 +10,7 @@ import { SaveService, FiltersService } from '../../../../../material';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './worktask-create.component.html',

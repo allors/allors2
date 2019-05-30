@@ -10,7 +10,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta, FetchService } from '../../../../../meta';
 import { switchMap } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './requestforquote-create.component.html',

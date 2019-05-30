@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/c
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ContextService, NavigationService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';

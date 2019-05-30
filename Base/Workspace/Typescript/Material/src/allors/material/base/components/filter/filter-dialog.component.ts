@@ -1,4 +1,6 @@
-import { MatDialogRef, MAT_DIALOG_DATA, MatStepper, MatChipListChange } from '@angular/material';
+import { MatChipListChange } from '@angular/material/chips';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
 import { Component, Inject, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -15,7 +17,7 @@ import { filter } from 'rxjs/operators';
 })
 export class AllorsMaterialFilterDialogComponent implements OnInit {
 
-  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('stepper', { static: true }) stepper: MatStepper;
 
   filterService: AllorsFilterService;
 

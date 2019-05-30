@@ -1,5 +1,5 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, Invoked, ActionTarget, InternalOrganisationId } from '../../../../../../angular';
 import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, PurchaseInvoiceItem, Organisation, OrderItemBilling } from '../../../../../../domain';

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { filter } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class MainComponent implements OnInit, OnDestroy {
   private openSubscription;
   private closeSubscription;
 
-  @ViewChild('drawer') private sidenav: MatSidenav;
+  @ViewChild('drawer', { static: true }) private sidenav: MatSidenav;
 
   constructor(
     @Self() private allors: ContextService,

@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDatepicker, MatDatepickerModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 
 import { AllorsMaterialDialogComponent } from './dialog.component';

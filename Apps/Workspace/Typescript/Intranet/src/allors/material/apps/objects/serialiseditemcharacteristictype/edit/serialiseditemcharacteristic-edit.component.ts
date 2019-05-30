@@ -8,7 +8,7 @@ import { IUnitOfMeasure, SerialisedItemCharacteristicType, Singleton, TimeFreque
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './serialiseditemcharacteristic-edit.component.html',

@@ -10,7 +10,7 @@ import { ContextService, SearchFactory, MetaService, RefreshService, FetcherServ
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './serialiseditem-create.component.html',

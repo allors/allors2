@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AllorsMaterialDialogModule } from '../../../components/dialog';
 
 import { EditService } from './edit.service';
