@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
@@ -19,7 +20,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
-
 import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
@@ -55,6 +55,7 @@ export { ReceiptEditComponent } from './receipt-edit.component';
     FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDatepickerModule,
     MatDividerModule,
     MatFormFieldModule,

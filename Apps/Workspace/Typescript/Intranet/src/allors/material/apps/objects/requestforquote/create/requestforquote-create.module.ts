@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,7 +47,6 @@ export { RequestForQuoteCreateComponent } from './requestforquote-create.compone
     PartyInlineModule,
     PersonInlineModule,
     ContactMechanismInlineModule,
-
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
@@ -62,6 +62,7 @@ export { RequestForQuoteCreateComponent } from './requestforquote-create.compone
     FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
