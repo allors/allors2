@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
     <div class="container-fluid">
 
       <div class="row">
@@ -61,7 +61,7 @@
         <a-mat-select class="col-md" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToFacility" [options]="facilities" display="Name"></a-mat-select>
       </div>
     </div>
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>

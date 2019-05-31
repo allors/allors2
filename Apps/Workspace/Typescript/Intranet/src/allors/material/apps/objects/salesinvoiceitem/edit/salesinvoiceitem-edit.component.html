@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
 
     <div class="row" *ngIf="!invoiceItem.isNew">
       <a-mat-static class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemState" display="Name"
@@ -30,7 +30,7 @@
           <a-mat-static class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
         </div>
       </div>
-  
+
       <div class="row">
         <a-mat-static *ngIf="invoice" class="col-md" [object]="invoice.VatRegime?.VatRate" [roleType]="m.VatRate.Rate"
           display="Rate" label="VAT % from invoice"></a-mat-static>
@@ -56,7 +56,7 @@
         <a-mat-textarea class="col-md-12" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InternalComment"></a-mat-textarea>
       </div>
     </div>
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>

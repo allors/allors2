@@ -15,7 +15,8 @@ export class SaveService {
 
       if (error instanceof ResponseError) {
         this.dialog.open(AllorsMaterialErrorDialogComponent, {
-          data: { error }
+          data: { error },
+          maxHeight: '90vh'
         });
       } else {
         throw error;

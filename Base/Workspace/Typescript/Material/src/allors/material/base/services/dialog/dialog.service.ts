@@ -21,7 +21,7 @@ export class AllorsMaterialDialogService {
 
     data.config.title = data.config.title || 'Alert';
 
-    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data, maxHeight: '90vh' });
     return dialogRef.afterClosed();
   }
 
@@ -34,7 +34,7 @@ export class AllorsMaterialDialogService {
 
     data.config.title = data.config.title || 'Confirm';
 
-    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data, maxHeight: '90vh' });
     return dialogRef.afterClosed();
   }
 
@@ -47,7 +47,7 @@ export class AllorsMaterialDialogService {
 
     data.config.title = data.config.title || 'Prompt';
 
-    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data, maxHeight: '90vh' });
     return dialogRef.afterClosed();
   }
 

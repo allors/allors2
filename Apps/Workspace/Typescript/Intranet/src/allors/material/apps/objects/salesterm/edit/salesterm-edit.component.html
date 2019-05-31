@@ -2,13 +2,14 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
 
     <div class="row">
       <a-mat-select class="col-md" [object]="object" [roleType]="m.SalesTerm.TermType" [options]="termTypes" display="Name"></a-mat-select>
       <a-mat-input class="col-md" [object]="object" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
     </div>
-  </div>
+
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>

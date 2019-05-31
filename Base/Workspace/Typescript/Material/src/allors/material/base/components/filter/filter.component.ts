@@ -48,7 +48,8 @@ export class AllorsMaterialFilterComponent {
       position: {
         'top': `${top}px`,
         'left': `${left}px`
-      }
+      },
+      maxHeight: '90vh'
     });
   }
 }

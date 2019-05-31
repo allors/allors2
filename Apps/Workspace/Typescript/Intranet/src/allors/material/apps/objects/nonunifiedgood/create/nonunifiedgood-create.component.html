@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
     <div class="container-fluid">
       <div class="row pt-3">
         <a-mat-input class="col-md" *ngIf="!settings.UseGlobalProductNumber" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-input>
@@ -31,7 +31,7 @@
       </div>
 
     </div>
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>

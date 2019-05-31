@@ -66,7 +66,6 @@ export { InventoryItemTransactionEditComponent } from './inventoryitemtransactio
     AllorsMaterialDatetimepickerModule,
     FacilityInlineModule,
     CommonModule,
-
     FormsModule,
     MatButtonModule,
     MatCardModule,

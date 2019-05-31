@@ -2,18 +2,17 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
-  
+  <mat-dialog-content>
+
     <div class="row">
       <a-mat-textarea class="col-md" [object]="productQuoteApproval" [roleType]="m.ProductQuoteApproval.Comment"></a-mat-textarea>
     </div>
 
     <div class="row">
-      <button mat-button type="button" (click)="print.execute(productQuoteApproval)"><mat-icon>cloud_download</mat-icon> Download Product Quote for Review</button> 
+      <button mat-button type="button" (click)="print.execute(productQuoteApproval)"><mat-icon>cloud_download</mat-icon> Download Product Quote for Review</button>
     </div>
 
-
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="approve()" class="ml-2" color="primary" type="button" [disabled]="!productQuoteApproval.CanExecuteApprove">APPROVE</button>

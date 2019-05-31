@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
 
     <div *ngIf="!quoteItem.isNew" class="row">
       <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status" class="col-md"></a-mat-static>
@@ -39,7 +39,7 @@
       <a-mat-static *ngIf="requestItem?.Comment" class="col-md" [object]="requestItem" [roleType]="m.RequestItem.Comment" label="Request Comment"></a-mat-static>
       <a-mat-static *ngIf="requestItem?.InternalComment" class="col-md" [object]="requestItem" [roleType]="m.RequestItem.InternalComment" label="Request Internal Comment"></a-mat-static>
     </div>
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>

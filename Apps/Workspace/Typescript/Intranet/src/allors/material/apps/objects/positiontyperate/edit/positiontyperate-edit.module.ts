@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -18,7 +19,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
@@ -56,11 +56,11 @@ export { PositionTypeRateEditComponent } from './positiontyperate-edit.component
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-
     FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,

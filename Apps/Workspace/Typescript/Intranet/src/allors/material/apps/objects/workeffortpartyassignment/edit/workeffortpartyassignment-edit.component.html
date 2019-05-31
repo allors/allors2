@@ -3,7 +3,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
     <div class="container-fluid">
 
       <div class="row">
@@ -20,7 +20,7 @@
           <a-mat-select *ngIf="!person" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Party"
           [options]="employees" display="displayName"></a-mat-select>
       </div>
-<!-- 
+<!--
       <div class="row">
         <a-mat-static *ngIf="assignment" class="col-md" [object]="workEffortPartyAssignment" [roleType]="m.WorkEffortPartyAssignment.Assignment"
           display="Name" label="Work Effort"></a-mat-static>
@@ -33,7 +33,7 @@
       </div>
 
     </div>
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>

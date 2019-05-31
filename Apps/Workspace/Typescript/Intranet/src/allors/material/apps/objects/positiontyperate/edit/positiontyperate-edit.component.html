@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
 
     <div class="row">
       <a-mat-select class="col-md" [object]="positionTypeRate" [roleType]="m.PositionTypeRate.RateType"
@@ -29,7 +29,7 @@
         [options]="timeFrequencies" display="Name" label="Frequency"></a-mat-select>
     </div>
 
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>

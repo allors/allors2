@@ -2,7 +2,7 @@
 
   <h3 mat-dialog-title>{{title}}</h3>
 
-  <div mat-dialog-content>
+  <mat-dialog-content>
 
     <div class="row">
       <a-mat-file class="col-md-12" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
@@ -50,7 +50,7 @@
       </mat-expansion-panel>
     </div>
 
-  </div>
+  </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
