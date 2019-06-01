@@ -46,6 +46,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public User[] Members { get; set; }
         
         #region Allors

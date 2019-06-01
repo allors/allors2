@@ -53,6 +53,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         public UserGroup SalesAccountManagerUserGroup { get; set; }
 
         #region Allors
@@ -71,6 +72,7 @@ namespace Allors.Repository
         [RoleId("6799208F-C7FB-4CBD-B5F7-180C8A212B13")]
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
+        [Workspace]
         #endregion
         public UserGroup EmployeeUserGroup { get; set; }
 

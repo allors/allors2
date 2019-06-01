@@ -608,6 +608,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup ProductQuoteApproverUserGroup { get; set; }
 
         #region Allors
@@ -648,6 +649,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup PurchaseOrderApproverLevel1UserGroup { get; set; }
 
         #region Allors
@@ -688,6 +690,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup PurchaseOrderApproverLevel2UserGroup { get; set; }
 
         #region Allors
@@ -728,6 +731,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup PurchaseInvoiceApproverUserGroup { get; set; }
 
         #region Allors
@@ -768,6 +772,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup BlueCollarWorkerUserGroup { get; set; }
 
         #region Allors
@@ -808,6 +813,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         UserGroup LocalAdministratorUserGroup { get; set; }
 
         #region Allors
