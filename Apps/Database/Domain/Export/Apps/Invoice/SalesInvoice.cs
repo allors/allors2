@@ -106,8 +106,6 @@ namespace Allors.Domain
             {
                 this.SalesInvoiceType = new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice;
             }
-
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

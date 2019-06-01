@@ -67,6 +67,7 @@ namespace Allors.Domain
 
             if (@this.ExistIssuer)
             {
+                @this.AddSecurityToken(@this.Issuer.ProductQuoteApproverSecurityToken);
                 @this.AddSecurityToken(@this.Issuer.LocalAdministratorSecurityToken);
             }
         }

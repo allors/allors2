@@ -138,8 +138,6 @@ namespace Allors.Domain
             {
                 this.OrderNumber = this.Store.DeriveNextSalesOrderNumber(this.OrderDate.Year);
             }
-
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

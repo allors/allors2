@@ -76,8 +76,6 @@ namespace Allors.Domain
             {
                 this.EntryDate = this.strategy.Session.Now();
             }
-
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -220,6 +218,7 @@ namespace Allors.Domain
             if (this.ExistBilledTo)
             {
                 this.AddSecurityToken(this.BilledTo.LocalAdministratorSecurityToken);
+                this.AddSecurityToken(this.BilledTo.PurchaseInvoiceApproverSecurityToken);
             }
 
             this.Sync(this.strategy.Session);

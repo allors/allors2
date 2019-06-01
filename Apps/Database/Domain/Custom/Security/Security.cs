@@ -141,6 +141,17 @@ namespace Allors.Domain
                     security.GrantSalesAccountManager(@class, full);
                     security.Grantemployee(@class, Operations.Read);
                 }
+                else if (@class.Equals(M.RequestForInformation.ObjectType) ||
+                         @class.Equals(M.RequestForProposal.ObjectType) ||
+                         @class.Equals(M.RequestForQuote.ObjectType) ||
+                         @class.Equals(M.ProductQuote.ObjectType) ||
+                         @class.Equals(M.Proposal.ObjectType) ||
+                         @class.Equals(M.StatementOfWork.ObjectType) ||
+                         @class.Equals(M.SalesInvoice.ObjectType) ||
+                         @class.Equals(M.SalesOrder.ObjectType))
+                {
+                    security.GrantSalesAccountManager(@class, full);
+                }
                 else if (@class.Equals(M.AccountAdjustment.ObjectType) ||
                          @class.Equals(M.AccountingPeriod.ObjectType) ||
                          @class.Equals(M.AccountingTransactionNumber.ObjectType) ||
@@ -153,14 +164,6 @@ namespace Allors.Domain
                          @class.Equals(M.JournalEntry.ObjectType) ||
                          @class.Equals(M.JournalEntryNumber.ObjectType) ||
                          @class.Equals(M.OperatingBudget.ObjectType) ||
-                         @class.Equals(M.RequestForInformation.ObjectType) ||
-                         @class.Equals(M.RequestForProposal.ObjectType) ||
-                         @class.Equals(M.RequestForQuote.ObjectType) ||
-                         @class.Equals(M.ProductQuote.ObjectType) ||
-                         @class.Equals(M.Proposal.ObjectType) ||
-                         @class.Equals(M.StatementOfWork.ObjectType) ||
-                         @class.Equals(M.SalesInvoice.ObjectType) ||
-                         @class.Equals(M.SalesOrder.ObjectType) ||
                          @class.Equals(M.PurchaseInvoice.ObjectType) ||
                          @class.Equals(M.PurchaseOrder.ObjectType) ||
                          @class.Equals(M.PurchaseReturn.ObjectType) ||

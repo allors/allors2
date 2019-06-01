@@ -112,6 +112,7 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive(true);
+            this.Session.Commit();
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
@@ -151,10 +152,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
-
             var otherInternalOrganisation = new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("other internalOrganisation").Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(otherInternalOrganisation).Build();
 
             var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(otherInternalOrganisation).Build();
 
@@ -175,6 +176,7 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive(true);
+            this.Session.Commit();
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
@@ -220,6 +222,7 @@ namespace Allors.Domain
             var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
 
             this.Session.Derive();
+            this.Session.Commit();
 
             this.SetIdentity(worker.UserName);
 
@@ -247,14 +250,15 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
-
             var otherInternalOrganisation = new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("other internalOrganisation").Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(otherInternalOrganisation).Build();
 
             var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(otherInternalOrganisation).Build();
 
             this.Session.Derive();
+            this.Session.Commit();
 
             this.SetIdentity(worker.UserName);
 
@@ -296,6 +300,7 @@ namespace Allors.Domain
             worker.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
 
             this.Session.Derive();
+            this.Session.Commit();
 
             this.SetIdentity(worker.UserName);
 
@@ -323,10 +328,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
-
             var otherInternalOrganisation = new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("other internalOrganisation").Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(otherInternalOrganisation).Build();
 
             var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(otherInternalOrganisation).Build();
 
@@ -339,6 +344,7 @@ namespace Allors.Domain
             worker.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
 
             this.Session.Derive();
+            this.Session.Commit();
 
             this.SetIdentity(worker.UserName);
 
@@ -365,6 +371,7 @@ namespace Allors.Domain
             userGroups.Creators.AddMember(worker);
 
             this.Session.Derive(true);
+            this.Session.Commit();
 
             this.SetIdentity(worker.UserName);
 

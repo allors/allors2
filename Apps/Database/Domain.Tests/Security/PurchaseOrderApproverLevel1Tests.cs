@@ -75,6 +75,7 @@ namespace Allors.Domain
         {
             var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
             this.Session.Derive();
+            this.Session.Commit();
 
             var approver = new PersonBuilder(this.Session)
                 .WithUserName("approver")
@@ -112,6 +113,7 @@ namespace Allors.Domain
             order.Confirm();
 
             this.Session.Derive();
+            this.Session.Commit();
 
             Assert.True(order.PurchaseOrderState.IsAwaitingApprovalLevel1);
 
@@ -164,7 +166,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity("approver");
+            this.SetIdentity(approver.UserName);
 
             var purchaseOrderApproval = order.PurchaseOrderApprovalsLevel1WherePurchaseOrder.First;
             var acl = new AccessControlList(purchaseOrderApproval, approver);

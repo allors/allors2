@@ -40,8 +40,6 @@ namespace Allors.Domain
             {
                 this.TakenBy = internalOrganisations.First();
             }
-
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -58,6 +56,7 @@ namespace Allors.Domain
             if (this.ExistTakenBy)
             {
                 this.AddSecurityToken(this.TakenBy.BlueCollarWorkerSecurityToken);
+                this.AddSecurityToken(this.TakenBy.LocalAdministratorSecurityToken);
             }
         }
 

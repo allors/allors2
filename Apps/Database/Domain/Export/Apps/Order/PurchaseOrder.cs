@@ -75,11 +75,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnBuild(ObjectOnBuild method)
-        {
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().InitialSecurityToken);
-        }
-
         public void AppsOnInit(ObjectOnInit method)
         {
             if (!this.ExistPurchaseOrderState)
@@ -306,6 +301,8 @@ namespace Allors.Domain
             if (this.ExistOrderedBy)
             {
                 this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
             }
 
             this.Sync(this.Strategy.Session);
