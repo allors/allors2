@@ -112,5 +112,29 @@ namespace Allors.Domain
             Assert.False(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
         }
+
+        [Fact]
+        public void UserGroup()
+        {
+            var userGroup = new UserGroups(this.Session).Administrators;
+
+            var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
+            this.SetIdentity(employee.UserName);
+
+            var acl = new AccessControlList(userGroup, employee);
+            Assert.True(acl.CanRead(M.UserGroup.Members));
+            Assert.False(acl.CanWrite(M.UserGroup.Members));
+        }
+
+        [Fact]
+        public void Singleton()
+        {
+            var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
+            this.SetIdentity(employee.UserName);
+
+            var acl = new AccessControlList(this.Session.GetSingleton(), employee);
+            Assert.True(acl.CanRead(M.Singleton.SalesAccountManagerUserGroup));
+            Assert.False(acl.CanWrite(M.Singleton.SalesAccountManagerUserGroup));
+        }
     }
 }
