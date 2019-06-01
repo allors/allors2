@@ -39,6 +39,7 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.saveButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
+            this.buttonLogoff = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.customerInitializeButton = this.Factory.CreateRibbonButton();
             this.SalesInvoicesOverdueButton = this.Factory.CreateRibbonButton();
@@ -46,7 +47,6 @@
             this.purchaseInvoicesInitializeButton = this.Factory.CreateRibbonButton();
             this.groupInventory = this.Factory.CreateRibbonGroup();
             this.InventoryItemsButton = this.Factory.CreateRibbonButton();
-            this.buttonLogoff = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.appsTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -89,6 +89,12 @@
             this.refreshButton.Label = "Refresh";
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.refreshButton_Click);
+            // 
+            // buttonLogoff
+            // 
+            this.buttonLogoff.Label = "Logoff";
+            this.buttonLogoff.Name = "buttonLogoff";
+            this.buttonLogoff.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonLogoff_Click);
             // 
             // group2
             // 
@@ -135,17 +141,8 @@
             // 
             // InventoryItemsButton
             // 
-            this.InventoryItemsButton.Label = "Equipment Stock";
+            this.InventoryItemsButton.Label = "";
             this.InventoryItemsButton.Name = "InventoryItemsButton";
-            this.InventoryItemsButton.OfficeImageId = "DataFormSource";
-            this.InventoryItemsButton.ShowImage = true;
-            this.InventoryItemsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.InventoryItemsButton_Click);
-            // 
-            // buttonLogoff
-            // 
-            this.buttonLogoff.Label = "Logoff";
-            this.buttonLogoff.Name = "buttonLogoff";
-            this.buttonLogoff.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonLogoff_Click);
             // 
             // Ribbon
             // 

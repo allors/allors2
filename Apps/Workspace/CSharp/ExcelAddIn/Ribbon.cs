@@ -158,31 +158,6 @@ namespace ExcelAddIn
                 this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
             }
         }
-        
-        private async void InventoryItemsButton_Click(object sender, RibbonControlEventArgs eventArgs)
-        {
-            try
-            {
-                this.EnsureAddInManager();
-
-                AsyncContext.Run(
-                    async () =>
-                    {
-                        if (this.Commands != null)
-                        {
-                            await this.Commands.InventoryItemsNew();
-                        }
-                    });
-            }
-            catch (Exception e)
-            {
-                e.Handle();
-            }
-            finally
-            {
-                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
-            }
-        }
 
         private async void SalesInvoicesOverdueButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {

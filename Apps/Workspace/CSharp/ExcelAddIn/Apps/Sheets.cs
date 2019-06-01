@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Allors.Excel.Customers;
-using Allors.Excel.InventoryItems;
 using Allors.Excel.PurchaseInvoices;
 using Allors.Excel.Relations.CustomersOverdue;
 using Microsoft.Office.Interop.Excel;
@@ -47,19 +46,6 @@ namespace Allors.Excel
             worksheet.SetCustomPropertyValue("AllorsType", nameof(CustomersSheet));
 
             var sheet = new CustomersSheet(this, worksheet);
-            this.SheetByVstoWorksheet[worksheet] = sheet;
-            return sheet;
-        }
-
-        public InventoryItemsSheet CreateInventoryItems()
-        {
-            var worksheet = this.Host.ActiveWorksheet;
-
-            AddCustomStyles();
-
-            worksheet.SetCustomPropertyValue("AllorsType", nameof(InventoryItemsSheet));
-
-            var sheet = new InventoryItemsSheet(this, worksheet);
             this.SheetByVstoWorksheet[worksheet] = sheet;
             return sheet;
         }
