@@ -492,5 +492,32 @@ namespace Allors.Domain
             Assert.True(acl.CanRead(M.Organisation.Name));
             Assert.False(acl.CanWrite(M.Organisation.Name));
         }
+
+        [Fact]
+        public void Usergroup()
+        {
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            var userGroup = new UserGroups(this.Session).Administrators;
+
+            var localAdmin = new PersonBuilder(this.Session)
+                .WithUserName("localadmin")
+                .WithLastName("admin")
+                .Build();
+
+            internalOrganisation.AddLocalAdministrator(localAdmin);
+            new EmploymentBuilder(this.Session).WithEmployee(localAdmin).WithEmployer(internalOrganisation).Build();
+
+            var userGroups = new UserGroups(this.Session);
+            userGroups.Creators.AddMember(localAdmin);
+
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            this.SetIdentity(localAdmin.UserName);
+
+            var acl = new AccessControlList(userGroup, localAdmin);
+            Assert.True(acl.CanRead(M.UserGroup.Members));
+            Assert.False(acl.CanWrite(M.UserGroup.Members));
+        }
     }
 }
