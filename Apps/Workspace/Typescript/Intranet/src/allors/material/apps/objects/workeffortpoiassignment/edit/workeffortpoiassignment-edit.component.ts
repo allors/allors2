@@ -13,7 +13,7 @@ import { SaveService } from '../../../../../../allors/material';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './workeffortpurchaseorderitemassignment-edit.component.html',
+  templateUrl: './workeffortpoiassignment-edit.component.html',
   providers: [ContextService]
 })
 export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScope implements OnInit, OnDestroy {

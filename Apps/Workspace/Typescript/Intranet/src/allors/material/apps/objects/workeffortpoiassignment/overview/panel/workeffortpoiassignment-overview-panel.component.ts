@@ -16,7 +16,7 @@ interface Row extends TableRow {
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'workeffortpurchaseorderitemassignment-overview-panel',
-  templateUrl: './workeffortpurchaseorderitemassignment-overview-panel.component.html',
+  templateUrl: './workeffortpoiassignment-overview-panel.component.html',
   providers: [PanelService]
 })
 export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends TestScope implements OnInit {

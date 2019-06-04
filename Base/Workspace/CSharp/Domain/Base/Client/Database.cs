@@ -33,6 +33,8 @@
 
         public HttpClient HttpClient { get; }
 
+        public string UserId { get; private set; }
+
         public IAsyncPolicy Policy { get; set; } = Polly.Policy
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
@@ -135,6 +137,7 @@
                 }
 
                 this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.Token);
+                this.UserId = authResult.UserId;
 
                 return true;
             }
@@ -145,6 +148,8 @@
             public bool Authenticated { get; set; }
 
             public string Token { get; set; }
+
+            public string UserId { get; set; }
         }
     }
 }

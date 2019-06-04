@@ -58,7 +58,6 @@ namespace Allors.Repository
         [Required]
         [Unique]
         [Size(256)]
-        [Workspace]
         public string Name { get; set; }
         
         #region inherited methods

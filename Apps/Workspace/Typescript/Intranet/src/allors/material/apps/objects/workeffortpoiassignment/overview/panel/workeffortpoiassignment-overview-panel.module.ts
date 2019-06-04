@@ -26,8 +26,8 @@ import { AllorsMaterialTextAreaModule } from '../../../../../base/components/rol
 import { AllorsMaterialTableModule } from '../../../../../base/components/table';
 import { AllorsMaterialFactoryFabModule } from '../../../../../base/components/factoryfab/factoryfab.module';
 
-import { WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent } from './workeffortpurchaseorderitemassignment-overview-panel.component';
-export { WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent } from './workeffortpurchaseorderitemassignment-overview-panel.component';
+import { WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent } from './workeffortpoiassignment-overview-panel.component';
+export { WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent } from './workeffortpoiassignment-overview-panel.component';
 
 @NgModule({
   declarations: [

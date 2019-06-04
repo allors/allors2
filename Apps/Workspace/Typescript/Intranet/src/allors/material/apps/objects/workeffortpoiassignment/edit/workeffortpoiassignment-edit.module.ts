@@ -27,8 +27,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/rol
 import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
 
-import { WorkEffortPurchaseOrderItemAssignmentEditComponent } from './workeffortpurchaseorderitemassignment-edit.component';
-export { WorkEffortPurchaseOrderItemAssignmentEditComponent } from './workeffortpurchaseorderitemassignment-edit.component';
+import { WorkEffortPurchaseOrderItemAssignmentEditComponent } from './workeffortpoiassignment-edit.component';
+export { WorkEffortPurchaseOrderItemAssignmentEditComponent } from './workeffortpoiassignment-edit.component';
 
 @NgModule({
   declarations: [
