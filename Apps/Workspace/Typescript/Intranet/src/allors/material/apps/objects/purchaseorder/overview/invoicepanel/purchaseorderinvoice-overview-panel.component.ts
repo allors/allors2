@@ -1,10 +1,10 @@
 import { Component, Self, HostBinding } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material';
 
 import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, Invoked, ActionTarget, InternalOrganisationId } from '../../../../../../angular';
 import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, PurchaseInvoiceItem, Organisation, OrderItemBilling } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { And, Equals, ContainedIn, Filter, Sort } from '../../../../../../framework';
+import { And, Equals, Filter, Sort, ContainedIn } from '../../../../../../framework';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, SaveService, MethodService } from '../../../../..';
 import { ObjectService, ObjectData } from '../../../../../base/services/object';
 

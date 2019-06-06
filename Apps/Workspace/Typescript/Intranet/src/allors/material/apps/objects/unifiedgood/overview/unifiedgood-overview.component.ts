@@ -2,10 +2,10 @@ import { Component, OnDestroy, Self, Injector, AfterViewInit } from '@angular/co
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, tap, delay } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { Good, Part } from '../../../../../domain';
+import { Good, UnifiedGood } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 
 @Component({
@@ -42,37 +42,11 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
       .pipe(
         switchMap(([]) => {
 
-          const { pull, x } = this.metaService;
+          const { pull, x, m } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-
-          const pulls = [
-            pull.Part({
-              object: id,
-              include: {
-                InventoryItemKind: x
-              }
-            }),
-          ];
-
-          return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              tap((loaded) => {
-                const part = loaded.objects.Part as Part;
-                this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
-              }),
-              delay(1)
-            );
-        }),
-        switchMap(([]) => {
-
-          const { m, pull } = this.metaService;
-
-          const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Good;
           this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.UnifiedGood;
           this.panelManager.expanded = navRoute.panel();
 
           this.panelManager.on();
@@ -80,7 +54,10 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
           const pulls = [
             pull.UnifiedGood({
               object: this.panelManager.id,
-            })
+              include: {
+                InventoryItemKind: x
+              }
+            }),
           ];
 
           this.panelManager.onPull(pulls);
@@ -92,9 +69,11 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
       .subscribe((loaded) => {
 
         this.panelManager.context.session.reset();
+
         this.panelManager.onPulled(loaded);
 
-        this.good = loaded.objects.NonUnifiedGood as Good;
+        const unifiedGood = loaded.objects.UnifiedGood as UnifiedGood;
+        this.serialised = unifiedGood.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
       });
   }
 
