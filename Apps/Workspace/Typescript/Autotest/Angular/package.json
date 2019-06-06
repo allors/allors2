@@ -29,6 +29,7 @@
     "@types/mocha": "latest",
     "@types/node": "latest",
     "chai": "latest",
+    "lnk": "^1.1.0",
     "mocha": "latest",
     "rimraf": "latest",
     "ts-node": "latest",
