@@ -1,4 +1,7 @@
-﻿namespace Allors
+﻿using System;
+using System.IO;
+
+namespace Allors
 {
     using Allors.Development.Repository.Tasks;
 
@@ -21,8 +24,6 @@
         {
             var config = new System.Collections.Generic.Dictionary<string, string>()
                              {
-                                { "Templates/docs.html.stg", "Docs" },
-                                { "Templates/meta.cs.stg", "Database/Meta/Generated" },
                              };
 
             foreach (var entry in config)

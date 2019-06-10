@@ -30,5 +30,20 @@ namespace Allors.Workspace.Meta
         public void Build()
         {
         }
+
+        public void BuildDomains()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void BuildObjectTypes()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void BuildOperandTypes()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
