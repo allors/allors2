@@ -7,11 +7,11 @@ pool:
 strategy:
   matrix:
     adapters_memory:
-      target: 'AdaptersTestMemory'
+      target: '-target AdaptersTestMemory'
     adapters_sqlclient:
-      target: 'AdaptersTestSqlClient'
+      target: '-target AdaptersTestSqlClient'
     adapters_npgsql:
-      target: 'AdaptersTestNpgsql'
+      target: '-target AdaptersTestNpgsql'
   maxParallel: 10
   
 steps:
@@ -19,7 +19,7 @@ steps:
   inputs:
     targetType: 'filePath'
     filePath: 'build.ps1'
-    arguments: '-target ' + $(target)
+    arguments: $(target)
     failOnStderr: true
   displayName: $(target)
 - task: PublishTestResults@2
