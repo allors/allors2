@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -12,7 +13,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : NukeBuild
+partial class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Default);
 
@@ -26,105 +27,30 @@ class Build : NukeBuild
     public readonly Paths Paths = new Paths(RootDirectory);
 
     Target Clean => _ => _
-        .Before(Restore)
         .Executes(() =>
         {
-            foreach (var root in new[] { Paths.Platform, Paths.Core, Paths.Base, Paths.Apps })
+            void Delete(DirectoryInfo v)
             {
-                foreach (var pattern in new[] { "node_modules", "packages", "bin", "obj", "generated" })
+                if (new[] { "node_modules", "packages", "bin", "obj", "generated" }.Contains(v.Name.ToLowerInvariant()))
                 {
-                    foreach (var directory in Directory.EnumerateDirectories(root, pattern, SearchOption.AllDirectories))
-                    {
-                        DeleteDirectory(directory);
-                    }
+                    DeleteDirectory(v.FullName);
+                    return;
                 }
+
+                foreach (var child in v.GetDirectories())
+                {
+                    Delete(child);
+                }
+            }
+
+            foreach (var child in new DirectoryInfo(Paths.Platform).GetDirectories().Where(v => !v.Name.Equals("build")))
+            {
+                Delete(child);
             }
 
             EnsureCleanDirectory(Paths.Artifacts);
         });
-
-    Target Restore => _ => _
-        .Executes(() =>
-        {
-            DotNetRestore(s => s
-                .SetProjectFile(Solution));
-
-            foreach (var path in Paths.BaseWorkspaceTypescript)
-            {
-                NpmTasks.NpmInstall(s => s
-                    .SetWorkingDirectory(path));
-            }
-        });
-
-    Target Generate => _ => _
-        .DependsOn(Restore)
-        .Executes(() =>
-        {
-            // Platform 
-            DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerate)
-                .SetApplicationArguments($"{Paths.PlatformAdaptersRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.PlatformAdaptersMetaGenerated}"));
-            DotNetRun(s => s
-                .SetWorkingDirectory(Paths.PlatformAdapters)
-                .SetProjectFile(Paths.PlatformAdaptersGenerate));
-
-            // Core 
-            DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerate)
-                .SetApplicationArguments($"{Paths.CoreRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.CoreDatabaseMetaGenerated}"));
-            DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Core)
-                .SetProjectFile(Paths.CoreDatabaseGenerate));
-
-            // Base 
-            DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerate)
-                .SetApplicationArguments($"{Paths.BaseRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.BaseDatabaseMetaGenerated}"));
-            DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Base)
-                .SetProjectFile(Paths.BaseDatabaseGenerate));
-
-            foreach (var path in new[] { Paths.BaseWorkspaceTypescriptMaterial, Paths.BaseWorkspaceTypescriptAutotestAngular })
-            {
-                NpmTasks.NpmRun(s => s
-                    .SetWorkingDirectory(path)
-                    .SetCommand("autotest"));
-            }
-
-            DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Base)
-                .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
-        });
-    
-    Target TestAdapters => _ => _
-        .DependsOn(Generate)
-        .Executes(() =>
-        {
-            DotNetTest(s => s
-                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Memory")
-                .SetLogger("trx;LogFileName=AdaptersMemory.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
-
-            DotNetTest(s => s
-                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
-                .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
-
-            /*
-             DotNetTest(s => s
-                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.Npgsql")
-                .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
-            */
-        });
-
-    Target Adapters => _ => _
-        .DependsOn(Clean)
-        .DependsOn(TestAdapters);
-
+   
     Target Default => _ => _
-        .DependsOn(Generate);
+        .DependsOn(BaseGenerate);
 }
