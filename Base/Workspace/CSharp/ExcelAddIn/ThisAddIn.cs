@@ -1,8 +1,5 @@
 ﻿namespace ExcelAddIn
 {
-    using System.ComponentModel;
-    using System.Windows.Forms;
-
     public partial class ThisAddIn
     {
         public AddInManager AddInManager { get; private set; }

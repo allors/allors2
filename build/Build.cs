@@ -6,7 +6,9 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
+using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Tools.Npm;
+using Nuke.Common.Tools.NuGet;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -31,7 +33,7 @@ class Build : NukeBuild
         {
             foreach (var root in new[] { Paths.Platform, Paths.Core, Paths.Base, Paths.Apps })
             {
-                foreach (var pattern in new[] { "node_modules", "bin", "obj", "generated" })
+                foreach (var pattern in new[] { "node_modules", "packages", "bin", "obj", "generated" })
                 {
                     foreach (var directory in Directory.EnumerateDirectories(root, pattern, SearchOption.AllDirectories))
                     {
@@ -48,7 +50,7 @@ class Build : NukeBuild
         {
             DotNetRestore(s => s
                 .SetProjectFile(Solution));
-            
+
             foreach (var path in Paths.BaseWorkspaceTypescript)
             {
                 NpmTasks.NpmInstall(s => s
@@ -105,8 +107,7 @@ class Build : NukeBuild
                 .SetConfiguration(Configuration)
                 .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
                 .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(GitVersion.InformationalVersion)
-                .EnableNoRestore());
+                .SetInformationalVersion(GitVersion.InformationalVersion));
         });
 
     Target TestAdapters => _ => _

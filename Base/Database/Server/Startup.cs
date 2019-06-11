@@ -226,11 +226,6 @@
 
             app.UseMvc(routes =>
                 {
-                    routes.MapRoute(
-                        name: "odata",
-                        template: "odata/{**request}",
-                        defaults: new { controller = "OData", Action = "Get" });
-
                     routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 });
         }
