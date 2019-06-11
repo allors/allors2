@@ -18,13 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
+    [Collection(Fixture.Collection)]
     public class CacheTest : Adapters.CacheTest, IDisposable
     {
-        private readonly Profile profile = new Profile();
+        private readonly Profile profile;
+
+        public CacheTest(Fixture fixture)
+        {
+            this.profile = new Profile(fixture.Server);
+        }
 
         public override void Dispose()
         {

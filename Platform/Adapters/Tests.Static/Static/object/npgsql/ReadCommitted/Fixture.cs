@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Many2ManyTest.cs" company="Allors bvba">
-//   Copyright 2002-2010 Allors bvba.
+// <copyright file="CacheTest.cs" company="Allors bvba">
+//   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -16,32 +16,37 @@
 // 
 // For more information visit http://www.allors.com/legal
 // </copyright>
-// <summary>
-//   Defines the Default type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using MysticMind.PostgresEmbed;
 using Xunit;
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
-    [Collection(Fixture.Collection)]
-    public class Many2ManyTest : Adapters.Many2ManyTest, IDisposable
+    public class Fixture : IDisposable
     {
-        private readonly Profile profile;
+        public const string Collection = "Npgsql collection";
 
-        public Many2ManyTest(Fixture fixture)
+        public PgServer Server { get; private set; }
+
+        public Fixture()
         {
-            this.profile = new Profile(fixture.Server);
+            this.Server = new PgServer("10.7.1");
+            this.Server.Start();
         }
 
-        protected override IProfile Profile => this.profile;
-
-        public override void Dispose()
+        public void Dispose()
         {
-            this.profile.Dispose();
+            this.Server?.Stop();
+            this.Server = null;
         }
     }
+    
+    [CollectionDefinition(Fixture.Collection)]
+    public class Collection : ICollectionFixture<Fixture>
+    {
+    }
+
 }

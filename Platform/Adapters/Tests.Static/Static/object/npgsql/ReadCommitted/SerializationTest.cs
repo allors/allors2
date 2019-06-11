@@ -18,14 +18,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
+    [Collection(Fixture.Collection)]
     public class SerializationTest : Adapters.SerializationTest, IDisposable
     {
-        private readonly Profile profile = new Profile();
+        private readonly Profile profile;
 
+        public SerializationTest(Fixture fixture)
+        {
+            this.profile = new Profile(fixture.Server);
+        }
+        
         protected override IProfile Profile => this.profile;
 
         public override void Dispose()

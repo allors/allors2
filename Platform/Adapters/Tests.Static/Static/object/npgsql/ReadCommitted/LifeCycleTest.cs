@@ -18,15 +18,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
     using Allors;
 
+    [Collection(Fixture.Collection)]
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable
     {
-        private readonly Profile profile = new Profile();
+        private readonly Profile profile;
+
+        public LifeCycleTest(Fixture fixture)
+        {
+            this.profile = new Profile(fixture.Server);
+        }
 
         protected override IProfile Profile => this.profile;
 

@@ -14,22 +14,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using MysticMind.PostgresEmbed;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
-
     using Allors.Meta;
-
     using global::Npgsql;
-
     using Microsoft.Extensions.DependencyInjection;
 
     public class Profile : Npgsql.Profile
     {
-        public Profile()
+        private readonly PgServer pgServer;
+
+        public Profile(PgServer pgServer)
         {
+            this.pgServer = pgServer;
             var services = new ServiceCollection();
             this.ServiceProvider = services.BuildServiceProvider();
         }
@@ -40,18 +42,18 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
         {
             get
             {
-                var markers = new List<Action> 
-                { 
-                    () => { }, 
-                    () => this.Session.Commit(), 
+                var markers = new List<Action>
+                {
+                    () => { },
+                    () => this.Session.Commit(),
                 };
 
                 return markers.ToArray();
             }
         }
 
-        protected string ConnectionString => "Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false; Timeout=300; CommandTimeout=300";
-        
+        protected string ConnectionString => $"Server=localhost; Port={this.pgServer.PgPort}; User Id=postgres; Password=test; Database=postgres; Pooling=false; Timeout=300; CommandTimeout=300";
+
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
             var configuration = new Npgsql.Configuration
@@ -83,7 +85,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
             return database;
         }
-        
+
         public override IDatabase CreatePopulation()
         {
             return new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });

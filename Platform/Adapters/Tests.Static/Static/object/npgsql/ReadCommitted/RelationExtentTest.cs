@@ -18,13 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
+    [Collection(Fixture.Collection)]
     public class RelationExtentTest : Adapters.RelationExtentTest, IDisposable
     {
-        private readonly Profile profile = new Profile();
+        private readonly Profile profile;
+
+        public RelationExtentTest(Fixture fixture)
+        {
+            this.profile = new Profile(fixture.Server);
+        }
 
         protected override IProfile Profile => this.profile;
 

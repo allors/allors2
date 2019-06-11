@@ -14,15 +14,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Xunit;
+
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
 
     using Allors.Meta;
 
+    //[CollectionDefinition(Collection.Npgsql)]
     //public class SchemaTest : Adapters.SchemaTest, IDisposable
     //{
-    //    private readonly Profile profile = new Profile();
+    // private readonly Profile profile;
+
+    //public SchemaTest(Fixture fixture)
+    //{
+    //    this.profile = new Profile(fixture.Server);
+    //}
 
     //    protected override IProfile Profile => this.profile;
 
