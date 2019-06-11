@@ -9,8 +9,6 @@ namespace Tests.Remote
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
 
-    using Nito.AsyncEx;
-
     using Xunit;
 
     [Collection("Remote")]

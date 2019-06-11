@@ -48,7 +48,7 @@ class Build : NukeBuild
         {
             DotNetRestore(s => s
                 .SetProjectFile(Solution));
-
+            
             foreach (var path in Paths.BaseWorkspaceTypescript)
             {
                 NpmTasks.NpmInstall(s => s
