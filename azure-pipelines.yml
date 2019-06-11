@@ -9,7 +9,7 @@ steps:
   inputs:
     targetType: 'filePath'
     filePath: 'build.ps1'
-    arguments: '-configuration $(buildConfiguration) -target Adapters'
+    arguments: '-target Adapters'
     failOnStderr: true
   displayName: 'Build & Test Adapters'
 - task: PublishTestResults@2
