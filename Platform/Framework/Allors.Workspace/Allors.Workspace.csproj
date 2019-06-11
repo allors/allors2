@@ -1,5 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyTitle>Allors.Framework</AssemblyTitle>
+    <Product>Allors.Framework</Product>
+    <Copyright>Copyright ©  2018</Copyright>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Meta\Overview.cd" />
+  </ItemGroup>
 </Project>
