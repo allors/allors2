@@ -8,7 +8,7 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'filePath'
-    filePath: 'build.ps1'
+    filePath: 'platform/build.ps1'
     arguments: '-target Adapters'
     failOnStderr: true
   displayName: 'Build & Test Adapters'
@@ -16,5 +16,5 @@ steps:
   inputs:
    testResultsFormat: 'VSTest'
    testResultsFiles: '*.trx'
-   searchFolder: 'artifacts/tests'
+   searchFolder: 'platform/artifacts/tests'
    displayName: 'Publish Test results'
