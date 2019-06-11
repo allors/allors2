@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
   </ItemGroup>
 

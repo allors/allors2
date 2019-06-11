@@ -57,7 +57,7 @@ namespace Allors.R1.Development.Resources
                     resourceDirectory.Merge(fileName, dictionary);
 
                     var fileInfo = new FileInfo(Path.Combine(this.outputDirectory.FullName, fileName));
-                    using (var resx = new ResXResourceWriter(fileInfo.FullName))
+                    using (var resx = new ResourceWriter(fileInfo.FullName))
                     {
                         var keys = new List<string>(dictionary.Keys);
                         keys.Sort(string.CompareOrdinal);

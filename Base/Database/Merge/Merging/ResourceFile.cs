@@ -34,7 +34,7 @@ namespace Allors.R1.Development.Resources
         {
             this.dictionary = new Dictionary<string, object>();
 
-            using (var resxReader = new ResXResourceReader(fileInfo.FullName))
+            using (var resxReader = new ResourceReader(fileInfo.FullName))
             {
                 foreach (DictionaryEntry entry in resxReader)
                 {

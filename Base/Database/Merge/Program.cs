@@ -15,6 +15,8 @@
             var outputDirectory = directoryInfos.Last();
             var resources = new Resources(inputDirectories, outputDirectory);
             resources.Merge();
+
+            return 0;
         }
     }
 }
