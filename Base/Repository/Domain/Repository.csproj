@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\..\Platform\Repository\Domain\Export\**\*.cs" />
     <Compile Include="..\..\..\Core\Repository\Domain\Export\**\*.cs" />
   </ItemGroup>
-
 </Project>

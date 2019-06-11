@@ -29,8 +29,6 @@ namespace Tests
     using Allors;
     using Allors.Domain;
 
-    using Sandwych.Reporting;
-
     using Xunit;
 
     public class TemplateTests : DomainTest
@@ -45,17 +43,21 @@ namespace Tests
             this.Session.Derive();
 
             var people = new People(this.Session).Extent();
-            var image = new ImageBlob("jpeg", this.GetResourceBytes("Domain.Tests.Resources.logo.png"));
+            var logo = this.GetResourceBytes("Domain.Tests.Resources.logo.png");
 
             var data = new Dictionary<string, object>()
                            {
-                               { "logo", image },
                                { "people", people },
                            };
 
+            var images = new Dictionary<string, byte[]>()
+                            {
+                                { "logo", logo },
+                            };
+
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var result = template.Render(data);
+            var result = template.Render(data, images);
 
             watch.Stop();
             var run1 = watch.ElapsedMilliseconds;
@@ -67,7 +69,7 @@ namespace Tests
 
             watch = System.Diagnostics.Stopwatch.StartNew();
 
-            result = template.Render(data);
+            result = template.Render(data, images);
 
             watch.Stop();
             var run2 = watch.ElapsedMilliseconds;

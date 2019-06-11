@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Update="DomainErrors.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -21,7 +19,6 @@
       <DependentUpon>WorkspaceResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="DomainErrors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -40,5 +37,4 @@
       <LastGenOutput>WorkspaceResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
