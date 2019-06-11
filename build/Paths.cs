@@ -9,12 +9,13 @@ public class Paths
         Platform = Root / "platform";
         PlatformRepositoryTemplates = Platform / "Repository/Templates";
         PlatformRepositoryTemplatesMetaCs = PlatformRepositoryTemplates / "meta.cs.stg";
-        PlatformRepositoryGenerateGenerate = Platform / "Repository/Generate/Generate.csproj";
+        PlatformRepositoryGenerate = Platform / "Repository/Generate/Generate.csproj";
 
         PlatformAdapters = Platform / "Adapters";
         PlatformAdaptersRepositoryDomainRepository = PlatformAdapters / "Repository/Domain/Repository.csproj";
         PlatformAdaptersMetaGenerated = PlatformAdapters / "Meta/generated";
         PlatformAdaptersGenerate = PlatformAdapters / "Generate/Generate.csproj";
+        PlatformAdaptersStaticTests = PlatformAdapters / "Tests.Static/Tests.Static.csproj";
 
         Core = Root / "core";
         CoreRepositoryDomainRepository = Core / "Repository/Domain/Repository.csproj";
@@ -43,7 +44,8 @@ public class Paths
 
         Apps = Root / "apps";
 
-        ArtifactsDirectory = Root / "artifacts";
+        Artifacts = Root / "artifacts";
+        ArtifactsTests = Artifacts / "Tests";
     }
 
     public AbsolutePath Root { get; }
@@ -51,12 +53,13 @@ public class Paths
     public AbsolutePath Platform { get; }
     public AbsolutePath PlatformRepositoryTemplates { get; }
     public AbsolutePath PlatformRepositoryTemplatesMetaCs { get; }
-    public AbsolutePath PlatformRepositoryGenerateGenerate { get; }
+    public AbsolutePath PlatformRepositoryGenerate { get; }
 
     public AbsolutePath PlatformAdapters { get; }
     public AbsolutePath PlatformAdaptersRepositoryDomainRepository { get; }
     public AbsolutePath PlatformAdaptersMetaGenerated { get; }
     public AbsolutePath PlatformAdaptersGenerate { get; }
+    public AbsolutePath PlatformAdaptersStaticTests { get; }
 
     public AbsolutePath Core { get; }
     public AbsolutePath CoreRepositoryDomainRepository { get; }
@@ -77,5 +80,6 @@ public class Paths
 
     public AbsolutePath Apps { get; }
 
-    public AbsolutePath ArtifactsDirectory { get; }
+    public AbsolutePath Artifacts { get; }
+    public AbsolutePath ArtifactsTests { get; }
 }

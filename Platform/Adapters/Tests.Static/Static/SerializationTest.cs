@@ -308,7 +308,7 @@ namespace Allors.Adapters
                     }
 
                     var xml = stringWriter.ToString();
-                    Console.Out.WriteLine(xml);
+                    //Console.Out.WriteLine(xml);
 
                     var stringReader = new StringReader(xml);
                     using (var reader = XmlReader.Create(stringReader))

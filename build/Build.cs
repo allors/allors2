@@ -1,18 +1,13 @@
-using System;
 using System.IO;
-using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
-using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.Npm;
-using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [CheckBuildProjectConfigurations]
@@ -45,7 +40,7 @@ class Build : NukeBuild
                 }
             }
 
-            EnsureCleanDirectory(Paths.ArtifactsDirectory);
+            EnsureCleanDirectory(Paths.Artifacts);
         });
 
     Target Restore => _ => _
@@ -62,12 +57,12 @@ class Build : NukeBuild
         });
 
     Target Generate => _ => _
-        //.DependsOn(Restore)
+        .DependsOn(Restore)
         .Executes(() =>
         {
             // Platform 
             DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerateGenerate)
+                .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.PlatformAdaptersRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.PlatformAdaptersMetaGenerated}"));
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.PlatformAdapters)
@@ -75,7 +70,7 @@ class Build : NukeBuild
 
             // Core 
             DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerateGenerate)
+                .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.CoreRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.CoreDatabaseMetaGenerated}"));
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.Core)
@@ -83,7 +78,7 @@ class Build : NukeBuild
 
             // Base 
             DotNetRun(s => s
-                .SetProjectFile(Paths.PlatformRepositoryGenerateGenerate)
+                .SetProjectFile(Paths.PlatformRepositoryGenerate)
                 .SetApplicationArguments($"{Paths.BaseRepositoryDomainRepository} {Paths.PlatformRepositoryTemplatesMetaCs} {Paths.BaseDatabaseMetaGenerated}"));
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.Base)
@@ -113,8 +108,37 @@ class Build : NukeBuild
                 .SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
+
+    Target TestAdapters => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DotNetTest(s => s
+                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
+                .SetFilter("FullyQualifiedName~Allors.Adapters.Memory")
+                .SetLogger("trx;LogFileName=AdaptersMemory.trx")
+                .SetResultsDirectory(Paths.ArtifactsTests)
+            );
+
+            /*DotNetTest(s => s
+                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
+                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
+                .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
+                .SetResultsDirectory(Paths.ArtifactsTests)
+            );
+
+            DotNetTest(s => s
+                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
+                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.Npgsql")
+                .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
+                .SetResultsDirectory(Paths.ArtifactsTests)
+            );*/
+        });
     
-    Target Default => _ => _
+    Target Adapters => _ => _
         .DependsOn(Clean)
-        .DependsOn(Compile);
+        .DependsOn(TestAdapters);
+
+    Target Default => _ => _
+        .DependsOn(Generate);
 }
