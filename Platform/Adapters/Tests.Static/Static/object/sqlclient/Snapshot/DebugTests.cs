@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LifeCycleTest.cs" company="Allors bvba">
+// <copyright file="PrefetchTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,38 +18,38 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
-{
-    using System;
+using System;
+using Allors.Adapters;
 
+namespace Allors.Adapters.Object.SqlClient.Snapshot
+{
     using Adapters;
 
-    using Allors;
+    using Allors.Adapters.Object.SqlClient.Caching;
+    using Allors.Adapters.Object.SqlClient.Debug;
 
-    public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable
+    using Xunit;
+
+    
+    public class DebugTests : Allors.Adapters.Object.SqlClient.DebugTests, IDisposable
     {
-        private readonly Profile profile = new Profile();
+        private readonly Profile profile;
+
+        private DebugConnectionFactory connectionFactory;
+        private DefaultCacheFactory cacheFactory;
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
+        public DebugTests()
+        {
+            this.connectionFactory = new DebugConnectionFactory();
+            this.cacheFactory = new DefaultCacheFactory();
+            this.profile = new Profile(this.connectionFactory, this.cacheFactory);
+        }
+
+        public void Dispose()
         {
             this.profile.Dispose();
-        }
-
-        protected override void SwitchDatabase()
-        {
-            this.profile.SwitchDatabase();
-        }
-
-        protected override IDatabase CreatePopulation()
-        {
-            return this.profile.CreateDatabase();
-        }
-
-        protected override ISession CreateSession()
-        {
-            return this.profile.CreateSession();
         }
     }
 }

@@ -14,7 +14,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using Allors;
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
@@ -22,7 +25,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
     using Allors.Meta;
 
-    public class SchemaTest : SqlClient.SchemaTest, IDisposable
+    public class SchemaTest : Allors.Adapters.Object.SqlClient.SchemaTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

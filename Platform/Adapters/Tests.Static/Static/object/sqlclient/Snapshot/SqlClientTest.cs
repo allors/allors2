@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ChangesTest.cs" company="Allors bvba">
+// <copyright file="SqlClientTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,19 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using System;
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
-    using System;
-
     using Adapters;
-
-    public class ChangesTest : Adapters.ChangesTest, IDisposable
+    
+    public class SqlClientTest : Allors.Adapters.Object.SqlClient.SqlClientTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
+        public void Dispose()
         {
             this.profile.Dispose();
         }

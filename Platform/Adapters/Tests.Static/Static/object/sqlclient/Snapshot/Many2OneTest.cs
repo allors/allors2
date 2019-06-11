@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlClientTest.cs" company="Allors bvba">
+// <copyright file="Many2OneTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,19 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
+using Allors.Adapters;
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
+    using System;
+
     using Adapters;
-    
-    public class SqlClientTest : SqlClient.SqlClientTest, IDisposable
+
+    public class Many2OneTest : Allors.Adapters.Many2OneTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

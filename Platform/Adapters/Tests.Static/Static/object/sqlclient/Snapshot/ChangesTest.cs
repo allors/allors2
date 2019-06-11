@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtentTest.cs" company="Allors bvba">
+// <copyright file="ChangesTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,13 +18,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
     using Adapters;
 
-    public class ExtentTest : SqlClient.ExtentTest, IDisposable
+    public class ChangesTest : Allors.Adapters.ChangesTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
@@ -33,11 +35,6 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         public override void Dispose()
         {
             this.profile.Dispose();
-        }
-
-        protected override ISession CreateSession()
-        {
-            return this.profile.CreateSession();
         }
     }
 }

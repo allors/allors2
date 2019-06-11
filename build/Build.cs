@@ -6,9 +6,7 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.MSBuild;
 using Nuke.Common.Tools.Npm;
-using Nuke.Common.Tools.NuGet;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
@@ -97,45 +95,32 @@ class Build : NukeBuild
                 .SetWorkingDirectory(Paths.Base)
                 .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
         });
-
-    Target Compile => _ => _
-        .DependsOn(Generate)
-        .Executes(() =>
-        {
-            DotNetBuild(s => s
-                .SetProjectFile(Solution)
-                .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.GetNormalizedAssemblyVersion())
-                .SetFileVersion(GitVersion.GetNormalizedFileVersion())
-                .SetInformationalVersion(GitVersion.InformationalVersion));
-        });
-
+    
     Target TestAdapters => _ => _
-        .DependsOn(Compile)
+        .DependsOn(Generate)
         .Executes(() =>
         {
             DotNetTest(s => s
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                 .SetFilter("FullyQualifiedName~Allors.Adapters.Memory")
                 .SetLogger("trx;LogFileName=AdaptersMemory.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests)
-            );
-
-            /*DotNetTest(s => s
-                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
-                .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests)
-            );
+                .SetResultsDirectory(Paths.ArtifactsTests));
 
             DotNetTest(s => s
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
+                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
+                .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
+                .SetResultsDirectory(Paths.ArtifactsTests));
+
+            /*
+             DotNetTest(s => s
+                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                 .SetFilter("FullyQualifiedName~Allors.Adapters.Object.Npgsql")
                 .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests)
-            );*/
+                .SetResultsDirectory(Paths.ArtifactsTests));
+            */
         });
-    
+
     Target Adapters => _ => _
         .DependsOn(Clean)
         .DependsOn(TestAdapters);

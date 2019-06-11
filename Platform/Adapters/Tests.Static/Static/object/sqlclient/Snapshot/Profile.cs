@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Profile : SqlClient.Profile
+    public class Profile : Allors.Adapters.Object.SqlClient.Profile
     {
         private readonly Prefetchers prefetchers = new Prefetchers();
 
@@ -80,12 +80,12 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         {
             get
             {
-                if (Settings.IsOsx)
+                if (Settings.IsWindows)
                 {
-                    return "server=localhost;database=object;User Id=SA;Password=Allors2018";
+                    return @"Server=(localdb)\MSSQLLocalDB;Integrated Security=true";
                 }
-                
-                return "Integrated Security=SSPI;Data Source=(local);Initial Catalog=object;Application Name=Adapters";
+
+                return "server=localhost;database=object;User Id=SA;Password=Allors2018";
             }
         }
 
@@ -110,7 +110,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         public override IDatabase CreatePopulation()
         {
-            return new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
+            return new Allors.Adapters.Memory.Database(this.ServiceProvider, new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory });
         }
 
         public override IDatabase CreateDatabase()

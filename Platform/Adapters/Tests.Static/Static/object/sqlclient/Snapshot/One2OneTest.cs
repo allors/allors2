@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="One2ManyTest.cs" company="Allors bvba">
+// <copyright file="One2OneTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,13 +18,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
     using Adapters;
 
-    public class One2ManyTest : Adapters.One2ManyTest, IDisposable
+    public class One2OneTest : Allors.Adapters.One2OneTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

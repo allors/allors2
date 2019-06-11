@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerializationTest.cs" company="Allors bvba">
+// <copyright file="RelationExtentTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,15 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
-
     using Adapters;
-
-    using Allors;
-
-    public class SerializationTest : Adapters.SerializationTest, IDisposable
+    
+    public class RelationExtentTest : Allors.Adapters.RelationExtentTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
@@ -35,11 +34,6 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         public override void Dispose()
         {
             this.profile.Dispose();
-        }
-
-        protected override IDatabase CreatePopulation()
-        {
-            return this.profile.CreatePopulation();
         }
     }
 }

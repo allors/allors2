@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SandboxTest.cs" company="Allors bvba">
+// <copyright file="CacheTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,21 +18,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
-    
-    using Adapters;
 
-    public class SandboxTest : Adapters.SandboxTest, IDisposable
+    public class CacheTest : Allors.Adapters.CacheTest, IDisposable
     {
         private readonly Profile profile = new Profile();
-
-        protected override IProfile Profile => this.profile;
 
         public override void Dispose()
         {
             this.profile.Dispose();
+        }
+
+        protected override IDatabase CreateDatabase()
+        {
+            return this.profile.CreateDatabase();
         }
     }
 }

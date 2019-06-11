@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CacheTest.cs" company="Allors bvba">
+// <copyright file="UnitTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,22 +18,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
-{
-    using System;
+using Allors.Adapters;
 
-    public class CacheTest : Adapters.CacheTest, IDisposable
+namespace Allors.Adapters.Object.SqlClient.Snapshot
+{
+    using Adapters;
+
+    using System;
+    
+    public class UnitTest : Allors.Adapters.Object.SqlClient.UnitTest
     {
         private readonly Profile profile = new Profile();
+
+        protected override IProfile Profile => this.profile;
 
         public override void Dispose()
         {
             this.profile.Dispose();
-        }
-
-        protected override IDatabase CreateDatabase()
-        {
-            return this.profile.CreateDatabase();
         }
     }
 }

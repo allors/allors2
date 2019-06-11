@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Many2OneTest.cs" company="Allors bvba">
+// <copyright file="LifeCycleTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,13 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+using Allors.Adapters;
+
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
     using Adapters;
 
-    public class Many2OneTest : Adapters.Many2OneTest, IDisposable
+    using Allors;
+
+    public class LifeCycleTest : Allors.Adapters.LifeCycleTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
@@ -33,6 +37,21 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         public override void Dispose()
         {
             this.profile.Dispose();
+        }
+
+        protected override void SwitchDatabase()
+        {
+            this.profile.SwitchDatabase();
+        }
+
+        protected override IDatabase CreatePopulation()
+        {
+            return this.profile.CreateDatabase();
+        }
+
+        protected override ISession CreateSession()
+        {
+            return this.profile.CreateSession();
         }
     }
 }

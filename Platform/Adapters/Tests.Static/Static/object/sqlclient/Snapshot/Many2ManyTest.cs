@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RelationExtentTest.cs" company="Allors bvba">
+// <copyright file="Many2ManyTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
 // Dual Licensed under
@@ -16,15 +16,20 @@
 // 
 // For more information visit http://www.allors.com/legal
 // </copyright>
+// <summary>
+//   Defines the Default type.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Adapters;
 
-namespace Allors.Adapters.Object.SqlClient.ReadCommitted
+namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
+
     using Adapters;
-    
-    public class RelationExtentTest : Adapters.RelationExtentTest, IDisposable
+
+    public class Many2ManyTest : Allors.Adapters.Many2ManyTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
