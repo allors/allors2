@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
   </ItemGroup>
 
