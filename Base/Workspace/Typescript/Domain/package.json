@@ -18,7 +18,6 @@
     "@types/mocha": "latest",
     "@types/node": "latest",
     "chai": "latest",
-    "istanbul": "latest",
     "lnk": "latest",
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",

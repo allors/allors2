@@ -95,7 +95,7 @@ partial class Build
             try
             {
                 NpmRun(s => s
-                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
+                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
                     .SetCommand("az:test"));
             }
             finally
@@ -109,7 +109,8 @@ partial class Build
         .DependsOn(BaseDatabaseTestServer);
 
     Target BaseWorkspaceTest => _ => _
-        .DependsOn(BaseWorkspaceTypescriptDomain);
+        .DependsOn(BaseWorkspaceTypescriptDomain)
+        .DependsOn(BaseWorkspaceTypescriptPromise);
 
     Target Base => _ => _
         .DependsOn(Clean)
