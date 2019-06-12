@@ -55,7 +55,7 @@ partial class Build
             DotNetTest(s => s
                 .SetProjectFile(Paths.BaseDatabaseDomainTests)
                 .SetLogger("trx;LogFileName=BaseDatabaseDomain.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
+                .SetResultsDirectory(Paths.Artifacts));
         });
 
     Target BaseDatabaseTestServer => _ => _
@@ -69,7 +69,7 @@ partial class Build
                 DotNetTest(s => s
                     .SetProjectFile(Paths.BaseDatabaseServerTests)
                     .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
-                    .SetResultsDirectory(Paths.ArtifactsTests));
+                    .SetResultsDirectory(Paths.Artifacts));
             }
             finally
             {

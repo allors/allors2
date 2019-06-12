@@ -32,7 +32,7 @@ partial class Build
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                 .SetFilter("FullyQualifiedName~Allors.Adapters.Memory")
                 .SetLogger("trx;LogFileName=AdaptersMemory.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
+                .SetResultsDirectory(Paths.Artifacts));
         });
 
     Target AdaptersTestSqlClient => _ => _
@@ -43,7 +43,7 @@ partial class Build
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                 .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
                 .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
+                .SetResultsDirectory(Paths.Artifacts));
         });
 
     Target AdaptersTestNpgsql => _ => _
@@ -54,7 +54,7 @@ partial class Build
                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.Npgsql")
                .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
-               .SetResultsDirectory(Paths.ArtifactsTests));
+               .SetResultsDirectory(Paths.Artifacts));
         });
 
     Target Adapters => _ => _
