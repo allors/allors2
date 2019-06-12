@@ -12,6 +12,8 @@ strategy:
       target: '-target AdaptersTestSqlClient'
     adapters_npgsql:
       target: '-target AdaptersTestNpgsql'
+    base_database:
+      target: '-target BaseDatabaseTest'
   maxParallel: 10
   
 steps:
