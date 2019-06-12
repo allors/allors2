@@ -13,7 +13,7 @@ using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 
-partial class Build 
+partial class Build
 {
     Target BaseRestore => _ => _
         .Executes(() =>
@@ -35,7 +35,12 @@ partial class Build
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.Base)
                 .SetProjectFile(Paths.BaseDatabaseGenerate));
+        });
 
+    Target BaseAutotest => _ => _
+        .DependsOn(BaseGenerate)
+        .Executes(() =>
+        {
             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptMaterial, Paths.BaseWorkspaceTypescriptAutotestAngular })
             {
                 NpmRun(s => s
