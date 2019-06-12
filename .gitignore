@@ -2,6 +2,7 @@
 #-------
 # Allors
 generated/
+artifacts/
 
 # Cake
 **/tools/**
