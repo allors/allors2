@@ -18,6 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using MysticMind.PostgresEmbed;
 using Xunit;
 
@@ -33,7 +34,19 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         public Fixture()
         {
-            this.Server = new PgServer("10.7.1");
+            var pgServerParams = new Dictionary<string, string>
+            {
+                {"timezone", "UTC"},
+                {"synchronous_commit", "off"}
+            };
+
+            this.Server = new PgServer(
+                pgVersion: "10.7.1",
+                addLocalUserAccessPermission: true,
+                //clearWorkingDirOnStart: true,
+                pgServerParams: pgServerParams,
+                locale: "English_Belgium.1252");
+
             this.Server.Start();
         }
 
@@ -43,7 +56,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             this.Server = null;
         }
     }
-    
+
     [CollectionDefinition(Fixture.Collection)]
     public class Collection : ICollectionFixture<Fixture>
     {
