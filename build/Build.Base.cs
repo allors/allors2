@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
@@ -61,12 +62,7 @@ partial class Build
         .DependsOn(BaseGenerate)
         .Executes(async () =>
         {
-            var dotNetRunSettings = new DotNetRunSettings()
-                .SetWorkingDirectory(Paths.Base)
-                .SetProjectFile(Paths.BaseDatabaseServer);
-;
-            var process = ProcessTasks.StartProcess(dotNetRunSettings);
-            await WaitForServer("http://localhost:5000", TimeSpan.FromSeconds(60));
+            var process = await BaseStartServer();
 
             try
             {
@@ -79,7 +75,6 @@ partial class Build
             {
                 process.Kill();
             }
-
         });
 
     Target BaseWorkspaceTypescriptDomain => _ => _
@@ -91,7 +86,24 @@ partial class Build
                 .SetCommand("az:test"));
         });
 
+    Target BaseWorkspaceTypescriptPromise => _ => _
+        //.DependsOn(BaseGenerate)
+        .Executes(async () =>
+        {
+            var process = await BaseStartServer();
 
+            try
+            {
+                NpmRun(s => s
+                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
+                    .SetCommand("az:test"));
+            }
+            finally
+            {
+                process.Kill();
+            }
+
+        });
     Target BaseDatabaseTest => _ => _
         .DependsOn(BaseDatabaseTestDomain)
         .DependsOn(BaseDatabaseTestServer);
