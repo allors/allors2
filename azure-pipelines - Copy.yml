@@ -6,6 +6,12 @@ pool:
 
 strategy:
   matrix:
+    adapters_memory:
+      target: '-target AdaptersTestMemory'
+    adapters_sqlclient:
+      target: '-target AdaptersTestSqlClient'
+    adapters_npgsql:
+      target: '-target AdaptersTestNpgsql'
     base_database:
       target: '-target BaseDatabaseTest'
   maxParallel: 10
