@@ -62,7 +62,7 @@ partial class Build
         .DependsOn(BaseGenerate)
         .Executes(async () =>
         {
-            var process = await BaseStartServer();
+            var process = await BaseInitServer();
 
             try
             {
@@ -87,10 +87,10 @@ partial class Build
         });
 
     Target BaseWorkspaceTypescriptPromise => _ => _
-        //.DependsOn(BaseGenerate)
+        .DependsOn(BaseGenerate)
         .Executes(async () =>
         {
-            var process = await BaseStartServer();
+            var process = await BaseInitServer();
 
             try
             {

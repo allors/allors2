@@ -7,7 +7,7 @@ using static Nuke.Common.Logger;
 
 partial class Build
 {
-    public async Task<bool> WaitForServer(string url, TimeSpan wait)
+    public async Task<bool> ServerGet(string url, TimeSpan wait)
     {
         var stop = DateTime.Now.Add(wait);
 
@@ -31,7 +31,7 @@ partial class Build
     }
 
 
-    async Task<IProcess> BaseStartServer()
+    async Task<IProcess> BaseInitServer()
     {
         IProcess process = null;
         try
@@ -41,7 +41,11 @@ partial class Build
                 .SetProjectFile(Paths.BaseDatabaseServer);
 
             process = ProcessTasks.StartProcess(dotNetRunSettings);
-            await WaitForServer("http://localhost:5000", TimeSpan.FromSeconds(60));
+            if (!await ServerGet("http://localhost:5000/Test/Init", TimeSpan.FromSeconds(120)))
+            {
+                throw new Exception("Could not initialize server");
+            }
+
             return process;
         }
         catch
