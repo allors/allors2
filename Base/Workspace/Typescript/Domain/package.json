@@ -10,7 +10,8 @@
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
     "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
-    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts",
+    "az:test": "mocha --require ts-node/register --preserve-symlinks --reporter xunit ./test/**/*.spec.ts --reporter-options output=../../../../artifacts/tests/baseworkspacedomain.xml"
   },
   "devDependencies": {
     "@types/chai": "latest",

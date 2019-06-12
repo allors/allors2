@@ -10,6 +10,7 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.Npm.NpmTasks;
 
 partial class Build 
 {
@@ -18,7 +19,7 @@ partial class Build
         {
             foreach (var path in Paths.BaseWorkspaceTypescript)
             {
-                NpmTasks.NpmInstall(s => s
+                NpmInstall(s => s
                     .SetWorkingDirectory(path));
             }
         });
@@ -36,7 +37,7 @@ partial class Build
 
             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptMaterial, Paths.BaseWorkspaceTypescriptAutotestAngular })
             {
-                NpmTasks.NpmRun(s => s
+                NpmRun(s => s
                     .SetWorkingDirectory(path)
                     .SetCommand("autotest"));
             }
@@ -81,9 +82,22 @@ partial class Build
 
         });
 
+    Target BaseWorkspaceTypescriptDomain => _ => _
+        //.DependsOn(BaseGenerate)
+        .Executes(() =>
+        {
+            NpmRun(s => s
+                .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
+                .SetCommand("az:test"));
+        });
+
+
     Target BaseDatabaseTest => _ => _
         .DependsOn(BaseDatabaseTestDomain)
         .DependsOn(BaseDatabaseTestServer);
+
+    Target BaseWorkspaceTest => _ => _
+        .DependsOn(BaseWorkspaceTypescriptDomain);
 
     Target Base => _ => _
         .DependsOn(Clean)

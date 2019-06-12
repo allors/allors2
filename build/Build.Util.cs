@@ -18,14 +18,8 @@ partial class Build
                 {
                     var response = await client.GetAsync(url);
                     success = response.IsSuccessStatusCode;
-
-                    Warn("XXX - OK");
                 }
-                catch (Exception e)
-                {
-                    Error("XXX - ERROR");
-                    Error(e);
-                }
+                catch {}
 
                 await Task.Delay(100);
             }
