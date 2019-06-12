@@ -83,7 +83,7 @@ partial class Build
         });
 
     Target BaseWorkspaceTypescriptDomain => _ => _
-        //.DependsOn(BaseGenerate)
+        .DependsOn(BaseGenerate)
         .Executes(() =>
         {
             NpmRun(s => s
