@@ -66,3 +66,21 @@ Write-Output "Microsoft (R) .NET Core SDK version $(& $env:DOTNET_EXE --version)
 
 ExecSafe { & $env:DOTNET_EXE build $BuildProjectFile /nodeReuse:false }
 ExecSafe { & $env:DOTNET_EXE run --project $BuildProjectFile --no-build -- $BuildArguments }
+
+
+
+
+# For Azure Devops Pipelines
+Write-Output "Kill all child processes"
+function KillChildren
+{
+    Param(
+        [Parameter(Mandatory=$True,Position=1)]
+            [int]$parentProcessId
+    )
+
+    Get-WmiObject win32_process | where {$_.ParentProcessId -eq $parentProcessId} | ForEach { KillChildren $_.ProcessId }
+    Get-WmiObject win32_process | where {$_.ParentProcessId -eq $parentProcessId} | ForEach { Stop-Process $_.ProcessId 2>$null }
+}
+
+KillChildren $pid
