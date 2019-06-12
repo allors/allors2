@@ -7,11 +7,9 @@ public partial class Paths
         Root = root;
 
         Artifacts = Root / "artifacts";
-        ArtifactsTests = Artifacts / "Tests";
     }
 
     public AbsolutePath Root { get; }
 
     public AbsolutePath Artifacts { get; }
-    public AbsolutePath ArtifactsTests { get; }
 }

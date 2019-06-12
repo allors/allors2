@@ -41,7 +41,7 @@ partial class Build
                 .SetProjectFile(Paths.BaseDatabaseServer);
 
             process = ProcessTasks.StartProcess(dotNetRunSettings);
-            if (!await ServerGet("http://localhost:5000/Test/Init", TimeSpan.FromSeconds(120)))
+            if (!await ServerGet("http://localhost:5000/Test/Init", TimeSpan.FromMinutes(5)))
             {
                 throw new Exception("Could not initialize server");
             }
