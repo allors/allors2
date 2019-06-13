@@ -14,8 +14,12 @@ public partial class Paths
     public AbsolutePath BaseWorkspaceTypescriptDomain => Base / "Workspace/Typescript/Domain";
     public AbsolutePath BaseWorkspaceTypescriptPromise => Base / "Workspace/Typescript/Promise";
     public AbsolutePath BaseWorkspaceTypescriptAngular => Base / "Workspace/Typescript/Angular";
+    public AbsolutePath BaseWorkspaceTypescriptAngularTrx => BaseWorkspaceTypescriptAngular / "dist/BaseWorkspaceTypescriptAngular.trx";
     public AbsolutePath BaseWorkspaceTypescriptMaterial => Base / "Workspace/Typescript/Material";
+    public AbsolutePath BaseWorkspaceTypescriptMaterialTrx => BaseWorkspaceTypescriptMaterial / "dist/BaseWorkspaceTypescriptMaterial.trx";
+    public AbsolutePath BaseWorkspaceTypescriptMaterialTests => Base / "Workspace/Typescript/Material.Tests/Material.Tests.csproj";
     public AbsolutePath BaseWorkspaceTypescriptAutotestAngular => Base / "Workspace/Typescript/Autotest/Angular";
+    public AbsolutePath BaseWorkspaceTypescriptAutotestGenerateGenerate => Base / "Workspace/Typescript/Autotest/Generate/Generate.csproj";
     public AbsolutePath[] BaseWorkspaceTypescript => new[]
     {
         BaseWorkspaceTypescriptDomain,
@@ -24,6 +28,4 @@ public partial class Paths
         BaseWorkspaceTypescriptMaterial,
         BaseWorkspaceTypescriptAutotestAngular
     };
-    public AbsolutePath BaseWorkspaceTypescriptAutotestGenerateGenerate => Base / "Workspace/Typescript/Autotest/Generate/Generate.csproj";
-
 }

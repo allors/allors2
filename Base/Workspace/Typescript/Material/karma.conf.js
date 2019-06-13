@@ -10,6 +10,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-trx-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
@@ -27,6 +28,10 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
+    trxReporter: {
+      outputFile: 'dist/BaseWorkspaceTypescriptMaterial.trx',
+      shortTestName: true
+    }
   });
 };

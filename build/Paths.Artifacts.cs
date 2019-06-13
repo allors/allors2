@@ -7,6 +7,7 @@ public partial class Paths
     public AbsolutePath ArtifactsTests => Artifacts / "Tests";
     public AbsolutePath ArtifactsTestsBaseWorkspaceTypescriptDomain => ArtifactsTests / "BaseWorkspaceTypescriptDomain.trx";
     public AbsolutePath ArtifactsTestsBaseWorkspaceTypescriptPromise => ArtifactsTests / "BaseWorkspaceTypescriptPromise .trx";
+    public AbsolutePath ArtifactsTestsBaseWorkspaceTypescriptAngular => ArtifactsTests / "BaseWorkspaceTypescriptAngular .trx";
 
     public AbsolutePath ArtifactsBaseServer => Artifacts / "Base/Server";
 }

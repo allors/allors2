@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Nuke.Common;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -115,8 +116,60 @@ partial class Build
                 await server.Init();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
-                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
+                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptPromise}")
                     .SetCommand("az:test"));
+            }
+        });
+
+    Target BaseWorkspaceTypescriptAngular => _ => _
+        .DependsOn(BaseWorkspaceSetup)
+        .DependsOn(BasePublishServer)
+        .DependsOn(EnsureDirectories)
+        .Executes(async () =>
+        {
+            using (var server = new Server(Paths.ArtifactsBaseServer))
+            {
+                await server.Init();
+                NpmRun(s => s
+                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptAngular)
+                    .SetArguments("--watch=false", "--reporters", "trx")
+                    .SetCommand("test"));
+                CopyFileToDirectory(Paths.BaseWorkspaceTypescriptAngularTrx, Paths.ArtifactsTests, FileExistsPolicy.Overwrite);
+            }
+        });
+
+    Target BaseWorkspaceTypescriptMaterial => _ => _
+        .DependsOn(BaseWorkspaceSetup)
+        .DependsOn(BasePublishServer)
+        .Executes(async () =>
+        {
+            using (var server = new Server(Paths.ArtifactsBaseServer))
+            {
+                await server.Init();
+                NpmRun(s => s
+                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptMaterial)
+                    .SetArguments("--watch=false", "--reporters", "trx")
+                    .SetCommand("test"));
+                CopyFileToDirectory(Paths.BaseWorkspaceTypescriptMaterialTrx, Paths.ArtifactsTests, FileExistsPolicy.Overwrite);
+            }
+        });
+
+    Target BaseWorkspaceTypescriptMaterialTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .Executes(async () =>
+        {
+            using (var server = new Server(Paths.ArtifactsBaseServer))
+            {
+                using (var angular = new Angular(Paths.BaseWorkspaceTypescriptMaterial))
+                {
+                    await server.Init();
+                    await angular.Init();
+                    DotNetTest(s => s
+                        .SetProjectFile(Paths.BaseWorkspaceTypescriptMaterialTests)
+                        .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptMaterialTests.trx")
+                        .SetResultsDirectory(Paths.ArtifactsTests));
+                }
             }
         });
 
@@ -126,7 +179,10 @@ partial class Build
 
     Target BaseWorkspaceTest => _ => _
         .DependsOn(BaseWorkspaceTypescriptDomain)
-        .DependsOn(BaseWorkspaceTypescriptPromise);
+        .DependsOn(BaseWorkspaceTypescriptPromise)
+        .DependsOn(BaseWorkspaceTypescriptAngular)
+        .DependsOn(BaseWorkspaceTypescriptMaterial)
+        .DependsOn(BaseWorkspaceTypescriptMaterialTests);
 
     Target BaseTest => _ => _
         .DependsOn(BaseDatabaseTest)
