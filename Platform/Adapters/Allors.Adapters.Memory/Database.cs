@@ -66,8 +66,6 @@ namespace Allors.Adapters.Memory
 
         public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
 
-        public IDatabase Serializable => null;
-
         public IServiceProvider ServiceProvider { get; }
 
         internal bool IsLoading { get; private set; }

@@ -83,13 +83,7 @@ namespace Allors
         /// Gets the meta domain of this population.
         /// </summary>
         IMetaPopulation MetaPopulation { get; }
-
-        /// <summary>
-        /// Gets the Serializable alias for this Database if it exists.
-        /// If this Database is the Serializable alias then this property should return null;
-        /// </summary>
-        IDatabase Serializable { get; }
-
+        
         /// <summary>
         /// Gets the service provider.
         /// </summary>

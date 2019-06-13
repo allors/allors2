@@ -41,7 +41,5 @@ namespace Allors.Adapters.Object.Npgsql
         public IsolationLevel IsolationLevel { get; set; }
 
         public string SchemaName { get; set; }
-
-        public IDatabase Serializable { get; set; }
     }
 }

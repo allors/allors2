@@ -25,7 +25,6 @@ namespace Tests
 {
     using System;
     using System.Data;
-    using System.IO;
 
     using Allors;
     using Allors.Domain;
@@ -37,10 +36,6 @@ namespace Tests
 
     public class CounterTest : DomainTest
     {
-        // Teamcity doesn't pick up connection string from app.config,
-        // that's why it's here.
-        private const string ConnectionString = "server=(local);database=base;Integrated Security=SSPI";
-
         [Fact]
         public void Meta()
         {
@@ -57,18 +52,8 @@ namespace Tests
         }
 
         [Fact]
-        public void WithoutSerializable()
+        public void NextValue()
         {
-            var configuration = new Allors.Adapters.Object.SqlClient.Configuration
-            {
-                ConnectionString = ConnectionString,
-                ObjectFactory = this.ObjectFactory,
-            };
-
-            var database = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), configuration);
-
-            this.Setup(database, true);
-
             var id = Guid.NewGuid();
 
             new CounterBuilder(this.Session).WithUniqueId(id).Build();
@@ -79,48 +64,6 @@ namespace Tests
             Assert.Equal(2, Counters.NextValue(this.Session, id));
             Assert.Equal(3, Counters.NextValue(this.Session, id));
             Assert.Equal(4, Counters.NextValue(this.Session, id));
-        }
-
-        [Fact]
-        public void Serializable()
-        {
-            var serializableConfiguration = new Allors.Adapters.Object.SqlClient.Configuration
-            {
-                ConnectionString = ConnectionString,
-                ObjectFactory = this.ObjectFactory,
-                IsolationLevel = IsolationLevel.Serializable
-            };
-
-            var serializableDatabase = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), serializableConfiguration);
-
-            var configuration = new Allors.Adapters.Object.SqlClient.Configuration
-            {
-                ConnectionString = ConnectionString,
-                ObjectFactory = this.ObjectFactory,
-                Serializable = serializableDatabase
-            };
-
-            var database = new Allors.Adapters.Object.SqlClient.Database(CreateServiceProvider(), configuration);
-
-            this.Setup(database, true);
-
-            var id = Guid.NewGuid();
-
-            new CounterBuilder(this.Session).WithUniqueId(id).Build();
-            this.Session.Derive(true);
-            this.Session.Commit();
-
-            Assert.Equal(1, Counters.NextValue(this.Session, id));
-            Assert.Equal(2, Counters.NextValue(this.Session, id));
-            Assert.Equal(3, Counters.NextValue(this.Session, id));
-            Assert.Equal(4, Counters.NextValue(this.Session, id));
-        }
-
-        private static ServiceProvider CreateServiceProvider()
-        {
-            var services = new ServiceCollection();
-            services.AddAllors();
-            return services.BuildServiceProvider();
         }
     }
 }

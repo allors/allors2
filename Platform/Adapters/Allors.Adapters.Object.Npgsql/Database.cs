@@ -74,8 +74,6 @@ namespace Allors.Adapters.Object.Npgsql
             this.CommandTimeout = configuration.CommandTimeout;
             this.IsolationLevel = configuration.IsolationLevel;
 
-            this.Serializable = configuration.Serializable;
-
             this.sortedUnitRolesByObjectType = new Dictionary<IObjectType, IRoleType[]>();
 
             this.CacheFactory = configuration.CacheFactory;
@@ -140,8 +138,6 @@ namespace Allors.Adapters.Object.Npgsql
         public IObjectFactory ObjectFactory => this.objectFactory;
 
         public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
-
-        public IDatabase Serializable { get; }
 
         public bool IsDatabase => true;
 

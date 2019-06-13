@@ -32,25 +32,16 @@ namespace Allors.Domain
         
         public static int NextValue(ISession session, Guid counterId)
         {
-            var serializable = session.Database.Serializable;
-            if (serializable != null)
+            using (var separateSession = session.Database.CreateSession())
             {
-                using (var counterSession = serializable.CreateSession())
-                {
-                    var serializableCounter = new Counters(counterSession).Sticky[counterId];
-                    var newValue = serializableCounter.Value + 1;
-                    serializableCounter.Value = newValue;
+                var serializableCounter = new Counters(separateSession).Sticky[counterId];
+                var newValue = serializableCounter.Value + 1;
+                serializableCounter.Value = newValue;
 
-                    counterSession.Commit();
+                separateSession.Commit();
 
-                    return newValue;
-                }
+                return newValue;
             }
-
-            var counter = new Counters(session).Sticky[counterId];
-            counter.Value = counter.Value + 1;
-
-            return counter.Value;
         }
     }
 }
