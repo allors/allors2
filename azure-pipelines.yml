@@ -17,6 +17,9 @@ stages:
       maxParallel: 10
     
     steps:
+    - powershell: |
+        Write-Host "Path: $(PATH)"
+      displayName: 'Environment'
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'
