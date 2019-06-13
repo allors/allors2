@@ -12,9 +12,17 @@ stages:
     
     strategy:
       matrix:
-        trial-and-error:
-          target: '-target BaseWorkspaceTypescriptMaterialTests'
-      maxParallel: 10
+        adapters_memory:
+          target: '-target AdaptersTestMemory'
+        adapters_sqlclient:
+          target: '-target AdaptersTestSqlClient'
+        adapters_npgsql:
+          target: '-target AdaptersTestNpgsql'
+        base_database:
+          target: '-target BaseDatabaseTest'
+        base_workspace:
+          target: '-target BaseWorkspaceTest'
+    maxParallel: 10
     
     steps:
     - task: PowerShell@2
@@ -23,7 +31,7 @@ stages:
         filePath: 'build.ps1'
         arguments: $(target)
         failOnStderr: true
-      displayName: 'Run Tests'
+      displayName: $(target)
     - task: PublishTestResults@2
       condition: always()
       inputs:
