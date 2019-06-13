@@ -158,15 +158,7 @@
                 {
                     ObjectFactory = objectFactory,
                     ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                    CommandTimeout = 600,
-                    Serializable = new Database(
-                        app.ApplicationServices,
-                        new Configuration
-                        {
-                            ObjectFactory = objectFactory,
-                            ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                            IsolationLevel = IsolationLevel.Serializable
-                        })
+                    CommandTimeout = 600
                 });
 
             app.UseAllors(database);

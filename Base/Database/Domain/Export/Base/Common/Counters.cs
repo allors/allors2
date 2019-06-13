@@ -34,13 +34,13 @@ namespace Allors.Domain
         {
             using (var separateSession = session.Database.CreateSession())
             {
-                var serializableCounter = new Counters(separateSession).Sticky[counterId];
-                var newValue = serializableCounter.Value + 1;
-                serializableCounter.Value = newValue;
+                var counter = new Counters(separateSession).Sticky[counterId];
+                var newValue = counter.Value + 1;
 
                 separateSession.Commit();
 
-                return newValue;
+                counter.Value = newValue;
+                return counter.Value;
             }
         }
     }
