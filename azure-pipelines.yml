@@ -1,28 +1,33 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-2019'
-  timeoutInMinutes: 10
+stages:
+- stage: Test
+  jobs:  
+  - job: Test
+    timeoutInMinutes: 10
 
-strategy:
-  matrix:
-    trial-and-error:
-      target: '-target BaseWorkspaceTypescriptMaterialTests'
-  maxParallel: 10
-
-steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: 'build.ps1'
-    arguments: $(target)
-    failOnStderr: true
-  displayName: $(target)
-- task: PublishTestResults@2
-  condition: always()
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '*.trx'
-    searchFolder: 'artifacts/tests'
-  displayName: 'Publish Test results'
+    pool:
+      vmImage: 'windows-2019'
+    
+    strategy:
+      matrix:
+        trial-and-error:
+          target: '-target BaseWorkspaceTypescriptMaterialTests'
+      maxParallel: 10
+    
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'filePath'
+        filePath: 'build.ps1'
+        arguments: $(target)
+        failOnStderr: true
+      displayName: 'Run Tests'
+    - task: PublishTestResults@2
+      condition: always()
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '*.trx'
+        searchFolder: 'artifacts/tests'
+      displayName: 'Publish Test results'
