@@ -44,12 +44,10 @@ namespace Tests
 
             options.AddArgument("no-sandbox");
 
-
             var chromeWebDriver = Environment.GetEnvironmentVariable("ChromeWebDriver");
-            var chromeWebDriverDirectory = chromeWebDriver != null && File.Exists(chromeWebDriver) ? new FileInfo(chromeWebDriver).DirectoryName : null;
 
-            this.Driver = chromeWebDriverDirectory != null ?
-                              new ChromeDriver(chromeWebDriverDirectory, options) :
+            this.Driver = Directory.Exists(chromeWebDriver) ?
+                              new ChromeDriver(chromeWebDriver, options) :
                               new ChromeDriver(Environment.CurrentDirectory, options);
 
             // Move to monitor on the left
