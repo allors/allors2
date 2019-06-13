@@ -20,6 +20,9 @@ describe('Person',
 
         describe('UserName',
             () => {
+
+                throw "Boom!"
+
                 let person: Person;
 
                 beforeEach(() => {
