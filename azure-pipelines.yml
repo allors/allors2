@@ -22,7 +22,7 @@ stages:
           target: '-target BaseDatabaseTest'
         base_workspace:
           target: '-target BaseWorkspaceTest'
-    maxParallel: 10
+      maxParallel: 10
     
     steps:
     - task: PowerShell@2
