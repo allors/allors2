@@ -30,7 +30,7 @@ partial class Server : IDisposable
 
     public async Task Init()
     {
-        if (!await Get("/Test/Init", TimeSpan.FromMinutes(5)))
+        if (!await Get("/Test/Setup", TimeSpan.FromMinutes(5)))
         {
             throw new Exception("Could not initialize server");
         }

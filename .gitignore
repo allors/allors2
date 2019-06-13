@@ -1,12 +1,8 @@
 # Custom
 #-------
-# Allors
 generated/
 artifacts/
-
-# Cake
-**/tools/**
-**/!tools/packages.config
+build/Properties/launchSettings.json
 
 # https://github.com/JetBrains/resharper-rider-samples/blob/master/.gitignore
 # Common IntelliJ Platform excludes

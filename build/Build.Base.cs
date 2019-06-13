@@ -98,6 +98,7 @@ partial class Build
         {
             NpmRun(s => s
                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
+                .SetArguments("--reporter-options", $"output={Paths.ArtifactsTests}/BaseWorkspaceTypescriptDomain..trx")
                 .SetCommand("az:test"));
         });
 
@@ -111,6 +112,7 @@ partial class Build
                 await server.Init();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
+                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTests}/BaseWorkspaceTypescriptPromise.trx")
                     .SetCommand("az:test"));
             }
         });

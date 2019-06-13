@@ -10,7 +10,7 @@
     "lint-fix": "tslint --fix --project ./tsconfig.json",
     "test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
     "tc:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts",
-    "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts --reporter-options output=../../../../artifacts/tests/baseworkspacepromise.trx"
+    "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
     "axios": "latest"
