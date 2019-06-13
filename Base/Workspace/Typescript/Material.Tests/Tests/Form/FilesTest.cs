@@ -5,11 +5,8 @@ namespace Tests
     using System.Linq;
 
     using Allors.Domain;
-    using Allors.Meta;
 
     using Components;
-
-
 
     using Xunit;
 

@@ -14,6 +14,8 @@ strategy:
       target: '-target AdaptersTestNpgsql'
     base_database:
       target: '-target BaseDatabaseTest'
+    base_workspace:
+      target: '-target BaseWorkspaceTest'
   maxParallel: 10
   
 steps:

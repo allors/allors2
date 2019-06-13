@@ -6,12 +6,12 @@ pool:
 
 strategy:
   matrix:
-    base_database:
-      target: '-target BaseDatabaseTest'
-    base_workspace:
-      target: '-target BaseWorkspaceTest'
+    trial-and-error:
+      target: '-target BaseWorkspaceTypescriptMaterialTests'
   maxParallel: 10
-  
+
+timeoutInMinutes: 10 
+ 
 steps:
 - task: PowerShell@2
   inputs:

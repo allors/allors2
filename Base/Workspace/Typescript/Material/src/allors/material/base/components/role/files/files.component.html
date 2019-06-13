@@ -9,7 +9,7 @@
     </button>
   </div>
 
-  <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" multiple="multiple" />
+  <input #fileInput type="file" (change)="onFileInput($event); fileInput.value = '';" style="display:none;" multiple="multiple" />
 
   <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
     <div class="col-2 d-flex" *ngFor="let media of medias">
