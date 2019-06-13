@@ -27,24 +27,9 @@ $env:DOTNET_CLI_TELEMETRY_OPTOUT = 1
 # EXECUTION
 ###########################################################################
 
-function StopChildProcesses
-{
-    Write-Output "Stop child processes"
-    Param(
-        [Parameter(Mandatory=$True,Position=1)]
-            [int]$parentProcessId
-    )
-
-    Get-WmiObject win32_process | where {$_.ParentProcessId -eq $parentProcessId} | ForEach { StopChildProcesses $_.ProcessId }
-    Get-WmiObject win32_process | where {$_.ParentProcessId -eq $parentProcessId} | ForEach { Stop-Process $_.ProcessId 2>$null }
-}
-
 function ExecSafe([scriptblock] $cmd) {
     & $cmd
-    if ($LASTEXITCODE) { 
-        StopChildProcesses $pid
-        exit $LASTEXITCODE 
-   }
+    if ($LASTEXITCODE) { exit $LASTEXITCODE }
 }
 
 # If global.json exists, load expected version
@@ -81,5 +66,3 @@ Write-Output "Microsoft (R) .NET Core SDK version $(& $env:DOTNET_EXE --version)
 
 ExecSafe { & $env:DOTNET_EXE build $BuildProjectFile /nodeReuse:false }
 ExecSafe { & $env:DOTNET_EXE run --project $BuildProjectFile --no-build -- $BuildArguments }
-
-StopChildProcesses $pid
