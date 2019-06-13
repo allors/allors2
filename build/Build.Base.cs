@@ -16,6 +16,7 @@ using static Nuke.Common.Tools.Npm.NpmTasks;
 partial class Build
 {
     Target BaseGenerate => _ => _
+        .After(Clean)
         .Executes(() =>
         {
             DotNetRun(s => s
@@ -71,9 +72,12 @@ partial class Build
             }
         });
 
-    Target BaseAutotest => _ => _
+    Target BaseWorkspaceSetup => _ => _
         .DependsOn(BaseWorkspaceNpmInstall)
-        .DependsOn(BaseGenerate)
+        .DependsOn(BaseGenerate);
+    
+    Target BaseWorkspaceAutotest => _ => _
+        .DependsOn(BaseWorkspaceSetup)
         .Executes(() =>
         {
             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptMaterial, Paths.BaseWorkspaceTypescriptAutotestAngular })
@@ -89,7 +93,7 @@ partial class Build
         });
 
     Target BaseWorkspaceTypescriptDomain => _ => _
-        .DependsOn(BaseGenerate)
+        .DependsOn(BaseWorkspaceSetup)
         .Executes(() =>
         {
             NpmRun(s => s
@@ -98,7 +102,7 @@ partial class Build
         });
 
     Target BaseWorkspaceTypescriptPromise => _ => _
-        .DependsOn(BaseGenerate)
+        .DependsOn(BaseWorkspaceSetup)
         .DependsOn(BasePublishServer)
         .Executes(async () =>
         {
@@ -125,5 +129,5 @@ partial class Build
 
     Target Base => _ => _
         .DependsOn(Clean)
-        .DependsOn(BaseTest);
+        .DependsOn(BaseWorkspaceTypescriptPromise);
 }

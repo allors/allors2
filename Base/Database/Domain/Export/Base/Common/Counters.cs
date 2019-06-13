@@ -36,10 +36,10 @@ namespace Allors.Domain
             {
                 var counter = new Counters(separateSession).Sticky[counterId];
                 var newValue = counter.Value + 1;
+                counter.Value = newValue;
 
                 separateSession.Commit();
 
-                counter.Value = newValue;
                 return counter.Value;
             }
         }
