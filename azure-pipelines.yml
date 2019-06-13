@@ -1,11 +1,9 @@
-job: Test
-timeoutInMinutes: 10
-
 trigger:
 - master
 
 pool:
   vmImage: 'windows-2019'
+  timeoutInMinutes: 10
 
 strategy:
   matrix:
