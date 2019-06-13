@@ -5,7 +5,7 @@ stages:
 - stage: Test
   jobs:  
   - job: Test
-    timeoutInMinutes: 60
+    timeoutInMinutes: 15
 
     pool:
       vmImage: 'windows-2019'
@@ -17,9 +17,6 @@ stages:
       maxParallel: 10
     
     steps:
-    - powershell: |
-        Get-ChildItem Env:
-      displayName: 'EnvironmentVariable'
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'

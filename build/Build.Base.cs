@@ -172,7 +172,7 @@ partial class Build
                 }
             }
         });
-
+    
     Target BaseDatabaseTest => _ => _
         .DependsOn(BaseDatabaseTestDomain)
         .DependsOn(BaseDatabaseTestServer);
