@@ -15,18 +15,7 @@ using static Nuke.Common.Tools.Npm.NpmTasks;
 
 partial class Build
 {
-    Target BaseRestore => _ => _
-        .Executes(() =>
-        {
-            foreach (var path in Paths.BaseWorkspaceTypescript)
-            {
-                NpmInstall(s => s
-                    .SetWorkingDirectory(path));
-            }
-        });
-
     Target BaseGenerate => _ => _
-        .DependsOn(BaseRestore)
         .Executes(() =>
         {
             DotNetRun(s => s
@@ -37,7 +26,53 @@ partial class Build
                 .SetProjectFile(Paths.BaseDatabaseGenerate));
         });
 
+    Target BaseDatabaseTestDomain => _ => _
+        .DependsOn(BaseGenerate)
+        .Executes(() =>
+        {
+            DotNetTest(s => s
+                .SetProjectFile(Paths.BaseDatabaseDomainTests)
+                .SetLogger("trx;LogFileName=BaseDatabaseDomain.trx")
+                .SetResultsDirectory(Paths.ArtifactsTests));
+        });
+
+    Target BasePublishServer => _ => _
+        .DependsOn(BaseGenerate)
+        .Executes(() =>
+        {
+            var dotNetPublishSettings = new DotNetPublishSettings()
+                .SetWorkingDirectory(Paths.BaseDatabaseServer)
+                .SetOutput(Paths.ArtifactsBaseServer);
+            DotNetPublish(dotNetPublishSettings);
+        });
+
+    Target BaseDatabaseTestServer => _ => _
+        .DependsOn(BaseGenerate)
+        .DependsOn(BasePublishServer)
+        .Executes(async () =>
+        {
+            using (var server = new Server(Paths.ArtifactsBaseServer))
+            {
+                await server.Init();
+                DotNetTest(s => s
+                    .SetProjectFile(Paths.BaseDatabaseServerTests)
+                    .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
+                    .SetResultsDirectory(Paths.ArtifactsTests));
+            }
+        });
+
+    Target BaseWorkspaceNpmInstall => _ => _
+        .Executes(() =>
+        {
+            foreach (var path in Paths.BaseWorkspaceTypescript)
+            {
+                NpmInstall(s => s
+                    .SetWorkingDirectory(path));
+            }
+        });
+
     Target BaseAutotest => _ => _
+        .DependsOn(BaseWorkspaceNpmInstall)
         .DependsOn(BaseGenerate)
         .Executes(() =>
         {
@@ -53,35 +88,6 @@ partial class Build
                 .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
         });
 
-    Target BaseDatabaseTestDomain => _ => _
-        .DependsOn(BaseGenerate)
-        .Executes(() =>
-        {
-            DotNetTest(s => s
-                .SetProjectFile(Paths.BaseDatabaseDomainTests)
-                .SetLogger("trx;LogFileName=BaseDatabaseDomain.trx")
-                .SetResultsDirectory(Paths.Artifacts));
-        });
-
-    Target BaseDatabaseTestServer => _ => _
-        .DependsOn(BaseGenerate)
-        .Executes(async () =>
-        {
-            var process = await BaseInitServer();
-
-            try
-            {
-                DotNetTest(s => s
-                    .SetProjectFile(Paths.BaseDatabaseServerTests)
-                    .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
-                    .SetResultsDirectory(Paths.Artifacts));
-            }
-            finally
-            {
-                process.Kill();
-            }
-        });
-
     Target BaseWorkspaceTypescriptDomain => _ => _
         .DependsOn(BaseGenerate)
         .Executes(() =>
@@ -93,22 +99,18 @@ partial class Build
 
     Target BaseWorkspaceTypescriptPromise => _ => _
         .DependsOn(BaseGenerate)
+        .DependsOn(BasePublishServer)
         .Executes(async () =>
         {
-            var process = await BaseInitServer();
-
-            try
+            using (var server = new Server(Paths.ArtifactsBaseServer))
             {
+                await server.Init();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
                     .SetCommand("az:test"));
             }
-            finally
-            {
-                process.Kill();
-            }
-
         });
+
     Target BaseDatabaseTest => _ => _
         .DependsOn(BaseDatabaseTestDomain)
         .DependsOn(BaseDatabaseTestServer);
@@ -117,7 +119,11 @@ partial class Build
         .DependsOn(BaseWorkspaceTypescriptDomain)
         .DependsOn(BaseWorkspaceTypescriptPromise);
 
+    Target BaseTest => _ => _
+        .DependsOn(BaseDatabaseTest)
+        .DependsOn(BaseWorkspaceTest);
+
     Target Base => _ => _
         .DependsOn(Clean)
-        .DependsOn(BaseDatabaseTest);
+        .DependsOn(BaseTest);
 }

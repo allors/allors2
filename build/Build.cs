@@ -49,8 +49,9 @@ partial class Build : NukeBuild
             }
 
             EnsureCleanDirectory(Paths.Artifacts);
+            EnsureExistingDirectory(Paths.ArtifactsTests);
         });
    
     Target Default => _ => _
-        .DependsOn(BaseGenerate);
+        .DependsOn(BaseAutotest);
 }

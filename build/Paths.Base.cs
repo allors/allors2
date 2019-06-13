@@ -6,7 +6,8 @@ public partial class Paths
     public AbsolutePath BaseRepositoryDomainRepository => Base / "Repository/Domain/Repository.csproj";
     public AbsolutePath BaseDatabaseMetaGenerated => Base / "Database/Meta/generated";
     public AbsolutePath BaseDatabaseGenerate => Base / "Database/Generate/Generate.csproj";
-    public AbsolutePath BaseDatabaseServer => Base / "Database/Server/Server.csproj";
+    public AbsolutePath BaseDatabaseServer => Base / "Database/Server";
+    public AbsolutePath BaseDatabaseServerProject => BaseDatabaseServer / "Server.csproj";
     public AbsolutePath BaseDatabaseDomainTests => Base / "Database/Domain.Tests/Domain.Tests.csproj";
     public AbsolutePath BaseDatabaseServerTests => Base / "Database/Server.Tests/Server.Tests.csproj";
 
