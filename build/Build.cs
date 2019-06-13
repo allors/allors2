@@ -49,9 +49,14 @@ partial class Build : NukeBuild
             }
 
             EnsureCleanDirectory(Paths.Artifacts);
+        });
+
+    Target EnsureDirectories => _ => _
+        .Executes(() =>
+        {
             EnsureExistingDirectory(Paths.ArtifactsTests);
         });
-   
+    
     Target Default => _ => _
         .DependsOn(BaseWorkspaceAutotest);
 }

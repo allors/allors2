@@ -10,6 +10,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.Npm;
+using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
 
@@ -94,17 +95,19 @@ partial class Build
 
     Target BaseWorkspaceTypescriptDomain => _ => _
         .DependsOn(BaseWorkspaceSetup)
+        .DependsOn(EnsureDirectories)
         .Executes(() =>
         {
             NpmRun(s => s
                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
-                .SetArguments("--reporter-options", $"output={Paths.ArtifactsTests}/BaseWorkspaceTypescriptDomain..trx")
+                .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
                 .SetCommand("az:test"));
         });
 
     Target BaseWorkspaceTypescriptPromise => _ => _
         .DependsOn(BaseWorkspaceSetup)
         .DependsOn(BasePublishServer)
+        .DependsOn(EnsureDirectories)
         .Executes(async () =>
         {
             using (var server = new Server(Paths.ArtifactsBaseServer))
@@ -112,7 +115,7 @@ partial class Build
                 await server.Init();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
-                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTests}/BaseWorkspaceTypescriptPromise.trx")
+                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
                     .SetCommand("az:test"));
             }
         });
