@@ -27,30 +27,30 @@ namespace Allors.Domain
     {
         public static int NextElfProefValue(ISession session, Guid counterId)
         {
-            var serializable = session.Database.Serializable;
-            if (serializable != null)
+            int NextElfProefValue(ISession counterSession)
             {
-                using (var counterSession = serializable.CreateSession())
+                var counter = new Counters(counterSession).Sticky[counterId];
+                counter.Value = counter.Value + 1;
+
+                while (!IsValidElfProefNumber(counter.Value))
                 {
-                    var serializableCounter = new Counters(counterSession).Sticky[counterId];
-                    var newValue = serializableCounter.Value + 1;
-                    serializableCounter.Value = newValue;
+                    counter.Value = counter.Value + 1;
+                }
 
+                return counter.Value;
+            }
+
+            if (session.Database.IsShared)
+            {
+                using (var counterSession = session.Database.CreateSession())
+                {
+                    var value = NextElfProefValue(counterSession);
                     counterSession.Commit();
-
-                    return newValue;
+                    return value;
                 }
             }
 
-            var counter = new Counters(session).Sticky[counterId];
-            counter.Value = counter.Value + 1;
-
-            while (!IsValidElfProefNumber(counter.Value))
-            {
-                counter.Value = counter.Value + 1;
-            }
-
-            return counter.Value;
+            return NextElfProefValue(session);
         }
 
         public static bool IsValidElfProefNumber(int number)

@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Allors.Domain
 {
     using System;
@@ -32,16 +34,24 @@ namespace Allors.Domain
         
         public static int NextValue(ISession session, Guid counterId)
         {
-            using (var separateSession = session.Database.CreateSession())
+            int NextValue(ISession counterSession)
             {
-                var counter = new Counters(separateSession).Sticky[counterId];
-                var newValue = counter.Value + 1;
-                counter.Value = newValue;
-
-                separateSession.Commit();
-
+                var counter = new Counters(counterSession).Sticky[counterId];
+                counter.Value = counter.Value + 1;
                 return counter.Value;
             }
+
+            if (session.Database.IsShared)
+            {
+                using (var counterSession = session.Database.CreateSession())
+                {
+                    var value = NextValue(counterSession);
+                    counterSession.Commit();
+                    return value;
+                }
+            }
+
+            return NextValue(session);
         }
     }
 }

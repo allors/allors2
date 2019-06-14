@@ -20,7 +20,7 @@ namespace Allors.Domain
     {
         public override string ToString()
         {
-            return this.InvoiceNumber ?? this.Description;
+            return $"{this.InvoiceNumber ?? this.Description} [{this.strategy.ObjectId}]";
         }
     }
 }

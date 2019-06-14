@@ -45,11 +45,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistFacility && this.ExistPart && this.Part.ExistDefaultFacility)
-            {
-                this.Facility = this.Part.DefaultFacility;
-            }
-
             if (!this.ExistName)
             {
                 this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.SerialisedInventoryItemState?.Name}";

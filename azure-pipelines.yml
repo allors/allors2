@@ -22,6 +22,8 @@ stages:
           target: '-target BaseDatabaseTest'
         base_workspace:
           target: '-target BaseWorkspaceTest'
+        apps_database:
+          target: '-target AppsDatabaseTest'
       maxParallel: 10
     
     steps:

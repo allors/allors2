@@ -765,10 +765,14 @@ namespace Allors.Domain
                                 .WithIdentification("1")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
             var item1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Good).Build();
+
+            this.Session.Derive();
+
             var item1Not = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(good1.Part).WithNonSerialisedInventoryItemState(new NonSerialisedInventoryItemStates(this.Session).Scrap).Build();
 
             var good2 = new NonUnifiedGoodBuilder(this.Session)
@@ -782,6 +786,7 @@ namespace Allors.Domain
                                 .WithIdentification("2")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
@@ -799,6 +804,7 @@ namespace Allors.Domain
                                 .WithIdentification("3")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
@@ -815,6 +821,7 @@ namespace Allors.Domain
                                 .WithIdentification("4")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
@@ -831,6 +838,7 @@ namespace Allors.Domain
                                 .WithIdentification("5")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
@@ -847,6 +855,7 @@ namespace Allors.Domain
                                 .WithIdentification("6")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 
@@ -863,6 +872,7 @@ namespace Allors.Domain
                                 .WithIdentification("7")
                                 .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithDefaultFacility(this.InternalOrganisation.FacilitiesWhereOwner.First)
                             .Build())
                 .Build();
 

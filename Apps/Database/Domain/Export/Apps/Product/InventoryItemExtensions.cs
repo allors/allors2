@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -40,10 +42,15 @@ namespace Allors.Domain
             var session = @this.Strategy.Session;
             var now = session.Now();
 
+            if (!@this.ExistFacility && @this.ExistPart && @this.Part.ExistDefaultFacility)
+            {
+                @this.Facility = @this.Part.DefaultFacility;
+            }
+
             Party owner = (Organisation) @this.Facility.Owner;
             if (@this is SerialisedInventoryItem item)
             {
-                owner = item.SerialisedItem.OwnedBy;
+                owner = item.SerialisedItem?.OwnedBy;
             }
 
             foreach (InventoryOwnership inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))

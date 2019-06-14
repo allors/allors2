@@ -30,7 +30,7 @@ namespace Allors.Domain
             var groupNames = this.SubjectGroups.Select(v => v.Name);
             var names = string.Join(",", userNames.Union(groupNames));
 
-            return this.Role.Name + ": " + names;
+            return $"{this.Role.Name}: {names} [{this.strategy.ObjectId}]";
         }
     }
 }

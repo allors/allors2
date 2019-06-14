@@ -19,7 +19,7 @@ namespace Allors.Domain
     {
         public override string ToString()
         {
-            return this.WorkEffortNumber ?? this.Name;
+            return $"{this.WorkEffortNumber ?? this.Name} [{this.strategy.ObjectId}]";
         }
     }
 }

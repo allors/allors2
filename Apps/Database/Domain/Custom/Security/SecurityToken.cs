@@ -41,7 +41,8 @@ namespace Allors.Domain
                 return "Initial";
             }
 
-            return string.Join(",", this.AccessControls.ToArray().Select(v => v.ToString()));
+            var toString = string.Join(",", this.AccessControls.ToArray().Select(v => v.ToString()));
+            return $"{toString} [{this.strategy.ObjectId}]";
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public override string ToString()
         {
-            return $"Organisation: {this.Id} {this.Name}";
+            return $"Organisation: {this.Id} {this.Name} [{this.strategy.ObjectId}]";
         }
     }
 }

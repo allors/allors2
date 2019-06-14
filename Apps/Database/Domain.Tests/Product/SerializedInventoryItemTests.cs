@@ -43,7 +43,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
             this.Session.Commit();
 
-            var builder = new SerialisedInventoryItemBuilder(this.Session).WithPart(part);
+            var builder = new SerialisedInventoryItemBuilder(this.Session).WithFacility(this.InternalOrganisation.FacilitiesWhereOwner.First).WithPart(part);
             builder.Build();
 
             // Act
