@@ -30,7 +30,7 @@ partial class Angular : IDisposable
 
     public async Task Init()
     {
-        if (!await Get("/", TimeSpan.FromMinutes(5)))
+        if (!await Get("/", TimeSpan.FromMinutes(10)))
         {
             throw new Exception("Could not initialize angular");
         }
