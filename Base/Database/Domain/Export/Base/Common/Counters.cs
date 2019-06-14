@@ -34,24 +34,28 @@ namespace Allors.Domain
         
         public static int NextValue(ISession session, Guid counterId)
         {
-            int NextValue(ISession counterSession)
+            int NextValue(Counter counter)
             {
-                var counter = new Counters(counterSession).Sticky[counterId];
                 counter.Value = counter.Value + 1;
                 return counter.Value;
             }
 
             if (session.Database.IsShared)
             {
-                using (var counterSession = session.Database.CreateSession())
+                using (var outOfBandSession = session.Database.CreateSession())
                 {
-                    var value = NextValue(counterSession);
-                    counterSession.Commit();
-                    return value;
+                    var outOfBandCounter = new Counters(outOfBandSession).Sticky[counterId];
+                    if (outOfBandCounter != null)
+                    {
+                        var value = NextValue(outOfBandCounter);
+                        outOfBandSession.Commit();
+                        return value;
+                    }
                 }
             }
 
-            return NextValue(session);
+            var sessionCounter = new Counters(session).Sticky[counterId];
+            return NextValue(sessionCounter);
         }
     }
 }

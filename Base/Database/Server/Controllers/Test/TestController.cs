@@ -1,3 +1,5 @@
+using Allors.Domain;
+
 namespace Allors.Server.Controllers
 {
     using System;
@@ -42,7 +44,10 @@ namespace Allors.Server.Controllers
                 new Setup(session, null).Apply();
                 session.Derive();
                 session.Commit();
-           
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
                 new TestPopulation(session, population).Apply();
                 session.Derive();
                 session.Commit();

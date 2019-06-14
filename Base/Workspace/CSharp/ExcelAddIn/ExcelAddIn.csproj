@@ -262,7 +262,7 @@
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.6.4</Version>
+      <Version>4.6.5</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>

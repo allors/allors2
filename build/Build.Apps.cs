@@ -98,7 +98,7 @@ partial class Build
             }
         });
 
-    Target AppsWorkspaceTypescriptMaterialTests => _ => _
+    Target AppsWorkspaceTypescriptIntranetTests => _ => _
         .DependsOn(AppsWorkspaceAutotest)
         .DependsOn(AppsPublishServer)
         .Executes(async () =>
@@ -123,7 +123,7 @@ partial class Build
     Target AppsWorkspaceTest => _ => _
         .DependsOn(AppsWorkspaceTypescriptDomain)
         .DependsOn(AppsWorkspaceTypescriptIntranet)
-        .DependsOn(AppsWorkspaceTypescriptMaterialTests);
+        .DependsOn(AppsWorkspaceTypescriptIntranetTests);
 
     Target AppsTest => _ => _
         .DependsOn(AppsDatabaseTest)

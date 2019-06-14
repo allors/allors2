@@ -27,9 +27,8 @@ namespace Allors.Domain
     {
         public static int NextElfProefValue(ISession session, Guid counterId)
         {
-            int NextElfProefValue(ISession counterSession)
+            int NextElfProefValue(Counter counter)
             {
-                var counter = new Counters(counterSession).Sticky[counterId];
                 counter.Value = counter.Value + 1;
 
                 while (!IsValidElfProefNumber(counter.Value))
@@ -42,15 +41,20 @@ namespace Allors.Domain
 
             if (session.Database.IsShared)
             {
-                using (var counterSession = session.Database.CreateSession())
+                using (var outOfBandSession = session.Database.CreateSession())
                 {
-                    var value = NextElfProefValue(counterSession);
-                    counterSession.Commit();
-                    return value;
+                    var outOfBandCounter = new Counters(outOfBandSession).Sticky[counterId];
+                    if (outOfBandCounter != null)
+                    {
+                        var value = NextElfProefValue(outOfBandCounter);
+                        outOfBandSession.Commit();
+                        return value;
+                    }
                 }
             }
 
-            return NextElfProefValue(session);
+            var sessionCounter = new Counters(session).Sticky[counterId];
+            return NextElfProefValue(sessionCounter);
         }
 
         public static bool IsValidElfProefNumber(int number)
