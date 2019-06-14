@@ -320,7 +320,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            this.SetIdentity("Administrator");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -346,8 +346,9 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
+
+            Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Delete));

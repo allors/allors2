@@ -48,7 +48,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            this.SetIdentity("orderProcessor");
+            this.SetIdentity("Administrator");
 
             var pickList = new PickListBuilder(this.Session).Build();
 

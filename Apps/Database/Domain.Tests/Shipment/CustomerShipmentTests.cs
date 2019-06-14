@@ -214,8 +214,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            this.SetIdentity("orderProcessor");
-            //this.SetIdentity("Administrator");
+            this.SetIdentity("Administrator");
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 

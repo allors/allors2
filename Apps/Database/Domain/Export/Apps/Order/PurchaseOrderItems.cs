@@ -43,16 +43,13 @@ namespace Allors.Domain
             var finished = new PurchaseOrderItemStates(this.Session).Finished;
 
             var part = this.Meta.Part;
-
-            config.Deny(this.ObjectType, partiallyReceived, part);
-            config.Deny(this.ObjectType, received, part);
-
             var cancel = this.Meta.Cancel;
             var reject = this.Meta.Reject;
             var quickReceive = this.Meta.QuickReceive;
-
-            // TODO: Delete
             var delete = this.Meta.Delete;
+
+            config.Deny(this.ObjectType, partiallyReceived, part);
+            config.Deny(this.ObjectType, received, part);
 
             config.Deny(this.ObjectType, created, cancel, reject);
             config.Deny(this.ObjectType, onHold, quickReceive);

@@ -801,7 +801,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            this.SetIdentity("Administrator");
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -815,6 +815,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            invoice.Send();
+
+            this.Session.Derive();
+
             new ReceiptBuilder(this.Session)
                 .WithAmount(100)
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
@@ -823,6 +827,8 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var acl = new AccessControlList(invoice, this.Session.GetUser());
+
+            Assert.Equal(new SalesInvoiceStates(this.Session).Paid, invoice.SalesInvoiceState);
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
             Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
