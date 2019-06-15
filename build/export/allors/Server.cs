@@ -55,7 +55,8 @@ partial class Server : IDisposable
                     if (!success)
                     {
                         Warn("Server: Unsuccessful request");
-                        Warn(response.Content);
+                        var result = response.Content.ReadAsStringAsync().Result;
+                        Warn(result);
                     }
                 }
             }

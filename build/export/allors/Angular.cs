@@ -55,7 +55,8 @@ partial class Angular : IDisposable
                     if (!success)
                     {
                         Warn("Angular: Unsuccessful request");
-                        Warn(response.Content);
+                        var result = response.Content.ReadAsStringAsync().Result;
+                        Warn(result);
                     }
                 }
             }
