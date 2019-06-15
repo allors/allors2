@@ -35,9 +35,6 @@ namespace Allors.Server.Controllers
         {
             try
             {
-                var nul = 0;
-                var oops = 1 / nul;
-
                 this.Database.Init();
                 this.Database.ServiceProvider.GetRequiredService<IStateService>().Clear();
 
