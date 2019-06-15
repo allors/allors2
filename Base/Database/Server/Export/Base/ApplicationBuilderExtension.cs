@@ -1,7 +1,6 @@
 ﻿namespace Allors.Server
 {
     using Allors.Services;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 

@@ -1,11 +1,8 @@
-using Allors.Domain;
-
 namespace Allors.Server.Controllers
 {
     using System;
-
+    using Allors.Domain;
     using Allors.Services;
-
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -23,11 +20,12 @@ namespace Allors.Server.Controllers
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
             stateService.Clear();
+            this.Database.Init();
             return this.Ok("Init");
         }
 
         [HttpGet]
- 		public IActionResult Setup(string population)
+        public IActionResult Setup(string population)
         {
             try
             {

@@ -58,5 +58,6 @@ partial class Build : NukeBuild
         });
     
     Target Default => _ => _
-        .DependsOn(BaseWorkspaceAutotest);
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(AppsWorkspaceAutotest);
 }

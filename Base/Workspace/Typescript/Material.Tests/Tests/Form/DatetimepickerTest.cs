@@ -4,11 +4,8 @@ namespace Tests
 {
     using System;
     using System.Linq;
-
     using Allors.Domain;
-
     using Components;
-
     using Xunit;
 
     [Collection("Test collection")]
