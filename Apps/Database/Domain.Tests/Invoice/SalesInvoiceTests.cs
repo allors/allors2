@@ -824,6 +824,7 @@ namespace Allors.Domain
                 .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
                 .Build();
 
+
             this.Session.Derive();
 
             var acl = new AccessControlList(invoice, this.Session.GetUser());

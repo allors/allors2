@@ -59,7 +59,7 @@ partial class Angular : IDisposable
                 }
                 catch (Exception e)
                 {
-                    Error(e);
+                    Warn(e);
                 }
             }
 

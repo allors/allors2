@@ -59,7 +59,7 @@ partial class Server : IDisposable
                 }
                 catch (Exception e)
                 {
-                    Error(e);
+                    Warn(e);
                 }
             }
 
