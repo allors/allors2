@@ -24,25 +24,28 @@ namespace Allors.Domain
 
     public partial class SecurityToken
     {
-        public override string ToString()
+        public string DebuggerDisplay
         {
-            if (this.ExistSingletonsWhereDefaultSecurityToken)
+            get
             {
-                return "Default";
-            }
+                if (this.ExistSingletonsWhereDefaultSecurityToken)
+                {
+                    return "Default";
+                }
 
-            if (this.ExistSingletonsWhereAdministratorSecurityToken)
-            {
-                return "Administrator";
-            }
+                if (this.ExistSingletonsWhereAdministratorSecurityToken)
+                {
+                    return "Administrator";
+                }
 
-            if (this.ExistSingletonsWhereInitialSecurityToken)
-            {
-                return "Initial";
-            }
+                if (this.ExistSingletonsWhereInitialSecurityToken)
+                {
+                    return "Initial";
+                }
 
-            var toString = string.Join(",", this.AccessControls.ToArray().Select(v => v.ToString()));
-            return $"{toString} [{this.strategy.ObjectId}]";
+                var toString = string.Join(",", this.AccessControls.ToArray().Select(v => v.ToString()));
+                return $"{toString} [{this.strategy.ObjectId}]";
+            }
         }
     }
 }

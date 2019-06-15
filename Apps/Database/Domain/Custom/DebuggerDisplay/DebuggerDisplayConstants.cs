@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Facilities.cs" company="Allors bvba">
+// <copyright file="AccountingPeriod.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,13 +13,10 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Allors.Domain
+
+public static class DebuggerDisplayConstants
 {
-    public partial class Facility
-    {
-        public override string ToString()
-        {
-            return $"{this.Name} [{this.strategy.ObjectId}]";
-        }
-    }
+    public const string id = " [{strategy.ObjectId}]";
+
+    public const string name = "{Name}" + id;
 }

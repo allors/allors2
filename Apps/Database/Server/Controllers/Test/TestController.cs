@@ -33,31 +33,41 @@ namespace Allors.Server.Controllers
         [HttpGet]
         public IActionResult Setup(string population)
         {
-            this.Database.Init();
-            this.Database.ServiceProvider.GetRequiredService<IStateService>().Clear();
-
-            using (var session = this.Database.CreateSession())
+            try
             {
-                new Setup(session).Apply();
+                var nul = 0;
+                var oops = 1 / nul;
 
-                session.Derive();
-                session.Commit();
+                this.Database.Init();
+                this.Database.ServiceProvider.GetRequiredService<IStateService>().Clear();
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                using (var session = this.Database.CreateSession())
+                {
+                    new Setup(session).Apply();
 
-                new Upgrade(session, null).Execute();
+                    session.Derive();
+                    session.Commit();
 
-                session.Derive();
-                session.Commit();
+                    var administrator = new Users(session).GetUser("administrator");
+                    session.SetUser(administrator);
 
-                new Demo(session, null).Execute();
+                    new Upgrade(session, null).Execute();
 
-                session.Derive();
-                session.Commit();
+                    session.Derive();
+                    session.Commit();
+
+                    new Demo(session, null).Execute();
+
+                    session.Derive();
+                    session.Commit();
+                }
+
+                return this.Ok("Setup");
             }
-
-            return this.Ok("Setup");
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpGet]
