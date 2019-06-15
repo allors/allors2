@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tooling.ProcessTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -45,14 +46,21 @@ partial class Server : IDisposable
             var success = false;
             while (!success && (DateTime.Now < stop))
             {
+                await Task.Delay(100);
+
                 try
                 {
                     var response = await client.GetAsync($"http://localhost:5000{url}");
                     success = response.IsSuccessStatusCode;
+                    if (!success)
+                    {
+                        Warn(response.Content);
+                    }
                 }
-                catch { }
-
-                await Task.Delay(100);
+                catch (Exception e)
+                {
+                    Error(e);
+                }
             }
 
             return success;

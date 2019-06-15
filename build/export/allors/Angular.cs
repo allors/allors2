@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Npm;
+using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
 
 partial class Angular : IDisposable
@@ -45,14 +46,21 @@ partial class Angular : IDisposable
             var success = false;
             while (!success && (DateTime.Now < stop))
             {
+                await Task.Delay(100);
+
                 try
                 {
                     var response = await client.GetAsync($"http://localhost:4200{url}");
                     success = response.IsSuccessStatusCode;
+                    if (!success)
+                    {
+                        Warn(response.Content);
+                    }
                 }
-                catch { }
-
-                await Task.Delay(100);
+                catch (Exception e)
+                {
+                    Error(e);
+                }
             }
 
             return success;

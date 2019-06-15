@@ -12,8 +12,20 @@ stages:
     
     strategy:
       matrix:
-        test:
-          target: '-target AppsWorkspaceTypescriptIntranet'
+        adapters_memory:
+          target: '-target AdaptersTestMemory'
+        adapters_sqlclient:
+          target: '-target AdaptersTestSqlClient'
+        adapters_npgsql:
+          target: '-target AdaptersTestNpgsql'
+        base_database:
+          target: '-target BaseDatabaseTest'
+        base_workspace:
+          target: '-target BaseWorkspaceTest'
+        apps_database:
+          target: '-target AppsDatabaseTest'
+        apps_workspace:
+          target: '-target AppsWorkspaceTest'
       maxParallel: 10
     
     steps:
