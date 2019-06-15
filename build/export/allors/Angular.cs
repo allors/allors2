@@ -52,12 +52,17 @@ partial class Angular : IDisposable
                 {
                     var response = await client.GetAsync($"http://localhost:4200{url}");
                     success = response.IsSuccessStatusCode;
+                    var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
                         Warn("Angular: Unsuccessful request");
-                        var result = response.Content.ReadAsStringAsync().Result;
                         Warn(result);
                     }
+                    else
+                    {
+                        Normal(result);
+                    }
+
                 }
             }
             catch (Exception e)

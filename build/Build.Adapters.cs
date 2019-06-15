@@ -39,11 +39,15 @@ partial class Build
         .DependsOn(AdaptersGenerate)
         .Executes(() =>
         {
-            DotNetTest(s => s
-                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
-                .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
-                .SetResultsDirectory(Paths.ArtifactsTests));
+            using (var database = new SqlServer())
+            {
+                database.Restart();
+                DotNetTest(s => s
+                    .SetProjectFile(Paths.PlatformAdaptersStaticTests)
+                    .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
+                    .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
+                    .SetResultsDirectory(Paths.ArtifactsTests));
+            }
         });
 
     Target AdaptersTestNpgsql => _ => _

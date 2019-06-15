@@ -52,11 +52,15 @@ partial class Server : IDisposable
                 {
                     var response = await client.GetAsync($"http://localhost:5000{url}");
                     success = response.IsSuccessStatusCode;
+                    var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
                         Warn("Server: Unsuccessful request");
-                        var result = response.Content.ReadAsStringAsync().Result;
                         Warn(result);
+                    }
+                    else
+                    {
+                        Normal(result);
                     }
                 }
             }

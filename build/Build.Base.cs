@@ -46,13 +46,17 @@ partial class Build
         .DependsOn(BasePublishServer)
         .Executes(async () =>
         {
-            using (var server = new Server(Paths.ArtifactsBaseServer))
+            using (var database = new SqlServer())
             {
-                await server.Init();
-                DotNetTest(s => s
-                    .SetProjectFile(Paths.BaseDatabaseServerTests)
-                    .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
-                    .SetResultsDirectory(Paths.ArtifactsTests));
+                database.Restart();
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    await server.Init();
+                    DotNetTest(s => s
+                        .SetProjectFile(Paths.BaseDatabaseServerTests)
+                        .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
+                        .SetResultsDirectory(Paths.ArtifactsTests));
+                }
             }
         });
 
@@ -69,7 +73,7 @@ partial class Build
     Target BaseWorkspaceSetup => _ => _
         .DependsOn(BaseWorkspaceNpmInstall)
         .DependsOn(BaseGenerate);
-    
+
     Target BaseWorkspaceAutotest => _ => _
         .DependsOn(BaseWorkspaceSetup)
         .Executes(() =>
@@ -103,13 +107,18 @@ partial class Build
         .DependsOn(EnsureDirectories)
         .Executes(async () =>
         {
-            using (var server = new Server(Paths.ArtifactsBaseServer))
+            using (var database = new SqlServer())
             {
-                await server.Init();
-                NpmRun(s => s
-                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
-                    .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptPromise}")
-                    .SetCommand("az:test"));
+                database.Restart();
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    await server.Init();
+                    NpmRun(s => s
+                        .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
+                        .SetArguments("--reporter-options",
+                            $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptPromise}")
+                        .SetCommand("az:test"));
+                }
             }
         });
 
@@ -119,14 +128,19 @@ partial class Build
         .DependsOn(EnsureDirectories)
         .Executes(async () =>
         {
-            using (var server = new Server(Paths.ArtifactsBaseServer))
+            using (var database = new SqlServer())
             {
-                await server.Init();
-                NpmRun(s => s
-                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptAngular)
-                    .SetArguments("--watch=false", "--reporters", "trx")
-                    .SetCommand("test"));
-                CopyFileToDirectory(Paths.BaseWorkspaceTypescriptAngularTrx, Paths.ArtifactsTests, FileExistsPolicy.Overwrite);
+                database.Restart();
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    await server.Init();
+                    NpmRun(s => s
+                        .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptAngular)
+                        .SetArguments("--watch=false", "--reporters", "trx")
+                        .SetCommand("test"));
+                    CopyFileToDirectory(Paths.BaseWorkspaceTypescriptAngularTrx, Paths.ArtifactsTests,
+                        FileExistsPolicy.Overwrite);
+                }
             }
         });
 
@@ -135,14 +149,19 @@ partial class Build
         .DependsOn(BasePublishServer)
         .Executes(async () =>
         {
-            using (var server = new Server(Paths.ArtifactsBaseServer))
+            using (var database = new SqlServer())
             {
-                await server.Init();
-                NpmRun(s => s
-                    .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptMaterial)
-                    .SetArguments("--watch=false", "--reporters", "trx")
-                    .SetCommand("test"));
-                CopyFileToDirectory(Paths.BaseWorkspaceTypescriptMaterialTrx, Paths.ArtifactsTests, FileExistsPolicy.Overwrite);
+                database.Restart();
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    await server.Init();
+                    NpmRun(s => s
+                        .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptMaterial)
+                        .SetArguments("--watch=false", "--reporters", "trx")
+                        .SetCommand("test"));
+                    CopyFileToDirectory(Paths.BaseWorkspaceTypescriptMaterialTrx, Paths.ArtifactsTests,
+                        FileExistsPolicy.Overwrite);
+                }
             }
         });
 
@@ -151,20 +170,24 @@ partial class Build
         .DependsOn(BasePublishServer)
         .Executes(async () =>
         {
-            using (var server = new Server(Paths.ArtifactsBaseServer))
+            using (var database = new SqlServer())
             {
-                using (var angular = new Angular(Paths.BaseWorkspaceTypescriptMaterial))
+                database.Restart();
+                using (var server = new Server(Paths.ArtifactsBaseServer))
                 {
-                    await server.Init();
-                    await angular.Init();
-                    DotNetTest(s => s
-                        .SetProjectFile(Paths.BaseWorkspaceTypescriptMaterialTests)
-                        .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptMaterialTests.trx")
-                        .SetResultsDirectory(Paths.ArtifactsTests));
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptMaterial))
+                    {
+                        await server.Init();
+                        await angular.Init();
+                        DotNetTest(s => s
+                            .SetProjectFile(Paths.BaseWorkspaceTypescriptMaterialTests)
+                            .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptMaterialTests.trx")
+                            .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
                 }
             }
         });
-    
+
     Target BaseDatabaseTest => _ => _
         .DependsOn(BaseDatabaseTestDomain)
         .DependsOn(BaseDatabaseTestServer);
