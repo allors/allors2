@@ -22,45 +22,8 @@ namespace Allors.Server.Controllers
         public IActionResult Init()
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
-
-            var database = this.Database;
-            database.Init();
             stateService.Clear();
-
             return this.Ok("Init");
-        }
-
-        [HttpGet]
-        public IActionResult Setup(string population)
-        {
-            try
-            {
-                var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
-
-                var database = this.Database;
-                database.Init();
-                stateService.Clear();
-
-                using (var session = database.CreateSession())
-                {
-                    new Setup(session, null).Apply();
-                    session.Derive();
-                    session.Commit();
-
-                    var administrator = new Users(session).GetUser("administrator");
-                    session.SetUser(administrator);
-
-                    new TestPopulation(session, population).Apply();
-                    session.Derive();
-                    session.Commit();
-                }
-
-                return this.Ok("Setup");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
         }
 
         [HttpGet]

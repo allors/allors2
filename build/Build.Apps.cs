@@ -31,6 +31,27 @@ partial class Build
                 .SetResultsDirectory(Paths.ArtifactsTests));
         });
 
+    Target AppsPublishCommands => _ => _
+        .DependsOn(AppsGenerate)
+        .Executes(() =>
+        {
+            var dotNetPublishSettings = new DotNetPublishSettings()
+                .SetWorkingDirectory(Paths.AppsDatabaseCommands)
+                .SetOutput(Paths.ArtifactsAppsCommands);
+            DotNetPublish(dotNetPublishSettings);
+        });
+
+    Target AppsCommandsPopulate => _ => _
+        .DependsOn(AppsPublishCommands)
+        .Executes(() =>
+        {
+            using (var database = new SqlServer())
+            {
+                database.Restart();
+                DotNet("Commands.dll Populate", Paths.ArtifactsAppsCommands);
+            }
+        });
+
     Target AppsPublishServer => _ => _
         .DependsOn(AppsGenerate)
         .Executes(() =>
@@ -85,43 +106,37 @@ partial class Build
     Target AppsWorkspaceTypescriptIntranet => _ => _
         .DependsOn(AppsWorkspaceSetup)
         .DependsOn(AppsPublishServer)
+        .DependsOn(AppsCommandsPopulate)
         .Executes(async () =>
         {
-            using (var database = new SqlServer())
+            using (var server = new Server(Paths.ArtifactsAppsServer))
             {
-                database.Restart();
-                using (var server = new Server(Paths.ArtifactsAppsServer))
-                {
-                    await server.Init();
-                    NpmRun(s => s
-                        .SetWorkingDirectory(Paths.AppsWorkspaceTypescriptIntranet)
-                        .SetArguments("--watch=false", "--reporters", "trx")
-                        .SetCommand("test"));
-                    CopyFileToDirectory(Paths.AppsWorkspaceTypescriptIntranetTrx, Paths.ArtifactsTests,
-                        FileExistsPolicy.Overwrite);
-                }
+                await server.Init();
+                NpmRun(s => s
+                    .SetWorkingDirectory(Paths.AppsWorkspaceTypescriptIntranet)
+                    .SetArguments("--watch=false", "--reporters", "trx")
+                    .SetCommand("test"));
+                CopyFileToDirectory(Paths.AppsWorkspaceTypescriptIntranetTrx, Paths.ArtifactsTests,
+                    FileExistsPolicy.Overwrite);
             }
         });
 
     Target AppsWorkspaceTypescriptIntranetTests => _ => _
         .DependsOn(AppsWorkspaceAutotest)
         .DependsOn(AppsPublishServer)
+        .DependsOn(AppsCommandsPopulate)
         .Executes(async () =>
         {
-            using (var database = new SqlServer())
+            using (var server = new Server(Paths.ArtifactsAppsServer))
             {
-                database.Restart();
-                using (var server = new Server(Paths.ArtifactsAppsServer))
+                using (var angular = new Angular(Paths.AppsWorkspaceTypescriptIntranet))
                 {
-                    using (var angular = new Angular(Paths.AppsWorkspaceTypescriptIntranet))
-                    {
-                        await server.Init();
-                        await angular.Init();
-                        DotNetTest(s => s
-                            .SetProjectFile(Paths.AppsWorkspaceTypescriptIntranetTests)
-                            .SetLogger("trx;LogFileName=AppsWorkspaceTypescriptMaterialTests.trx")
-                            .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
+                    await server.Init();
+                    await angular.Init();
+                    DotNetTest(s => s
+                        .SetProjectFile(Paths.AppsWorkspaceTypescriptIntranetTests)
+                        .SetLogger("trx;LogFileName=AppsWorkspaceTypescriptMaterialTests.trx")
+                        .SetResultsDirectory(Paths.ArtifactsTests));
                 }
             }
         });

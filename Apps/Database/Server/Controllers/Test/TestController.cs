@@ -22,51 +22,10 @@ namespace Allors.Server.Controllers
         public IActionResult Init()
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
-
-            var database = this.Database;
-            database.Init();
             stateService.Clear();
-
             return this.Ok("Init");
         }
-
-        [HttpGet]
-        public IActionResult Setup(string population)
-        {
-            try
-            {
-                this.Database.Init();
-                this.Database.ServiceProvider.GetRequiredService<IStateService>().Clear();
-
-                using (var session = this.Database.CreateSession())
-                {
-                    new Setup(session).Apply();
-
-                    session.Derive();
-                    session.Commit();
-
-                    var administrator = new Users(session).GetUser("administrator");
-                    session.SetUser(administrator);
-
-                    new Upgrade(session, null).Execute();
-
-                    session.Derive();
-                    session.Commit();
-
-                    new Demo(session, null).Execute();
-
-                    session.Derive();
-                    session.Commit();
-                }
-
-                return this.Ok("Setup");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-        }
-
+        
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
         {

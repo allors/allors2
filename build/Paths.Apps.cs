@@ -6,8 +6,8 @@ public partial class Paths
     public AbsolutePath AppsRepositoryDomainRepository => Apps / "Repository/Domain/Repository.csproj";
     public AbsolutePath AppsDatabaseMetaGenerated => Apps / "Database/Meta/generated";
     public AbsolutePath AppsDatabaseGenerate => Apps / "Database/Generate/Generate.csproj";
+    public AbsolutePath AppsDatabaseCommands => Apps / "Database/Commands";
     public AbsolutePath AppsDatabaseServer => Apps / "Database/Server";
-    public AbsolutePath AppsDatabaseServerProject => AppsDatabaseServer / "Server.csproj";
     public AbsolutePath AppsDatabaseDomainTests => Apps / "Database/Domain.Tests/Domain.Tests.csproj";
 
     public AbsolutePath AppsWorkspaceTypescriptDomain => Apps / "Workspace/Typescript/Domain";

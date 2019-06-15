@@ -8,7 +8,6 @@ using Nuke.Common.Tools.DotNet;
 using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tooling.ProcessTasks;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class Server : IDisposable
 {
@@ -31,7 +30,7 @@ partial class Server : IDisposable
 
     public async Task Init()
     {
-        if (!await Get("/Test/Setup", TimeSpan.FromMinutes(10)))
+        if (!await Get("/Test/Init", TimeSpan.FromMinutes(5)))
         {
             throw new Exception("Could not initialize server");
         }
@@ -62,7 +61,7 @@ partial class Server : IDisposable
                     }
                     else
                     {
-                        Warn("Server response: Successful");
+                        Normal("Server response: Successful");
                         Normal(result);
                     }
                 }

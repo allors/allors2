@@ -11,7 +11,6 @@ public partial class Paths
     public AbsolutePath ArtifactsBaseServer => Artifacts / "Base/Server";
 
     public AbsolutePath ArtifactsTestsAppsWorkspaceTypescriptDomain => ArtifactsTests / "AppsWorkspaceTypescriptDomain.trx";
+    public AbsolutePath ArtifactsAppsCommands => Artifacts / "Apps/Commands";
     public AbsolutePath ArtifactsAppsServer => Artifacts / "Apps/Server";
 }
-
-
