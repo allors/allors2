@@ -83,8 +83,8 @@ partial class Build
         });
 
     Target AppsWorkspaceTypescriptIntranet => _ => _
-        //.DependsOn(AppsWorkspaceSetup)
-        //.DependsOn(AppsPublishServer)
+        .DependsOn(AppsWorkspaceSetup)
+        .DependsOn(AppsPublishServer)
         .Executes(async () =>
         {
             using (var database = new SqlServer())
