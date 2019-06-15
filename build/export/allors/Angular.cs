@@ -40,6 +40,7 @@ partial class Angular : IDisposable
     public async Task<bool> Get(string url, TimeSpan wait)
     {
         var stop = DateTime.Now.Add(wait);
+        var run = 0;
 
         var success = false;
         while (!success && (DateTime.Now < stop))
@@ -50,25 +51,26 @@ partial class Angular : IDisposable
             {
                 using (var client = new HttpClient())
                 {
+                    Normal($"Angular request: ${url}");
                     var response = await client.GetAsync($"http://localhost:4200{url}");
                     success = response.IsSuccessStatusCode;
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
-                        Warn("Angular: Unsuccessful request");
+                        Warn("Angular response: Unsuccessful");
                         Warn(result);
                     }
                     else
                     {
+                        Normal("Angular response: Successful");
                         Normal(result);
-                    }
 
+                    }
                 }
             }
             catch (Exception e)
             {
-                Warn("Angular: Exception");
-                Warn(e);
+                Warn($"Angular: Exception (run {++run})");
             }
         }
 
