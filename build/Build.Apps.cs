@@ -135,7 +135,7 @@ partial class Build
                     await angular.Init();
                     DotNetTest(s => s
                         .SetProjectFile(Paths.AppsWorkspaceTypescriptIntranetTests)
-                        .SetLogger("trx;LogFileName=AppsWorkspaceTypescriptMaterialTests.trx")
+                        .SetLogger("trx;LogFileName=AppsWorkspaceTypescriptIntranetTests.trx")
                         .SetResultsDirectory(Paths.ArtifactsTests));
                 }
             }
