@@ -6,7 +6,6 @@ namespace Tests
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
-
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
     using OpenQA.Selenium.Firefox;
@@ -44,10 +43,11 @@ namespace Tests
 
             options.AddArgument("no-sandbox");
 
-            var systemChromeDriver = @"\chromedriver";
-            this.Driver = Directory.Exists(systemChromeDriver) ?
-                              new ChromeDriver(systemChromeDriver, options) :
-                              new ChromeDriver(Environment.CurrentDirectory, options);
+            var chromeWebDriver = Environment.GetEnvironmentVariable("ChromeWebDriver");
+
+            this.Driver = Directory.Exists(chromeWebDriver) ?
+                new ChromeDriver(chromeWebDriver, options) :
+                new ChromeDriver(Environment.CurrentDirectory, options);
 
             // Move to monitor on the left
             this.Driver.Manage().Window.Position = new Point(-800, 0);

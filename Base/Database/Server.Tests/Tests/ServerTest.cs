@@ -80,8 +80,7 @@ namespace Server.Tests
 
             this.HttpClient.DefaultRequestHeaders.Accept.Clear();
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
+            
             var result = this.HttpClient.GetAsync("Test/Setup").Result;
             var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);
             this.Session = database.CreateSession();

@@ -11,14 +11,9 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
-    
-
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
     using OpenQA.Selenium;
-
     using ObjectFactory = Allors.ObjectFactory;
     using src.app.auth;
 
