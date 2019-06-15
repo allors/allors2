@@ -24,9 +24,9 @@ partial class Server : IDisposable
 
     public void Dispose()
     {
-       Process?.Kill();
-       Process?.Dispose();
-       Process = null;
+        Process?.Kill();
+        Process?.Dispose();
+        Process = null;
     }
 
     public async Task Init()
@@ -41,29 +41,31 @@ partial class Server : IDisposable
     {
         var stop = DateTime.Now.Add(wait);
 
-        using (var client = new HttpClient())
+        var success = false;
+        while (!success && (DateTime.Now < stop))
         {
-            var success = false;
-            while (!success && (DateTime.Now < stop))
-            {
-                await Task.Delay(100);
+            await Task.Delay(1000);
 
-                try
+            try
+            {
+                using (var client = new HttpClient())
                 {
                     var response = await client.GetAsync($"http://localhost:5000{url}");
                     success = response.IsSuccessStatusCode;
                     if (!success)
                     {
+                        Warn("Server: Unsuccessful request");
                         Warn(response.Content);
                     }
                 }
-                catch (Exception e)
-                {
-                    Warn(e);
-                }
             }
-
-            return success;
+            catch (Exception e)
+            {
+                Warn("Server: Exception");
+                Warn(e);
+            }
         }
+
+        return success;
     }
 }

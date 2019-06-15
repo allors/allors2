@@ -21,12 +21,12 @@ partial class Angular : IDisposable
 
     public void Dispose()
     {
-       Process?.Kill();
-       Process?.Dispose();
-       Process = null;
+        Process?.Kill();
+        Process?.Dispose();
+        Process = null;
 
-       // TODO: Only stop child processes
-       System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
+        // TODO: Only stop child processes
+        System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
     }
 
     public async Task Init()
@@ -41,29 +41,31 @@ partial class Angular : IDisposable
     {
         var stop = DateTime.Now.Add(wait);
 
-        using (var client = new HttpClient())
+        var success = false;
+        while (!success && (DateTime.Now < stop))
         {
-            var success = false;
-            while (!success && (DateTime.Now < stop))
-            {
-                await Task.Delay(100);
+            await Task.Delay(1000);
 
-                try
+            try
+            {
+                using (var client = new HttpClient())
                 {
                     var response = await client.GetAsync($"http://localhost:4200{url}");
                     success = response.IsSuccessStatusCode;
                     if (!success)
                     {
+                        Warn("Angular: Unsuccessful request");
                         Warn(response.Content);
                     }
                 }
-                catch (Exception e)
-                {
-                    Warn(e);
-                }
             }
-
-            return success;
+            catch (Exception e)
+            {
+                Warn("Angular: Exception");
+                Warn(e);
+            }
         }
+
+        return success;
     }
 }

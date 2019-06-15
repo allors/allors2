@@ -819,9 +819,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            var invoiceItem = invoice.SalesInvoiceItems[0];
+            var value = invoiceItem.TotalIncVat;
+
             new ReceiptBuilder(this.Session)
-                .WithAmount(100)
-                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(100).Build())
+                .WithAmount(value)
+                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoiceItem).WithAmountApplied(value).Build())
                 .Build();
 
 
