@@ -10,8 +10,8 @@ Licensed under the Lesser General Public Licence v3 (LGPL)
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-    $model.Project.LocalRoutedComponents:{component|<generation template="routedComponent" input="$component.Reference.Id$" output="$component.Reference.Name$.g.cs"/>}$
-    $model.Project.LocalNonRoutedScopedComponents:{component|<generation template="nonRoutedComponent" input="$component.Reference.Id$" output="$component.Reference.Name$.g.cs"/>}$
+    $model.Project.LocalRoutedComponents:{component|<generation template="routedComponent" input="$component.Reference.Id$" output="$component.Reference.Namespace$.$component.Reference.Name$.g.cs"/>}$
+    $model.Project.LocalNonRoutedScopedComponents:{component|<generation template="nonRoutedComponent" input="$component.Reference.Id$" output="$component.Reference.Namespace$.$component.Reference.Name$.g.cs"/>}$
 </generations>
 >>
 
