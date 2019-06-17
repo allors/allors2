@@ -7,6 +7,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class SqlServer : IDisposable
 {
@@ -34,6 +35,11 @@ partial class SqlServer : IDisposable
             Normal("SqlServer: Start");
             manager.Start();
         }
+    }
+
+    public void Populate(AbsolutePath commandsPath)
+    {
+        DotNet("Commands.dll Populate", commandsPath);
     }
 
     public void Dispose()
