@@ -2,18 +2,14 @@
 {
     using System.Data;
     using System.Text;
-
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using Identity;
     using Identity.Models;
     using Identity.Services;
-
     using JSNLog;
-
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
@@ -26,7 +22,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
-
     using Newtonsoft.Json;
 
     public class Startup
@@ -68,6 +63,8 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(this.Configuration);
+
             // Allors
             services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -122,27 +119,25 @@
 
             // Add framework services.
             services.AddCors(options =>
-                {
-                    options.AddPolicy(
-                        "AllowAll",
-                        builder =>
-                            {
-                                builder
-                                    .AllowAnyOrigin()
-                                    .AllowAnyHeader()
-                                    .AllowAnyMethod()
-                                    .AllowCredentials();
-                            });
-                });
+            {
+                options.AddPolicy(
+                    "AllowAngular",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
 
             services.AddResponseCaching();
-            services.AddMvc()
-                .AddXmlSerializerFormatters()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
 
             services.Configure<MvcOptions>(options =>
                 {
-                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAll"));
+                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAngular"));
                 });
         }
 
@@ -188,7 +183,7 @@
 
             app.UseAuthentication();
 
-            app.UseCors("AllowAll");
+            app.UseCors("AllowAngular");
 
             app.UseExceptionHandler(appBuilder =>
                 {

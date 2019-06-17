@@ -1,18 +1,14 @@
 ﻿namespace Allors.Server
 {
     using System.Text;
-
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using Identity;
     using Identity.Models;
     using Identity.Services;
-
     using JSNLog;
-
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
@@ -25,7 +21,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
-
     using Newtonsoft.Json;
 
     public class Startup
@@ -137,8 +132,7 @@
             });
 
             services.AddResponseCaching();
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
 
             services.Configure<MvcOptions>(options =>
             {
