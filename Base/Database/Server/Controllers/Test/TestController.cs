@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Allors.Server.Controllers
 {
     using System;
@@ -15,6 +17,8 @@ namespace Allors.Server.Controllers
 
         public IDatabase Database { get; set; }
 
+        private ILogger<TestController> Logger { get; set; }
+
         [HttpGet]
         public IActionResult Ready()
         {
@@ -24,13 +28,21 @@ namespace Allors.Server.Controllers
         [HttpGet]
         public IActionResult Init()
         {
-            var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
+            try
+            {
+                var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
 
-            var database = this.Database;
-            database.Init();
-            stateService.Clear();
+                var database = this.Database;
+                database.Init();
+                stateService.Clear();
 
-            return this.Ok("Init");
+                return this.Ok("Init");
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "Exception");
+                return BadRequest(e);
+            }
         }
 
         [HttpGet]
@@ -62,6 +74,7 @@ namespace Allors.Server.Controllers
             }
             catch (Exception e)
             {
+                this.Logger.LogError(e, "Exception");
                 return BadRequest(e);
             }
         }
@@ -69,9 +82,17 @@ namespace Allors.Server.Controllers
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
         {
-            var timeService = this.Database.ServiceProvider.GetRequiredService<ITimeService>();
-            timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
-            return this.Ok();
+            try
+            {
+                var timeService = this.Database.ServiceProvider.GetRequiredService<ITimeService>();
+                timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
+                return this.Ok();
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "Exception");
+                return BadRequest(e);
+            }
         }
     }
 }
