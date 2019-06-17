@@ -49,7 +49,7 @@
             // 
             this.allorsTab.Groups.Add(this.group1);
             this.allorsTab.Groups.Add(this.group2);
-            this.allorsTab.Label = "Allors";
+            this.allorsTab.Label = "Base";
             this.allorsTab.Name = "allorsTab";
             // 
             // group1

@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--
     This section defines project-level properties.
@@ -24,10 +24,10 @@
     <ProjectGuid>{15E278BF-C374-4C63-8469-18B71AF991FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <RootNamespace>AppsExcelAddIn</RootNamespace>
+    <RootNamespace>ExcelAddIn</RootNamespace>
     <AssemblyName>AppsExcelAddIn</AssemblyName>
     <LoadBehavior>3</LoadBehavior>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
@@ -104,7 +104,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -161,32 +162,32 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Client.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Client.cs">
       <Link>Base\Client.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Commands.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Commands.cs">
       <Link>Base\Commands.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\data\Row.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Data\Row.cs">
       <Link>Base\Data\Row.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\data\Table.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Data\Table.cs">
       <Link>Base\Data\Table.cs</Link>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\extensions\WorksheetExtensions.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\WorksheetExtensions.cs">
       <Link>Base\Extensions\WorksheetExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Host.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Host.cs">
       <Link>Base\Host.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Mediator.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Mediator.cs">
       <Link>Base\Mediator.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Sheet.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Sheet.cs">
       <Link>Base\Sheet.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\base\workspace\csharp\exceladdin\base\Sheets.cs">
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Sheets.cs">
       <Link>Base\Sheets.cs</Link>
     </Compile>
     <Compile Include="AddInManager.cs" />
@@ -200,33 +201,38 @@
     <Compile Include="Apps\Login\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Apps\Mediator.cs" />
     <Compile Include="Apps\PurchaseInvoices\DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Apps\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
-    <Compile Include="Apps\Mediator.cs" />
-    <Compile Include="Apps\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
-    <Compile Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Apps\Relation\Customers\DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Apps\Relation\Customers\CustomersSheet.cs" />
+    <Compile Include="Apps\Relation\Customers\DataSet1.Designer.cs" />
+    <Compile Include="Apps\Relation\Customers\DataSet11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Apps\Relation\People\DataSet.cs">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Apps\Relation\People\DataSet.Designer.cs">
       <DependentUpon>DataSet.cs</DependentUpon>
     </Compile>
-    <Compile Include="Apps\Relation\People\DataSet1.Designer.cs" />
+    <Compile Include="Apps\Relation\People\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Apps\Relation\People\PeopleSheet.cs" />
+    <Compile Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
     <Compile Include="Apps\Sheet.cs" />
     <Compile Include="Apps\Sheets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -243,7 +249,6 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
@@ -253,31 +258,20 @@
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Apps\PurchaseInvoices\DataSet.xsd">
-      <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Apps\PurchaseInvoices\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
     </None>
     <None Include="Apps\Relation\Customers\DataSet1.xsc">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </None>
     <None Include="Apps\Relation\Customers\DataSet1.xsd">
-      <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSet11.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Apps\Relation\Customers\DataSet1.xss">
       <DependentUpon>DataSet1.xsd</DependentUpon>
@@ -285,13 +279,27 @@
     <None Include="Apps\Relation\People\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\People\DataSet.xsd" />
+    <None Include="Apps\Relation\People\DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Apps\Relation\People\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
     <None Include="ExcelAddIn_TemporaryKey.pfx" />
     <None Include="NLog.config">
-      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -303,7 +311,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Ribbon.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
@@ -322,7 +330,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
-      <Project>{399e472f-356c-4dcd-b8ec-60cc263542ad}</Project>
+      <Project>{4cc90d31-775e-4a0e-8183-1ed53270d14d}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj">
@@ -357,7 +365,7 @@
     <ManifestKeyFile>ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>23BE8AB0522F03C56462CEEE8B75C6B23F08ECD0</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>24BA43AE5F6542F00C1AECEB87FA1B4C3989388A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -368,7 +376,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Excel" GeneratedCodeNamespace="AppsExcelAddIn" IconIndex="0">
+        <Host Name="Excel" GeneratedCodeNamespace="ExcelAddIn" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>

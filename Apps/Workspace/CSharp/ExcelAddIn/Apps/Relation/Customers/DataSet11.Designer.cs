@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace AppsExcelAddIn.Apps.Relation.Customers {
+namespace ExcelAddIn.Apps.Relation.Customers {
     
     
     /// <summary>
