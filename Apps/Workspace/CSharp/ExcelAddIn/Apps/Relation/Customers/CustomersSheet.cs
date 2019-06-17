@@ -24,7 +24,7 @@ namespace Allors.Excel.Customers
     public class CustomersSheet : Sheet
     {
         private const string CustomersListObjectName = "CustomersListObject";
-        private DataSet1 dataSet;
+        private DataSet dataSet;
         private ListObject listObject;
 
         private Result result;
@@ -81,7 +81,7 @@ namespace Allors.Excel.Customers
         
         private void ToListObject()
         {
-            this.dataSet = new DataSet1();
+            this.dataSet = new DataSet();
 
             this.dataSet.Customers.SetColumnsOrder(
                 this.dataSet.Customers.NameColumn.ColumnName,

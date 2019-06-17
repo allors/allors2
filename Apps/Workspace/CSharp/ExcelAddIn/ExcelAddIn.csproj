@@ -209,28 +209,21 @@
     </Compile>
     <Compile Include="Apps\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
     <Compile Include="Apps\Relation\Customers\CustomersSheet.cs" />
-    <Compile Include="Apps\Relation\Customers\DataSet1.Designer.cs" />
-    <Compile Include="Apps\Relation\Customers\DataSet11.Designer.cs">
+    <Compile Include="Apps\Relation\Customers\DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Apps\Relation\People\DataSet.cs">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Apps\Relation\People\DataSet.Designer.cs">
-      <DependentUpon>DataSet.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Apps\Relation\People\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Apps\Relation\People\PeopleSheet.cs" />
-    <Compile Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.Designer.cs">
+    <Compile Include="Apps\Relation\SalesInvoicesOverdue\DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+      <DependentUpon>DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Apps\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
     <Compile Include="Apps\Sheet.cs" />
@@ -265,38 +258,38 @@
     <None Include="Apps\PurchaseInvoices\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\Customers\DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <None Include="Apps\Relation\Customers\DataSet.xsc">
+      <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\Customers\DataSet1.xsd">
+    <None Include="Apps\Relation\Customers\DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet11.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Apps\Relation\Customers\DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <None Include="Apps\Relation\Customers\DataSet.xss">
+      <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Apps\Relation\People\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Apps\Relation\People\DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="Apps\Relation\People\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet.xsc">
+      <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xsd">
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
+    <None Include="Apps\Relation\SalesInvoicesOverdue\DataSet.xss">
+      <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="ExcelAddIn_TemporaryKey.pfx" />
     <None Include="NLog.config">
@@ -311,7 +304,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Ribbon.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
@@ -365,7 +358,7 @@
     <ManifestKeyFile>ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>24BA43AE5F6542F00C1AECEB87FA1B4C3989388A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1D4FC99D764126503217EE9DEF0C5107F381DC18</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

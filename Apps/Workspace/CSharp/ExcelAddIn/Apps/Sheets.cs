@@ -2,12 +2,11 @@
 using Allors.Excel.Customers;
 using Allors.Excel.PurchaseInvoices;
 using Allors.Excel.Relations.CustomersOverdue;
+using ExcelAddIn.Apps.Relation.People;
 using Microsoft.Office.Interop.Excel;
 
 namespace Allors.Excel
 {
-    using Allors.Excel.People;
-
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
     public partial class Sheets

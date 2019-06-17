@@ -1,6 +1,6 @@
 ﻿using Allors.Workspace.Meta;
 
-namespace Allors.Excel.People
+namespace ExcelAddIn.Apps.Relation.People
 {
     using System;
     using System.Linq;
@@ -133,7 +133,7 @@ namespace Allors.Excel.People
 
         private async Task Load()
         {
-            var pull = new Pull { Extent = new Workspace.Data.Filter(M.Person.ObjectType) };
+            var pull = new Pull { Extent = new Allors.Workspace.Data.Filter(M.Person.ObjectType) };
             this.result = await this.Load(pull);
             this.People = this.result.GetCollection<Person>("People");
         }
