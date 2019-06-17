@@ -111,7 +111,7 @@ partial class Build
         {
             using (var server = new Server(Paths.ArtifactsAppsServer))
             {
-                await server.Init();
+                await server.Ready();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.AppsWorkspaceTypescriptIntranet)
                     .SetArguments("--watch=false", "--reporters", "trx")
@@ -131,7 +131,7 @@ partial class Build
             {
                 using (var angular = new Angular(Paths.AppsWorkspaceTypescriptIntranet))
                 {
-                    await server.Init();
+                    await server.Ready();
                     await angular.Init();
                     DotNetTest(s => s
                         .SetProjectFile(Paths.AppsWorkspaceTypescriptIntranetTests)

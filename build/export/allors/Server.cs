@@ -28,11 +28,11 @@ partial class Server : IDisposable
         Process = null;
     }
 
-    public async Task Init()
+    public async Task Ready()
     {
-        if (!await Get("/Test/Init", TimeSpan.FromMinutes(5)))
+        if (!await Get("/Test/Ready", TimeSpan.FromMinutes(5)))
         {
-            throw new Exception("Could not initialize server");
+            throw new Exception("Server is not ready");
         }
     }
 

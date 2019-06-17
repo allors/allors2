@@ -16,11 +16,20 @@ namespace Allors.Server.Controllers
         public IDatabase Database { get; set; }
 
         [HttpGet]
+        public IActionResult Ready()
+        {
+            return this.Ok("Ready");
+        }
+
+        [HttpGet]
         public IActionResult Init()
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
+
+            var database = this.Database;
+            database.Init();
             stateService.Clear();
-            this.Database.Init();
+
             return this.Ok("Init");
         }
 

@@ -70,7 +70,7 @@ partial class Build
         {
             using (var server = new Server(Paths.ArtifactsBaseServer))
             {
-                await server.Init();
+                await server.Ready();
                 DotNetTest(s => s
                     .SetProjectFile(Paths.BaseDatabaseServerTests)
                     .SetLogger("trx;LogFileName=BaseDatabaseServer.trx")
@@ -128,7 +128,7 @@ partial class Build
         {
             using (var server = new Server(Paths.ArtifactsBaseServer))
             {
-                await server.Init();
+                await server.Ready();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
                     .SetArguments("--reporter-options",
@@ -146,7 +146,7 @@ partial class Build
         {
             using (var server = new Server(Paths.ArtifactsBaseServer))
             {
-                await server.Init();
+                await server.Ready();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptAngular)
                     .SetArguments("--watch=false", "--reporters", "trx")
@@ -164,7 +164,7 @@ partial class Build
         {
             using (var server = new Server(Paths.ArtifactsBaseServer))
             {
-                await server.Init();
+                await server.Ready();
                 NpmRun(s => s
                     .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptMaterial)
                     .SetArguments("--watch=false", "--reporters", "trx")
@@ -184,7 +184,7 @@ partial class Build
             {
                 using (var angular = new Angular(Paths.BaseWorkspaceTypescriptMaterial))
                 {
-                    await server.Init();
+                    await server.Ready();
                     await angular.Init();
                     DotNetTest(s => s
                         .SetProjectFile(Paths.BaseWorkspaceTypescriptMaterialTests)
