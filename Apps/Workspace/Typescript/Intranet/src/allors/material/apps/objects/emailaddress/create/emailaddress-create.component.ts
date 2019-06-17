@@ -49,7 +49,7 @@ export class EmailAddressCreateComponent extends TestScope implements OnInit, On
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const pulls = [
             pull.Party({

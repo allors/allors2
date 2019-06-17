@@ -58,7 +58,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
 
@@ -260,7 +260,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.serialisedItems = serialisedItems.filter(v => v.OwnedBy !== this.internalOrganisation);
 
         if (this.orderItem.SerialisedItem) {
-          this.serialisedItems.push(this.orderItem.SerialisedItem)
+          this.serialisedItems.push(this.orderItem.SerialisedItem);
         }
       });
   }

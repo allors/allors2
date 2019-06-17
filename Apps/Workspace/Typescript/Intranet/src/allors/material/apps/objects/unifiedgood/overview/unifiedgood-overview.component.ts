@@ -40,7 +40,7 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const { pull, x, m } = this.metaService;
 

@@ -102,7 +102,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           this.part = undefined;
 
@@ -335,7 +335,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
 
           if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = moment.utc().toISOString();;
+            supplierOffering.ThroughDate = moment.utc().toISOString();
           }
         });
       }

@@ -44,7 +44,7 @@ export class WebAddressEditComponent extends TestScope implements OnInit, OnDest
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
 
           const pulls = [

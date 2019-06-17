@@ -63,7 +63,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           let pulls = [
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),

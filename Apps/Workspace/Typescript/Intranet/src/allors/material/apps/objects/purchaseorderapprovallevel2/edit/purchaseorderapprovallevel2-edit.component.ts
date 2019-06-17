@@ -52,7 +52,7 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const pulls = [
             pull.PurchaseOrderApprovalLevel2({

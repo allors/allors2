@@ -50,7 +50,7 @@ export class PositionTypeRateEditComponent extends TestScope implements OnInit, 
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
 

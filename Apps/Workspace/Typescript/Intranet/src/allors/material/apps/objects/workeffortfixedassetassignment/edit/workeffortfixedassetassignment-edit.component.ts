@@ -51,7 +51,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
 

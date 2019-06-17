@@ -71,7 +71,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
           const { id } = this.data;

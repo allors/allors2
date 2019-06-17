@@ -55,7 +55,7 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
 

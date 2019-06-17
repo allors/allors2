@@ -55,7 +55,7 @@ export class FaceToFaceCommunicationEditComponent extends TestScope implements O
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
 

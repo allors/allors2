@@ -40,39 +40,13 @@ export class PersonOverviewComponent extends TestScope implements AfterViewInit,
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const { pull, x } = this.metaService;
-
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-
-          const pulls = [
-            pull.Person({
-              object: id,
-              fetch: {
-                EmploymentsWhereEmployee: x
-              }
-            }),
-          ];
-
-          return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              tap((loaded) => {
-                const employments = loaded.collections.Employments as Employment[];
-                this.employee = employments.length > 0;
-              }),
-              delay(1)
-            );
-        }),
-        switchMap(([]) => {
-
-          const { m, pull } = this.metaService;
+          const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Person;
           this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.Organisation;
           this.panelManager.expanded = navRoute.panel();
 
           this.panelManager.on();
@@ -80,7 +54,13 @@ export class PersonOverviewComponent extends TestScope implements AfterViewInit,
           const pulls = [
             pull.Person({
               object: this.panelManager.id,
-            })
+            }),
+            pull.Person({
+              object: this.panelManager.id,
+              fetch: {
+                EmploymentsWhereEmployee: x
+              }
+            }),
           ];
 
           this.panelManager.onPull(pulls);
@@ -95,6 +75,8 @@ export class PersonOverviewComponent extends TestScope implements AfterViewInit,
         this.panelManager.onPulled(loaded);
 
         this.person = loaded.objects.Person as Person;
+        const employments = loaded.collections.Employments as Employment[];
+        this.employee = employments.length > 0;
       });
   }
 

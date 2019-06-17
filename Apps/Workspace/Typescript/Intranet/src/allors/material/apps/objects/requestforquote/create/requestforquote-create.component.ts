@@ -58,7 +58,7 @@ export class RequestForQuoteCreateComponent extends TestScope implements OnInit,
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,

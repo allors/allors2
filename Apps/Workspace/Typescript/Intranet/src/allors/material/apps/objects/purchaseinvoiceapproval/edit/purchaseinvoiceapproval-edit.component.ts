@@ -52,7 +52,7 @@ export class PurchaseInvoiceApprovalEditComponent extends TestScope implements O
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const pulls = [
             pull.PurchaseInvoiceApproval({

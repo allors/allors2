@@ -41,7 +41,7 @@ export class PurchaseOrderOverviewComponent extends TestScope implements AfterVi
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const { m, pull, x } = this.metaService;
 

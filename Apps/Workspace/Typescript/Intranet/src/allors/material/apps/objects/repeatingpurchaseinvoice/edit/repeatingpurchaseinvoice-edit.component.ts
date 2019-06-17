@@ -50,7 +50,7 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([]) => {
+        switchMap(([, ]) => {
 
           const isCreate = this.data.id === undefined;
           const id = this.data.id;
