@@ -13,17 +13,15 @@
     <div class="a-content row">
 
       <div class="col-md-4 mb-3">
-        <nonunifiedgood-overview-summary></nonunifiedgood-overview-summary>
+           <nonunifiedgood-overview-summary></nonunifiedgood-overview-summary>
       </div>
 
       <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
-
         <nonunifiedgood-overview-detail></nonunifiedgood-overview-detail>
 
         <productidentification-panel [roleType]="metaService.m.Good.ProductIdentifications"></productidentification-panel>
 
         <pricecomponent-overview-panel></pricecomponent-overview-panel>
-
       </div>
     </div>
   </div>

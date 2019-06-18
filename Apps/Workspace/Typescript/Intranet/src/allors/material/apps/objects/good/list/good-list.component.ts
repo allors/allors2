@@ -158,7 +158,10 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
-                NonUnifiedGood_Part: x
+                NonUnifiedGood_Part: x,
+                ProductIdentifications: {
+                  ProductIdentificationType: x
+                }
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

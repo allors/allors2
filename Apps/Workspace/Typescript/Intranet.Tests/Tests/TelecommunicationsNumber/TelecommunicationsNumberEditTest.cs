@@ -60,6 +60,7 @@ namespace Tests.TelecommunicationsNumberTests
 
             var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
             createComponent
+                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber.Name)
                 .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
@@ -75,7 +76,7 @@ namespace Tests.TelecommunicationsNumberTests
             Assert.Equal(after.Length, before.Length + 1);
 
             var contactMechanism = after.Except(before).First();
-            
+
             Assert.Equal("111", contactMechanism.CountryCode);
             Assert.Equal("222", contactMechanism.AreaCode);
             Assert.Equal("333", contactMechanism.ContactNumber);

@@ -1,4 +1,5 @@
 import { ErrorHandler, Injectable, Injector, Type, NgZone } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { JL } from 'jsnlog';
 
 @Injectable()
@@ -16,7 +17,8 @@ export class AllorsErrorHandler implements ErrorHandler {
 
     JL().fatalException('Uncaught Exception', error);
 
-    alert('🛑 An error occurred and was logged, the application will restart.');
-    location.href = '/';
+    const router = this.injector.get(ActivatedRoute);
+
+    location.href = '/error';
   }
 }
