@@ -9,7 +9,7 @@ using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.Npm;
 using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tooling.ProcessTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
@@ -32,7 +32,7 @@ partial class Build : NukeBuild
 
         try
         {
-            System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
+            StartProcess("taskkill", "/F /T /IM node.exe").WaitForExit();
         }
         catch { }
     }
