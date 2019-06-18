@@ -26,7 +26,7 @@ partial class Angular : IDisposable
         Process = null;
 
         // TODO: Only stop child processes
-        System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
+        //System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
     }
 
     public async Task Init()

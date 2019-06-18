@@ -26,6 +26,17 @@ partial class Build : NukeBuild
 
     public readonly Paths Paths = new Paths(RootDirectory);
 
+    protected override void OnBuildFinished()
+    {
+        base.OnBuildFinished();
+
+        try
+        {
+            System.Diagnostics.Process.Start("taskkill", "/F /IM node.exe").WaitForExit();
+        }
+        catch { }
+    }
+
     Target Clean => _ => _
         .Executes(() =>
         {
