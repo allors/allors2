@@ -33,7 +33,9 @@ partial class Build : NukeBuild
 
         try
         {
-            StartProcess("taskkill", "/IM node.exe /F /T /FI \"STATUS eq RUNNING\"").WaitForExit();
+            StartProcess("taskkill", "/IM node.exe /F /T").WaitForExit();
+            StartProcess("taskkill", "/IM chrome.exe /F /T").WaitForExit();
+            StartProcess("taskkill", "/IM chromedriver.exe /F /T").WaitForExit();
         }
         catch { }
     }
