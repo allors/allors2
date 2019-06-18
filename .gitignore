@@ -3,6 +3,7 @@
 generated/
 artifacts/
 build/Properties/launchSettings.json
+**/package-lock.json
 
 # https://github.com/JetBrains/resharper-rider-samples/blob/master/.gitignore
 # Common IntelliJ Platform excludes

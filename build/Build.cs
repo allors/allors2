@@ -8,6 +8,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Tools.Npm;
+using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
 
@@ -32,7 +33,7 @@ partial class Build : NukeBuild
 
         try
         {
-            StartProcess("taskkill", "/F /T /IM node.exe").WaitForExit();
+            StartProcess("taskkill", "/IM node.exe /F /T /FI \"STATUS eq RUNNING\"").WaitForExit();
         }
         catch { }
     }
@@ -40,23 +41,33 @@ partial class Build : NukeBuild
     Target Clean => _ => _
         .Executes(() =>
         {
-            void Delete(DirectoryInfo v)
+            void Delete(DirectoryInfo directoryInfo)
             {
-                if (new[] { "node_modules", "packages", "bin", "obj", "generated" }.Contains(v.Name.ToLowerInvariant()))
+                directoryInfo.Refresh();
+                if (directoryInfo.Exists)
                 {
-                    DeleteDirectory(v.FullName);
-                    return;
-                }
+                    if (new[] { "node_modules", "packages", "bin", "obj", "generated" }.Contains(directoryInfo.Name.ToLowerInvariant()))
+                    {
+                        DeleteDirectory(directoryInfo.FullName);
+                        return;
+                    }
 
-                foreach (var child in v.GetDirectories())
-                {
-                    Delete(child);
+                    if (!directoryInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        foreach (var child in directoryInfo.GetDirectories())
+                        {
+                            Delete(child);
+                        }
+                    }
                 }
             }
 
-            foreach (var child in new DirectoryInfo(Paths.Platform).GetDirectories().Where(v => !v.Name.Equals("build")))
+            foreach (var path in new AbsolutePath[] { Paths.Platform, Paths.Core, Paths.Base, Paths.Apps })
             {
-                Delete(child);
+                foreach (var child in new DirectoryInfo(path).GetDirectories().Where(v => !v.Name.Equals("build")))
+                {
+                    Delete(child);
+                }
             }
 
             EnsureCleanDirectory(Paths.Artifacts);
@@ -67,7 +78,7 @@ partial class Build : NukeBuild
         {
             EnsureExistingDirectory(Paths.ArtifactsTests);
         });
-    
+
     Target Default => _ => _
         .DependsOn(AdaptersGenerate)
         .DependsOn(BaseWorkspaceAutotest)

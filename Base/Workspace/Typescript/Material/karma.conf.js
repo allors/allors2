@@ -29,12 +29,14 @@ module.exports = function (config) {
     browsers: ['Chrome'],
     singleRun: false,
     restartOnFileChange: true,
-    jasmineNodeOpts: {
-      defaultTimeoutInterval: 60000,
-    },
     trxReporter: {
       outputFile: 'dist/BaseWorkspaceTypescriptMaterial.trx',
       shortTestName: true
+    },
+    client: {
+      jasmine: {
+        timeoutInterval: 60000
+      }
     }
   });
 };
