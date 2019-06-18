@@ -27,17 +27,34 @@ partial class Build : NukeBuild
 
     public readonly Paths Paths = new Paths(RootDirectory);
 
+    static void TaskKill()
+    {
+        void TaskKill(string imageName)
+        {
+            try
+            {
+                StartProcess("taskkill", $"/IM {imageName} /F /T /FI \"PID ge 0\"").WaitForExit();
+            }
+            catch
+            {
+            }
+        }
+
+        TaskKill("node.exe");
+        TaskKill("chrome.exe");
+        TaskKill("chromedriver.exe");
+    }
+
+    protected override void OnBuildInitialized()
+    {
+        base.OnBuildInitialized();
+        TaskKill();
+    }
+
     protected override void OnBuildFinished()
     {
         base.OnBuildFinished();
-
-        try
-        {
-            StartProcess("taskkill", "/IM node.exe /F /T").WaitForExit();
-            StartProcess("taskkill", "/IM chrome.exe /F /T").WaitForExit();
-            StartProcess("taskkill", "/IM chromedriver.exe /F /T").WaitForExit();
-        }
-        catch { }
+        TaskKill();
     }
 
     Target Clean => _ => _
