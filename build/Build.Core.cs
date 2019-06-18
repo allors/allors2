@@ -14,6 +14,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build 
 {
     Target CoreGenerate => _ => _
+        .After(Clean)
         .Executes(() =>
         {
             DotNetRun(s => s
