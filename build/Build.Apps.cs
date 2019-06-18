@@ -101,7 +101,7 @@ partial class Build
             using (var sqlServer = new SqlServer())
             {
                 sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                sqlServer.Populate(Paths.ArtifactsAppsCommands);
 
                 using (var server = new Server(Paths.ArtifactsAppsServer))
                 {
@@ -128,7 +128,7 @@ partial class Build
             using (var sqlServer = new SqlServer())
             {
                 sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                sqlServer.Populate(Paths.ArtifactsAppsCommands);
                 using (var server = new Server(Paths.ArtifactsAppsServer))
                 {
                     using (var angular = new Angular(Paths.AppsWorkspaceTypescriptIntranet))
