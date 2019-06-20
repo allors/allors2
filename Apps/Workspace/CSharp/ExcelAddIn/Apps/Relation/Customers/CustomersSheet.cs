@@ -110,9 +110,9 @@ namespace Allors.Excel.Customers
                 {
                     var postalAddress = contactMechanism as PostalAddress;
                     row.Street = postalAddress.Address1;
-                    row.Place = postalAddress.PostalBoundary.Locality;
-                    row.Country = postalAddress.PostalBoundary.Country.Name;
-                    row.PostalCode = postalAddress.PostalBoundary.PostalCode;
+                    row.Place = postalAddress.Locality;
+                    row.Country = postalAddress.Country?.Name;
+                    row.PostalCode = postalAddress.PostalCode;
                 }
 
                 var contact = customer.CurrentOrganisationContactRelationships.FirstOrDefault()?.Contact;
@@ -201,12 +201,6 @@ namespace Allors.Excel.Customers
 
         private Tree ContactMechanismTree
             => new Tree(M.PostalAddress.Class)
-                .Add(M.PostalAddress.PostalBoundary, this.PostalBoundaryTree)
-        ;
-
-        private Tree PostalBoundaryTree
-            => new Tree(M.PostalBoundary.Class)
-                .Add(M.PostalBoundary.Country)
         ;
 
         private Tree GeneralCorrespondenceTree

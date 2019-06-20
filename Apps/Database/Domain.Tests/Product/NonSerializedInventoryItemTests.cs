@@ -142,7 +142,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
@@ -291,7 +291,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = this.InternalOrganisation;

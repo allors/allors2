@@ -148,7 +148,7 @@ namespace Allors.Domain
                 .Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var address1 = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var address1 = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var internalOrganisation2 = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
@@ -183,7 +183,7 @@ namespace Allors.Domain
 
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
-            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
+            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
@@ -249,7 +249,7 @@ namespace Allors.Domain
 
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
-            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
+            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();

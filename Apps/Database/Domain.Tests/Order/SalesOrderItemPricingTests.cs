@@ -67,8 +67,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
 
-            this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
+            this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(this.kiev).WithAddress1("Dnieper").Build();
             this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
             this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
                                                             .WithContactMechanism(this.shipToContactMechanismKiev)

@@ -135,7 +135,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithPostalAddressBoundary(mechelen).Build();
 
             var shippingAddress = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(shipToAddress)

@@ -353,11 +353,8 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
-                    .WithLocality("Mechelen")
-                    .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                    .Build())
-
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
@@ -411,11 +408,8 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
-                    .WithLocality("Mechelen")
-                    .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                    .Build())
-
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             var otherInternalOrganisation = new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("other internalOrganisation").Build();

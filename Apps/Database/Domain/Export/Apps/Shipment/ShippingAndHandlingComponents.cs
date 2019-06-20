@@ -47,7 +47,7 @@ namespace Allors.Domain
 
                 if (customerShipment.ExistShipToAddress)
                 {
-                    foreach (GeographicBoundary geographicBoundary in customerShipment.ShipToAddress.GeographicBoundaries)
+                    foreach (GeographicBoundary geographicBoundary in customerShipment.ShipToAddress.PostalAddressBoundaries)
                     {
                         if (geographicBoundary.Equals(shippingAndHandlingComponent.GeographicBoundary))
                         {

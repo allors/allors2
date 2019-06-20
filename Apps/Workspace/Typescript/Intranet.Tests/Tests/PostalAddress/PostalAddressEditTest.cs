@@ -29,11 +29,9 @@ namespace Tests.PostalAddressTests
 
             this.editContactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
-                    .WithLocality("city")
-                    .WithPostalCode("1111")
-                    .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                    .Build())
+                .WithLocality("city")
+                .WithPostalCode("1111")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.editContactMechanism).Build();
@@ -84,9 +82,9 @@ namespace Tests.PostalAddressTests
             Assert.Equal("addressline 2", contactMechanism.Address2);
             Assert.Equal("addressline 3", contactMechanism.Address3);
             Assert.Equal("addressline 1", contactMechanism.Address1);
-            Assert.Equal("city", contactMechanism.PostalBoundary.Locality);
-            Assert.Equal("postalcode", contactMechanism.PostalBoundary.PostalCode);
-            Assert.Equal(country, contactMechanism.PostalBoundary.Country);
+            Assert.Equal("city", contactMechanism.Locality);
+            Assert.Equal("postalcode", contactMechanism.PostalCode);
+            Assert.Equal(country, contactMechanism.Country);
             Assert.Equal("description", contactMechanism.Description);
         }
 
@@ -129,9 +127,9 @@ namespace Tests.PostalAddressTests
             Assert.Equal("addressline 2", this.editContactMechanism.Address2);
             Assert.Equal("addressline 3", this.editContactMechanism.Address3);
             Assert.Equal("addressline 1", this.editContactMechanism.Address1);
-            Assert.Equal("city", this.editContactMechanism.PostalBoundary.Locality);
-            Assert.Equal("postalcode", this.editContactMechanism.PostalBoundary.PostalCode);
-            Assert.Equal(country, this.editContactMechanism.PostalBoundary.Country);
+            Assert.Equal("city", this.editContactMechanism.Locality);
+            Assert.Equal("postalcode", this.editContactMechanism.PostalCode);
+            Assert.Equal(country, this.editContactMechanism.Country);
             Assert.Equal("description", this.editContactMechanism.Description);
         }
     }

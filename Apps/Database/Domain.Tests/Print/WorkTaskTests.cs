@@ -143,9 +143,9 @@ namespace Allors.Domain.Print
                 .WithAddress1(addressLine1)
                 .WithAddress2(addressLine2)
                 .WithAddress3(addressLine3)
-                .WithGeographicBoundary(postalCode)
-                .WithGeographicBoundary(city)
-                .WithGeographicBoundary(city.State.Country)
+                .WithPostalAddressBoundary(postalCode)
+                .WithPostalAddressBoundary(city)
+                .WithPostalAddressBoundary(city.State.Country)
                 .Build();
 
         private PartyContactMechanism CreatePartyContactMechanism(ContactMechanismPurpose purpose, ContactMechanism mechanism) =>

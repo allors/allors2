@@ -91,7 +91,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithInternalOrganisation(organisation).WithSupplier(supplier).WithNeedsApproval(true).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(takenViaContactMechanism)
                 .WithUseAsDefault(true)
@@ -143,7 +143,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithInternalOrganisation(organisation).WithSupplier(supplier).WithNeedsApproval(true).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(takenViaContactMechanism)
                 .WithUseAsDefault(true)

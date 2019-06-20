@@ -35,30 +35,10 @@ namespace Allors.Domain.Print.ProductQuoteModel
                     this.Address = $"\n{postalAddress.Address3}";
                 }
 
-                if (postalAddress.ExistCity)
-                {
-                    this.City = postalAddress.City.Name;
-                    this.State = postalAddress.City.State?.Name;
-                }
-                else if (postalAddress.ExistPostalBoundary)
-                {
-                    var postalBoundary = postalAddress.PostalBoundary;
-
-                    this.City = postalBoundary.Locality;
-                    this.State = postalBoundary.Region;
-                    this.PostalCode = postalBoundary.PostalCode;
-                    this.Country = postalBoundary.Country.Name;
-                }
-
-                if (this.PostalCode == null)
-                {
-                    this.PostalCode = postalAddress.PostalCode?.Code;
-                }
-
-                if (this.Country == null)
-                {
-                    this.Country = postalAddress.Country?.Name;
-                }
+                this.City = postalAddress.Locality;
+                this.State = postalAddress.Region;
+                this.PostalCode = postalAddress.PostalCode;
+                this.Country = postalAddress.Country?.Name;
             }
 
             if (contactMechanisam is ElectronicAddress electronicAddress)
@@ -66,7 +46,6 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.Address = electronicAddress.ElectronicAddressString;
             }
         }
-
 
         public string Address { get; }
 

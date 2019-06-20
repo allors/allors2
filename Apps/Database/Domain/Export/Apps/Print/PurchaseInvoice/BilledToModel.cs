@@ -47,31 +47,11 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
                     {
                         this.Address = $"\n{generalAddress.Address3}";
                     }
-
-                    if (generalAddress.ExistCity)
-                    {
-                        this.City = generalAddress.City.Name;
-                        this.State = generalAddress.City.State?.Name;
-                    }
-                    else if (generalAddress.ExistPostalBoundary)
-                    {
-                        var postalBoundary = generalAddress.PostalBoundary;
-
-                        this.City = postalBoundary.Locality;
-                        this.State = postalBoundary.Region;
-                        this.PostalCode = postalBoundary.PostalCode;
-                        this.Country = postalBoundary.Country.Name;
-                    }
-
-                    if (this.PostalCode == null)
-                    {
-                        this.PostalCode = generalAddress.PostalCode?.Code;
-                    }
-
-                    if (this.Country == null)
-                    {
-                        this.Country = generalAddress.Country?.Name;
-                    }
+ 
+                    this.City = generalAddress.Locality;
+                    this.State = generalAddress.Region;
+                    this.PostalCode = generalAddress.PostalCode;
+                    this.Country = generalAddress.Country?.Name;
                 }
 
                 var bankAccount = orderedBy.BankAccounts.FirstOrDefault(v => v.ExistIban);

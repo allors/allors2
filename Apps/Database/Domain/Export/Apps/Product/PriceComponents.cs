@@ -100,7 +100,7 @@ namespace Allors.Domain
 
                 if (postalAddress != null)
                 {
-                    foreach (GeographicBoundary geographicBoundary in postalAddress.GeographicBoundaries)
+                    foreach (GeographicBoundary geographicBoundary in postalAddress.PostalAddressBoundaries)
                     {
                         if (geographicBoundary.Equals(priceComponent.GeographicBoundary))
                         {

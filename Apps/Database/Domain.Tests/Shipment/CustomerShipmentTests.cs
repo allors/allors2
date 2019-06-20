@@ -33,7 +33,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipToParty(customer)
@@ -52,7 +52,7 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipToParty(customer)
@@ -91,7 +91,7 @@ namespace Allors.Domain
         public void GivenCustomerShipment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
             this.Session.Commit();
@@ -127,7 +127,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipment1 = new CustomerShipmentBuilder(this.Session)
                 .WithShipToParty(new PersonBuilder(this.Session).WithLastName("person1").Build())
@@ -159,7 +159,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipment1 = new CustomerShipmentBuilder(this.Session)
                 .WithShipToParty(new PersonBuilder(this.Session).WithLastName("person1").Build())
@@ -185,7 +185,7 @@ namespace Allors.Domain
         {
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithPostalAddressBoundary(mechelen).Build();
 
             var shippingAddress = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(shipToAddress)
@@ -212,7 +212,7 @@ namespace Allors.Domain
         public void GivenCustomerShipment_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             this.SetIdentity("Administrator");
 
@@ -235,7 +235,7 @@ namespace Allors.Domain
         public void GivenCustomerShipment_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             this.SetIdentity("orderProcessor");
 
@@ -269,7 +269,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
@@ -338,7 +338,7 @@ namespace Allors.Domain
             store.IsImmediatelyPicked = false;
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithPostalAddressBoundary(mechelen).Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -463,7 +463,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good2.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -522,7 +522,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -568,7 +568,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -623,7 +623,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -673,7 +673,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -746,7 +746,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -796,7 +796,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -863,7 +863,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -933,7 +933,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -1014,7 +1014,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
@@ -1092,7 +1092,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -1171,7 +1171,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -1241,7 +1241,7 @@ namespace Allors.Domain
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -1330,7 +1330,7 @@ namespace Allors.Domain
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -1338,7 +1338,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
+            var billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Mechelen").Build();
             var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 

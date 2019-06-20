@@ -34,16 +34,7 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("24216a78-41d8-4ffc-958a-2411530eeb94")]
-        [AssociationId("649eb363-210c-4567-be0a-bcd3e666294e")]
-        [RoleId("1e9fb472-c39d-4e46-a58c-3cbf2b99c2cd")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        public GeographicBoundary[] GeographicBoundaries { get; set; }
-
+        
         #region Allors
         [Id("c83eb0ff-8503-4f2a-9280-f8e46b382b6a")]
         [AssociationId("2976fdd4-19c4-4913-8875-1bf413da02fd")]
@@ -73,57 +64,53 @@ namespace Allors.Repository
         public string Address3 { get; set; }
 
         #region Allors
-        [Id("dfec7833-a7c1-4c27-bbdb-7bc2cc9e8f30")]
-        [AssociationId("c206f13e-d4eb-4818-81ef-e134251698cd")]
-        [RoleId("f6a78ca4-be61-41ff-803b-05934f8691e7")]
+        [Id("24216a78-41d8-4ffc-958a-2411530eeb94")]
+        [AssociationId("649eb363-210c-4567-be0a-bcd3e666294e")]
+        [RoleId("1e9fb472-c39d-4e46-a58c-3cbf2b99c2cd")]
         #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        [Workspace]
-        public PostalBoundary PostalBoundary { get; set; }
+        public GeographicBoundary[] PostalAddressBoundaries { get; set; }
 
         #region Allors
-        [Id("e642d557-a842-4357-be4a-ed7da965d592")]
-        [AssociationId("ad1d5592-71a7-4410-91e3-f00ea1c29ce1")]
-        [RoleId("23f50fbf-71df-4532-9b45-17e5ac3ad7f4")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public PostalCode PostalCode { get; set; }
-
-        #region Allors
-        [Id("9801fa63-ac82-4774-bf84-d2752b95b8a3")]
-        [AssociationId("6eb0ec18-2d30-4529-b741-785aad15842f")]
-        [RoleId("a477adeb-04b9-449c-b61c-4a1384fe10aa")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public City City { get; set; }
-
-        #region Allors
-        [Id("5c513411-ca39-4f39-844d-54cf0468a702")]
-        [AssociationId("d72a1dc4-a61b-4f91-89ac-29f633b6944b")]
-        [RoleId("13e57a25-6265-4a56-a4e7-c914a0c57cb9")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public Country Country { get; set; }
-
-        #region Allors
-        [Id("f2ba6a39-2e34-42bc-accb-0d8838311994")]
-        [AssociationId("6d2b7cbb-1825-40a9-9000-2854a9cd6a26")]
-        [RoleId("53349be7-9048-494f-96e0-367468eb9dad")]
+        [Id("2edd7f54-5596-46c1-9f8a-813c947d95fb")]
+        [AssociationId("61f54d7a-9ad7-447e-ae79-227833f2473c")]
+        [RoleId("68f52b6f-6feb-4e22-ae1a-8ef8334c578f")]
         #endregion
         [Size(256)]
         [Workspace]
-        public string Directions { get; set; }
+        public string PostalCode { get; set; }
 
+        #region Allors
+        [Id("7166cc1b-1f00-4cef-9875-8092cd4a76a0")]
+        [AssociationId("cb2ca991-e054-44af-b6d1-d860072a0859")]
+        [RoleId("dea67366-e6ec-4f64-b450-68c6bae4fec7")]
+        #endregion
+        [Required]
+        [Size(256)]
+        [Workspace]
+        public string Locality { get; set; }
+
+        #region Allors
+        [Id("d92c5fd4-68e9-402b-b540-86053df1b70d")]
+        [AssociationId("ce1593e7-a08d-43f3-a6af-ea5800ff9d3b")]
+        [RoleId("f35bdd80-6821-4d72-8cd7-a8f4d0542fc4")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string Region { get; set; }
+
+        #region Allors
+        [Id("c0e1c31b-5506-48c0-b46f-239f89eca08f")]
+        [AssociationId("09a54b9f-1461-4956-ba7a-fc6f086abf77")]
+        [RoleId("226183cc-ae5d-4292-982b-aba15304ab70")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public Country Country { get; set; }
+        
         #region inherited methods
 
 
@@ -146,6 +133,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }

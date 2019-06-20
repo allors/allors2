@@ -37,7 +37,9 @@ namespace Tests.LetterCorrespondenceTests
 
             var organisationAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .WithLocality("city")
+                .WithPostalCode("1111")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(organisationAddress).Build());
@@ -97,14 +99,18 @@ namespace Tests.LetterCorrespondenceTests
 
             var organisationAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("city").WithPostalCode("1111").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .WithLocality("city")
+                .WithPostalCode("1111")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(organisationAddress).Build());
 
             var employeeAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("home sweet home")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("suncity").WithPostalCode("0000").WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE")).Build())
+                .WithLocality("suncity")
+                .WithPostalCode("0000")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             employee.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session).WithContactMechanism(employeeAddress).Build());

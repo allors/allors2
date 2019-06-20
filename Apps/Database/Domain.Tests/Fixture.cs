@@ -62,8 +62,11 @@ namespace Allors
                     .WithDescription("Main bank account")
                     .Build();
 
-                var postalBoundary = new PostalBoundaryBuilder(session).WithLocality("Mechelen").WithCountry(belgium).Build();
-                var postalAddress = new PostalAddressBuilder(session).WithAddress1("Kleine Nieuwedijkstraat 2").WithPostalBoundary(postalBoundary).Build();
+                var postalAddress = new PostalAddressBuilder(session)
+                    .WithAddress1("Kleine Nieuwedijkstraat 2")
+                    .WithLocality("Mechelen")
+                    .WithCountry(belgium)
+                    .Build();
 
                 var internalOrganisation = new OrganisationBuilder(session)
                     .WithIsInternalOrganisation(true)

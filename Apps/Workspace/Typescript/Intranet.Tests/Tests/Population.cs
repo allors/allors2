@@ -273,7 +273,9 @@ namespace Tests
             {
                 var acmePostalAddress = new PostalAddressBuilder(this.Session)
                     .WithAddress1($"Acme{i} address 1")
-                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Acme{i} city").WithPostalCode("1111").WithCountry(us).Build())
+                    .WithLocality($"Acme{i} city")
+                    .WithPostalCode("1111")
+                    .WithCountry(us)
                     .Build();
 
                 var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)

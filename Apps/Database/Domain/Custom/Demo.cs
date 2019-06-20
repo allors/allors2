@@ -326,7 +326,9 @@ namespace Allors
             {
                 var acmePostalAddress = new PostalAddressBuilder(this.Session)
                     .WithAddress1($"Acme{i} address 1")
-                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Acme{i} city").WithPostalCode("1111").WithCountry(us).Build())
+                    .WithLocality($"Acme{i} city")
+                    .WithPostalCode("1111")
+                    .WithCountry(us)
                     .Build();
 
                 var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
@@ -565,7 +567,9 @@ line2")
             {
                 var supplierPostalAddress = new PostalAddressBuilder(this.Session)
                     .WithAddress1($"Supplier{i} address 1")
-                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Supplier{i} city").WithPostalCode("1111").WithCountry(us).Build())
+                    .WithLocality($"Supplier{i} city")
+                    .WithPostalCode("1111")
+                    .WithCountry(us)
                     .Build();
 
                 var supplierBillingAddress = new PartyContactMechanismBuilder(this.Session)
@@ -761,7 +765,9 @@ line2")
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1($"{firstName} address")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Mechelen").WithPostalCode("2800").WithCountry(be).Build())
+                .WithLocality($"Mechelen")
+                .WithPostalCode("2800")
+                .WithCountry(be)
                 .Build();
 
             var generalCorrespondence = new PartyContactMechanismBuilder(this.Session)

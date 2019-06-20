@@ -39,10 +39,9 @@ namespace Allors.Domain.Print.WorkTaskModel
                         this.BillingAddress = $"\n{postalBillingAddress.Address3}";
                     }
 
-                    this.BillingCity = postalBillingAddress.City?.Name;
-                    this.BillingState = postalBillingAddress.City?.State?.Name;
-
-                    this.BillingPostalCode = postalBillingAddress.PostalCode?.Code;
+                    this.BillingCity = postalBillingAddress.Locality;
+                    this.BillingState = postalBillingAddress.Region;
+                    this.BillingPostalCode = postalBillingAddress.PostalCode;
                 }
                 else
                 {
@@ -63,10 +62,9 @@ namespace Allors.Domain.Print.WorkTaskModel
                         this.ShippingAddress = $"\n{shippingAddress.Address3}";
                     }
 
-                    this.ShippingCity = shippingAddress.City?.Name;
-                    this.ShippingState = shippingAddress.City?.State?.Name;
-
-                    this.ShippingPostalCode = shippingAddress.PostalCode?.Code;
+                    this.ShippingCity = shippingAddress.Locality;
+                    this.ShippingState = shippingAddress.Region;
+                    this.ShippingPostalCode = shippingAddress.PostalCode;
                 }
             }
         }

@@ -90,12 +90,13 @@ namespace Allors.Domain
             int? purchaseInvoiceCounterValue,
             bool purchaseOrderNeedsApproval,
             decimal? purchaseOrderApprovalThresholdLevel1,
-            decimal? purchaseOrderApprovalThresholdLevel2
-            )
+            decimal? purchaseOrderApprovalThresholdLevel2)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
-                    .WithPostalBoundary(new PostalBoundaryBuilder(session).WithPostalCode(postalCode).WithLocality(locality).WithCountry(country).Build())
+                    .WithPostalCode(postalCode)
+                    .WithLocality(locality)
+                    .WithCountry(country)
                     .Build();
 
             var email = new EmailAddressBuilder(session)

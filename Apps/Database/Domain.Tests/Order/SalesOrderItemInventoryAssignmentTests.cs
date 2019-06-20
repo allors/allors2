@@ -73,8 +73,8 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
                 .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
             this.salesOrderItem = new SalesOrderItemBuilder(this.Session)

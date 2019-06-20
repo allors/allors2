@@ -102,7 +102,7 @@ namespace Allors.Domain
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                   .WithAddress1("Kleine Nieuwedijkstraat 2")
-                  .WithGeographicBoundary(mechelen)
+                  .WithPostalAddressBoundary(mechelen)
                   .Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");

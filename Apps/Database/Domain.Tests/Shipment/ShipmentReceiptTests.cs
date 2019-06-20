@@ -152,7 +152,7 @@ namespace Allors.Domain
             store.IsImmediatelyPicked = false;
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)

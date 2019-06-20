@@ -30,7 +30,7 @@ namespace Allors.Domain
         public void GivenEngagement_WhenDeriving_ThenDescriptionIsRequired()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(billToContactMechanism)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)

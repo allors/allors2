@@ -26,53 +26,16 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.PostalAddress.GeographicBoundaries, M.PostalAddress.PostalBoundary);
-            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.GeographicBoundaries, M.PostalAddress.PostalBoundary);
-
-            this.AppsOnDerivePostalCode();
-            this.AppsOnDeriveCity();
-            this.AppsOnDeriveCountry();
-        }
-
-        public void AppsOnDerivePostalCode()
-        {
-            foreach (GeographicBoundary geographicBoundary in this.GeographicBoundaries)
+            void AtLeastAtMost(RoleType roleType)
             {
-                if (geographicBoundary is PostalCode)
-                {
-                    this.PostalCode = (PostalCode)geographicBoundary;
-                    break;
-                }
-            }
-        }
-
-        public void AppsOnDeriveCity()
-        {
-            foreach (GeographicBoundary geographicBoundary in this.GeographicBoundaries)
-            {
-                if (geographicBoundary is City)
-                {
-                    this.City = (City)geographicBoundary;
-                    break;
-                }
-            }
-        }
-
-        public void AppsOnDeriveCountry()
-        {
-            foreach (GeographicBoundary geographicBoundary in this.GeographicBoundaries)
-            {
-                if (geographicBoundary is Country)
-                {
-                    this.Country = (Country)geographicBoundary;
-                    break;
-                }
+                derivation.Validation.AssertAtLeastOne(this, M.PostalAddress.PostalAddressBoundaries, roleType);
+                derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, roleType);
             }
 
-            if (this.ExistPostalBoundary)
-            {
-                this.Country = this.PostalBoundary.Country;
-            }
+            AtLeastAtMost(M.PostalAddress.Locality);
+            AtLeastAtMost(M.PostalAddress.Region);
+            AtLeastAtMost(M.PostalAddress.PostalCode);
+            AtLeastAtMost(M.PostalAddress.Country);
         }
     }
 }

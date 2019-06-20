@@ -19,9 +19,5 @@ namespace Allors.Domain
 {
     public partial class PostalAddress
     {
-        public void AppsDelete(DeletableDelete method)
-        {
-            this.PostalBoundary.Delete();
-        }
     }
 }

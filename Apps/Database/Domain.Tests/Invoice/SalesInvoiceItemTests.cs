@@ -60,8 +60,8 @@ namespace Allors.Domain
             this.mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
 
-            this.billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithAddress1("Mechelen").WithGeographicBoundary(this.mechelen).Build();
-            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithAddress1("Kiev").WithGeographicBoundary(this.kiev).Build();
+            this.billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithAddress1("Mechelen").WithPostalAddressBoundary(this.mechelen).Build();
+            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithAddress1("Kiev").WithPostalAddressBoundary(this.kiev).Build();
             this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
 
             this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithPreferredCurrency(euro).Build();
