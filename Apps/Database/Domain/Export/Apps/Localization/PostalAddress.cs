@@ -15,7 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Text;
     using Meta;
 
     public partial class PostalAddress
@@ -26,16 +25,10 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            void AtLeastAtMost(RoleType roleType)
-            {
-                derivation.Validation.AssertAtLeastOne(this, M.PostalAddress.PostalAddressBoundaries, roleType);
-                derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, roleType);
-            }
-
-            AtLeastAtMost(M.PostalAddress.Locality);
-            AtLeastAtMost(M.PostalAddress.Region);
-            AtLeastAtMost(M.PostalAddress.PostalCode);
-            AtLeastAtMost(M.PostalAddress.Country);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.Locality);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.Region);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.PostalCode);
+            derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.Country);
         }
     }
 }
