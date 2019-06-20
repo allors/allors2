@@ -81,9 +81,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
                 LastModifiedBy: x,
                 Request: x,
                 FullfillContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }),
@@ -218,9 +216,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

@@ -78,9 +78,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
                   }
                 },
                 PostalAddress: {
-                  PostalBoundary: {
-                    Country: x
-                  }
+                  Country: x
                 },
                 EventPurposes: x,
                 CommunicationEventState: x
@@ -93,9 +91,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
                     ContactMechanism: {
-                      PostalAddress_PostalBoundary: {
-                        Country: x,
-                      }
+                      PostalAddress_Country: x
                     },
                   }
                 }
@@ -119,9 +115,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
                   CurrentContacts: x,
                   CurrentPartyContactMechanisms: {
                     ContactMechanism: {
-                      PostalAddress_PostalBoundary: {
-                        Country: x,
-                      }
+                      PostalAddress_Country: x
                     },
                   }
                 }
@@ -138,9 +132,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
                         CurrentContacts: x,
                         CurrentPartyContactMechanisms: {
                           ContactMechanism: {
-                            PostalAddress_PostalBoundary: {
-                              Country: x,
-                            }
+                            PostalAddress_Country: x
                           },
                         }
                       }
@@ -295,9 +287,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
             include: {
               ContactMechanism: {
                 ContactMechanismType: x,
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                PostalAddress_Country: x
               },
             }
           }

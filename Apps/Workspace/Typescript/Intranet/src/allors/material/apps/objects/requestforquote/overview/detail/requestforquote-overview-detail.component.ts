@@ -66,9 +66,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
               object: this.panel.manager.id,
               include: {
                 FullfillContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
+                  PostalAddress_Country: x
                 },
                 RequestItems: {
                   Product: x,
@@ -129,9 +127,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
                   ContactPerson: x,
                   RequestState: x,
                   FullfillContactMechanism: {
-                    PostalAddress_PostalBoundary: {
-                      Country: x,
-                    }
+                    PostalAddress_Country: x
                   }
                 }
               }
@@ -219,9 +215,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x
-                }
+                PostalAddress_Country: x
               }
             }
           }

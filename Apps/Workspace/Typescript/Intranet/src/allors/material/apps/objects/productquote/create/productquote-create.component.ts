@@ -157,9 +157,7 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

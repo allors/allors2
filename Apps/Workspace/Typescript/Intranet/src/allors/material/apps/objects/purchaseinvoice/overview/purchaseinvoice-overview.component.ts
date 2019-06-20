@@ -77,9 +77,7 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
                   }
                 },
                 ShipToEndCustomerAddress: {
-                  PostalBoundary: {
-                    Country: x
-                  }
+                  Country: x
                 }
               },
             }),

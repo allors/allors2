@@ -309,9 +309,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -354,9 +352,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -398,9 +394,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                                  PostalAddress_Country: x
+
               }
             }
           }
@@ -446,9 +441,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                                  PostalAddress_Country: x
+
               }
             }
           }

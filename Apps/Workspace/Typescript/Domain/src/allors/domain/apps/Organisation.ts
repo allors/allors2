@@ -42,7 +42,7 @@ domain.extend((workspace) => {
             get(this: Organisation): string {
                 if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
                     const postalAddress = this.GeneralCorrespondence as PostalAddress;
-                    return `${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.PostalCode : ''} ${postalAddress.PostalBoundary ? postalAddress.PostalBoundary.Locality : ''}`;
+                    return `${postalAddress.PostalCode} ${postalAddress.Locality}`;
                 }
             },
         },
@@ -50,7 +50,7 @@ domain.extend((workspace) => {
             get(this: Organisation): string {
                 if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
                     const postalAddress = this.GeneralCorrespondence as PostalAddress;
-                    return `${postalAddress.PostalBoundary.Country ? postalAddress.PostalBoundary.Country.Name : ''}`;
+                    return `${postalAddress.Country ? postalAddress.Country.Name : ''}`;
                 }
                 return '';
             },

@@ -69,9 +69,7 @@ export class ProductQuoteOverviewComponent extends TestScope implements AfterVie
                   LastModifiedBy: x,
                   Request: x,
                   FullfillContactMechanism: {
-                    PostalAddress_PostalBoundary: {
-                      Country: x,
-                    }
+                    PostalAddress_Country: x
                   }
                 }
               }),

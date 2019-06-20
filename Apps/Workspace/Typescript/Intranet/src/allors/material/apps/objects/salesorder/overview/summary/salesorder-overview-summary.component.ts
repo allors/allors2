@@ -87,24 +87,16 @@ export class SalesOrderOverviewSummaryComponent {
               Media: x
             },
             ShipToAddress: {
-              PostalBoundary: {
-                Country: x,
-              }
+              Country: x,
             },
             BillToEndCustomerContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x,
-              }
+              PostalAddress_Country: x
             },
             ShipToEndCustomerAddress: {
-              PostalBoundary: {
-                Country: x,
-              }
+              Country: x
             },
             BillToContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x,
-              }
+              PostalAddress_Country: x
             }
           }
         }),

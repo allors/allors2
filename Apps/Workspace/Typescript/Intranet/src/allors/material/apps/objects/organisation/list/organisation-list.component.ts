@@ -138,10 +138,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
               sort: sorter.create(sort),
               include: {
                 GeneralCorrespondence: {
-                  PostalAddress_PostalCode: x,
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
+                  PostalAddress_Country: x
                 },
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,

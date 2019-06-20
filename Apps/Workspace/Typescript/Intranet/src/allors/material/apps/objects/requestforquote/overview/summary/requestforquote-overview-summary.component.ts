@@ -41,9 +41,8 @@ export class RequestForQuoteOverviewSummaryComponent {
             object: this.panel.manager.id,
             include: {
               FullfillContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                                  PostalAddress_Country: x
+
               },
               RequestItems: {
                 Product: x,

@@ -126,24 +126,16 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             CreatedBy: x,
             LastModifiedBy: x,
             BillToContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x
-              }
+              PostalAddress_Country: x
             },
             ShipToAddress: {
-              PostalBoundary: {
-                Country: x
-              }
+              Country: x
             },
             BillToEndCustomerContactMechanism: {
-              PostalAddress_PostalBoundary: {
-                Country: x
-              }
+              PostalAddress_Country: x
             },
             ShipToEndCustomerAddress: {
-              PostalBoundary: {
-                Country: x
-              }
+              Country: x
             }
           }
         }),
@@ -401,9 +393,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -450,9 +440,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -500,9 +488,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -550,9 +536,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

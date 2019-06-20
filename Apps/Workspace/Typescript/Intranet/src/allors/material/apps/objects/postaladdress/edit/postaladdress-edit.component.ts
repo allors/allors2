@@ -54,9 +54,7 @@ export class PostalAddressEditComponent extends TestScope implements OnInit, OnD
             pull.ContactMechanism({
               object: this.data.id,
               include: {
-                PostalAddress_PostalBoundary: {
-                  Country: x
-                }
+                PostalAddress_Country: x
               },
             }),
             pull.Country({

@@ -57,9 +57,7 @@ export class RequestForQuoteOverviewComponent extends TestScope implements After
                 object: this.panelManager.id,
                 include: {
                   FullfillContactMechanism: {
-                    PostalAddress_PostalBoundary: {
-                      Country: x,
-                    }
+                    PostalAddress_Country: x
                   },
                   RequestItems: {
                     Product: x,

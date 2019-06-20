@@ -120,14 +120,10 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                 CreatedBy: x,
                 LastModifiedBy: x,
                 ShipToAddress: {
-                  PostalBoundary: {
-                    Country: x,
-                  }
+                  Country: x,
                 },
                 BillToContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
+                  PostalAddress_Country: x
                 },
               }
             }),
@@ -258,9 +254,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -303,9 +297,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

@@ -107,9 +107,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                PostalAddress_Country: x
               }
             }
           }

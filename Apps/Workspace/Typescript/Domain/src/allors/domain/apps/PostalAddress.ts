@@ -24,22 +24,22 @@ domain.extend((workspace) => {
         }
       }
 
-      if (fullAddress === '' && this.PostalBoundary.PostalCode) {
-        fullAddress += this.PostalBoundary.PostalCode;
+      if (fullAddress === '') {
+        fullAddress += this.PostalCode;
       } else {
-        fullAddress += ' ' + this.PostalBoundary.PostalCode;
+        fullAddress += ' ' + this.PostalCode;
       }
 
-      if (fullAddress === '' && this.PostalBoundary.Locality) {
-        fullAddress += this.PostalBoundary.Locality;
+      if (fullAddress === '') {
+        fullAddress += this.Locality;
       } else {
-        fullAddress += ' ' + this.PostalBoundary.Locality;
+        fullAddress += ' ' + this.Locality;
       }
 
-      if (fullAddress === '' && this.PostalBoundary.Country.Name) {
-        return fullAddress += this.PostalBoundary.Country.Name;
+      if (fullAddress === '') {
+        return fullAddress += this.Country.Name;
       } else {
-        return fullAddress += ' ' + this.PostalBoundary.Country.Name;
+        return fullAddress += ' ' + this.Country.Name;
       }
     },
   });

@@ -96,9 +96,7 @@ export class PartyContactMechanismOverviewPanelComponent extends TestScope imple
       const partyContactMechanismTree = tree.PartyContactMechanism({
         ContactPurposes: x,
         ContactMechanism: {
-          PostalAddress_PostalBoundary: {
-            Country: x,
-          }
+          PostalAddress_Country: x
         }
       });
 

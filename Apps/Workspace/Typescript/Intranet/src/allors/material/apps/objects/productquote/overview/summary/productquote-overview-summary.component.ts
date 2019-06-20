@@ -58,9 +58,8 @@ export class ProductQuoteOverviewSummaryComponent {
               LastModifiedBy: x,
               Request: x,
               FullfillContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                                  PostalAddress_Country: x
+
               },
               PrintDocument: {
                 Media: x,

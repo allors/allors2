@@ -69,9 +69,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
               }
             },
             ShipToEndCustomerAddress: {
-              PostalBoundary: {
-                Country: x
-              }
+              Country: x
             },
             PrintDocument: {
               Media: x

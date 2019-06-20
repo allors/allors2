@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { PostalAddress, Enumeration, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
+import { PostalAddress, Enumeration, Country, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap } from 'rxjs/operators';
@@ -22,7 +22,6 @@ export class PostalAddressCreateComponent extends TestScope implements OnInit, O
   public title = 'Add Postal Address';
 
   contactMechanism: PostalAddress;
-  postalBoundary: PostalBoundary;
   countries: Country[];
   party: Party;
   contactMechanismPurposes: Enumeration[];
@@ -79,9 +78,6 @@ export class PostalAddressCreateComponent extends TestScope implements OnInit, O
         this.party = loaded.objects.Party as Party;
 
         this.contactMechanism = this.allors.context.create('PostalAddress') as PostalAddress;
-
-        this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
-        this.contactMechanism.PostalBoundary = this.postalBoundary;
 
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.UseAsDefault = true;

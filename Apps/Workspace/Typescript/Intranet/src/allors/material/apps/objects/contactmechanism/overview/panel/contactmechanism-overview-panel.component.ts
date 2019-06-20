@@ -92,9 +92,7 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
             PartyContactMechanisms: {
               ContactMechanism: {
                 include: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x,
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

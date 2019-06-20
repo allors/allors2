@@ -213,9 +213,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -252,9 +250,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }

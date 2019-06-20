@@ -59,9 +59,7 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
               object: this.data.id,
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               },
             }),
@@ -73,9 +71,7 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
               fetch: {
                 CurrentOrganisationContactMechanisms: {
                   include: {
-                    PostalAddress_PostalBoundary: {
-                      Country: x
-                    }
+                    PostalAddress_Country: x
                   }
                 }
               }
@@ -87,9 +83,7 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
                 PartyContactMechanisms: {
                   include: {
                     ContactMechanism: {
-                      PostalAddress_PostalBoundary: {
-                        Country: x
-                      }
+                      PostalAddress_Country: x
                     }
                   }
                 }

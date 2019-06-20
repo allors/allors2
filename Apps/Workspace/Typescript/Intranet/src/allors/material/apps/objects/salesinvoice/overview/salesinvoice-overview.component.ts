@@ -76,24 +76,16 @@ export class SalesInvoiceOverviewComponent extends TestScope implements AfterVie
                 CreatedBy: x,
                 LastModifiedBy: x,
                 BillToContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 },
                 ShipToAddress: {
-                  PostalBoundary: {
-                    Country: x
-                  }
+                  Country: x
                 },
                 BillToEndCustomerContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 },
                 ShipToEndCustomerAddress: {
-                  PostalBoundary: {
-                    Country: x
-                  }
+                  Country: x
                 }
               }
             }),

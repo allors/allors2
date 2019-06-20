@@ -127,9 +127,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               }
             },
             ShipToEndCustomerAddress: {
-              PostalBoundary: {
-                Country: x
-              }
+              Country: x
             }
           },
         }),
@@ -392,9 +390,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -443,9 +439,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             CurrentPartyContactMechanisms: {
               include: {
                 ContactMechanism: {
-                  PostalAddress_PostalBoundary: {
-                    Country: x
-                  }
+                  PostalAddress_Country: x
                 }
               }
             }
@@ -487,9 +481,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                PostalAddress_Country: x
               }
             }
           }
@@ -535,9 +527,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_PostalBoundary: {
-                  Country: x,
-                }
+                PostalAddress_Country: x
               }
             }
           }
