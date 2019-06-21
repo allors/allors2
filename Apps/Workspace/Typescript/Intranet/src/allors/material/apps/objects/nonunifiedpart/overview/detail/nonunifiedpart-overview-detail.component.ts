@@ -102,7 +102,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           this.part = undefined;
 

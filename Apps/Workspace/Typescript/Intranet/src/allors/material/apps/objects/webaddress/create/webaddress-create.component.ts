@@ -50,7 +50,7 @@ export class WebAddressCreateComponent extends TestScope implements OnInit, OnDe
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             pull.Party({

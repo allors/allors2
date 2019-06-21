@@ -19,9 +19,9 @@
       </div>
 
       <div class="row">
-        <a-mat-input class="col-md" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Locality" label="City"></a-mat-input>
-        <a-mat-input class="col-md" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.PostalCode" label="Postal code"></a-mat-input>
-        <a-mat-select class="col-md" [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary.Country" [options]="countries" display="Name"></a-mat-select>
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.PostalAddress.Locality" label="City"></a-mat-input>
+        <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.PostalAddress.PostalCode" label="Postal code"></a-mat-input>
+        <a-mat-select class="col-md" [object]="contactMechanism" [roleType]="m.PostalAddress.Country" [options]="countries" display="Name"></a-mat-select>
       </div>
 
       <div class="row">

@@ -42,7 +42,7 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const { m, pull, x } = this.metaService;
 

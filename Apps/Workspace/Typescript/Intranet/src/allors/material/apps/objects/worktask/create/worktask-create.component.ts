@@ -63,7 +63,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             this.fetcher.internalOrganisation,

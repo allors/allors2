@@ -52,7 +52,7 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             this.fetcher.Settings,

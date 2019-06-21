@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
 import {  ContextService, MetaService } from '../../../../../angular';
-import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../domain';
+import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
@@ -23,7 +23,6 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   public partyContactMechanism: PartyContactMechanism;
   public postalAddress: PostalAddress;
-  public postalBoundary: PostalBoundary;
 
   public m: Meta;
 
@@ -56,9 +55,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
         this.postalAddress = this.allors.context.create('PostalAddress') as PostalAddress;
-        this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
-        this.postalAddress.PostalBoundary = this.postalBoundary;
       });
   }
 
@@ -67,7 +64,6 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
     if (!!this.partyContactMechanism) {
       this.allors.context.delete(this.partyContactMechanism);
       this.allors.context.delete(this.postalAddress);
-      this.allors.context.delete(this.postalBoundary);
     }
   }
 
@@ -80,6 +76,5 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
     this.partyContactMechanism = undefined;
     this.postalAddress = undefined;
-    this.postalBoundary = undefined;
   }
 }

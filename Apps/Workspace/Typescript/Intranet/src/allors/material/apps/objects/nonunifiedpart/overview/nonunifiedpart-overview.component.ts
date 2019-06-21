@@ -40,7 +40,7 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const { pull, x } = this.metaService;
 
@@ -66,7 +66,7 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
               delay(1)
             );
         }),
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const { m } = this.metaService;
 

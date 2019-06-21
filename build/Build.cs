@@ -65,7 +65,7 @@ partial class Build : NukeBuild
                 directoryInfo.Refresh();
                 if (directoryInfo.Exists)
                 {
-                    if (new[] { "node_modules", "packages", "bin", "obj", "generated" }.Contains(directoryInfo.Name.ToLowerInvariant()))
+                    if (new[] { "node_modules", "packages", "out-tsc", "bin", "obj", "generated" }.Contains(directoryInfo.Name.ToLowerInvariant()))
                     {
                         DeleteDirectory(directoryInfo.FullName);
                         return;

@@ -64,7 +64,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             this.fetcher.internalOrganisation,

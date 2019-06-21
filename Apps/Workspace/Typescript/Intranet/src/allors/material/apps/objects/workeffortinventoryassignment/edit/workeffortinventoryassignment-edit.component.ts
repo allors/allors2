@@ -52,7 +52,7 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const isCreate = this.data.id === undefined;
 

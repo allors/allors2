@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { PostalAddress, PostalBoundary, Country, Party, PartyContactMechanism } from '../../../../../domain';
+import { PostalAddress, Country, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -19,7 +19,6 @@ export class PostalAddressEditComponent extends TestScope implements OnInit, OnD
   readonly m: Meta;
 
   contactMechanism: PostalAddress;
-  postalBoundary: PostalBoundary;
   countries: Country[];
   title: string;
 
@@ -48,7 +47,7 @@ export class PostalAddressEditComponent extends TestScope implements OnInit, OnD
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             pull.ContactMechanism({

@@ -49,7 +49,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const isCreate = this.data.id === undefined;
 

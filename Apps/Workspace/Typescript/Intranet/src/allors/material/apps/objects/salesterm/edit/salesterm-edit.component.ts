@@ -44,7 +44,7 @@ export class SalesTermEditComponent extends TestScope implements OnInit, OnDestr
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const create = (this.data as IObject).id === undefined;
           const { objectType, associationRoleType } = this.data;

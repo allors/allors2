@@ -53,7 +53,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           const pulls = [
             pull.ProductQuoteApproval({

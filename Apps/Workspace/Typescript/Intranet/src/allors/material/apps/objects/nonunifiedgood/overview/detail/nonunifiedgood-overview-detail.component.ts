@@ -108,7 +108,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           this.good = undefined;
 

@@ -110,7 +110,7 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
         filter(() => {
           return this.panel.isExpanded;
         }),
-        switchMap(([, ]) => {
+        switchMap(() => {
 
           this.good = undefined;
 
