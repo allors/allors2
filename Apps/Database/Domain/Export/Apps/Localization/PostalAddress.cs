@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Diagnostics;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -29,6 +32,17 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.Region);
             derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.PostalCode);
             derivation.Validation.AssertExistsAtMostOne(this, M.PostalAddress.PostalAddressBoundaries, M.PostalAddress.Country);
+
+            if (!this.ExistPostalAddressBoundaries)
+            {
+                if (!this.ExistCountry || !this.ExistLocality)
+                {
+                    Debugger.Break();
+                }
+
+                derivation.Validation.AssertExists(this, M.PostalAddress.Locality);
+                derivation.Validation.AssertExists(this, M.PostalAddress.Country);
+            }
         }
     }
 }

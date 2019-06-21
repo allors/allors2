@@ -86,7 +86,6 @@ namespace Allors.Repository
         [AssociationId("cb2ca991-e054-44af-b6d1-d860072a0859")]
         [RoleId("dea67366-e6ec-4f64-b450-68c6bae4fec7")]
         #endregion
-        [Required]
         [Size(256)]
         [Workspace]
         public string Locality { get; set; }
@@ -107,7 +106,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public Country Country { get; set; }
         
