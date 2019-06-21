@@ -24,11 +24,9 @@ namespace Tests.PartyContactMachanismTests
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
-                    .WithLocality("city")
-                    .WithPostalCode("1111")
-                    .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                    .Build())
+                .WithLocality("city")
+                .WithPostalCode("1111")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
             this.editPartyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(postalAddress).Build();
