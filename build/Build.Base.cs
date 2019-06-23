@@ -78,6 +78,7 @@ partial class Build
             foreach (var path in Paths.BaseWorkspaceTypescript)
             {
                 NpmInstall(s => s
+                    .SetEnvironmentVariable("npm_config_loglevel", "error")
                     .SetWorkingDirectory(path));
             }
         });
@@ -93,6 +94,7 @@ partial class Build
             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptMaterial, Paths.BaseWorkspaceTypescriptAutotestAngular })
             {
                 NpmRun(s => s
+                    .SetEnvironmentVariable("npm_config_loglevel", "error")
                     .SetWorkingDirectory(path)
                     .SetCommand("autotest"));
             }
@@ -108,6 +110,7 @@ partial class Build
         .Executes(() =>
         {
             NpmRun(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
                 .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
                 .SetCommand("az:test"));
@@ -128,9 +131,9 @@ partial class Build
                 {
                     await server.Ready();
                     NpmRun(s => s
+                        .SetEnvironmentVariable("npm_config_loglevel", "error")
                         .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptPromise)
-                        .SetArguments("--reporter-options",
-                            $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptPromise}")
+                        .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptPromise}")
                         .SetCommand("az:test"));
                 }
             }
@@ -151,6 +154,7 @@ partial class Build
                 {
                     await server.Ready();
                     NpmRun(s => s
+                        .SetEnvironmentVariable("npm_config_loglevel", "error")
                         .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptAngular)
                         .SetArguments("--watch=false", "--reporters", "trx")
                         .SetCommand("test"));
@@ -174,6 +178,7 @@ partial class Build
                 {
                     await server.Ready();
                     NpmRun(s => s
+                        .SetEnvironmentVariable("npm_config_loglevel", "error")
                         .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptMaterial)
                         .SetArguments("--watch=false", "--reporters", "trx")
                         .SetCommand("test"));

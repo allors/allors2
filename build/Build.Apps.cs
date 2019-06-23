@@ -57,6 +57,7 @@ partial class Build
             foreach (var path in Paths.AppsWorkspaceTypescript)
             {
                 NpmInstall(s => s
+                    .SetEnvironmentVariable("npm_config_loglevel", "error")
                     .SetWorkingDirectory(path));
             }
         });
@@ -72,6 +73,7 @@ partial class Build
             foreach (var path in new[] { Paths.AppsWorkspaceTypescriptIntranet, Paths.AppsWorkspaceTypescriptAutotestAngular })
             {
                 NpmRun(s => s
+                    .SetEnvironmentVariable("npm_config_loglevel", "error")
                     .SetWorkingDirectory(path)
                     .SetCommand("autotest"));
             }
@@ -87,6 +89,7 @@ partial class Build
         .Executes(() =>
         {
             NpmRun(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
                 .SetWorkingDirectory(Paths.AppsWorkspaceTypescriptDomain)
                 .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsAppsWorkspaceTypescriptDomain}")
                 .SetCommand("az:test"));
@@ -108,6 +111,7 @@ partial class Build
                     await server.Ready();
                     NpmRun(
                         s => s
+                            .SetEnvironmentVariable("npm_config_loglevel", "error")
                             .SetWorkingDirectory(Paths.AppsWorkspaceTypescriptIntranet)
                             .SetArguments("--watch=false", "--reporters", "trx")
                             .SetCommand("test"));

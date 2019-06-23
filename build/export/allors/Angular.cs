@@ -13,8 +13,8 @@ partial class Angular : IDisposable
     public Angular(AbsolutePath path)
     {
         var npmRunSetting = new NpmRunSettings()
+            .SetEnvironmentVariable("npm_config_loglevel", "error")
             .SetWorkingDirectory(path)
-            .SetEnvironmentVariable("npm_config_loglevel", "silent")
             .SetCommand("start");
 
         Process = ProcessTasks.StartProcess((ToolSettings)npmRunSetting);
@@ -62,7 +62,6 @@ partial class Angular : IDisposable
                     {
                         Normal("Angular response: Successful");
                         Normal(result);
-
                     }
                 }
             }
