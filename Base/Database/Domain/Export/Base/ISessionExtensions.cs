@@ -22,10 +22,8 @@
 namespace Allors
 {
     using System;
-
     using Allors.Domain;
     using Allors.Services;
-
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class ISessionExtensions

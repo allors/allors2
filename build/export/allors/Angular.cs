@@ -14,6 +14,7 @@ partial class Angular : IDisposable
     {
         var npmRunSetting = new NpmRunSettings()
             .SetWorkingDirectory(path)
+            .SetEnvironmentVariable("npm_config_loglevel", "silent")
             .SetCommand("start");
 
         Process = ProcessTasks.StartProcess((ToolSettings)npmRunSetting);

@@ -1,10 +1,5 @@
 using System;
-using System.Data.SqlClient;
-using System.Net.Http;
-using System.Threading.Tasks;
 using MartinCostello.SqlLocalDb;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
