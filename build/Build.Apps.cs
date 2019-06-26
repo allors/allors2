@@ -167,11 +167,16 @@ partial class Build
         //.DependsOn(AppsPublishCommands)
         .Executes(() =>
         {
+            CopyFileToDirectory(Paths.SignTool, Paths.AppsWorkspaceCSharpExcelAddIn, FileExistsPolicy.Overwrite);
+            
             var msBuildSettings = new MSBuildSettings()
                 .SetRestore(true)
                 .SetProjectFile(Paths.AppsWorkspaceCSharpExcelAddInProject)
-                .SetTargets("Publish");
+                .SetTargets("Publish")
+                .SetPackageOutputPath(Paths.ArtifactsAppsExcellAddIn);
             MSBuild(msBuildSettings);
+
+            CopyDirectoryRecursively(Paths.AppsWorkspaceCSharpExcelAddIn / "bin" / Configuration / "app.publish", Paths.ArtifactsAppsExcellAddIn);
         });
     
     Target AppsDatabaseTest => _ => _
