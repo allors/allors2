@@ -8,14 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.5.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\..\Base\Database\Commands\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +20,10 @@
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Base\Database\Commands\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
