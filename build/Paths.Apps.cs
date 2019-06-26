@@ -10,6 +10,10 @@ public partial class Paths
     public AbsolutePath AppsDatabaseServer => Apps / "Database/Server";
     public AbsolutePath AppsDatabaseDomainTests => Apps / "Database/Domain.Tests/Domain.Tests.csproj";
 
+    public AbsolutePath AppsWorkspaceCSharp => Apps / "Workspace/CSharp";
+    public AbsolutePath AppsWorkspaceCSharpExcelAddIn => AppsWorkspaceCSharp / "ExcelAddIn";
+    public AbsolutePath AppsWorkspaceCSharpExcelAddInProject => AppsWorkspaceCSharpExcelAddIn / "ExcelAddIn.csproj";
+
     public AbsolutePath AppsWorkspaceTypescriptDomain => Apps / "Workspace/Typescript/Domain";
     public AbsolutePath AppsWorkspaceTypescriptIntranet => Apps / "Workspace/Typescript/Intranet";
     public AbsolutePath AppsWorkspaceTypescriptIntranetTrx => AppsWorkspaceTypescriptIntranet / "dist/AppsWorkspaceTypescriptIntranet.trx";

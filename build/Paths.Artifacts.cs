@@ -14,4 +14,5 @@ public partial class Paths
     public AbsolutePath ArtifactsTestsAppsWorkspaceTypescriptDomain => ArtifactsTests / "AppsWorkspaceTypescriptDomain.trx";
     public AbsolutePath ArtifactsAppsCommands => Artifacts / "Apps/Commands";
     public AbsolutePath ArtifactsAppsServer => Artifacts / "Apps/Server";
+    public AbsolutePath ArtifactsAppsExcellAddIn => Artifacts / "Apps/ExcelAddIn";
 }

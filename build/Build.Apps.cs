@@ -3,9 +3,11 @@ using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.Npm;
+using Nuke.Common.Tools.MSBuild;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.Npm.NpmTasks;
+using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 
 partial class Build
 {
@@ -149,6 +151,29 @@ partial class Build
             }
         });
 
+    Target AppsWorkspaceCSharpExcellAddin => _ => _
+        .DependsOn(AppsPublishServer)
+        .DependsOn(AppsPublishCommands)
+        .Executes(() =>
+        {
+            var msBuildSettings = new MSBuildSettings()
+                .SetRestore(true)
+                .SetProjectFile(Paths.AppsWorkspaceCSharpExcelAddInProject);
+            MSBuild(msBuildSettings);
+        });
+
+    Target AppsPublishExcellAddin => _ => _
+        //.DependsOn(AppsPublishServer)
+        //.DependsOn(AppsPublishCommands)
+        .Executes(() =>
+        {
+            var msBuildSettings = new MSBuildSettings()
+                .SetRestore(true)
+                .SetProjectFile(Paths.AppsWorkspaceCSharpExcelAddInProject)
+                .SetTargets("Publish");
+            MSBuild(msBuildSettings);
+        });
+    
     Target AppsDatabaseTest => _ => _
         .DependsOn(AppsDatabaseTestDomain);
 
