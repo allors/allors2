@@ -42,42 +42,24 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
       .pipe(
         switchMap(() => {
 
-          const { pull, x } = this.metaService;
+          const { pull, x, m } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
+          this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.NonUnifiedPart;
+          this.panelManager.expanded = navRoute.panel();
+
+          this.panelManager.on();
 
           const pulls = [
             pull.NonUnifiedPart({
-              object: id,
+              object: this.panelManager.id,
               include: {
                 InventoryItemKind: x
               }
             }),
           ];
 
-          return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              tap((loaded) => {
-                const part = loaded.objects.NonUnifiedPart as NonUnifiedPart;
-                this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
-              }),
-              delay(1)
-            );
-        }),
-        switchMap(() => {
-
-          const { m } = this.metaService;
-
-          const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Part;
-          this.panelManager.id = navRoute.id();
-          this.panelManager.expanded = navRoute.panel();
-
-          this.panelManager.on();
-
-          const pulls = [];
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
@@ -89,8 +71,8 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
         this.panelManager.context.session.reset();
         this.panelManager.onPulled(loaded);
 
-        this.part = loaded.objects.Part as Part;
-
+        const part = loaded.objects.NonUnifiedPart as NonUnifiedPart;
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
       });
   }
 
