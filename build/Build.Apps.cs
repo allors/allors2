@@ -163,8 +163,8 @@ partial class Build
         });
 
     Target AppsPublishExcellAddin => _ => _
-        //.DependsOn(AppsPublishServer)
-        //.DependsOn(AppsPublishCommands)
+        .DependsOn(AppsPublishServer)
+        .DependsOn(AppsPublishCommands)
         .Executes(() =>
         {
             CopyFileToDirectory(Paths.SignTool, Paths.AppsWorkspaceCSharpExcelAddIn, FileExistsPolicy.Overwrite);
