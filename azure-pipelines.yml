@@ -24,8 +24,10 @@ stages:
           target: '-target BaseWorkspaceTest'
         apps_database:
           target: '-target AppsDatabaseTest'
-        apps_workspace:
-          target: '-target AppsWorkspaceTest'
+        apps_workspace_typescript:
+          target: '-target AppsWorkspaceTypescriptTest'
+        apps_workspace_csharp:
+          target: '-target AppsWorkspaceCSharpTest'
       maxParallel: 10
     
     steps:

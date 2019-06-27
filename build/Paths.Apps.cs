@@ -13,6 +13,7 @@ public partial class Paths
     public AbsolutePath AppsWorkspaceCSharp => Apps / "Workspace/CSharp";
     public AbsolutePath AppsWorkspaceCSharpExcelAddIn => AppsWorkspaceCSharp / "ExcelAddIn";
     public AbsolutePath AppsWorkspaceCSharpExcelAddInProject => AppsWorkspaceCSharpExcelAddIn / "ExcelAddIn.csproj";
+    public AbsolutePath AppsWorkspaceCSharpExcelAddInSignTool => AppsWorkspaceCSharpExcelAddIn / "signtool.exe";
 
     public AbsolutePath AppsWorkspaceTypescriptDomain => Apps / "Workspace/Typescript/Domain";
     public AbsolutePath AppsWorkspaceTypescriptIntranet => Apps / "Workspace/Typescript/Intranet";

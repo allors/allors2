@@ -167,7 +167,7 @@ partial class Build
         .DependsOn(AppsPublishCommands)
         .Executes(() =>
         {
-            CopyFileToDirectory(Paths.SignTool, Paths.AppsWorkspaceCSharpExcelAddIn, FileExistsPolicy.Overwrite);
+            CopyFile(Paths.SignTool, Paths.AppsWorkspaceCSharpExcelAddInSignTool, FileExistsPolicy.Overwrite);
             
             var msBuildSettings = new MSBuildSettings()
                 .SetRestore(true)
@@ -176,20 +176,26 @@ partial class Build
                 .SetPackageOutputPath(Paths.ArtifactsAppsExcellAddIn);
             MSBuild(msBuildSettings);
 
+            DeleteFile(Paths.AppsWorkspaceCSharpExcelAddInSignTool);
+
             CopyDirectoryRecursively(Paths.AppsWorkspaceCSharpExcelAddIn / "bin" / Configuration / "app.publish", Paths.ArtifactsAppsExcellAddIn);
         });
     
     Target AppsDatabaseTest => _ => _
         .DependsOn(AppsDatabaseTestDomain);
 
-    Target AppsWorkspaceTest => _ => _
+    Target AppsWorkspaceCSharpTest => _ => _
+        .DependsOn(AppsWorkspaceCSharpExcellAddin);
+
+    Target AppsWorkspaceTypescriptTest => _ => _
         .DependsOn(AppsWorkspaceTypescriptDomain)
         .DependsOn(AppsWorkspaceTypescriptIntranet)
         .DependsOn(AppsWorkspaceTypescriptIntranetTests);
 
     Target AppsTest => _ => _
         .DependsOn(AppsDatabaseTest)
-        .DependsOn(AppsWorkspaceTest);
+        .DependsOn(AppsWorkspaceCSharpTest)
+        .DependsOn(AppsWorkspaceTypescriptTest);
 
     Target Apps => _ => _
         .DependsOn(Clean)
