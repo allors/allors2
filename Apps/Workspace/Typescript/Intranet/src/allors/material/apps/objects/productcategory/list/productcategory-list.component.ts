@@ -13,6 +13,7 @@ import { ProductCategory, CatScope, Good } from '../../../../../domain';
 interface Row extends TableRow {
   object: ProductCategory;
   name: string;
+  parents: string;
   scope: string;
 }
 
@@ -62,6 +63,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
       selection: true,
       columns: [
         { name: 'name', sort: true },
+        { name: 'parents', sort: true },
         { name: 'scope', sort: true }
       ],
       actions: [
@@ -119,7 +121,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , , ,]),
+        }, [, , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
@@ -133,7 +135,8 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
                 LocalisedNames: x,
                 LocalisedDescriptions: x,
                 CatScope: x,
-                Parents: x
+                Parents: x,
+                SuperJacent: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -152,6 +155,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
           return {
             object: v,
             name: v.Name,
+            parents: v.SuperJacent.map(w => w.Name).join('/'),
             scope: v.CatScope.Name
           } as Row;
         });
