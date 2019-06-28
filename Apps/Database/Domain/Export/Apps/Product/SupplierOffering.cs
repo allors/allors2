@@ -49,7 +49,10 @@ namespace Allors.Domain
             if (this.ExistPart && this.Part.ExistInventoryItemKind &&
                 this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
-                foreach (Facility facility in this.Strategy.Session.Extent<Facility>())
+                var warehouses = this.Strategy.Session.Extent<Facility>();
+                warehouses.Filter.AddEquals(M.Facility.FacilityType, new FacilityTypes(this.strategy.Session).Warehouse);
+
+                foreach (Facility facility in warehouses)
                 {
                     var inventoryItems = this.Part.InventoryItemsWherePart;
                     inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
