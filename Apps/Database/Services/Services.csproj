@@ -5,12 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Base\Database\Services\Base\**\*.cs" />
+    <Compile Include="..\..\..\Base\Database\Services\Export\**\*.cs" />
   </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="MailKit" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="ZXing.Net.Bindings.ImageSharp" Version="0.16.6-beta" />
   </ItemGroup>
   

@@ -29,12 +29,9 @@ namespace Commands
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using McMaster.Extensions.CommandLineUtils;
-
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-
     using NLog.Extensions.Logging;
 
     [Command(Description = "Allors Apps Commands")]

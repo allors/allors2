@@ -1,14 +1,12 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
+    using System.IO;
+    using System.Runtime.InteropServices;
+    using Allors.Services;
     using System;
-
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-
     using NLog.Web;
 
     public class Program
@@ -37,12 +35,13 @@ namespace Allors.Server
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureAppConfiguration((hostingContext, config) =>
+                .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                 {
-                    if (IsOsx)
-                    {
-                        config.AddJsonFile("appSettings.osx.json", false);                        
-                    }                    
+                    const string root = "/config/apps";
+                    var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
+                    configurationBuilder.AddCrossPlatform(".", environmentName, true);
+                    configurationBuilder.AddCrossPlatform(root, environmentName);
+                    configurationBuilder.AddCrossPlatform(Path.Combine(root, "server"), environmentName);
                 })
                 .ConfigureLogging(logging =>
                     {
