@@ -25,8 +25,6 @@ namespace Tests
         public static readonly string DatabaseInitUrl = $"{ServerUrl}/Test/Init";
         public static readonly string DatabaseTimeShiftUrl = $"{ServerUrl}/Test/TimeShift";
 
-        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
         private static FileInfo populationFileInfo;
         private static string population;
 

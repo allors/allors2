@@ -11,8 +11,6 @@
 
     public class Program
     {
-        private static bool IsOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
         public static void Main(string[] args)
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
