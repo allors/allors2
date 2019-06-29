@@ -1,6 +1,3 @@
-using src.app.auth;
-using src.app.main;
-
 namespace Tests
 {
     using System;
@@ -8,19 +5,17 @@ namespace Tests
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Xml;
-
     using Allors;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.Extensions;
     using ObjectFactory = Allors.ObjectFactory;
+    using src.app.auth;
+    using src.app.main;
 
     public abstract class Test : IDisposable
     {
@@ -51,37 +46,31 @@ namespace Tests
             // Init Server
             this.Driver.Navigate().GoToUrl(Test.DatabaseInitUrl);
 
-            // Init Allors
             CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
-            var configurationBuilder = new ConfigurationBuilder()
-                          .AddJsonFile("appSettings.json");
 
-            if (IsOsx)
-            {
-                configurationBuilder.AddJsonFile("appSettings.osx.json");
-            }
+            // Init Allors
+            var configurationBuilder = new ConfigurationBuilder();
 
-            configurationBuilder.AddEnvironmentVariables()
-                .Build();
+            const string root = "/config/apps";
+            configurationBuilder.AddCrossPlatform(".");
+            configurationBuilder.AddCrossPlatform(root);
+            configurationBuilder.AddCrossPlatform(Path.Combine(root, "server"));
+            configurationBuilder.AddEnvironmentVariables();
 
-            var appConfiguration = configurationBuilder.Build();
-
-            var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
+            var configuration = configurationBuilder.Build();
 
             var services = new ServiceCollection();
             services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
 
-            var configuration = new Configuration
+            var database = new Database(serviceProvider, new Configuration
             {
-                ConnectionString = appConfiguration["ConnectionStrings:DefaultConnection"],
-                ObjectFactory = objectFactory,
-            };
+                ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
+                ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
+            });
 
-            var database = new Database(serviceProvider, configuration);
-
-            if (population == null && populationFileInfo.Exists)
+            if ((population == null) && populationFileInfo.Exists)
             {
                 population = File.ReadAllText(populationFileInfo.FullName);
             }
@@ -109,7 +98,6 @@ namespace Tests
 
                     using (var stringWriter = new StringWriter())
                     {
-
                         using (var writer = XmlWriter.Create(stringWriter))
                         {
                             database.Save(writer);
