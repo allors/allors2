@@ -19,6 +19,8 @@
 // <summary>Defines the ISessionExtension type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Server
 {
     using System;
@@ -61,55 +63,65 @@ namespace Allors.Server
             {
                 foreach (var result in this.pull.Results)
                 {
-                    var name = result.Name;
-
-                    var fetch = result.Fetch;
-                    if (fetch == null && result.FetchRef.HasValue)
+                    try
                     {
-                        fetch = this.fetchService.Get(result.FetchRef.Value);
-                    }
+                        var name = result.Name;
 
-                    if (fetch != null)
-                    {
-                        var include = fetch.Include ?? fetch.Step?.End.Include;
-
-                        if (fetch.Step != null)
+                        var fetch = result.Fetch;
+                        if (fetch == null && result.FetchRef.HasValue)
                         {
-                            var aclCache = new AccessControlListFactory(this.user);
-
-                            var propertyType = fetch.Step.End.PropertyType;
-
-                            objects = propertyType.IsOne ? 
-                                          objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() : 
-                                          objects.SelectMany(v => ((Extent)fetch.Step.Get(v, aclCache))?.ToArray() ?? EmptyArray).Distinct().ToArray();
-
-                            name = name ?? propertyType.PluralName;
+                            fetch = this.fetchService.Get(result.FetchRef.Value);
                         }
 
-                        name = name ?? extent.ObjectType.PluralName;
-
-                        if (result.Skip.HasValue || result.Take.HasValue)
+                        if (fetch != null)
                         {
-                            var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
-                            if (result.Take.HasValue)
+                            var include = fetch.Include ?? fetch.Step?.End.Include;
+
+                            if (fetch.Step != null)
                             {
-                                paged = paged.Take(result.Take.Value);
+                                var aclCache = new AccessControlListFactory(this.user);
+
+                                objects = fetch.Step.IsOne ?
+                                              objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() :
+                                              objects.SelectMany(v =>
+                                              {
+                                                  var stepResult = fetch.Step.Get(v, aclCache);
+                                                  return stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
+                                              }).Distinct().ToArray();
+
+                                var propertyType = fetch.Step.End.PropertyType;
+                                name = name ?? propertyType.PluralName;
                             }
 
-                            paged = paged.ToArray();
+                            name = name ?? extent.ObjectType.PluralName;
 
-                            response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count);
-                            response.AddCollection(name, paged, include);
+                            if (result.Skip.HasValue || result.Take.HasValue)
+                            {
+                                var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
+                                if (result.Take.HasValue)
+                                {
+                                    paged = paged.Take(result.Take.Value);
+                                }
+
+                                paged = paged.ToArray();
+
+                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count);
+                                response.AddCollection(name, paged, include);
+                            }
+                            else
+                            {
+                                response.AddCollection(name, objects, include);
+                            }
                         }
                         else
                         {
-                            response.AddCollection(name, objects, include);
+                            name = name ?? extent.ObjectType.PluralName;
+                            response.AddCollection(name, objects);
                         }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        name = name ?? extent.ObjectType.PluralName;
-                        response.AddCollection(name, objects);
+                        throw new Exception($"Extent: {extent.ObjectType}, {result}", e);
                     }
                 }
             }

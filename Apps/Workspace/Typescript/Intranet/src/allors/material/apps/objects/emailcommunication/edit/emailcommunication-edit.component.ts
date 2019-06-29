@@ -151,6 +151,24 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
             ];
           }
 
+          pulls = [
+            pull.Person({
+              object: this.data.associationId,
+              fetch: {
+                OrganisationContactRelationshipsWhereContact: {
+                  Organisation: {
+                    include: {
+                      CurrentContacts: x,
+                      CurrentPartyContactMechanisms: {
+                        ContactMechanism: x,
+                      }
+                    }
+                  }
+                }
+              }
+            })
+          ];
+
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(

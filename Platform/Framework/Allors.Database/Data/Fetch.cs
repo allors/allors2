@@ -96,5 +96,10 @@ namespace Allors.Data
 
             return null;
         }
+
+        public override string ToString()
+        {
+            return this.Step?.ToString() ?? base.ToString();
+        }
     }
 }

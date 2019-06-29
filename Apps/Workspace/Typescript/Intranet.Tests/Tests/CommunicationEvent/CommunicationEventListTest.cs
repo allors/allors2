@@ -34,5 +34,12 @@ namespace Tests.CommunicationEventTests
 
             Assert.Equal("meeting 0", cell.Element.Text);
         }
+        
+        [Fact]
+        public void Create()
+        {
+            var dialog = this.page.CreateEmailCommunication();
+            dialog.CANCEL.Click();
+        }
     }
 }

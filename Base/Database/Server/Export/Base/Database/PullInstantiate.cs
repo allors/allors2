@@ -21,9 +21,9 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
@@ -68,67 +68,74 @@ namespace Allors.Server
             {
                 foreach (var result in this.pull.Results)
                 {
-                    var name = result.Name;
-
-                    var fetch = result.Fetch;
-                    if (fetch == null && result.FetchRef.HasValue)
+                    try
                     {
-                        fetch = this.fetchService.Get(result.FetchRef.Value);
-                    }
+                        var name = result.Name;
 
-                    if (fetch != null)
-                    {
-                        var include = fetch.Include ?? fetch.Step?.End.Include;
-
-                        if (fetch.Step != null)
+                        var fetch = result.Fetch;
+                        if ((fetch == null) && result.FetchRef.HasValue)
                         {
-                            var aclCache = new AccessControlListFactory(this.user);
+                            fetch = this.fetchService.Get(result.FetchRef.Value);
+                        }
 
-                            var propertyType = fetch.Step.End.PropertyType;
+                        if (fetch != null)
+                        {
+                            var include = fetch.Include ?? fetch.Step?.End.Include;
 
-                            if (fetch.Step.IsOne)
+                            if (fetch.Step != null)
                             {
-                                name = name ?? propertyType.SingularName;
+                                var aclCache = new AccessControlListFactory(this.user);
 
-                                @object = (IObject)fetch.Step.Get(@object, aclCache);
-                                response.AddObject(name, @object, include);
-                            }
-                            else
-                            {
-                                name = name ?? propertyType.PluralName;
+                                var propertyType = fetch.Step.End.PropertyType;
 
-                                var stepResult = fetch.Step.Get(@object, aclCache);
-                                var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
-
-                                if (result.Skip.HasValue || result.Take.HasValue)
+                                if (fetch.Step.IsOne)
                                 {
-                                    var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
-                                    if (result.Take.HasValue)
-                                    {
-                                        paged = paged.Take(result.Take.Value);
-                                    }
+                                    name = name ?? propertyType.SingularName;
 
-                                    paged = paged.ToArray();
-
-                                    response.AddValue(name + "_total", objects.Length);
-                                    response.AddCollection(name, paged, include);
+                                    @object = (IObject)fetch.Step.Get(@object, aclCache);
+                                    response.AddObject(name, @object, include);
                                 }
                                 else
                                 {
-                                    response.AddCollection(name, objects, include);
+                                    name = name ?? propertyType.PluralName;
+
+                                    var stepResult = fetch.Step.Get(@object, aclCache);
+                                    var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
+
+                                    if (result.Skip.HasValue || result.Take.HasValue)
+                                    {
+                                        var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
+                                        if (result.Take.HasValue)
+                                        {
+                                            paged = paged.Take(result.Take.Value);
+                                        }
+
+                                        paged = paged.ToArray();
+
+                                        response.AddValue(name + "_total", objects.Length);
+                                        response.AddCollection(name, paged, include);
+                                    }
+                                    else
+                                    {
+                                        response.AddCollection(name, objects, include);
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
+                                response.AddObject(name, @object, include);
                             }
                         }
                         else
                         {
                             name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
-                            response.AddObject(name, @object, include);
+                            response.AddObject(name, @object);
                         }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
-                        response.AddObject(name, @object);
+                        throw new Exception($"Instantiate: {@object?.Strategy.Class}[{@object?.Strategy.ObjectId}], {result}", e);
                     }
                 }
             }

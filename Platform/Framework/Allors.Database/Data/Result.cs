@@ -45,5 +45,19 @@ namespace Allors.Data
                 Take = this.Take
             };
         }
+
+        public override string ToString()
+        {
+            if (this.FetchRef != null)
+            {
+                return $"Result: [FetchRef: {FetchRef}]";
+            }
+            if (this.Name != null)
+            {
+                return $"Result: [Name: {Name}]";
+            }
+
+            return $"Result: [Fetch: {this.Fetch}]";
+        }
     }
 }

@@ -86,22 +86,22 @@ namespace Allors.Data
         public override string ToString()
         {
             var name = new StringBuilder();
-            name.Append(this.PropertyType.Name);
+            name.Append(this.PropertyType.PropertyName);
             if (this.ExistNext)
             {
-                this.Next.AppendToName(name);
+                this.Next.ToStringAppendToName(name);
             }
 
             return name.ToString();
         }
 
-        private void AppendToName(StringBuilder name)
+        private void ToStringAppendToName(StringBuilder name)
         {
-            name.Append("." + this.PropertyType.Name);
+            name.Append("." + this.PropertyType.PropertyName);
 
             if (this.ExistNext)
             {
-                this.Next.AppendToName(name);
+                this.Next.ToStringAppendToName(name);
             }
         }
     }

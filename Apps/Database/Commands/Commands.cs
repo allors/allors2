@@ -18,13 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Globalization;
-
 namespace Commands
 {
     using System;
+    using System.Globalization;
     using System.Data;
-
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;

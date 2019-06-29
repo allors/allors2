@@ -34,6 +34,8 @@ namespace Allors.Meta
 
         string PluralName { get; }
 
+        string PropertyName { get; }
+
         IObjectType ObjectType { get; }
 
         bool IsOne { get; }

@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+
 namespace Tests
 {
     using System;
@@ -60,9 +63,20 @@ namespace Tests
 
             var services = new ServiceCollection();
             services.AddAllors();
-            var serviceProvider = services.BuildServiceProvider();
+            services.AddSingleton<IConfiguration>(configuration);
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddLogging(builder => builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace));
 
-            var database = new Database(serviceProvider, new Configuration
+            this.ServiceProvider = services.BuildServiceProvider();
+
+            var loggerFactory = this.ServiceProvider.GetService<ILoggerFactory>();
+            loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
+            NLog.LogManager.LoadConfiguration("nlog.config");
+
+            this.Logger = (ILogger)this.ServiceProvider.GetService(typeof(ILogger<>).MakeGenericType(new[] { this.GetType() }));
+
+            var database = new Database(this.ServiceProvider, new Configuration
             {
                 ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
                 ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
@@ -108,7 +122,11 @@ namespace Tests
             }
 
             this.Session = database.CreateSession();
-}
+        }
+
+        public ServiceProvider ServiceProvider { get; set; }
+
+        public ILogger Logger { get; set; }
 
         public ISession Session { get; set; }
 
