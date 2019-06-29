@@ -110,8 +110,7 @@ namespace Tests
             }
 
             this.Session = database.CreateSession();
-
-        }
+}
 
         public ISession Session { get; set; }
 
