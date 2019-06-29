@@ -102,9 +102,7 @@ namespace Allors.Excel.Customers
 
                 row.Name = customer.Name;
                 var contactMechanism = customer.PartyContactMechanisms
-                    .Where(v => v.ContactPurposes.Any(w =>
-                        string.Equals(w.Name, "General correspondence address", StringComparison.OrdinalIgnoreCase)))
-                    .FirstOrDefault()?.ContactMechanism;
+                    .FirstOrDefault(v => v.ContactPurposes.Any(w => string.Equals(w.Name, "General correspondence address", StringComparison.OrdinalIgnoreCase)))?.ContactMechanism;
 
                 if (contactMechanism is PostalAddress)
                 {
@@ -115,8 +113,8 @@ namespace Allors.Excel.Customers
                     row.PostalCode = postalAddress.PostalCode;
                 }
 
-                var contact = customer.CurrentOrganisationContactRelationships.FirstOrDefault()?.Contact;
-                row.ContactName = $"{contact?.Salutation?.Name} {contact?.FirstName} {contact?.LastName}";
+                var contacts = customer.CurrentOrganisationContactRelationships.Select(v => v.Contact);
+                row.ContactName = string.Join("\n", contacts.Select(v => $"{v?.Salutation?.Name} {v?.PartyName}"));
                
                 row.TaxNumber = customer.TaxNumber;
 
