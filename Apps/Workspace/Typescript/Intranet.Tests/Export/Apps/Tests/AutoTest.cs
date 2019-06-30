@@ -1,3 +1,5 @@
+using OpenQA.Selenium;
+
 namespace Tests.ApplicationTests
 {
     using System.Reflection;
@@ -23,7 +25,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void Navigate()
+        public async void List()
         {
             this.Login();
 
@@ -34,7 +36,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void Create()
+        public async void CreateDialog()
         {
             this.Login();
 
@@ -43,18 +45,49 @@ namespace Tests.ApplicationTests
                 var page = (Component)navigateTo.Invoke(this.Sidenav, null);
 
                 var createMethod = page.GetType().GetMethods().FirstOrDefault(v => v.Name.StartsWith("Create"));
-                this.Logger.LogTrace($"{createMethod?.Name}");
                 var dialog = (Component)createMethod?.Invoke(page, null);
 
-                var cancelProperty = dialog?.GetType().GetProperties().FirstOrDefault(v => v.Name.Equals("cancel", StringComparison.InvariantCultureIgnoreCase));
-                dynamic cancel = cancelProperty?.GetGetMethod().Invoke(dialog, null);
-
-                cancel?.Click();
+                Cancel(dialog);
             }
         }
 
         [Fact]
-        public async void Overview()
+        public async void EditDialog()
+        {
+            this.Login();
+
+            foreach (var navigateTo in this.navigateTos)
+            {
+                var page = (Component)navigateTo.Invoke(this.Sidenav, null);
+
+                var tableProperty = page.GetType().GetProperties().FirstOrDefault(v => v.PropertyType == typeof(MatTable));
+                if (tableProperty != null)
+                {
+                    var table = (MatTable)tableProperty?.GetGetMethod().Invoke(page, null);
+                    var action = table.Actions.FirstOrDefault(v => v.Equals("edit"));
+
+                    if (action != null)
+                    {
+                        var objects = this.Session.Instantiate(table.ObjectIds);
+                        foreach (IObject @object in objects)
+                        {
+                            table.Action(@object, action);
+
+                            this.Driver.WaitForAngular();
+                            var dialogElement = this.Driver.FindElement(By.CssSelector("mat-dialog-container ng-component[data-test-scope]"));
+                            var testScope = dialogElement.GetAttribute("data-test-scope");
+                            var type = Assembly.GetExecutingAssembly().GetTypes().First(v => v.Name.Equals(testScope));
+                            var dialog = (Component)Activator.CreateInstance(type, this.Driver, null);
+
+                            Cancel(dialog);
+                        }
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public async void OverviewPage()
         {
             this.Login();
 
@@ -79,6 +112,14 @@ namespace Tests.ApplicationTests
                     }
                 }
             }
+        }
+
+        private static void Cancel(Component dialog)
+        {
+            var cancelProperty = dialog?.GetType().GetProperties().FirstOrDefault(v => v.Name.Equals("cancel", StringComparison.InvariantCultureIgnoreCase));
+            dynamic cancel = cancelProperty?.GetGetMethod().Invoke(dialog, null);
+
+            cancel?.Click();
         }
     }
 }

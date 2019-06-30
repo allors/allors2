@@ -203,8 +203,13 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
         } else {
           this.communicationEvent = loaded.objects.EmailCommunication as EmailCommunication;
 
-          this.updateFromParty(this.communicationEvent.FromParty);
-          this.updateToParty(this.communicationEvent.ToParty);
+          if (this.communicationEvent.FromParty) {
+            this.updateFromParty(this.communicationEvent.FromParty);
+          }
+
+          if (this.communicationEvent.ToParty) {
+            this.updateToParty(this.communicationEvent.ToParty);
+          }
 
           if (this.communicationEvent.CanWriteActualEnd) {
             this.title = 'Edit Email';
