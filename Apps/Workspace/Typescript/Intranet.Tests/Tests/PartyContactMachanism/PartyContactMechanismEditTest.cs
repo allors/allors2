@@ -20,7 +20,7 @@ namespace Tests.PartyContactMachanismTests
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -47,7 +47,7 @@ namespace Tests.PartyContactMachanismTests
             //var before = new PostalAddresses(this.Session).Extent().ToArray();
 
             //var extent = new People(this.Session).Extent();
-            //var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            //var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             //var personOverview = this.people.Select(person);
             //var page = personOverview.NewPostalAddress();
@@ -101,7 +101,7 @@ namespace Tests.PartyContactMachanismTests
             //var country = new Countries(this.Session).FindBy(M.Country.IsoCode, "NL");
 
             //var extent = new People(this.Session).Extent();
-            //var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            //var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             //var before = new PostalAddresses(this.Session).Extent().ToArray();
 

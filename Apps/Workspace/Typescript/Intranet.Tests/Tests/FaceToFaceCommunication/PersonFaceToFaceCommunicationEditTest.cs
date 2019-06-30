@@ -35,7 +35,7 @@ namespace Tests.FaceToFaceCommunicationTests
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             this.personListPage.Table.DefaultAction(person);
             var faceToFaceCommunicationEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
@@ -78,7 +78,7 @@ namespace Tests.FaceToFaceCommunicationTests
         public void Edit()
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));

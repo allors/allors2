@@ -27,11 +27,11 @@ namespace Tests.OrganisationTests
         [Fact]
         public void Table()
         {
-            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
+            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme");
             var row = this.page.Table.FindRow(organisation);
             var cell = row.FindCell("name");
 
-            Assert.Equal("Acme0", cell.Element.Text);
+            Assert.Equal("Acme", cell.Element.Text);
         }
     }
 }

@@ -353,8 +353,8 @@ namespace Tests
             var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
 
             new FaceToFaceCommunicationBuilder(this.Session)
-                .WithDescription($"Meeting ")
-                .WithSubject($"meeting ")
+                .WithDescription($"Meeting")
+                .WithSubject($"meeting")
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithFromParty(contact1)
                 .WithToParty(contact2)
@@ -363,8 +363,8 @@ namespace Tests
                 .Build();
 
             new EmailCommunicationBuilder(this.Session)
-                .WithDescription($"Email ")
-                .WithSubject($"email ")
+                .WithDescription($"Email")
+                .WithSubject($"email")
                 .WithFromEmail(email2)
                 .WithToEmail(email2)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -373,8 +373,8 @@ namespace Tests
                 .Build();
 
             new LetterCorrespondenceBuilder(this.Session)
-                .WithDescription($"Letter ")
-                .WithSubject($"letter ")
+                .WithDescription($"Letter")
+                .WithSubject($"letter")
                 .WithFromParty(administrator)
                 .WithToParty(contact1)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -383,8 +383,8 @@ namespace Tests
                 .Build();
 
             new PhoneCommunicationBuilder(this.Session)
-                .WithDescription($"Phone ")
-                .WithSubject($"phone ")
+                .WithDescription($"Phone")
+                .WithSubject($"phone")
                 .WithFromParty(administrator)
                 .WithToParty(contact1)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)

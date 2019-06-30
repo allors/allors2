@@ -30,7 +30,7 @@ namespace Tests.EmailCommunicationTests
         public void Create()
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
@@ -89,7 +89,7 @@ namespace Tests.EmailCommunicationTests
         public void Edit()
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));

@@ -1,13 +1,10 @@
-using src.allors.material.apps.objects.person.overview;
-
 namespace Tests.SerialisedItemTests
 {
     using Allors.Domain;
     using Allors.Meta;
-
-    using src.allors.material.apps.objects.person.list;
-
     using Xunit;
+    using src.allors.material.apps.objects.person.list;
+    using src.allors.material.apps.objects.person.overview;
 
     [Collection("Test collection")]
     public class SerialisedItemOverviewTest : Test
@@ -24,7 +21,7 @@ namespace Tests.SerialisedItemTests
         [Fact]
         public void Title()
         {
-            var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
+            var person = new People(this.Session).FindBy(M.Person.FirstName, "John");
             this.people.Table.DefaultAction(person);
             new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
@@ -33,7 +30,7 @@ namespace Tests.SerialisedItemTests
         [Fact]
         public void NavigateToList()
         {
-            var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
+            var person = new People(this.Session).FindBy(M.Person.FirstName, "John");
             this.people.Table.DefaultAction(person);
             var overviewPage = new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);

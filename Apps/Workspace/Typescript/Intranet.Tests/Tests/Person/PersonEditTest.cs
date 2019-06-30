@@ -65,7 +65,7 @@ namespace Tests.PersonTests
         {
             var before = new People(this.Session).Extent().ToArray();
 
-            var person = before.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = before.First(v => v.PartyName.Equals("John Doe"));
             var id = person.Id;
 
             this.people.Table.DefaultAction(person);

@@ -22,7 +22,7 @@ namespace Tests.OrganisationTests
         [Fact]
         public void Title()
         {
-            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
+            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme");
 
             this.organisationListPage.Table.DefaultAction(organisation);
             new OrganisationOverviewComponent(this.organisationListPage.Driver);
@@ -33,7 +33,7 @@ namespace Tests.OrganisationTests
         [Fact]
         public void NavigateToList()
         {
-            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
+            var organisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme");
             this.organisationListPage.Table.DefaultAction(organisation);
             var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 

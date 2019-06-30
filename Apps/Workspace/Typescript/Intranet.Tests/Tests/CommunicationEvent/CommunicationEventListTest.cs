@@ -26,13 +26,13 @@ namespace Tests.CommunicationEventTests
         [Fact]
         public void Table()
         {
-            var communicationEvent = new CommunicationEvents(this.Session).FindBy(M.CommunicationEvent.Subject, "meeting 0");
+            var communicationEvent = new CommunicationEvents(this.Session).FindBy(M.CommunicationEvent.Subject, "meeting");
 
             var cell = this.page.Table
                 .FindRow(communicationEvent)
                 .FindCell("subject");
 
-            Assert.Equal("meeting 0", cell.Element.Text);
+            Assert.Equal("meeting", cell.Element.Text);
         }
         
         [Fact]

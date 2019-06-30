@@ -83,7 +83,7 @@ namespace Tests.OrganisationTests
 
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var organisation = before.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = before.First(v => v.PartyName.Equals("Acme"));
             var id = organisation.Id;
 
             this.organisationListPage.Table.DefaultAction(organisation);

@@ -25,7 +25,7 @@ namespace Tests.PostalAddressTests
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             this.editContactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -52,7 +52,7 @@ namespace Tests.PostalAddressTests
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             this.people.Table.DefaultAction(person);
             var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
@@ -94,7 +94,7 @@ namespace Tests.PostalAddressTests
             var country = new Countries(this.Session).FindBy(M.Country.IsoCode, "NL");
 
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 

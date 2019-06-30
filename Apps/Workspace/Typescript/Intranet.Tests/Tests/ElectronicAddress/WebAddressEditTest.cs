@@ -36,7 +36,7 @@ namespace Tests.ElectronicAddressTests
             var before = new WebAddresses(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             this.personListPage.Table.DefaultAction(person);
             var webAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateWebAddress();
@@ -64,7 +64,7 @@ namespace Tests.ElectronicAddressTests
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John0 Doe0"));
+            var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
             var editContactMechanism = new WebAddressBuilder(this.Session)
                 .WithElectronicAddressString("www.acme.com")

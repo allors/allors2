@@ -35,7 +35,7 @@ namespace Tests.FaceToFaceCommunicationTests
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             this.organisationListPage.Table.DefaultAction(organisation);
@@ -79,7 +79,7 @@ namespace Tests.FaceToFaceCommunicationTests
         public void Edit()
         {
             var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");

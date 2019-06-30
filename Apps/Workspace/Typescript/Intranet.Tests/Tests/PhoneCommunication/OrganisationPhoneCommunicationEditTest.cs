@@ -28,7 +28,7 @@ namespace Tests.PhoneCommunicationTests
             : base(fixture)
         {
             var people = new Organisations(this.Session).Extent();
-            var organisation = people.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = people.First(v => v.PartyName.Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
@@ -65,8 +65,8 @@ namespace Tests.PhoneCommunicationTests
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
-            var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane0"));
+            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
+            var contact = organisation.CurrentContacts.First(v => v.FirstName.Equals("Jane"));
 
             this.organisations.Table.DefaultAction(organisation);
             var phoneCommunication = new OrganisationOverviewComponent(this.organisations.Driver).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
@@ -113,7 +113,7 @@ namespace Tests.PhoneCommunicationTests
         public void Edit()
         {
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));

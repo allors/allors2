@@ -30,7 +30,7 @@ namespace Tests.EmailCommunicationTests
         public void Create()
         {
             var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
@@ -91,7 +91,7 @@ namespace Tests.EmailCommunicationTests
         public void Edit()
         {
             var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme0"));
+            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");

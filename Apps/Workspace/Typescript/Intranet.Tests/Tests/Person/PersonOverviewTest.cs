@@ -22,7 +22,7 @@ namespace Tests.PersonTests
         [Fact]
         public void Title()
         {
-            var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
+            var person = new People(this.Session).FindBy(M.Person.FirstName, "John");
             this.people.Table.DefaultAction(person);
             new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
@@ -31,7 +31,7 @@ namespace Tests.PersonTests
         [Fact]
         public void NavigateToList()
         {
-            var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
+            var person = new People(this.Session).FindBy(M.Person.FirstName, "John");
             this.people.Table.DefaultAction(person);
             var overviewPage = new PersonOverviewComponent(this.people.Driver);
             Assert.Equal("Person", this.Driver.Title);
