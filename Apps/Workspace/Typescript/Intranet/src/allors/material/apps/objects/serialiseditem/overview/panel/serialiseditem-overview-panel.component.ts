@@ -74,7 +74,8 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
       ],
       actions: [
         {
-          name: () => 'Change Inventory',
+          name: 'changeinventory',
+          displayName: () => 'Change Inventory',
           description: () => '',
           disabled: () => false,
           execute: (target: ActionTarget) => {

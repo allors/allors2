@@ -1,13 +1,14 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 
-import { Deletable } from '../../../../../domain';
 import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
 import { MethodType, ISessionObject } from '../../../../../framework';
 
 import { MethodConfig } from './MethodConfig';
 
-export class DeleteAction implements Action {
+export class MethodAction implements Action {
+
+  name = 'method';
 
   constructor(
     refreshService: RefreshService,
@@ -36,7 +37,7 @@ export class DeleteAction implements Action {
 
   execute: (target: ActionTarget) => void;
 
-  name = () => (this.config && this.config.name) || this.methodType.name;
+  displayName = () => (this.config && this.config.name) || this.methodType.name;
   description = () => (this.config && this.config.description) || this.methodType.name;
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {

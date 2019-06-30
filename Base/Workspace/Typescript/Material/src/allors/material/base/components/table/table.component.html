@@ -10,7 +10,7 @@
   </div>
 
   <table mat-table matSort [dataSource]="table.dataSource" [matSortActive]="table.sortValue?.active" [matSortDirection]="table.sortValue?.direction"
-    (matSortChange)="table.sort($event)">
+    (matSortChange)="table.sort($event)" [attr.data-allors-actions]="dataAllorsActions">
 
     <ng-container *ngIf="table.selection" matColumnDef="select" sticky>
       <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()" style="width: 4rem">
@@ -37,7 +37,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button *ngFor="let action of table.actions" mat-menu-item (click)="action.execute(row.object)" [disabled]="action.disabled(row.object)">{{action.name(row.object)}}</button>
+          <button *ngFor="let action of table.actions" mat-menu-item (click)="action.execute(row.object)" [disabled]="action.disabled(row.object)" [attr.data-allors-action]="action.name">{{action.displayName(row.object)}}</button>
         </mat-menu>
       </td>
     </ng-container>

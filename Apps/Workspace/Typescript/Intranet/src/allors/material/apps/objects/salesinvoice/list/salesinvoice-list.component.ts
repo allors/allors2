@@ -85,7 +85,8 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     });
 
     this.setPaid = {
-      name: () => 'Set as Paid',
+      name: 'setaspaid',
+      displayName: () => 'Set as Paid',
       description: () => '',
       disabled: (target: ActionTarget) => {
         if (Array.isArray(target)) {

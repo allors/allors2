@@ -5,8 +5,9 @@ import { Deletable } from '../../../../../domain';
 import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
 import { AllorsMaterialDialogService } from '../../dialog';
 
-
 export class DeleteAction implements Action {
+
+  name = 'delete';
 
   constructor(
     refreshService: RefreshService,
@@ -42,7 +43,7 @@ export class DeleteAction implements Action {
 
   execute: (target: ActionTarget) => void;
 
-  name = () => 'Delete';
+  displayName = () => 'Delete';
   description = () => 'Delete';
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {

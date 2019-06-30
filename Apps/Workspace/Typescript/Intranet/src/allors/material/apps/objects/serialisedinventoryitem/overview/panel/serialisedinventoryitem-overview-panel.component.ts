@@ -68,7 +68,8 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
 
     this.edit = this.editService.edit();
     this.changeInventory = {
-      name: () => 'Change Inventory',
+      name: 'changeinventory',
+      displayName: () => 'Change Inventory',
       description: () => '',
       disabled: () => false,
       execute: (target: ActionTarget) => {

@@ -8,12 +8,14 @@ function objectTypeName(target: ActionTarget) {
 
 export class OverviewAction implements Action {
 
+  name = 'overview';
+
   constructor(private navigationService: NavigationService) {
   }
 
   result = new Subject<boolean>();
 
-  name = (target: ActionTarget) => 'Overview';
+  displayName = (target: ActionTarget) => 'Overview';
 
   description = (target: ActionTarget) => `Go to ${objectTypeName(target)} overview`;
 

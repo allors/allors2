@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Components
 {
     using System.Linq;

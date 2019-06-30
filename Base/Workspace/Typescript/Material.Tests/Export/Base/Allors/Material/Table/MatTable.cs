@@ -1,5 +1,6 @@
 namespace Components
 {
+    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
     using Allors;
     using OpenQA.Selenium;
@@ -15,17 +16,52 @@ namespace Components
 
         public By Selector { get; }
 
+        public string[] ObjectIds
+        {
+            get
+            {
+                var rowPath = By.CssSelector($"tr[mat-row][data-allors-id]");
+                var path = this.Selector != null ? new ByChained(this.Selector, rowPath) : rowPath;
+                var rows = this.Driver.FindElements(path);
+                return rows.Select(v => v.GetAttribute("data-allors-id")).ToArray();
+            }
+        }
+
+        public string[] Actions
+        {
+            get
+            {
+                this.Driver.WaitForAngular();
+
+                var tablePath = By.CssSelector($"table");
+                var path = this.Selector != null ? new ByChained(this.Selector, tablePath) : tablePath;
+                var table = this.Driver.FindElement(path);
+                var attribute = table.GetAttribute("data-allors-actions");
+                return !string.IsNullOrWhiteSpace(attribute) ? attribute.Split(",") : new string[0];
+            }
+        }
+
         public MatTableRow FindRow(IObject obj)
         {
             var row = this.TableRowElement(obj);
             return new MatTableRow(this.Driver, row);
         }
-
+        
         public void DefaultAction(IObject obj)
         {
             var row = this.FindRow(obj);
             var cell = row.Cells[1];
             cell.Click();
+        }
+
+        public void Action(IObject obj, string action)
+        {
+            var row = this.FindRow(obj);
+            var cell = row.FindCell("menu");
+            cell.Click();
+
+            var menu = new MatMenu(this.Driver);
+            menu.Select(action);
         }
 
         protected IWebElement TableRowElement(IObject obj)
@@ -34,8 +70,7 @@ namespace Components
 
             var rowPath = By.CssSelector($"tr[mat-row][data-allors-id='{obj.Id}']");
             var path = this.Selector != null ? new ByChained(this.Selector, rowPath) : rowPath;
-            var row = this.Driver.FindElement(path);
-            return row;
+            return this.Driver.FindElement(path);
         }
     }
 

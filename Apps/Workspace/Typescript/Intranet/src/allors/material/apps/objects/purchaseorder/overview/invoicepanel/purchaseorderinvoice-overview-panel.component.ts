@@ -83,7 +83,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     this.delete = this.deleteService.delete(this.panel.manager.context);
 
     this.addToInvoice = {
-      name: () => 'Add to invoice',
+      name: 'addtoinvoice',
+      displayName: () => 'Add to invoice',
       description: () => '',
       disabled: (target: PurchaseOrder) => {
         return !target.CanExecuteInvoice;
@@ -97,7 +98,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     };
 
     this.removeFromInvoice = {
-      name: () => 'Remove from invoice',
+      name: 'removefrominvoice',
+      displayName: () => 'Remove from invoice',
       description: () => '',
       disabled: (target: PurchaseOrder) => {
         return !this.purchaseInvoice.PurchaseOrders.includes(target);

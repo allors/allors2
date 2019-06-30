@@ -7,8 +7,9 @@ import { ObjectService } from '../../object';
 
 export class EditAction implements Action {
 
+  name = 'edit';
   result = new Subject<boolean>();
-  name = () => 'Edit';
+  displayName = () => 'Edit';
   description = () => 'Edit';
 
   constructor(
@@ -18,10 +19,10 @@ export class EditAction implements Action {
   ) {
   }
 
-  resolve(target: ActionTarget){
-    let editObject = target as ISessionObject 
+  resolve(target: ActionTarget) {
+    let editObject = target as ISessionObject
 
-    if(this.roleType){
+    if (this.roleType) {
       editObject = editObject.get(this.roleType.name);
     }
 

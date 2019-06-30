@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RefreshService, Action, Context } from '../../../../../angular';
-import { DeleteAction as MethodAction } from './MethodAction';
+import { MethodAction as MethodAction } from './MethodAction';
 import { MethodType } from '../../../../../framework';
 
 import { MethodConfig } from './MethodConfig';

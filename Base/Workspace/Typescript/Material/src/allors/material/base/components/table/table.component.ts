@@ -34,7 +34,12 @@ export class AllorsMaterialTableComponent implements OnInit {
     }
   }
 
+  get dataAllorsActions(): string {
+      return (this.table && this.table.actions) ? this.table.actions.map(v => v.name).join() : '';
+  }
+
   private action(row: TableRow, column: Column) {
     return column.action || this.table.defaultAction;
   }
+
 }

@@ -8,6 +8,8 @@ import { PrintConfig } from './print.config';
 
 export class PrintAction implements Action {
 
+  name = 'print';
+
   constructor(config: PrintConfig, roleType?: RoleType) {
     this.execute = (target: ActionTarget) => {
 
@@ -30,7 +32,7 @@ export class PrintAction implements Action {
 
   execute: (target: ActionTarget) => void;
 
-  name = () => 'Print';
+  displayName = () => 'Print';
   description = () => 'Print';
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {

@@ -73,7 +73,8 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
 
     this.edit = this.editService.edit();
     this.changeInventory = {
-      name: () => 'Change Inventory',
+      name: 'changeinventory',
+      displayName: () => 'Change Inventory',
       description: () => '',
       disabled: () => false,
       execute: (target: ActionTarget) => {

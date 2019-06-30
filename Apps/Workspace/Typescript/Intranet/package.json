@@ -4,14 +4,14 @@
   "scripts": {
     "postinstall": "node ./postinstall.js",
     "ng": "ng",
-    "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
-    "start": "ng serve",
+    "ng-high-memory": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng",
+    "start": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
     "tc:test": "ng test --watch=false",
-    "build-stats": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
+    "build-stats": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
     "stats": "webpack-bundle-analyzer dist/intranet/stats.json",
     "autotest": "npx tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main && npx rimraf ./out-tsc"
   },
