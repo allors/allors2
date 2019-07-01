@@ -13,7 +13,7 @@ namespace Components
         : base(driver)
         {
             this.Selector = By.XPath($"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]");
-            this.InputSelector = new ByChained(this.Selector, By.XPath($"//input"));
+            this.InputSelector = new ByChained(this.Selector, By.XPath($".//input"));
         }
 
         public override By Selector { get; }

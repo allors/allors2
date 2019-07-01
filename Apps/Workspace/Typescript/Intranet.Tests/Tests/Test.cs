@@ -6,7 +6,6 @@ namespace Tests
     using System;
     using System.Globalization;
     using System.IO;
-    using System.Runtime.InteropServices;
     using System.Xml;
     using Allors;
     using Allors.Adapters.Object.SqlClient;
