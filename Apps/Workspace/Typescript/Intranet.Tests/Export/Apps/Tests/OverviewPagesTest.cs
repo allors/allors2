@@ -2,6 +2,7 @@ namespace Tests.ApplicationTests
 {
     using System.Collections.Generic;
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.PageObjects;
     using System.Reflection;
     using Components;
     using System;
@@ -32,6 +33,77 @@ namespace Tests.ApplicationTests
                 dynamic detail = detailProperty.GetGetMethod().Invoke(page, null);
                 detail.Click();
                 Cancel(detail);
+            }
+        }
+
+        [Fact]
+        public async void PanelsCreate()
+        {
+            foreach (var page in this.OverviewPages())
+            {
+                var panelProperties = page.GetType().GetProperties().Where(v => v.Name.ToUpperInvariant().Contains("PANEL"));
+                foreach (var panelProperty in panelProperties)
+                {
+                    var panel = (SelectorComponent)panelProperty.GetGetMethod().Invoke(page, null);
+                    if (this.Driver.SelectorIsVisible(panel.Selector))
+                    {
+                        dynamic dynamicPanel = panel;
+                        dynamicPanel.Click();
+
+                        var createMethods = panel.GetType().GetMethods().Where(v => v.Name.StartsWith("Create"));
+                        foreach (var createMethod in createMethods)
+                        {
+                            var dialog = (Component)createMethod?.Invoke(panel, null);
+                            Cancel(dialog);
+                        }
+                        
+                        Collapse(panel);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public async void PanelsEdit()
+        {
+            foreach (var page in this.OverviewPages())
+            {
+                var panelProperties = page.GetType().GetProperties().Where(v => v.Name.ToUpperInvariant().Contains("PANEL"));
+                foreach (var panelProperty in panelProperties)
+                {
+                    var panel = (SelectorComponent)panelProperty.GetGetMethod().Invoke(page, null);
+                    if (this.Driver.SelectorIsVisible(panel.Selector))
+                    {
+                        dynamic dynamicPanel = panel;
+                        dynamicPanel.Click();
+
+                        var tableProperty = panel.GetType().GetProperties().FirstOrDefault(v => v.PropertyType == typeof(MatTable));
+                        if (tableProperty != null)
+                        {
+                            var table = (MatTable)tableProperty?.GetGetMethod().Invoke(panel, null);
+                            var action = table.Actions.FirstOrDefault(v => v.Equals("edit"));
+
+                            if (action != null)
+                            {
+                                var objects = this.Session.Instantiate(table.ObjectIds);
+                                foreach (IObject @object in objects)
+                                {
+                                    table.Action(@object, action);
+
+                                    this.Driver.WaitForAngular();
+                                    var dialogElement = this.Driver.FindElement(By.CssSelector("mat-dialog-container ng-component[data-test-scope]"));
+                                    var testScope = dialogElement.GetAttribute("data-test-scope");
+                                    var type = Assembly.GetExecutingAssembly().GetTypes().First(v => v.Name.Equals(testScope));
+                                    var dialog = (Component)Activator.CreateInstance(type, this.Driver);
+
+                                    Cancel(dialog);
+                                }
+                            }
+                        }
+
+                        Collapse(panel);
+                    }
+                }
             }
         }
 
@@ -68,6 +140,15 @@ namespace Tests.ApplicationTests
                     }
                 }
             }
+        }
+
+        private void Collapse(SelectorComponent panel)
+        {
+            this.Driver.WaitForAngular();
+
+            var byChained = new ByChained(panel.Selector, By.XPath($".//mat-icon[contains(text(), 'expand_less')]"));
+            var collapse = this.Driver.FindElement(byChained);
+            collapse.Click();
         }
 
         private static void Cancel(Component dialog)

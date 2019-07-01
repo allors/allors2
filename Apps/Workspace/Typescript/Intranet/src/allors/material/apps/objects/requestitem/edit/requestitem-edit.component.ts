@@ -178,8 +178,12 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        this.part = loaded.objects.UnifiedGood as Part;
+        if (this.part) {
+          this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        } else {
+          this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+        }
 
         if (this.requestItem.Product !== this.previousProduct) {
           this.requestItem.SerialisedItem = null;

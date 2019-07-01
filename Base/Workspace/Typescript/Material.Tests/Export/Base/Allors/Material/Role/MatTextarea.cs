@@ -4,16 +4,15 @@ namespace Components
     using Allors.Meta;
     using OpenQA.Selenium;
 
-    public class MatTextarea : Component
+    public class MatTextarea : SelectorComponent
     {
         public MatTextarea(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-textarea{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-textarea{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public string Value
         {

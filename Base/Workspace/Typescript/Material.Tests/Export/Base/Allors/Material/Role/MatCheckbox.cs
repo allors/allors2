@@ -1,24 +1,19 @@
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
-
     using Allors.Meta;
-
-    using Components;
-
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MatCheckbox : Component
+    public class MatCheckbox : SelectorComponent
     {
         public MatCheckbox(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-checkbox{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-checkbox{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public IWebElement Label => this.Driver.FindElement(new ByChained(this.Selector, By.CssSelector("label")));
 

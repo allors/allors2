@@ -4,7 +4,7 @@ namespace Components
 
     using OpenQA.Selenium;
 
-    public class Anchor : Component
+    public class Anchor : SelectorComponent
     {
         public Anchor(IWebDriver driver, By selector)
         : base(driver)
@@ -31,9 +31,9 @@ namespace Components
             }
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
-        public bool IsVisible => this.SelectorIsVisible(this.Selector);
+        public bool IsVisible => this.Driver.SelectorIsVisible(this.Selector);
 
         public void Click()
         {

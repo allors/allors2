@@ -4,7 +4,7 @@ namespace Components
 
     using OpenQA.Selenium;
 
-    public class Element : Component
+    public class Element : SelectorComponent
     {
         public Element(IWebDriver driver, By selector)
         : base(driver)
@@ -12,9 +12,9 @@ namespace Components
             this.Selector = selector;
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
-        public bool IsVisible => this.SelectorIsVisible(this.Selector);
+        public bool IsVisible => this.Driver.SelectorIsVisible(this.Selector);
 
         public void Click()
         {

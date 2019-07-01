@@ -5,13 +5,15 @@ namespace Components
     using System.Diagnostics.CodeAnalysis;
     using OpenQA.Selenium;
 
-    public class MatTableRow : Component
+    public class MatTableRow
     {
         public MatTableRow(IWebDriver driver, IWebElement element)
-        : base(driver)
         {
+            this.Driver = driver;
             this.Element = element;
         }
+
+        public IWebDriver Driver { get; }
 
         public IWebElement Element { get; }
 

@@ -6,16 +6,15 @@ namespace Components
     using OpenQA.Selenium;
 
     public class MatDatetimepicker
-    : Component
+    : SelectorComponent
     {
         public MatDatetimepicker(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-datetimepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-datetimepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public DateTime? Value
         {

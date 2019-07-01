@@ -45,6 +45,7 @@ export class WorkEffortOverviewPanelComponent extends TestScope implements OnIni
     public navigationService: NavigationService,
 
     public deleteService: DeleteService,
+    public editService: EditService,
     public overviewService: OverviewService,
   ) {
     super();
@@ -54,10 +55,12 @@ export class WorkEffortOverviewPanelComponent extends TestScope implements OnIni
 
   ngOnInit() {
 
-    this.panel.name = 'workefort';
+    this.panel.name = 'workeffort';
     this.panel.title = 'Child Work Orders';
     this.panel.icon = 'business';
     this.panel.expandable = true;
+
+    this.edit = this.editService.edit();
 
     const sort = true;
     this.table = new Table({

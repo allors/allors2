@@ -1,20 +1,22 @@
+using OpenQA.Selenium.Support.PageObjects;
+
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
     using Allors.Meta;
     using OpenQA.Selenium;
 
-    public class MatSelect : Component
+    public class MatSelect : SelectorComponent
     {
         public MatSelect(IWebDriver driver, RoleType roleType, params string[] scopes) : base(driver)
         {
-            var arrowXPath = $"//a-mat-select{this.ByScopesPredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]";
-            this.ArrowSelector = By.XPath(arrowXPath);
-
-            var valueTextXPath = $"//a-mat-select{this.ByScopesPredicate(scopes)}//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]";
-            this.ValueTextSelector = By.XPath(valueTextXPath);
+            this.Selector = By.XPath($"//a-mat-select{this.ByScopesPredicate(scopes)}");
+            this.ArrowSelector = new ByChained(this.Selector, By.XPath($"//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]"));
+            this.ValueTextSelector = new ByChained(this.Selector, By.XPath($"//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]"));
         }
 
+        public override By Selector { get; }
+        
         public string Value
         {
             get

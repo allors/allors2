@@ -6,7 +6,7 @@ namespace Components
 
     public static partial class WebDriverExtensions
     {
-        public static void WaitForAngular(this IWebDriver driver)
+        public static void WaitForAngular(this IWebDriver @this)
         {
             const string Function =
                 @"
@@ -18,7 +18,7 @@ window.getAngularTestability(document.querySelector('app-root'))
 });
 ";
 
-            var javascriptExecutor = (IJavaScriptExecutor)driver;
+            var javascriptExecutor = (IJavaScriptExecutor)@this;
             var didWork = true;
             while (didWork)
             {
@@ -26,9 +26,16 @@ window.getAngularTestability(document.querySelector('app-root'))
             }
         }
 
-        public static void WaitForCondition(this IWebDriver driver, Func<IWebDriver, bool> condition)
+        public static void WaitForCondition(this IWebDriver @this, Func<IWebDriver, bool> condition)
         {
-            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(condition);
+            new WebDriverWait(@this, TimeSpan.FromSeconds(30)).Until(condition);
+        }
+
+        public static bool SelectorIsVisible(this IWebDriver @this, By selector)
+        {
+            @this.WaitForAngular();
+            var elements = @this.FindElements(selector);
+            return (elements.Count == 1) && elements[0].Displayed;
         }
     }
 

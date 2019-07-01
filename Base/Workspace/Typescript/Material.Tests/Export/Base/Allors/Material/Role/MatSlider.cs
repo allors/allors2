@@ -6,16 +6,15 @@ namespace Components
     using OpenQA.Selenium.Interactions;
 
     public class MatSlider
-    : Component
+    : SelectorComponent
     {
         public MatSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider");
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public void Select(int min, int max, int value)
         {

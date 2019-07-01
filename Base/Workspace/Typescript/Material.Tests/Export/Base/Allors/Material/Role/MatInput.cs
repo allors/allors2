@@ -4,13 +4,12 @@ namespace Components
     using Allors.Meta;
     using OpenQA.Selenium;
 
-    public class MatInput : Component
+    public class MatInput : SelectorComponent
     {
         public MatInput(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
         }
 
         public MatInput(IWebDriver driver, By selector)
@@ -19,7 +18,7 @@ namespace Components
             this.Selector = selector;
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public string Value
         {

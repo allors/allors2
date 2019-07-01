@@ -17,15 +17,19 @@ namespace Autotest.Angular
 
         public Directive[] Directives { get; set; }
 
-        public Directive[] LocalNonRoutedScopedComponents { get; set; }
-
         public Module[] LocalModules { get; set; }
 
         public Directive[] LocalRoutedComponents { get; set; }
 
         public Directive[] LocalEntryComponents { get; set; }
 
-        public Directive[] LocalScopedDirectives{ get; set; }
+        public Directive[] LocalScopedDirectives { get; set; }
+
+        public Directive[] LocalNonRoutedScopedComponents { get; set; }
+
+        public Directive[] LocalNonRoutedScopedComponentsWithoutSelector { get; set; }
+
+        public Directive[] LocalNonRoutedScopedComponentsWithSelector { get; set; }
 
         public Module MainModule { get; set; }
 
@@ -140,6 +144,10 @@ namespace Autotest.Angular
             this.LocalScopedDirectives = this.Directives.Where(v => v.Scope != null && v.Reference.IsLocal).ToArray();
 
             this.LocalNonRoutedScopedComponents = this.LocalScopedDirectives.Except(this.LocalRoutedComponents).ToArray();
+
+            this.LocalNonRoutedScopedComponentsWithSelector = this.LocalNonRoutedScopedComponents.Where(v => !string.IsNullOrEmpty(v.Selector)).ToArray();
+
+            this.LocalNonRoutedScopedComponentsWithoutSelector = this.LocalNonRoutedScopedComponents.Where(v => string.IsNullOrEmpty(v.Selector)).ToArray();
         }
     }
 }

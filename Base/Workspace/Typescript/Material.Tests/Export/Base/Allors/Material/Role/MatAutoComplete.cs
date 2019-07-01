@@ -5,19 +5,17 @@ namespace Components
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MatAutocomplete
-    : Component
+    public class MatAutocomplete : SelectorComponent
     {
         public MatAutocomplete(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-autocomplete{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-autocomplete{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public IWebElement Input => this.Driver.FindElement(new ByChained(this.Selector, By.CssSelector("input")));
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public void Select(string value, string selection = null)
         {

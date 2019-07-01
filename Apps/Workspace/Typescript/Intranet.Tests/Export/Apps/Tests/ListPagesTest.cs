@@ -1,10 +1,8 @@
-using OpenQA.Selenium;
-
 namespace Tests.ApplicationTests
 {
     using System.Reflection;
     using Components;
-    using Microsoft.Extensions.Logging;
+    using OpenQA.Selenium;
     using System;
     using System.Linq;
     using Xunit;
@@ -43,11 +41,12 @@ namespace Tests.ApplicationTests
             foreach (var navigateTo in this.navigateTos)
             {
                 var page = (Component)navigateTo.Invoke(this.Sidenav, null);
-
-                var createMethod = page.GetType().GetMethods().FirstOrDefault(v => v.Name.StartsWith("Create"));
-                var dialog = (Component)createMethod?.Invoke(page, null);
-
-                Cancel(dialog);
+                var createMethods = page.GetType().GetMethods().Where(v => v.Name.StartsWith("Create"));
+                foreach (var createMethod in createMethods)
+                {
+                    var dialog = (Component)createMethod?.Invoke(page, null);
+                    Cancel(dialog);
+                }
             }
         }
 
@@ -77,7 +76,7 @@ namespace Tests.ApplicationTests
                             var dialogElement = this.Driver.FindElement(By.CssSelector("mat-dialog-container ng-component[data-test-scope]"));
                             var testScope = dialogElement.GetAttribute("data-test-scope");
                             var type = Assembly.GetExecutingAssembly().GetTypes().First(v => v.Name.Equals(testScope));
-                            var dialog = (Component)Activator.CreateInstance(type, this.Driver, null);
+                            var dialog = (Component)Activator.CreateInstance(type, this.Driver);
 
                             Cancel(dialog);
                         }

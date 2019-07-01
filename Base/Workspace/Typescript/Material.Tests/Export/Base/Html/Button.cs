@@ -5,7 +5,7 @@ namespace Components
     using System.Diagnostics.CodeAnalysis;
     using OpenQA.Selenium;
 
-    public class Button : Component
+    public class Button : SelectorComponent
     {
         public Button(IWebDriver driver, params By[] selectors)
         : base(driver)
@@ -28,7 +28,7 @@ namespace Components
             }
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public void Click()
         {

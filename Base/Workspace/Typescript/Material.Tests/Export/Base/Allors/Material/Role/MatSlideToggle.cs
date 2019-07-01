@@ -1,3 +1,5 @@
+using OpenQA.Selenium.Support.PageObjects;
+
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
@@ -5,21 +7,18 @@ namespace Components
     using OpenQA.Selenium;
 
     public class MatSlideToggle
-    : Component
+    : SelectorComponent
     {
         public MatSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var inputXPath = $"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]//input";
-            this.InputSelector = By.XPath(inputXPath);
-
-            var containerXPath = $"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]";
-            this.ContainerSelector = By.XPath(containerXPath);
+            this.Selector = By.XPath($"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]");
+            this.InputSelector = new ByChained(this.Selector, By.XPath($"//input"));
         }
 
-        public By InputSelector { get; }
+        public override By Selector { get; }
 
-        public By ContainerSelector { get; }
+        public By InputSelector { get; }
 
         public bool Value
         {
@@ -33,7 +32,7 @@ namespace Components
             set
             {
                 this.Driver.WaitForAngular();
-                var container = this.Driver.FindElement(this.ContainerSelector);
+                var container = this.Driver.FindElement(this.Selector);
                 var element = this.Driver.FindElement(this.InputSelector);
                 this.ScrollToElement(container);
                 if (element.Selected)

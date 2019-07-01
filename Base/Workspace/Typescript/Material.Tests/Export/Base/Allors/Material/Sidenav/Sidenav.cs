@@ -4,7 +4,7 @@ namespace Tests
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public partial class Sidenav : Component
+    public partial class Sidenav : SelectorComponent
     {
         public Sidenav(IWebDriver driver)
         : base(driver)
@@ -12,7 +12,7 @@ namespace Tests
             this.Selector = By.CssSelector("mat-sidenav");
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public Button Toggle => new Button(this.Driver, By.CssSelector(@"button[aria-label=""Toggle sidenav""]"));
 

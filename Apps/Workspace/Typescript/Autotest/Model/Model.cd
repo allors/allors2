@@ -12,8 +12,8 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAgCAQAAAAIAAAgAAAgAABAAAA=</HashCode>
-      <FileName>Export\Base\Model.cs</FileName>
+      <HashCode>AQAAAAAAAACAAAAAAAAgCAQAAAAIAAAgAAAgAABAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Model.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Project" />
@@ -31,20 +31,9 @@
         <Position X="-0.593" Y="0.166" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="LocalDeclaredEntryComponents" Type="Autotest.Angular.Directive">
+    <AssociationLine Name="LocalModules" Type="Autotest.Angular.Module">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.919" Y="0.402" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="LocalModules" Type="Autotest.Angular.Module" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="7.5" Y="4.123" />
-        <Point X="7.5" Y="5.5" />
-        <Point X="4.812" Y="5.5" />
-        <Point X="4.812" Y="6" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.968" Y="0.263" />
+        <Position X="0.263" Y="-0.968" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="LocalRoutedComponents" Type="Autotest.Angular.Directive">
@@ -52,24 +41,17 @@
         <Position X="-0.641" Y="0.617" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Modules" Type="Autotest.Angular.Module" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="7.312" Y="4.123" />
-        <Point X="7.312" Y="5.5" />
-        <Point X="4.562" Y="5.5" />
-        <Point X="4.562" Y="6" />
-      </Path>
+    <AssociationLine Name="Modules" Type="Autotest.Angular.Module">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.709" Y="0.72" />
+        <Position X="0.72" Y="-0.709" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAgAAEIAAEBAwAAAAAAAIYAAAAAAAAAAgAACIAAAA=</HashCode>
-      <FileName>Custom\Angular\Project.cs</FileName>
+      <HashCode>AAAAgAAEIAAEBAwAAAgAAAAYAAEgAARAAAgAASIAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Project.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Directives" />
-      <Property Name="LocalDeclaredEntryComponents" />
       <Property Name="LocalModules" />
       <Property Name="LocalRoutedComponents" />
       <Property Name="Modules" />
@@ -84,8 +66,8 @@
       <Method Name="ToString" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AIAAAACAAEAAAAAEAAAACAAAAAIAAAAAAQAAAAIAAgA=</HashCode>
-      <FileName>Custom\Angular\Directive.cs</FileName>
+      <HashCode>IIEAAACAAkAACCAEAIAACACIAAIAAAAEAQAAAAIAggA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Directive.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Template" />
@@ -107,14 +89,6 @@
         <Position X="0.06" Y="0.318" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="ExportedModules" Type="Autotest.Angular.Module" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="3.875" Y="7.488" />
-        <Point X="3.875" Y="7.738" />
-        <Point X="4.312" Y="7.738" />
-        <Point X="4.312" Y="7.488" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="RoutedComponents" Type="Autotest.Angular.Directive" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="5" Y="6.062" />
@@ -124,8 +98,8 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ABAAAAGIIAgEAAAEIEAACABAAAAAQAAAAAAAAAICAgA=</HashCode>
-      <FileName>Custom\Angular\Module.cs</FileName>
+      <HashCode>ABAAAAGIIAgEAAAGIEACCABAAAAAQAAAAAAAACICAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Module.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="BootstrapComponents" />
@@ -149,7 +123,7 @@
     </Members>
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAEAAAACAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
-      <FileName>Custom\Angular\Pipe.cs</FileName>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Pipe.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Autotest.Angular.Provider">
@@ -160,7 +134,7 @@
     </Members>
     <TypeIdentifier>
       <HashCode>AAAAAIAgAAAAAAAEAAAACAAAAAIAAAQAAAAAAAIAAgE=</HashCode>
-      <FileName>Custom\Angular\Provider.cs</FileName>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Provider.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Autotest.Angular.Template">
@@ -171,8 +145,8 @@
       <Method Name="ToString" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAEAAAAAAAAAAAABAAACAAAAAIAAgA=</HashCode>
-      <FileName>Custom\Angular\Template.cs</FileName>
+      <HashCode>AAAAAAAAAAAABAAEAIAAAAAAAAAABAAACAAAAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Template.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Html" />
@@ -181,26 +155,18 @@
   <Class Name="Autotest.Typescript.Class">
     <Position X="7.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAEAAAAAAAAAAAAAAQAAAAAABAAAAAEAAIAAAA=</HashCode>
-      <FileName>Export\Base\Typescript\Class.cs</FileName>
+      <HashCode>AAAAAEAAAAAABAAAAAAAAAQAAAAACAAAAAAEAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Typescript\Class.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Decorators" />
       <Property Name="Members" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Autotest.Angular.Route">
     <Position X="0.5" Y="5" Width="1.5" />
-    <AssociationLine Name="Component" Type="Autotest.Angular.Directive" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="2" Y="8.125" />
-        <Point X="7.844" Y="8.125" />
-        <Point X="7.844" Y="7.623" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAIEAAAEQAAAQAAAABEAAIBACAIAAgA=</HashCode>
-      <FileName>Custom\Angular\Route.cs</FileName>
+      <HashCode>CAAACAAAAAAAAAIEAAAEQAAAQAAAABEAAIBAiAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Angular\Route.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Children" />
@@ -217,16 +183,16 @@
   <Class Name="Autotest.Typescript.Method">
     <Position X="9.75" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Export\Base\Typescript\Method.cs</FileName>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAQAAAAAAAAAAYAAAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Typescript\Method.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Autotest.Typescript.Property">
     <Position X="11.5" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Export\Base\Typescript\Property.cs</FileName>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAIABgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Typescript\Property.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -237,8 +203,8 @@
       <Method Name="BaseLoad" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\Attribute.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAEAAAAQAQAAAAEAAAAAAAgAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\Attribute.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -249,8 +215,8 @@
       <Method Name="Comment" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\Comment.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAEAAAAQAAAAAAEAAAAAAAgAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\Comment.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -261,8 +227,8 @@
       <Method Name="Element" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAEAAQQAAAAAAAAAAAAAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\Element.cs</FileName>
+      <HashCode>AAAAAQAEAEAEACAEAIAEQAQQQAAEAAIAAIBAACNAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\Element.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Attributes" />
@@ -277,8 +243,8 @@
       <Method Name="Expansion" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\Expansion.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAEAAQQQAAAAAAEAAAAAAAAAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\Expansion.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="ExpansionCases" />
@@ -292,8 +258,8 @@
       <Method Name="ExpansionCase" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAgAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\ExpansionCase.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAEAAAAQAAAAAAEAAAQAAAgAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\ExpansionCase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -304,23 +270,23 @@
       <Method Name="Text" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAgA=</HashCode>
-      <FileName>Export\Base\Html\Text.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAEAAAAQAAAAAAEAAAAAAAgAAIAAgA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\Text.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Autotest.Html.INode" Collapsed="true">
     <Position X="12.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
-      <FileName>Export\Base\Html\INode.cs</FileName>
+      <HashCode>AAAAAAAAAEAEAAAAAAAAQAAAAAAEAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Html\INode.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Autotest.Typescript.IMember" Collapsed="true">
     <Position X="10.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Export\Base\Typescript\IMember.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>C:\Users\KoenVanExem\Documents\GitHub\allors2\Base\Workspace\Typescript\Autotest\Model\Export\Base\Typescript\IMember.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

@@ -5,7 +5,7 @@ namespace Components
     using System.Diagnostics.CodeAnalysis;
     using OpenQA.Selenium;
 
-    public class Input : Component
+    public class Input : SelectorComponent
     {
         public Input(IWebDriver driver, params By[] selectors)
             : base(driver)
@@ -36,7 +36,7 @@ namespace Components
             }
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public string Value
         {

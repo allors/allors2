@@ -4,13 +4,12 @@ namespace Components
     using Allors.Meta;
     using OpenQA.Selenium;
 
-    public class MatLocalised : Component
+    public class MatLocalised : SelectorComponent
     {
         public MatLocalised(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            var xpath = $"//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']";
-            this.Selector = By.XPath(xpath);
+            this.Selector = By.XPath($"//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public MatLocalised(IWebDriver driver, By selector)
@@ -19,7 +18,7 @@ namespace Components
             this.Selector = selector;
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         // TODO:
         public string Value

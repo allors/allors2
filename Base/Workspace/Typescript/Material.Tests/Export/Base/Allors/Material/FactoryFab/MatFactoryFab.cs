@@ -5,7 +5,7 @@ namespace Components
 {
     using OpenQA.Selenium;
 
-    public class MatFactoryFab : Component
+    public class MatFactoryFab : SelectorComponent
     {
         public MatFactoryFab(IWebDriver driver, Composite composite, By selector)
             : base(driver)
@@ -16,7 +16,7 @@ namespace Components
 
         public Composite Composite { get; set; }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public void Create(Class @class = null)
         {

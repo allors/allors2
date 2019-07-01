@@ -5,7 +5,7 @@ namespace Components
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MatList : Component
+    public class MatList : SelectorComponent
     {
         public MatList(IWebDriver driver, By selector = null)
             : base(driver)
@@ -13,7 +13,7 @@ namespace Components
             this.Selector = selector;
         }
 
-        public By Selector { get; }
+        public override By Selector { get; }
 
         public MatListItem FindListItem(IObject obj)
         {

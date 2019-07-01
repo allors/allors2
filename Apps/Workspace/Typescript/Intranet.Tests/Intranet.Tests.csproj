@@ -47,4 +47,8 @@
     <ProjectReference Include="..\..\..\Database\Tests\Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="generated\" />
+  </ItemGroup>
+
 </Project>

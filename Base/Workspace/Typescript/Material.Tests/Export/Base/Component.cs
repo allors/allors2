@@ -37,12 +37,5 @@ namespace Components
             var actions = new Actions(this.Driver);
             actions.MoveToElement(element);
         }
-
-        protected bool SelectorIsVisible(By selector)
-        {
-            this.Driver.WaitForAngular();
-            var elements = this.Driver.FindElements(selector);
-            return elements.Count == 1 && elements[0].Displayed;
-        }
     }
 }

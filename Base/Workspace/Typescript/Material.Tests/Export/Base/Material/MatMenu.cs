@@ -4,11 +4,15 @@ namespace Components
     using Allors.Meta;
     using OpenQA.Selenium;
 
-    public class MatMenu : Component
+    public class MatMenu : SelectorComponent
     {
         public MatMenu(IWebDriver driver, params string[] scopes) : base(driver)
         {
+            // TODO:
+            this.Selector = By.CssSelector($"button[data-allors-action]");
         }
+
+        public override By Selector { get; }
 
         public void Select(string value)
         {
