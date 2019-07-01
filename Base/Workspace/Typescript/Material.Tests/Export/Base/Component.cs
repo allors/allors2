@@ -27,7 +27,7 @@ namespace Components
         {
             return string.Concat(ByScopesExpressions(scopes).Select(v=>$" and {v}"));
         }
-        
+
         protected void ScrollToElement(IWebElement element)
         {
             //const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";

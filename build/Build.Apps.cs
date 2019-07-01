@@ -178,6 +178,7 @@ partial class Build
 
             DeleteFile(Paths.AppsWorkspaceCSharpExcelAddInSignTool);
 
+            DeleteDirectory(Paths.ArtifactsAppsExcellAddIn);
             CopyDirectoryRecursively(Paths.AppsWorkspaceCSharpExcelAddIn / "bin" / Configuration / "app.publish", Paths.ArtifactsAppsExcellAddIn);
         });
     

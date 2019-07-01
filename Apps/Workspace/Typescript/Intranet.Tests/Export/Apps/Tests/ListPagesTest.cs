@@ -11,11 +11,11 @@ namespace Tests.ApplicationTests
     using Allors;
 
     [Collection("Test collection")]
-    public class AutoTest : Test
+    public class ListPagesTest : Test
     {
         private readonly MethodInfo[] navigateTos;
 
-        public AutoTest(TestFixture fixture)
+        public ListPagesTest(TestFixture fixture)
             : base(fixture)
         {
             this.navigateTos = this.Sidenav.GetType()
@@ -25,7 +25,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void List()
+        public async void Navigate()
         {
             this.Login();
 
@@ -36,7 +36,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void CreateDialog()
+        public async void Create()
         {
             this.Login();
 
@@ -52,7 +52,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void EditDialog()
+        public async void Edit()
         {
             this.Login();
 
@@ -87,7 +87,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
-        public async void OverviewPage()
+        public async void Overview()
         {
             this.Login();
 

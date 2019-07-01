@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Base\Database\Tests\Export\**\*.cs" />
     <Compile Include="..\..\..\..\Base\Workspace\Typescript\Material.Tests\Export\**\*.cs" />
   </ItemGroup>
 
@@ -45,6 +44,7 @@
     <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
+    <ProjectReference Include="..\..\..\Database\Tests\Tests.csproj" />
   </ItemGroup>
 
 </Project>
