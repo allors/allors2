@@ -47,7 +47,7 @@ export class PurchaseOrderOverviewComponent extends TestScope implements AfterVi
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation;
+          this.panelManager.objectType = m.PurchaseOrder;
           this.panelManager.expanded = navRoute.panel();
 
           this.panelManager.on();

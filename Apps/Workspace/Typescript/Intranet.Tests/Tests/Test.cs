@@ -103,7 +103,7 @@ namespace Tests
                     new Setup(session, null).Apply();
                     session.Commit();
 
-                    new Population(session, null).Execute();
+                    new IntranetPopulation(session, null).Execute();
 
                     session.Commit();
 

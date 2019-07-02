@@ -71,19 +71,14 @@ namespace Tests.ApplicationTests
                         foreach (IObject @object in objects)
                         {
                             table.Action(@object, action);
-
-                            this.Driver.WaitForAngular();
-                            var dialogElement = this.Driver.FindElement(By.CssSelector("mat-dialog-container ng-component[data-test-scope]"));
-                            var testScope = dialogElement.GetAttribute("data-test-scope");
-                            var type = Assembly.GetExecutingAssembly().GetTypes().First(v => v.Name.Equals(testScope));
-                            var dialog = (Component)Activator.CreateInstance(type, this.Driver);
-
+                            var dialog = this.Driver.GetDialog();
                             Cancel(dialog);
                         }
                     }
                 }
             }
         }
+        
 
         [Fact]
         public async void Overview()

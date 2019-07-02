@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, throwError } from 'rxjs';
 
 import { ObjectType, ISessionObject, IObject } from '../../../../framework';
+import { Context } from '../../../../angular';
 
 import { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './object.tokens';
 import { ObjectData } from './object.data';
@@ -34,8 +35,17 @@ export class ObjectService {
     return throwError('Missing component');
   }
 
-  hasCreateControl(objectType: ObjectType) {
-    return !!this.createControlByObjectTypeId[objectType.id];
+  hasCreateControl(objectType: ObjectType, createData: ObjectData, context: Context) {
+    const createControl = this.createControlByObjectTypeId[objectType.id];
+    if (createControl) {
+      if (createControl.canCreate) {
+        return createControl.canCreate(createData, context);
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   edit(object: ISessionObject, createData?: ObjectData): Observable<IObject> {

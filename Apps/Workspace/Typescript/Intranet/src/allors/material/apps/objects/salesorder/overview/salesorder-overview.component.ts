@@ -52,7 +52,7 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation;
+          this.panelManager.objectType = m.SalesOrder;
           this.panelManager.expanded = navRoute.panel();
 
           this.panelManager.on();

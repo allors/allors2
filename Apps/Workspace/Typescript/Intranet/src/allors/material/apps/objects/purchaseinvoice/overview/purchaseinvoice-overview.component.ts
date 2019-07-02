@@ -48,7 +48,7 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.SalesInvoice;
+          this.panelManager.objectType = m.PurchaseInvoice;
           this.panelManager.expanded = navRoute.panel();
 
           const { id } = this.panelManager;

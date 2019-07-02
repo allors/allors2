@@ -44,7 +44,7 @@ export class NonUnifiedGoodOverviewComponent extends TestScope implements AfterV
           const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Good;
+          this.panelManager.objectType = m.NonUnifiedGood;
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 

@@ -130,8 +130,13 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
           }
         }
 
+        // TODO: Martien
         const employments = loaded.collections.Employments as Employment[];
-        this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
+        if (this.workEffort && this.workEffort.ScheduledStart) {
+          this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
+        } else {
+          this.employees = [this.person];
+        }
       });
   }
 

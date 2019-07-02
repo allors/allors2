@@ -184,7 +184,9 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         object: product.id,
         fetch: {
           Part: {
-            SerialisedItems: x
+            include: {
+              SerialisedItems: x
+            }
           }
         }
       }),
@@ -199,7 +201,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.part = (loaded.objects.UnifiedGood || loaded.objects.Parts) as Part;
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
         this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
 
         if (this.quoteItem.Product !== this.previousProduct) {

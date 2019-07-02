@@ -5,11 +5,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, Context } from '../../../../../angular';
 import { Employment, Party, Organisation, Person } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
-import { Meta } from '../../../../../meta';
+import { Meta, ids } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -45,6 +45,17 @@ export class EmploymentEditComponent extends TestScope implements OnInit, OnDest
     super();
 
     this.m = this.metaService.m;
+  }
+
+  static canCreate(createData: ObjectData, context: Context) {
+
+    const organisationId = ids.Organisation;
+    if (createData.associationObjectType.id === organisationId) {
+      const organisation = context.session.get(createData.associationId) as Organisation;
+      return organisation.IsInternalOrganisation;
+    }
+
+    return true;
   }
 
   public ngOnInit(): void {

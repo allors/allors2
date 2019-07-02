@@ -5,11 +5,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope, Context } from '../../../../../angular';
 import { SupplierRelationship, Organisation } from '../../../../../domain/';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
-import { Meta } from '../../../../../meta';
+import { Meta, ids } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
@@ -40,6 +40,16 @@ export class SupplierRelationshipEditComponent extends TestScope implements OnIn
     super();
 
     this.m = this.metaService.m;
+  }
+
+  static canCreate(createData: ObjectData, context: Context) {
+
+    const personId = ids.Person;
+    if (createData.associationObjectType.id === personId) {
+      return false;
+    }
+
+    return true;
   }
 
   public ngOnInit(): void {

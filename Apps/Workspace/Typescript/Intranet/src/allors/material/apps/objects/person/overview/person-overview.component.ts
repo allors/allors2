@@ -46,7 +46,7 @@ export class PersonOverviewComponent extends TestScope implements AfterViewInit,
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation;
+          this.panelManager.objectType = m.Person;
           this.panelManager.expanded = navRoute.panel();
 
           this.panelManager.on();

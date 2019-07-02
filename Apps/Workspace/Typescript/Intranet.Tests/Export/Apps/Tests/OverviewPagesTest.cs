@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Tests.ApplicationTests
 {
     using System.Collections.Generic;
@@ -50,14 +52,24 @@ namespace Tests.ApplicationTests
                         dynamic dynamicPanel = panel;
                         dynamicPanel.Click();
 
-                        var createMethods = panel.GetType().GetMethods().Where(v => v.Name.StartsWith("Create"));
-                        foreach (var createMethod in createMethods)
+                        if (panel.GetType().GetProperties().Any(v => v.Name.Equals("Factory")))
                         {
-                            var dialog = (Component)createMethod?.Invoke(panel, null);
-                            Cancel(dialog);
+                            var factory = (MatFactoryFab)dynamicPanel.Factory;
+
+                            if (this.Driver.SelectorIsVisible(factory.Selector))
+                            {
+                                var classes = factory.Classes;
+
+                                foreach (var @class in classes)
+                                {
+                                    factory.Create(@class);
+                                    var dialog = this.Driver.GetDialog();
+                                    Cancel(dialog);
+                                }
+                            }
                         }
-                        
-                        Collapse(panel);
+
+                        this.Collapse(panel);
                     }
                 }
             }
@@ -101,7 +113,7 @@ namespace Tests.ApplicationTests
                             }
                         }
 
-                        Collapse(panel);
+                        this.Collapse(panel);
                     }
                 }
             }

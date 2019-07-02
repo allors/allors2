@@ -8,4 +8,9 @@
     <Compile Include="..\..\..\Base\Database\Tests\Export\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Meta\Meta.csproj" />
+  </ItemGroup>
+
 </Project>

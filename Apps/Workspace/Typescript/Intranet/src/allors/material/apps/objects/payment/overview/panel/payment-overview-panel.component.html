@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div *ngIf="panel.isExpanded && !!payments" class="mat-elevation-z2" style="background: white">
+<div *ngIf="panel.isExpanded && !!table" class="mat-elevation-z2" style="background: white">
 
   <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
     <div class="row pt-3">
@@ -28,7 +28,7 @@
   <a-mat-factory-fab [objectType]="metaService.m.Payment" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
   <div>
-    <a-mat-table *ngIf="table.data && table.data.length > 0" [table]="table"></a-mat-table>
+    <a-mat-table [table]="table"></a-mat-table>
   </div>
 
 </div>

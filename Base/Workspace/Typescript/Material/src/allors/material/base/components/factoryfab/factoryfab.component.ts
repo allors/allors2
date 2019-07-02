@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ObjectType, IObject } from '../../../../framework';
+import { DatabaseService, WorkspaceService, Context } from '../../../../angular';
+
 import { ObjectData, ObjectService } from '../../services/object';
 
 @Component({
@@ -19,7 +21,11 @@ export class FactoryFabComponent implements OnInit {
 
   classes: ObjectType[];
 
-  constructor(public readonly factoryService: ObjectService) {
+  constructor(
+    public readonly factoryService: ObjectService,
+    private databaseService: DatabaseService,
+    private workspaceService: WorkspaceService,
+) {
   }
 
   ngOnInit(): void {
@@ -30,7 +36,12 @@ export class FactoryFabComponent implements OnInit {
       this.classes = [this.objectType];
     }
 
-    this.classes = this.classes.filter((v) => this.factoryService.hasCreateControl(v));
+    const context = new Context(this.databaseService.database, this.workspaceService.workspace);
+    this.classes = this.classes.filter((v) => this.factoryService.hasCreateControl(v, this.createData, context));
+  }
+
+  get dataAllorsActions(): string {
+    return (this.classes) ? this.classes.map(v => v.name).join() : '';
   }
 
   create(objectType: ObjectType) {

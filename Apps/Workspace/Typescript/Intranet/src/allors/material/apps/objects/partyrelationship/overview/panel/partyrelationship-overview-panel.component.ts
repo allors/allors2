@@ -1,9 +1,10 @@
+
+import * as moment from 'moment';
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { PartyRelationship } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
-import * as moment from 'moment';
 
 interface Row extends TableRow {
   object: PartyRelationship;

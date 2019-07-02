@@ -180,7 +180,11 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
       .subscribe((loaded) => {
         this.part = loaded.objects.UnifiedGood as Part;
         if (this.part) {
-          this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+          if (this.part.SerialisedItems) {
+            this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+          } else {
+            this.serialisedItems = [];
+          }
         } else {
           this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
         }
