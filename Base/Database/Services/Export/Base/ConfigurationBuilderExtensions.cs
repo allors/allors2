@@ -47,9 +47,17 @@ namespace Allors.Services
                 configurationBuilder.AddJsonFile(Path.Combine(path, "appSettings.json"), true);
             }
 
-            configurationBuilder.AddJsonFile(Path.Combine(path, $"appSettings.{environmentName}.json"), true);
+            if (!string.IsNullOrWhiteSpace(environmentName))
+            {
+                configurationBuilder.AddJsonFile(Path.Combine(path, $"appSettings.{environmentName}.json"), true);
+            }
+
             configurationBuilder.AddJsonFile(Path.Combine(path, $"appSettings.{platform}.json"), true);
-            configurationBuilder.AddJsonFile(Path.Combine(path, $"appSettings.{environmentName}.{platform}.json"), true);
+
+            if (!string.IsNullOrWhiteSpace(environmentName))
+            {
+                configurationBuilder.AddJsonFile(Path.Combine(path, $"appSettings.{environmentName}.{platform}.json"), true);
+            }
         }
     }
 }
