@@ -22,9 +22,13 @@ namespace Allors.Domain
 
     public static partial class ProductExtensions
     {
-        public static void AppsOnDerive(this Product @this, ObjectOnDerive method)
+        public static void AppsOnPreDerive(this Product @this, ObjectOnPreDerive method)
         {
-            @this.AppsOnDeriveProductCategoriesExpanded();
+            var derivation = method.Derivation;
+            foreach (ProductCategory productCategory in @this.ProductCategoriesWhereProduct)
+            {
+                derivation.AddDependency(productCategory, @this);
+            }
         }
 
         public static void AddToBasePrice(this Product @this, BasePrice basePrice)
@@ -62,23 +66,6 @@ namespace Allors.Domain
                             product.AddToBasePrice(basePrice);
                         }
                     }
-                }
-            }
-        }
-
-        public static void AppsOnDeriveProductCategoriesExpanded(this Product @this)
-        {
-            @this.RemoveProductCategoriesExpanded();
-
-            foreach (ProductCategory productCategory in @this.ProductCategoriesWhereProduct)
-            {
-                @this.AddProductCategoriesExpanded(productCategory);
-                foreach (ProductCategory superJacent in productCategory.SuperJacent)
-                {
-                    @this.AddProductCategoriesExpanded(superJacent);
-                    superJacent.AppsOnDeriveAllProducts();
-                    superJacent.AppsDeriveAllSerialisedItemsForSale();
-                    superJacent.AppsDeriveAllNonSerialisedInventoryItemsForSale();
                 }
             }
         }

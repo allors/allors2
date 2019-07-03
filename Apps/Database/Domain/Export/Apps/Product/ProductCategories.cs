@@ -24,7 +24,7 @@ namespace Allors.Domain
             get
             {
                 var extent = this.Session.Extent(this.ObjectType);
-                extent.Filter.AddNot().AddExists(this.Meta.Parents);
+                extent.Filter.AddNot().AddExists(this.Meta.PrimaryParent);
                 return extent;
             }
         }

@@ -156,7 +156,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                 ProductCategoriesWhereProduct: {
                   include: {
                     Products: x,
-                    Parents: x
+                    PrimaryAncestors: x
                   }
                 },
               }
@@ -179,7 +179,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             name: v.Name,
             id: v.ProductIdentifications
                 .find(p => p.ProductIdentificationType.UniqueId === 'b640630da5564526a2e560a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191acdc4456396efdddc7b969ca6').Identification,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.Parents.length > 0 ? `${w.Parents.map((y) => y.Name).join(', ')}/${w.Name}` : w.Name).join(', '),
+            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
             qoh: v.QuantityOnHand
           } as Row;
         });

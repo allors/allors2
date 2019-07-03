@@ -264,7 +264,7 @@ namespace Allors.Domain
                 throw new Exception("AddDependency can only be called during a derivation.");
             }
 
-            if (dependent != null && dependee != null)
+            if ((dependent != null) && (dependee != null) && !dependent.Equals(dependee))
             {
                 this.added.Add(dependent);
                 this.added.Add(dependee);

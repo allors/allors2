@@ -13,51 +13,19 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
     using System.Linq;
-
-    using Meta;
-    using Resources;
 
     public partial class ProductCategory
     {
         public override string ToString()
         {
             return this.Name;
-        }
-
-        private IEnumerable<ProductCategory> AllSuperJacent
-        {
-            get
-            {
-                var superJacent = new List<ProductCategory>();
-
-                foreach (ProductCategory parent in this.Parents)
-                {
-                    superJacent.Add(parent);
-                    superJacent.AddRange(parent.AllSuperJacent);
-                }
-
-                return superJacent;
-            }
-        }
-
-        private IEnumerable<ProductCategory> ChildList
-        {
-            get
-            {
-                var children = new List<ProductCategory>();
-
-                foreach (ProductCategory child in this.ProductCategoriesWhereParent)
-                {
-                    children.Add(child);
-//                    children.AddRange(child.ChildList);
-                }
-
-                return children;
-            }
         }
 
         public void AppsOnBuild(ObjectOnBuild method)
@@ -72,7 +40,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            foreach (Object parent in this.Parents)
+            derivation.AddDependency(this.PrimaryParent, this);
+            foreach (Object parent in this.SecondaryParents)
             {
                 derivation.AddDependency(parent, this);
             }
@@ -98,109 +67,52 @@ namespace Allors.Domain
                 this.CategoryImage = this.Strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
 
-            foreach (ProductCategory productCategory in this.ProductCategoriesWhereSuperJacent)
+            var primaryAncestors = new List<ProductCategory>();
+
+            var primaryAncestor = this.PrimaryParent;
+            while (primaryAncestor != null)
             {
-                productCategory.AppsOnDeriveSuperJacent(derivation);
-            }
-
-            foreach (Product product in this.ProductsWhereProductCategoriesExpanded)
-            {
-                product.AppsOnDeriveProductCategoriesExpanded();
-            }
-
-            this.AppsOnDeriveSuperJacent(derivation);
-            this.AppsOnDeriveChildren(derivation);
-            this.AppsOnDeriveAllProducts();
-            this.AppsDeriveAllSerialisedItemsForSale();
-            this.AppsDeriveAllNonSerialisedInventoryItemsForSale();
-        }
-
-        public void AppsOnDeriveSuperJacent(IDerivation derivation)
-        {
-            this.RemoveSuperJacent();
-
-            foreach (var superJacent in this.AllSuperJacent)
-            {
-                this.AddSuperJacent(superJacent);
-            }
-        }
-
-        public void AppsOnDeriveChildren(IDerivation derivation)
-        {
-            this.RemoveChildren();
-
-            foreach (var child in this.ChildList)
-            {
-                this.AddChild(child);
-            }
-
-            foreach (ProductCategory parent in this.Parents)
-            {
-                parent.AppsOnDeriveChildren(derivation);
-            }
-        }
-
-        public void AppsOnDeriveAllProducts()
-        {
-            var allProducts = new List<Product>(this.Products);
-
-            foreach (ProductCategory child in this.Children)
-            {
-                allProducts.AddRange(child.AllProducts);
-            }
-
-            this.AllProducts = allProducts.ToArray();
-        }
-
-        public void AppsDeriveAllSerialisedItemsForSale()
-        {
-            this.RemoveAllSerialisedItemsForSale();
-
-            if (this.Parts.Count > 0)
-            { 
-                this.AllSerialisedItemsForSale = this.Parts?.SelectMany(v => v.SerialisedItems).Where(v => v.AvailableForSale).ToArray();
-            }
-        }
-
-        public void AppsDeriveAllNonSerialisedInventoryItemsForSale()
-        {
-            this.RemoveAllNonSerialisedInventoryItemsForSale();
-
-            foreach (Part part in this.Parts)
-            {
-                if (part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
+                if (primaryAncestors.Contains(primaryAncestor))
                 {
-                    foreach (NonSerialisedInventoryItem nonSerialisedInventoryItem in part.InventoryItemsWherePart)
-                    {
-                        if (nonSerialisedInventoryItem.NonSerialisedInventoryItemState.AvailableForSale)
-                        {
-                            this.AddAllNonSerialisedInventoryItemsForSale(nonSerialisedInventoryItem);
-                        }
-                    }
-                }
-            }
-        }
-
-        private List<Part> Parts
-        {
-            get
-            {
-                var parts = new List<Part>();
-                foreach (Product product in this.AllProducts)
-                {
-                    if (product is NonUnifiedGood nonUnifiedGood && nonUnifiedGood.ExistPart)
-                    {
-                        parts.Add(nonUnifiedGood.Part);
-                    }
-
-                    if (product is UnifiedGood unifiedGood)
-                    {
-                        parts.Add(unifiedGood);
-                    }
+                    var cycle = string.Join(" -> ", primaryAncestors.Append(primaryAncestor).Select(v => v.Name));
+                    derivation.Validation.AddError(this, this.Meta.PrimaryParent, "Cycle detected in " + cycle);
+                    break;
                 }
 
-                return parts;
+                primaryAncestors.Add(primaryAncestor);
+                primaryAncestor = primaryAncestor.PrimaryParent;
             }
+
+            this.PrimaryAncestors = primaryAncestors.ToArray();
+
+            this.Children = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
+            this.Descendants = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
+
+            var descendantsAndSelf = this.Descendants.Append(this).ToArray();
+
+            this.AllProducts = descendantsAndSelf
+                .SelectMany(v => v.Products)
+                .ToArray();
+
+            this.AllParts = this.AllProducts
+                .Select(v => v is Part part ? part : v is NonUnifiedGood nonUnifiedGood ? nonUnifiedGood.Part : null)
+                .Where(v => v != null)
+                .ToArray();
+
+            this.AllSerialisedItemsForSale = descendantsAndSelf
+                .SelectMany(
+                    v => this.AllParts
+                    .SelectMany(w => w.SerialisedItems)
+                    .Where(w => w.AvailableForSale))
+                .ToArray();
+
+            this.AllNonSerialisedInventoryItemsForSale = descendantsAndSelf
+                .SelectMany(
+                    v => this.AllParts
+                    .SelectMany(w => w.InventoryItemsWherePart)
+                    .OfType<NonSerialisedInventoryItem>()
+                    .Where(w => w.NonSerialisedInventoryItemState.AvailableForSale))
+                .ToArray();
         }
     }
 }

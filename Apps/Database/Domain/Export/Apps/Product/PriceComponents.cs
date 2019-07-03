@@ -139,7 +139,7 @@ namespace Allors.Domain
                 {
                     foreach (ProductCategory productCategory in product.ProductCategoriesWhereProduct)
                     {
-                        foreach (ProductCategory ancestor in productCategory.SuperJacent)
+                        foreach (ProductCategory ancestor in productCategory.ProductCategoriesWhereDescendant)
                         {
                             if (ancestor.Equals(priceComponent.ProductCategory))
                             {

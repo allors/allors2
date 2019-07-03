@@ -17,9 +17,12 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+
 namespace Allors.Development.Repository.Tasks
 {
     using System;
+    using Antlr4.StringTemplate.Misc;
 
     internal class GenerateLog : Log
     {
@@ -31,7 +34,21 @@ namespace Allors.Development.Repository.Tasks
         public override void Error(object sender, string message)
         {
             this.ErrorOccured = true;
+
             Console.WriteLine(message);
+
+            if (sender is TemplateRuntimeMessage templateRuntimeMessage)
+            {
+                var frame = templateRuntimeMessage.Frame;
+                var template = frame.Template;
+
+                foreach (var attribute in template.GetAttributes())
+                {
+                    Console.WriteLine($"{attribute.Key}: {attribute.Value}");
+                }
+            }
+
+            Console.WriteLine();
         }
     }
 }

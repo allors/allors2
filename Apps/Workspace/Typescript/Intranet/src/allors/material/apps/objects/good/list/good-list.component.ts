@@ -13,7 +13,6 @@ import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedG
 
 import { ObjectService } from '../../../../../material/base/services/object';
 
-
 interface Row extends TableRow {
   object: Good;
   name: string;
@@ -174,7 +173,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
                 ProductCategoriesWhereProduct: {
                   include: {
                     Products: x,
-                    Parents: x
+                    PrimaryAncestors: x
                   }
                 },
               }
@@ -196,7 +195,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
             object: v,
             name: v.Name,
             id: v.ProductIdentifications.find(p => p.ProductIdentificationType.UniqueId === 'b640630da5564526a2e560a84ab0db3f').Identification,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.Parents.length > 0 ? `${w.Parents.map((y) => y.Name).join(', ')}/${w.Name}` : w.Name).join(', '),
+            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
             // qoh: v.Part && v.Part.QuantityOnHand
             qoh: ((v as NonUnifiedGood).Part && (v as NonUnifiedGood).Part.QuantityOnHand) || (v as UnifiedGood).QuantityOnHand
           } as Row;

@@ -181,13 +181,13 @@ namespace Allors
 
                 var cat1 = new ProductCategoryBuilder(session)
                     .WithName("cat for good1")
-                    .WithParent(catMain)
+                    .WithPrimaryParent(catMain)
                     .WithProduct(good1)
                     .Build();
 
                 var cat2 = new ProductCategoryBuilder(session)
                     .WithName("cat for good2")
-                    .WithParent(catMain)
+                    .WithPrimaryParent(catMain)
                     .WithProduct(good2)
                     .WithProduct(good3)
                     .Build();

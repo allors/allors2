@@ -158,14 +158,14 @@ namespace Allors.Domain
 
             this.parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
-                .WithParent(this.ancestorProductCategory)
+                .WithPrimaryParent(this.ancestorProductCategory)
                 .Build();
 
             this.productCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("gizmo")
                 .Build();
 
-            this.productCategory.AddParent(this.parentProductCategory);
+            this.productCategory.AddSecondaryParent(this.parentProductCategory);
 
             this.goodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.part)
@@ -1412,7 +1412,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory)
+                .WithPrimaryParent(parentProductCategory)
                 .WithProduct(this.good)
                 .Build();
 
@@ -1464,7 +1464,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory)
+                .WithPrimaryParent(parentProductCategory)
                 .WithProduct(this.good)
                 .Build();
 
@@ -1510,7 +1510,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
+                .WithPrimaryParent(parentProductCategory).
                 Build();
 
             new SalesRepRelationshipBuilder(this.Session)

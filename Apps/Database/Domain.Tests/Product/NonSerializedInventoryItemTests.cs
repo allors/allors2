@@ -347,8 +347,8 @@ namespace Allors.Domain
         //        .Build();
 
         //    var level1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level1").Build();
-        //    var level2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level2").WithParent(level1).Build();
-        //    var level3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level3").WithParent(level2).Build();
+        //    var level2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level2").WithPrimaryParent(level1).Build();
+        //    var level3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level3").WithPrimaryParent(level2).Build();
         //    var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
 
         //    var good = new NonUnifiedGoodBuilder(this.DatabaseSession)

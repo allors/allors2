@@ -139,21 +139,21 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -205,21 +205,21 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -250,7 +250,7 @@ namespace Allors.Domain
             var productCategory3 = new ProductCategoryBuilder(this.Session)
                 .WithName("3")
                 .Build();
-            productCategory11.AddParent(productCategory3);
+            productCategory11.AddSecondaryParent(productCategory3);
 
             this.Session.Derive();
 
@@ -267,9 +267,9 @@ namespace Allors.Domain
 
             var productCategory13 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.3")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .Build();
-            productCategory121.AddParent(productCategory13);
+            productCategory121.AddSecondaryParent(productCategory13);
 
             this.Session.Derive();
 
@@ -295,17 +295,17 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -333,7 +333,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory1, good.ProductCategoriesExpanded);
             Assert.Contains(productCategory2, good.ProductCategoriesExpanded);
 
-            productCategory11.RemoveParent(productCategory2);
+            productCategory11.RemoveSecondaryParent(productCategory2);
 
             this.Session.Derive();
 

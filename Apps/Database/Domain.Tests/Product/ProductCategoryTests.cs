@@ -43,7 +43,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenProductCategory_WhenDeriving_ThenSuperJacentAreSet()
+        public void GivenProductCategory_WhenDeriving_ThenProductCategoriesWhereDescendantAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithName("1")
@@ -53,58 +53,58 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory11.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
-            Assert.Contains(productCategory2, productCategory11.SuperJacent);
+            Assert.Equal(2, productCategory11.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
-            Assert.Contains(productCategory2, productCategory111.SuperJacent);
+            Assert.Equal(3, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(3, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
         }
 
         [Fact]
-        public void GivenProductCategory_WhenNewParentsAreInserted_ThenSuperJacentAreRecalculated()
+        public void GivenProductCategory_WhenNewParentsAreInserted_ThenProductCategoriesWhereDescendantAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithName("1")
@@ -114,135 +114,135 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory11.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
-            Assert.Contains(productCategory2, productCategory11.SuperJacent);
+            Assert.Equal(2, productCategory11.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
-            Assert.Contains(productCategory2, productCategory111.SuperJacent);
+            Assert.Equal(3, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(3, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
 
             var productCategory3 = new ProductCategoryBuilder(this.Session)
                 .WithName("3")
                 .Build();
-            productCategory11.AddParent(productCategory3);
+            productCategory11.AddSecondaryParent(productCategory3);
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
-            Assert.False(productCategory3.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory3.ExistProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory11.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
-            Assert.Contains(productCategory2, productCategory11.SuperJacent);
-            Assert.Contains(productCategory3, productCategory11.SuperJacent);
+            Assert.Equal(3, productCategory11.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory3, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(4, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
-            Assert.Contains(productCategory2, productCategory111.SuperJacent);
-            Assert.Contains(productCategory3, productCategory111.SuperJacent);
+            Assert.Equal(4, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory3, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(3, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
 
             var productCategory13 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.3")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .Build();
-            productCategory122.AddParent(productCategory13);
+            productCategory122.AddSecondaryParent(productCategory13);
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
-            Assert.False(productCategory3.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory3.ExistProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory11.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
-            Assert.Contains(productCategory2, productCategory11.SuperJacent);
-            Assert.Contains(productCategory3, productCategory11.SuperJacent);
+            Assert.Equal(3, productCategory11.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory3, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Single(productCategory13.SuperJacent);
-            Assert.Contains(productCategory1, productCategory13.SuperJacent);
+            Assert.Single(productCategory13.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory13.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(4, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
-            Assert.Contains(productCategory2, productCategory111.SuperJacent);
-            Assert.Contains(productCategory3, productCategory111.SuperJacent);
+            Assert.Equal(4, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory3, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(4, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory13, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(4, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory13, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
         }
 
         [Fact]
-        public void GivenProductCategory_WhenNewParentsAreRemoved_ThenSuperJacentAreRecalculated()
+        public void GivenProductCategory_WhenNewParentsAreRemoved_ThenProductCategoriesWhereDescendantAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
                 .WithName("1")
@@ -252,82 +252,82 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             this.Session.Derive(); 
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory11.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
-            Assert.Contains(productCategory2, productCategory11.SuperJacent);
+            Assert.Equal(2, productCategory11.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
-            Assert.Contains(productCategory2, productCategory111.SuperJacent);
+            Assert.Equal(3, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(3, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
 
-            productCategory11.RemoveParent(productCategory2);
+            productCategory11.RemoveSecondaryParent(productCategory2);
 
             this.Session.Derive();
 
-            Assert.False(productCategory1.ExistSuperJacent);
-            Assert.False(productCategory2.ExistSuperJacent);
+            Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
+            Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
 
-            Assert.Single(productCategory11.SuperJacent);
-            Assert.Contains(productCategory1, productCategory11.SuperJacent);
+            Assert.Single(productCategory11.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory11.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory12.SuperJacent.Count);
-            Assert.Contains(productCategory1, productCategory12.SuperJacent);
-            Assert.Contains(productCategory2, productCategory12.SuperJacent);
+            Assert.Equal(2, productCategory12.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory1, productCategory12.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory12.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(2, productCategory111.SuperJacent.Count);
-            Assert.Contains(productCategory11, productCategory111.SuperJacent);
-            Assert.Contains(productCategory1, productCategory111.SuperJacent);
+            Assert.Equal(2, productCategory111.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory11, productCategory111.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory111.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory121.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory121.SuperJacent);
-            Assert.Contains(productCategory1, productCategory121.SuperJacent);
-            Assert.Contains(productCategory2, productCategory121.SuperJacent);
+            Assert.Equal(3, productCategory121.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory121.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory121.ProductCategoriesWhereDescendant);
 
-            Assert.Equal(3, productCategory122.SuperJacent.Count);
-            Assert.Contains(productCategory12, productCategory122.SuperJacent);
-            Assert.Contains(productCategory1, productCategory122.SuperJacent);
-            Assert.Contains(productCategory2, productCategory122.SuperJacent);
+            Assert.Equal(3, productCategory122.ProductCategoriesWhereDescendant.Count);
+            Assert.Contains(productCategory12, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory1, productCategory122.ProductCategoriesWhereDescendant);
+            Assert.Contains(productCategory2, productCategory122.ProductCategoriesWhereDescendant);
         }
 
         [Fact]
@@ -341,24 +341,24 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .Build();
 
             this.Session.Derive(); 
@@ -488,28 +488,28 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .WithProduct(good11)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .WithProduct(good12)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .WithProduct(good111)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good121)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good122)
                 .Build();
 
@@ -687,28 +687,28 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .WithProduct(good11)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .WithProduct(good12)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .WithProduct(good111)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good121)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good122)
                 .Build();
 
@@ -888,28 +888,28 @@ namespace Allors.Domain
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1")
-                .WithParent(productCategory1)
+                .WithPrimaryParent(productCategory1)
                 .WithProduct(good11)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2")
-                .WithParent(productCategory1)
-                .WithParent(productCategory2)
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
                 .WithProduct(good12)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.1.1")
-                .WithParent(productCategory11)
+                .WithPrimaryParent(productCategory11)
                 .WithProduct(good111)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.1")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good121)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
                 .WithName("1.2.2")
-                .WithParent(productCategory12)
+                .WithPrimaryParent(productCategory12)
                 .WithProduct(good122)
                 .Build();
 

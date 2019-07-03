@@ -46,7 +46,7 @@ namespace Allors.Domain
                             return salesRepRelationship.SalesRepresentative;
                         }
 
-                        foreach (ProductCategory parent in productCategory.Parents)
+                        foreach (ProductCategory parent in productCategory.ProductCategoriesWhereDescendant)
                         {
                             var salesRep = SalesRep(salesRepRelationships, parent, date);
                             if (salesRep != null)

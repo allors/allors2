@@ -111,5 +111,10 @@ namespace Autotest.Testers
                 return null;
             }
         }
+
+        public override string ToString()
+        {
+            return $"Type[{this.Type}] RoleType[{this.RoleType}] NameAttributeValue[{this.NameAttributeValue}] RoleTypeAttributeValue[{this.RoleTypeAttributeValue}] PropertyName[{this.PropertyName}]";
+        }
     }
 }

@@ -15,12 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System;
-
-    using Meta;
     internal static class PaymentMethodExtensions
     {
-
         public static void AppsOnPreDerive(this PaymentMethod @this, ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

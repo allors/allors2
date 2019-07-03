@@ -1838,7 +1838,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory)
+                .WithPrimaryParent(parentProductCategory)
                 .WithProduct(this.good)
                 .Build();
 
@@ -1893,7 +1893,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
+                .WithPrimaryParent(parentProductCategory).
                 Build();
 
             new SalesRepRelationshipBuilder(this.Session)
@@ -1946,7 +1946,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
+                .WithPrimaryParent(parentProductCategory).
                 Build();
 
             new SalesRepRelationshipBuilder(this.Session)

@@ -2465,7 +2465,7 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
+                .WithPrimaryParent(parentProductCategory).
                 Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();

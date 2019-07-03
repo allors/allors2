@@ -1,7 +1,6 @@
 namespace Allors.Repository
 {
     using System;
-
     using Attributes;
 
     #region Allors
@@ -39,14 +38,35 @@ namespace Allors.Repository
         public string Code { get; set; }
 
         #region Allors
-        [Id("2dcea42e-2c3d-483c-b514-b7bd418318ab")]
-        [AssociationId("98564463-d7a9-4605-997c-2ceacb5c3302")]
-        [RoleId("f8ad2d5e-eab0-4c5b-8cb7-35b3439e62e6")]
+        [Id("511A0C9B-46C0-4ED8-8C6E-280FF4634076")]
+        [AssociationId("B4793F39-2BA8-4848-B955-697FE34B80DB")]
+        [RoleId("830F63F0-DB64-4209-A649-5118C4F36233")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public ProductCategory PrimaryParent { get; set; }
+
+        #region Allors
+        [Id("29B96BB3-D121-405C-AFD5-90171729002E")]
+        [AssociationId("AC465B3B-4C93-4357-9371-17AAA79F4322")]
+        [RoleId("57EA4254-8922-465C-92A2-6FB325DE682F")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
-        public ProductCategory[] Parents { get; set; }
+        [Derived]
+        public ProductCategory[] PrimaryAncestors { get; set; }
+
+        #region Allors
+        [Id("16F70B37-079A-47AE-B883-8F1E1A9E345F")]
+        [AssociationId("B37765CA-61AC-4AC6-8524-EBC69B1E3333")]
+        [RoleId("F743AED0-4939-4722-AF67-34166A20F05A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        public ProductCategory[] SecondaryParents { get; set; }
 
         #region Allors
         [Id("6ad49c7d-8c4e-455b-8073-a5ef72e92725")]
@@ -60,6 +80,17 @@ namespace Allors.Repository
         public ProductCategory[] Children { get; set; }
 
         #region Allors
+        [Id("6AB3E5EC-FC02-4F2D-B5EB-4EFC50E2B33B")]
+        [AssociationId("DF6664EF-1A6A-4B28-AB01-8B7E16B8E3B8")]
+        [RoleId("8D87B6C3-D86C-464F-9B67-7BDC24F39F75")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public ProductCategory[] Descendants { get; set; }
+        
+        #region Allors
         [Id("8af8b1b1-a711-4e98-a6a0-2948f2d1f315")]
         [AssociationId("042e65b2-6df9-4e76-91bd-7766e935cbfe")]
         [RoleId("991971a4-4ced-4cad-a7a5-48cde31f5e95")]
@@ -68,7 +99,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Name { get; set; }
-
+        
         #region Allors
         [Id("0FB2F768-8313-450C-94AE-5F9C52B758E8")]
         [AssociationId("A9401345-9CBB-4CD7-A792-57EAEC1C5F53")]
@@ -109,17 +140,6 @@ namespace Allors.Repository
         public Media CategoryImage { get; set; }
 
         #region Allors
-        [Id("b02c92d3-8b3a-4ce0-a49d-5c608a25b7d4")]
-        [AssociationId("b01ed533-259c-429c-8827-c61222896b8f")]
-        [RoleId("7efeb782-6278-4482-8cbb-b46d2a146e96")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public ProductCategory[] SuperJacent { get; set; }
-
-        #region Allors
         [Id("7B219D9E-0234-4F34-884D-D092573F6172")]
         [AssociationId("54730CB3-015E-4363-8937-37966B8293BD")]
         [RoleId("C15FF1FD-5FDD-42F4-8CE6-3BF240E1F4DC")]
@@ -152,6 +172,17 @@ namespace Allors.Repository
         public Product[] AllProducts { get; set; }
 
         #region Allors
+        [Id("43875418-7375-41BD-B6B3-1D091F98AF98")]
+        [AssociationId("7994D9CC-87E2-4D58-A2ED-083F6FF46C02")]
+        [RoleId("ACD2F850-D3CE-4F22-B3E1-00838E825D5D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
+        [Workspace]
+        public Part[] AllParts { get; set; }
+
+        #region Allors
         [Id("5889B718-100F-4444-AA5D-3B56FD33AD91")]
         [AssociationId("BE94D710-A504-4C7E-9325-9AA36C0D208B")]
         [RoleId("690C5D0B-25A3-4CA0-A5F1-D583C928456F")]
@@ -176,20 +207,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

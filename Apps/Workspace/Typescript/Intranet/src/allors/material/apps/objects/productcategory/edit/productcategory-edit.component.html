@@ -18,7 +18,12 @@
     </div>
 
     <div class="row">
-      <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories"
+      <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.PrimaryParent" [options]="categories"
+        display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="category" [roleType]="m.ProductCategory.SecondaryParents" [options]="categories"
         display="Name"></a-mat-select>
     </div>
 

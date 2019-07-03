@@ -80,7 +80,6 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.Session)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
-                
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).Build();
@@ -92,14 +91,14 @@ namespace Allors.Domain
 
             this.parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
-                .WithParent(this.ancestorProductCategory)
+                .WithPrimaryParent(this.ancestorProductCategory)
                 .Build();
 
             this.productCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("gizmo")
                 .Build();
 
-            this.productCategory.AddParent(this.parentProductCategory);
+            this.productCategory.AddSecondaryParent(this.parentProductCategory);
 
             this.part = new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)

@@ -4,6 +4,7 @@ import './Organisation';
 import './Party';
 import './Person';
 import './PostalAddress';
+import './ProductCategory';
 import './PurchaseOrder';
 import './PurchaseOrderItem';
 import './SerialisedItem';
