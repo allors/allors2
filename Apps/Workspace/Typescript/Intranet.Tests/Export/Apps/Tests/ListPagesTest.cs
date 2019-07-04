@@ -2,7 +2,6 @@ namespace Tests.ApplicationTests
 {
     using System.Reflection;
     using Components;
-    using OpenQA.Selenium;
     using System;
     using System.Linq;
     using Xunit;
