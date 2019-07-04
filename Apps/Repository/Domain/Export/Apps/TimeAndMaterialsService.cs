@@ -27,8 +27,6 @@ namespace Allors.Repository
 
         public string IntrastatCode { get; set; }
 
-        public ProductCategory[] ProductCategoriesExpanded { get; set; }
-
         public Product ProductComplement { get; set; }
 
         public Product[] Variants { get; set; }

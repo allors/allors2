@@ -44,16 +44,6 @@ namespace Allors.Repository
         string IntrastatCode { get; set; }
 
         #region Allors
-        [Id("438f00fe-750a-414d-a498-a03095c086fb")]
-        [AssociationId("62a5b5f3-0572-4f17-8f1b-10c9ee9048f4")]
-        [RoleId("e051a24d-f2de-439c-923a-39cf6c47a0e4")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        ProductCategory[] ProductCategoriesExpanded { get; set; }
-
-        #region Allors
         [Id("4632101d-09d6-4a89-8bba-e02ac791f9ad")]
         [AssociationId("3aed43b7-3bad-44f9-a2d9-8f865de71156")]
         [RoleId("de3785d8-0143-4339-bf49-310c13de385a")]

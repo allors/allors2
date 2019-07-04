@@ -67,26 +67,45 @@ namespace Allors.Domain
                 this.CategoryImage = this.Strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
 
-            var primaryAncestors = new List<ProductCategory>();
-
-            var primaryAncestor = this.PrimaryParent;
-            while (primaryAncestor != null)
             {
-                if (primaryAncestors.Contains(primaryAncestor))
+                var primaryAncestors = new List<ProductCategory>();
+                var primaryAncestor = this.PrimaryParent;
+                while (primaryAncestor != null)
                 {
-                    var cycle = string.Join(" -> ", primaryAncestors.Append(primaryAncestor).Select(v => v.Name));
-                    derivation.Validation.AddError(this, this.Meta.PrimaryParent, "Cycle detected in " + cycle);
-                    break;
+                    if (primaryAncestors.Contains(primaryAncestor))
+                    {
+                        var cycle = string.Join(" -> ", primaryAncestors.Append(primaryAncestor).Select(v => v.Name));
+                        derivation.Validation.AddError(this, this.Meta.PrimaryParent, "Cycle detected in " + cycle);
+                        break;
+                    }
+
+                    primaryAncestors.Add(primaryAncestor);
+                    primaryAncestor = primaryAncestor.PrimaryParent;
                 }
 
-                primaryAncestors.Add(primaryAncestor);
-                primaryAncestor = primaryAncestor.PrimaryParent;
+                this.PrimaryAncestors = primaryAncestors.ToArray();
             }
 
-            this.PrimaryAncestors = primaryAncestors.ToArray();
-
             this.Children = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
-            this.Descendants = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
+
+            {
+                var descendants = new List<ProductCategory>();
+                var children = this.Children.ToArray();
+                while (children.Length > 0)
+                {
+                    if (children.Any(v => descendants.Contains(v)))
+                    {
+                        var cycle = string.Join(" -> ", descendants.Union(children).Select(v => v.Name));
+                        derivation.Validation.AddError(this, this.Meta.Children, "Cycle detected in " + cycle);
+                        break;
+                    }
+
+                    descendants.AddRange(children);
+                    children = children.SelectMany(v => v.Children).ToArray();
+                }
+
+                this.Descendants = descendants.ToArray();
+            }
 
             var descendantsAndSelf = this.Descendants.Append(this).ToArray();
 

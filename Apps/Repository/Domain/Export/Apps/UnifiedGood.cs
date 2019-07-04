@@ -30,7 +30,7 @@ namespace Allors.Repository
         public DateTime SalesDiscontinuationDate { get; set; }
         public PriceComponent[] VirtualProductPriceComponents { get; set; }
         public string IntrastatCode { get; set; }
-        public ProductCategory[] ProductCategoriesExpanded { get; set; }
+
         public Product ProductComplement { get; set; }
         public Product[] Variants { get; set; }
         public DateTime IntroductionDate { get; set; }

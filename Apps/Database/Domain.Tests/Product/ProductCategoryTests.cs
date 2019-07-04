@@ -512,8 +512,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .WithProduct(good122)
                 .Build();
-
-
+            
             this.Session.Derive();
 
             Assert.Equal(6, productCategory1.AllProducts.Count);
