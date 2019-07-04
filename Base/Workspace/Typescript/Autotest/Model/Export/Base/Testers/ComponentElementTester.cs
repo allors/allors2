@@ -30,7 +30,9 @@ namespace Autotest.Testers
                     return $@"By.XPath(@""//{this.Element.Name}[@{this.NameAttribute.Value}='{this.PropertyName}'{this.ByScopeAnd}]"")";
                 }
 
-                return $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")";
+                return !string.IsNullOrEmpty(this.ByScope) ?
+                        $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")" :
+                        $@"By.XPath(@""//{this.Element.Name}"")";
             }
         }
     }

@@ -16,6 +16,8 @@ namespace Autotest.Testers
 
         public override string PropertyName => "Table";
 
-        public string Selector => $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")";
+        public string Selector => !string.IsNullOrEmpty(this.ByScope) ?
+            $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")" :
+            $@"By.XPath(@""//{this.Element.Name}"")";
     }
 }

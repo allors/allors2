@@ -20,10 +20,15 @@ namespace Tests.ApplicationTests
         public OverviewPagesTest(TestFixture fixture)
             : base(fixture)
         {
-            this.navigateTos = this.Sidenav.GetType()
+            var navigateTos = this.Sidenav.GetType()
                 .GetMethods()
                 .Where(v => v.Name.StartsWith("NavigateTo"))
                 .ToArray();
+
+            // Uncomment next line to only test a certain page
+            //navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToPeople")).ToArray();
+
+            this.navigateTos = navigateTos;
         }
 
         [Fact]

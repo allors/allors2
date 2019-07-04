@@ -16,10 +16,15 @@ namespace Tests.ApplicationTests
         public ListPagesTest(TestFixture fixture)
             : base(fixture)
         {
-            this.navigateTos = this.Sidenav.GetType()
+            var navigateTos = this.Sidenav.GetType()
                 .GetMethods()
                 .Where(v => v.Name.StartsWith("NavigateTo"))
                 .ToArray();
+
+            // Uncomment next line to only test a certain page
+            //navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToSpareParts")).ToArray();
+
+            this.navigateTos = navigateTos;
         }
 
         [Fact]
@@ -38,14 +43,25 @@ namespace Tests.ApplicationTests
         {
             this.Login();
 
-            foreach (var navigateTo in this.navigateTos)
+            var navigateTos = this.navigateTos;
+            foreach (var navigateTo in navigateTos)
             {
                 var page = (Component)navigateTo.Invoke(this.Sidenav, null);
-                var createMethods = page.GetType().GetMethods().Where(v => v.Name.StartsWith("Create"));
-                foreach (var createMethod in createMethods)
+                if (page.GetType().GetProperties().Any(v => v.Name.Equals("Factory")))
                 {
-                    var dialog = (Component)createMethod?.Invoke(page, null);
-                    Cancel(dialog);
+                    var factory = (MatFactoryFab)((dynamic)page).Factory;
+
+                    if (this.Driver.SelectorIsVisible(factory.Selector))
+                    {
+                        var classes = factory.Classes;
+
+                        foreach (var @class in classes)
+                        {
+                            factory.Create(@class);
+                            var dialog = this.Driver.GetDialog();
+                            Cancel(dialog);
+                        }
+                    }
                 }
             }
         }
@@ -63,22 +79,25 @@ namespace Tests.ApplicationTests
                 if (tableProperty != null)
                 {
                     var table = (MatTable)tableProperty?.GetGetMethod().Invoke(page, null);
-                    var action = table.Actions.FirstOrDefault(v => v.Equals("edit"));
 
-                    if (action != null)
+                    if (this.Driver.SelectorIsVisible(table.Selector))
                     {
-                        var objects = this.Session.Instantiate(table.ObjectIds);
-                        foreach (IObject @object in objects)
+                        var action = table.Actions.FirstOrDefault(v => v.Equals("edit"));
+
+                        if (action != null)
                         {
-                            table.Action(@object, action);
-                            var dialog = this.Driver.GetDialog();
-                            Cancel(dialog);
+                            var objects = this.Session.Instantiate(table.ObjectIds);
+                            foreach (IObject @object in objects)
+                            {
+                                table.Action(@object, action);
+                                var dialog = this.Driver.GetDialog();
+                                Cancel(dialog);
+                            }
                         }
                     }
                 }
             }
         }
-        
 
         [Fact]
         public async void Overview()
@@ -93,15 +112,18 @@ namespace Tests.ApplicationTests
                 if (tableProperty != null)
                 {
                     var table = (MatTable)tableProperty?.GetGetMethod().Invoke(page, null);
-                    var action = table.Actions.FirstOrDefault(v => v.Equals("overview"));
 
-                    if (action != null)
+                    if (this.Driver.SelectorIsVisible(table.Selector))
                     {
-                        var objects = this.Session.Instantiate(table.ObjectIds);
-                        foreach (IObject @object in objects)
+                        var action = table.Actions.FirstOrDefault(v => v.Equals("overview"));
+                        if (action != null)
                         {
-                            table.Action(@object, action);
-                            this.Driver.Navigate().Back();
+                            var objects = this.Session.Instantiate(table.ObjectIds);
+                            foreach (IObject @object in objects)
+                            {
+                                table.Action(@object, action);
+                                this.Driver.Navigate().Back();
+                            }
                         }
                     }
                 }
