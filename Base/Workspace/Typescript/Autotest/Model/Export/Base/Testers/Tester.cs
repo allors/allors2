@@ -48,5 +48,10 @@ namespace Autotest.Testers
 
             }
         }
+
+        public override string ToString()
+        {
+            return $"Template[{this.Element.Template.Url}] Element[{this.Element.Name}]";
+        }
     }
 }

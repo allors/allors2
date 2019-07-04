@@ -33,10 +33,5 @@ namespace Autotest.Testers
                 return $@"By.XPath(@""//{this.Element.Name}[{this.ByScope}]"")";
             }
         }
-
-        public override string ToString()
-        {
-            return $"PropertyName[{this.PropertyName}]";
-        }
     }
 }
