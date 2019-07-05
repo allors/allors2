@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-
     using Allors;
     using Allors.Meta;
 
@@ -182,11 +181,12 @@ namespace Allors.Domain
             }
         }
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
-            base.BaseSetup(config);
-
-            this.Sync();
+            if (setup.Config.SetupSecurity)
+            {
+                this.Sync();
+            }
         }
     }
 }

@@ -4,10 +4,10 @@
 
     public partial class Stores
     {
-        protected override void AppsPrepare(Setup config)
+        protected override void AppsPrepare(Setup setup)
         {
-            config.AddDependency(this.ObjectType, M.BillingProcess.ObjectType);
-            config.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
+            setup.AddDependency(this.ObjectType, M.BillingProcess.ObjectType);
+            setup.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var created = new ShipmentStates(this.Session).Created;
             var picked = new ShipmentStates(this.Session).Picked;

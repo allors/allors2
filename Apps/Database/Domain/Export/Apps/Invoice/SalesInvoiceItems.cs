@@ -29,7 +29,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var paid = new SalesInvoiceItemStates(this.Session).Paid;
             var writtenOff = new SalesInvoiceItemStates(this.Session).WrittenOff;

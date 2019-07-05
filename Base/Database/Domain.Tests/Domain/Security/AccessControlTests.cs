@@ -22,16 +22,15 @@
 namespace Tests
 {
     using System.Collections;
-
     using Allors;
     using Allors.Meta;
-
     using global::Allors.Domain;
-
     using Xunit;
 
     public class AccessControlTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+
         [Fact]
         public void GivenNoAccessControlWhenCreatingAAccessControlWithoutARoleThenAccessControlIsInvalid()
         {

@@ -23,8 +23,6 @@ using System.Linq;
 
 namespace Allors.Domain
 {
-    using System;
-
     using Meta;
 
     using Xunit;
@@ -1513,7 +1511,7 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
-            
+
             order.AddSalesOrderItem(new SalesOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(1).WithAssignedUnitPrice(10).Build());
 
             this.Session.Derive();
@@ -1640,230 +1638,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.Locale);
         }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsProvisional_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity(Users.AdministratorUserName);
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(new SalesOrderStates(this.Session).Provisional, order.SalesOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
-            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity(Users.AdministratorUserName);
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.True(acl.CanExecute(M.SalesOrder.Hold));
-            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsCancelled_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity("customer");
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            order.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderStates(this.Session).Cancelled, order.SalesOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsRejected_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity("customer");
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            order.Reject();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderStates(this.Session).Rejected, order.SalesOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsFinished_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity("customer");
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            order.SalesOrderState = new SalesOrderStates(this.Session).Finished;
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderStates(this.Session).Finished, order.SalesOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
-        }
-
-        [Fact]
-        public void GivenSalesOrder_WhenObjectStateIsOnHold_ThenCheckTransitions()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            this.SetIdentity(Users.AdministratorUserName);
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            order.Hold();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
-            Assert.True(acl.CanExecute(M.SalesOrder.Continue));
-            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
-            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
-        }
-
+        
         [Fact]
         public void GivenSalesOrderWithShippingAndHandlingAmount_WhenDeriving_ThenOrderTotalsMustIncludeShippingAndHandlingAmount()
         {
@@ -2594,8 +2369,233 @@ namespace Allors.Domain
             Assert.Contains(salesrep2, order.SalesReps);
             Assert.Contains(salesrep3, order.SalesReps);
         }
+    }
 
-      
+    public class SalesOrderSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
 
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsProvisional_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity(Users.AdministratorUserName);
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Provisional, order.SalesOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity(Users.AdministratorUserName);
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.True(acl.CanExecute(M.SalesOrder.Hold));
+            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsCancelled_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity("customer");
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            order.Cancel();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Cancelled, order.SalesOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsRejected_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity("customer");
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            order.Reject();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Rejected, order.SalesOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsFinished_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity("customer");
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            order.SalesOrderState = new SalesOrderStates(this.Session).Finished;
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Finished, order.SalesOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenObjectStateIsOnHold_ThenCheckTransitions()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            this.SetIdentity(Users.AdministratorUserName);
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            order.Hold();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            Assert.Equal(new SalesOrderStates(this.Session).OnHold, order.SalesOrderState);
+            var acl = new AccessControlList(order, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
+            Assert.True(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Confirm));
+            Assert.False(acl.CanExecute(M.SalesOrder.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrder.Approve));
+            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+        }
     }
 }

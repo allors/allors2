@@ -4,9 +4,9 @@
 
     public partial class Enumerations
     {
-        protected override void AppsPrepare(Setup config)
+        protected override void AppsPrepare(Setup setup)
         {
-            config.AddDependency(this.ObjectType, M.Singleton.ObjectType);
+            setup.AddDependency(this.ObjectType, M.Singleton.ObjectType);
         }
     }
 }

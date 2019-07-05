@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using System;
-
     using Allors;
 
     public partial class Roles
@@ -47,10 +46,8 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<Role> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Role>(this.Session));
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
-            base.BaseSetup(config);
-
             // Horizontal Roles
             new RoleBuilder(this.Session).WithName("Administrator").WithUniqueId(AdministratorId).Build();
             new RoleBuilder(this.Session).WithName("Guest").WithUniqueId(GuestId).Build();

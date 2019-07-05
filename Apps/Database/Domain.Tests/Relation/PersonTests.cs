@@ -23,9 +23,7 @@
 
 namespace Allors.Domain
 {
-    using System;
     using Xunit;
-
     using Allors.Meta;
 
     public class PersonTests : DomainTest
@@ -53,37 +51,7 @@ namespace Allors.Domain
 
             Assert.True(salesRep.AppsIsActiveEmployee(this.Session.Now()));
         }
-
-        [Fact]
-        public void GivenLoggedUserIsAdministrator_WhenAccessingSingleton_ThenLoggedInUserIsGrantedAccess()
-        {
-            var existingAdministrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
-            var secondAdministrator = new PersonBuilder(this.Session).WithLastName("second admin").Build();
-            Assert.False(secondAdministrator.IsAdministrator);
-
-            var internalOrganisation = this.InternalOrganisation;
-
-            this.Session.Derive();
-
-            this.SetIdentity(Users.AdministratorUserName);
-
-            var acl = new AccessControlList(internalOrganisation, existingAdministrator);
-            Assert.True(acl.CanWrite(M.Organisation.Name));
-
-            acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.False(acl.CanRead(M.Organisation.Name));
-
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(secondAdministrator);
-
-            this.Session.Derive();
-
-            Assert.True(secondAdministrator.IsAdministrator);
-
-            acl = new AccessControlList(internalOrganisation, secondAdministrator);
-            Assert.True(acl.CanWrite(M.Organisation.Name));
-        }
-
+        
         [Fact]
         public void GivenPerson_WhenActiveContactRelationship_ThenPersonCurrentOrganisationContactRelationshipsContainsPerson()
         {
@@ -217,6 +185,41 @@ namespace Allors.Domain
             Assert.Equal(2, contact.CurrentOrganisationContactMechanisms.Count);
             Assert.Contains(contactMechanism1, contact.CurrentOrganisationContactMechanisms);
             Assert.Contains(contactMechanism2, contact.CurrentOrganisationContactMechanisms);
+        }
+    }
+    
+    public class PersonSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
+        public void GivenLoggedUserIsAdministrator_WhenAccessingSingleton_ThenLoggedInUserIsGrantedAccess()
+        {
+            var existingAdministrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
+            var secondAdministrator = new PersonBuilder(this.Session).WithLastName("second admin").Build();
+            Assert.False(secondAdministrator.IsAdministrator);
+
+            var internalOrganisation = this.InternalOrganisation;
+
+            this.Session.Derive();
+
+            this.SetIdentity(Users.AdministratorUserName);
+
+            var acl = new AccessControlList(internalOrganisation, existingAdministrator);
+            Assert.True(acl.CanWrite(M.Organisation.Name));
+
+            acl = new AccessControlList(internalOrganisation, secondAdministrator);
+            Assert.False(acl.CanRead(M.Organisation.Name));
+
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(secondAdministrator);
+
+            this.Session.Derive();
+
+            Assert.True(secondAdministrator.IsAdministrator);
+
+            acl = new AccessControlList(internalOrganisation, secondAdministrator);
+            Assert.True(acl.CanWrite(M.Organisation.Name));
         }
     }
 }

@@ -6,8 +6,10 @@ namespace Allors.Domain
     using Allors;
     using Xunit;
    
-    public class SalesAccountManagerTests : DomainTest
+    public class SalesAccountManagerSecurityTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+
         [Fact]
         public void Person()
         {

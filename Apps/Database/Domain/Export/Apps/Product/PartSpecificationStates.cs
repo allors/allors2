@@ -43,7 +43,7 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
             
             new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)

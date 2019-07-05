@@ -39,7 +39,7 @@ namespace Allors.Domain
 
         public ShipmentState Shipped => this.Sticky[ShippedId];
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             new ShipmentStateBuilder(this.Session).WithUniqueId(NotShippedId).WithName("NotShipped").Build();
             new ShipmentStateBuilder(this.Session).WithUniqueId(PartiallyShippedId).WithName("PartiallyShipped").Build();

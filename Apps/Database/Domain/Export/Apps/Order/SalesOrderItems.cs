@@ -29,7 +29,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
             var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;

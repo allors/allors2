@@ -41,13 +41,13 @@ namespace Allors.Domain
 
         public Locale DutchBelgium => this.FindBy(this.Meta.Name, DutchBelgiumName);
 
-        protected override void BasePrepare(Setup config)
+        protected override void BasePrepare(Setup setup)
         {
-            config.AddDependency(this.ObjectType, M.Country);
-            config.AddDependency(this.ObjectType, M.Language);
+            setup.AddDependency(this.ObjectType, M.Country);
+            setup.AddDependency(this.ObjectType, M.Language);
         }
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             var countries = new Countries(this.Session);
             var greatBritain = countries.CountryByIsoCode["GB"];

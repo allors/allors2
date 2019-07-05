@@ -31,7 +31,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var notPaid = new SalesInvoiceStates(this.Session).NotPaid;
             var paid = new SalesInvoiceStates(this.Session).Paid;

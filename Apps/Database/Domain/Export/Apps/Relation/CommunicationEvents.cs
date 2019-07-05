@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             ObjectState scheduled = new CommunicationEventStates(this.Session).Scheduled;
             ObjectState cancelled = new CommunicationEventStates(this.Session).Cancelled;

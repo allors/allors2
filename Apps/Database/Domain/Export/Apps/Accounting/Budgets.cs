@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var closed = new BudgetStates(this.Session).Closed;
             var opened = new BudgetStates(this.Session).Opened;

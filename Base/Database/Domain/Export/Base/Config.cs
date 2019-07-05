@@ -1,31 +1,35 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PurchaseOrderApprovals.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
+// <copyright file="SetupConfig.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
+//
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
+//
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
+//
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Allors.Domain
+
+namespace Allors
 {
-    using Meta;
+    using System.IO;
 
-    public partial class PurchaseOrderApprovalsLevel2
+    public partial class Config
     {
+        public DirectoryInfo DataPath { get; set; }
+        
+        public bool SetupSecurity { get; set; } = true;
 
-        protected override void AppsSecure(Security config)
-        {
-            
+        public bool Demo { get; set; } = false;
 
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-            config.GrantOwner(this.ObjectType, full);
-        }
+        public bool End2End { get; set; } = false;
     }
 }

@@ -22,13 +22,13 @@ namespace Tests
 {
     using Allors;
     using Allors.Meta;
-
     using global::Allors.Domain;
-
     using Xunit;
 
     public class AccessControlListsTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+
         [Fact]
         public void GivenAUserAndANonAccessControlledObjectWhenGettingTheAccessListThenUserHasAccessToThePermissionsInTheRole()
         {
@@ -252,7 +252,7 @@ namespace Tests
             }
         }
 
-         [Fact]
+        [Fact]
         public void GivenAnAccessListWhenRemovingUserFromACLThenUserHasNoAccessToThePermissionsInTheRole()
         {
             var permission = this.FindPermission(M.Organisation.Name, Operations.Read);
@@ -289,7 +289,7 @@ namespace Tests
 
                 accessLists = new AccessControlLists(new IObject[] { organisation }, person);
                 accessList = accessLists[organisation];
-                
+
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
                 session.Rollback();
@@ -332,7 +332,7 @@ namespace Tests
 
                 accessLists = new AccessControlLists(new IObject[] { organisation }, person);
                 accessList = accessLists[organisation];
-                
+
                 Assert.False(accessList.CanRead(M.Organisation.Name));
 
                 session.Rollback();

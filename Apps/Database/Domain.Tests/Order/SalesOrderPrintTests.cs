@@ -22,19 +22,16 @@
 namespace Allors.Domain
 {
     using System;
-
     using Xunit;
 
     public class SalesOrderPrintTests : DomainTest
     {
+        public override Config Config => new Config { Demo = true };
+
         [Fact]
         public void GivenSalesOrder_WhenCreatingPrintModel_ThenPrintModelIsNotNull()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-            this.Session.Derive(true);
-
             var order = new SalesOrders(this.Session).Extent().First;
 
             // Act
@@ -44,13 +41,10 @@ namespace Allors.Domain
             Assert.NotNull(printModel);
         }
 
-
         [Fact]
         public void GivenSalesOrder_WhenDeriving_henPrintDocumentWithoutMediaCreated()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
 
             // Act
             this.Session.Derive(true);
@@ -66,9 +60,6 @@ namespace Allors.Domain
         public void GivenSalesOrderPrintDocument_WhenPrinting_ThenMediaCreated()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-            this.Session.Derive(true);
             var order = new SalesOrders(this.Session).Extent().First;
 
             // Act

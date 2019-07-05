@@ -20,7 +20,7 @@ namespace Allors.Domain
 
     public partial class People
     {
-        protected override void AppsSetup(Setup config)
+        protected override void AppsSetup(Setup setup)
         {
             var internalOrganisations = new Organisations(this.Session).InternalOrganisations();
             
@@ -47,7 +47,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 

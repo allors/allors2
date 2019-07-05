@@ -93,7 +93,7 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 

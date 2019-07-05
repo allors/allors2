@@ -1,11 +1,9 @@
-using src.app.dashboard;
-using src.app.main;
-
 namespace Tests
 {
     using System;
     using System.Globalization;
-
+    using src.app.dashboard;
+    using src.app.main;
     using Allors;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
@@ -65,7 +63,9 @@ namespace Tests
 
             database.Init();
             this.Session = database.CreateSession();
-            new Setup(this.Session, null).Apply();
+
+            var config = new Config();
+            new Setup(this.Session, config).Apply();
             this.Session.Commit();
 
             new Population(this.Session, null).Execute();

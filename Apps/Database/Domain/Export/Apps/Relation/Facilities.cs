@@ -19,9 +19,9 @@ namespace Allors.Domain
 
     public partial class Facilities
     {
-        protected override void BasePrepare(Setup config)
+        protected override void BasePrepare(Setup setup)
         {
-            config.AddDependency(this.ObjectType, M.FacilityType);
+            setup.AddDependency(this.ObjectType, M.FacilityType);
         }
     }
 }

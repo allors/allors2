@@ -21,11 +21,9 @@
 
 namespace Allors.Domain
 {
-    using System;
-
-    using Meta;
+  using Meta;
     using Xunit;
-    
+
     public class CustomerShipmentTests : DomainTest
     {
         [Fact]
@@ -206,129 +204,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(shippingAddress.ContactMechanism, customerShipment.ShipToAddress);
-        }
-
-        [Fact]
-        public void GivenCustomerShipment_WhenObjectStateIsCreated_ThenCheckTransitions()
-        {
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            this.SetIdentity("Administrator");
-
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-
-            var shipment = new CustomerShipmentBuilder(this.Session)
-                .WithShipToParty(customer)
-                .WithShipToAddress(shipToAddress)
-                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .Build();
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(shipment, this.Session.GetUser());
-            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
-            Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
-        }
-
-        [Fact]
-        public void GivenCustomerShipment_WhenObjectStateIsCancelled_ThenCheckTransitions()
-        {
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            this.SetIdentity("orderProcessor");
-
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-
-            var shipment = new CustomerShipmentBuilder(this.Session)
-                .WithShipToParty(customer)
-                .WithShipToAddress(shipToAddress)
-                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .Build();
-
-            shipment.Cancel();
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(shipment, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
-        }
-
-        [Fact]
-        public void GivenCustomerShipment_WhenObjectStateIsShipped_ThenCheckTransitions()
-        {
-            this.SetIdentity("administrator");
-
-            var assessable = new VatRegimes(this.Session).Assessable;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
-
-            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-
-            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var billToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithBillToContactMechanism(mechelenAddress)
-                .WithVatRegime(assessable)
-                .Build();
-
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
-            order.AddSalesOrderItem(item1);
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
-
-            pickList.SetPicked();
-
-            var package = new ShipmentPackageBuilder(this.Session).Build();
-            shipment.AddShipmentPackage(package);
-
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
-            {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
-            }
-
-            this.Session.Derive();
-
-            shipment.Ship();
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(shipment, this.Session.GetUser());
-            Assert.Equal(new ShipmentStates(this.Session).Shipped, shipment.ShipmentState);
-            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
-            Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));
         }
 
         [Fact]
@@ -980,7 +855,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            Assert.Single(customer.ShipmentsWhereShipToParty); 
+            Assert.Single(customer.ShipmentsWhereShipToParty);
             Assert.Single(customer.PickListsWhereShipToParty);
 
             var order3 = new SalesOrderBuilder(this.Session)
@@ -1386,31 +1261,131 @@ namespace Allors.Domain
         }
     }
 
-
-    public class DerivationLog : Allors.Domain.Logging.ListDerivationLog
+    public class CustomerShipmentSecurityTests : DomainTest
     {
-        public override void AddedDerivable(Allors.Domain.Object derivable)
+        public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
+        public void GivenCustomerShipment_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
-            if (derivable is Permission)
-            {
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            }
+            this.SetIdentity("Administrator");
 
-            base.AddedDerivable(derivable);
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+
+            var shipment = new CustomerShipmentBuilder(this.Session)
+                .WithShipToParty(customer)
+                .WithShipToAddress(shipToAddress)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .Build();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(shipment, this.Session.GetUser());
+            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
+            Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
-        /// <summary>
-        /// The dependee is derived before the dependent object;
-        /// </summary>
-        public override void AddedDependency(Allors.Domain.Object dependent, Allors.Domain.Object dependee)
+        [Fact]
+        public void GivenCustomerShipment_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
-            if (dependent is Permission || dependee is Permission)
-            {
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
+            this.SetIdentity("orderProcessor");
+
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+
+            var shipment = new CustomerShipmentBuilder(this.Session)
+                .WithShipToParty(customer)
+                .WithShipToAddress(shipToAddress)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .Build();
+
+            shipment.Cancel();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(shipment, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
+        }
+
+        [Fact]
+        public void GivenCustomerShipment_WhenObjectStateIsShipped_ThenCheckTransitions()
+        {
+            this.SetIdentity("administrator");
+
+            var assessable = new VatRegimes(this.Session).Assessable;
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
+            assessable.VatRate = vatRate21;
+
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var billToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithBillToContactMechanism(mechelenAddress)
+                .WithVatRegime(assessable)
+                .Build();
+
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            order.AddSalesOrderItem(item1);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+
+            pickList.SetPicked();
+
+            var package = new ShipmentPackageBuilder(this.Session).Build();
+            shipment.AddShipmentPackage(package);
+
+            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
+            {
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            base.AddedDependency(dependent, dependee);
+            this.Session.Derive();
+
+            shipment.Ship();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(shipment, this.Session.GetUser());
+            Assert.Equal(new ShipmentStates(this.Session).Shipped, shipment.ShipmentState);
+            Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
+            Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));
         }
     }
-
 }

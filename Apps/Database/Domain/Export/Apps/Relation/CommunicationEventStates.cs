@@ -38,7 +38,7 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
             
             new CommunicationEventStateBuilder(this.Session)
                 .WithName("Scheduled")

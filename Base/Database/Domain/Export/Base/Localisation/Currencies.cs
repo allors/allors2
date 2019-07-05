@@ -26,7 +26,7 @@ namespace Allors.Domain
 
         public Sticky<string, Currency> CurrencyByCode => this.currencyByCode ?? (this.currencyByCode = new Sticky<string, Currency>(this.Session, this.Meta.IsoCode));
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             var data = new[,]
             {

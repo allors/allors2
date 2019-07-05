@@ -19,15 +19,15 @@ namespace Allors.Domain
 
     public partial class InternalOrganisations
     {
-        protected override void AppsPrepare(Setup config)
+        protected override void AppsPrepare(Setup setup)
         {
-            base.BasePrepare(config);
+            base.BasePrepare(setup);
 
-            config.AddDependency(this.ObjectType, M.Locale.ObjectType);
-            config.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
-            config.AddDependency(this.ObjectType, M.ShipmentMethod.ObjectType);
-            config.AddDependency(this.ObjectType, M.Carrier.ObjectType);
-            config.AddDependency(this.ObjectType, M.BillingProcess.ObjectType);
+            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
+            setup.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
+            setup.AddDependency(this.ObjectType, M.ShipmentMethod.ObjectType);
+            setup.AddDependency(this.ObjectType, M.Carrier.ObjectType);
+            setup.AddDependency(this.ObjectType, M.BillingProcess.ObjectType);
         }
     }
 }

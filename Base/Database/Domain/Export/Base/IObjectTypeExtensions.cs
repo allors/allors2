@@ -26,7 +26,7 @@ namespace Allors
 
     public static class IObjectTypeExtensions
     {
-        public static IObjects GetObjects(this ObjectType objectType, ISession session)
+        public static IObjects GetObjects(this IObjectType objectType, ISession session)
         {
             var objectFactory = session.Database.ObjectFactory;
             var type = objectFactory.Assembly.GetType(objectFactory.Namespace + "." + objectType.PluralName);

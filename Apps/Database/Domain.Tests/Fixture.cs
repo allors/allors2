@@ -27,14 +27,14 @@ namespace Allors
 
     public class Fixture
     {
-        public static void Setup(IDatabase database)
+        public static void Setup(IDatabase database, Config config)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-GB");
             CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
 
             using (var session = database.CreateSession())
             {
-                new Setup(session, null).Apply();
+                new Setup(session, config).Apply();
 
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);

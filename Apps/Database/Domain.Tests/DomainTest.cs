@@ -22,15 +22,11 @@
 namespace Allors
 {
     using System;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
-
     using Allors.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using Microsoft.Extensions.DependencyInjection;
 
     public class DomainTest : IDisposable
@@ -39,6 +35,8 @@ namespace Allors
         {
             this.Setup(populate);
         }
+
+        public virtual Config Config { get; } = new Config { SetupSecurity = false };
 
         public ISession Session { get; private set; }
 
@@ -66,12 +64,11 @@ namespace Allors
             var services = new ServiceCollection();
             services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
-            //serviceProvider.ConfigureAllors();
 
             var configuration = new Configuration
-                                    {
-                                        ObjectFactory = this.ObjectFactory,
-                                    };
+            {
+                ObjectFactory = this.ObjectFactory,
+            };
 
             var database = new Database(serviceProvider, configuration);
             this.Setup(database, populate);
@@ -85,8 +82,7 @@ namespace Allors
 
             if (populate)
             {
-                Fixture.Setup(database);
-
+                Fixture.Setup(database, this.Config);
                 this.Session.Commit();
             }
         }

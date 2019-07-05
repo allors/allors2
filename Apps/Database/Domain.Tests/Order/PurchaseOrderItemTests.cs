@@ -21,8 +21,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     using Meta;
     using Xunit;
 
@@ -32,7 +30,7 @@ namespace Allors.Domain
         private SupplierOffering currentPurchasePrice;
         private PurchaseOrder order;
         private Organisation supplier;
-        
+
         public PurchaseOrderItemTests()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -241,12 +239,126 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenOrderItemWithAssignedDeliveryDate_WhenDeriving_ThenDeliveryDateIsOrderItemAssignedDeliveryDate()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithQuantityOrdered(1)
+                .WithAssignedDeliveryDate(this.Session.Now().AddMonths(1))
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            this.Session.Derive();
+
+            Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
+        }
+
+        [Fact]
+        public void GivenOrderItemWithoutDeliveryDate_WhenDeriving_ThenDerivedDeliveryDateIsOrderDeliveryDate()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithQuantityOrdered(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            this.Session.Derive();
+
+            Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
+        }
+
+        private void InstantiateObjects(ISession session)
+        {
+            this.finishedGood = (Part)session.Instantiate(this.finishedGood);
+            this.currentPurchasePrice = (SupplierOffering)session.Instantiate(this.currentPurchasePrice);
+            this.order = (PurchaseOrder)session.Instantiate(this.order);
+            this.supplier = (Organisation)session.Instantiate(this.supplier);
+        }
+    }
+
+    public class PurchaseOrderItemSecurityTests : DomainTest
+    {
+        private Part finishedGood;
+        private SupplierOffering currentPurchasePrice;
+        private PurchaseOrder order;
+        private Organisation supplier;
+
+        public override Config Config => new Config { SetupSecurity = true };
+
+        public PurchaseOrderItemSecurityTests()
+        {
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            ContactMechanism takenViaContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var supplierContactMechanism = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(takenViaContactMechanism)
+                .WithUseAsDefault(true)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .Build();
+
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            this.supplier.AddPartyContactMechanism(supplierContactMechanism);
+
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+            this.finishedGood = good1.Part;
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .WithCurrency(euro)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(8)
+                .Build();
+
+            this.currentPurchasePrice = new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
+                .WithCurrency(euro)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(10)
+                .Build();
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
+                .WithFromDate(this.Session.Now().AddYears(1))
+                .WithCurrency(euro)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(8)
+                .Build();
+
+            this.order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(this.supplier)
+                .WithBillToContactMechanism(takenViaContactMechanism)
+                .WithDeliveryDate(this.Session.Now())
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+        }
+
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -280,7 +392,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -314,7 +426,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -360,8 +472,8 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
-            this.Session.Derive();           
+
+            this.Session.Derive();
             this.Session.Commit();
 
             this.InstantiateObjects(this.Session);
@@ -374,7 +486,7 @@ namespace Allors.Domain
                 .WithAssignedUnitPrice(5)
                 .Build();
 
-            this.order.AddPurchaseOrderItem(item);            
+            this.order.AddPurchaseOrderItem(item);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -396,7 +508,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -411,7 +523,7 @@ namespace Allors.Domain
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
-            
+
             this.Session.Derive();
 
             item.Reject();
@@ -431,7 +543,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -446,9 +558,9 @@ namespace Allors.Domain
                 .Build();
 
             this.order.AddPurchaseOrderItem(item);
-            
+
             this.order.Confirm();
-            
+
             this.Session.Derive();
 
             this.order.QuickReceive();
@@ -506,7 +618,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -525,7 +637,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.PurchaseOrderState = new PurchaseOrderStates(this.Session).Finished;
-            
+
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Finished, item.PurchaseOrderItemState);
@@ -541,8 +653,8 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
-            this.Session.Derive(); 
+
+            this.Session.Derive();
             this.Session.Commit();
 
             this.InstantiateObjects(this.Session);
@@ -558,7 +670,7 @@ namespace Allors.Domain
             this.order.AddPurchaseOrderItem(item);
 
             this.order.Confirm();
-            
+
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(order.TakenViaSupplier).Build();
@@ -576,41 +688,6 @@ namespace Allors.Domain
             Assert.Equal(new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived, item.PurchaseOrderItemShipmentState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.False(acl.CanWrite(M.PurchaseOrderItem.Part));
-        }
-
-        [Fact]
-        public void GivenOrderItemWithAssignedDeliveryDate_WhenDeriving_ThenDeliveryDateIsOrderItemAssignedDeliveryDate()
-        {
-            this.InstantiateObjects(this.Session);
-
-            var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithPart(this.finishedGood)
-                .WithQuantityOrdered(1)
-                .WithAssignedDeliveryDate(this.Session.Now().AddMonths(1))
-                .Build();
-
-            this.order.AddPurchaseOrderItem(item);
-            
-            this.Session.Derive();
-
-            Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
-        }
-
-        [Fact]
-        public void GivenOrderItemWithoutDeliveryDate_WhenDeriving_ThenDerivedDeliveryDateIsOrderDeliveryDate()
-        {
-            this.InstantiateObjects(this.Session);
-
-            var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithPart(this.finishedGood)
-                .WithQuantityOrdered(1)
-                .Build();
-
-            this.order.AddPurchaseOrderItem(item);
-            
-            this.Session.Derive();
-
-            Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
         }
 
         private void InstantiateObjects(ISession session)

@@ -19,7 +19,7 @@ namespace Allors.Domain
     {
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var write = Operations.Write;
             var closed = new BudgetStates(this.Session).Closed;

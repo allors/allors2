@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
 
             new EngineeringChangeObjectStateBuilder(this.Session)
                 .WithUniqueId(RequestedId)

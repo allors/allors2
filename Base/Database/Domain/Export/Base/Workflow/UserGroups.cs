@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using System;
-
     using Allors;
 
     public partial class UserGroups
@@ -47,10 +46,8 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<UserGroup> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<UserGroup>(this.Session));
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
-            base.BaseSetup(config);
-
             // Default Groups
             new UserGroupBuilder(this.Session).WithName("Guests").WithUniqueId(GuestsId).Build();
             new UserGroupBuilder(this.Session).WithName("Administrators").WithUniqueId(AdministratorsId).Build();

@@ -69,6 +69,11 @@ namespace Allors.Domain
 
             Assert.Contains(approver, organisation.PurchaseOrderApproverLevel1UserGroup.Members);
         }
+    }
+
+    public class PurchaseOrderApproverLevel1SecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
 
         [Fact]
         public void PurchaseOrder_Approve()

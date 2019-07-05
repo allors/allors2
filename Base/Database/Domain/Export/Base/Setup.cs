@@ -22,7 +22,6 @@ namespace Allors
 {
     using System.Collections.Generic;
     using System.IO;
-
     using Allors.Domain;
     using Allors.Meta;
 
@@ -33,17 +32,13 @@ namespace Allors
         private readonly Dictionary<IObjectType, IObjects> objectsByObjectType;
         private readonly ObjectsGraph objectsGraph;
 
-        public Setup(ISession session) : this(session, null)
+        public Setup(ISession session, Config config)
         {
-        }
-
-        public Setup(ISession session, DirectoryInfo dataPath)
-        {
+            this.Config = config;
             this.session = session;
-            this.DataPath = dataPath;
 
             this.objectsByObjectType = new Dictionary<IObjectType, IObjects>();
-            foreach (ObjectType objectType in session.Database.MetaPopulation.Composites)
+            foreach (var objectType in session.Database.MetaPopulation.Composites)
             {
                 this.objectsByObjectType[objectType] = objectType.GetObjects(session);
             }
@@ -51,9 +46,7 @@ namespace Allors
             this.objectsGraph = new ObjectsGraph();
         }
 
-        public DirectoryInfo DataPath { get; private set; }
-
-        public bool ExistDataPath => this.DataPath != null;
+        public Config Config { get; }
 
         public void Apply()
         {
@@ -74,7 +67,10 @@ namespace Allors
 
             this.session.Derive();
 
-            new Security(this.session).Apply();
+            if (this.Config.SetupSecurity)
+            {
+                new Security(this.session).Apply();
+            }
         }
 
         public void Add(IObjects objects)

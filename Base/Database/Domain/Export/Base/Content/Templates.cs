@@ -24,11 +24,11 @@ namespace Allors.Domain
 
     public partial class Templates
     {
-        protected override void BasePrepare(Setup config)
+        protected override void BasePrepare(Setup setup)
         {
-            base.BasePrepare(config);
+            base.BasePrepare(setup);
 
-            config.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
+            setup.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
         }
     }
 }

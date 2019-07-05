@@ -56,7 +56,8 @@ namespace Commands
 
             using (var session = this.databaseService.Database.CreateSession())
             {
-                new Setup(session, this.dataPath).Apply();
+                var config = new Config { DataPath = this.dataPath };
+                new Setup(session, config).Apply();
 
                 session.Derive();
                 session.Commit();

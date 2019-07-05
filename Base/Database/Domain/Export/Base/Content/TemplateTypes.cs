@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         public TemplateType OpenDocumentType => this.Sticky[OpenDocumentTypeId];
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             new TemplateTypeBuilder(this.Session).WithUniqueId(OpenDocumentTypeId).WithName("Odt Template").Build();
         }

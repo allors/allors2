@@ -621,309 +621,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsReadyForPosting_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithLastName("Administrator").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            SetIdentity("administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.True(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsNotPaid_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.SetIdentity("administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(1000M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-
-            invoice.Send();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(new SalesInvoiceStates(this.Session).NotPaid, invoice.SalesInvoiceState);
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        ////[Fact]
-        ////public void GivenSalesInvoice_WhenObjectStateIsReceived_ThenCheckTransitions()
-        ////{
-        ////    SecurityPopulation securityPopulation = new SecurityPopulation(this.Session);
-        ////    securityPopulation.CoreCreateUserGroups();
-        ////    securityPopulation.CoreAssignDefaultPermissions();
-        ////    new Invoices(this.Session).Populate();
-        ////    new SalesInvoices(this.Session).Populate();
-
-        ////    Person administrator = new PersonBuilder(this.Session).WithUserName("administrator").WithLastName("administrator").Build();
-        ////    securityPopulation.CoreAdministrators.AddMember(administrator);
-
-        ////    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
-        ////    SalesInvoice invoice = new SalesInvoiceBuilder(this.Session)
-        ////        .WithInvoiceStatus(new InvoiceStatusBuilder(this.Session).WithObjectState(new Invoices(this.Session).Received).Build())
-        ////        .Build();
-
-        ////    AccessControlList acl = new AccessControlList(invoice, this.Session.GetUser()());
-        ////    Assert.False(acl.CanExecute(Invoices.ReadyForPostingId));
-        ////    Assert.False(acl.CanExecute(Invoices.ApproveId));
-        ////    Assert.False(acl.CanExecute(Invoices.SendId));
-        ////    Assert.False(acl.CanExecute(Invoices.WriteOffId));
-        ////    Assert.False(acl.CanExecute(Invoices.CancelId));
-        ////}
-
-        [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsPaid_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.SetIdentity("Administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-
-            invoice.Send();
-
-            this.Session.Derive();
-
-            var invoiceItem = invoice.SalesInvoiceItems[0];
-            var value = invoiceItem.TotalIncVat;
-
-            new ReceiptBuilder(this.Session)
-                .WithAmount(value)
-                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoiceItem).WithAmountApplied(value).Build())
-                .Build();
-
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-
-            Assert.Equal(new SalesInvoiceStates(this.Session).Paid, invoice.SalesInvoiceState);
-            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsPartiallyPaid_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.SetIdentity("administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-
-            new ReceiptBuilder(this.Session)
-                .WithAmount(90)
-                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(90).Build())
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsWrittenOff_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.SetIdentity("administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            this.Session.Derive();
-
-            invoice.Send();
-            invoice.WriteOff();
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        [Fact]
-        public void GivenSalesInvoice_WhenObjectStateIsCancelled_ThenCheckTransitions()
-        {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
-                .Build();
-
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.SetIdentity("administrator");
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-
-            invoice.CancelInvoice();
-
-            this.Session.Derive();
-
-            var acl = new AccessControlList(invoice, this.Session.GetUser());
-            Assert.Equal(new SalesInvoiceStates(this.Session).Cancelled, invoice.SalesInvoiceState);
-            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
-            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
-            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
-            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
-        }
-
-        [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingAmount_WhenDeriving_ThenInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -1444,6 +1141,314 @@ namespace Allors.Domain
 
             Assert.Equal(new SalesOrderStates(this.Session).Completed, order.SalesOrderState);
             Assert.Equal(new SalesOrderPaymentStates(this.Session).NotPaid, order.SalesOrderPaymentState);
+        }
+    }
+
+    public class SalesInvoiceSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsReadyForPosting_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithLastName("Administrator").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            SetIdentity("administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.True(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
+        }
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsNotPaid_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.SetIdentity("administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(1000M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+
+            invoice.Send();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            Assert.Equal(new SalesInvoiceStates(this.Session).NotPaid, invoice.SalesInvoiceState);
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
+        }
+
+        ////[Fact]
+        ////public void GivenSalesInvoice_WhenObjectStateIsReceived_ThenCheckTransitions()
+        ////{
+        ////    SecurityPopulation securityPopulation = new SecurityPopulation(this.Session);
+        ////    securityPopulation.CoreCreateUserGroups();
+        ////    securityPopulation.CoreAssignDefaultPermissions();
+        ////    new Invoices(this.Session).Populate();
+        ////    new SalesInvoices(this.Session).Populate();
+
+        ////    Person administrator = new PersonBuilder(this.Session).WithUserName("administrator").WithLastName("administrator").Build();
+        ////    securityPopulation.CoreAdministrators.AddMember(administrator);
+
+        ////    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
+        ////    SalesInvoice invoice = new SalesInvoiceBuilder(this.Session)
+        ////        .WithInvoiceStatus(new InvoiceStatusBuilder(this.Session).WithObjectState(new Invoices(this.Session).Received).Build())
+        ////        .Build();
+
+        ////    AccessControlList acl = new AccessControlList(invoice, this.Session.GetUser()());
+        ////    Assert.False(acl.CanExecute(Invoices.ReadyForPostingId));
+        ////    Assert.False(acl.CanExecute(Invoices.ApproveId));
+        ////    Assert.False(acl.CanExecute(Invoices.SendId));
+        ////    Assert.False(acl.CanExecute(Invoices.WriteOffId));
+        ////    Assert.False(acl.CanExecute(Invoices.CancelId));
+        ////}
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsPaid_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.SetIdentity("Administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+
+            invoice.Send();
+
+            this.Session.Derive();
+
+            var invoiceItem = invoice.SalesInvoiceItems[0];
+            var value = invoiceItem.TotalIncVat;
+
+            new ReceiptBuilder(this.Session)
+                .WithAmount(value)
+                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoiceItem).WithAmountApplied(value).Build())
+                .Build();
+
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+
+            Assert.Equal(new SalesInvoiceStates(this.Session).Paid, invoice.SalesInvoiceState);
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
+        }
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsPartiallyPaid_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.SetIdentity("administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+
+            new ReceiptBuilder(this.Session)
+                .WithAmount(90)
+                .WithPaymentApplication(new PaymentApplicationBuilder(this.Session).WithInvoiceItem(invoice.SalesInvoiceItems[0]).WithAmountApplied(90).Build())
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.True(acl.CanExecute(M.SalesInvoice.SetPaid));
+        }
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsWrittenOff_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.SetIdentity("administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive();
+
+            invoice.Send();
+            invoice.WriteOff();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
+        }
+
+        [Fact]
+        public void GivenSalesInvoice_WhenObjectStateIsCancelled_ThenCheckTransitions()
+        {
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithLocality("Mechelen")
+                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .Build();
+
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.SetIdentity("administrator");
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithInvoiceNumber("1")
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            invoice.CancelInvoice();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlList(invoice, this.Session.GetUser());
+            Assert.Equal(new SalesInvoiceStates(this.Session).Cancelled, invoice.SalesInvoiceState);
+            Assert.False(acl.CanExecute(M.SalesInvoice.Send));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.CancelInvoice));
+            Assert.False(acl.CanExecute(M.SalesInvoice.Delete));
+            Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));
         }
     }
 }

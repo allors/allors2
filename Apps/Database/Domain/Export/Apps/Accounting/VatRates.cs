@@ -19,7 +19,7 @@ namespace Allors.Domain
     {
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
 
             new VatRateBuilder(this.Session).WithRate(0).Build();
             new VatRateBuilder(this.Session).WithRate(6).Build();

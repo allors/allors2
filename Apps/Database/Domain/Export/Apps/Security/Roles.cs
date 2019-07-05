@@ -49,10 +49,8 @@ namespace Allors.Domain
 
         public Role Employee => this.Sticky[EmployeeId];
 
-        protected override void AppsSetup(Setup config)
+        protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(config);
-
             new RoleBuilder(this.Session).WithName("ProductQuote approver").WithUniqueId(ProductQuoteApproverId).Build();
             new RoleBuilder(this.Session).WithName("PurchaseOrder approver level 1").WithUniqueId(PurchaseOrderApproverLevel1Id).Build();
             new RoleBuilder(this.Session).WithName("PurchaseOrder approver level 2").WithUniqueId(PurchaseOrderApproverLevel2Id).Build();

@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var created = new PurchaseInvoiceItemStates(this.Session).Created;
             var awaitingApproval = new PurchaseInvoiceItemStates(this.Session).AwaitingApproval;

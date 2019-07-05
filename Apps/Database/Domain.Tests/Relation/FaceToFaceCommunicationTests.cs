@@ -21,7 +21,6 @@
 
 namespace Allors.Domain
 {
-    using System;
     using Xunit;
 
     public class FaceToFaceCommunicationTests : DomainTest
@@ -62,12 +61,43 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive();
-            
+
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(participant1, communication.InvolvedParties);
             Assert.Contains(participant2, communication.InvolvedParties);
             Assert.Contains(owner, communication.InvolvedParties);
         }
+
+        [Fact]
+        public void GivenFaceToFaceCommunication_WhenParticipantIsDeleted_ThenCommunicationEventIsDeleted()
+        {
+            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
+            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            new FaceToFaceCommunicationBuilder(this.Session)
+                .WithSubject("subject")
+                .WithFromParty(participant1)
+                .WithToParty(participant2)
+                .WithActualStart(this.Session.Now())
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Single(this.Session.Extent<FaceToFaceCommunication>());
+
+            participant2.Delete();
+            this.Session.Derive();
+
+            Assert.Equal(0, this.Session.Extent<FaceToFaceCommunication>().Count);
+        }
+    }
+
+    public class FaceToFaceCommunicationSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
 
         [Fact]
         public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
@@ -120,33 +150,5 @@ namespace Allors.Domain
             Assert.Contains(this.Session.GetSingleton().DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
-
-
-        [Fact]
-        public void GivenFaceToFaceCommunication_WhenParticipantIsDeleted_ThenCommunicationEventIsDeleted()
-        {
-            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
-            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            new FaceToFaceCommunicationBuilder(this.Session)
-                .WithSubject("subject")
-                .WithFromParty(participant1)
-                .WithToParty(participant2)
-                .WithActualStart(this.Session.Now())
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Single(this.Session.Extent<FaceToFaceCommunication>());
-
-            participant2.Delete();
-            this.Session.Derive();
-
-            Assert.Equal(0, this.Session.Extent<FaceToFaceCommunication>().Count);
-        }
-
     }
 }

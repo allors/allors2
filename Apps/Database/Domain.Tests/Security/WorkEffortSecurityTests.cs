@@ -7,6 +7,8 @@ namespace Allors.Domain
 
     public class WorkEffortSecurityTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+
         [Fact]
         public void WorkTask_StateCreated()
         {

@@ -22,7 +22,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
             config.GrantOwner(this.ObjectType, full);

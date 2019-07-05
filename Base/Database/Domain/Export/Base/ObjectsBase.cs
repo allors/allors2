@@ -57,12 +57,12 @@ namespace Allors
             return (T)extent.First;
         }
 
-        protected virtual void BasePrepare(Setup config)
+        protected virtual void BasePrepare(Setup setup)
         {
-            config.Add(this);
+            setup.Add(this);
         }
 
-        protected virtual void BaseSetup(Setup config)
+        protected virtual void BaseSetup(Setup setup)
         {
         }
 

@@ -42,7 +42,7 @@ namespace Allors.Domain
 
         public OrderState Cancelled => this.Sticky[CancelledId];
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             new OrderStateBuilder(this.Session).WithUniqueId(InitialId).WithName("Initial").Build();
             new OrderStateBuilder(this.Session).WithUniqueId(ConfirmedId).WithName("Confirmed").Build();

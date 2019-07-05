@@ -30,12 +30,12 @@ namespace Allors.Domain
 
         public Sticky<string, Country> CountryByIsoCode => this.countryByIsoCode ?? (this.countryByIsoCode = new Sticky<string, Country>(this.Session, M.Country.IsoCode));
 
-        protected override void BasePrepare(Setup config)
+        protected override void BasePrepare(Setup setup)
         {
-            config.AddDependency(this.ObjectType, M.Currency.ObjectType);
+            setup.AddDependency(this.ObjectType, M.Currency.ObjectType);
         }
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             var data = new[,]
             {

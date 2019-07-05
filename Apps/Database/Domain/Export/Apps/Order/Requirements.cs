@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var createdState = new WorkEffortStates(this.Session).Created;
             var cancelledState = new WorkEffortStates(this.Session).Cancelled;

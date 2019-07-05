@@ -18,15 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors;
+
 namespace Tests
 {
     using Allors.Domain;
     using Allors.Meta;
-
     using Xunit;
 
     public class DelegateAccessTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+
         [Fact]
         public void DelegateAccessReturnsTokens()
         {

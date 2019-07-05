@@ -774,369 +774,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedCancelledOrRejected()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
-            Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.True(acl.CanExecute(M.SalesOrderItem.Reject));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.True(acl.CanExecute(M.SalesOrderItem.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
-            pickList.SetPicked();
-
-            this.Session.Derive();
-
-            var package = new ShipmentPackageBuilder(this.Session).Build();
-            shipment.AddShipmentPackage(package);
-
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
-            {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
-            }
-
-            this.Session.Derive();
-
-            shipment.Ship();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            item.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).Cancelled, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            item.Reject();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).Rejected, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-
-            this.order.Ship();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
-            pickList.SetPicked();
-
-            this.Session.Derive();
-
-            var package = new ShipmentPackageBuilder(this.Session).Build();
-            shipment.AddShipmentPackage(package);
-
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
-            {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
-            }
-
-            this.Session.Derive();
-
-            shipment.Ship();
-
-            this.Session.Derive();
-
-            shipment.Invoice();
-
-            this.Session.Derive();
-
-            ((SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem).SalesInvoiceWhereSalesInvoiceItem.Send();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).Completed, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.SalesOrderState = new SalesOrderStates(this.Session).Finished;
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item.SalesOrderItemState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-        }
-
-        [Fact]
-        public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenProductChangeIsNotAllowed()
-        {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            this.SetIdentity("admin");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
-            pickList.SetPicked();
-
-            this.Session.Derive();
-
-            var package = new ShipmentPackageBuilder(this.Session).Build();
-            shipment.AddShipmentPackage(package);
-
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
-            {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
-            }
-
-            this.Session.Derive();
-
-            shipment.Ship();
-
-            this.Session.Derive();
-
-            Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
-            var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanWrite(M.SalesOrderItem.Product));
-        }
-
-        [Fact]
         public void GivenOrderItemForGoodWithEnoughStockAvailable_WhenConfirming_ThenQuantitiesReservedAndRequestsShippingAreEqualToQuantityOrdered()
         {
             this.InstantiateObjects(this.Session);
@@ -1200,9 +837,9 @@ namespace Allors.Domain
             //this.Session.Derive();
 
             var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
-                {
-                    DerivationLogFunc = () => new CustomListDerivationLog()
-                }
+            {
+                DerivationLogFunc = () => new CustomListDerivationLog()
+            }
             );
 
             derivation.Derive();
@@ -1961,6 +1598,688 @@ namespace Allors.Domain
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
             Assert.Equal(-7, negativePickList.PickListItems[0].Quantity);
+        }
+
+        private void InstantiateObjects(ISession session)
+        {
+            this.productCategory = (ProductCategory)session.Instantiate(this.productCategory);
+            this.parentProductCategory = (ProductCategory)session.Instantiate(this.parentProductCategory);
+            this.ancestorProductCategory = (ProductCategory)session.Instantiate(this.ancestorProductCategory);
+            this.part = (Part)session.Instantiate(this.part);
+            this.virtualGood = (Good)session.Instantiate(this.virtualGood);
+            this.good = (Good)session.Instantiate(this.good);
+            this.feature1 = (Colour)session.Instantiate(this.feature1);
+            this.feature2 = (Colour)session.Instantiate(this.feature2);
+            this.shipToCustomer = (Organisation)session.Instantiate(this.shipToCustomer);
+            this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
+            this.supplier = (Organisation)session.Instantiate(this.supplier);
+            this.kiev = (City)session.Instantiate(this.kiev);
+            this.shipToContactMechanismMechelen = (PostalAddress)session.Instantiate(this.shipToContactMechanismMechelen);
+            this.shipToContactMechanismKiev = (PostalAddress)session.Instantiate(this.shipToContactMechanismKiev);
+            this.currentBasePriceGeoBoundary = (BasePrice)session.Instantiate(this.currentBasePriceGeoBoundary);
+            this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
+            this.currentGood1Feature1BasePrice = (BasePrice)session.Instantiate(this.currentGood1Feature1BasePrice);
+            this.currentFeature2BasePrice = (BasePrice)session.Instantiate(this.currentFeature2BasePrice);
+            this.goodPurchasePrice = (SupplierOffering)session.Instantiate(this.goodPurchasePrice);
+            this.virtualGoodPurchasePrice = (SupplierOffering)session.Instantiate(this.virtualGoodPurchasePrice);
+            this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
+            this.order = (SalesOrder)session.Instantiate(this.order);
+            this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
+        }
+    }
+
+    public class SalesOrderItemSecurityTests : DomainTest
+    {
+        private ProductCategory productCategory;
+        private ProductCategory ancestorProductCategory;
+        private ProductCategory parentProductCategory;
+        private Good good;
+        private Good variantGood;
+        private Good variantGood2;
+        private Good virtualGood;
+        private Part part;
+        private Colour feature1;
+        private Colour feature2;
+        private Organisation shipToCustomer;
+        private Organisation billToCustomer;
+        private Organisation supplier;
+        private City kiev;
+        private PostalAddress shipToContactMechanismMechelen;
+        private PostalAddress shipToContactMechanismKiev;
+        private BasePrice currentBasePriceGeoBoundary;
+        private BasePrice currentGoodBasePrice;
+        private BasePrice currentGood1Feature1BasePrice;
+        private BasePrice currentFeature2BasePrice;
+        private SupplierOffering goodPurchasePrice;
+        private SupplierOffering virtualGoodPurchasePrice;
+        private SalesOrder order;
+        private VatRate vatRate21;
+
+        public override Config Config => new Config { SetupSecurity = true };
+
+        public SalesOrderItemSecurityTests()
+        {
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
+
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+
+            this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            this.kiev = new CityBuilder(this.Session).WithName("Kiev").Build();
+
+            this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(this.kiev).WithAddress1("Dnieper").Build();
+            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
+            this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                                                            .WithContactMechanism(this.shipToContactMechanismKiev)
+                                                            .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
+                                                            .WithUseAsDefault(true)
+                                                            .Build());
+
+            this.billToCustomer = new OrganisationBuilder(this.Session)
+                .WithName("billToCustomer")
+                .WithPreferredCurrency(euro)
+
+                .Build();
+
+            this.billToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                                                            .WithContactMechanism(this.shipToContactMechanismKiev)
+                                                            .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                                                            .WithUseAsDefault(true)
+                                                            .Build());
+
+            this.part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            this.good = new NonUnifiedGoodBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("10101")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(this.vatRate21)
+                .WithName("good")
+                .WithPart(this.part)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .Build();
+
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(this.supplier)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(this.billToCustomer).Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(this.shipToCustomer).Build();
+
+            this.variantGood = new NonUnifiedGoodBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10101")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(this.vatRate21)
+                .WithName("variant good")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("2")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .Build();
+
+            this.variantGood2 = new NonUnifiedGoodBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10102")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(this.vatRate21)
+                .WithName("variant good2")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("3")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .Build();
+
+            this.virtualGood = new NonUnifiedGoodBuilder(this.Session)
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10103")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(this.vatRate21)
+                .WithName("virtual good")
+                .WithVariant(this.variantGood)
+                .WithVariant(this.variantGood2)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .Build();
+
+            this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("ancestor")
+                .Build();
+
+            this.parentProductCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("parent")
+                .WithPrimaryParent(this.ancestorProductCategory)
+                .Build();
+
+            this.productCategory = new ProductCategoryBuilder(this.Session)
+                .WithName("gizmo")
+                .Build();
+
+            this.productCategory.AddSecondaryParent(this.parentProductCategory);
+
+            this.goodPurchasePrice = new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.part)
+                .WithSupplier(this.supplier)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithFromDate(this.Session.Now())
+                .WithPrice(7)
+                .WithCurrency(euro)
+                .Build();
+
+            this.virtualGoodPurchasePrice = new SupplierOfferingBuilder(this.Session)
+                .WithCurrency(euro)
+                .WithFromDate(this.Session.Now())
+                .WithSupplier(this.supplier)
+                .WithPrice(8)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .Build();
+
+            this.feature1 = new ColourBuilder(this.Session)
+                .WithVatRate(this.vatRate21)
+                .WithName("white")
+                .Build();
+
+            this.feature2 = new ColourBuilder(this.Session)
+                .WithName("black")
+                .Build();
+
+            this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.Session)
+                .WithDescription("current BasePriceGeoBoundary ")
+                .WithGeographicBoundary(mechelen)
+                .WithProduct(this.good)
+                .WithPrice(8)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            // previous basePrice for good
+            new BasePriceBuilder(this.Session).WithDescription("previous good")
+                .WithProduct(this.good)
+                .WithPrice(8)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .Build();
+
+            // future basePrice for good
+            new BasePriceBuilder(this.Session).WithDescription("future good")
+                .WithProduct(this.good)
+                .WithPrice(11)
+                .WithFromDate(this.Session.Now().AddYears(1))
+                .Build();
+
+            this.currentGoodBasePrice = new BasePriceBuilder(this.Session)
+                .WithDescription("current good")
+                .WithProduct(this.good)
+                .WithPrice(10)
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
+                .Build();
+
+            // previous basePrice for feature1
+            new BasePriceBuilder(this.Session).WithDescription("previous feature1")
+                .WithProductFeature(this.feature1)
+                .WithPrice(0.5M)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .Build();
+
+            // future basePrice for feature1
+            new BasePriceBuilder(this.Session).WithDescription("future feature1")
+                .WithProductFeature(this.feature1)
+                .WithPrice(2.5M)
+                .WithFromDate(this.Session.Now().AddYears(1))
+                .Build();
+
+            new BasePriceBuilder(this.Session)
+                .WithDescription("current feature1")
+                .WithProductFeature(this.feature1)
+                .WithPrice(2)
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
+                .Build();
+
+            // previous basePrice for feature2
+            new BasePriceBuilder(this.Session).WithDescription("previous feature2")
+                .WithProductFeature(this.feature2)
+                .WithPrice(2)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .Build();
+
+            // future basePrice for feature2
+            new BasePriceBuilder(this.Session)
+                .WithDescription("future feature2")
+                .WithProductFeature(this.feature2)
+                .WithPrice(4)
+                .WithFromDate(this.Session.Now().AddYears(1))
+                .Build();
+
+            this.currentFeature2BasePrice = new BasePriceBuilder(this.Session)
+                .WithDescription("current feature2")
+                .WithProductFeature(this.feature2)
+                .WithPrice(3)
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
+                .Build();
+
+            // previous basePrice for good with feature1
+            new BasePriceBuilder(this.Session).WithDescription("previous good/feature1")
+                .WithProduct(this.good)
+                .WithProductFeature(this.feature1)
+                .WithPrice(4)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .Build();
+
+            // future basePrice for good with feature1
+            new BasePriceBuilder(this.Session)
+                .WithDescription("future good/feature1")
+                .WithProduct(this.good)
+                .WithProductFeature(this.feature1)
+                .WithPrice(6)
+                .WithFromDate(this.Session.Now().AddYears(1))
+                .Build();
+
+            this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.Session)
+                .WithDescription("current good/feature1")
+                .WithProduct(this.good)
+                .WithProductFeature(this.feature1)
+                .WithPrice(5)
+                .WithFromDate(this.Session.Now())
+                .WithThroughDate(this.Session.Now().AddYears(1).AddDays(-1))
+                .Build();
+
+            new BasePriceBuilder(this.Session)
+                .WithDescription("current variant good2")
+                .WithProduct(this.variantGood2)
+                .WithPrice(11)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.order = new SalesOrderBuilder(this.Session)
+                .WithShipToCustomer(this.shipToCustomer)
+                .WithBillToCustomer(this.billToCustomer)
+                .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedCancelledOrRejected()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Reject));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.order.Confirm();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+
+            this.Session.Derive();
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            this.order.Confirm();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+
+            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.SetPicked();
+
+            this.Session.Derive();
+
+            var package = new ShipmentPackageBuilder(this.Session).Build();
+            shipment.AddShipmentPackage(package);
+
+            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
+            {
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
+            }
+
+            this.Session.Derive();
+
+            shipment.Ship();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            item.Cancel();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Cancelled, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            item.Reject();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Rejected, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+
+            this.Session.Derive();
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            this.order.Confirm();
+
+            this.Session.Derive();
+
+            this.order.Ship();
+
+            this.Session.Derive();
+
+            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+
+            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.SetPicked();
+
+            this.Session.Derive();
+
+            var package = new ShipmentPackageBuilder(this.Session).Build();
+            shipment.AddShipmentPackage(package);
+
+            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
+            {
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
+            }
+
+            this.Session.Derive();
+
+            shipment.Ship();
+
+            this.Session.Derive();
+
+            shipment.Invoice();
+
+            this.Session.Derive();
+
+            ((SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem).SalesInvoiceWhereSalesInvoiceItem.Send();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Completed, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            this.order.SalesOrderState = new SalesOrderStates(this.Session).Finished;
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item.SalesOrderItemState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenProductChangeIsNotAllowed()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            this.SetIdentity("admin");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+
+            this.Session.Derive();
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            this.order.Confirm();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+
+            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
+            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.SetPicked();
+
+            this.Session.Derive();
+
+            var package = new ShipmentPackageBuilder(this.Session).Build();
+            shipment.AddShipmentPackage(package);
+
+            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
+            {
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
+            }
+
+            this.Session.Derive();
+
+            shipment.Ship();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
+            var acl = new AccessControlList(item, this.Session.GetUser());
+            Assert.False(acl.CanWrite(M.SalesOrderItem.Product));
         }
 
         private void InstantiateObjects(ISession session)

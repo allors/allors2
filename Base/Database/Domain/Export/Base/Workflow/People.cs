@@ -39,10 +39,8 @@ namespace Allors.Domain
             setup.AddDependency(this.Meta.ObjectType, M.Locale.ObjectType);
         }
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
-            base.BaseSetup(config);
-
             var userGroups = new UserGroups(this.Session);
 
             var administrator = new PersonBuilder(this.Session).WithUniqueId(People.AdministratorId).WithUserName(Users.AdministratorUserName).Build();

@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
+            
 
             var created = new PurchaseOrderItemStates(this.Session).Created;
             var onHold = new PurchaseOrderItemStates(this.Session).OnHold;

@@ -39,7 +39,7 @@ namespace Allors.Domain
 
         public PaymentState Paid => this.Sticky[PaidId];
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             new PaymentStateBuilder(this.Session).WithUniqueId(UnpaidId).WithName("Unpaid").Build();
             new PaymentStateBuilder(this.Session).WithUniqueId(PartiallyPaidId).WithName("PartiallyPaid").Build();

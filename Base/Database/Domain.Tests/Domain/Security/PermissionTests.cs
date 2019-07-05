@@ -21,21 +21,21 @@
 
 namespace Tests
 {
+    using Allors;
     using System;
-
     using Allors.Domain;
     using Allors.Meta;
-
     using Xunit;
-
     
     public class PermissionTests : DomainTest
     {
+        public override Config Config => new Config { SetupSecurity = true };
+        
         //[Fact]
         //public void SyncMethod()
         //{
         //    var domain = (Domain)this.DatabaseSession.Population.MetaPopulation.Find(new Guid("AB41FD0C-C887-4A1D-BEDA-CED69527E69A"));
-         
+
         //    var methodType = new MethodTypeBuilder(domain, Guid.NewGuid()).Build();
         //    methodType.ObjectType = M.Organisation.ObjectType;
         //    methodType.Name = "Method";
@@ -55,7 +55,7 @@ namespace Tests
         //public void SyncRelation()
         //{
         //    var domain = (Domain)this.DatabaseSession.Population.MetaPopulation.Find(new Guid("AB41FD0C-C887-4A1D-BEDA-CED69527E69A"));
-            
+
         //    var count = new Permissions(this.DatabaseSession).Extent().Count;
 
         //    var relationType = new RelationTypeBuilder(domain, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()).Build();
@@ -64,7 +64,7 @@ namespace Tests
         //    relationType.RoleType.ObjectType = Persons.Meta.ObjectType;
         //    relationType.RoleType.AssignedSingularName = "Relation";
         //    relationType.RoleType.AssignedPluralName = "Relations";
-                
+
         //    new Permissions(this.DatabaseSession).Sync();
 
         //    this.DatabaseSession.Derive(true);

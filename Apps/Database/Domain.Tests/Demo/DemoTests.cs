@@ -34,7 +34,8 @@ namespace Allors.Domain
         {
             var session = this.Session;
 
-            new Setup(session, null).Apply();
+            var config = new Config { Demo = true };
+            new Setup(session, config).Apply();
 
             session.Derive();
             session.Commit();
@@ -42,16 +43,10 @@ namespace Allors.Domain
             var administrator = new Users(session).GetUser("administrator");
             session.SetUser(administrator);
 
-            new Allors.Upgrade(session, null).Execute();
+            new Upgrade(session, null).Execute();
 
             session.Derive();
             session.Commit();
-
-            new Demo(session, null).Execute();
-
-            session.Derive();
-            session.Commit();
-
         }
     }
 }

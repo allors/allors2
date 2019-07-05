@@ -23,7 +23,6 @@ using Resources;
 
 namespace Allors.Domain
 {
-    using System;
     using Meta;
     using Xunit;
 
@@ -178,6 +177,96 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
+        {
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .Build();
+
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(supplier)
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .Build();
+
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
+            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
+            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
+            var item4 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(4).Build();
+            order.AddPurchaseOrderItem(item1);
+            order.AddPurchaseOrderItem(item2);
+            order.AddPurchaseOrderItem(item3);
+            order.AddPurchaseOrderItem(item4);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            item4.Cancel();
+
+            this.Session.Derive();
+
+            Assert.Equal(3, order.ValidOrderItems.Count);
+            Assert.Contains(item1, order.ValidOrderItems);
+            Assert.Contains(item2, order.ValidOrderItems);
+            Assert.Contains(item3, order.ValidOrderItems);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item4.PurchaseOrderItemState);
+        }
+
+        [Fact]
+        public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
+        {
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .Build();
+
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(supplier)
+                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .Build();
+
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
+            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
+            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
+            order.AddPurchaseOrderItem(item1);
+            order.AddPurchaseOrderItem(item2);
+            order.AddPurchaseOrderItem(item3);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            Assert.Equal(3, order.ValidOrderItems.Count);
+            Assert.Contains(item1, order.ValidOrderItems);
+            Assert.Contains(item2, order.ValidOrderItems);
+            Assert.Contains(item3, order.ValidOrderItems);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
+        }
+    }
+
+    public class PurchaseOrderSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
         public void GivenPurchaseOrder_WhenObjectStateIsApproved_ThenCheckTransitions()
         {
             this.SetIdentity(Users.AdministratorUserName);
@@ -192,8 +281,8 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             order.Approve();
 
             this.Session.Derive();
@@ -249,8 +338,8 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             order.Hold();
 
             this.Session.Derive();
@@ -268,91 +357,6 @@ namespace Allors.Domain
             Assert.True(acl.CanExecute(M.PurchaseOrder.Reject));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Continue));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
-        }
-
-        [Fact]
-        public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
-        {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
-            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
-
-            var part = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                .Build();
-
-            var order = new PurchaseOrderBuilder(this.Session)
-                .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
-                .Build();
-
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
-            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
-            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
-            var item4 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(4).Build();
-            order.AddPurchaseOrderItem(item1);
-            order.AddPurchaseOrderItem(item2);
-            order.AddPurchaseOrderItem(item3);
-            order.AddPurchaseOrderItem(item4);
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            item4.Cancel();
-
-            this.Session.Derive(); 
-
-            Assert.Equal(3, order.ValidOrderItems.Count);
-            Assert.Contains(item1, order.ValidOrderItems);
-            Assert.Contains(item2, order.ValidOrderItems);
-            Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).Cancelled, item4.PurchaseOrderItemState);
-        }
-
-        [Fact]
-        public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
-        {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
-            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
-
-            var part = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("1")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                .Build();
-
-            var order = new PurchaseOrderBuilder(this.Session)
-                .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
-                .Build();
-
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
-            var item2 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(2).Build();
-            var item3 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(3).Build();
-            order.AddPurchaseOrderItem(item1);
-            order.AddPurchaseOrderItem(item2);
-            order.AddPurchaseOrderItem(item3);
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            Assert.Equal(3, order.ValidOrderItems.Count);
-            Assert.Contains(item1, order.ValidOrderItems);
-            Assert.Contains(item2, order.ValidOrderItems);
-            Assert.Contains(item3, order.ValidOrderItems);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item1.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item2.PurchaseOrderItemState);
-            Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item3.PurchaseOrderItemState);
         }
     }
 }

@@ -24,15 +24,12 @@ namespace Tests
     using System;
     using System.IO;
     using System.Reflection;
-
     using Allors;
     using Allors.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-
     using Microsoft.Extensions.DependencyInjection;
-
     using Configuration = Allors.Adapters.Memory.Configuration;
     using ObjectFactory = Allors.ObjectFactory;
 
@@ -42,6 +39,8 @@ namespace Tests
         {
             this.Setup(populate);
         }
+
+        public virtual Config Config { get; } = new Config { SetupSecurity = false };
 
         public ISession Session { get; private set; }
 
@@ -86,7 +85,7 @@ namespace Tests
 
             if (populate)
             {
-                new Setup(this.Session, null).Apply();
+                new Setup(this.Session, this.Config).Apply();
                 this.Session.Commit();
             }
         }

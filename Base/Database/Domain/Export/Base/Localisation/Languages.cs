@@ -26,7 +26,7 @@ namespace Allors.Domain
 
         public Sticky<string, Language> LanguageByCode => this.languageByCode ?? (this.languageByCode = new Sticky<string, Language>(this.Session, this.Meta.IsoCode));
 
-        protected override void BaseSetup(Setup config)
+        protected override void BaseSetup(Setup setup)
         {
             var data = new[,]
             {
@@ -224,8 +224,7 @@ namespace Allors.Domain
                     .Build();
             }
         }
-
-
+        
         protected override void BaseSecure(Security config)
         {
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };

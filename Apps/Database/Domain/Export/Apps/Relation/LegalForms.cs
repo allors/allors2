@@ -19,7 +19,7 @@ namespace Allors.Domain
     {
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
 
             new LegalFormBuilder(this.Session).WithDescription("UK - Public Limited Company").Build();
             new LegalFormBuilder(this.Session).WithDescription("UK - Limited Liability Company").Build();

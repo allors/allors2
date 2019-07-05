@@ -22,19 +22,16 @@
 namespace Allors.Domain
 {
     using System;
-
     using Xunit;
 
     public class SalesInvoicePrintTests : DomainTest
     {
+        public override Config Config => new Config { Demo = true };
+
         [Fact]
         public void GivenSalesInvoice_WhenCreatingPrintModel_ThenPrintModelIsNotNull()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-            this.Session.Derive(true);
-
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
             // Act
@@ -48,15 +45,11 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenDeriving_ThenPrintDocumentWithoutMediaCreated()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-
-            // Act
-            this.Session.Derive(true);
-
-            // Assert
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
+            // Act
+
+            // Assert
             Assert.True(invoice.ExistPrintDocument);
             Assert.False(invoice.PrintDocument.ExistMedia);
         }
@@ -65,9 +58,6 @@ namespace Allors.Domain
         public void GivenSalesInvoicePrintDocument_WhenPrinting_ThenMediaCreated()
         {
             // Arrange
-            var demo = new Demo(this.Session, null);
-            demo.Execute();
-            this.Session.Derive(true);
             var invoice = new SalesInvoices(this.Session).Extent().First;
 
             // Act

@@ -29,8 +29,6 @@ namespace Allors.Domain
 
         protected override void AppsSecure(Security config)
         {
-            base.AppsSecure(config);
-
             var provisional = new SalesOrderStates(this.Session).Provisional;
             var onHold = new SalesOrderStates(this.Session).OnHold;
             var requestsApproval = new SalesOrderStates(this.Session).RequestsApproval;

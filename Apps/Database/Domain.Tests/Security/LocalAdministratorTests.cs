@@ -1,12 +1,10 @@
-using System.Linq;
-using Allors.Meta;
-
 namespace Allors.Domain
 {
+    using System.Linq;
+    using Allors.Meta;
     using Allors;
-    using Allors.Domain;
     using Xunit;
-   
+
     public class LocalAdministratorTests : DomainTest
     {
         [Fact]
@@ -70,6 +68,11 @@ namespace Allors.Domain
 
             Assert.Contains(localAdmin, organisation.LocalAdministratorUserGroup.Members);
         }
+    }
+
+    public class LocalAdministratorSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
 
         [Fact]
         public void WorkEffortInventoryAssignmentOwnInternalOrganisation()

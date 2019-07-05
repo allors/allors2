@@ -6,7 +6,7 @@ namespace Allors.Domain
     using Allors;
     using Allors.Domain;
     using Xunit;
-   
+
     public class BlueCollarWorkerTests : DomainTest
     {
         [Fact]
@@ -70,6 +70,11 @@ namespace Allors.Domain
 
             Assert.Contains(worker, organisation.BlueCollarWorkerUserGroup.Members);
         }
+    }
+
+    public class BlueCollarWorkerSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
 
         [Fact]
         public void WorkEffortInventoryAssignmentOwnInternalOrganisation()

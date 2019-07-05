@@ -100,7 +100,8 @@ namespace Tests
 
                 using (var session = database.CreateSession())
                 {
-                    new Setup(session, null).Apply();
+                    var config = new Config();
+                    new Setup(session, config).Apply();
                     session.Commit();
 
                     new IntranetPopulation(session, null).Execute();
@@ -122,7 +123,7 @@ namespace Tests
 
             this.Session = database.CreateSession();
         }
-
+        
         public ServiceProvider ServiceProvider { get; set; }
 
         public ILogger Logger { get; set; }

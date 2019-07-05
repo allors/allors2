@@ -56,7 +56,7 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            base.AppsSetup(setup);
+            
 
             var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
             var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
