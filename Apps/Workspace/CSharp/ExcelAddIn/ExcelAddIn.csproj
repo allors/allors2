@@ -190,6 +190,14 @@
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Host.cs">
       <Link>Base\Host.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.cs">
+      <Link>Base\Login\LoginForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.designer.cs">
+      <Link>Base\Login\LoginForm.designer.cs</Link>
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Mediator.cs">
       <Link>Base\Mediator.cs</Link>
     </Compile>
@@ -201,12 +209,6 @@
     </Compile>
     <Compile Include="AddInManager.cs" />
     <Compile Include="Apps\Commands.cs" />
-    <Compile Include="Apps\Login\LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Apps\Login\LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Apps\Mediator.cs" />
     <Compile Include="Apps\PurchaseInvoices\DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -237,7 +239,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="Apps\Login\LoginForm.resx">
+    <EmbeddedResource Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.resx">
+      <Link>Base\Login\LoginForm.resx</Link>
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
