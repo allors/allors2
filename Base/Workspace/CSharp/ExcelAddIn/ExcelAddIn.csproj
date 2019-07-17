@@ -169,14 +169,15 @@
     <Compile Include="Base\Data\Table.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Base\Extensions\DataTableExtensions.cs" />
+    <Compile Include="Base\Extensions\ErrorResponseExtensions.cs" />
+    <Compile Include="Base\Extensions\ExceptionExtensions.cs" />
     <Compile Include="Base\Extensions\WorksheetExtensions.cs" />
     <Compile Include="Base\Host.cs" />
     <Compile Include="Base\Mediator.cs" />
     <Compile Include="Base\Sheet.cs" />
     <Compile Include="Base\Sheets.cs" />
     <Compile Include="Custom\Commands.cs" />
-    <Compile Include="Custom\Extensions\ErrorResponseExtensions.cs" />
-    <Compile Include="Custom\Extensions\ExceptionExtensions.cs" />
     <Compile Include="Custom\Mediator.cs" />
     <Compile Include="Custom\Relation\People\DataSet.cs">
       <DependentUpon>DataSet.xsd</DependentUpon>

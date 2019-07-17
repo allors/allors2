@@ -175,6 +175,15 @@
       <Link>Base\Data\Table.cs</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\DataTableExtensions.cs">
+      <Link>Base\Extensions\DataTableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\ErrorResponseExtensions.cs">
+      <Link>Base\Extensions\ErrorResponseExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\ExceptionExtensions.cs">
+      <Link>Base\Extensions\ExceptionExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\WorksheetExtensions.cs">
       <Link>Base\Extensions\WorksheetExtensions.cs</Link>
     </Compile>
@@ -192,9 +201,6 @@
     </Compile>
     <Compile Include="AddInManager.cs" />
     <Compile Include="Apps\Commands.cs" />
-    <Compile Include="Apps\Extensions\DataTableExtensions.cs" />
-    <Compile Include="Apps\Extensions\ErrorResponseExtensions.cs" />
-    <Compile Include="Apps\Extensions\ExceptionExtensions.cs" />
     <Compile Include="Apps\Login\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
