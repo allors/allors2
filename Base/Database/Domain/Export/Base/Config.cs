@@ -30,6 +30,8 @@ namespace Allors
 
         public bool Demo { get; set; } = false;
 
+        public bool Unit { get; set; } = false;
+
         public bool End2End { get; set; } = false;
     }
 }
