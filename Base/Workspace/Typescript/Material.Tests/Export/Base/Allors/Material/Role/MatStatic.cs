@@ -9,7 +9,7 @@ namespace Components
         public MatStatic(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.XPath($"//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.XPath($".//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public MatStatic(IWebDriver driver, By selector)

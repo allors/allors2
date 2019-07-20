@@ -19,19 +19,19 @@ namespace Components
             switch (kind.ToLowerInvariant())
             {
                 case "id":
-                    this.Selector = By.XPath($"//input[@id='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//input[@id='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 case "name":
-                    this.Selector = By.XPath($"//input[@name='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//input[@name='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 case "formcontrolname":
-                    this.Selector = By.XPath($"//input[@formcontrolname='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//input[@formcontrolname='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 default:
-                    this.Selector = By.XPath($"//input{ByScopesPredicate(scopes)}");
+                    this.Selector = By.XPath($".//input{ByScopesPredicate(scopes)}");
                     break;
             }
         }

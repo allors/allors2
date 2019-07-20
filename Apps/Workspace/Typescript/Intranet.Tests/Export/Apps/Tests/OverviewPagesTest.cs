@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Tests.ApplicationTests
 {
     using System.Collections.Generic;
@@ -26,7 +24,7 @@ namespace Tests.ApplicationTests
                 .ToArray();
 
             // Uncomment next line to only test a certain page
-            //navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToPeople")).ToArray();
+            //navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToProductQuotes") || v.Name.Equals("NavigateToSalesOrder")).ToArray();
 
             this.navigateTos = navigateTos;
         }

@@ -9,7 +9,7 @@ namespace Components
         public MatInput(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.XPath($"//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
+            this.Selector = By.XPath($".//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
         }
 
         public MatInput(IWebDriver driver, By selector)

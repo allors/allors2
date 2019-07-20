@@ -18,15 +18,15 @@ namespace Components
             switch (kind.ToLowerInvariant())
             {
                 case "innertext":
-                    this.Selector = By.XPath($"//a[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//a[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 case "routerlink":
-                    this.Selector = By.XPath($"//a[@ng-reflect-router-link='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//a[@ng-reflect-router-link='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 default:
-                    this.Selector = By.XPath($"//a'{ByScopesPredicate(scopes)}");
+                    this.Selector = By.XPath($".//a'{ByScopesPredicate(scopes)}");
                     break;
             }
         }

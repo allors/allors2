@@ -19,11 +19,11 @@ namespace Components
             switch (kind.ToLowerInvariant())
             {
                 case "innertext":
-                    this.Selector = By.XPath($"//button[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
+                    this.Selector = By.XPath($".//button[normalize-space()='{value}'{ByScopesAnd(scopes)}]");
                     break;
 
                 default:
-                    this.Selector = By.XPath($"//button'{ByScopesPredicate(scopes)}");
+                    this.Selector = By.XPath($".//button'{ByScopesPredicate(scopes)}");
                     break;
             }
         }

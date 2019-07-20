@@ -10,7 +10,7 @@ namespace Components
         public MatChips(IWebDriver driver, RoleType roleType, params string[] scopes)
             : base(driver)
         {
-            this.Selector = By.XPath($"//a-mat-chips{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.XPath($".//a-mat-chips{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public override By Selector { get; }

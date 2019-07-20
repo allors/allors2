@@ -12,7 +12,7 @@ namespace Components
         public MatSlideToggle(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.XPath($"//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]");
+            this.Selector = By.XPath($".//mat-slide-toggle[@data-allors-roletype='{roleType.IdAsNumberString}'{this.ByScopesAnd(scopes)}]");
             this.InputSelector = new ByChained(this.Selector, By.XPath($".//input"));
         }
 

@@ -38,6 +38,7 @@ namespace Tests
                 if (!group.IsVisible)
                 {
                     this.Toggle.Click();
+                    this.Driver.WaitForAngular();
                     this.Driver.WaitForCondition(driver => @group.IsVisible);
                 }
 
@@ -52,7 +53,7 @@ namespace Tests
 
         private Element Group(string name)
         {
-            return new Element(this.Driver, new ByChained(this.Selector, By.XPath($"//span[contains(text(), '{name}')]")));
+            return new Element(this.Driver, new ByChained(this.Selector, By.XPath($".//span[contains(text(), '{name}')]")));
         }
 
         private Anchor Link(string href)

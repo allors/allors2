@@ -10,7 +10,7 @@ namespace Components
         public MatAutocomplete(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver)
         {
-            this.Selector = By.XPath($"//a-mat-autocomplete{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.XPath($".//a-mat-autocomplete{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public IWebElement Input => this.Driver.FindElement(new ByChained(this.Selector, By.CssSelector("input")));

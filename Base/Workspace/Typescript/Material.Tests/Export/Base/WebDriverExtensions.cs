@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Components
 {
     using System;
@@ -28,7 +30,17 @@ window.getAngularTestability(document.querySelector('app-root'))
 
         public static void WaitForCondition(this IWebDriver @this, Func<IWebDriver, bool> condition)
         {
-            new WebDriverWait(@this, TimeSpan.FromSeconds(30)).Until(condition);
+            for (var i = 0; i < 30; i++)
+            {
+                if (condition(@this))
+                {
+                    return;
+                }
+
+                Thread.Sleep(1000);
+            }
+
+            throw new Exception("Condition not met");
         }
 
         public static bool SelectorIsVisible(this IWebDriver @this, By selector)
