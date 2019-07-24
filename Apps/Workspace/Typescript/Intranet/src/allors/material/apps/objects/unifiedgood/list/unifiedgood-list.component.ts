@@ -3,9 +3,8 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
 
-import { PullRequest, And, Like, Equals, ContainedIn, Filter, Contains, Exists } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, Contains, Exists } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
@@ -20,6 +19,7 @@ interface Row extends TableRow {
   id: string;
   categories: string;
   qoh: number;
+  photos: number;
 }
 
 @Component({
@@ -46,7 +46,6 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private internalOrganisationId: InternalOrganisationId,
     titleService: Title
   ) {
     super();
@@ -63,6 +62,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       columns: [
         { name: 'name', sort: true },
         { name: 'id' },
+        { name: 'photos' },
         { name: 'categories' },
         { name: 'qoh' },
       ],
@@ -87,6 +87,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       new Equals({ propertyType: m.UnifiedGood.Brand, parameter: 'brand' }),
       new Equals({ propertyType: m.UnifiedGood.Model, parameter: 'model' }),
       new Exists({ propertyType: m.UnifiedGood.SalesDiscontinuationDate, parameter: 'discontinued' }),
+      new Exists({ propertyType: m.UnifiedGood.Photos, parameter: 'photos' }),
     ]);
 
     const modelSearch = new SearchFactory({
@@ -140,6 +141,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
               predicate,
               sort: sorter.create(sort),
               include: {
+                Photos: x,
                 PrimaryPhoto: x,
                 ProductIdentifications: {
                   ProductIdentificationType: x
@@ -180,7 +182,8 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             id: v.ProductIdentifications
                 .find(p => p.ProductIdentificationType.UniqueId === 'b640630da5564526a2e560a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191acdc4456396efdddc7b969ca6').Identification,
             categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
-            qoh: v.QuantityOnHand
+            qoh: v.QuantityOnHand,
+            photos: v.Photos.length,
           } as Row;
         });
       });
