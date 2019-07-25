@@ -18,6 +18,8 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Allors.Data
 {
     using System.Collections.Generic;
@@ -58,18 +60,23 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            var propertyType = this.Parameter != null ? (IPropertyType)session.GetMetaObject(arguments[this.Parameter]) : this.PropertyType;
+            var argument = this.Parameter != null ? arguments[this.Parameter] : null;
+
+            var exists = !(argument is bool b) || b;
+            var propertyType = argument is string s && Guid.TryParse(s, out var metaObjectId) ? (IPropertyType)session.GetMetaObject(metaObjectId) : this.PropertyType;
 
             if (propertyType != null)
             {
+                var predicate = !exists ? compositePredicate.AddNot() : compositePredicate;
+
                 if (propertyType is IRoleType roleType)
                 {
-                    compositePredicate.AddExists(roleType);
+                    predicate.AddExists(roleType);
                 }
                 else
                 {
                     var associationType = (IAssociationType)propertyType;
-                    compositePredicate.AddExists(associationType);
+                    predicate.AddExists(associationType);
                 }
             }
         }

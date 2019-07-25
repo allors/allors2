@@ -15,11 +15,6 @@ export class FilterField {
       value = value + '%';
     }
 
-    if (this.definition.isExists) {
-      const exists = this.definition.predicate as Exists;
-      value = value ? exists.propertyType.id : undefined;
-    }
-
     return value;
   }
 
