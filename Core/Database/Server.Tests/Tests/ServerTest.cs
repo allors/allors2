@@ -49,7 +49,7 @@ namespace Server.Tests
         {
             var configurationBuilder = new ConfigurationBuilder();
 
-            const string root = "/config/base";
+            const string root = "/config/core";
             configurationBuilder.AddCrossPlatform(".");
             configurationBuilder.AddCrossPlatform(root);
             configurationBuilder.AddCrossPlatform(Path.Combine(root, "commands"));

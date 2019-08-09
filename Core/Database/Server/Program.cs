@@ -37,7 +37,7 @@
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                 {
-                    const string root = "/config/base";
+                    const string root = "/config/core";
                     var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
                     configurationBuilder.AddCrossPlatform(".", environmentName, true);
                     configurationBuilder.AddCrossPlatform(root, environmentName);

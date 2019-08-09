@@ -1,5 +1,5 @@
 import { ObjectType } from '../../framework/meta/ObjectType';
-import { humanize } from '../../angular/base/humanize';
+import { humanize } from '../../angular/core/humanize';
 
 const icon = Symbol('icon');
 const displayName = Symbol('displayName');

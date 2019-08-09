@@ -8,7 +8,7 @@ function link(src, dst){
 
     lnk([src], dst, {force: true})
     .then(() => console.log(basename + ' linked') )
-    .catch((e) =>  console.log(e))
+    .catch((e) =>  e.errno && e.errno != -4075 ? console.log(e) : console.log('already linked'))
 }
 
 link ('../../../../Platform/Framework/Typescript/framework', 'src/allors');

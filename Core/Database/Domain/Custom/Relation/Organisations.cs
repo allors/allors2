@@ -54,16 +54,5 @@ namespace Allors.Domain
                     .Add(M.Organisation.Employees)
             };
         }
-
-        protected override void CustomSecure(Security config)
-        {
-            base.CustomSecure(config);
-
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-            config.GrantAdministrator(this.ObjectType, full);
-            config.GrantCreator(this.ObjectType, full);
-
-            config.GrantGuest(this.ObjectType, Operations.Read);
-        }
     }
 }

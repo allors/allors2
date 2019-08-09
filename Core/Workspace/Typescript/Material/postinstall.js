@@ -8,10 +8,10 @@ function link(src, dst){
 
     lnk([src], dst, {force: true})
     .then(() => console.log(basename + ' linked') )
-    .catch(() =>  console.log(basename + ' already linked'))
+    .catch((e) =>  e.errno && e.errno != -4075 ? console.log(e) : console.log('already linked'))
 }
 
 link ('../../../../Platform/Framework/Typescript/framework', 'src/allors');
 
-link ('../Domain/src/allors/meta/base', 'src/allors/meta');
-link ('../Angular/src/allors/angular/base', 'src/allors/angular');
+link ('../Domain/src/allors/meta/core', 'src/allors/meta');
+link ('../Angular/src/allors/angular/core', 'src/allors/angular');

@@ -31,12 +31,5 @@ namespace Allors.Domain
 
             return places;
         }
-
-        protected override void CustomSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
     }
 }

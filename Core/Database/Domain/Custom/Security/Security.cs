@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -60,6 +62,17 @@ namespace Allors.Domain
 
         private void CustomOnPostSetup()
         {
+            // Default access policy
+            var security = new Security(this.session);
+
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+
+            foreach (ObjectType @class in session.Database.MetaPopulation.Classes)
+            {
+                security.GrantAdministrator(@class, full);
+                security.GrantCreator(@class, full);
+                security.GrantGuest(@class, Operations.Read);
+            }
         }
     }
 }

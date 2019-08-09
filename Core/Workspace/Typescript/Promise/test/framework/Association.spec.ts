@@ -15,7 +15,7 @@ describe('Association',
             await fixture.init(fixture.FULL_POPULATION);
         });
 
-        describe('Person',
+        describe('C1',
             () => {
                 it('should access association', async () => {
 
