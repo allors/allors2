@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("22e85314-cfdf-4ead-a816-18588294fa79")]
     #endregion
-    public partial class ServiceEntryHeader : Period, AccessControlledObject 
+    public partial class ServiceEntryHeader : Period, Object
     {
         #region inherited properties
         public DateTime FromDate { get; set; }

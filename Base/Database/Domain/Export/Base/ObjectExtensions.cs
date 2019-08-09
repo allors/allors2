@@ -67,15 +67,11 @@ namespace Allors
         // TODO: move to security
         public static void AddCreatorSecurityToken(this Domain.Object @this)
         {
-            var accessControlledObject = @this as AccessControlledObject;
-            if (accessControlledObject != null)
-            {
-                var creator = @this.Strategy.Session.GetUser();
+            var creator = @this.Strategy.Session.GetUser();
 
-                if (creator != null)
-                {
-                    accessControlledObject.AddSecurityToken(creator.OwnerSecurityToken);
-                }
+            if (creator != null)
+            {
+                @this.AddSecurityToken(creator.OwnerSecurityToken);
             }
         }
     }

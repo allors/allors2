@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("eaebcfe7-0d65-43ab-857c-b171086a1982")]
     #endregion
-	public partial interface CountryBound : AccessControlledObject 
+	public partial interface CountryBound : Object
     {
 
 

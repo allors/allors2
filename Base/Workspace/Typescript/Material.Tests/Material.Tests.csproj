@@ -40,4 +40,10 @@
     <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
   </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Folder Include="generated\components\" />
+    <Folder Include="generated\sidenav\" />
+  </ItemGroup>
 </Project>

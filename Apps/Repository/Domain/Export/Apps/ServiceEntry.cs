@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("4a4a0548-b75f-4a79-89aa-f5c242121f11")]
     #endregion
     [Plural("ServiceEntries")]
-    public partial interface ServiceEntry : Commentable, AccessControlledObject, Period, Deletable
+    public partial interface ServiceEntry : Commentable, Period, Deletable, Object
     {
         #region Allors
         [Id("74fc8f9b-62f3-4921-bce1-ca10eed33204")]

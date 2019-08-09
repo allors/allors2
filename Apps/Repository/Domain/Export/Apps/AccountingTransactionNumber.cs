@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0b9034b1-288a-48a7-9d46-3ca6dcb7ca3f")]
     #endregion
-    public partial class AccountingTransactionNumber : AccessControlledObject 
+    public partial class AccountingTransactionNumber : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

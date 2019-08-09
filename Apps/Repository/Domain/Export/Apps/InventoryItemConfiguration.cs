@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f135770b-7228-4e4b-b7ea-9307b6317fd2")]
     #endregion
-    public partial interface InventoryItemConfiguration : Commentable, AccessControlledObject 
+    public partial interface InventoryItemConfiguration : Commentable, Object
     {
         #region Allors
         [Id("92a85a6b-4f65-4ba4-bd5e-bf44d5a9ca56")]

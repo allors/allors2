@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("63ca0535-95e5-4b2d-847d-d619a5365605")]
     #endregion
-    public partial class DepreciationMethod : AccessControlledObject 
+    public partial class DepreciationMethod : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

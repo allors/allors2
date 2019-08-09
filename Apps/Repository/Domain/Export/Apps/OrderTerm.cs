@@ -5,7 +5,7 @@
     #region Allors
     [Id("86cf6a28-baeb-479d-ac9e-fabc7fe1994d")]
     #endregion
-    public partial class OrderTerm : AccessControlledObject, SalesTerm
+    public partial class OrderTerm : SalesTerm, Object
     {
         #region inherited properties
 

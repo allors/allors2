@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("734be1c9-e6af-49b7-8fe8-331cd7036e2e")]
     #endregion
-    public partial interface AgreementTerm : AccessControlledObject, Deletable 
+    public partial interface AgreementTerm : Deletable, Object
     {
         #region Allors
         [Id("85cd1bbd-f2ad-454f-8f04-cdea48ce6196")]

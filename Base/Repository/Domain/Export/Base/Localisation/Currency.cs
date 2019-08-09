@@ -29,7 +29,7 @@ namespace Allors.Repository
     [Id("fd397adf-40b4-4ef8-b449-dd5a24273df3")]
     #endregion
     [Plural("Currencies")]
-    public partial class Currency : AccessControlledObject, Enumeration
+    public partial class Currency : Enumeration, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("e6f97f86-6aec-4dde-b828-4de04d42c248")]
     #endregion
-    public partial class County : GeographicBoundary, CityBound, AccessControlledObject 
+    public partial class County : GeographicBoundary, CityBound, Object
     {
         #region inherited properties
         public string Abbreviation { get; set; }

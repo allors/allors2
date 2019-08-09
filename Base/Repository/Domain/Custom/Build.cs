@@ -24,6 +24,11 @@ namespace Allors.Repository
         public string String { get; set; }
 
         #region Methods
+
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild()
         {
 

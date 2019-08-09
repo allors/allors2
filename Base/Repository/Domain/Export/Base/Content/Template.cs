@@ -29,7 +29,7 @@ namespace Allors.Repository
     #region Allors
     [Id("93F8B97B-2D9A-42FC-A823-7BDCC5A92203")]
     #endregion
-    public partial class Template : UniquelyIdentifiable, AccessControlledObject, Deletable 
+    public partial class Template : UniquelyIdentifiable, Deletable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

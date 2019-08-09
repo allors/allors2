@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4f46f32a-04e6-4ccc-829b-68fb3336f870")]
     #endregion
-    public partial class Carrier : UniquelyIdentifiable, AccessControlledObject 
+    public partial class Carrier : UniquelyIdentifiable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("BB280499-092B-4929-BF9A-D6A55419B8C0")]
     #endregion
-    public partial class InvoiceTerm : AccessControlledObject, SalesTerm
+    public partial class InvoiceTerm : SalesTerm, Object
     {
         #region inherited properties
 

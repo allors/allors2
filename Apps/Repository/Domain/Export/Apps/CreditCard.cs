@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9492bd39-0f07-4978-a987-0393ca34b504")]
     #endregion
-    public partial class CreditCard : FinancialAccount, AccessControlledObject 
+    public partial class CreditCard : FinancialAccount, Object
     {
         #region inherited properties
         public FinancialAccountTransaction[] FinancialAccountTransactions { get; set; }

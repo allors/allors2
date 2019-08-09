@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ada24931-020a-48e8-8f8d-18ddb8f46cf7")]
     #endregion
-    public partial class Province : CityBound, GeographicBoundary, CountryBound, AccessControlledObject 
+    public partial class Province : CityBound, GeographicBoundary, CountryBound, Object
     {
         #region inherited properties
         public City[] Cities { get; set; }

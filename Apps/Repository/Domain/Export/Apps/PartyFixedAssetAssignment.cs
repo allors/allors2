@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("40ee178e-7564-4dfa-ab6f-8bcd4e62b498")]
     #endregion
-    public partial class PartyFixedAssetAssignment : AccessControlledObject, Period, Commentable 
+    public partial class PartyFixedAssetAssignment : Period, Commentable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

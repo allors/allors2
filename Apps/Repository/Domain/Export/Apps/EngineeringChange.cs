@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c6c4537a-21f8-4d62-b584-3c609fb2210f")]
     #endregion
-    public partial class EngineeringChange : Transitional, AccessControlledObject 
+    public partial class EngineeringChange : Transitional, Object
     {
         #region inherited properties
         public ObjectState[] PreviousObjectStates { get; set; }

@@ -80,7 +80,7 @@ namespace Tests
             {
                 session.Commit();
 
-                foreach (AccessControlledObject aco in (IObject[])session.Extent(M.Organisation.ObjectType))
+                foreach (Object aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
                     var accessLists = new AccessControlLists(new IObject[] { aco }, guest);

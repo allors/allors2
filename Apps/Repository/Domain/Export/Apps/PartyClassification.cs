@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("3bb83aa5-e58a-4421-bdbc-3c9fa0b2324f")]
     #endregion
-	public partial interface PartyClassification : AccessControlledObject 
+	public partial interface PartyClassification : Object
     {
         #region Allors
         [Id("4f35ae7e-fe06-4a3b-abe1-adb78fcf2e6b")]

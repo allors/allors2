@@ -8,7 +8,7 @@
 
     #endregion
 
-    public partial class IncoTerm : AccessControlledObject, SalesTerm
+    public partial class IncoTerm : SalesTerm, Object
     {
         #region inherited properties
 

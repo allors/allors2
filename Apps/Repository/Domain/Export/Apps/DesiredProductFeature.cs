@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("dda88fe9-14b3-463b-ae66-25dd1b136e16")]
     #endregion
-    public partial class DesiredProductFeature : AccessControlledObject 
+    public partial class DesiredProductFeature : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

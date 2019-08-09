@@ -21,6 +21,11 @@ namespace Allors.Repository
         public bool IsDerived { get; set; }
 
         #region inherited methods
+
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild(){}
 
         public void OnPostBuild(){}

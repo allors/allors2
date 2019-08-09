@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9d0065b8-2760-4ec5-928a-9ebd128bbfdd")]
     #endregion
-    public partial class PostalCode : CountryBound, AccessControlledObject, GeographicBoundary 
+    public partial class PostalCode : CountryBound, GeographicBoundary, Object
     {
         #region inherited properties
         public Country Country { get; set; }

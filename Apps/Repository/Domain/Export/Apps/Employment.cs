@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6a7e45b2-36b2-4d2e-a29c-0cc13851766f")]
     #endregion
-    public partial class Employment : PartyRelationship, Period, Deletable, AccessControlledObject 
+    public partial class Employment : PartyRelationship, Period, Deletable, Object
     {
         #region inherited properties
 

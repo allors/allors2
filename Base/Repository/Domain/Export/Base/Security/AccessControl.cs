@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c4d93d5e-34c3-4731-9d37-47a8e801d9a8")]
     #endregion
-    public partial class AccessControl : Cachable, Deletable, AccessControlledObject 
+    public partial class AccessControl : Cachable, Deletable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

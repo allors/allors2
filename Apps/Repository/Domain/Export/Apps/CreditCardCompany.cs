@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("86d934de-a5cf-46d3-aad3-2626c43ebc85")]
     #endregion
-    public partial class CreditCardCompany : AccessControlledObject 
+    public partial class CreditCardCompany : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

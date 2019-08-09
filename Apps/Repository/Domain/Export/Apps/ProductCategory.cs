@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ea83087e-05cc-458c-a6ba-3ce947644a0f")]
     #endregion
-    public partial class ProductCategory : AccessControlledObject, UniquelyIdentifiable, Deletable
+    public partial class ProductCategory : UniquelyIdentifiable, Deletable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

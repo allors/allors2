@@ -8,7 +8,7 @@ namespace Allors.Repository
 
     #endregion
 
-    public partial class Bank : AccessControlledObject
+    public partial class Bank : Object
     {
         #region inherited properties
 

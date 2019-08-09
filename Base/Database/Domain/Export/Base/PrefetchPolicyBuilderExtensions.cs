@@ -53,8 +53,8 @@ namespace Allors
             if (@class.DelegatedAccessRoleTypes != null)
             {
                 var builder = new PrefetchPolicyBuilder()
-                    .WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy)
-                    .WithRule(MetaAccessControlledObject.Instance.DeniedPermissions)
+                    .WithRule(MetaObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy)
+                    .WithRule(MetaObject.Instance.DeniedPermissions)
                     .Build();
 
                 var delegatedAccessRoleTypes = @class.DelegatedAccessRoleTypes;
@@ -64,8 +64,8 @@ namespace Allors
                 }
             }
 
-            @this.WithRule(MetaAccessControlledObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy);
-            @this.WithRule(MetaAccessControlledObject.Instance.DeniedPermissions);
+            @this.WithRule(MetaObject.Instance.SecurityTokens, SecurityTokenPrefetchPolicy);
+            @this.WithRule(MetaObject.Instance.DeniedPermissions);
         }
     }
 }

@@ -5,7 +5,7 @@
     #region
     [Id("721008C3-C87C-40AB-966B-094E1271ED5F")]
     #endregion
-    public partial class OrderLine : AccessControlledObject, Versioned
+    public partial class OrderLine : Versioned, Object
     {
         #region inherited properties
 

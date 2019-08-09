@@ -6,7 +6,7 @@
     #region Allors
     [Id("6C726DED-C081-46D7-8DCF-F0A376943531")]
     #endregion
-    public partial interface Auditable : AccessControlledObject
+    public partial interface Auditable : Object
     {
         #region Allors
         [Id("4BD26F4D-E85B-415A-B956-3FCBE15D4F58")]

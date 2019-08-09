@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("6cf4845d-65a0-4957-95e9-f2b5327d6515")]
     #endregion
     [Plural("ChartsOfAccounts")]
-    public partial class ChartOfAccounts : UniquelyIdentifiable, AccessControlledObject 
+    public partial class ChartOfAccounts : UniquelyIdentifiable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

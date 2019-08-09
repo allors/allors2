@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("da5b86a3-4f33-4c0d-965d-f4fbc1179374")]
     #endregion
-    public partial class Media : UniquelyIdentifiable, AccessControlledObject, Deletable 
+    public partial class Media : UniquelyIdentifiable, Deletable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

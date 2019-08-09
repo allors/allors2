@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1a0e396b-69bd-4e77-a602-3d7f7938fd74")]
     #endregion
-    public partial class GeneralLedgerAccount : UniquelyIdentifiable, AccessControlledObject 
+    public partial class GeneralLedgerAccount : UniquelyIdentifiable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

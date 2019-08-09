@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b00e2650-283f-4326-bdd3-46a2890e2037")]
     #endregion
-    public partial class InventoryItemTransaction : AccessControlledObject, Commentable 
+    public partial class InventoryItemTransaction : Commentable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

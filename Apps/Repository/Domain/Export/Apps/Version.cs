@@ -24,7 +24,7 @@ namespace Allors.Repository
 
     using Attributes;
 
-    public partial interface Version : AccessControlledObject
+    public partial interface Version
     {
         #region Allors
         [Id("561C7A91-5232-453F-BA26-9B84D871ECC9")]

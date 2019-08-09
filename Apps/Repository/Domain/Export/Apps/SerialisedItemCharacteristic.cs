@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A34F6226-7837-4905-9125-61CD00A07BF4")]
     #endregion
-    public partial class SerialisedItemCharacteristic : AccessControlledObject, Deletable
+    public partial class SerialisedItemCharacteristic : Deletable, Object
     {
         #region inherited properties
 

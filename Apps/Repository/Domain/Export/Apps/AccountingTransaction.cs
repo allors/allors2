@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("785a36a9-4710-4f3f-bd26-dbaff5353535")]
     #endregion
-    public partial interface AccountingTransaction : AccessControlledObject 
+    public partial interface AccountingTransaction : Object
     {
         #region Allors
         [Id("4e4cb94c-424c-4824-ad44-5bb1c7312a52")]

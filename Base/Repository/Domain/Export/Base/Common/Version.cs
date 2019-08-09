@@ -27,7 +27,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A6A3C79E-150B-4586-96EA-5AC0E2E638C6")]
     #endregion
-    public partial interface Version : AccessControlledObject
+    public partial interface Version : Object
     {
         #region Allors
         [Id("9FAEB940-A3A0-4E7A-B889-BCFD92F6A882")]

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c78a49b1-9918-4f15-95f3-c537c82f59fd")]
     #endregion
-    public partial class EmailTemplate : AccessControlledObject 
+    public partial class EmailTemplate : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

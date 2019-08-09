@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Generated\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

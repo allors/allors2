@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6b666a30-7a55-4986-8411-b6179768e70b")]
     #endregion
-    public partial class EngagementRate : Period, AccessControlledObject 
+    public partial class EngagementRate : Period, Object
     {
         #region inherited properties
         public DateTime FromDate { get; set; }

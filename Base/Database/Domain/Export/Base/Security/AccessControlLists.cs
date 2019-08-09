@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             var securityTokens = new HashSet<SecurityToken>();
 
-            foreach (var @object in objects.OfType<AccessControlledObject>())
+            foreach (var @object in objects.OfType<Object>())
             {
                 SecurityToken[] objectSecurityTokens;
                 HashSet<long> objectDeniedPermissions = null;

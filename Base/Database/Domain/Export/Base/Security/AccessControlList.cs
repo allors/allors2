@@ -23,7 +23,6 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors;
     using Allors.Meta;
 
@@ -34,7 +33,7 @@ namespace Allors.Domain
     {
         internal static readonly PrefetchPolicy PrefetchPolicy;
 
-        private readonly AccessControlledObject @object;
+        private readonly Object @object;
         private readonly ISession session;
 
         private readonly Guid classId;
@@ -59,7 +58,7 @@ namespace Allors.Domain
         {
             this.User = user;
             this.session = this.User.Strategy.Session;
-            this.@object = obj as AccessControlledObject;
+            this.@object = obj as Object;
             this.classId = this.@object?.Strategy.Class.Id ?? Guid.Empty;
 
             this.lazyLoaded = false;

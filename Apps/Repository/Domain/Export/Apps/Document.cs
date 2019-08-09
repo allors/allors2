@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1d21adf0-6008-459d-9f6a-3a026e7640bc")]
     #endregion
-    public partial interface Document : Printable, AccessControlledObject, Commentable 
+    public partial interface Document : Printable, Commentable, Object
     {
         #region Allors
         [Id("484d082e-b3e4-4915-a355-43315f466e6d")]

@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6c20422e-cb3e-4402-bb40-dacaf584405e")]
     #endregion
-    public partial class MediaContent : AccessControlledObject, Deletable
+    public partial class MediaContent : Deletable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

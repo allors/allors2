@@ -80,6 +80,9 @@ namespace Allors.Repository
         public NonSerialisedInventoryItemState[] OnHandNonSerialisedStates { get; set; }
 
         #region inheritedMethods
+
+        public Permission[] DeniedPermissions { get; set; }
+        public SecurityToken[] SecurityTokens { get; set; }
         public void OnBuild() { }
 
         public void OnDerive() { }

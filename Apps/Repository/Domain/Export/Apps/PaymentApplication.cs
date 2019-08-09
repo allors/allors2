@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6fef08f0-d4cb-42f4-a10f-fb31787f65c3")]
     #endregion
-    public partial class PaymentApplication : AccessControlledObject, Deletable
+    public partial class PaymentApplication : Deletable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

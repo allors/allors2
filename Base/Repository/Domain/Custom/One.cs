@@ -22,6 +22,9 @@ namespace Allors.Repository
 
         #region inherited methods
 
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
 
         public void OnBuild(){}
 

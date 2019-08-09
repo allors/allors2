@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b0a42c94-3d4e-47f1-86a2-cf45eeba5f0d")]
     #endregion
-    public partial class PositionResponsibility : Commentable, AccessControlledObject 
+    public partial class PositionResponsibility : Commentable, Object
     {
         #region inherited properties
         public string Comment { get; set; }

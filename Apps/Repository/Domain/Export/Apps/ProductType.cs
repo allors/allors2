@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6451E06E-747E-4F58-98F5-2F9DC5D787B5")]
     #endregion
-    public partial class ProductType : UniquelyIdentifiable, AccessControlledObject, Deletable
+    public partial class ProductType : UniquelyIdentifiable, Deletable, Object
     {
         #region inherited properties
         public Guid UniqueId { get; set; }

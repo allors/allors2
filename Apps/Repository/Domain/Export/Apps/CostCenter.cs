@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("2ab70094-5481-4ecc-ae15-cb2131fbc2f1")]
     #endregion
-    public partial class CostCenter : AccessControlledObject, UniquelyIdentifiable 
+    public partial class CostCenter : UniquelyIdentifiable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

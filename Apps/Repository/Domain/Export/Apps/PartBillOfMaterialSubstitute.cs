@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5906f4cd-3950-43ee-a3ba-84124c4180f6")]
     #endregion
-    public partial class PartBillOfMaterialSubstitute : Period, AccessControlledObject, Commentable 
+    public partial class PartBillOfMaterialSubstitute : Period, Commentable, Object
     {
         #region inherited properties
         public DateTime FromDate { get; set; }

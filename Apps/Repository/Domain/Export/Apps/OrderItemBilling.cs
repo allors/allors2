@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1f14fdb3-9e0f-4cea-b7c7-3ca2ab898f56")]
     #endregion
-    public partial class OrderItemBilling : AccessControlledObject, Deletable
+    public partial class OrderItemBilling : Deletable, Object
     {
         #region inherited properties
 

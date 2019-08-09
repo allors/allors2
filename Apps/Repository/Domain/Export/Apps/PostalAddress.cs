@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d54b4bba-a84c-4826-85ba-7340714035c7")]
     #endregion
-    public partial class PostalAddress : ContactMechanism, AccessControlledObject, GeoLocatable 
+    public partial class PostalAddress : ContactMechanism, GeoLocatable, Object
     {
         #region inherited properties
         public string Description { get; set; }

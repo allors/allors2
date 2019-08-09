@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f194d2e1-d246-40eb-9eab-70ee2521703a")]
     #endregion
-	public partial interface ProductAssociation : Commentable, AccessControlledObject, Period 
+	public partial interface ProductAssociation : Commentable, Period, Object
     {
     }
 }

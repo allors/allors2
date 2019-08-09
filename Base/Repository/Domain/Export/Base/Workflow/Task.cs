@@ -27,7 +27,7 @@ namespace Allors.Repository
     #region Allors
     [Id("84eb0e6e-68e1-478c-a35f-6036d45792be")]
     #endregion
-    public partial interface Task : AccessControlledObject, UniquelyIdentifiable, Deletable
+    public partial interface Task : UniquelyIdentifiable, Deletable, Object
     {
         #region Allors
         [Id("f247de73-70fe-47e4-a763-22ee9c68a476")]

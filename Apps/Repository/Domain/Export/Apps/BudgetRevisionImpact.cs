@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ebae3ca2-5dca-486d-bbc0-30550313f153")]
     #endregion
-    public partial class BudgetRevisionImpact : AccessControlledObject 
+    public partial class BudgetRevisionImpact : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

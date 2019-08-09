@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ab2179ad-9eac-4b61-8d84-81cd777c4926")]
     #endregion
-    public partial interface Transitional : AccessControlledObject 
+    public partial interface Transitional : Object
     {
         #region Allors
         [Id("D9D86241-5FC7-4EDB-9FAA-FF5CA291F16C")]

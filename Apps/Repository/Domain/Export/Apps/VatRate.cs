@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a5e29ca1-80de-4de4-9085-b69f21550b5a")]
     #endregion
-    public partial class VatRate : AccessControlledObject 
+    public partial class VatRate : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

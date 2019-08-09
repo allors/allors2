@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4a3efb9c-1556-4e57-bb59-f09d297e607e")]
     #endregion
-    public partial interface FixedAsset : AccessControlledObject, Commentable
+    public partial interface FixedAsset : Commentable, Object
     {
         #region Allors
         [Id("354107ce-4eb6-4b9a-83c8-5cfe5e3adb22")]

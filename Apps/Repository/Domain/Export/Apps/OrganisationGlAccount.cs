@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("59f3100c-da48-4b4c-a302-1a75e37216a6")]
     #endregion
-    public partial class OrganisationGlAccount : AccessControlledObject, Period 
+    public partial class OrganisationGlAccount : Period, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

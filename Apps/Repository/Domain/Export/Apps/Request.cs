@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("321a6047-2233-4bec-a1b1-9b965c0099e5")]
     #endregion
-    public partial interface Request : Transitional, AccessControlledObject, Commentable, Auditable, Printable
+    public partial interface Request : Transitional, Commentable, Auditable, Printable, Object
     {
         #region ObjectStates
         #region RequestState

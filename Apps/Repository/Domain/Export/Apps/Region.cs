@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("62693ee8-1fd3-4b2b-85ce-8d88df3bba0c")]
     #endregion
-    public partial class Region : GeographicBoundaryComposite, AccessControlledObject 
+    public partial class Region : GeographicBoundaryComposite, Object
     {
         #region inherited properties
         public GeographicBoundary[] Associations { get; set; }

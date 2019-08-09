@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("cdd79e23-a132-48b0-b88f-a03bd029f49d")]
     #endregion
     [Plural("Facilities")]
-    public partial class Facility : AccessControlledObject, GeoLocatable 
+    public partial class Facility : GeoLocatable, Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

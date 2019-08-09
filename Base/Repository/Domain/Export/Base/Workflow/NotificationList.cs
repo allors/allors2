@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b6579993-4ff1-4853-b048-1f8e67419c00")]
     #endregion
-    public partial class NotificationList : AccessControlledObject, Deletable 
+    public partial class NotificationList : Deletable, Object
     {
         #region inherited properties
         #endregion
