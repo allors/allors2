@@ -4,7 +4,7 @@ import { PanelService, MetaService, RefreshService, Action, NavigationService, T
 import { CommunicationEvent } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../..';
-import { ObjectService, ObjectData } from '../../../../../base/services/object';
+import { ObjectService, ObjectData } from '../../../../../core/services/object';
 
 interface Row extends TableRow {
   object: CommunicationEvent;

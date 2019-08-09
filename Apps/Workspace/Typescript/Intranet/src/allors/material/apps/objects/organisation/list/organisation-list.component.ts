@@ -10,7 +10,7 @@ import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService 
 
 import { Organisation, Country } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 interface Row extends TableRow {
   object: Organisation;

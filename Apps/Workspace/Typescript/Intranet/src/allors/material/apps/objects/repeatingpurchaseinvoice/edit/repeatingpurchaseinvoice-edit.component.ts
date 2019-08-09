@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
 import { RepeatingPurchaseInvoice, TimeFrequency, DayOfWeek, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { SaveService } from '../../../../../../allors/material';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';

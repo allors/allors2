@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { RoleType } from './../../../../../framework';
 import { RefreshService } from '../../../../../angular';
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 import { EditAction } from './EditAction';
 

@@ -8,7 +8,7 @@ import { ObjectData } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SaveService } from '../../../../../../allors/material/base/services/save';
+import { SaveService } from '../../../../../../allors/material/core/services/save';
 
 @Component({
   templateUrl: './positiontyperate-edit.component.html',

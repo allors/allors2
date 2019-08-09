@@ -16,15 +16,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
-import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
-import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
-import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
+import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
+import { AllorsMaterialHeaderModule } from '../../../../../core/components/header';
+import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
+import { AllorsMaterialFooterModule } from '../../../../../core/components/footer';
 
 import { PersonOverviewDetailComponent } from './person-overview-detail.component';
 export { PersonOverviewDetailComponent } from './person-overview-detail.component';

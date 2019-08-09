@@ -8,7 +8,7 @@ import { AllorsFilterService, ContextService, NavigationService, RefreshService,
 
 import { Task } from '../../../../../domain';
 
-import { ObjectService } from '../../../../base/services/object';
+import { ObjectService } from '../../../../core/services/object';
 
 @Component({
   // tslint:disable-next-line:component-selector

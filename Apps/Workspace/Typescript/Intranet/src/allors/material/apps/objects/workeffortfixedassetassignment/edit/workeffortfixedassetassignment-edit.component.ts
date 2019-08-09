@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { SaveService } from '../../../../../../allors/material';

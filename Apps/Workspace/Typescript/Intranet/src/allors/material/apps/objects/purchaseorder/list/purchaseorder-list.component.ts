@@ -11,7 +11,7 @@ import { AllorsFilterService, MediaService, ContextService, NavigationService, A
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
 import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem } from '../../../../../domain';
-import { MethodService } from '../../../../../material/base/services/actions';
+import { MethodService } from '../../../../../material/core/services/actions';
 
 interface Row extends TableRow {
   object: PurchaseOrder;

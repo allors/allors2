@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../..
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, EditService } from '../../../..';
 import { TaskAssignment } from '../../../../../domain';
-import { ObjectService } from '../../../../base/services/object';
+import { ObjectService } from '../../../../core/services/object';
 
 interface Row extends TableRow {
   object: TaskAssignment;

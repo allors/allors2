@@ -4,7 +4,7 @@ import { PanelService, MetaService, RefreshService, Action, NavigationService, T
 import { PurchaseOrder, Organisation } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, MethodService } from '../../../../..';
-import { ObjectService, ObjectData } from '../../../../../base/services/object';
+import { ObjectService, ObjectData } from '../../../../../core/services/object';
 
 interface Row extends TableRow {
   object: PurchaseOrder;

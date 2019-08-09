@@ -9,7 +9,7 @@ import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership,
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService } from '../../../..';
-import { ObjectData } from '../../../../../../allors/material/base/services/object';
+import { ObjectData } from '../../../../../../allors/material/core/services/object';
 import { Good } from '../../../../../../allors/domain/generated';
 
 @Component({

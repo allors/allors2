@@ -17,17 +17,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
+import { AllorsMaterialHeaderModule } from '../../../../core/components/header';
+import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
+import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
+import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 
 import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';

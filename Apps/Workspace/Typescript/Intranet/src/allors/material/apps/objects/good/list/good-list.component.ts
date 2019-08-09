@@ -11,7 +11,7 @@ import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../.
 
 import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedGood, UnifiedGood } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 interface Row extends TableRow {
   object: Good;

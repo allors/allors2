@@ -21,21 +21,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/role/autocomplete';
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/role/files';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/role/localisedtext';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
-import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/role/datetimepicker';
+import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
+import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
+import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
+import { AllorsMaterialFilesModule } from '../../../../core/components/role/files';
+import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
+import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
+import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
+import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
+import { AllorsMaterialDatetimepickerModule } from '../../../../core/components/role/datetimepicker';
 
 import { FacilityInlineModule } from '../../facility/inline/facility-inline.module';
 

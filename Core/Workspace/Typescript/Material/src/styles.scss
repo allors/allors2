@@ -3,7 +3,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-@import "allors/material/base/styles/bootstrap";
-@import "allors/material/base/styles/layout";
+@import "allors/material/core/styles/bootstrap";
+@import "allors/material/core/styles/layout";
 
 @import "allors/material/custom/styles/layout";

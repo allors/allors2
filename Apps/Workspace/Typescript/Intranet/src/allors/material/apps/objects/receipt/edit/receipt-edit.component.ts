@@ -8,7 +8,7 @@ import { Receipt, SalesInvoice, PaymentApplication } from '../../../../../domain
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService } from '../../../../../../allors/material';
 
 @Component({

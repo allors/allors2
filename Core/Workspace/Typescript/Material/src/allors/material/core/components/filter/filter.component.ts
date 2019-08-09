@@ -1,9 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AllorsFilterService } from '../../../../angular/base/filter';
+import { AllorsFilterService } from '../../../../angular/core/filter';
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
-import { FilterField } from '../../../../angular/base/filter/FilterField';
+import { FilterField } from '../../../../angular/core/filter/FilterField';
 
 @Component({
   // tslint:disable-next-line:component-selector

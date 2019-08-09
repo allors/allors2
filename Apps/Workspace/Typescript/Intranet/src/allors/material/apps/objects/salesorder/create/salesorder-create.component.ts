@@ -8,7 +8,7 @@ import { ContextService, MetaService, RefreshService, FetcherService, InternalOr
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({

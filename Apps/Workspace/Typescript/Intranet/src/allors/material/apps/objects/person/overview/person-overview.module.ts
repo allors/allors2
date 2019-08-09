@@ -22,15 +22,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
+import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
+import { AllorsMaterialHeaderModule } from '../../../../core/components/header';
+import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLauncherModule } from '../../../..';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
+import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/overview/panel/contactmechanism-overview-panel.module';

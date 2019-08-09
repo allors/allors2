@@ -11,7 +11,7 @@ import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../.
 
 import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 interface Row extends TableRow {
   object: SerialisedItem;

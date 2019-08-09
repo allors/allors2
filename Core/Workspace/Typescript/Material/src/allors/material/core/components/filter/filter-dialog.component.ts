@@ -6,9 +6,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { timer } from 'rxjs';
 
-import { AllorsFilterService } from '../../../../angular/base/filter';
-import { FilterField } from '../../../../../allors/angular/base/filter/FilterField';
-import { FilterFieldDefinition } from '../../../../../allors/angular/base/filter/FilterFieldDefinition';
+import { AllorsFilterService } from '../../../../angular/core/filter';
+import { FilterField } from '../../../../../allors/angular/core/filter/FilterField';
+import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { filter } from 'rxjs/operators';
 

@@ -6,7 +6,7 @@ import { DeleteService, TableRow, Table, EditService } from '../../../../..';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
+import { ObjectData, ObjectService } from '../../../../../../material/core/services/object';
 
 interface Row extends TableRow {
   object: PurchaseInvoiceItem;

@@ -6,7 +6,7 @@ import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, Pur
 import { Meta } from '../../../../../../meta';
 import { And, Equals, Filter, Sort, ContainedIn } from '../../../../../../framework';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, SaveService, MethodService } from '../../../../..';
-import { ObjectService, ObjectData } from '../../../../../base/services/object';
+import { ObjectService, ObjectData } from '../../../../../core/services/object';
 
 interface Row extends TableRow {
   object: PurchaseOrder;

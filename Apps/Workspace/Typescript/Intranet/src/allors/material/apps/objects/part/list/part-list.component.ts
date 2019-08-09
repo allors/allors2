@@ -10,7 +10,7 @@ import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 interface Row extends TableRow {
   object: Part;

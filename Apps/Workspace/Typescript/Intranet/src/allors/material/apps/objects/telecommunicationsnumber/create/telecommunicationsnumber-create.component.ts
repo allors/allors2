@@ -8,7 +8,7 @@ import { Enumeration, TelecommunicationsNumber, Party, PartyContactMechanism } f
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { ObjectData } from '../../../../../../allors/material/base/services/object';
+import { ObjectData } from '../../../../../../allors/material/core/services/object';
 import { SaveService } from '../../../../../../allors/material';
 
 @Component({

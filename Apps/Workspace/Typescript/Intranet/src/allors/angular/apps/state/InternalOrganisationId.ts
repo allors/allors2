@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SessionState } from '../../base/state/SessionState';
+import { SessionState } from '../../core/state/SessionState';
 
 @Injectable({
   providedIn: 'root',

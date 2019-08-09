@@ -7,7 +7,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../material';

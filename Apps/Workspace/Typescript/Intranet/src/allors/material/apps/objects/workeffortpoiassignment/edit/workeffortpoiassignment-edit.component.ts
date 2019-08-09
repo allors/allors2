@@ -8,7 +8,7 @@ import { ContextService, MetaService, RefreshService, InternalOrganisationId, Te
 import { WorkEffortPurchaseOrderItemAssignment, WorkEffort, PurchaseOrder, PurchaseOrderItem } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService } from '../../../../../../allors/material';
 import { switchMap, map } from 'rxjs/operators';
 

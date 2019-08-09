@@ -8,7 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../material';

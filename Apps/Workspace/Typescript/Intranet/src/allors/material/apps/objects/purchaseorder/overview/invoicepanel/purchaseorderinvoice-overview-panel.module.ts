@@ -16,15 +16,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
-import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialTableModule } from '../../../../../base/components/table';
-import { AllorsMaterialFactoryFabModule } from '../../../../../base/components/factoryfab/factoryfab.module';
-import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
+import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
+import { AllorsMaterialTableModule } from '../../../../../core/components/table';
+import { AllorsMaterialFactoryFabModule } from '../../../../../core/components/factoryfab/factoryfab.module';
+import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
 
 import { PurchaseOrderInvoiceOverviewPanelComponent } from './purchaseorderinvoice-overview-panel.component';
 export { PurchaseOrderInvoiceOverviewPanelComponent as CommunicationEventsPanel } from './purchaseorderinvoice-overview-panel.component';

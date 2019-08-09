@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ObjectData, ObjectService } from '../../../../../../material/base/services/object';
+import { ObjectData, ObjectService } from '../../../../../../material/core/services/object';
 import { Equals } from '../../../../../../../allors/framework';
 
 interface Row extends TableRow {

@@ -21,15 +21,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialDatepickerModule } from '../../../../../base/components/role/datepicker';
-import { AllorsMaterialFileModule } from '../../../../../base/components/role/file';
-import { AllorsMaterialInputModule } from '../../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../base/components/role/textarea';
-import { AllorsMaterialAutoCompleteModule } from '../../../../../../../allors/material/base/components/role/autocomplete';
+import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
+import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
+import { AllorsMaterialAutoCompleteModule } from '../../../../../../../allors/material/core/components/role/autocomplete';
 
 import { CommunicationEventOverviewPanelModule } from '../../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';

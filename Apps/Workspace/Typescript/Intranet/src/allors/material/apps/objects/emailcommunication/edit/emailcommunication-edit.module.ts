@@ -18,17 +18,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
-import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/role/datetimepicker';
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
+import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
+import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
+import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../core/components/role/datetimepicker';
+import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { EmailAddressInlineModule } from '../../emailaddress/inline/emailaddress-inline.module';

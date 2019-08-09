@@ -4,11 +4,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { WorkEffortAssignmentRate, TimeFrequency, RateType, WorkEffort, WorkEffortPartyAssignment } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SaveService } from '../../../../../../allors/material/base/services/save';
+import { SaveService } from '../../../../../../allors/material/core/services/save';
 
 @Component({
   templateUrl: './workeffortassignmentrate-edit.component.html',

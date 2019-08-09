@@ -30,7 +30,7 @@ module.exports = function (config) {
     singleRun: false,
     restartOnFileChange: true,
     trxReporter: {
-      outputFile: 'dist/BaseWorkspaceTypescriptMaterial.trx',
+      outputFile: 'dist/CoreWorkspaceTypescriptMaterial.trx',
       shortTestName: true
     },
     client: {

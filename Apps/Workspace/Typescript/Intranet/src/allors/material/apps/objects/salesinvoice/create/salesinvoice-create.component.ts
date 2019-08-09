@@ -9,7 +9,7 @@ import { ContactMechanism, Currency, Organisation, OrganisationContactRelationsh
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/apps/state';
-import { ObjectData } from '../../../../../material/base/services/object';
+import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
 
 @Component({

@@ -10,7 +10,7 @@ import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../.
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../material/base/services/object';
+import { ObjectService } from '../../../../../material/core/services/object';
 
 
 interface Row extends TableRow {

@@ -10,7 +10,7 @@ import { AllorsFilterService, ContextService, NavigationService, MediaService, M
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
-import { MethodService } from '../../../../../material/base/services/actions';
+import { MethodService } from '../../../../../material/core/services/actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Row extends TableRow {

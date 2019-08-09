@@ -5,7 +5,7 @@ import { Subscription, combineLatest, Observable } from 'rxjs';
 import { Saved, ContextService, MetaService, RefreshService, Invoked, Action, TestScope } from '../../../../../angular';
 import { ProductQuoteApproval } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
-import { ObjectData } from '../../../../base/services/object';
+import { ObjectData } from '../../../../core/services/object';
 import { PrintService } from './../../../services/actions/print/print.service';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';

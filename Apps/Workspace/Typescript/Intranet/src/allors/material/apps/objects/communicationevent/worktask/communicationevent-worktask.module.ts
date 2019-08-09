@@ -17,16 +17,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
-import { AllorsMaterialChipsModule } from '../../../../base/components/role/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/role/datepicker';
-import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/role/datetimepicker';
-import { AllorsMaterialFileModule } from '../../../../base/components/role/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/role/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/role/select';
+import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
+import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../core/components/role/datetimepicker';
+import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
+import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
+import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../..';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/role/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/role/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/role/textarea';
+import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
+import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 

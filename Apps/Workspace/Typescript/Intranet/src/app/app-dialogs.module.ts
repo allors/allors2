@@ -68,7 +68,7 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 // import { WorkEffortPurchaseOrderItemAssignmentEditComponent, WorkEffortPurchaseOrderItemAssignmentEditModule } from '../allors/material/apps/objects/workeffortpurchaseorderitemassignment/edit/workeffortpurchaseorderitemassignment-edit.module';
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
-import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
+import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
 
 // Garage
 import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/garage/objects/timeentry/edit/timeentry-edit.module';

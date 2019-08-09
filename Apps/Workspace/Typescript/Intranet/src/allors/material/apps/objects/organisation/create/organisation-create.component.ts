@@ -11,7 +11,7 @@ import { CustomerRelationship, CustomOrganisationClassification, IndustryClassif
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../core/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { VatRegime, Currency } from 'src/allors/domain/generated';

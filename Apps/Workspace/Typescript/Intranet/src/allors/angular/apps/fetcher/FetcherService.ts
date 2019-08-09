@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Pull } from '../../../framework';
 import { PullFactory } from '../../../meta';
 
-import { MetaService } from '../../base/framework/MetaService';
-import { SingletonId } from '../../base/state/SingletonId';
+import { MetaService } from '../../core/framework/MetaService';
+import { SingletonId } from '../../core/state/SingletonId';
 import { InternalOrganisationId } from '../state/InternalOrganisationId';
 
 const x = {};
