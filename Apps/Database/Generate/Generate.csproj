@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Generate\Export\**\*.cs" />
+    <Compile Include="..\..\..\Base\Database\Generate\Export\**\*.cs" />
   </ItemGroup>
   
   <ItemGroup>

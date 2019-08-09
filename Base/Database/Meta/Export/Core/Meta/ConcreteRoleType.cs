@@ -25,6 +25,14 @@ namespace Allors.Meta
     {
         public static readonly ConcreteRoleType[] EmptyArray = new ConcreteRoleType[0];
 
+        public bool IsRequired => this.IsRequiredOverride ?? this.RoleType.IsRequired;
+
+        public bool? IsRequiredOverride { get; set; }
+
+        public bool IsUnique => this.IsUniqueOverride ?? this.RoleType.IsUnique;
+
+        public bool? IsUniqueOverride { get; set; }
+
         public ConcreteRoleType(Class @class, RoleType roleType)
         {
             this.Class = @class;

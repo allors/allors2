@@ -32,6 +32,10 @@ namespace Allors.Meta
 
         public const string PluralSuffix = "s";
 
+        public bool IsRequired { get; set; }
+
+        public bool IsUnique { get; set; }
+
         private readonly RelationType relationType;
 
         private ObjectType objectType;

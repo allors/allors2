@@ -27,6 +27,9 @@ namespace Allors.Meta
 
     public sealed partial class Class : Composite, IClass
     {
+        // TODO: Review
+        public RoleType[] DelegatedAccessRoleTypes { get; set; }
+
         private readonly Class[] classes;
 
         private readonly Dictionary<RoleType, ConcreteRoleType> concreteRoleTypeByRoleType;
