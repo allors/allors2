@@ -4,6 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Repository\Domain\Export\**\*.cs" />
-    <Compile Include="..\..\..\..\Core\Repository\Domain\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\Base\Repository\Domain\Export\Core\**\*.cs" />
   </ItemGroup>
 </Project>

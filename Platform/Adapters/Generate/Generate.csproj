@@ -5,7 +5,7 @@
     <StartupObject>Allors.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Generate\Export\**\*.cs" />
+    <Compile Include="..\..\..\Base\Database\Generate\Export\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
