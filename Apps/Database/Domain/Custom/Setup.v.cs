@@ -24,28 +24,28 @@ namespace Allors
     {
         private void OnPrePrepare()
         {
-            this.BaseOnPrePrepare();
+            this.CoreOnPrePrepare();
             this.AppsOnPrePrepare();
             this.CustomOnPrePrepare();
         }
 
         private void OnPostPrepare()
         {
-            this.BaseOnPostPrepare();
+            this.CoreOnPostPrepare();
             this.AppsOnPostPrepare();
             this.CustomOnPostPrepare();
         }
 
         private void OnPreSetup()
         {
-            this.BaseOnPreSetup();
+            this.CoreOnPreSetup();
             this.AppsOnPreSetup();
             this.CustomOnPreSetup();
         }
 
         private void OnPostSetup()
         {
-            this.BaseOnPostSetup();
+            this.CoreOnPostSetup();
             this.AppsOnPostSetup();
             this.CustomOnPostSetup();
         }

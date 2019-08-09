@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     public partial class Facilities
     {
-        protected override void BasePrepare(Setup setup)
+        protected override void CorePrepare(Setup setup)
         {
             setup.AddDependency(this.ObjectType, M.FacilityType);
         }

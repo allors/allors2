@@ -18,10 +18,10 @@ stages:
           target: '-target AdaptersTestSqlClient'
         adapters_npgsql:
           target: '-target AdaptersTestNpgsql'
-        base_database:
-          target: '-target BaseDatabaseTest'
-        base_workspace:
-          target: '-target BaseWorkspaceTest'
+        core_database:
+          target: '-target CoreDatabaseTest'
+        core_workspace:
+          target: '-target CoreWorkspaceTest'
         apps_database:
           target: '-target AppsDatabaseTest'
         apps_workspace_typescript:

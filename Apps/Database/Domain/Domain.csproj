@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Base\Database\Domain\Export\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Domain\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,9 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Base\Database\Document\Allors.Document\Allors.Document.csproj" />
+    <ProjectReference Include="..\..\..\Core\Database\Document\Allors.Document\Allors.Document.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Generated\" />
   </ItemGroup>
 
 </Project>

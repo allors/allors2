@@ -196,7 +196,7 @@ namespace Allors.Repository.Domain
                         this.DomainByName.Add(domain.Name, domain);
 
                         var extendsAttribute = structureModel.GetAttributes().FirstOrDefault(v => v.AttributeClass.Name.Equals("ExtendsAttribute"));
-                        var parent = (string)extendsAttribute.ConstructorArguments.First().Value;
+                        var parent = (string)extendsAttribute?.ConstructorArguments.First().Value;
 
                         if (!string.IsNullOrEmpty(parent))
                         {

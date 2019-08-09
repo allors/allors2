@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{D4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{3248ECB3-BF45-40F2-9286-C4E526312CFB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{E69B1E1F-8643-47FD-A195-69CD912E3550}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E69B1E1F-8643-47FD-A195-69CD912E3550}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{18152690-993E-4346-90BB-C099982229F5}"
 EndProject
@@ -45,53 +45,53 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Platform\Reposi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{583954BC-1E23-4E62-B539-131CF3FBC96E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Base\Database\Generate\Generate.csproj", "{BAFA46B3-EADB-4A05-AF24-0D47062B90B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Core\Database\Generate\Generate.csproj", "{BAFA46B3-EADB-4A05-AF24-0D47062B90B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commands", "Base\Database\Commands\Commands.csproj", "{7C0EC881-13F5-4E3D-A662-3055FBA8CE06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commands", "Core\Database\Commands\Commands.csproj", "{7C0EC881-13F5-4E3D-A662-3055FBA8CE06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document", "Base\Database\Document\Allors.Document\Allors.Document.csproj", "{D0AF15F0-1C0B-4A65-9DD3-148B40D3A8EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document", "Core\Database\Document\Allors.Document\Allors.Document.csproj", "{D0AF15F0-1C0B-4A65-9DD3-148B40D3A8EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document.Tests", "Base\Database\Document\Allors.Document.Tests\Allors.Document.Tests.csproj", "{F8EEA673-D66F-4705-AC8F-8D73DB03E0DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Document.Tests", "Core\Database\Document\Allors.Document.Tests\Allors.Document.Tests.csproj", "{F8EEA673-D66F-4705-AC8F-8D73DB03E0DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{375E7CD9-BD46-471A-BD27-0F9A31520D72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Base\Database\Domain\Domain.csproj", "{FF7427D3-439C-4617-B17B-26A0EE625471}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Core\Database\Domain\Domain.csproj", "{FF7427D3-439C-4617-B17B-26A0EE625471}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "Base\Database\Domain.Tests\Domain.Tests.csproj", "{02ECB869-4721-4019-817B-74CF3D3C6482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "Core\Database\Domain.Tests\Domain.Tests.csproj", "{02ECB869-4721-4019-817B-74CF3D3C6482}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merge", "Base\Database\Merge\Merge.csproj", "{6581CE59-6105-4672-ABD0-55E653672571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merge", "Core\Database\Merge\Merge.csproj", "{6581CE59-6105-4672-ABD0-55E653672571}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Base\Database\Meta\Meta.csproj", "{8C3C2A18-BB66-4CFD-9468-FC34BE7B790B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Core\Database\Meta\Meta.csproj", "{8C3C2A18-BB66-4CFD-9468-FC34BE7B790B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Base\Database\Resources\Resources.csproj", "{15CCBE65-02A9-4D34-812A-A3C8DE54F6D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Core\Database\Resources\Resources.csproj", "{15CCBE65-02A9-4D34-812A-A3C8DE54F6D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Base\Database\Server\Server.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Core\Database\Server\Server.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "Base\Database\Server.Tests\Server.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "Core\Database\Server.Tests\Server.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Base\Database\Services\Services.csproj", "{F186943D-2361-42CA-895A-B172C25FE664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Core\Database\Services\Services.csproj", "{F186943D-2361-42CA-895A-B172C25FE664}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{794822B4-6156-4038-AAEE-D20C67D58A7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Base\Repository\Domain\Repository.csproj", "{583634CE-2977-4238-AA90-164E9BDD4198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Core\Repository\Domain\Repository.csproj", "{583634CE-2977-4238-AA90-164E9BDD4198}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{38DA0455-9724-498A-83EF-B4285EB00AD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Domain", "Base\Workspace\CSharp\Domain\Workspace.Domain.csproj", "{94474285-CAFB-4A71-AED2-D6A80564F543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Domain", "Core\Workspace\CSharp\Domain\Workspace.Domain.csproj", "{94474285-CAFB-4A71-AED2-D6A80564F543}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Domain.Tests", "Base\Workspace\CSharp\Domain.Tests\Workspace.Domain.Tests.csproj", "{B53DBACF-90AD-40CE-924C-C649FAD4B9A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Domain.Tests", "Core\Workspace\CSharp\Domain.Tests\Workspace.Domain.Tests.csproj", "{B53DBACF-90AD-40CE-924C-C649FAD4B9A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Meta", "Base\Workspace\CSharp\Meta\Workspace.Meta.csproj", "{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Meta", "Core\Workspace\CSharp\Meta\Workspace.Meta.csproj", "{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Typescript", "Typescript", "{DFFDDA74-9311-45F8-8755-2BD0512A294F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Base\Workspace\Typescript\Autotest\Generate\Generate.csproj", "{644BF65A-12C8-4538-A1C5-882108C51B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generate", "Core\Workspace\Typescript\Autotest\Generate\Generate.csproj", "{644BF65A-12C8-4538-A1C5-882108C51B20}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutoTest", "AutoTest", "{0BAACD0D-9BA0-4D99-8222-AAEDC2D6AC71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Material.Tests", "Base\Workspace\Typescript\Material.Tests\Material.Tests.csproj", "{97A184A8-CE38-43AE-9C0B-324C3A1B93BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Material.Tests", "Core\Workspace\Typescript\Material.Tests\Material.Tests.csproj", "{97A184A8-CE38-43AE-9C0B-324C3A1B93BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{3E9C6582-CCF0-4A7C-B501-9F1308F04A7B}"
 EndProject
@@ -133,9 +133,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intranet.Tests", "Apps\Work
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Apps\Workspace\Typescript\Autotest\Model\Model.csproj", "{1B869B8C-2E3D-46AF-81D4-A8D6373C32CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Base\Workspace\Typescript\Autotest\Model\Model.csproj", "{B57EBB57-792B-4FE1-8694-3A75EC3FD091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Core\Workspace\Typescript\Autotest\Model\Model.csproj", "{B57EBB57-792B-4FE1-8694-3A75EC3FD091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Base\Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{6BBA0C2D-D20F-4A22-99B4-D3D0D3F8A1E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Core\Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{6BBA0C2D-D20F-4A22-99B4-D3D0D3F8A1E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Apps\Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{15E278BF-C374-4C63-8469-18B71AF991FA}"
 EndProject

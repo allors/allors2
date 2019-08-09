@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Export\Core\Domain\" />
+  </ItemGroup>
+
+</Project>

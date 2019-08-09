@@ -78,7 +78,7 @@ partial class Build : NukeBuild
                 }
             }
 
-            foreach (var path in new AbsolutePath[] { Paths.Platform, Paths.Base, Paths.Apps })
+            foreach (var path in new AbsolutePath[] { Paths.Platform, Paths.Core, Paths.Apps })
             {
                 foreach (var child in new DirectoryInfo(path).GetDirectories().Where(v => !v.Name.Equals("build")))
                 {
@@ -97,6 +97,6 @@ partial class Build : NukeBuild
 
     Target Default => _ => _
         .DependsOn(AdaptersGenerate)
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(CoreWorkspaceAutotest)
         .DependsOn(AppsWorkspaceAutotest);
 }

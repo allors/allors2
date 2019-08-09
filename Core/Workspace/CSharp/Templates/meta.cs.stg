@@ -1,0 +1,338 @@
+group AllorsCSharpRepository;
+
+TemplateId() ::= <<7B7D955D-7C87-4198-A40D-4B70CABC7525>>
+TemplateName() ::= <<Allors C# Workspace Meta>>
+TemplateVersion() ::= <<1.0.4>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(meta) ::= <<
+$! 
+Copyright 2002-2016 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<generations>
+	<generation template="meta" output="meta.g.cs"/> 
+	<generation template="builder" output="builder.g.cs"/> 
+	<generation template="domains" output="domains.g.cs"/> 
+	<generation template="units" output="units.g.cs"/> 
+	<generation template="interfaces" output="interfaces.g.cs"/> 
+	<generation template="classes" output="classes.g.cs"/> 
+</generations>
+>>
+
+meta(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	public static class M
+	{
+		// Interfaces
+$meta.WorkspaceInterfaces:{interface|         public static readonly Meta$interface.SingularName$ $interface.SingularName$;}; separator="\n"$
+
+		// Classes
+$meta.WorkspaceClasses:{class|         public static readonly Meta$class.SingularName$ $class.SingularName$;}; separator="\n"$
+
+
+		static M()
+		{
+		    // Interfaces
+$meta.WorkspaceInterfaces:{interface|             $interface.SingularName$ = Meta$interface.SingularName$.Instance;}; separator="\n"$
+
+		    // Classes
+$meta.WorkspaceClasses:{class|             $class.SingularName$ = Meta$class.SingularName$.Instance;}; separator="\n"$
+		}
+	}
+
+	public partial class MetaInterface 
+	{
+		public void Extend()
+		{
+			$meta.SortedDomains:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+		}
+
+$meta.SortedDomains:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+	}
+
+	public partial class MetaClass 
+	{
+		public void Extend()
+		{
+			$meta.SortedDomains:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+		}
+
+$meta.SortedDomains:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+	}
+}
+>>
+
+builder(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	using Allors.Workspace.Meta;
+
+	internal class MetaBuilder
+	{
+	    private readonly MetaPopulation metaPopulation;
+
+        internal MetaBuilder(MetaPopulation metaPopulation)
+		{
+			this.metaPopulation = metaPopulation;
+		}
+
+		internal void BuildDomains()
+		{
+			// Domains
+$meta.SortedDomains:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
+
+			// Domain Inheritance
+$meta.SortedDomains:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
+		}
+
+		internal void BuildObjectTypes()
+		{
+
+			// Units
+$meta.Units:{unit|             Meta$unit.SingularName$.Instance = new Meta$unit.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Interfaces
+$meta.WorkspaceInterfaces:{interface|             Meta$interface.SingularName$.Instance = new Meta$interface.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Classes
+$meta.WorkspaceClasses:{class|             Meta$class.SingularName$.Instance = new Meta$class.SingularName$(this.metaPopulation);}; separator="\n"$
+
+			// Inheritance
+$meta.WorkspaceComposites:{composite|$inheritance(composite)$}; separator="\n"$
+		}
+
+		internal void BuildOperandTypes()
+		{
+			// Exclusive Roles
+$meta.WorkspaceComposites:{composite|$relations(composite)$}; separator="\n"$
+
+			// Inherited Roles
+$meta.WorkspaceInterfaces:{interface|$inheritedRoles(interface)$}; separator="\n"$
+
+			// Implemented Roles
+$meta.WorkspaceClasses:{class|$implementedRoles(class)$}; separator="\n"$
+
+			// Associations
+$meta.WorkspaceComposites:{composite|$associations(composite)$}; separator="\n"$
+
+			// InheritedAssociations
+$meta.WorkspaceComposites:{composite|$inheritedassociations(composite)$}; separator="\n"$
+
+			// Defined Methods
+$meta.WorkspaceComposites:{composite|$exclusiveMethods(composite)$}; separator="\n"$
+
+			// Inherited Methods
+$meta.WorkspaceComposites:{composite|$inheritedMethods(composite)$}; separator="\n"$
+
+
+
+			// Extend
+            $meta.WorkspaceInterfaces:{interface|Meta$interface.SingularName$.Instance.Extend();}; separator="\n"$
+
+            $meta.WorkspaceClasses:{class|Meta$class.SingularName$.Instance.Extend();}; separator="\n"$
+		}
+	}
+}
+>>
+
+domain_inheritance(assembly) ::= <<$assembly.DirectSuperdomains:{base|             Meta$assembly.Name$.Instance.Domain.AddDirectSuperdomain(Meta$base.Name$.Instance.Domain);}; separator="\n"$>>
+
+inheritance(composite) ::= <<$composite.WorkspaceDirectSupertypes:{implementedInterface|$inheritance_implentedInterface(composite, implementedInterface)$}; separator="\n"$>>
+inheritance_implentedInterface(composite, implementedInterface) ::= <<            new Inheritance(this.metaPopulation){ Subtype = (Composite)Meta$composite.SingularName$.Instance.ObjectType, Supertype = Meta$implementedInterface.SingularName$.Instance.Interface};>>
+
+relations(composite) ::= <<$composite.WorkspaceExclusiveRoleTypes:{roleType|$relation(property=roleType.RelationType)$}; separator="\n"$>>
+relation(property) ::= <<
+	{
+		// TODO: Groups
+		var relationType = new RelationType(this.metaPopulation, new System.Guid("$property.Id$"), new System.Guid("$property.AssociationType.Id$"), new System.Guid("$property.RoleType.Id$"));
+		relationType.AssociationType.ObjectType = Meta$property.AssociationType.ObjectType.Name$.Instance.ObjectType;
+$if(property.Multiplicity)$		relationType.AssignedMultiplicity = Allors.Workspace.Multiplicity.$property.Multiplicity$;$endif$
+$if(property.IsDerived)$		relationType.IsDerived = $property.IsDerived$;$endif$
+$if(property.IsSynced)$		relationType.IsSynced = $property.IsSynced$;$endif$
+$if(property.IsIndexed)$		relationType.IsIndexed = $property.IsIndexed$;$endif$
+		relationType.RoleType.ObjectType = Meta$property.RoleType.ObjectType.SingularName$.Instance.ObjectType;
+		relationType.RoleType.SingularName = "$property.RoleType.SingularName$";
+		relationType.RoleType.PluralName = "$property.RoleType.PluralName$";
+$if(property.RoleType.IsRequired)$		relationType.RoleType.IsRequired = $property.RoleType.IsRequired$;$endif$
+$if(property.RoleType.Size)$		relationType.RoleType.Size = $property.RoleType.Size$;$endif$
+$if(property.RoleType.Precision)$		relationType.RoleType.Precision = $property.RoleType.Precision$;$endif$
+$if(property.RoleType.Scale)$		relationType.RoleType.Scale = $property.RoleType.Scale$;$endif$
+		Meta$composite.SingularName$.Instance.$property.RoleType.Name$ = relationType.RoleType; 
+	}
+>>
+
+inheritedRoles(interface) ::= <<$interface.WorkspaceInheritedRoleTypes:{roleType|$inheritedRole(property=roleType.RelationType)$}; separator="\n"$>>
+inheritedRole(property) ::= <<            Meta$interface.SingularName$.Instance.$property.RoleType.Name$ = Meta$property.AssociationType.ObjectType.SingularName$.Instance.$property.RoleType.Name$;>>
+
+implementedRoles(class) ::= <<$class.WorkspaceInheritedRoleTypes:{roleType|$implementedRole(property=roleType.RelationType)$}; separator="\n"$>>
+implementedRole(property) ::= <<            Meta$class.SingularName$.Instance.$property.RoleType.Name$ = Meta$class.SingularName$.Instance.Class.ConcreteRoleTypeByRoleType[Meta$property.AssociationType.ObjectType.SingularName$.Instance.$property.RoleType.Name$];>>
+
+associations(composite) ::= <<$composite.WorkspaceExclusiveAssociationTypes:{associationType|$association(property=associationType.RelationType)$}; separator="\n"$>>
+association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
+
+inheritedassociations(composite) ::= <<$composite.WorkspaceInheritedAssociationTypes:{associationType|$inheritedassociation(property=associationType.RelationType)$}; separator="\n"$>>
+inheritedassociation(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
+
+exclusiveMethods(composite) ::= <<$composite.WorkspaceExclusiveMethods:{method|$definedMethod(method)$}; separator="\n"$>>
+definedMethod(method) ::= <<
+			{
+				var method = new MethodType(this.metaPopulation, new System.Guid("$method.Id$"));
+				method.ObjectType = Meta$method.ObjectType.SingularName$.Instance;
+				method.Name = "$method.Name$";
+				// TODO: Group and XmlDoc
+				Meta$composite.SingularName$.Instance.$method.Name$ = method; 
+			}
+>>
+
+inheritedMethods(composite) ::= <<$composite.WorkspaceInheritedMethods:{method|$inheritedMethod(method)$}; separator="\n"$>>
+inheritedMethod(method) ::= <<				Meta$composite.SingularName$.Instance.$method.Name$ = Meta$method.ObjectType.SingularName$.Instance.$method.Name$;>>
+
+domains(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	using Allors.Workspace.Meta;
+
+$meta.SortedDomains:{assembly|$domain(assembly)$}; separator="\n\n"$
+}
+>>
+
+domain(assembly) ::= <<
+    public partial class Meta$assembly.Name$
+    {
+        public static Meta$assembly.Name$ Instance { get; internal set;}
+
+		public readonly Domain Domain;
+
+        internal Meta$assembly.Name$(MetaPopulation metaPopulation)
+        {
+			this.Domain = new Domain(metaPopulation, new System.Guid("$assembly.Id$"))
+			{
+				Name = "$assembly.Name$"
+			};
+        }
+    }
+>>
+
+units(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	using Allors.Workspace.Meta;
+
+$meta.Units:{unit|$unit(unit)$}; separator="\n\n"$
+}
+>>
+
+unit(unit) ::= <<
+    public partial class Meta$unit.SingularName$ : MetaUnit
+	{
+	    public static Meta$unit.SingularName$ Instance { get; internal set;}
+
+		public override Unit Unit { get; }
+
+		internal Meta$unit.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Unit = new Unit(metaPopulation, UnitIds.$unit.SingularName$)
+			{
+				UnitTag = UnitTags.$unit.SingularName$,
+				SingularName = UnitNames.$unit.SingularName$
+			};
+        }
+	}
+>>
+
+interfaces(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	using Allors.Workspace.Meta;
+
+$meta.Interfaces:{interface|$interface(interface)$}; separator="\n\n"$
+}
+>>
+
+interface(interface) ::= <<
+    public partial class Meta$interface.SingularName$ : MetaInterface
+	{
+	    public static Meta$interface.SingularName$ Instance { get; internal set;}
+
+		public override Interface Interface { get; }
+
+		// Defined Methods
+$interface.ExclusiveMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// Inherited Methods
+$interface.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+		
+		// Roles
+$interface.RoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
+
+		// Associations
+$interface.AssociationTypes:{property|         public AssociationType $property.Name$;}; separator="\n"$
+
+		internal Meta$interface.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Interface = new Interface(metaPopulation, new System.Guid("$interface.Id$"))
+			{
+				SingularName = "$interface.SingularName$",
+				PluralName = "$interface.PluralName$"
+				// TODO: XmlDoc
+			};
+        }
+	}
+>>
+
+classes(meta) ::= <<
+namespace Allors.Workspace.Meta
+{
+	using Allors.Workspace.Meta;
+
+$meta.Classes:{class|$class(class)$}; separator="\n\n"$
+}
+>>
+
+class(class) ::= <<
+    public partial class Meta$class.SingularName$ : MetaClass
+	{
+	    public static Meta$class.SingularName$ Instance { get; internal set;}
+
+		public override Class Class { get; }
+
+		// Defined Methods
+$class.ExclusiveMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// Inherited Methods
+$class.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+
+		// RoleTypes
+$class.RoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
+
+		// Associations
+$class.AssociationTypes:{property|         public AssociationType $property.Name$;}; separator="\n"$
+
+		internal Meta$class.SingularName$(MetaPopulation metaPopulation)
+        {
+			this.Class = new Class(metaPopulation, new System.Guid("$class.Id$"))
+			{
+				SingularName = "$class.SingularName$",
+				PluralName = "$class.PluralName$",
+			};
+        }
+
+	}
+>>
+
+
+boolean(value) ::= "$if(value)$true$else$false$endif$"

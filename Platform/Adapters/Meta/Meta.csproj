@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Base\Database\Meta\Export\Core\Meta\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Meta\Export\Core\Meta\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

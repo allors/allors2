@@ -24,14 +24,14 @@ namespace Allors.Domain
     {
         private void OnPreSetup()
         {
-            this.BaseOnPreSetup();
+            this.CoreOnPreSetup();
             this.AppsOnPreSetup();
             this.CustomOnPreSetup();
         }
 
         private void OnPostSetup()
         {
-            this.BaseOnPostSetup();
+            this.CoreOnPostSetup();
             this.AppsOnPostSetup();
             this.CustomOnPostSetup();
         }

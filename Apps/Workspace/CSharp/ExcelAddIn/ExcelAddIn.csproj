@@ -162,50 +162,50 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Client.cs">
-      <Link>Base\Client.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Client.cs">
+      <Link>Core\Client.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Commands.cs">
-      <Link>Base\Commands.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Commands.cs">
+      <Link>Core\Commands.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Data\Row.cs">
-      <Link>Base\Data\Row.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Data\Row.cs">
+      <Link>Core\Data\Row.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Data\Table.cs">
-      <Link>Base\Data\Table.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Data\Table.cs">
+      <Link>Core\Data\Table.cs</Link>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\DataTableExtensions.cs">
-      <Link>Base\Extensions\DataTableExtensions.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\DataTableExtensions.cs">
+      <Link>Core\Extensions\DataTableExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\ErrorResponseExtensions.cs">
-      <Link>Base\Extensions\ErrorResponseExtensions.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\ErrorResponseExtensions.cs">
+      <Link>Core\Extensions\ErrorResponseExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\ExceptionExtensions.cs">
-      <Link>Base\Extensions\ExceptionExtensions.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\ExceptionExtensions.cs">
+      <Link>Core\Extensions\ExceptionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Extensions\WorksheetExtensions.cs">
-      <Link>Base\Extensions\WorksheetExtensions.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\WorksheetExtensions.cs">
+      <Link>Core\Extensions\WorksheetExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Host.cs">
-      <Link>Base\Host.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Host.cs">
+      <Link>Core\Host.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.cs">
-      <Link>Base\Login\LoginForm.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.cs">
+      <Link>Core\Login\LoginForm.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.designer.cs">
-      <Link>Base\Login\LoginForm.designer.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.designer.cs">
+      <Link>Core\Login\LoginForm.designer.cs</Link>
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Mediator.cs">
-      <Link>Base\Mediator.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Mediator.cs">
+      <Link>Core\Mediator.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Sheet.cs">
-      <Link>Base\Sheet.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Sheet.cs">
+      <Link>Core\Sheet.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Sheets.cs">
-      <Link>Base\Sheets.cs</Link>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Sheets.cs">
+      <Link>Core\Sheets.cs</Link>
     </Compile>
     <Compile Include="AddInManager.cs" />
     <Compile Include="Apps\Commands.cs" />
@@ -239,8 +239,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="..\..\..\..\Base\Workspace\CSharp\ExcelAddIn\Base\Login\LoginForm.resx">
-      <Link>Base\Login\LoginForm.resx</Link>
+    <EmbeddedResource Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.resx">
+      <Link>Core\Login\LoginForm.resx</Link>
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -255,6 +255,9 @@
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\desktop.ini">
+      <Link>Core\desktop.ini</Link>
+    </None>
     <None Include="app.config" />
     <None Include="Apps\PurchaseInvoices\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>

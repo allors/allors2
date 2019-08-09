@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Base\Database\Commands\Export\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Commands\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

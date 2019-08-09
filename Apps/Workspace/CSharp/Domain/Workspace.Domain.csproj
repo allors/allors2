@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Domain\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\Domain\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

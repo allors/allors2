@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Export\**\*.cs"/>
-    <Compile Include="..\..\..\..\Base\Workspace\CSharp\Meta\Export\**\*.cs" />
   </ItemGroup>
 
 </Project>

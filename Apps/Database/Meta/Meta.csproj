@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\Core\Database\Meta\Export\**\*.cs" />
-    <Compile Include="..\..\..\Base\Database\Meta\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

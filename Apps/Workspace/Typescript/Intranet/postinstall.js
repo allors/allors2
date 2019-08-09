@@ -8,15 +8,14 @@ function link(src, dst){
 
     lnk([src], dst, {force: true})
     .then(() => console.log(basename + ' linked') )
-    .catch(() =>  console.log(basename + ' already linked'))
+    .catch((e) =>  console.log(e))
 }
-
 
 link ('../../../../Platform/Framework/Typescript/framework', 'src/allors');
 
-link ('../../../../Base/Workspace/Typescript/Domain/src/allors/meta/base', 'src/allors/meta');
-link ('../../../../Base/Workspace/Typescript/Domain/src/allors/domain/base', 'src/allors/domain');
-link ('../../../../Base/Workspace/Typescript/Angular/src/allors/angular/base', 'src/allors/angular');
-link ('../../../../Base/Workspace/Typescript/Material/src/allors/material/base', 'src/allors/material');
+link ('../../../../Core/Workspace/Typescript/Domain/src/allors/meta/core', 'src/allors/meta');
+link ('../../../../Core/Workspace/Typescript/Domain/src/allors/domain/core', 'src/allors/domain');
+link ('../../../../Core/Workspace/Typescript/Angular/src/allors/angular/core', 'src/allors/angular');
+link ('../../../../Core/Workspace/Typescript/Material/src/allors/material/core', 'src/allors/material');
 
 link ('../Domain/src/allors/domain/apps', 'src/allors/domain');
