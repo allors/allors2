@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\Base\Workspace\Typescript\Autotest\Generate\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\..\Core\Workspace\Typescript\Autotest\Generate\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
