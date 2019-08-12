@@ -7,7 +7,6 @@
   <ItemGroup>
     <Compile Include="..\..\..\Platform\Repository\Domain\Export\**\*.cs" />
     <Compile Include="..\..\..\Core\Repository\Domain\Export\**\*.cs"/>
-    <Compile Include="..\..\..\Base\Repository\Domain\Export\**\*.cs"/>
   </ItemGroup>
 
 </Project>

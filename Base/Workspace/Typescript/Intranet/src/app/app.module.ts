@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
 
-import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/state/internalorganisation-select.module';
+import { InternalOrganisationSelectModule } from '../allors/material/base/objects/internalorganisation/state/internalorganisation-select.module';
 import { AppDialogModule } from './app-dialogs.module';
 import { WorkspaceService } from '../allors/angular';
 import { appMeta } from './app.meta';

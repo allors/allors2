@@ -8,7 +8,7 @@ import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party,
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { InternalOrganisationId } from '../../../../../angular/apps/state';
+import { InternalOrganisationId } from '../../../../../angular/base/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({

@@ -1,7 +1,7 @@
-using src.allors.material.apps.objects.communicationevent.overview.panel;
-using src.allors.material.apps.objects.organisation.list;
-using src.allors.material.apps.objects.organisation.overview;
-using src.allors.material.apps.objects.phonecommunication.edit;
+using src.allors.material.base.objects.communicationevent.overview.panel;
+using src.allors.material.base.objects.organisation.list;
+using src.allors.material.base.objects.organisation.overview;
+using src.allors.material.base.objects.phonecommunication.edit;
 
 namespace Tests.PhoneCommunicationTests
 {

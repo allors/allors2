@@ -1,6 +1,6 @@
 namespace Tests.CommunicationEventTests
 {
-    using src.allors.material.apps.objects.communicationevent.list;
+    using src.allors.material.base.objects.communicationevent.list;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;

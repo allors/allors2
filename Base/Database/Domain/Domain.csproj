@@ -14,18 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Export\Apps\Print\WorkTask\Customer\**" />
-    <Compile Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
-    <Compile Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
-    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\Customer\**" />
-    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
-    <EmbeddedResource Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
-    <None Remove="Export\Apps\Print\WorkTask\Customer\**" />
-    <None Remove="Export\Apps\Print\WorkTask\TimeEntry\**" />
-    <None Remove="Export\Apps\Print\WorkTask\WorkEffortInventoryAssignment\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Templates\allors.png" />
     <None Remove="Templates\ProductQuote.odt" />
     <None Remove="Templates\PurchaseInvoice.odt" />

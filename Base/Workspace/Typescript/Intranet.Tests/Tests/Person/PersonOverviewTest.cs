@@ -1,5 +1,5 @@
-using src.allors.material.apps.objects.person.list;
-using src.allors.material.apps.objects.person.overview;
+using src.allors.material.base.objects.person.list;
+using src.allors.material.base.objects.person.overview;
 
 namespace Tests.PersonTests
 {

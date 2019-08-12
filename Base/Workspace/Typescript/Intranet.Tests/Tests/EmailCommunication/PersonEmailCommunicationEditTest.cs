@@ -1,7 +1,7 @@
-using src.allors.material.apps.objects.communicationevent.overview.panel;
-using src.allors.material.apps.objects.emailcommunication.edit;
-using src.allors.material.apps.objects.person.list;
-using src.allors.material.apps.objects.person.overview;
+using src.allors.material.base.objects.communicationevent.overview.panel;
+using src.allors.material.base.objects.emailcommunication.edit;
+using src.allors.material.base.objects.person.list;
+using src.allors.material.base.objects.person.overview;
 
 namespace Tests.EmailCommunicationTests
 {

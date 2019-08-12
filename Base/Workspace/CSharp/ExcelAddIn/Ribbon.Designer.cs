@@ -35,7 +35,7 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.appsTab = this.Factory.CreateRibbonTab();
+            this.baseTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.saveButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
@@ -48,7 +48,7 @@
             this.groupInventory = this.Factory.CreateRibbonGroup();
             this.InventoryItemsButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.appsTab.SuspendLayout();
+            this.baseTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.groupPurchases.SuspendLayout();
@@ -61,14 +61,14 @@
             this.tab1.Label = "TabAddIns";
             this.tab1.Name = "tab1";
             // 
-            // appsTab
+            // baseTab
             // 
-            this.appsTab.Groups.Add(this.group1);
-            this.appsTab.Groups.Add(this.group2);
-            this.appsTab.Groups.Add(this.groupPurchases);
-            this.appsTab.Groups.Add(this.groupInventory);
-            this.appsTab.Label = "Base";
-            this.appsTab.Name = "appsTab";
+            this.baseTab.Groups.Add(this.group1);
+            this.baseTab.Groups.Add(this.group2);
+            this.baseTab.Groups.Add(this.groupPurchases);
+            this.baseTab.Groups.Add(this.groupInventory);
+            this.baseTab.Label = "Base";
+            this.baseTab.Name = "baseTab";
             // 
             // group1
             // 
@@ -149,12 +149,12 @@
             this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.tab1);
-            this.Tabs.Add(this.appsTab);
+            this.Tabs.Add(this.baseTab);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.appsTab.ResumeLayout(false);
-            this.appsTab.PerformLayout();
+            this.baseTab.ResumeLayout(false);
+            this.baseTab.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
@@ -170,7 +170,7 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        private Microsoft.Office.Tools.Ribbon.RibbonTab appsTab;
+        private Microsoft.Office.Tools.Ribbon.RibbonTab baseTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton saveButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;

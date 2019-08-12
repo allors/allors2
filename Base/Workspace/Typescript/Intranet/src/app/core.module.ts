@@ -16,7 +16,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ConfigService } from './app.config.service';
 import { ErrorModule } from './error/error.module';
 
-import { DefaultFiltersService } from '../allors/material/apps/services/filters/default.filters.service';
+import { DefaultFiltersService } from '../allors/material/base/services/filters/default.filters.service';
 
 @NgModule({
   imports: [

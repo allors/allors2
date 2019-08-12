@@ -1,3 +1,3 @@
 export * from './core';
 
-export * from './apps';
+export * from './base';

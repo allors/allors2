@@ -18,4 +18,4 @@ link ('../../../../Core/Workspace/Typescript/Domain/src/allors/domain/core', 'sr
 link ('../../../../Core/Workspace/Typescript/Angular/src/allors/angular/core', 'src/allors/angular');
 link ('../../../../Core/Workspace/Typescript/Material/src/allors/material/core', 'src/allors/material');
 
-link ('../Domain/src/allors/domain/apps', 'src/allors/domain');
+link ('../Domain/src/allors/domain/base', 'src/allors/domain');

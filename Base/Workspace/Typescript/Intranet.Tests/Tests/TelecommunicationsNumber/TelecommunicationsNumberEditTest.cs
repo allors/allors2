@@ -1,8 +1,8 @@
-using src.allors.material.apps.objects.contactmechanism.overview.panel;
-using src.allors.material.apps.objects.person.list;
-using src.allors.material.apps.objects.person.overview;
-using src.allors.material.apps.objects.telecommunicationsnumber.create;
-using src.allors.material.apps.objects.telecommunicationsnumber.edit;
+using src.allors.material.base.objects.contactmechanism.overview.panel;
+using src.allors.material.base.objects.person.list;
+using src.allors.material.base.objects.person.overview;
+using src.allors.material.base.objects.telecommunicationsnumber.create;
+using src.allors.material.base.objects.telecommunicationsnumber.edit;
 
 namespace Tests.TelecommunicationsNumberTests
 {

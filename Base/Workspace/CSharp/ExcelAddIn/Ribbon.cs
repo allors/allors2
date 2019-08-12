@@ -95,7 +95,7 @@ namespace ExcelAddIn
             }
             finally
             {
-                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+                this.RibbonUI.ActivateTab(this.baseTab.ControlId.ToString());
             }
         }
 
@@ -130,7 +130,7 @@ namespace ExcelAddIn
             }
             finally
             {
-                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+                this.RibbonUI.ActivateTab(this.baseTab.ControlId.ToString());
             }
         }
 
@@ -155,7 +155,7 @@ namespace ExcelAddIn
             }
             finally
             {
-                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+                this.RibbonUI.ActivateTab(this.baseTab.ControlId.ToString());
             }
         }
 
@@ -180,7 +180,7 @@ namespace ExcelAddIn
             }
             finally
             {
-                this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+                this.RibbonUI.ActivateTab(this.baseTab.ControlId.ToString());
             }
         }
 
@@ -199,7 +199,7 @@ namespace ExcelAddIn
         private void ButtonLogoff_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.AddInManager?.Logoff();
-            this.RibbonUI.ActivateTab(this.appsTab.ControlId.ToString());
+            this.RibbonUI.ActivateTab(this.baseTab.ControlId.ToString());
         }
     }
 }

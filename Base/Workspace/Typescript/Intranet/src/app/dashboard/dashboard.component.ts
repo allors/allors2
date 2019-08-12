@@ -15,7 +15,7 @@ interface Item {
 })
 export class DashboardComponent extends TestScope implements OnInit {
 
-  apps: Item[];
+  base: Item[];
 
   constructor(
     private titleService: Title
@@ -26,7 +26,7 @@ export class DashboardComponent extends TestScope implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apps = [{
+    this.base = [{
       title: 'WorkOrder',
       subtitle: 'Manage workorder',
       icon: 'assignment',

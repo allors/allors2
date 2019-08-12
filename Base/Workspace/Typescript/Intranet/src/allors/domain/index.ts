@@ -1,6 +1,6 @@
 export * from './generated';
 
 import './core';
-import './apps';
+import './base';
 
 export { domain } from './domain';

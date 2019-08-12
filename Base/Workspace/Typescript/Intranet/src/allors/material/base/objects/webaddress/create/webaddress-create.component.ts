@@ -7,7 +7,7 @@ import { ContextService, MetaService, RefreshService, TestScope } from '../../..
 import { Enumeration, TelecommunicationsNumber, ElectronicAddress, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { InternalOrganisationId } from '../../../../../angular/apps/state';
+import { InternalOrganisationId } from '../../../../../angular/base/state';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData } from '../../../../../../allors/material/core/services/object';
 import { SaveService } from '../../../../../../allors/material';

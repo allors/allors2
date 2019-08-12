@@ -52,7 +52,7 @@ namespace Tests
             // Init Allors
             var configurationBuilder = new ConfigurationBuilder();
 
-            const string root = "/config/apps";
+            const string root = "/config/base";
             configurationBuilder.AddCrossPlatform(".");
             configurationBuilder.AddCrossPlatform(root);
             configurationBuilder.AddCrossPlatform(Path.Combine(root, "server"));

@@ -8,7 +8,7 @@ import { ContextService, MetaService, RefreshService, FetcherService, TestScope 
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship, SalesInvoiceType } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { InternalOrganisationId } from '../../../../../angular/apps/state';
+import { InternalOrganisationId } from '../../../../../angular/base/state';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
 

@@ -38,9 +38,9 @@ export * from './core/services/sidenav';
 // Base Misc
 export * from './core/sorting';
 
-// Apps Components
-export * from './apps/objects/internalorganisation/state/internalorganisation-select.module';
+// Base Components
+export * from './base/objects/internalorganisation/state/internalorganisation-select.module';
 
-// Apps Services
-export * from './apps/services/actions';
-export * from './apps/services/filters';
+// Base Services
+export * from './base/services/actions';
+export * from './base/services/filters';

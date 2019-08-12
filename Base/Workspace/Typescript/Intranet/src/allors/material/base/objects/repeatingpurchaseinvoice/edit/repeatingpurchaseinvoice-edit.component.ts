@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { SaveService } from '../../../../../../allors/material';
-import { InternalOrganisationId } from '../../../../../angular/apps/state';
+import { InternalOrganisationId } from '../../../../../angular/base/state';
 
 @Component({
   templateUrl: './repeatingpurchaseinvoice-edit.component.html',

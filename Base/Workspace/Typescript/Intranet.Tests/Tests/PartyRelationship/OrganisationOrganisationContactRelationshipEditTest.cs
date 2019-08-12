@@ -1,6 +1,6 @@
-using src.allors.material.apps.objects.organisation.list;
-using src.allors.material.apps.objects.organisation.overview;
-using src.allors.material.apps.objects.organisationcontactrelationship.edit;
+using src.allors.material.base.objects.organisation.list;
+using src.allors.material.base.objects.organisation.overview;
+using src.allors.material.base.objects.organisationcontactrelationship.edit;
 
 namespace Tests.PartyRelationshipTests
 {

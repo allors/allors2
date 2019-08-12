@@ -2,7 +2,7 @@ using static Nuke.Common.IO.PathConstruction;
 
 public partial class Paths
 {
-    public AbsolutePath Base => Root / "apps";
+    public AbsolutePath Base => Root / "base";
     public AbsolutePath BaseRepositoryDomainRepository => Base / "Repository/Domain/Repository.csproj";
     public AbsolutePath BaseDatabaseMetaGenerated => Base / "Database/Meta/generated";
     public AbsolutePath BaseDatabaseGenerate => Base / "Database/Generate/Generate.csproj";

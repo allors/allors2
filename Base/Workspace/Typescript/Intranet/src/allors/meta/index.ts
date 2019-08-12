@@ -1,4 +1,4 @@
 export * from './generated';
 
 import './core';
-import './apps';
+import './base';
