@@ -1,3 +1,5 @@
+// tslint:disable: directive-selector
+// tslint:disable: directive-class-suffix
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,7 +11,10 @@ import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';
 import { ISessionObject } from '../../../../../allors/framework';
+import { Directive } from '@angular/core';
 
+// See https://github.com/angular/angular/issues/30080
+@Directive({selector: 'ivy-workaround-base-table'})
 export abstract class BaseTable {
   columns: Column[];
   dataSource: MatTableDataSource<TableRow>;

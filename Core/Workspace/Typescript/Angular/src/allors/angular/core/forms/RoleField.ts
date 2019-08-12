@@ -1,8 +1,13 @@
-import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+// tslint:disable: directive-selector
+// tslint:disable: directive-class-suffix
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, RoleType } from '../../../framework';
 import { humanize } from '../humanize';
 import { Field } from './Field';
+
+// See https://github.com/angular/angular/issues/30080
+@Directive({selector: 'ivy-workaround-role-field'})
 
 export abstract class RoleField extends Field implements AfterViewInit, OnDestroy {
 

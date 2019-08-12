@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="table">
   <div *ngIf="table.autoFilter" class="container-fluid a-search">
     <div class="row m-3" style="border-bottom: 1px dotted lightgray">
       <input #filterInput matInput class="col pl-3 pr-3 pb-3" placeholder="Filter" (keyup)="table.filter($event)">
@@ -15,7 +15,7 @@
     <ng-container *ngIf="table.selection" matColumnDef="select" sticky>
       <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()" style="width: 4rem">
         <mat-checkbox (change)="$event ? table.masterToggle() : null" [checked]="table.anySelected && table.allSelected"
-          [indeterminate]="table.anySelected && !isAllSelected">
+          [indeterminate]="table.anySelected && !table.allSelected">
         </mat-checkbox>
       </th>
       <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
@@ -45,7 +45,9 @@
     <tr mat-header-row *matHeaderRowDef="table.columnNames"></tr>
     <tr mat-row *matRowDef="let row; columns: table.columnNames;" [attr.data-allors-id]="row.object?.id"></tr>
   </table>
+
+  <mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions"
+  (page)="table.page($event)"></mat-paginator>
+
 </div>
 
-<mat-paginator *ngIf="table.pageSize" [length]="table?.total" [pageSize]="table.pageSize" [pageSizeOptions]="table.pageSizeOptions"
-  (page)="table.page($event)"></mat-paginator>

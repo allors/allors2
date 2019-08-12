@@ -9,7 +9,7 @@
       <mat-icon>add</mat-icon>
     </button>
 
-    <mat-menu #menu="matMenu" class="a-mat-factory-fab" [overlapTrigger]="true" [attr.data-allors-actions]="dataAllorsActions">
+    <mat-menu #menu="matMenu" class="a-mat-factory-fab" overlapTrigger="true" [attr.data-allors-actions]="dataAllorsActions">
       <mat-toolbar color="accent"><span class="title">Add new</span></mat-toolbar>
       <button *ngFor='let class of classes' mat-menu-item (click)="create(class); false" attr.data-allors-class="{{class.name}}">
         <mat-icon>{{class.icon}}</mat-icon><span>{{class.displayName}}</span>

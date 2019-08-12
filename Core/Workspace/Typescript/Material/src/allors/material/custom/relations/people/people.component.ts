@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 

@@ -14,7 +14,6 @@ export { FactoryFabComponent } from './factoryfab.component';
   ],
   exports: [
     FactoryFabComponent,
-
   ],
   imports: [
     CommonModule,

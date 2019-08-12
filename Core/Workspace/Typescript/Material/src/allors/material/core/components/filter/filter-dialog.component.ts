@@ -1,4 +1,3 @@
-import { MatChipListChange } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Component, Inject, ViewChild, OnInit } from '@angular/core';
@@ -10,7 +9,6 @@ import { AllorsFilterService } from '../../../../angular/core/filter';
 import { FilterField } from '../../../../../allors/angular/core/filter/FilterField';
 import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { filter } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',

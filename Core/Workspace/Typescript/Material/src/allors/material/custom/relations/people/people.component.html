@@ -1,19 +1,19 @@
-<div class="a-master">
+<div class="a-master" >
 
   <mat-toolbar class="a-header">
     <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
       <span class="col"></span>
-      <button mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']">
+      <button mat-icon-button matTooltip="Export to CSV" routerLink="/export/people">
         <mat-icon>cloud_download</mat-icon>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div>
+  <div *ngIf="dataSource">
 
-    <mat-card *ngIf="dataSource">
+    <mat-card >
       <mat-card-content class="container-fluid a-list" style="flex: 0 0 auto">
           <a-mat-filter></a-mat-filter>
       </mat-card-content>
@@ -78,7 +78,7 @@
   <mat-toolbar class="a-footer">
     <mat-toolbar-row class="row">
       <span class="col"></span>
-      <a mat-raised-button [routerLink]="['/contacts/addperson']">
+      <a mat-raised-button routerLink="/contacts/addperson">
         Add New
       </a>
     </mat-toolbar-row>
