@@ -1,4 +1,4 @@
-﻿namespace AppsExcelAddIn.Apps
+﻿namespace BaseExcelAddIn.Base
 {
     partial class LoginForm
     {

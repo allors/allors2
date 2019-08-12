@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Allors.Workspace.Client;
 using Nito.AsyncEx;
 
-namespace AppsExcelAddIn.Apps
+namespace BaseExcelAddIn.Base
 {
     public partial class LoginForm : Form
     {
