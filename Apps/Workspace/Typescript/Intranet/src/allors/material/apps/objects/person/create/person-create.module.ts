@@ -22,7 +22,7 @@ import { AllorsMaterialHeaderModule } from '../../../../core/components/header';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
+import { AllorsMaterialCheckboxModule } from '../../../../core/components/role/checkbox';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
@@ -44,7 +44,7 @@ export { PersonCreateComponent } from './person-create.component';
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
-    AllorsMaterialSlideToggleModule,
+    AllorsMaterialCheckboxModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
