@@ -3,7 +3,7 @@ import { MetaPopulation, Workspace } from '../src/allors/framework';
 import { data, Meta, TreeFactory, FetchFactory, PullFactory } from '../src/allors/meta';
 import { Database, Scope } from '../src/allors/promise';
 
-import { AxiosHttp } from '../src/allors/promise/base/http/AxiosHttp';
+import { AxiosHttp } from '../src/allors/promise/core/http/AxiosHttp';
 
 export class Fixture {
 

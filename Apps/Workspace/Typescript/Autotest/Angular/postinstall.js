@@ -11,4 +11,4 @@ function link(src, dst){
     .catch(() =>  console.log(basename + ' already linked'))
 }
 
-link ('../../../../../Base/Workspace/Typescript/Autotest/Angular/src/Autotest', 'src');
+link ('../../../../../Core/Workspace/Typescript/Autotest/Angular/src/Autotest', 'src');

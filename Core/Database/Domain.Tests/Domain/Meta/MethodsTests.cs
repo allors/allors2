@@ -36,7 +36,7 @@ namespace Tests
 
             var classMethod = c1.ClassMethod();
 
-            Assert.Equal("C1CustomC1BaseC1Core", classMethod.Value);
+            Assert.Equal("C1CustomC1Core", classMethod.Value);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Tests
 
             var interfaceMethod = c1.InterfaceMethod();
 
-            Assert.Equal("I1CustomI1BaseI1CoreC1CustomC1BaseC1Core", interfaceMethod.Value);
+            Assert.Equal("I1CustomI1CoreC1CustomC1Core", interfaceMethod.Value);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Tests
 
             var interfaceMethod = c1.SuperinterfaceMethod();
 
-            Assert.Equal("S1CustomS1BaseS1CoreI1CustomI1BaseI1CoreC1CustomC1BaseC1Core", interfaceMethod.Value);
+            Assert.Equal("S1CustomS1CoreI1CustomI1CoreC1CustomC1Core", interfaceMethod.Value);
         }
 
         [Fact]

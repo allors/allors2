@@ -61,7 +61,7 @@ namespace Commands
             catch (Exception e)
             {
                 var logger = serviceProvider.GetService<ILogger<Program>>();
-                logger.LogCritical(e, "Uncaught exception");
+                logger.LogCritical(e, e.Message);
             }
         }
     }

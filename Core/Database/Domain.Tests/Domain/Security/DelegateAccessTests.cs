@@ -54,12 +54,12 @@ namespace Tests
 
             // Use default security from Singleton
             var acl = new AccessControlList(accessClass, administrator);
-            Assert.False(acl.CanRead(M.AccessClass.Property));
+            Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 
             this.Session.Commit();
 
-            Assert.False(acl.CanRead(M.AccessClass.Property));
+            Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 
             this.Session.Commit();

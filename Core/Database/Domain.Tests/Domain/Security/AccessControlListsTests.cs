@@ -28,40 +28,7 @@ namespace Tests
     public class AccessControlListsTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
-
-        [Fact]
-        public void GivenAUserAndANonAccessControlledObjectWhenGettingTheAccessListThenUserHasAccessToThePermissionsInTheRole()
-        {
-            var permission = this.FindPermission(M.Organisation.Name, Operations.Read);
-            var role = new RoleBuilder(this.Session).WithName("Role").WithPermission(permission).Build();
-            var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
-            new AccessControlBuilder(this.Session).WithSubject(person).WithRole(role).Build();
-
-            this.Session.Derive(true);
-            this.Session.Commit();
-
-            var sessions = new ISession[] { this.Session };
-            foreach (var session in sessions)
-            {
-                session.Commit();
-
-                var c2 = new C2Builder(session).WithName("C2").Build();
-
-                this.Session.Derive(true);
-
-                Assert.False(this.Session.Derive(false).HasErrors);
-
-                var accessLists = new AccessControlLists(new IObject[] { c2 }, person);
-                var accessList = accessLists[c2];
-
-                Assert.True(accessList.CanRead(M.C2.Name));
-                Assert.False(accessList.CanWrite(M.C2.Name));
-                Assert.False(accessList.CanExecute(M.C2.OnInit));
-
-                session.Rollback();
-            }
-        }
-
+        
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
         {
