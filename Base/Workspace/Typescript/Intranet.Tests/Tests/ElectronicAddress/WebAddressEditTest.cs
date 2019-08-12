@@ -1,8 +1,8 @@
-using src.allors.material.base.objects.contactmechanism.overview.panel;
-using src.allors.material.base.objects.person.list;
-using src.allors.material.base.objects.person.overview;
-using src.allors.material.base.objects.webaddress.create;
-using src.allors.material.base.objects.webaddress.edit;
+using src.allors.material.@base.objects.contactmechanism.overview.panel;
+using src.allors.material.@base.objects.person.list;
+using src.allors.material.@base.objects.person.overview;
+using src.allors.material.@base.objects.webaddress.create;
+using src.allors.material.@base.objects.webaddress.edit;
 
 namespace Tests.ElectronicAddressTests
 {

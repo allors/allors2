@@ -324,7 +324,6 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Settings.StyleCop" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>

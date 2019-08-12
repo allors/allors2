@@ -1,4 +1,4 @@
-using src.allors.material.base.objects.good.list;
+using src.allors.material.@base.objects.good.list;
 
 namespace Tests.NonUnifiedGood
 {

@@ -1,6 +1,6 @@
-using src.allors.material.base.objects.organisation.create;
-using src.allors.material.base.objects.organisation.list;
-using src.allors.material.base.objects.organisation.overview;
+using src.allors.material.@base.objects.organisation.create;
+using src.allors.material.@base.objects.organisation.list;
+using src.allors.material.@base.objects.organisation.overview;
 
 namespace Tests.OrganisationTests
 {

@@ -1,6 +1,6 @@
-using src.allors.material.base.objects.organisation.list;
-using src.allors.material.base.objects.organisation.overview;
-using src.allors.material.base.objects.supplierrelationship.edit;
+using src.allors.material.@base.objects.organisation.list;
+using src.allors.material.@base.objects.organisation.overview;
+using src.allors.material.@base.objects.supplierrelationship.edit;
 
 namespace Tests.PartyRelationshipTests
 {

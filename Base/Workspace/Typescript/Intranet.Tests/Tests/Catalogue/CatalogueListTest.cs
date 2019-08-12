@@ -1,7 +1,7 @@
 
 namespace Tests.CatalogueTests
 {
-    using src.allors.material.base.objects.catalogue.list;
+    using src.allors.material.@base.objects.catalogue.list;
     using Xunit;
 
     [Collection("Test collection")]

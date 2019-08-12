@@ -1,4 +1,4 @@
-using src.allors.material.base.objects.person.list;
+using src.allors.material.@base.objects.person.list;
 
 namespace Tests.PartyContactMachanismTests
 {

@@ -47,7 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="generated\" />
+    <Folder Include="generated\components\" />
+    <Folder Include="generated\sidenav\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 using Allors.Meta;
-using src.allors.material.base.objects.contactmechanism.overview.panel;
-using src.allors.material.base.objects.emailaddress.create;
-using src.allors.material.base.objects.emailaddress.edit;
-using src.allors.material.base.objects.person.overview;
+using src.allors.material.@base.objects.contactmechanism.overview.panel;
+using src.allors.material.@base.objects.emailaddress.create;
+using src.allors.material.@base.objects.emailaddress.edit;
+using src.allors.material.@base.objects.person.overview;
 
 namespace Tests.ElectronicAddressTests
 {
@@ -12,7 +12,7 @@ namespace Tests.ElectronicAddressTests
     using Components;
     using Xunit;
 
-    using src.allors.material.base.objects.person.list;
+    using src.allors.material.@base.objects.person.list;
 
     [Collection("Test collection")]
     public class EmailAddressEditTest : Test

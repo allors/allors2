@@ -1,4 +1,4 @@
-using src.allors.material.base.objects.organisation.list;
+using src.allors.material.@base.objects.organisation.list;
 
 namespace Tests.OrganisationTests
 {

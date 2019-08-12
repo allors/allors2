@@ -1,7 +1,7 @@
-using src.allors.material.base.objects.person.create;
-using src.allors.material.base.objects.person.list;
-using src.allors.material.base.objects.person.overview;
-using src.allors.material.base.objects.person.overview.detail;
+using src.allors.material.@base.objects.person.create;
+using src.allors.material.@base.objects.person.list;
+using src.allors.material.@base.objects.person.overview;
+using src.allors.material.@base.objects.person.overview.detail;
 
 namespace Tests.PersonTests
 {

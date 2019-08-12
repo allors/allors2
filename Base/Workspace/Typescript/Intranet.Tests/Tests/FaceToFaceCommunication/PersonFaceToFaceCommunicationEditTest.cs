@@ -1,7 +1,7 @@
-using src.allors.material.base.objects.communicationevent.overview.panel;
-using src.allors.material.base.objects.facetofacecommunication.edit;
-using src.allors.material.base.objects.person.list;
-using src.allors.material.base.objects.person.overview;
+using src.allors.material.@base.objects.communicationevent.overview.panel;
+using src.allors.material.@base.objects.facetofacecommunication.edit;
+using src.allors.material.@base.objects.person.list;
+using src.allors.material.@base.objects.person.overview;
 
 namespace Tests.FaceToFaceCommunicationTests
 {
