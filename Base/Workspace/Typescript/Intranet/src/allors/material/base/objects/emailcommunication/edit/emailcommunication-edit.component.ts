@@ -40,7 +40,7 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
   parties: Party[];
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<EmailCommunicationEditComponent>,
     public refreshService: RefreshService,

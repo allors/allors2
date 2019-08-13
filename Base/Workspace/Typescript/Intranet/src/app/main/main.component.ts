@@ -35,7 +35,7 @@ export class MainComponent extends TestScope implements OnInit, OnDestroy {
   @ViewChild('drawer', { static: true }) private sidenav: MatSidenav;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     private barcodeService: AllorsBarcodeService,
     private router: Router,

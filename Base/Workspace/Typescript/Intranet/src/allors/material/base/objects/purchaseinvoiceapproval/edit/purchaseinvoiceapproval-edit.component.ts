@@ -31,7 +31,7 @@ export class PurchaseInvoiceApprovalEditComponent extends TestScope implements O
   print: Action;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<PurchaseInvoiceApprovalEditComponent>,
     public metaService: MetaService,

@@ -15,9 +15,9 @@
     "autotest": "npm run build && node ./out-tsc/main && npx rimraf ./out-tsc"
   },
   "dependencies": {
-    "@angular/compiler": "~8.2.1",
-    "@angular/compiler-cli": "~8.2.1",
-    "@angular/core": "~8.2.1",
+    "@angular/compiler": "~8.2.2",
+    "@angular/compiler-cli": "~8.2.2",
+    "@angular/core": "~8.2.2",
     "ejs": "^2.6.2",
     "moment": "^2.24.0",
     "ngast": "^0.3.0",

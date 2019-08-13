@@ -31,7 +31,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
     public metaService: MetaService,

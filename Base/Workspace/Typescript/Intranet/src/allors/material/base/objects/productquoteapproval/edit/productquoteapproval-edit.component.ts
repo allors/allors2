@@ -31,7 +31,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
   print: Action;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<ProductQuoteApprovalEditComponent>,
     public metaService: MetaService,

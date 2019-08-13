@@ -14,7 +14,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty" [options]="contacts" display="displayName" (selected)="fromPartySelected($event)"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="person" type="button" [disabled]="person" (click)="addFromParty = !addFromParty">
+            <button mat-mini-fab color="accent" [disabled]="person" type="button" (click)="addFromParty = !addFromParty">
               <mat-icon *ngIf="!addFromParty">add</mat-icon>
               <mat-icon *ngIf="addFromParty">close</mat-icon>
             </button>

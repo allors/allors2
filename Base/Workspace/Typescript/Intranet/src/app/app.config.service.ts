@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators';
 export class ConfigService {
 
     constructor(
-        @Self() private allors: ContextService,
+        @Self() public allors: ContextService,
         public metaService: MetaService,
         private internalOrganisationId: InternalOrganisationId,
         private singletonId: SingletonId,

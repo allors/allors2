@@ -32,7 +32,7 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
   employees: Person[];
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortPartyAssignmentEditComponent>,
     public metaService: MetaService,
