@@ -50,6 +50,7 @@ namespace Allors.Repository
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
         public InvoiceItem[] ValidInvoiceItems { get; set; }
+        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -447,6 +448,15 @@ namespace Allors.Repository
         [Derived]
         [Workspace]
         public DateTime DueDate { get; set; }
+
+        #region Allors
+        [Id("96D069CB-E463-4C94-A294-17A57D6CD418")]
+        [AssociationId("4CE582B9-B1FA-4379-8D3E-63F91E319066")]
+        [RoleId("F14D7BF1-0620-4350-BF20-FCB430E3F42B")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public VatClause VatClause { get; set; }
 
         #region Allors
         [Id("55A60B80-2052-47E6-BD41-2AF414ABB885")]

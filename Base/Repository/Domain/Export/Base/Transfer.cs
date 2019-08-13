@@ -43,7 +43,8 @@ namespace Allors.Repository
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
-
+        public TransportInitiator InitiatedBy { get; set; }
+        
         public Document[] Documents { get; set; }
 
         public Person ShipFromContactPerson { get; set; }

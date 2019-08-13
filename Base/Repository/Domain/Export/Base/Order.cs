@@ -271,6 +271,16 @@ namespace Allors.Repository
         SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         #region Allors
+        [Id("EBD1F458-F885-49DD-9C9A-E0E39F9C9626")]
+        [AssociationId("093BE562-C973-48BB-BF27-0CAC613334C3")]
+        [RoleId("122D2469-2F95-42F7-A828-C71A67525E6E")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        TransportInitiator TransportInitiatedBy { get; set; }
+
+        #region Allors
         [Id("116D62FC-04E5-407C-B044-7092454C8806")]
         #endregion
         [Workspace]

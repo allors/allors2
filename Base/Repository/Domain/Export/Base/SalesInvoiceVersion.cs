@@ -54,6 +54,7 @@ namespace Allors.Repository
         
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
+        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Guid DerivationId { get; set; }
 
@@ -340,6 +341,15 @@ namespace Allors.Repository
         [RoleId("8E2239DF-B6FC-4277-97AF-FE6608F83097")]
         #endregion
         public DateTime DueDate { get; set; }
+
+        #region Allors
+        [Id("906EB925-D04D-44F6-9E1C-13438200C1F4")]
+        [AssociationId("7012361F-63A2-43DB-907B-CC09D2F4B451")]
+        [RoleId("B52C8305-6135-46A7-84BB-D19385614D4C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public VatClause VatClause { get; set; }
 
         #region inherited methods
 

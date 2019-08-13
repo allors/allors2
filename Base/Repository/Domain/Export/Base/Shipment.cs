@@ -65,6 +65,16 @@ namespace Allors.Repository
         string ShipmentNumber { get; set; }
 
         #region Allors
+        [Id("1C4EFC39-CC8B-4E8B-903A-FB1293834FF9")]
+        [AssociationId("ED1C3E37-C6EA-4D6B-9E0E-A7D239FA7108")]
+        [RoleId("0CD15901-A08F-4386-842F-1194776ADBA0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        TransportInitiator InitiatedBy { get; set; }
+
+        #region Allors
         [Id("f1e92d31-db63-419c-8ed7-49f5db66c63d")]
         [AssociationId("fffbc8b5-a541-402d-8df6-3134cc52b306")]
         [RoleId("566b9c3a-3fec-455f-a40d-b23338d3508c")]

@@ -522,6 +522,19 @@ namespace Allors.Domain
             }
             #endregion
 
+            #region VatClause
+
+            if (!this.ExistVatClause && this.ExistVatRegime)
+            {
+                this.VatClause = this.VatRegime.VatClause;
+            }
+
+            if (!this.ExistVatClause)
+            {
+
+            }
+            #endregion
+
             // TODO: Move to versioning
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;

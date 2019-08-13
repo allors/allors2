@@ -35,6 +35,16 @@ namespace Allors.Repository
         public VatRate VatRate { get; set; }
 
         #region Allors
+        [Id("00A91056-1F2D-462F-8A81-6DA277AD86E1")]
+        [AssociationId("0E3D88B3-ECF4-4681-B16F-91B55CD5308B")]
+        [RoleId("6BD52A1A-E7A0-479F-95EC-452BB23A3167")]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public VatClause VatClause { get; set; }
+
+        #region Allors
         [Id("a037f9f0-1aff-4ad0-8ee9-36ae4609d398")]
         [AssociationId("25db54a8-873d-4736-8408-f1d9e65c49e4")]
         [RoleId("238996a2-ec4f-47f4-8336-8fee91383649")]
@@ -43,7 +53,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public OrganisationGlAccount GeneralLedgerAccount { get; set; }
-
 
         #region inherited methods
 
@@ -64,6 +73,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

@@ -52,6 +52,7 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
@@ -570,6 +571,15 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public bool CanInvoice { get; set; }
+
+        #region Allors
+        [Id("1FC9526F-D1C5-41E3-93D9-FDA9308CD7B4")]
+        [AssociationId("19712037-D36D-4449-B2D5-1694E0357E48")]
+        [RoleId("0E6910E4-7466-4B48-801B-2CFF4C830D11")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public VatClause VatClause { get; set; }
 
         #region Allors
         [Id("E822B75C-3A37-480A-A469-B18A060EC560")]

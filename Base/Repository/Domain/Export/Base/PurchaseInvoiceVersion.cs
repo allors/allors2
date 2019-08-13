@@ -54,6 +54,7 @@ namespace Allors.Repository
         
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
+        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Guid DerivationId { get; set; }
 

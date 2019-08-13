@@ -55,6 +55,7 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Guid DerivationId { get; set; }
 
@@ -413,7 +414,16 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Facility OriginFacility { get; set; }
-        
+
+        #region Allors
+        [Id("20518386-6E32-4521-A97E-E5654E06D1E1")]
+        [AssociationId("4F97C053-CEC7-4CE2-B5DE-D3F6FD25430D")]
+        [RoleId("FCEF8AB3-7D43-4ADB-9C2A-602E29129D9E")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public VatClause VatClause { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

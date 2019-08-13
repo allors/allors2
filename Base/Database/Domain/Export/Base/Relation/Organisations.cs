@@ -18,6 +18,7 @@ namespace Allors.Domain
 {
     using System;
     using System.IO;
+
     using Meta;
 
     public partial class Organisations
@@ -223,12 +224,7 @@ namespace Allors.Domain
 
             if (File.Exists(logo))
             {
-                var fileInfo = new FileInfo(logo);
-
-                var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
-                var content = File.ReadAllBytes(fileInfo.FullName);
-                var image = new MediaBuilder(session).WithFileName(fileName).WithInData(content).Build();
-                internalOrganisation.LogoImage = image;
+                internalOrganisation.LogoImage = FileReader.CreateMedia(session, logo);
             }
 
             Facility facility = null;
