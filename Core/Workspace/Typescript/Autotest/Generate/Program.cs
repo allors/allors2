@@ -18,12 +18,10 @@ namespace Allors
                 string[,] config =
                 {
                     {
-                        "./Workspace/Typescript/Autotest/Templates/sidenav.cs.stg",
-                        "./Workspace/Typescript/Material.Tests/generated/sidenav"
+                        "./Workspace/Typescript/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/Material.Tests/generated/sidenav"
                     },
                     {
-                        "./Workspace/Typescript/Autotest/Templates/component.cs.stg",
-                        "./Workspace/Typescript/Material.Tests/generated/components"
+                        "./Workspace/Typescript/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/Material.Tests/generated/components"
                     },
                 };
 
