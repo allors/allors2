@@ -11,11 +11,8 @@ import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';
 import { ISessionObject } from '../../../../../allors/framework';
-import { Directive } from '@angular/core';
 
-// See https://github.com/angular/angular/issues/30080
-@Directive({selector: 'ivy-workaround-base-table'})
-export abstract class BaseTable {
+export interface BaseTable {
   columns: Column[];
   dataSource: MatTableDataSource<TableRow>;
   selection: SelectionModel<TableRow>;
@@ -31,59 +28,25 @@ export abstract class BaseTable {
 
   autoFilter: boolean;
 
-  get sortValue(): Sort {
-    return this.sort$.getValue();
-  }
+  sortValue: Sort;
 
-  get hasActions(): boolean {
-    return this.actions && this.actions.length > 0;
-  }
+  hasActions: boolean;
 
-  get columnNames(): string[] {
-    let result = this.columns.map((v) => v.name);
-    if (this.selection) {
-      result = ['select', ...result];
-    }
+  columnNames: string[];
 
-    if (this.hasActions) {
-      result = [...result, 'menu'];
-    }
+  anySelected: boolean;
 
-    return result;
-  }
+  allSelected: boolean;
 
-  get anySelected() {
-    return !this.selection.isEmpty();
-  }
+  selected: ISessionObject[];
 
-  get allSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
+  Init(matSort: any);
 
-  get selected(): ISessionObject[] {
-    return this.selection.selected.map((v => v.object));
-  }
+  masterToggle();
 
-  abstract Init(matSort: any);
+  page(event: PageEvent): void;
 
-  masterToggle() {
-    this.allSelected ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
+  sort(event: Sort): void;
 
-  page(event: PageEvent): void {
-    this.pager$.next(event);
-  }
-
-  sort(event: Sort): void {
-    this.sort$.next(event);
-  }
-
-  filter(event: any): void {
-    const value = event && event.target && event.target.value;
-    this.dataSource.filter = value;
-  }
+  filter(event: any): void;
 }

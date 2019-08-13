@@ -4,20 +4,34 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs';
 
+import { Action } from '../../../../angular';
+import { ISessionObject } from '../../../../framework';
 import { TableConfig } from './TableConfig';
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { TableRow } from './TableRow';
 
-export class Table<Row extends TableRow> extends BaseTable {
+export class Table<Row extends TableRow> implements BaseTable {
 
   dataSource: MatTableDataSource<Row>;
   selection: SelectionModel<Row>;
 
+  columns: Column[];
+  actions: Action[];
+  defaultAction: Action;
+  pageSize: number;
+  pageSizeOptions: number[];
+
+  sort$: BehaviorSubject<Sort>;
+  pager$: BehaviorSubject<PageEvent>;
+
+  total: number;
+
+  autoFilter: boolean;
+
   private autoSort = false;
 
   constructor(config?: TableConfig) {
-    super();
 
     let sort: Sort = null;
 
@@ -64,6 +78,60 @@ export class Table<Row extends TableRow> extends BaseTable {
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
 
     this.sort$ = new BehaviorSubject<Sort>(sort);
+  }
+
+  get sortValue(): Sort {
+    return this.sort$.getValue();
+  }
+
+  get hasActions(): boolean {
+    return this.actions && this.actions.length > 0;
+  }
+
+  get columnNames(): string[] {
+    let result = this.columns.map((v) => v.name);
+    if (this.selection) {
+      result = ['select', ...result];
+    }
+
+    if (this.hasActions) {
+      result = [...result, 'menu'];
+    }
+
+    return result;
+  }
+
+  get anySelected() {
+    return !this.selection.isEmpty();
+  }
+
+  get allSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  get selected(): ISessionObject[] {
+    return this.selection.selected.map((v => v.object));
+  }
+
+  masterToggle() {
+    this.allSelected ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  page(event: PageEvent): void {
+    this.pager$.next(event);
+  }
+
+  sort(event: Sort): void {
+    this.sort$.next(event);
+  }
+
+  filter(event: any): void {
+    const value = event && event.target && event.target.value;
+    this.dataSource.filter = value;
   }
 
   get data(): Row[] {
