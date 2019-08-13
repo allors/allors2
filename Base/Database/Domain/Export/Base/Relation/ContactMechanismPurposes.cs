@@ -21,6 +21,7 @@ namespace Allors.Domain
 
     public partial class ContactMechanismPurposes
     {
+        private static readonly Guid RegisteredOfficeId = new Guid("8F99BE32-3817-4371-8317-8F1EF5CA2CDB");
         private static readonly Guid HeadQuartersId = new Guid("065AF4A2-44E0-4bc5-8E09-3D3A6091F841");
         private static readonly Guid SalesOfficeId = new Guid("E6E5E1AF-D490-4d9c-82CD-DD845CC70C56");
         private static readonly Guid HomeAddressId = new Guid("C371E9E3-609D-47f0-A778-DEE0A7F7B477");
@@ -43,6 +44,8 @@ namespace Allors.Domain
         private static readonly Guid OperationsId = new Guid("0078904B-6611-4DFA-BDC9-2A2E139ECD59");
 
         private UniquelyIdentifiableSticky<ContactMechanismPurpose> cache;
+
+        public ContactMechanismPurpose RegisteredOffice => this.Cache[RegisteredOfficeId];
 
         public ContactMechanismPurpose HeadQuarters => this.Cache[HeadQuartersId];
 
@@ -93,9 +96,14 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
-
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
+
+            new ContactMechanismPurposeBuilder(this.Session)
+                .WithName("Registerd Office")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Statutaire zetel").WithLocale(dutchLocale).Build())
+                .WithUniqueId(RegisteredOfficeId)
+                .WithIsActive(true)
+                .Build();
 
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Head Quarters")
