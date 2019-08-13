@@ -26,7 +26,7 @@ namespace Allors.Domain
         private static readonly Guid AssessableId = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
         private static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
         private static readonly Guid IntraCommunautairId = new Guid("CFA1860E-DEBA-49a8-9062-E5577CDE0CCC");
-        private static readonly Guid NotAssessableId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
+        private static readonly Guid ServiceB2BId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
         private static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
         private UniquelyIdentifiableSticky<VatRegime> cache;
@@ -41,7 +41,7 @@ namespace Allors.Domain
 
         public VatRegime IntraCommunautair => this.Cache[IntraCommunautairId];
 
-        public VatRegime NotAssessable => this.Cache[NotAssessableId];
+        public VatRegime ServiceB2B => this.Cache[ServiceB2BId];
 
         public VatRegime Exempt => this.Cache[ExemptId];
 
@@ -106,10 +106,10 @@ namespace Allors.Domain
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithName("Not VAT assessable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet BTW-plichtig").WithLocale(dutchLocale).Build())
+                .WithName("Service B2B: Not VAT assessable")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Service B2B: Niet BTW-plichtig").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
-                .WithUniqueId(NotAssessableId)
+                .WithUniqueId(ServiceB2BId)
                 .WithIsActive(true)
                 .Build();
             

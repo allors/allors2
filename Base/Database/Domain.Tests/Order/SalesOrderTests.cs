@@ -1794,6 +1794,50 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenSalesOrderWithoutShipFromAddress_WhenDeriving_ThenUseTakenByShipFromAddress()
+        {
+            var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
+            
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithBillToCustomer(billToCustomer)
+                .WithFee(adjustment)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.NotNull(this.InternalOrganisation.ShippingAddress);
+            Assert.Equal(order.ShipFromAddress, this.InternalOrganisation.ShippingAddress);
+        }
+
+        [Fact]
+        public void GivenSalesOrderWithShipFromAddress_WhenDeriving_ThenUseOrderShipFromAddress()
+        {
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipFrom = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithShipFromAddress(shipFrom)
+                .WithBillToCustomer(billToCustomer)
+                .WithFee(adjustment)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(order.ShipFromAddress, shipFrom);
+        }
+
+        [Fact]
         public void GivenSalesOrderWithFeePercentage_WhenDeriving_ThenOrderTotalsMustIncludeFeeAmount()
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();

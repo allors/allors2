@@ -282,6 +282,16 @@ namespace Allors.Repository
         public SerialisedItemState NewSerialisedItemState { get; set; }
 
         #region Allors
+        [Id("B9E742C3-F497-4663-9874-EB49DCB45BC0")]
+        [AssociationId("1112D307-756E-4E1D-9386-EE77506437DF")]
+        [RoleId("64B4748B-FF63-404B-A2A1-B02A74984770")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress ShipFromAddress { get; set; }
+
+        #region Allors
         [Id("5cc50f26-361b-46d7-a8e6-a9f53f7d2722")]
         [AssociationId("0d8906e9-3bfd-4d9b-8b24-8526fdfb2e33")]
         [RoleId("000b641f-00be-4b9c-84aa-a8c968024ece")]

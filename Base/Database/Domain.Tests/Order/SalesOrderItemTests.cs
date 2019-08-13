@@ -550,6 +550,24 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenOrderItemWithoutShipFromAddress_WhenDeriving_ThenDerivedShipFromAddressIsFromOrder()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var salesOrder = new SalesOrderBuilder(this.Session)
+                .WithShipFromAddress(this.shipToContactMechanismMechelen)
+                .WithBillToCustomer(this.billToCustomer)
+                .Build();
+
+            var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
+            salesOrder.AddSalesOrderItem(orderItem);
+
+            this.Session.Derive();
+
+            Assert.Equal(this.shipToContactMechanismMechelen, orderItem.ShipFromAddress);
+        }
+
+        [Fact]
         public void GivenOrderItemWithoutShipToAddress_WhenDeriving_ThenDerivedShipToAddressIsFromOrder()
         {
             this.InstantiateObjects(this.Session);

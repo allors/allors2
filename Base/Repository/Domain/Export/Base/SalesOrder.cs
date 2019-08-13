@@ -278,6 +278,16 @@ namespace Allors.Repository
         public Party PreviousShipToCustomer { get; set; }
 
         #region Allors
+        [Id("848B1B7B-C91E-460E-B702-342CDCC58238")]
+        [AssociationId("5ACB2265-3C10-4526-862B-6AD440E32095")]
+        [RoleId("9744CBB5-F9FC-428C-86B0-1BE05174312D")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress ShipFromAddress { get; set; }
+
+        #region Allors
         [Id("3a2be2f2-2608-46e0-b1f1-1da7e372b8f8")]
         [AssociationId("11b71189-8551-467d-9c50-07afe152bdc0")]
         [RoleId("86ca98fe-6bc1-44ce-984e-23ed2f51e9b1")]

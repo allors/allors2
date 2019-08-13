@@ -172,6 +172,7 @@ namespace Allors.Domain
             this.BillToContactMechanism = this.BillToContactMechanism ?? this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
             this.BillToEndCustomerContactMechanism = this.BillToEndCustomerContactMechanism ?? this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
             this.ShipToEndCustomerAddress = this.ShipToEndCustomerAddress ?? this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToCustomer?.GeneralCorrespondence as PostalAddress;
+            this.ShipFromAddress = this.ShipFromAddress?? this.TakenBy?.ShippingAddress;
             this.ShipToAddress = this.ShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
             this.ShipmentMethod = this.ShipmentMethod ?? this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             this.PaymentMethod = this.PaymentMethod ?? this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
@@ -195,6 +196,7 @@ namespace Allors.Domain
             // SalesOrderItem Derivations and Validations
             foreach (SalesOrderItem salesOrderItem in this.SalesOrderItems)
             {
+                salesOrderItem.ShipFromAddress = salesOrderItem.ShipFromAddress ?? this.ShipFromAddress;
                 salesOrderItem.ShipToAddress = salesOrderItem.AssignedShipToAddress ?? salesOrderItem.AssignedShipToParty?.ShippingAddress ?? this.ShipToAddress;
                 salesOrderItem.ShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
                 salesOrderItem.DeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
@@ -259,6 +261,18 @@ namespace Allors.Domain
                 .SelectMany(v => v.SalesReps)
                 .Distinct()
                 .ToArray();
+            #endregion
+
+            #region VatClause
+
+            if (!this.ExistVatClause && this.ExistVatRegime)
+            {
+                this.VatClause = this.VatRegime.VatClause;
+            }
+
+            if (!this.ExistVatClause)
+            {
+            }
             #endregion
 
             #region States
@@ -519,19 +533,6 @@ namespace Allors.Domain
                         totalListPrice += item1.UnitPrice;
                     }
                 }
-            }
-            #endregion
-
-            #region VatClause
-
-            if (!this.ExistVatClause && this.ExistVatRegime)
-            {
-                this.VatClause = this.VatRegime.VatClause;
-            }
-
-            if (!this.ExistVatClause)
-            {
-
             }
             #endregion
 

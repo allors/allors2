@@ -201,6 +201,16 @@ namespace Allors.Repository
         public decimal QuantityShipped { get; set; }
 
         #region Allors
+        [Id("6F3996FE-E7E2-44F0-90B5-BD6E59B108A7")]
+        [AssociationId("A4BBB841-1D26-498A-9D0F-3B064A6B90CF")]
+        [RoleId("8F553EB9-6755-428D-A149-87B3335E44E3")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress ShipFromAddress { get; set; }
+
+        #region Allors
         [Id("38F38BF8-B735-4578-A2B1-2FD997A1FE3C")]
         [AssociationId("F615FF3B-23BD-4743-9557-0C355DDA3A18")]
         [RoleId("10709F20-3D42-4A28-9EA6-B1F8F7D9C0B8")]

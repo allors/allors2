@@ -124,6 +124,16 @@ namespace Allors.Repository
         public SalesOrderPaymentState SalesOrderPaymentState { get; set; }
 
         #region Allors
+        [Id("943F35C6-F418-4BAD-9F30-ABEF4F19DB48")]
+        [AssociationId("7D854417-AB88-4DB6-9345-A1D0C293A7A2")]
+        [RoleId("E2FA3139-2B44-4CA8-9F4D-BFB7A9BEED6D")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress ShipFromAddress { get; set; }
+
+        #region Allors
         [Id("13CBB0CC-126E-4A1F-B873-CF48B6BAA869")]
         [AssociationId("5CE6A286-BAC2-4F13-8B4C-841E5690E965")]
         [RoleId("A2388761-37B7-4AB8-A3EF-D88E2BAA74BB")]

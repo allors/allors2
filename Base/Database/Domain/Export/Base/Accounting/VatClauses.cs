@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     public partial class VatClauses
     {
-        private static readonly Guid BeArt21Par2Id = new Guid("E4D1A217-2E99-4C6E-8D96-8050F99AABB4");
+        private static readonly Guid ServiceB2BId = new Guid("E4D1A217-2E99-4C6E-8D96-8050F99AABB4");
         private static readonly Guid IntracommunautairId = new Guid("0FDBA90F-7E00-4E75-96A5-824CF2400ABE");
         private static readonly Guid BeArt39Par1Part1Id = new Guid("5743B957-3C30-4EDB-B09F-D01D58D01F2E");
         private static readonly Guid BeArt15Par2Id = new Guid("FE7D4204-B328-42F2-8C65-DE8A17AE3F5A");
@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<VatClause> cache;
 
-        public VatClause BeArt21Par2 => this.Cache[BeArt21Par2Id];
+        public VatClause ServiceB2B => this.Cache[ServiceB2BId];
 
         public VatClause Intracommunautair => this.Cache[IntracommunautairId];
 
@@ -51,10 +51,10 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verhuur goederen").WithLocale(dutchLocale).Build())
                 .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
                     .WithText(
-                        @"Dienstverrichting niet onderworpen aan Belgische btw art. 21, § 2 van het Wbtw / Art. 44 Richtlijn 2006/112/EG.")
+                        @"Dienstverrichting niet onderworpen aan Belgische btw art. 21, § 2 van het Wbtw / Art. 44  /EG.")
                     .WithLocale(dutchLocale)
                     .Build())
-                .WithUniqueId(BeArt21Par2Id)
+                .WithUniqueId(ServiceB2BId)
                 .WithIsActive(true)
                 .Build();
 
