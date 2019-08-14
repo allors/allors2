@@ -25,7 +25,7 @@ export class EmailAddressEditComponent extends TestScope implements OnInit, OnDe
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: IObject,
     public dialogRef: MatDialogRef<EmailAddressEditComponent>,
     public metaService: MetaService,

@@ -43,7 +43,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
   get inWorkerMode() { return !!this.data.workerId; }
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: TimeEntryData,
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,

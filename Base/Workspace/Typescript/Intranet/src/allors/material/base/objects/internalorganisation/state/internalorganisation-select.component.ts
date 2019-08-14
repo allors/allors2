@@ -27,7 +27,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     private internalOrganisationId: InternalOrganisationId,
   ) { }

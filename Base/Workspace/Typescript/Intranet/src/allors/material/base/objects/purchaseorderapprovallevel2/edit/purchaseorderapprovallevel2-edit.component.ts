@@ -31,7 +31,7 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
   print: Action;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<PurchaseOrderApprovalLevel2EditComponent>,
     public metaService: MetaService,

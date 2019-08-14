@@ -31,7 +31,7 @@ export class TelecommunicationsNumberCreateComponent extends TestScope implement
 
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<TelecommunicationsNumberCreateComponent>,
     public metaService: MetaService,

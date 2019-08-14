@@ -27,7 +27,7 @@ export class PostalAddressEditComponent extends TestScope implements OnInit, OnD
   partyContactMechanism: PartyContactMechanism;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: IObject,
     public dialogRef: MatDialogRef<PostalAddressEditComponent>,
     public metaService: MetaService,

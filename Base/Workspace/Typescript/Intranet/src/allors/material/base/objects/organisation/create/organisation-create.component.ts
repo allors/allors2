@@ -52,7 +52,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
   currencies: Currency[];
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,

@@ -1,4 +1,5 @@
 import './AutomatedAgent';
+import './ContactMechanism';
 import './EmailAddress';
 import './Organisation';
 import './Party';

@@ -30,7 +30,7 @@ export class BasepriceEditComponent extends TestScope implements OnInit, OnDestr
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<BasepriceEditComponent>,
     public metaService: MetaService,

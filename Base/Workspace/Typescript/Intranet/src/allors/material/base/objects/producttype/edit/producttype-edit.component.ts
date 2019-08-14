@@ -27,7 +27,7 @@ export class ProductTypeEditComponent extends TestScope implements OnInit, OnDes
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<ProductTypeEditComponent>,
     public metaService: MetaService,

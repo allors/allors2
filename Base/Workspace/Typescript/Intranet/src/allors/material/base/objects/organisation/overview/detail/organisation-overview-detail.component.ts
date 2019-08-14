@@ -35,7 +35,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
   currencies: Currency[];
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public saveService: SaveService,

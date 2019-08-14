@@ -30,7 +30,7 @@ export class WorkEffortAssignmentRateEditComponent extends TestScope implements 
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortAssignmentRateEditComponent>,
     public metaService: MetaService,

@@ -33,7 +33,7 @@ export class EmploymentEditComponent extends TestScope implements OnInit, OnDest
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<EmploymentEditComponent>,
     public metaService: MetaService,

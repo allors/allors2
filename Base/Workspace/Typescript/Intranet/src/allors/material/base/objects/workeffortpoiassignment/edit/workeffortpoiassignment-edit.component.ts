@@ -29,7 +29,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
   purchaseOrders: PurchaseOrder[];
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortPurchaseOrderItemAssignmentEditComponent>,
     public metaService: MetaService,

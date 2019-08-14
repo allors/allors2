@@ -29,7 +29,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
   ownerships: Enumeration[];
   parts: Part[];
   part: Part;
-  currentSuppliers: Set<Organisation>;
+  currentSuppliers: Organisation[];
   currentFacility: Facility;
 
   private subscription: Subscription;
@@ -164,7 +164,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
         const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
+        this.currentSuppliers = Array.from(new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))));
 
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
