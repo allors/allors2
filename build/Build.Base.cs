@@ -152,27 +152,30 @@ partial class Build
         });
 
     Target BaseWorkspaceCSharpExcellAddin => _ => _
-        .DependsOn(BasePublishServer)
-        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseGenerate)
         .Executes(() =>
         {
             var msBuildSettings = new MSBuildSettings()
                 .SetRestore(true)
-                .SetProjectFile(Paths.BaseWorkspaceCSharpExcelAddInProject);
+                .SetProjectFile(Paths.BaseWorkspaceCSharpExcelAddInProject)
+                .SetTargets("Build")
+                .SetPackageOutputPath(Paths.ArtifactsBaseExcellAddIn);
             MSBuild(msBuildSettings);
         });
 
     Target BasePublishExcellAddin => _ => _
+        .DependsOn(BaseWorkspaceCSharpExcellAddin)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .Executes(() =>
         {
             CopyFile(Paths.SignTool, Paths.BaseWorkspaceCSharpExcelAddInSignTool, FileExistsPolicy.Overwrite);
-            
+
             var msBuildSettings = new MSBuildSettings()
                 .SetRestore(true)
                 .SetProjectFile(Paths.BaseWorkspaceCSharpExcelAddInProject)
                 .SetTargets("Publish")
+                .AddProperty("InstallUrl", "https://base.allors.com/excel/")
                 .SetPackageOutputPath(Paths.ArtifactsBaseExcellAddIn);
             MSBuild(msBuildSettings);
 

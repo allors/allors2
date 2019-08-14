@@ -23,8 +23,6 @@ namespace Allors.Meta
 {
     public sealed partial class ConcreteRoleType : IConcreteRoleType
     {
-        public static readonly ConcreteRoleType[] EmptyArray = new ConcreteRoleType[0];
-
         public bool IsRequired => this.IsRequiredOverride ?? this.RoleType.IsRequired;
 
         public bool? IsRequiredOverride { get; set; }

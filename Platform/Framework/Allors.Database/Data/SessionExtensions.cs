@@ -27,8 +27,6 @@ namespace Allors.Data
 
     public static class SessionExtensions
     {
-        private static readonly IObject[] EmptyArray = { };
-
         internal static IMetaObject GetMetaObject(this ISession @this, object value)
         {
             switch (value)
@@ -67,6 +65,7 @@ namespace Allors.Data
 
         internal static IObject[] GetObjects(this ISession @this, object value)
         {
+            IObject[] emptyArray = Array.Empty<IObject>();
             switch (value)
             {
                 case IObject[] objects:
@@ -83,11 +82,11 @@ namespace Allors.Data
 
                 case long idAsLong:
                     var objectFromLong = @this.Instantiate(idAsLong);
-                    return objectFromLong != null ? new[] { objectFromLong } : EmptyArray;
+                    return objectFromLong != null ? new[] { objectFromLong } : emptyArray;
 
                 case string idAsString:
                     var objectFromString = @this.Instantiate(idAsString);
-                    return objectFromString != null ? new[] { objectFromString } : EmptyArray;
+                    return objectFromString != null ? new[] { objectFromString } : emptyArray;
 
                 default:
                     throw new ArgumentException();

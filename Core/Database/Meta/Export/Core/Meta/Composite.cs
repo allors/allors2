@@ -26,8 +26,6 @@ namespace Allors.Meta
 
     public abstract partial class Composite : ObjectType, IComposite
     {
-        internal static readonly Composite[] EmptyArray = new Composite[0];
-
         private bool derivedWorkspace;
 
         private bool assignedIsSynced;

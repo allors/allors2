@@ -958,7 +958,7 @@ namespace Allors.Domain
             decimal quantityOrdered,
             decimal totalBasePrice)
         {
-            var currentGenericOrProductOrFeaturePriceComponents = PriceComponents.EmptyArray;
+            var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
             if (salesOrderItem.ExistProduct)
             {
                 currentGenericOrProductOrFeaturePriceComponents = salesOrderItem.Product.GetPriceComponents(currentPriceComponents);

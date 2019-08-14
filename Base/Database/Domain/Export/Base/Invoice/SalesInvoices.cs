@@ -20,8 +20,6 @@ namespace Allors.Domain
 
     public partial class SalesInvoices
     {
-        public static readonly SalesInvoice[] EmptyArray = new SalesInvoice[0];
-
         protected override void BasePrepare(Setup setup)
         {
             base.BasePrepare(setup);

@@ -21,8 +21,6 @@ namespace Allors.Domain
 
     public partial class PriceComponents
     {
-        public static readonly PriceComponent[] EmptyArray = new PriceComponent[0];
-
         public partial class IsApplicable
         {
             public PriceComponent PriceComponent;
