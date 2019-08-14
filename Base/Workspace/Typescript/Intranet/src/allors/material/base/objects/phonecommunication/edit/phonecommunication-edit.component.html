@@ -17,7 +17,7 @@
           <div class="row">
             <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.FromParty"
               [options]="contacts" display="displayName" (selected)="fromPartySelected($event)"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="person" (click)="addFromParty = !addFromParty">
+            <button mat-mini-fab color="accent" type="button" [disabled]="person != null" (click)="addFromParty = !addFromParty">
               <mat-icon *ngIf="!addFromParty">add</mat-icon>
               <mat-icon *ngIf="addFromParty">close</mat-icon>
             </button>
@@ -38,7 +38,7 @@
           <div class="row">
             <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ToParty"
               [options]="contacts" display="displayName" (selected)="toPartySelected($event)"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="person" (click)="addToParty = !addToParty">
+            <button mat-mini-fab color="accent" type="button" [disabled]="person != null" (click)="addToParty = !addToParty">
               <mat-icon *ngIf="!addToParty">add</mat-icon>
               <mat-icon *ngIf="addToParty">close</mat-icon>
             </button>

@@ -145,6 +145,14 @@ namespace Allors.Repository
         [Workspace]
         public InventoryStrategy InventoryStrategy { get; set; }
 
+        #region Allors
+        [Id("791989EE-DAB9-42C6-B64C-6B07E8400C90")]
+        [AssociationId("F9A3A98A-29D8-4352-926F-57E776ACBC96")]
+        [RoleId("763919A4-C334-4200-A1F6-AC8F49BD32A6")]
+        #endregion
+        [Workspace]
+        public bool UseGlobalProductNumber { get; set; }
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

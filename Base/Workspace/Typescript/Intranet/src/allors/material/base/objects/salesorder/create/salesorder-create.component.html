@@ -185,7 +185,7 @@
           <div class="row">
             <a-mat-select class="col" [disabled]="shipToEndCustomerIsPerson" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerContactPerson"
               [options]="shipToEndCustomerContacts" display="displayName" label="Shipping Contact Person" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="shipToEndCustomerIsPerson || !order.CanWriteShipToEndCustomerContactPersonr"
+            <button mat-mini-fab color="accent" [disabled]="shipToEndCustomerIsPerson || !order.CanWriteShipToEndCustomerContactPerson"
               type="button" (click)="addShipToEndCustomerContactPerson = !addShipToEndCustomerContactPerson">
               <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
               <mat-icon *ngIf="addShipToEndCustomerContactPerson">close</mat-icon>

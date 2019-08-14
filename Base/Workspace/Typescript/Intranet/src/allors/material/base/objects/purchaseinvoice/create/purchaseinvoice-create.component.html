@@ -196,7 +196,7 @@
         <div class="row">
           <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToEndCustomerContactPerson"
             [options]="billToEndCustomerContacts" display="displayName" label="Billed to Contact Person" class="col-md"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteBillToEndCustomerContactPerson"
+          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteBillToEndCustomerContactPerson"
             type="button" (click)="addBillToEndCustomerContactPerson = !addBillToEndCustomerContactPerson">
             <mat-icon *ngIf="!addBillToEndCustomerContactPerson">add</mat-icon>
             <mat-icon *ngIf="addBillToEndCustomerContactPerson">close</mat-icon>
@@ -219,7 +219,7 @@
         <div class="row">
           <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
             [filter]="filtersService.customersFilter.create(allors.context)" display="displayName" (changed)="shipToEndCustomerSelected($event)"></a-mat-autocomplete>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteshipToEndCustomer" type="button" (click)="addShipToEndCustomer = !addShipToEndCustomer">
+          <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToEndCustomer" type="button" (click)="addShipToEndCustomer = !addShipToEndCustomer">
             <mat-icon *ngIf="!addShipToEndCustomer">add</mat-icon>
             <mat-icon *ngIf="addShipToEndCustomer">close</mat-icon>
           </button>
