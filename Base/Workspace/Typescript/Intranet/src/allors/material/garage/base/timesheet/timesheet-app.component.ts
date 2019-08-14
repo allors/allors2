@@ -2,7 +2,7 @@ import { Subscription, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Component, ChangeDetectionStrategy, Self, OnInit, OnDestroy } from '@angular/core';
-import { CalendarEvent, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { Title } from '@angular/platform-browser';
 
 import { ContextService, MetaService, RefreshService, UserId, TestScope } from '../../../../angular';
@@ -35,6 +35,7 @@ export class TimesheetAppComponent extends TestScope implements OnInit, OnDestro
 
   calendarRefresh$: Subject<any> = new Subject();
   viewDate = new Date();
+  calendarView = CalendarView.Day;
   events: CalendarEvent<MetaType>[] = [];
 
   get createData(): TimeEntryData {

@@ -17,13 +17,13 @@
               <h3>{{ viewDate | calendarDate:('dayViewTitle') }}</h3>
             </div>
             <div>
-              <button type="button" mat-raised-button mwlCalendarPreviousView [view]="'day'" [(viewDate)]="viewDate">
+              <button type="button" mat-raised-button mwlCalendarPreviousView [view]="calendarView" [(viewDate)]="viewDate">
                 Previous
               </button>
               <button type="button" mat-raised-button mwlCalendarToday [(viewDate)]="viewDate">
                 Today
               </button>
-              <button type="button" mat-raised-button mwlCalendarNextView [view]="'day'" [(viewDate)]="viewDate">
+              <button type="button" mat-raised-button mwlCalendarNextView [view]="calendarView" [(viewDate)]="viewDate">
                 Next
               </button>
             </div>
