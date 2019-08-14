@@ -22,6 +22,8 @@ namespace Allors.Domain.Print.SalesOrderModel
     {
         public Model(SalesOrder order)
         {
+            var session = order.Strategy.Session;
+
             this.Order = new OrderModel(order);
             
             this.TakenBy = new TakenByModel((Organisation)order.TakenBy);
@@ -30,8 +32,19 @@ namespace Allors.Domain.Print.SalesOrderModel
 
             this.OrderItems = order.SalesOrderItems.Select(v => new OrderItemModel(v)).ToArray();
 
-            var paymentTerm = new InvoiceTermTypes(order.Strategy.Session).PaymentNetDays;
+            var paymentTerm = new InvoiceTermTypes(session).PaymentNetDays;
             this.SalesTerms = order.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
+
+            string TakenByCountry = null;
+            if (order.TakenBy.PartyContactMechanisms?.FirstOrDefault(v => v.ContactPurposes.Any(p => Equals(p, new ContactMechanismPurposes(session).RegisteredOffice)))?.ContactMechanism is PostalAddress registeredOffice)
+            {
+                TakenByCountry = registeredOffice.Country.IsoCode;
+            }
+
+            if (TakenByCountry == "BE")
+            {
+                this.VatClause = order.DerivedVatClause?.LocalisedClause.First(v => v.Locale.Equals(new Locales(session).DutchNetherlands)).Text;
+            }
         }
 
         public OrderModel Order { get; }
@@ -45,5 +58,7 @@ namespace Allors.Domain.Print.SalesOrderModel
         public OrderItemModel[] OrderItems { get; }
 
         public SalesTermModel[] SalesTerms { get; }
+
+        public string VatClause { get; }
     }
 }

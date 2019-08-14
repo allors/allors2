@@ -31,6 +31,29 @@
         <div class="row">
           <div class="col-md">
             <div class="row">
+              <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipFromAddress" [options]="shipFromAddresses" display="displayName"
+                class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteShipFromAddress"
+                type="button" (click)="addShipFromAddress = !addShipFromAddress">
+                <mat-icon *ngIf="!addShipFromAddress">add</mat-icon>
+                <mat-icon *ngIf="addShipFromAddress">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="addShipFromAddress">
+            <mat-card>
+              <mat-card-header>Add a new ship from address</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism-postaladdress (cancelled)="addShipFromAddress = false" (saved)="shipFromAddressAdded($event); addShipFromAddress = false">
+                </party-contactmechanism-postaladdress>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
               <a-mat-autocomplete class="col-md" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
                 display="displayName" (changed)="shipToCustomerSelected($event)" label="Ship to"></a-mat-autocomplete>
               <button mat-mini-fab color="accent" [disabled]="!order.CanWriteShipToCustomer" type="button" (click)="addShipToCustomer = !addShipToCustomer">
@@ -303,6 +326,11 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.DerivedVatClause" [options]="vatClauses" display="Name" label="Applied VAT clause"></a-mat-select>
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.AssignedVatClause" [options]="vatClauses" display="Name" label="Assign VAT clause"></a-mat-select>
+        </div>
+
+        <div class="row">
           <a-mat-select class="col-md-6" [object]="order" [roleType]="m.SalesOrder.Currency" [options]="currencies" display="Name"></a-mat-select>
         </div>
   
@@ -323,7 +351,8 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+      <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
       <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
     </mat-card-actions>
   </mat-card>

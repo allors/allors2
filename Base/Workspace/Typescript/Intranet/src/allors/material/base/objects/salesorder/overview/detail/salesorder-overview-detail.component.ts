@@ -3,11 +3,12 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility, VatClause } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -25,10 +26,12 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   currencies: Currency[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  shipFromAddresses: ContactMechanism[] = [];
   shipToAddresses: ContactMechanism[] = [];
   shipToEndCustomerAddresses: ContactMechanism[] = [];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  vatClauses: VatClause[];
   billToContacts: Person[] = [];
   billToEndCustomerContacts: Person[] = [];
   shipToContacts: Person[] = [];
@@ -42,6 +45,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   selectedSerialisedInventoryState: string;
   inventoryItemStates: SerialisedInventoryItemState[];
   internalOrganisation: Organisation;
+
+  addShipFromAddress = false;
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -90,8 +95,9 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private singletonId: SingletonId,
-    private fetcher: FetcherService
+    private fetcher: FetcherService,
+    private snackBar: MatSnackBar,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -147,6 +153,9 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               CreatedBy: x,
               LastModifiedBy: x,
               Quote: x,
+              ShipFromAddress: {
+                Country: x,
+              },
               ShipToAddress: {
                 Country: x,
               },
@@ -185,7 +194,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
             sort: new Sort(m.SerialisedInventoryItemState.Name)
           }),
-
         );
       }
     };
@@ -238,6 +246,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
                 ShipToEndCustomer: x,
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
+                AssignedVatClause: x,
+                DerivedVatClause: x,
                 VatRegime: {
                   VatRate: x,
                 }
@@ -246,16 +256,27 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.VatClause(),
             pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: this.internalOrganisation }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
             }),
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: new Sort(m.Organisation.PartyName),
-            })
+            pull.Party(
+              {
+                object: this.internalOrganisationId.value,
+                fetch: {
+                  CurrentPartyContactMechanisms: {
+                    include: {
+                      ContactMechanism: {
+                        PostalAddress_Country: x
+                      }
+                    }
+                  }
+                }
+              }
+            ),
           ];
 
           return this.allors.context
@@ -270,8 +291,12 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.vatClauses = loaded.collections.VatClauses as VatClause[];
         this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
 
         if (this.order.ShipToCustomer) {
           this.previousShipToCustomer = this.order.ShipToCustomer;
@@ -427,6 +452,13 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+  }
+
+  public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.shipFromAddresses.push(partyContactMechanism.ContactMechanism);
+    this.order.TakenBy.AddPartyContactMechanism(partyContactMechanism);
+    this.order.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   private updateShipToCustomer(party: Party): void {
@@ -631,4 +663,16 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     }
   }
 
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler
+      );
+  }
 }

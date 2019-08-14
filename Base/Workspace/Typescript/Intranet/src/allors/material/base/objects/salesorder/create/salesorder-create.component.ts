@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, VatRate, VatRegime, CustomerRelationship } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -22,19 +22,19 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   title = 'Add Sales Order';
 
   order: SalesOrder;
-  currencies: Currency[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToEndCustomerContactMechanisms: ContactMechanism[] = [];
+  shipFromAddresses: ContactMechanism[] = [];
   shipToAddresses: ContactMechanism[] = [];
   shipToEndCustomerAddresses: ContactMechanism[] = [];
-  vatRates: VatRate[];
-  vatRegimes: VatRegime[];
   billToContacts: Person[] = [];
   billToEndCustomerContacts: Person[] = [];
   shipToContacts: Person[] = [];
   shipToEndCustomerContacts: Person[] = [];
   stores: Store[];
   internalOrganisation: Organisation;
+
+  addShipFromAddress = false;
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -100,18 +100,25 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.VatRate(),
-            pull.VatRegime(),
-            pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
             }),
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: new Sort(m.Organisation.PartyName),
-            })
+            pull.Party(
+              {
+                object: this.internalOrganisationId.value,
+                fetch: {
+                  CurrentPartyContactMechanisms: {
+                    include: {
+                      ContactMechanism: {
+                        PostalAddress_Country: x
+                      }
+                    }
+                  }
+                }
+              }
+            ),
           ];
 
           return this.allors.context
@@ -125,13 +132,12 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = this.internalOrganisation;
 
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
+
         if (this.stores.length === 1) {
           this.order.Store = this.stores[0];
         }
-
-        this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.currencies = loaded.collections.Currencies as Currency[];
 
         if (this.order.ShipToCustomer) {
           this.updateShipToCustomer(this.order.ShipToCustomer);
@@ -280,6 +286,13 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+  }
+
+  public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
+
+    this.shipFromAddresses.push(partyContactMechanism.ContactMechanism);
+    this.order.TakenBy.AddPartyContactMechanism(partyContactMechanism);
+    this.order.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToCustomerSelected(party: Party) {
