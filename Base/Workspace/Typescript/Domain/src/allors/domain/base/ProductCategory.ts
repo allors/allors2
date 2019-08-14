@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: ProductCategory = workspace.prototypeByName['ProductCategory'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: ProductCategory): string {
 
       const selfAndPrimaryAncestors = [this];

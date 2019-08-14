@@ -13,6 +13,7 @@ domain.extend((workspace) => {
     const obj: AutomatedAgent = workspace.prototypeByName['AutomatedAgent'];
 
     Object.defineProperty(obj, 'displayName', {
+        configurable: true,
         get(this: AutomatedAgent): string {
             if (this.UserName) {
                 return this.UserName;

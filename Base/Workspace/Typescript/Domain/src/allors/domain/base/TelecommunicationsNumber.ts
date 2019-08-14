@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: TelecommunicationsNumber = workspace.prototypeByName['TelecommunicationsNumber'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: TelecommunicationsNumber) {
       let numberString = '';
       if (this.CountryCode || this.AreaCode) {

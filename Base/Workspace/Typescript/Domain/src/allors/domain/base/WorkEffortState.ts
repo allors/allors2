@@ -22,30 +22,35 @@ domain.extend((workspace) => {
   const obj: WorkEffortState = workspace.prototypeByName.WorkEffortState;
 
   Object.defineProperty(obj, 'created', {
+    configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === createdId;
     },
   });
 
   Object.defineProperty(obj, 'inProgress', {
+    configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === inProgressId;
     },
   });
 
   Object.defineProperty(obj, 'cancelled', {
+    configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === cancelledId;
     },
   });
 
   Object.defineProperty(obj, 'completed', {
+    configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === completedId;
     },
   });
 
   Object.defineProperty(obj, 'finished', {
+    configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === finishedId;
     },

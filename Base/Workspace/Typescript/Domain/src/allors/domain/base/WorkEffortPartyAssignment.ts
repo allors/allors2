@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: WorkEffortPartyAssignment = workspace.prototypeByName['WorkEffortPartyAssignment'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: WorkEffortPartyAssignment) {
       if (this.Party) {
         return this.Party.displayName;

@@ -19,16 +19,19 @@ domain.extend((workspace) => {
 
     Object.defineProperties(obj, {
         displayName: {
+            configurable: true,
             get(this: Organisation): string {
                 return this.Name || 'N/A';
             },
         },
         displayClassification: {
+            configurable: true,
             get(this: Organisation): string {
                 return this.CustomClassifications.map(w => w.Name).join(', ');
             },
         },
         displayAddress: {
+            configurable: true,
             get(this: Organisation): string {
                 if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
                     const postalAddress = this.GeneralCorrespondence as PostalAddress;
@@ -39,6 +42,7 @@ domain.extend((workspace) => {
             },
         },
         displayAddress2: {
+            configurable: true,
             get(this: Organisation): string {
                 if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
                     const postalAddress = this.GeneralCorrespondence as PostalAddress;
@@ -47,6 +51,7 @@ domain.extend((workspace) => {
             },
         },
         displayAddress3: {
+            configurable: true,
             get(this: Organisation): string {
                 if (this.GeneralCorrespondence && this.GeneralCorrespondence.objectType.name === 'PostalAddress') {
                     const postalAddress = this.GeneralCorrespondence as PostalAddress;
@@ -56,6 +61,7 @@ domain.extend((workspace) => {
             },
         },
         displayPhone: {
+            configurable: true,
             get(this: Organisation): string {
                 return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.displayName : ''}`;
             },

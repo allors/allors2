@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: WebAddress = workspace.prototypeByName['WebAddress'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: WebAddress) {
       if (this.ElectronicAddressString) {
         return this.ElectronicAddressString;

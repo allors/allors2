@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: PurchaseOrderItem = workspace.prototypeByName['PurchaseOrderItem'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: PurchaseOrderItem) {
 
       return this.Description || this.Part.Name;

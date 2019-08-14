@@ -12,6 +12,7 @@ domain.extend((workspace) => {
   const obj: PostalAddress = workspace.prototypeByName['PostalAddress'];
 
   Object.defineProperty(obj, 'displayName', {
+    configurable: true,
     get(this: PostalAddress) {
       let fullAddress: string;
       if (this.Address1 || this.Address2 || this.Address3) {

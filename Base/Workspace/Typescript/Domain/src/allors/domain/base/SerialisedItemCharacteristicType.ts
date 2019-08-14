@@ -13,6 +13,7 @@ domain.extend((workspace) => {
 
     Object.defineProperties(obj, {
         displayName: {
+            configurable: true,
             get(this: SerialisedItemCharacteristicType): string {
                 return  this.UnitOfMeasure ?  this.Name + ' (' + this.UnitOfMeasure.Abbreviation + ')' : this.Name;
             },

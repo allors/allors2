@@ -14,6 +14,7 @@ domain.extend((workspace) => {
     const obj: Person = workspace.prototypeByName['Person'];
 
     Object.defineProperty(obj, 'displayName', {
+        configurable: true,
         get(this: Person): string {
             if (this.FirstName || this.LastName) {
                 let name = null;
@@ -49,6 +50,7 @@ domain.extend((workspace) => {
     });
 
     Object.defineProperty(obj, 'displayEmail', {
+        configurable: true,
         get(this: Person): string {
             const email = this.GeneralEmail;
             if (email) {
@@ -58,6 +60,7 @@ domain.extend((workspace) => {
     });
 
     Object.defineProperty(obj, 'displayPhone', {
+        configurable: true,
         get(this: Person): string {
 
             const phone = this.GeneralPhoneNumber;
