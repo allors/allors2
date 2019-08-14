@@ -174,6 +174,7 @@ namespace Allors.Domain
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
+                .WithContactPurpose(new ContactMechanismPurposes(session).RegisteredOffice)
                 .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
                 .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(session).ShippingAddress)

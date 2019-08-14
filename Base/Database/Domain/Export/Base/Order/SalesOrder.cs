@@ -159,6 +159,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var session = this.strategy.Session;
 
             #region Derivations and Validations
             // SalesOrder Derivations and Validations
@@ -270,8 +271,49 @@ namespace Allors.Domain
                 this.VatClause = this.VatRegime.VatClause;
             }
 
-            if (!this.ExistVatClause)
+            if (!this.ExistVatClause && this.ExistTakenBy)
             {
+                string TakenbyCountry = null;
+
+                if (this.TakenBy.PartyContactMechanisms?.FirstOrDefault(v => v.ContactPurposes.Any(p => Equals(p, new ContactMechanismPurposes(session).RegisteredOffice)))?.ContactMechanism is PostalAddress registeredOffice)
+                {
+                    TakenbyCountry = registeredOffice.Country.IsoCode;
+                }
+
+                var shipFromBelgium = this.ValidOrderItems?.Cast<SalesOrderItem>().All(v => Equals("BE", v.ShipFromAddress?.Country?.IsoCode));
+                var shipToEU = this.ValidOrderItems?.Cast<SalesOrderItem>().Any(v => Equals(true, v.ShipFromAddress?.Country?.EuMemberState));
+                var shipToOrganisation = this.ShipToCustomer as Organisation;
+                bool? shipToInternalOrganisation = shipToOrganisation?.IsInternalOrganisation;
+
+                if (TakenbyCountry == "BE" && shipFromBelgium.HasValue && shipFromBelgium.Value && shipToEU.HasValue && shipToEU.Value == false)
+                {
+                    if (shipToInternalOrganisation.HasValue && shipToInternalOrganisation.Value)
+                    {
+                        if (Equals(this.TransportInitiatedBy, new TransportInitiators(session).InternalOrganisation))
+                        {
+                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and the importer is InternalOrganisation
+                            this.VatClause = new VatClauses(session).BeArt15Par2;
+                        }
+                        else
+                        {
+                            // you sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and the customer does the transport of the goods and the importer is InternalOrganisation
+                            this.VatClause = new VatClauses(session).BeArt14Par2;
+                        }
+                    }
+                    else
+                    {
+                        if (Equals(this.TransportInitiatedBy, new TransportInitiators(session).InternalOrganisation))
+                        {
+                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and importer is the customer
+                            this.VatClause = new VatClauses(session).BeArt39Par1Item1;
+                        }
+                        else
+                        {
+                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU  and the customer does the transport of the goods and importer is the customer
+                            this.VatClause = new VatClauses(session).BeArt39Par1item2;
+                        }
+                    }
+                }
             }
             #endregion
 
@@ -373,7 +415,7 @@ namespace Allors.Domain
             #endregion
 
             #region Pricing
-            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.OrderDate);
+            var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.OrderDate);
 
             var quantityOrderedByProduct = validOrderItems
                 .Where(v => v.ExistProduct)
@@ -540,7 +582,7 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            var singleton = this.strategy.Session.GetSingleton();
+            var singleton = session.GetSingleton();
 
             this.SecurityTokens = new[]
             {
@@ -552,7 +594,7 @@ namespace Allors.Domain
                 this.AddSecurityToken(this.TakenBy.LocalAdministratorSecurityToken);
             }
 
-            this.Sync(this.strategy.Session);
+            this.Sync(session);
 
             this.ResetPrintDocument();
         }
@@ -720,7 +762,7 @@ namespace Allors.Domain
                         if (pendingShipment == null)
                         {
                             pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
-                                .WithShipFromAddress(this.TakenBy.ShippingAddress)
+                                .WithShipFromAddress(this.ShipFromAddress)
                                 .WithShipToAddress(address.Key)
                                 .WithShipToParty(address.Value)
                                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Strategy.Session).Build())
@@ -809,12 +851,14 @@ namespace Allors.Domain
                     .WithSalesChannel(this.SalesChannel)
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                     .WithVatRegime(this.VatRegime)
+                    .WithVatClause(this.VatClause)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
                     .WithSurchargeAdjustment(this.SurchargeAdjustment)
                     .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
                     .WithFee(this.Fee)
                     .WithCustomerReference(this.CustomerReference)
                     .WithPaymentMethod(this.PaymentMethod)
+                    .WithTransportInitiatedBy(this.TransportInitiatedBy)
                     .Build();
 
                 foreach (SalesOrderItem orderItem in this.ValidOrderItems)
