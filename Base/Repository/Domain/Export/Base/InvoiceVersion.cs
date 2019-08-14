@@ -299,15 +299,5 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalFee { get; set; }
-
-        #region Allors
-        [Id("15B9E539-CC59-4602-91D2-BC06B6E5E42A")]
-        [AssociationId("EF24B707-16B9-4E4D-A98B-1B7B229C5F57")]
-        [RoleId("5AC2510C-89F5-46A8-A45A-D5F336C5FA4F")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        TransportInitiator TransportInitiatedBy { get; set; }
     }
 }

@@ -55,7 +55,6 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
-        public TransportInitiator TransportInitiatedBy { get; set; }
 
         public Guid DerivationId { get; set; }
 

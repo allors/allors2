@@ -101,7 +101,6 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(IntraCommunautairId)
-                .WithVatClause(new VatClauses(this.Session).Intracommunautair)
                 .WithIsActive(true)
                 .Build();
             

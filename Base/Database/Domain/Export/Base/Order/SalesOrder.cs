@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Net.Http.Headers;
+
 namespace Allors.Domain
 {
     using System;
@@ -280,38 +283,34 @@ namespace Allors.Domain
                     TakenbyCountry = registeredOffice.Country.IsoCode;
                 }
 
+                var OutsideEUCustomer = this.BillToCustomer?.VatRegime?.Equals(new VatRegimes(session).Export);
                 var shipFromBelgium = this.ValidOrderItems?.Cast<SalesOrderItem>().All(v => Equals("BE", v.ShipFromAddress?.Country?.IsoCode));
-                var shipToEU = this.ValidOrderItems?.Cast<SalesOrderItem>().Any(v => Equals(true, v.ShipFromAddress?.Country?.EuMemberState));
-                var shipToOrganisation = this.ShipToCustomer as Organisation;
-                bool? shipToInternalOrganisation = shipToOrganisation?.IsInternalOrganisation;
+                var shipToEU = this.ValidOrderItems?.Cast<SalesOrderItem>().Any(v => Equals(true, v.ShipToAddress?.Country?.EuMemberState));
+                var sellerResponsibleForTransport = this.SalesTerms.Any(v => Equals(v.TermType, new IncoTermTypes(session).Cif) || Equals(v.TermType, new IncoTermTypes(session).Cfr));
+                var buyerResponsibleForTransport = this.SalesTerms.Any(v => Equals(v.TermType, new IncoTermTypes(session).Exw));
 
-                if (TakenbyCountry == "BE" && shipFromBelgium.HasValue && shipFromBelgium.Value && shipToEU.HasValue && shipToEU.Value == false)
+                if (Equals(this.VatRegime, new VatRegimes(session).ServiceB2B))
                 {
-                    if (shipToInternalOrganisation.HasValue && shipToInternalOrganisation.Value)
+                    this.VatClause = new VatClauses(session).ServiceB2B;
+                }
+                else if (Equals(this.VatRegime, new VatRegimes(session).IntraCommunautair))
+                {
+                    this.VatClause = new VatClauses(session).Intracommunautair;
+                }
+                else if (TakenbyCountry == "BE" 
+                         && OutsideEUCustomer.HasValue && OutsideEUCustomer.Value
+                         && shipFromBelgium.HasValue && shipFromBelgium.Value 
+                         && shipToEU.HasValue && shipToEU.Value == false)
+                {
+                    if (sellerResponsibleForTransport)
                     {
-                        if (Equals(this.TransportInitiatedBy, new TransportInitiators(session).InternalOrganisation))
-                        {
-                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and the importer is InternalOrganisation
-                            this.VatClause = new VatClauses(session).BeArt15Par2;
-                        }
-                        else
-                        {
-                            // you sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and the customer does the transport of the goods and the importer is InternalOrganisation
-                            this.VatClause = new VatClauses(session).BeArt14Par2;
-                        }
+                        // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and importer is the customer
+                        this.VatClause = new VatClauses(session).BeArt39Par1Item1;
                     }
-                    else
+                    else if(buyerResponsibleForTransport)
                     {
-                        if (Equals(this.TransportInitiatedBy, new TransportInitiators(session).InternalOrganisation))
-                        {
-                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and importer is the customer
-                            this.VatClause = new VatClauses(session).BeArt39Par1Item1;
-                        }
-                        else
-                        {
-                            // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU  and the customer does the transport of the goods and importer is the customer
-                            this.VatClause = new VatClauses(session).BeArt39Par1item2;
-                        }
+                        // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU  and the customer does the transport of the goods and importer is the customer
+                        this.VatClause = new VatClauses(session).BeArt39Par1Item2;
                     }
                 }
             }
@@ -858,7 +857,6 @@ namespace Allors.Domain
                     .WithFee(this.Fee)
                     .WithCustomerReference(this.CustomerReference)
                     .WithPaymentMethod(this.PaymentMethod)
-                    .WithTransportInitiatedBy(this.TransportInitiatedBy)
                     .Build();
 
                 foreach (SalesOrderItem orderItem in this.ValidOrderItems)

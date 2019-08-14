@@ -152,8 +152,9 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var session = this.strategy.Session;
 
-            var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
+            var internalOrganisations = new Organisations(session).InternalOrganisations();
 
             if (!this.ExistBilledFrom && internalOrganisations.Count() == 1)
             {
@@ -162,7 +163,7 @@ namespace Allors.Domain
 
             if (!this.ExistStore && this.ExistBilledFrom)
             {
-                var stores = new Stores(this.Strategy.Session).Extent();
+                var stores = new Stores(session).Extent();
                 stores.Filter.AddEquals(M.Store.InternalOrganisation, this.BilledFrom);
                 this.Store = stores.FirstOrDefault();
             }
@@ -207,7 +208,7 @@ namespace Allors.Domain
                 {
                     this.Currency = this.BilledFrom.ExistPreferredCurrency ?
                         this.BilledFrom.PreferredCurrency :
-                        this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
+                        session.GetSingleton().DefaultLocale.Country.Currency;
                 }
             }
 
@@ -253,14 +254,14 @@ namespace Allors.Domain
             }
             else
             {
-                this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
+                this.Locale = session.GetSingleton().DefaultLocale;
             }
 
             if (this.ExistSalesTerms)
             {
                 foreach (AgreementTerm term in this.SalesTerms)
                 {
-                    if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
+                    if (term.TermType.Equals(new InvoiceTermTypes(session).PaymentNetDays))
                     {
                         if (int.TryParse(term.TermValue, out var netDays))
                         {
@@ -521,11 +522,31 @@ namespace Allors.Domain
             }
             #endregion
 
+            #region VatClause
+
+            if (!this.ExistVatClause && this.ExistVatRegime)
+            {
+                this.VatClause = this.VatRegime.VatClause;
+            }
+
+            if (!this.ExistVatClause && this.ExistBilledFrom)
+            {
+                if (Equals(this.VatRegime, new VatRegimes(session).ServiceB2B))
+                {
+                    this.VatClause = new VatClauses(session).ServiceB2B;
+                }
+                else if (Equals(this.VatRegime, new VatRegimes(session).IntraCommunautair))
+                {
+                    this.VatClause = new VatClauses(session).Intracommunautair;
+                }
+            }
+            #endregion
+
             this.SalesReps = validInvoiceItems
-            .Cast<SalesInvoiceItem>()
-            .SelectMany(v => v.SalesReps)
-            .Distinct()
-            .ToArray();
+                .Cast<SalesInvoiceItem>()
+                .SelectMany(v => v.SalesReps)
+                .Distinct()
+                .ToArray();
 
             this.BaseOnDeriveCustomers(derivation);
 

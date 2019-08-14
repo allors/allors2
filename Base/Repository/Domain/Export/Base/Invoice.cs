@@ -272,15 +272,5 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         InvoiceItem[] ValidInvoiceItems { get; set; }
-
-        #region Allors
-        [Id("C92B2E96-CA63-4CE7-9D6B-C838AE42F6A6")]
-        [AssociationId("9D8E41C9-5C3E-490D-B4AA-5BA2A9EBA805")]
-        [RoleId("6A1CFCAF-ECDF-4B44-8143-A5F853E38CCA")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        TransportInitiator TransportInitiatedBy { get; set; }
     }
 }
