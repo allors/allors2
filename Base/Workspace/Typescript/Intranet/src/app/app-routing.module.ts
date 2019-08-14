@@ -51,10 +51,6 @@ import * as WorkEffortList from '../allors/material/base/objects/workeffort/list
 import * as WorkTaskOverview from '../allors/material/base/objects/worktask/overview/worktask-overview.module';
 import * as TaskAssignmentList from '../allors/material/base/objects/taskassignment/list/taskassignment-list.module';
 
-// Garage
-import * as WorkOrderApp from '../allors/material/garage/base/workorder/workorder-app.module';
-import * as TimesheetApp from '../allors/material/garage/base/timesheet/timesheet-app.module';
-
 const modules = [
 
   CommunicationEventList.CommunicationEventListModule,
@@ -99,9 +95,6 @@ const modules = [
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
   WorkEffortList.WorkEffortListModule,
   WorkTaskOverview.WorkTaskDetailModule,
-
-  WorkOrderApp.WorkOrdersAppModule,
-  TimesheetApp.TimesheetAppModule,
 ];
 
 export const routes: Routes = [
@@ -188,15 +181,6 @@ export const routes: Routes = [
         path: 'workflow',
         children: [
           { path: 'taskassignments', component: TaskAssignmentList.TaskAssignmentListComponent },
-        ],
-      },
-
-      {
-        path: 'app',
-        children: [
-          { path: 'workorder', component: WorkOrderApp.WorkerOrderMasterComponent },
-          { path: 'workorder/:id', component: WorkOrderApp.WorkerOrderDetailComponent },
-          { path: 'timesheet', component: TimesheetApp.TimesheetAppComponent },
         ],
       },
     ],
