@@ -431,7 +431,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public VatClause VatClause { get; set; }
+        public VatClause DerivedVatClause { get; set; }
 
         #region inherited methods
 

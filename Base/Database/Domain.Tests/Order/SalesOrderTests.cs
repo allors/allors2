@@ -2499,7 +2499,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new VatClauses(this.Session).ServiceB2B, order.VatClause);
+            Assert.Equal(new VatClauses(this.Session).ServiceB2B, order.DerivedVatClause);
         }
 
         [Fact]
@@ -2586,7 +2586,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new VatClauses(this.Session).Intracommunautair, order.VatClause);
+            Assert.Equal(new VatClauses(this.Session).Intracommunautair, order.DerivedVatClause);
         }
 
         [Fact]
@@ -2674,7 +2674,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item1, order.VatClause);
+            Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item1, order.DerivedVatClause);
         }
 
         [Fact]
@@ -2762,7 +2762,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item2, order.VatClause);
+            Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item2, order.DerivedVatClause);
         }
    }
 

@@ -524,22 +524,24 @@ namespace Allors.Domain
 
             #region VatClause
 
-            if (!this.ExistVatClause && this.ExistVatRegime)
+            if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
-                this.VatClause = this.VatRegime.VatClause;
+                this.DerivedVatClause = this.VatRegime.VatClause;
             }
-
-            if (!this.ExistVatClause && this.ExistBilledFrom)
+            else
             {
                 if (Equals(this.VatRegime, new VatRegimes(session).ServiceB2B))
                 {
-                    this.VatClause = new VatClauses(session).ServiceB2B;
+                    this.DerivedVatClause = new VatClauses(session).ServiceB2B;
                 }
                 else if (Equals(this.VatRegime, new VatRegimes(session).IntraCommunautair))
                 {
-                    this.VatClause = new VatClauses(session).Intracommunautair;
+                    this.DerivedVatClause = new VatClauses(session).Intracommunautair;
                 }
             }
+
+            this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
+
             #endregion
 
             this.SalesReps = validInvoiceItems

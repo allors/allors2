@@ -269,12 +269,11 @@ namespace Allors.Domain
 
             #region VatClause
 
-            if (!this.ExistVatClause && this.ExistVatRegime)
+            if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
-                this.VatClause = this.VatRegime.VatClause;
+                this.DerivedVatClause = this.VatRegime.VatClause;
             }
-
-            if (!this.ExistVatClause && this.ExistTakenBy)
+            else
             {
                 string TakenbyCountry = null;
 
@@ -291,29 +290,32 @@ namespace Allors.Domain
 
                 if (Equals(this.VatRegime, new VatRegimes(session).ServiceB2B))
                 {
-                    this.VatClause = new VatClauses(session).ServiceB2B;
+                    this.DerivedVatClause = new VatClauses(session).ServiceB2B;
                 }
                 else if (Equals(this.VatRegime, new VatRegimes(session).IntraCommunautair))
                 {
-                    this.VatClause = new VatClauses(session).Intracommunautair;
+                    this.DerivedVatClause = new VatClauses(session).Intracommunautair;
                 }
-                else if (TakenbyCountry == "BE" 
+                else if (TakenbyCountry == "BE"
                          && OutsideEUCustomer.HasValue && OutsideEUCustomer.Value
-                         && shipFromBelgium.HasValue && shipFromBelgium.Value 
+                         && shipFromBelgium.HasValue && shipFromBelgium.Value
                          && shipToEU.HasValue && shipToEU.Value == false)
                 {
                     if (sellerResponsibleForTransport)
                     {
                         // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU and you transport the goods and importer is the customer
-                        this.VatClause = new VatClauses(session).BeArt39Par1Item1;
+                        this.DerivedVatClause = new VatClauses(session).BeArt39Par1Item1;
                     }
-                    else if(buyerResponsibleForTransport)
+                    else if (buyerResponsibleForTransport)
                     {
                         // You sell goods to a customer out of the EU and the goods are being sold and transported from Belgium to another country out of the EU  and the customer does the transport of the goods and importer is the customer
-                        this.VatClause = new VatClauses(session).BeArt39Par1Item2;
+                        this.DerivedVatClause = new VatClauses(session).BeArt39Par1Item2;
                     }
                 }
             }
+
+            this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
+
             #endregion
 
             #region States
@@ -850,7 +852,7 @@ namespace Allors.Domain
                     .WithSalesChannel(this.SalesChannel)
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                     .WithVatRegime(this.VatRegime)
-                    .WithVatClause(this.VatClause)
+                    .WithAssignedVatClause(this.DerivedVatClause)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
                     .WithSurchargeAdjustment(this.SurchargeAdjustment)
                     .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)

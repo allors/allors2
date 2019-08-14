@@ -588,7 +588,17 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public VatClause VatClause { get; set; }
+        public VatClause AssignedVatClause { get; set; }
+
+        #region Allors
+        [Id("5E059289-F4F8-4FFB-B642-9F2A0B597713")]
+        [AssociationId("330ABF82-1C63-4633-944F-4F49491ADD68")]
+        [RoleId("9F78854A-C3DC-415D-A939-DBB15C08C4F0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        public VatClause DerivedVatClause { get; set; }
 
         #region Allors
         [Id("E822B75C-3A37-480A-A469-B18A060EC560")]

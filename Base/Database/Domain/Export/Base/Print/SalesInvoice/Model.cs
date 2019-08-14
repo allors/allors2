@@ -22,6 +22,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
     {
         public Model(SalesInvoice invoice)
         {
+            var session = invoice.Strategy.Session;
+
             this.Invoice = new InvoiceModel(invoice);
             this.BilledFrom = new BilledFromModel((Organisation)invoice.BilledFrom);
             this.BillTo = new BillToModel(invoice);
@@ -29,8 +31,19 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             this.InvoiceItems = invoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
 
-            var paymentTerm = new InvoiceTermTypes(invoice.Strategy.Session).PaymentNetDays;
+            var paymentTerm = new InvoiceTermTypes(session).PaymentNetDays;
             this.SalesTerms = invoice.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
+
+            string TakenByCountry = null;
+            if (invoice.BilledFrom.PartyContactMechanisms?.FirstOrDefault(v => v.ContactPurposes.Any(p => Equals(p, new ContactMechanismPurposes(session).RegisteredOffice)))?.ContactMechanism is PostalAddress registeredOffice)
+            {
+                TakenByCountry = registeredOffice.Country.IsoCode;
+            }
+
+            if (TakenByCountry == "BE")
+            {
+                this.VatClause = invoice.DerivedVatClause?.LocalisedClause.First(v => v.Locale.Equals(new Locales(session).DutchNetherlands)).Text;
+            }
         }
 
         public InvoiceModel Invoice { get; }
@@ -44,5 +57,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceItemModel[] InvoiceItems { get; }
 
         public SalesTermModel[] SalesTerms { get; }
+
+        public string VatClause { get; }
     }
 }
