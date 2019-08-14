@@ -20,6 +20,7 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -32,8 +33,6 @@ namespace Allors.Server
 
     public class PullResponseBuilder
     {
-        private static readonly IObject[] EmptyArray = new IObject[0];
-
         private readonly User user;
 
         private readonly HashSet<IObject> objects = new HashSet<IObject>();
@@ -92,7 +91,7 @@ namespace Allors.Server
 
         public void AddCollection(string name, IEnumerable<IObject> collection, bool full = false)
         {
-            var inputList = (collection as IList<IObject>) ?? collection?.ToArray() ?? EmptyArray;
+            var inputList = (collection as IList<IObject>) ?? collection?.ToArray() ?? Array.Empty<IObject>();
 
             Tree tree = null;
             if (full && inputList.Count > 0)

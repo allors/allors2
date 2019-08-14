@@ -31,8 +31,6 @@ namespace Allors.Server
 
     public class PullInstantiate
     {
-        private static readonly IObject[] EmptyArray = new IObject[0];
-
         private readonly ISession session;
 
         private readonly Pull pull;
@@ -100,7 +98,7 @@ namespace Allors.Server
                                     name = name ?? propertyType.PluralName;
 
                                     var stepResult = fetch.Step.Get(@object, aclCache);
-                                    var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
+                                    var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? new IObject[0];
 
                                     if (result.Skip.HasValue || result.Take.HasValue)
                                     {

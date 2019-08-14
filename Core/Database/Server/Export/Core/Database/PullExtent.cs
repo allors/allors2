@@ -32,8 +32,6 @@ namespace Allors.Server
 
     public class PullExtent
     {
-        private static readonly IObject[] EmptyArray = { };
-
         private readonly ISession session;
         private readonly Pull pull;
         private readonly User user;
@@ -86,7 +84,7 @@ namespace Allors.Server
                                               objects.SelectMany(v =>
                                               {
                                                   var stepResult = fetch.Step.Get(v, aclCache);
-                                                  return stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? EmptyArray;
+                                                  return stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? Array.Empty<IObject>();
                                               }).Distinct().ToArray();
 
                                 var propertyType = fetch.Step.End.PropertyType;

@@ -353,7 +353,7 @@ namespace Allors.Meta
             {
                 return this.AssociationType.ObjectType.IsInterface ? 
                            this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() : 
-                           ConcreteRoleType.EmptyArray;
+                           Array.Empty<ConcreteRoleType>();
             }
         }
     }
