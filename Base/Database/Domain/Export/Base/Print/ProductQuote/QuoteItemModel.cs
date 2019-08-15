@@ -22,7 +22,8 @@ namespace Allors.Domain.Print.ProductQuoteModel
         {
             var product = item.Product;
             var serialisedItem = item.SerialisedItem;
-          
+
+            this.Reference = item.InvoiceItemType?.Name;
             this.Product = serialisedItem?.Name ?? product?.Name;
             this.Description = serialisedItem?.Description ?? product?.Description;
             this.Details = item.Details;
@@ -38,6 +39,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.Comment = item.Comment;
         }
 
+        public string Reference { get; }
         public string Product { get; }
         public string Description { get; }
         public string Details { get; }

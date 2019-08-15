@@ -40,6 +40,11 @@ namespace Allors.Domain
             {
                 this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
             }
+
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
+            {
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
+            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)

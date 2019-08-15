@@ -28,7 +28,11 @@ namespace Allors.Domain.Print.ProductQuoteModel
 
             // TODO: Where does the currency come from?
             var currency = "€";
-            this.Price = quote.Price.ToString("0.00") + " " + currency;
+            this.SubTotal = quote.TotalBasePrice.ToString("0.00") + " " + currency;
+            this.TotalExVat = quote.TotalExVat.ToString("0.00") + " " + currency;
+            this.VatCharge = quote.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.TotalVat = quote.TotalVat.ToString("0.00") + " " + currency;
+            this.TotalIncVat = quote.TotalIncVat.ToString("0.00") + " " + currency;
         }
 
         public string Description { get; }
@@ -36,6 +40,10 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public string IssueDate { get; }
         public string ValidFromDate { get; }
         public string ValidThroughDate { get; }
-        public string Price { get; }
+        public string SubTotal { get; }
+        public string TotalExVat { get; }
+        public string VatCharge { get; }
+        public string TotalVat { get; }
+        public string TotalIncVat { get; }
     }
 }

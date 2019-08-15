@@ -6,40 +6,40 @@
 
     <div class="row" *ngIf="!orderItem.isNew">
       <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name"
-        label="Status"></a-mat-static>
+                    label="Status"></a-mat-static>
       <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState"
-        display="Name" label="Shipment Status"></a-mat-static>
+                    display="Name" label="Shipment Status"></a-mat-static>
       <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemInvoiceState"
-        display="Name" label="Invoice Status"></a-mat-static>
+                    display="Name" label="Invoice Status"></a-mat-static>
       <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState"
-        display="Name" label="Payment Status"></a-mat-static>
+                    display="Name" label="Payment Status"></a-mat-static>
     </div>
 
     <div class="row" *ngIf="orderItem.isNew">
       <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes"
-        display="Name"></a-mat-select>
+                    display="Name"></a-mat-select>
     </div>
 
     <div *ngIf="orderItem.InvoiceItemType">
       <div class="row" *ngIf="!orderItem.isNew && orderItem.InvoiceItemType !== productItemType">
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes"
-          display="Name"></a-mat-select>
+                      display="Name"></a-mat-select>
       </div>
 
-      <div class="row" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
+      <div class="row" *ngIf="orderItem.InvoiceItemType !== productItemType">
         <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedUnitPrice" label="Amount"></a-mat-input>
         <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
         <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
       </div>
 
-      <div *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
+      <div *ngIf="orderItem.InvoiceItemType === productItemType">
         <div class="row">
           <a-mat-autocomplete class="col-md" *ngIf="orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.Product"
-            [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+                              [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
           <a-mat-static class="col-md" *ngIf="!orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.Product"
-            display="Name"></a-mat-static>
+                        display="Name"></a-mat-static>
           <a-mat-select class="col-md" *ngIf="orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.SerialisedItem"
-            [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+                        [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
           <a-mat-static class="col-md" *ngIf="!orderItem.isNew" [object]="orderItem" [roleType]="m.SalesOrderItem.SerialisedItem" display="displayName"></a-mat-static>
           <a-mat-static class="col-md" [object]="orderItem.SerialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
         </div>
@@ -54,12 +54,12 @@
 
       <div class="row">
         <a-mat-static *ngIf="order" class="col-md" [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate"
-          display="Rate" label="VAT % from order"></a-mat-static>
+                      display="Rate" label="VAT % from order"></a-mat-static>
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes"
-          display="Name" label="Item VAT regime"></a-mat-select>
+                      display="Name" label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col-md" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedItemState" [options]="serialisedItemStates" display="Name" label="Next Item State"></a-mat-select>
-    </div>
+      </div>
 
       <div class="row" *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem">
         <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityReserved"></a-mat-static>
@@ -79,10 +79,10 @@
       <div class="row">
         <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Description"></a-mat-textarea>
         <a-mat-static class="col-md-12" *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment"
-          label="Quote Comment"></a-mat-static>
+                      label="Quote Comment"></a-mat-static>
         <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Item Comment"></a-mat-textarea>
         <a-mat-static class="col-md-12" *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"
-          label="Quote Internal Comment"></a-mat-static>
+                      label="Quote Internal Comment"></a-mat-static>
         <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment" label="Order Item Internal Comment"></a-mat-textarea>
       </div>
 

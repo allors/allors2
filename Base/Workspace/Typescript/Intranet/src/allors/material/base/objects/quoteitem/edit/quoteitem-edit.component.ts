@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good } from '../../../../../domain';
+import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good, InvoiceItemType, VatRate, VatRegime } from '../../../../../domain';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -22,6 +22,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
   title: string;
   quote: ProductQuote;
+  invoiceItemTypes: InvoiceItemType[];
+  productItemType: InvoiceItemType;
   quoteItem: QuoteItem;
   requestItem: RequestItem;
   inventoryItems: InventoryItem[];
@@ -33,6 +35,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   parts: Part[];
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
+  vatRates: VatRate[];
+  vatRegimes: VatRegime[];
 
   private previousProduct;
   private subscription: Subscription;
@@ -71,7 +75,11 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
                   QuoteItemState: x,
                   RequestItem: x,
                   Product: x,
-                  SerialisedItem: x
+                  SerialisedItem: x,
+                  VatRate: x,
+                  VatRegime: {
+                    VatRate: x,
+                  }
                 }
               }
             ),
@@ -83,11 +91,27 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
                 }
               }
             ),
+            pull.QuoteItem({
+              object: this.data.id,
+              fetch: {
+                QuoteWhereQuoteItem: {
+                  include: {
+                    VatRegime: x
+                  }
+                }
+              }
+            }),
+            pull.VatRate(),
+            pull.VatRegime(),
             pull.Good(
               {
                 sort: new Sort(m.Good.Name),
               }
             ),
+            pull.InvoiceItemType({
+              predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name),
+            }),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: [
@@ -99,7 +123,10 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
           if (create && this.data.associationId) {
             pulls.push(
               pull.ProductQuote({
-                object: this.data.associationId
+                object: this.data.associationId,
+                include: {
+                  VatRegime: x
+                }
               }),
             );
           }
@@ -118,8 +145,12 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.requestItem = loaded.objects.RequestItem as RequestItem;
         this.goods = loaded.collections.Goods as Good[];
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb523441476892d4729c6c5d6f1b');
+        this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
+        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778273544cb8354fb887ada42ad');
 
         if (create) {
           this.title = 'Add Quote Item';

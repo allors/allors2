@@ -960,7 +960,6 @@ namespace Allors.Domain
             foreach (ProductFeature productFeature in salesInvoiceItem.ProductFeatures)
             {
                 currentGenericOrProductOrFeaturePriceComponents.AddRange(productFeature.GetPriceComponents(salesInvoiceItem.Product, currentPriceComponents));
-
             }
 
             var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(

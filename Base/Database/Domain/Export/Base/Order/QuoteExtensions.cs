@@ -21,7 +21,6 @@ namespace Allors.Domain
 {
     public static partial class QuoteExtensions
     {
-
         public static void BaseOnBuild(this Quote @this, ObjectOnBuild method)
         {
             if (!@this.ExistQuoteState)
@@ -34,7 +33,6 @@ namespace Allors.Domain
 
         public static void BaseOnDerive(this Quote @this, ObjectOnDerive method)
         {
-
             if (!@this.ExistIssuer)
             {
                 var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
@@ -51,12 +49,6 @@ namespace Allors.Domain
             }
 
             @this.Currency = @this.Currency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
-
-            @this.Price = 0;
-            foreach (QuoteItem item in @this.QuoteItems)
-            {
-                @this.Price += item.LineTotal;
-            }
 
             var singleton = @this.Strategy.Session.GetSingleton();
 

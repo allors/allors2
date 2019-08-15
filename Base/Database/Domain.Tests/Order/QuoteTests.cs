@@ -120,15 +120,15 @@ namespace Allors.Domain
                 .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
                 .Build();
 
-            var item1 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithUnitPrice(1000).Build();
-            var item2 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithUnitPrice(100).Build();
+            var item1 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithAssignedUnitPrice(1000).Build();
+            var item2 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithAssignedUnitPrice(100).Build();
             
             quote.AddQuoteItem(item1);
             quote.AddQuoteItem(item2);
 
             this.Session.Derive();
 
-            Assert.Equal(1300, quote.Price);
+            Assert.Equal(1300, quote.TotalIncVat);
         }
     }
 }

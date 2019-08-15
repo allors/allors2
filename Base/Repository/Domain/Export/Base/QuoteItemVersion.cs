@@ -157,7 +157,7 @@ namespace Allors.Repository
         [RoleId("CB43411F-3319-42F6-BC80-1E95A2E0A316")]
         #endregion
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         #region Allors
         [Id("24B8A678-F28D-4041-9514-490CDC1FDE7D")]
