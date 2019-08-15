@@ -255,9 +255,9 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             }),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.VatRate(),
-            pull.VatRegime(),
-            pull.VatClause(),
-            pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
+            pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: this.internalOrganisation }),
               include: { BillingProcess: x },

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship } from '../../../../../../domain';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship, VatClause, Country } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
   currencies: Currency[];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  vatClauses: VatClause[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToContacts: Person[] = [];
   billToEndCustomerContactMechanisms: ContactMechanism[] = [];
@@ -115,6 +116,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             VatRegime: {
               VatRate: x
             },
+            AssignedVatClause: x,
+            DerivedVatClause: x,
             Currency: x,
             BillToCustomer: x,
             BillToContactPerson: x,
@@ -185,14 +188,15 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 SalesInvoiceState: x,
-                Currency: x
+                Currency: x,
+                AssignedVatClause: x,
+                DerivedVatClause: x
               },
             }),
             pull.VatRate(),
-            pull.VatRegime(),
-            pull.Currency({
-              sort: new Sort(m.Currency.Name),
-            }),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
+            pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: [
@@ -210,6 +214,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.vatClauses = loaded.collections.VatClauses as VatClause[];
         this.currencies = loaded.collections.Currencies as Currency[];
 
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;

@@ -71,7 +71,7 @@ namespace Allors.Domain
                 .Build();
 
             new VatClauseBuilder(this.Session)
-                .WithName("Sell goods outside EU, transport responsible is you, destination customer")
+                .WithName("Export goods, transport responsible is you, destination customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk bent u, bestemming klant").WithLocale(dutchLocale).Build())
                 .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
                     .WithText(
@@ -83,7 +83,7 @@ namespace Allors.Domain
                 .Build();
 
             new VatClauseBuilder(this.Session)
-                .WithName("Sell goods outside EU, transport responsible is you, destination internal organisation")
+                .WithName("Export goods, transport responsible is you, destination internal organisation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk bent u, bestemming interne organisatie").WithLocale(dutchLocale).Build())
                 .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
                     .WithText(
@@ -95,7 +95,7 @@ namespace Allors.Domain
                 .Build();
 
             new VatClauseBuilder(this.Session)
-                .WithName("Sell goods outside EU, transport responsible is customer, destination customer")
+                .WithName("Export goods, transport responsible is customer, destination customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk is klant, bestemming klant").WithLocale(dutchLocale).Build())
                 .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
                     .WithText(
@@ -107,14 +107,14 @@ namespace Allors.Domain
                 .Build();
 
             new VatClauseBuilder(this.Session)
-                .WithName("Sell goods outside EU, transport responsible is customer, destination internal organisation")
+                .WithName("Export goods, transport responsible is customer, destination internal organisation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk is klant, bestemming internal organisation").WithLocale(dutchLocale).Build())
                 .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
                     .WithText(
                         @"
-Levering van goederen niet onderworpen aan Belgische BTW. art. 14, § 2 van het WBTW / Artikel 32, eerste alinea - Richtlijn 2006/112 Extra vermeldingen
+Levering van goederen niet onderworpen aan Belgische BTW. art. 14, § 2 van het WBTW / Artikel 32, eerste alinea - Richtlijn 2006/112 Extra vermeldingen:
 De goederen worden niet geïnstalleerd. / The goods are not installed.
-Koper vervoert van België naar {{country}}. / The buyer transports from Belgium to {{country}}"
+Koper vervoert van België naar {shipToCountry}. / The buyer transports from Belgium to {shipToCountry}"
 )
                     .WithLocale(dutchLocale)
                     .Build())

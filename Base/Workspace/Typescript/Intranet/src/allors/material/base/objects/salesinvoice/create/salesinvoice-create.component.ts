@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, VatRate, VatRegime, CustomerRelationship, SalesInvoiceType } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, CustomerRelationship, SalesInvoiceType } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/base/state';
@@ -22,9 +22,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   public title = 'Add Sales Invoice';
 
   invoice: SalesInvoice;
-  currencies: Currency[];
-  vatRates: VatRate[];
-  vatRegimes: VatRegime[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToContacts: Person[] = [];
   billToEndCustomerContactMechanisms: ContactMechanism[] = [];
@@ -100,9 +97,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.VatRate(),
-            pull.VatRegime(),
-            pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.SalesInvoiceType({
               predicate: new Equals({ propertyType: m.SalesInvoiceType.IsActive, value: true }),
               sort: new Sort(m.SalesInvoiceType.Name),
@@ -116,9 +110,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.currencies = loaded.collections.Currencies as Currency[];
         this.salesInvoiceTypes = loaded.collections.SalesInvoiceTypes as SalesInvoiceType[];
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
