@@ -10,14 +10,9 @@ namespace Allors.Domain
 {
     public partial class C1
     {
-        public void CoreClassMethod(C1ClassMethod method)
-        {
-            method.Value += "C1Core";
-        }
-        public void CustomClassMethod(C1ClassMethod method)
-        {
-            method.Value += "C1Custom";
-        }
+        public void CoreClassMethod(C1ClassMethod method) => method.Value += "C1Core";
+
+        public void CustomClassMethod(C1ClassMethod method) => method.Value += "C1Custom";
     }
 
     public partial class C1ClassMethod

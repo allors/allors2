@@ -80,6 +80,5 @@ namespace Tests
 
             Assert.Equal(extent.ToArray(), queryExtent.ToArray());
         }
-
     }
 }

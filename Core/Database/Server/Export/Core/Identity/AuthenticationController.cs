@@ -67,6 +67,5 @@ namespace Allors.Server
 
             return this.Ok(new { Authenticated = false });
         }
-
     }
 }

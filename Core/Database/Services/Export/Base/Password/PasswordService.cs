@@ -12,15 +12,9 @@ namespace Allors.Services
     {
         private readonly PasswordHasher<string> passwordHasher;
 
-        public PasswordService()
-        {
-            this.passwordHasher = new PasswordHasher<string>();
-        }
+        public PasswordService() => this.passwordHasher = new PasswordHasher<string>();
 
-        public string HashPassword(string user, string password)
-        {
-            return this.passwordHasher.HashPassword(user, password);
-        }
+        public string HashPassword(string user, string password) => this.passwordHasher.HashPassword(user, password);
 
         public bool VerifyHashedPassword(string user, string hashedPassword, string providedPassword)
         {

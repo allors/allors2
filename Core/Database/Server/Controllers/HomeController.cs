@@ -18,10 +18,7 @@ namespace Identity.Controllers
         {
         }
 
-        public IActionResult Index()
-        {
-            return this.View();
-        }
+        public IActionResult Index() => this.View();
 
         public IActionResult About()
         {
@@ -37,9 +34,6 @@ namespace Identity.Controllers
             return this.View();
         }
 
-        public IActionResult Error()
-        {
-            return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

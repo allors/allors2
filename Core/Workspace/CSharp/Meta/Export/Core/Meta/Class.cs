@@ -93,10 +93,7 @@ namespace Allors.Workspace.Meta
 
         public override Class ExclusiveSubclass => this;
 
-        public override bool IsAssignableFrom(IComposite objectType)
-        {
-            return this.Equals(objectType);
-        }
+        public override bool IsAssignableFrom(IComposite objectType) => this.Equals(objectType);
 
         public void DeriveConcreteRoleTypes(HashSet<RoleType> sharedRoleTypes)
         {
@@ -152,10 +149,7 @@ namespace Allors.Workspace.Meta
 
         public override Type ClrType => this.clrType;
 
-        internal void Bind(Dictionary<string, Type> typeByTypeName)
-        {
-            this.clrType = typeByTypeName[this.Name];
-        }
+        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
 
         // Workspace
         public IEnumerable<ConcreteRoleType> WorkspaceConcreteRoleTypes

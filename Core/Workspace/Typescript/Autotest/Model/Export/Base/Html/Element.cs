@@ -46,10 +46,7 @@ namespace Autotest.Html
 
         public Directive[] Directives { get; set; }
 
-        public string InnerText
-        {
-            get { return string.Join(string.Empty, this.FlattenedText.Select(v => v.Value)); }
-        }
+        public string InnerText => string.Join(string.Empty, this.FlattenedText.Select(v => v.Value));
 
         public Element[] Ancestors
         {
@@ -62,13 +59,7 @@ namespace Autotest.Html
             }
         }
 
-        public string Scope
-        {
-            get
-            {
-                return this.Component?.Scope ?? this.Attributes.FirstOrDefault(v => v.Name == "data-test-scope")?.Value;
-            }
-        }
+        public string Scope => this.Component?.Scope ?? this.Attributes.FirstOrDefault(v => v.Name == "data-test-scope")?.Value;
 
         public Scope InScope { get; set; }
 
@@ -117,9 +108,6 @@ namespace Autotest.Html
             }
         }
 
-        private IEnumerable<INode> Flatten(IEnumerable<INode> nodes)
-        {
-            return nodes.SelectMany(v => v is Element element ? new[] { v }.Concat(this.Flatten(element.Children)) : new[] { v });
-        }
+        private IEnumerable<INode> Flatten(IEnumerable<INode> nodes) => nodes.SelectMany(v => v is Element element ? new[] { v }.Concat(this.Flatten(element.Children)) : new[] { v });
     }
 }

@@ -46,10 +46,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        protected internal List<Predicate> Filters
-        {
-            get { return this.predicates; }
-        }
+        protected internal List<Predicate> Filters => this.predicates;
 
         public ICompositePredicate AddAnd()
         {

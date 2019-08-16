@@ -129,30 +129,15 @@ namespace Allors.Domain
 
             public User User => this.accessControlLists.user;
 
-            public bool CanRead(IPropertyType propertyType)
-            {
-                return this.IsPermitted(propertyType, Operations.Read);
-            }
+            public bool CanRead(IPropertyType propertyType) => this.IsPermitted(propertyType, Operations.Read);
 
-            public bool CanRead(ConcreteRoleType roleType)
-            {
-                return this.IsPermitted(roleType.RoleType, Operations.Read);
-            }
+            public bool CanRead(ConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Read);
 
-            public bool CanWrite(IRoleType roleType)
-            {
-                return this.IsPermitted(roleType, Operations.Write);
-            }
+            public bool CanWrite(IRoleType roleType) => this.IsPermitted(roleType, Operations.Write);
 
-            public bool CanWrite(ConcreteRoleType roleType)
-            {
-                return this.IsPermitted(roleType.RoleType, Operations.Write);
-            }
+            public bool CanWrite(ConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Write);
 
-            public bool CanExecute(IMethodType methodType)
-            {
-                return this.IsPermitted(methodType, Operations.Execute);
-            }
+            public bool CanExecute(IMethodType methodType) => this.IsPermitted(methodType, Operations.Execute);
 
             public bool IsPermitted(IOperandType operandType, Operations operation)
             {

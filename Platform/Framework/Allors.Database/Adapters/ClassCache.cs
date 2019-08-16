@@ -27,25 +27,13 @@ namespace Allors.Adapters
     {
         private Dictionary<long, IClass> classByObject;
 
-        public ClassCache()
-        {
-            this.classByObject = new Dictionary<long, IClass>();
-        }
+        public ClassCache() => this.classByObject = new Dictionary<long, IClass>();
 
-        public bool TryGet(long objectId, out IClass @class)
-        {
-            return this.classByObject.TryGetValue(objectId, out @class);
-        }
+        public bool TryGet(long objectId, out IClass @class) => this.classByObject.TryGetValue(objectId, out @class);
 
-        public void Set(long objectId, IClass @class)
-        {
-            this.classByObject[objectId] = @class;
-        }
+        public void Set(long objectId, IClass @class) => this.classByObject[objectId] = @class;
 
-        public void Invalidate()
-        {
-            this.classByObject = new Dictionary<long, IClass>();
-        }
+        public void Invalidate() => this.classByObject = new Dictionary<long, IClass>();
 
         public void Invalidate(long[] objectsToInvalidate)
         {

@@ -8,10 +8,7 @@
 
     public partial class Commands
     {
-        public Commands(Sheets sheets)
-        {
-            this.Sheets = sheets;
-        }
+        public Commands(Sheets sheets) => this.Sheets = sheets;
 
         public Sheets Sheets { get; }
 

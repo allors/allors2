@@ -17,10 +17,7 @@ namespace Allors.Domain
         private readonly Object derivable;
         private HashSet<DerivationNodeBase> dependencies;
 
-        protected DerivationNodeBase(Object derivable)
-        {
-            this.derivable = derivable;
-        }
+        protected DerivationNodeBase(Object derivable) => this.derivable = derivable;
 
         public void Derive(DerivationBase derivation, List<Object> postDeriveObjects)
         {
@@ -54,25 +51,13 @@ namespace Allors.Domain
             this.dependencies.Add(derivationNode);
         }
 
-        public bool Equals(DerivationNodeBase other)
-        {
-            return other != null && this.derivable.Equals(other.derivable);
-        }
+        public bool Equals(DerivationNodeBase other) => other != null && this.derivable.Equals(other.derivable);
 
-        public override bool Equals(object obj)
-        {
-            return this.Equals((DerivationNodeBase)obj);
-        }
+        public override bool Equals(object obj) => this.Equals((DerivationNodeBase)obj);
 
-        public override int GetHashCode()
-        {
-            return this.derivable.GetHashCode();
-        }
+        public override int GetHashCode() => this.derivable.GetHashCode();
 
-        public override string ToString()
-        {
-            return this.derivable.ToString();
-        }
+        public override string ToString() => this.derivable.ToString();
 
         protected abstract void OnCycle(Object root, Object derivable);
 

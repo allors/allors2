@@ -51,9 +51,6 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, PartialType> PartialTypeBySingularName { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

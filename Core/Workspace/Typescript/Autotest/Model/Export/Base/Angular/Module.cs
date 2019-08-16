@@ -87,10 +87,7 @@ namespace Autotest.Angular
             this.DeclaredEntryComponents = this.EntryComponents.Except(this.RoutedComponents).Except(this.BootstrapComponents).ToArray();
         }
 
-        public Directive LookupComponent(Element element)
-        {
-            return this.Directives.FirstOrDefault(v => Equals(element.Name, v.Selector) || Equals(element.Name, v.ExportAs));
-        }
+        public Directive LookupComponent(Element element) => this.Directives.FirstOrDefault(v => Equals(element.Name, v.Selector) || Equals(element.Name, v.ExportAs));
 
         public Directive[] LookupAttributeDirectives(Element element)
         {

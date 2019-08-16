@@ -13,35 +13,14 @@ namespace Allors.Adapters.Object.SqlClient
             this.definition = definition;
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name => this.name;
 
-        public string Definition
-        {
-            get
-            {
-                return this.definition;
-            }
-        }
+        public string Definition => this.definition;
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
-        public bool IsDefinitionCompatible(string existingDefinition)
-        {
-            return this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(existingDefinition));
-        }
+        public bool IsDefinitionCompatible(string existingDefinition) => this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(existingDefinition));
 
-        private string RemoveWhitespace(string input)
-        {
-            return new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
-        }
+        private string RemoveWhitespace(string input) => new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
     }
 }

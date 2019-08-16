@@ -68,28 +68,19 @@ namespace Allors
         /// Gets the relation type id.
         /// </summary>
         /// <value>The relation type id.</value>
-        public Guid RelationTypeId
-        {
-            get { return this.relationTypeId; }
-        }
+        public Guid RelationTypeId => this.relationTypeId;
 
         /// <summary>
         /// Gets the association id.
         /// </summary>
         /// <value>The association id.</value>
-        public long AssociationId
-        {
-            get { return this.associationId; }
-        }
+        public long AssociationId => this.associationId;
 
         /// <summary>
         /// Gets the role contents.
         /// </summary>
         /// <value>The role contents.</value>
-        public string RoleContents
-        {
-            get { return this.roleContents; }
-        }
+        public string RoleContents => this.roleContents;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -97,9 +88,6 @@ namespace Allors
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return "RelationType: " + this.relationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.roleContents;
-        }
+        public override string ToString() => "RelationType: " + this.relationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.roleContents;
     }
 }

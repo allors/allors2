@@ -32,14 +32,8 @@ namespace Allors
 
         private static readonly ISet<IAssociationType> EmptyAssociationTypeSet = new EmptySet<IAssociationType>();
 
-        public static ISet<IRoleType> GetRoleTypes(this IChangeSet @this, long association)
-        {
-            return @this.RoleTypesByAssociation.TryGetValue(association, out var roleTypes) ? roleTypes : EmptyRoleTypeSet;
-        }
+        public static ISet<IRoleType> GetRoleTypes(this IChangeSet @this, long association) => @this.RoleTypesByAssociation.TryGetValue(association, out var roleTypes) ? roleTypes : EmptyRoleTypeSet;
 
-        public static ISet<IAssociationType> GetAssociationTypes(this IChangeSet @this, long role)
-        {
-            return @this.AssociationTypesByRole.TryGetValue(role, out var associationTypes) ? associationTypes : EmptyAssociationTypeSet;
-        }
+        public static ISet<IAssociationType> GetAssociationTypes(this IChangeSet @this, long role) => @this.AssociationTypesByRole.TryGetValue(role, out var associationTypes) ? associationTypes : EmptyAssociationTypeSet;
     }
 }

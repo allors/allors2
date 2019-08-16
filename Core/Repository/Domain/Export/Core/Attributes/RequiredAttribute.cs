@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class RequiredAttribute : RepositoryAttribute
     {
-        public RequiredAttribute(bool value = true)
-        {
-            this.Value = value;
-        }
+        public RequiredAttribute(bool value = true) => this.Value = value;
 
         public bool Value { get; set; }
     }

@@ -161,10 +161,7 @@ namespace Allors.Meta
         /// <returns>
         /// The association value.
         /// </returns>
-        public override object Get(IStrategy strategy)
-        {
-            return strategy.GetAssociation(this.RelationType);
-        }
+        public override object Get(IStrategy strategy) => strategy.GetAssociation(this.RelationType);
 
         IRoleType IAssociationType.RoleType => this.RoleType;
 
@@ -206,10 +203,7 @@ namespace Allors.Meta
         /// <returns>
         /// The <see cref="ObjectType"/>.
         /// </returns>
-        public override ObjectType GetObjectType()
-        {
-            return this.ObjectType;
-        }
+        public override ObjectType GetObjectType() => this.ObjectType;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

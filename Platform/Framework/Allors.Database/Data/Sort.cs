@@ -24,18 +24,12 @@ namespace Allors.Data
 
     public class Sort
     {
-        public Sort(IRoleType roleType = null)
-        {
-            this.RoleType = roleType;
-        }
+        public Sort(IRoleType roleType = null) => this.RoleType = roleType;
 
         public IRoleType RoleType { get; set; }
 
         public bool Descending { get; set; }
 
-        public void Build(Allors.Extent extent)
-        {
-            extent.AddSort(RoleType, this.Descending ? SortDirection.Descending : SortDirection.Ascending);
-        }
+        public void Build(Allors.Extent extent) => extent.AddSort(RoleType, this.Descending ? SortDirection.Descending : SortDirection.Ascending);
     }
 }

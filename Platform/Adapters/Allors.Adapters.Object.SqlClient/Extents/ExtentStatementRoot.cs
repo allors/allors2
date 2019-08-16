@@ -43,10 +43,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal override bool IsRoot => true;
 
-        public override string ToString()
-        {
-            return this.sql.ToString();
-        }
+        public override string ToString() => this.sql.ToString();
 
         internal override string AddParameter(object obj)
         {
@@ -60,25 +57,13 @@ namespace Allors.Adapters.Object.SqlClient
             return this.paramNameByParamValue[obj];
         }
 
-        internal override void Append(string part)
-        {
-            this.sql.Append(part);
-        }
+        internal override void Append(string part) => this.sql.Append(part);
 
-        internal override string CreateAlias()
-        {
-            return "alias" + (this.aliasIndex++);
-        }
+        internal override string CreateAlias() => "alias" + (this.aliasIndex++);
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association)
-        {
-            return new ExtentStatementChild(this, extent, association);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association) => new ExtentStatementChild(this, extent, association);
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role)
-        {
-            return new ExtentStatementChild(this, extent, role);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role) => new ExtentStatementChild(this, extent, role);
 
         internal Command CreateDbCommand(string alias)
         {

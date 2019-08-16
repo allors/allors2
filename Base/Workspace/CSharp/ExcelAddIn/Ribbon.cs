@@ -184,8 +184,7 @@ namespace ExcelAddIn
             }
         }
 
-        private void EnsureAddInManager()
-        {
+        private void EnsureAddInManager() =>
             AsyncContext.Run(
                 async () =>
                 {
@@ -194,7 +193,6 @@ namespace ExcelAddIn
                         Globals.ThisAddIn.InitAddInManager();
                     }
                 });
-        }
 
         private void ButtonLogoff_Click(object sender, RibbonControlEventArgs e)
         {

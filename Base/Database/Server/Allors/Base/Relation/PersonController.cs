@@ -10,10 +10,7 @@
     {
         private ISessionService allors;
 
-        public PersonController(ISessionService allorsContext)
-        {
-            this.allors = allorsContext;
-        }
+        public PersonController(ISessionService allorsContext) => this.allors = allorsContext;
 
         [HttpPost]
         public IActionResult Pull([FromBody] Model model)

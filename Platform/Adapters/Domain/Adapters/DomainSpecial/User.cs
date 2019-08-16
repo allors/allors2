@@ -24,24 +24,12 @@ namespace Allors.Domain
 
     public partial class User
     {
-        public static User Create(ISession session)
-        {
-            return (User)session.Create(Meta.ObjectType);
-        }
+        public static User Create(ISession session) => (User)session.Create(Meta.ObjectType);
 
-        public static User[] Create(ISession session, int count)
-        {
-            return (User[])session.Create(Meta.ObjectType, count);
-        }
+        public static User[] Create(ISession session, int count) => (User[])session.Create(Meta.ObjectType, count);
 
-        public static User[] Instantiate(ISession session, string[] ids)
-        {
-            return (User[])session.Instantiate(ids);
-        }
+        public static User[] Instantiate(ISession session, string[] ids) => (User[])session.Instantiate(ids);
 
-        public static User[] Extent(ISession session)
-        {
-            return (User[])session.Extent(Meta.ObjectType).ToArray();
-        }
+        public static User[] Extent(ISession session) => (User[])session.Extent(Meta.ObjectType).ToArray();
     }
 }

@@ -27,9 +27,6 @@ namespace Allors.Workspace.Meta
 
         public Unit ObjectType => this.Unit;
 
-        public static implicit operator ObjectType(MetaUnit metaUnit)
-        {
-            return metaUnit.Unit;
-        }
+        public static implicit operator ObjectType(MetaUnit metaUnit) => metaUnit.Unit;
     }
 }

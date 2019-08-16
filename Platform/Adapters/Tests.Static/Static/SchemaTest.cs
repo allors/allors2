@@ -797,10 +797,7 @@ namespace Allors.Adapters
 
         protected abstract IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init);
 
-        protected IDatabase CreateDatabase()
-        {
-            return this.Profile.CreateDatabase();
-        }
+        protected IDatabase CreateDatabase() => this.Profile.CreateDatabase();
 
         protected abstract void DropTable(string schema, string tableName);
 

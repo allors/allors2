@@ -164,9 +164,6 @@ namespace Allors.Repository.Domain
             }
         }
 
-        public override string ToString()
-        {
-            return $"{this.DefiningType.SingularName}.{this.RoleSingularName}";
-        }
+        public override string ToString() => $"{this.DefiningType.SingularName}.{this.RoleSingularName}";
     }
 }

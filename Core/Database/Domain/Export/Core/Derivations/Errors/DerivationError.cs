@@ -66,9 +66,6 @@ namespace Allors.Domain
 
         public virtual string Message => this.message;
 
-        public override string ToString()
-        {
-            return this.message;
-        }
+        public override string ToString() => this.message;
     }
 }

@@ -24,10 +24,7 @@ namespace Allors.Workspace.Data
 {
     public class Sort
     {
-        public Sort(IRoleType roleType = null)
-        {
-            this.RoleType = roleType;
-        }
+        public Sort(IRoleType roleType = null) => this.RoleType = roleType;
 
         public IRoleType RoleType { get; set; }
 

@@ -26,14 +26,8 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
     {
         private readonly Profile profile = new Profile();
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
-        protected override IDatabase CreateDatabase()
-        {
-            return this.profile.CreateDatabase();
-        }
+        protected override IDatabase CreateDatabase() => this.profile.CreateDatabase();
     }
 }

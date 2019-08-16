@@ -63,10 +63,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal override bool Include
-        {
-            get { return this.filter != null && this.filter.Include; }
-        }
+        internal override bool Include => this.filter != null && this.filter.Include;
 
         public ICompositePredicate AddAnd()
         {

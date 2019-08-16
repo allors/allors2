@@ -26,10 +26,7 @@
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        ~Database()
-        {
-            this.HttpClient.Dispose();
-        }
+        ~Database() => this.HttpClient.Dispose();
 
         public HttpClient HttpClient { get; }
 
@@ -68,10 +65,7 @@
             return pushResponse;
         }
 
-        public async Task<InvokeResponse> Invoke(Method method)
-        {
-            return await this.Invoke(new[] { method });
-        }
+        public async Task<InvokeResponse> Invoke(Method method) => await this.Invoke(new[] { method });
 
         public async Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
         {
@@ -105,17 +99,15 @@
             return invokeResponse;
         }
 
-        public async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
-        {
-            return await this.Policy.ExecuteAsync(
-                       async () =>
-                           {
-                               var json = JsonConvert.SerializeObject(args);
-                               return await this.HttpClient.PostAsync(
-                                          uri,
-                                          new StringContent(json, Encoding.UTF8, "application/json"));
-                           });
-        }
+        public async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args) =>
+            await this.Policy.ExecuteAsync(
+                async () =>
+                {
+                    var json = JsonConvert.SerializeObject(args);
+                    return await this.HttpClient.PostAsync(
+                        uri,
+                        new StringContent(json, Encoding.UTF8, "application/json"));
+                });
 
         public async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
         {

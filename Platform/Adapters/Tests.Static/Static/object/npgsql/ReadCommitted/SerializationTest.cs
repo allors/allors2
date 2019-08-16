@@ -29,21 +29,12 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     {
         private readonly Profile profile;
 
-        public SerializationTest(Fixture fixture)
-        {
-            this.profile = new Profile(fixture.Server);
-        }
+        public SerializationTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
-        protected override IDatabase CreatePopulation()
-        {
-            return this.profile.CreatePopulation();
-        }
+        protected override IDatabase CreatePopulation() => this.profile.CreatePopulation();
     }
 }

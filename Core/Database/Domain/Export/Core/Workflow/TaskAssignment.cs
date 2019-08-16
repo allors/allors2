@@ -17,9 +17,6 @@ namespace Allors.Domain
             this.Task?.ManageNotification(this);
         }
 
-        public void CoreDelete(DeletableDelete method)
-        {
-            this.Notification?.Delete();
-        }
+        public void CoreDelete(DeletableDelete method) => this.Notification?.Delete();
     }
 }

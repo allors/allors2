@@ -12,10 +12,7 @@ namespace Allors.Services
     {
         private readonly DerivationConfig config;
 
-        public DerivationService(DerivationConfig config)
-        {
-            this.config = config;
-        }
+        public DerivationService(DerivationConfig config) => this.config = config;
 
 
         public IDerivation CreateDerivation(ISession session)

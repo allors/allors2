@@ -30,7 +30,6 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.Receiver = new ReceiverModel(quote);
 
             this.QuoteItems = quote.QuoteItems.Select(v => new QuoteItemModel(v)).ToArray();
-
         }
 
         public QuoteModel Quote { get; }

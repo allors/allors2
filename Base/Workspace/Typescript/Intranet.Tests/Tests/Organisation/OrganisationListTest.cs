@@ -19,10 +19,7 @@ namespace Tests.OrganisationTests
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Organisations", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Organisations", this.Driver.Title);
 
         [Fact]
         public void Table()

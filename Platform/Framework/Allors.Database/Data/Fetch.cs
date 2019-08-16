@@ -57,14 +57,12 @@ namespace Allors.Data
             return fetch != null;
         }
 
-        public Protocol.Data.Fetch Save()
-        {
-            return new Protocol.Data.Fetch
+        public Protocol.Data.Fetch Save() =>
+            new Protocol.Data.Fetch
             {
                 Step = this.Step?.Save(),
                 Include = this.Include?.Save()
             };
-        }
 
         private static IPropertyType Resolve(IComposite composite, string propertyName)
         {
@@ -97,9 +95,6 @@ namespace Allors.Data
             return null;
         }
 
-        public override string ToString()
-        {
-            return this.Step?.ToString() ?? base.ToString();
-        }
+        public override string ToString() => this.Step?.ToString() ?? base.ToString();
     }
 }

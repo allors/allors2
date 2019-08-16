@@ -24,6 +24,5 @@ namespace Allors.Domain
         public bool PartiallyInvoiced => Equals(this.UniqueId, SalesOrderInvoiceStates.PartiallyInvoicedId);
 
         public bool Invoiced => Equals(this.UniqueId, SalesOrderInvoiceStates.InvoicedId);
-
     }
 }

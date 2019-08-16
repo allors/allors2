@@ -26,28 +26,16 @@ namespace Allors.Adapters.Object.SqlClient
             this.Connection = connectionFactory.Create(database);
         }
 
-        ~ManagementSession()
-        {
-            this.Dispose();
-        }
+        ~ManagementSession() => this.Dispose();
 
         public Database Database { get; }
 
         public Connection Connection { get; }
 
-        public void Dispose()
-        {
-            this.Rollback();
-        }
+        public void Dispose() => this.Rollback();
 
-        internal void Commit()
-        {
-            this.Connection.Commit();
-        }
+        internal void Commit() => this.Connection.Commit();
 
-        internal void Rollback()
-        {
-            this.Connection.Rollback();
-        }
+        internal void Rollback() => this.Connection.Rollback();
     }
 }

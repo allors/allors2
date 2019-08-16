@@ -27,19 +27,10 @@ namespace Allors.Workspace.Meta
 
         public Class ObjectType => this.Class;
 
-        public static implicit operator Class(MetaClass metaClass)
-        {
-            return metaClass.Class;
-        }
+        public static implicit operator Class(MetaClass metaClass) => metaClass.Class;
 
-        public static implicit operator Composite(MetaClass metaClass)
-        {
-            return metaClass.Class;
-        }
+        public static implicit operator Composite(MetaClass metaClass) => metaClass.Class;
 
-        public static implicit operator ObjectType(MetaClass metaClass)
-        {
-            return metaClass.Class;
-        }
+        public static implicit operator ObjectType(MetaClass metaClass) => metaClass.Class;
     }
 }

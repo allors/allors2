@@ -62,15 +62,9 @@ namespace Allors.Adapters.Memory
 
         public IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole => this.associationTypesByRole;
 
-        internal void OnCreated(long objectId)
-        {
-            this.created.Add(objectId);
-        }
+        internal void OnCreated(long objectId) => this.created.Add(objectId);
 
-        internal void OnDeleted(long objectId)
-        {
-            this.deleted.Add(objectId);
-        }
+        internal void OnDeleted(long objectId) => this.deleted.Add(objectId);
 
         internal void OnChangingUnitRole(long association, IRoleType roleType)
         {

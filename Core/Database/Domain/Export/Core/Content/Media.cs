@@ -55,14 +55,8 @@ namespace Allors.Domain
             }
         }
 
-        public void CoreOnPostDerive(ObjectOnPostDerive method)
-        {
-            this.Type = this.MediaContent?.Type;
-        }
+        public void CoreOnPostDerive(ObjectOnPostDerive method) => this.Type = this.MediaContent?.Type;
 
-        public void CoreDelete(DeletableDelete method)
-        {
-            this.MediaContent?.Delete();
-        }
+        public void CoreDelete(DeletableDelete method) => this.MediaContent?.Delete();
     }
 }

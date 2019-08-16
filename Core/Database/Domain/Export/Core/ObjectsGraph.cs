@@ -14,10 +14,7 @@ namespace Allors
     {
         private readonly Dictionary<IObjects, ObjectsNode> objectsNodeByObjects;
 
-        public ObjectsGraph()
-        {
-            this.objectsNodeByObjects = new Dictionary<IObjects, ObjectsNode>();
-        }
+        public ObjectsGraph() => this.objectsNodeByObjects = new Dictionary<IObjects, ObjectsNode>();
 
         public void Invoke(Action<IObjects> action)
         {

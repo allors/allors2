@@ -12,10 +12,8 @@ namespace Components
     public class MatList : SelectorComponent
     {
         public MatList(IWebDriver driver, By selector = null)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = selector;
-        }
 
         public override By Selector { get; }
 
@@ -41,10 +39,8 @@ namespace Components
     public class MatList<T> : MatList where T : Component
     {
         public MatList(T page, By selector = null)
-            : base(page.Driver, selector)
-        {
+            : base(page.Driver, selector) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

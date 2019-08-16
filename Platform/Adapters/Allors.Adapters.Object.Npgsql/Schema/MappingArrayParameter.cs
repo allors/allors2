@@ -43,9 +43,6 @@ namespace Allors.Adapters.Object.Npgsql
         /// <returns>
         /// The string which represents the object instance.
         /// </returns>
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

@@ -29,16 +29,10 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     {
         private readonly Profile profile;
 
-        public SandboxTest(Fixture fixture)
-        {
-            this.profile = new Profile(fixture.Server);
-        }
+        public SandboxTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
     }
 }

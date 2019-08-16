@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Struct)]
     public class DomainAttribute : RepositoryAttribute
     {
-        public DomainAttribute(string value)
-        {
-            this.Value = value;
-        }
+        public DomainAttribute(string value) => this.Value = value;
 
         public string Value { get; set; }
     }

@@ -27,10 +27,7 @@ namespace Allors.Adapters.Memory
     {
         private readonly IEnumerator<Strategy> strategyEnumerator;
 
-        public ExtentEnumerator(IEnumerator<Strategy> strategyEnumerator)
-        {
-            this.strategyEnumerator = strategyEnumerator;
-        }
+        public ExtentEnumerator(IEnumerator<Strategy> strategyEnumerator) => this.strategyEnumerator = strategyEnumerator;
 
         public IObject Current
         {
@@ -46,27 +43,12 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        object IEnumerator.Current
-        {
-            get
-            {
-                return this.Current;
-            }
-        }
+        object IEnumerator.Current => this.Current;
 
-        public void Dispose()
-        {
-            this.strategyEnumerator.Dispose();
-        }
+        public void Dispose() => this.strategyEnumerator.Dispose();
 
-        public bool MoveNext()
-        {
-            return this.strategyEnumerator.MoveNext();
-        }
+        public bool MoveNext() => this.strategyEnumerator.MoveNext();
 
-        public void Reset()
-        {
-            this.strategyEnumerator.Reset();
-        }
+        public void Reset() => this.strategyEnumerator.Reset();
     }
 }

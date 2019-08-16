@@ -86,14 +86,8 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             return database;
         }
 
-        public override IDatabase CreatePopulation()
-        {
-            return new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
-        }
+        public override IDatabase CreatePopulation() => new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
 
-        protected override NpgsqlConnection CreateDbConnection()
-        {
-            return new NpgsqlConnection(this.ConnectionString);
-        }
+        protected override NpgsqlConnection CreateDbConnection() => new NpgsqlConnection(this.ConnectionString);
     }
 }

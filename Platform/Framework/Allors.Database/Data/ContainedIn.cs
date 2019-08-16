@@ -74,9 +74,8 @@ namespace Allors.Data
             return false;
         }
 
-        public Predicate Save()
-        {
-            return new Predicate
+        public Predicate Save() =>
+            new Predicate
             {
                 Kind = PredicateKind.ContainedIn,
                 PropertyType = this.PropertyType?.Id,
@@ -84,7 +83,6 @@ namespace Allors.Data
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
                 Parameter = this.Parameter
             };
-        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

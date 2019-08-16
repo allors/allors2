@@ -46,21 +46,9 @@ namespace Allors
             this.id = Guid.NewGuid();
         }
 
-        public Guid Id
-        {
-            get
-            {
-                return this.id;
-            }
-        }
+        public Guid Id => this.id;
 
-        public PrefetchRule[] PrefetchRules
-        {
-            get
-            {
-                return this.prefetchRules;
-            }
-        }
+        public PrefetchRule[] PrefetchRules => this.prefetchRules;
 
         public bool AllowCompilation { get; set; }
 
@@ -82,15 +70,9 @@ namespace Allors
             };
         }
 
-        public IEnumerator<PrefetchRule> GetEnumerator()
-        {
-            return ((IEnumerable<PrefetchRule>)this.prefetchRules).GetEnumerator();
-        }
+        public IEnumerator<PrefetchRule> GetEnumerator() => ((IEnumerable<PrefetchRule>)this.prefetchRules).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.prefetchRules.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this.prefetchRules.GetEnumerator();
 
         public string DebugView
         {

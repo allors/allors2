@@ -13,10 +13,8 @@ namespace Components
     : SelectorComponent
     {
         public MatDatetimepicker(IWebDriver driver, RoleType roleType, params string[] scopes)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = By.XPath($".//a-mat-datetimepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
-        }
 
         public override By Selector { get; }
 
@@ -108,10 +106,8 @@ namespace Components
     public class MatDatetimepicker<T> : MatDatetimepicker where T : Component
     {
         public MatDatetimepicker(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

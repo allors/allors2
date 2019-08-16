@@ -4,10 +4,7 @@
 
     public partial class Singletons
     {
-        protected override void BasePrepare(Setup setup)
-        {
-            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
-        }
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
 
         protected override void BaseSetup(Setup setup)
         {

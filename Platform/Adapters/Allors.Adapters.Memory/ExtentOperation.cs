@@ -43,15 +43,9 @@ namespace Allors.Adapters.Memory
             secondOperand.Parent = this;
         }
 
-        public override ICompositePredicate Filter
-        {
-            get { return null; }
-        }
+        public override ICompositePredicate Filter => null;
 
-        public override IComposite ObjectType
-        {
-            get { return this.firstOperand.ObjectType; }
-        }
+        public override IComposite ObjectType => this.firstOperand.ObjectType;
 
         protected override void Evaluate()
         {

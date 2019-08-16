@@ -31,54 +31,24 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
-        protected override IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
-        {
-            return this.profile.CreateDatabase(metaPopulation, init);
-        }
+        protected override IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init) => this.profile.CreateDatabase(metaPopulation, init);
 
-        protected override void DropTable(string schema, string tableName)
-        {
-            this.profile.DropTable(schema, tableName);
-        }
+        protected override void DropTable(string schema, string tableName) => this.profile.DropTable(schema, tableName);
 
-        protected override bool ExistTable(string schema, string table)
-        {
-            return this.profile.ExistTable(schema, table);
-        }
+        protected override bool ExistTable(string schema, string table) => this.profile.ExistTable(schema, table);
 
-        protected override int ColumnCount(string schema, string table)
-        {
-            return this.profile.ColumnCount(schema, table);
-        }
+        protected override int ColumnCount(string schema, string table) => this.profile.ColumnCount(schema, table);
 
-        protected override bool ExistColumn(string schema, string table, string column, ColumnTypes columnType)
-        {
-            return this.profile.ExistColumn(schema, table, column, columnType);
-        }
+        protected override bool ExistColumn(string schema, string table, string column, ColumnTypes columnType) => this.profile.ExistColumn(schema, table, column, columnType);
 
-        protected override bool ExistPrimaryKey(string schema, string table, string column)
-        {
-            return this.profile.ExistPrimaryKey(schema, table, column);
-        }
+        protected override bool ExistPrimaryKey(string schema, string table, string column) => this.profile.ExistPrimaryKey(schema, table, column);
 
-        protected override bool ExistProcedure(string schema, string procedure)
-        {
-            return this.profile.ExistProcedure(schema, procedure);
-        }
+        protected override bool ExistProcedure(string schema, string procedure) => this.profile.ExistProcedure(schema, procedure);
 
-        protected override bool ExistIndex(string schema, string table, string column)
-        {
-            return this.profile.ExistIndex(schema, table, column);
-        }
+        protected override bool ExistIndex(string schema, string table, string column) => this.profile.ExistIndex(schema, table, column);
 
-        protected override void DropProcedure(string schema, string procedure)
-        {
-            this.profile.DropProcedure(procedure);
-        }
+        protected override void DropProcedure(string schema, string procedure) => this.profile.DropProcedure(procedure);
     }
 }

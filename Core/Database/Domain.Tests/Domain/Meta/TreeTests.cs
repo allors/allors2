@@ -167,6 +167,5 @@ namespace Tests
                 .Add(M.C1.C1C1Many2Manies);
             tree.BuildPrefetchPolicy();
         }
-
     }
 }

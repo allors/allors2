@@ -78,9 +78,6 @@ namespace Allors.Adapters.Object.Npgsql
             return this.Include;
         }
 
-        internal override void Setup(ExtentStatement statement)
-        {
-            statement.UseRole(this.roleType);
-        }
+        internal override void Setup(ExtentStatement statement) => statement.UseRole(this.roleType);
     }
 }

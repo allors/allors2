@@ -28,10 +28,7 @@ namespace Allors.Data
 
     public class Union : IExtentOperator
     {
-        public Union(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
+        public Union(params IExtent[] operands) => this.Operands = operands;
 
         public IComposite ObjectType => this.Operands?[0].ObjectType;
 
@@ -39,10 +36,7 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Operands.Any(v => v.HasMissingArguments(arguments));
-        }
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
 
         public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
@@ -55,14 +49,12 @@ namespace Allors.Data
             return extent;
         }
 
-        public Extent Save()
-        {
-            return new Extent
+        public Extent Save() =>
+            new Extent
             {
                 Kind = ExtentKind.Union,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),
                 Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
-        }
     }
 }

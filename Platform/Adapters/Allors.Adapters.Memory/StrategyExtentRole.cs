@@ -43,43 +43,19 @@ namespace Allors.Adapters.Memory
             this.roleType = roleType;
         }
 
-        public override int Count
-        {
-            get { return this.GetStrategies().Count; }
-        }
+        public override int Count => this.GetStrategies().Count;
 
-        public override ICompositePredicate Filter
-        {
-            get { throw new NotSupportedException(); }
-        }
+        public override ICompositePredicate Filter => throw new NotSupportedException();
 
-        public override IObject First
-        {
-            get
-            {
-                return this.GetStrategies().Select(strategy => strategy.GetObject()).FirstOrDefault();
-            }
-        }
+        public override IObject First => this.GetStrategies().Select(strategy => strategy.GetObject()).FirstOrDefault();
 
-        public override IComposite ObjectType
-        {
-            get { return (IComposite)this.roleType.ObjectType; }
-        }
+        public override IComposite ObjectType => (IComposite)this.roleType.ObjectType;
 
-        internal override Session Session
-        {
-            get { return this.associationStrategy.MemorySession; }
-        }
+        internal override Session Session => this.associationStrategy.MemorySession;
 
-        public override Allors.Extent AddSort(IRoleType sortRoleType)
-        {
-            throw new NotSupportedException();
-        }
+        public override Allors.Extent AddSort(IRoleType sortRoleType) => throw new NotSupportedException();
 
-        public override Allors.Extent AddSort(IRoleType subSortRoleType, SortDirection direction)
-        {
-            throw new NotSupportedException();
-        }
+        public override Allors.Extent AddSort(IRoleType subSortRoleType, SortDirection direction) => throw new NotSupportedException();
 
         public override bool Contains(object value)
         {
@@ -98,10 +74,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public override IEnumerator GetEnumerator()
-        {
-            return this.GetStrategies().ToList().Select(strategy => strategy.GetObject()).GetEnumerator();
-        }
+        public override IEnumerator GetEnumerator() => this.GetStrategies().ToList().Select(strategy => strategy.GetObject()).GetEnumerator();
 
         public override int IndexOf(object value)
         {
@@ -181,9 +154,6 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        private List<Strategy> GetStrategies()
-        {
-            return this.associationStrategy.GetStrategies(this.roleType);
-        }
+        private List<Strategy> GetStrategies() => this.associationStrategy.GetStrategies(this.roleType);
     }
 }

@@ -80,10 +80,7 @@ namespace Allors.Repository.Generation
 
         public string Version { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         public void Generate(Repository repository, DirectoryInfo outputDirectory)
         {
@@ -164,25 +161,13 @@ namespace Allors.Repository.Generation
         {
             private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-            public void CompiletimeError(TemplateMessage msg)
-            {
-                Logger.Error(msg.ToString());
-            }
+            public void CompiletimeError(TemplateMessage msg) => Logger.Error(msg.ToString());
 
-            public void RuntimeError(TemplateMessage msg)
-            {
-                Logger.Error(msg.ToString());
-            }
+            public void RuntimeError(TemplateMessage msg) => Logger.Error(msg.ToString());
 
-            public void IOError(TemplateMessage msg)
-            {
-                Logger.Error(msg.ToString());
-            }
+            public void IOError(TemplateMessage msg) => Logger.Error(msg.ToString());
 
-            public void InternalError(TemplateMessage msg)
-            {
-                Logger.Error(msg.ToString());
-            }
+            public void InternalError(TemplateMessage msg) => Logger.Error(msg.ToString());
         }
     }
 }

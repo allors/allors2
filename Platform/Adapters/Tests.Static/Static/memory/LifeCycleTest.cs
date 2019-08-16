@@ -39,23 +39,14 @@ namespace Allors.Adapters.Memory
         {
         }
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
         protected override void SwitchDatabase()
         {
         }
 
-        protected override IDatabase CreatePopulation()
-        {
-            return this.profile.CreateDatabase();
-        }
+        protected override IDatabase CreatePopulation() => this.profile.CreateDatabase();
 
-        protected override ISession CreateSession()
-        {
-            return this.profile.CreateSession();
-        }
+        protected override ISession CreateSession() => this.profile.CreateSession();
     }
 }

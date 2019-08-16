@@ -15,10 +15,7 @@ namespace Allors.Server.Controllers
 
     public class TestShareHoldersController : Controller
     {
-        public TestShareHoldersController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public TestShareHoldersController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class UniqueAttribute : RepositoryAttribute
     {
-        public UniqueAttribute(bool value = true)
-        {
-            this.Value = value;
-        }
+        public UniqueAttribute(bool value = true) => this.Value = value;
 
         public bool Value { get; set; }
     }

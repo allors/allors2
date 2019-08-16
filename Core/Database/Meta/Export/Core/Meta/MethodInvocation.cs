@@ -26,10 +26,7 @@ namespace Allors.Meta
     {
         private readonly ConcreteMethodType concreteMethodType;
 
-        public MethodInvocation(Class @class, MethodType methodType)
-        {
-            this.concreteMethodType = @class.ConcreteMethodTypeByMethodType[methodType];
-        }
+        public MethodInvocation(Class @class, MethodType methodType) => this.concreteMethodType = @class.ConcreteMethodTypeByMethodType[methodType];
 
         public ConcreteMethodType ConcreteConcreteMethodType => this.concreteMethodType;
 

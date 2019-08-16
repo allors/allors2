@@ -38,10 +38,7 @@ namespace Allors.Workspace.Data
 
         public TreeNodes Nodes { get; }
 
-        public Tree Add(IEnumerable<IRelationType> relationTypes)
-        {
-            return this.Add(relationTypes.Select(v => v.RoleType));
-        }
+        public Tree Add(IEnumerable<IRelationType> relationTypes) => this.Add(relationTypes.Select(v => v.RoleType));
 
         public Tree Add(IEnumerable<IRoleType> roleTypes)
         {
@@ -49,10 +46,7 @@ namespace Allors.Workspace.Data
             return this;
         }
 
-        public Tree Add(IRelationType relationType)
-        {
-            return this.Add(relationType.RoleType);
-        }
+        public Tree Add(IRelationType relationType) => this.Add(relationType.RoleType);
 
         public Tree Add(IRoleType roleType)
         {
@@ -61,15 +55,9 @@ namespace Allors.Workspace.Data
             return this;
         }
 
-        public Tree Add(IConcreteRoleType concreteRoleType)
-        {
-            return this.Add(concreteRoleType.RoleType);
-        }
+        public Tree Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
 
-        public Tree Add(IRelationType relationType, Tree tree)
-        {
-            return this.Add(relationType.RoleType, tree);
-        }
+        public Tree Add(IRelationType relationType, Tree tree) => this.Add(relationType.RoleType, tree);
 
         public Tree Add(IRoleType roleType, Tree tree)
         {
@@ -85,14 +73,12 @@ namespace Allors.Workspace.Data
             return this;
         }
 
-        public Protocol.Data.Tree ToJson()
-        {
-            return new Protocol.Data.Tree
+        public Protocol.Data.Tree ToJson() =>
+            new Protocol.Data.Tree
             {
                 Composite = this.Composite.Id,
                 Nodes = this.Nodes.Select(v => v.ToJson()).ToArray()
             };
-        }
 
         public string DebugView
         {

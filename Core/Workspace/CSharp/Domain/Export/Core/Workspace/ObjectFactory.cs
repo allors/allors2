@@ -159,15 +159,9 @@ namespace Allors.Workspace
         /// </summary>
         /// <param name="type">The .Net <see cref="Type"/>.</param>
         /// <returns>The Allors <see cref="IObjectType"/>.</returns>
-        public IObjectType GetObjectTypeForType(Type type)
-        {
-            return !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
-        }
+        public IObjectType GetObjectTypeForType(Type type) => !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
 
-        public IObjectType GetObjectTypeForTypeName(string name)
-        {
-            return !this.objectTypeByName.TryGetValue(name, out var objectType) ? null : objectType;
-        }
+        public IObjectType GetObjectTypeForTypeName(string name) => !this.objectTypeByName.TryGetValue(name, out var objectType) ? null : objectType;
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
@@ -178,10 +172,7 @@ namespace Allors.Workspace
         /// <returns>
         /// The Allors <see cref="IObjectType"/>.
         /// </returns>
-        public IObjectType GetObjectTypeForObjectTypeId(Guid id)
-        {
-            return !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
-        }
+        public IObjectType GetObjectTypeForObjectTypeId(Guid id) => !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.

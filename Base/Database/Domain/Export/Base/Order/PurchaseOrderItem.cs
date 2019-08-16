@@ -71,15 +71,9 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseConfirm(OrderItemConfirm method)
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseConfirm(OrderItemConfirm method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
 
-        public void BaseApprove(OrderItemApprove method)
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseApprove(OrderItemApprove method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseQuickReceive(PurchaseOrderItemQuickReceive method)
         {
@@ -120,20 +114,11 @@ namespace Allors.Domain
             }
         }
 
-        public void CancelFromOrder()
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;
-        }
+        public void CancelFromOrder() => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;
 
-        public void BaseCancel(OrderItemCancel method)
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(OrderItemCancel method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
 
-        public void BaseReject(OrderItemReject method)
-        {
-            this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
-        }
+        public void BaseReject(OrderItemReject method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
@@ -351,9 +336,6 @@ namespace Allors.Domain
             }
         }
 
-        public void Sync(Order order)
-        {
-            this.SyncedOrder = order;
-        }
+        public void Sync(Order order) => this.SyncedOrder = order;
     }
 }

@@ -31,15 +31,9 @@ namespace Allors.Domain
             }
         }
 
-        public static void AddToBasePrice(this Product @this, BasePrice basePrice)
-        {
-            @this.AddBasePrice(basePrice);
-        }
+        public static void AddToBasePrice(this Product @this, BasePrice basePrice) => @this.AddBasePrice(basePrice);
 
-        public static void RemoveFromBasePrices(this Product @this, BasePrice basePrice)
-        {
-            @this.RemoveBasePrice(basePrice);
-        }
+        public static void RemoveFromBasePrices(this Product @this, BasePrice basePrice) => @this.RemoveBasePrice(basePrice);
 
         public static void BaseOnDeriveVirtualProductPriceComponent(this Product @this)
         {

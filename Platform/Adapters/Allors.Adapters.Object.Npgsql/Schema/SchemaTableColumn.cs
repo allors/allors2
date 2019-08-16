@@ -52,9 +52,6 @@ namespace Allors.Adapters.Object.Npgsql
 
         public int? NumericScale { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

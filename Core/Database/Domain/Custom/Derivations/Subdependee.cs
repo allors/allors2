@@ -26,9 +26,6 @@ namespace Allors.Domain
             }
         }
 
-        public void CustomOnDerive(ObjectOnDerive method)
-        {
-            this.Subcounter = this.Subcounter + 1;
-        }
+        public void CustomOnDerive(ObjectOnDerive method) => this.Subcounter = this.Subcounter + 1;
     }
 }

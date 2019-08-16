@@ -13,17 +13,11 @@ namespace Allors.Domain.Logging
     {
         public List<string> List { get; }
 
-        public ListDerivationLog()
-        {
-            this.List = new List<string>();
-        }
+        public ListDerivationLog() => this.List = new List<string>();
 
         public string Text => string.Join("\n", this.List);
 
-        public override string ToString()
-        {
-            return this.Text;
-        }
+        public override string ToString() => this.Text;
 
         // Derivation
         public virtual void StartedGeneration(int generation)

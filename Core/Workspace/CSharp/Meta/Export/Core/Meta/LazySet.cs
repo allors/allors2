@@ -30,18 +30,9 @@ namespace Allors.Workspace.Meta
         private readonly IList<T> array;
         private HashSet<T> set;
 
-        internal LazySet(IEnumerable<T> collection)
-        {
-            this.array = collection.ToArray();
-        }
+        internal LazySet(IEnumerable<T> collection) => this.array = collection.ToArray();
 
-        public int Count
-        {
-            get
-            {
-                return this.array.Count;
-            }
-        }
+        public int Count => this.array.Count;
 
         public bool Contains(T item)
         {
@@ -58,14 +49,8 @@ namespace Allors.Workspace.Meta
             return false;
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this.array.GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => this.array.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }

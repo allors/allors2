@@ -32,10 +32,7 @@ namespace Allors.Data
 
         private readonly List<TreeNode> items = new List<TreeNode>();
 
-        public TreeNodes(IComposite composite)
-        {
-            this.composite = composite;
-        }
+        public TreeNodes(IComposite composite) => this.composite = composite;
 
         public int Count => this.items.Count;
 
@@ -53,14 +50,8 @@ namespace Allors.Data
             this.items.Add(treeNode);
         }
 
-        public IEnumerator<TreeNode> GetEnumerator()
-        {
-            return this.items.GetEnumerator();
-        }
+        public IEnumerator<TreeNode> GetEnumerator() => this.items.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }

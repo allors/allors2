@@ -41,10 +41,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         private HashSet<IRoleType> requireFlushRoles;
 
-        internal Roles(Reference reference)
-        {
-            this.Reference = reference;
-        }
+        internal Roles(Reference reference) => this.Reference = reference;
 
         internal ICachedObject CachedObject
         {
@@ -493,10 +490,7 @@ namespace Allors.Adapters.Object.Npgsql
             private HashSet<long> added;
             private HashSet<long> removed;
 
-            internal CompositesRole(IEnumerable<long> compositeRoles)
-            {
-                this.baseline = new HashSet<long>(compositeRoles);
-            }
+            internal CompositesRole(IEnumerable<long> compositeRoles) => this.baseline = new HashSet<long>(compositeRoles);
 
             internal HashSet<long> ObjectIds
             {

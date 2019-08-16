@@ -43,9 +43,6 @@ namespace Allors.Workspace.Meta
 
         public Class Class { get; }
 
-        public static implicit operator RoleType(ConcreteRoleType concreteRoleType)
-        {
-            return (RoleType)concreteRoleType.RoleType;
-        }
+        public static implicit operator RoleType(ConcreteRoleType concreteRoleType) => (RoleType)concreteRoleType.RoleType;
     }
 }

@@ -50,11 +50,9 @@ namespace Allors.Domain
             return null;
         }
 
-        private object CreateSubject()
-        {
-            return this.TemplateType.IsOpenDocumentTemplate ?
-                       new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments) :
-                       null;
-        }
+        private object CreateSubject() =>
+            this.TemplateType.IsOpenDocumentTemplate ?
+                new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments) :
+                null;
     }
 }

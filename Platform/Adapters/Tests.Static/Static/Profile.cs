@@ -34,10 +34,7 @@ namespace Allors.Adapters
         private IDatabase database;
         private ISession session;
 
-        protected Profile()
-        {
-            this.objectFactory = this.CreateObjectFactory(MetaPopulation.Instance);
-        }
+        protected Profile() => this.objectFactory = this.CreateObjectFactory(MetaPopulation.Instance);
 
         public IObjectFactory ObjectFactory => this.objectFactory;
 
@@ -82,10 +79,7 @@ namespace Allors.Adapters
 
         public abstract IDatabase CreateDatabase();
 
-        internal ISession CreateSession()
-        {
-            return this.database.CreateSession();
-        }
+        internal ISession CreateSession() => this.database.CreateSession();
 
         protected internal void Init()
         {
@@ -105,9 +99,6 @@ namespace Allors.Adapters
             }
         }
 
-        protected ObjectFactory CreateObjectFactory(IMetaPopulation metaPopulation)
-        {
-            return new ObjectFactory(metaPopulation, typeof(C1));
-        }
+        protected ObjectFactory CreateObjectFactory(IMetaPopulation metaPopulation) => new ObjectFactory(metaPopulation, typeof(C1));
     }
 }

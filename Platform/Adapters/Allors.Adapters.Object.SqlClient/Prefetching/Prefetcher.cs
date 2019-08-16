@@ -37,10 +37,7 @@ namespace Allors.Adapters.Object.SqlClient
         private Dictionary<IRoleType, Command> prefetchCompositesRoleByRoleType;
         private Dictionary<IAssociationType, Command> prefetchCompositeAssociationByAssociationType;
 
-        public Prefetcher(Session session)
-        {
-            this.Session = session;
-        }
+        public Prefetcher(Session session) => this.Session = session;
 
         public Session Session { get; }
 

@@ -54,5 +54,4 @@ window.getAngularTestability(document.querySelector('app-root'))
             return (elements.Count == 1) && elements[0].Displayed;
         }
     }
-
 }

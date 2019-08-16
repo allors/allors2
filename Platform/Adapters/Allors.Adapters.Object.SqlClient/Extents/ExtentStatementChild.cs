@@ -42,49 +42,22 @@ namespace Allors.Adapters.Object.SqlClient
             this.associationType = associationType;
         }
 
-        internal IAssociationType AssociationType
-        {
-            get { return this.associationType; }
-        }
+        internal IAssociationType AssociationType => this.associationType;
 
-        internal override bool IsRoot
-        {
-            get { return false; }
-        }
+        internal override bool IsRoot => false;
 
-        internal IRoleType RoleType
-        {
-            get { return this.roleType; }
-        }
+        internal IRoleType RoleType => this.roleType;
 
-        public override string ToString()
-        {
-            return this.root.ToString();
-        }
+        public override string ToString() => this.root.ToString();
 
-        internal override string AddParameter(object obj)
-        {
-            return this.root.AddParameter(obj);
-        }
+        internal override string AddParameter(object obj) => this.root.AddParameter(obj);
 
-        internal override void Append(string part)
-        {
-            this.root.Append(part);
-        }
+        internal override void Append(string part) => this.root.Append(part);
 
-        internal override string CreateAlias()
-        {
-            return this.root.CreateAlias();
-        }
+        internal override string CreateAlias() => this.root.CreateAlias();
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association)
-        {
-            return new ExtentStatementChild(this.root, extent, association);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association) => new ExtentStatementChild(this.root, extent, association);
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role)
-        {
-            return new ExtentStatementChild(this.root, extent, role);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role) => new ExtentStatementChild(this.root, extent, role);
     }
 }

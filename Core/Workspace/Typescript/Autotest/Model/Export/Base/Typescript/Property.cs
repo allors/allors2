@@ -10,10 +10,7 @@ namespace Autotest.Typescript
 
     public class Property : IMember
     {
-        public Property(JToken json)
-        {
-            this.Json = json;
-        }
+        public Property(JToken json) => this.Json = json;
 
         public JToken Json { get; }
 

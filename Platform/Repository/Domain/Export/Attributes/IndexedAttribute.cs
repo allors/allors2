@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class IndexedAttribute : RepositoryAttribute
     {
-        public IndexedAttribute(bool value = true)
-        {
-            this.Value = value;
-        }
+        public IndexedAttribute(bool value = true) => this.Value = value;
 
         public bool Value { get; set; }
     }

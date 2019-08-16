@@ -13,33 +13,12 @@ namespace Allors.Adapters.Object.Npgsql
             this.lowercaseName = name.ToLowerInvariant();
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name => this.name;
 
-        public string LowercaseName
-        {
-            get
-            {
-                return this.lowercaseName;
-            }
-        }
+        public string LowercaseName => this.lowercaseName;
 
-        public Schema Schema
-        {
-            get
-            {
-                return this.schema;
-            }
-        }
+        public Schema Schema => this.schema;
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

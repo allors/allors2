@@ -14,10 +14,7 @@ namespace Allors.Server.Controllers
 
     public class TestPullController : Controller
     {
-        public TestPullController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public TestPullController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

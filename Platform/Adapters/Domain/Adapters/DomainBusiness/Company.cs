@@ -24,25 +24,13 @@ namespace Allors.Domain
 
     public partial class Company
     {
-        public static Company Create(ISession session)
-        {
-            return (Company)session.Create(Meta.ObjectType);
-        }
+        public static Company Create(ISession session) => (Company)session.Create(Meta.ObjectType);
 
-        public static Company[] Create(ISession session, int count)
-        {
-            return (Company[])session.Create(Meta.ObjectType, count);
-        }
+        public static Company[] Create(ISession session, int count) => (Company[])session.Create(Meta.ObjectType, count);
 
-        public static Company[] Instantiate(ISession session, string[] ids)
-        {
-            return (Company[])session.Instantiate(ids);
-        }
+        public static Company[] Instantiate(ISession session, string[] ids) => (Company[])session.Instantiate(ids);
 
-        public static Company[] Extent(ISession session)
-        {
-            return (Company[])session.Extent(Meta.ObjectType).ToArray();
-        }
+        public static Company[] Extent(ISession session) => (Company[])session.Extent(Meta.ObjectType).ToArray();
 
         public static Company Create(ISession session, string name)
         {
@@ -59,9 +47,6 @@ namespace Allors.Domain
             return company;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

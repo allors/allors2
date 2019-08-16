@@ -220,37 +220,13 @@ WHERE
             }
         }
 
-        public Dictionary<string, SchemaTable> TableByName
-        {
-            get
-            {
-                return this.tableByName;
-            }
-        }
+        public Dictionary<string, SchemaTable> TableByName => this.tableByName;
 
-        public Dictionary<string, SchemaTableType> TableTypeByName
-        {
-            get
-            {
-                return this.tableTypeByName;
-            }
-        }
+        public Dictionary<string, SchemaTableType> TableTypeByName => this.tableTypeByName;
 
-        public Dictionary<string, SchemaProcedure> ProcedureByName
-        {
-            get
-            {
-                return this.procedureByName;
-            }
-        }
+        public Dictionary<string, SchemaProcedure> ProcedureByName => this.procedureByName;
 
-        public Dictionary<string, Dictionary<string, SchemaIndex>> IndexByIndexNameByTableName
-        {
-            get
-            {
-                return this.indexByIndexNameByTableName;
-            }
-        }
+        public Dictionary<string, Dictionary<string, SchemaIndex>> IndexByIndexNameByTableName => this.indexByIndexNameByTableName;
 
         public SchemaTable GetTable(string tableName)
         {

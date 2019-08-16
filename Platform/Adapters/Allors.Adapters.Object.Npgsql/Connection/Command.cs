@@ -57,20 +57,11 @@ namespace Allors.Adapters.Object.Npgsql
 
         protected NpgsqlCommand NpgsqlCommand { get; }
 
-        public void Dispose()
-        {
-            this.NpgsqlCommand.Dispose();
-        }
+        public void Dispose() => this.NpgsqlCommand.Dispose();
 
-        internal NpgsqlParameter CreateParameter()
-        {
-            return this.NpgsqlCommand.CreateParameter();
-        }
+        internal NpgsqlParameter CreateParameter() => this.NpgsqlCommand.CreateParameter();
 
-        internal NpgsqlParameter GetParameter(string name)
-        {
-            return this.NpgsqlCommand.Parameters[name];
-        }
+        internal NpgsqlParameter GetParameter(string name) => this.NpgsqlCommand.Parameters[name];
 
         internal void AddInParameter(string parameterName, object value)
         {

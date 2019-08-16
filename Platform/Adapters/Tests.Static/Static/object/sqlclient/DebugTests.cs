@@ -424,10 +424,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        protected ISession CreateSession()
-        {
-            return this.Profile.Database.CreateSession();
-        }
+        protected ISession CreateSession() => this.Profile.Database.CreateSession();
 
         private void InvalidateCache()
         {

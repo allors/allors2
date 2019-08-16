@@ -23,10 +23,7 @@ namespace Autotest
 
         public Menu Menu { get; set; }
 
-        public ValidationLog Validate()
-        {
-            return new ValidationLog();
-        }
+        public ValidationLog Validate() => new ValidationLog();
 
         public void LoadMetaExtensions(FileInfo fileInfo)
         {

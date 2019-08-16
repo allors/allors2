@@ -18,14 +18,8 @@ namespace Allors.Domain
 
     public partial class Colour
     {
-        public void AddToBasePrice(BasePrice basePrice)
-        {
-            this.AddBasePrice(basePrice);
-        }
+        public void AddToBasePrice(BasePrice basePrice) => this.AddBasePrice(basePrice);
 
-        public void RemoveFromBasePrices(BasePrice basePrice)
-        {
-            this.RemoveBasePrice(basePrice);
-        }
+        public void RemoveFromBasePrices(BasePrice basePrice) => this.RemoveBasePrice(basePrice);
     }
 }

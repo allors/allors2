@@ -7,9 +7,6 @@ namespace Autotest.Angular
 {
     public partial class Module
     {
-        public override string ToString()
-        {
-            return this.Reference.ToString();
-        }
+        public override string ToString() => this.Reference.ToString();
     }
 }

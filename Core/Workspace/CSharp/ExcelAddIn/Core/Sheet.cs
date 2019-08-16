@@ -37,10 +37,7 @@
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
         // Commands
-        public virtual async Task<Result> Load(object args)
-        {
-            return await this.Context.Load(args);
-        }
+        public virtual async Task<Result> Load(object args) => await this.Context.Load(args);
 
         public async Task<PushResponse> Save()
         {

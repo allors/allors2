@@ -29,15 +29,9 @@ namespace Allors.Adapters.Memory
         private readonly StrategyExtent strategyExtent;
         private Extent extent;
 
-        public ExtentSwitch(Strategy strategy, IAssociationType associationType)
-        {
-            this.strategyExtent = new StrategyExtentAssociation(strategy, associationType);
-        }
+        public ExtentSwitch(Strategy strategy, IAssociationType associationType) => this.strategyExtent = new StrategyExtentAssociation(strategy, associationType);
 
-        public ExtentSwitch(Strategy strategy, IRoleType roleType)
-        {
-            this.strategyExtent = new StrategyExtentRole(strategy, roleType);
-        }
+        public ExtentSwitch(Strategy strategy, IRoleType roleType) => this.strategyExtent = new StrategyExtentRole(strategy, roleType);
 
         public override int Count
         {
@@ -74,10 +68,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public override IComposite ObjectType
-        {
-            get { return this.strategyExtent.ObjectType; }
-        }
+        public override IComposite ObjectType => this.strategyExtent.ObjectType;
 
         public Extent Extent
         {

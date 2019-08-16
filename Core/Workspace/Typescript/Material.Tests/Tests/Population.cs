@@ -20,9 +20,6 @@ namespace Tests
             this.dataPath = dataPath;
         }
 
-        public void Execute()
-        {
-            this.session.Derive();
-        }
+        public void Execute() => this.session.Derive();
     }
 }

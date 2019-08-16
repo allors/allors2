@@ -24,10 +24,7 @@ namespace Allors.Adapters.Object.SqlClient.Debug
 
     public class DebugExecution
     {
-        public DebugExecution(DebugCommand debugCommand)
-        {
-            this.Command = debugCommand;
-        }
+        public DebugExecution(DebugCommand debugCommand) => this.Command = debugCommand;
 
         public DebugCommand Command { get; }
 
@@ -35,9 +32,6 @@ namespace Allors.Adapters.Object.SqlClient.Debug
 
         public DateTime End { get; set; }
 
-        public override string ToString()
-        {
-            return $"{this.Begin:hh:mm:ss.ff} {this.Command}";
-        }
+        public override string ToString() => $"{this.Begin:hh:mm:ss.ff} {this.Command}";
     }
 }

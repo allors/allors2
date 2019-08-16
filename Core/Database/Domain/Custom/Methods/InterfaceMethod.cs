@@ -10,28 +10,16 @@ namespace Allors.Domain
 {
     public partial class C1
     {
-        public void CoreInterfaceMethod(I1InterfaceMethod method)
-        {
-            method.Value += "C1Core";
-        }
+        public void CoreInterfaceMethod(I1InterfaceMethod method) => method.Value += "C1Core";
 
-        public void CustomInterfaceMethod(I1InterfaceMethod method)
-        {
-            method.Value += "C1Custom";
-        }
+        public void CustomInterfaceMethod(I1InterfaceMethod method) => method.Value += "C1Custom";
     }
 
     public static partial class I1Extensions
     {
-        public static void CoreInterfaceMethod(this I1 @this, I1InterfaceMethod method)
-        {
-            method.Value += "I1Core";
-        }
+        public static void CoreInterfaceMethod(this I1 @this, I1InterfaceMethod method) => method.Value += "I1Core";
 
-        public static void CustomInterfaceMethod(this I1 @this, I1InterfaceMethod method)
-        {
-            method.Value += "I1Custom";
-        }
+        public static void CustomInterfaceMethod(this I1 @this, I1InterfaceMethod method) => method.Value += "I1Custom";
     }
 
     public partial class I1InterfaceMethod

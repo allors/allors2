@@ -15,10 +15,7 @@ namespace Allors.Server.Controllers
 
     public class OrganisationsController : Controller
     {
-        public OrganisationsController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public OrganisationsController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

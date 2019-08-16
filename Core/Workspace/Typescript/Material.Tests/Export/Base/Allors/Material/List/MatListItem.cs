@@ -30,10 +30,8 @@ namespace Components
     public class MatListItem<T> : MatListItem where T : Component
     {
         public MatListItem(T page, IWebElement element)
-            : base(page.Driver, element)
-        {
+            : base(page.Driver, element) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

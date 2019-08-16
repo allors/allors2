@@ -11,10 +11,8 @@ namespace Components
     public class Input : SelectorComponent
     {
         public Input(IWebDriver driver, params By[] selectors)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = selectors.Length == 1 ? selectors[0] : new ByChained(selectors);
-        }
 
         public Input(IWebDriver driver, string kind, string value, params string[] scopes)
             : base(driver)
@@ -66,16 +64,12 @@ namespace Components
     public class Input<T> : Input where T : Component
     {
         public Input(T page, params By[] selectors)
-            : base(page.Driver, selectors)
-        {
+            : base(page.Driver, selectors) =>
             this.Page = page;
-        }
 
         public Input(T page, string kind, string value, params string[] scopes)
-            : base(page.Driver, kind, value, scopes)
-        {
+            : base(page.Driver, kind, value, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

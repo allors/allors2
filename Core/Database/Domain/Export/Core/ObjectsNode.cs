@@ -18,15 +18,9 @@ namespace Allors
         private ObjectsNode previousRoot;
         private HashSet<ObjectsNode> dependencies;
 
-        public ObjectsNode(IObjects objects)
-        {
-            this.objects = objects;
-        }
+        public ObjectsNode(IObjects objects) => this.objects = objects;
 
-        public void Execute(Action<IObjects> execute)
-        {
-            this.Execute(this, execute);
-        }
+        public void Execute(Action<IObjects> execute) => this.Execute(this, execute);
 
         public void AddDependency(ObjectsNode objectsNode)
         {
@@ -38,25 +32,13 @@ namespace Allors
             this.dependencies.Add(objectsNode);
         }
 
-        public bool Equals(ObjectsNode other)
-        {
-            return other != null && this.objects.Equals(other.objects);
-        }
+        public bool Equals(ObjectsNode other) => other != null && this.objects.Equals(other.objects);
 
-        public override bool Equals(object obj)
-        {
-            return this.Equals((ObjectsNode)obj);
-        }
+        public override bool Equals(object obj) => this.Equals((ObjectsNode)obj);
 
-        public override int GetHashCode()
-        {
-            return this.objects.GetHashCode();
-        }
+        public override int GetHashCode() => this.objects.GetHashCode();
 
-        public override string ToString()
-        {
-            return this.objects.ToString();
-        }
+        public override string ToString() => this.objects.ToString();
 
         private void Execute(ObjectsNode currentRoot, Action<IObjects> execute)
         {

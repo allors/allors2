@@ -49,13 +49,7 @@ namespace Commands
 
         private Commands Parent { get; set; }
 
-        public int OnExecute(CommandLineApplication app)
-        {
-            //return this.PrintPurchaseInvoice();
-            return this.PrintSalesInvoice();
-            //return this.PrintWorkTask();
-            //return this.MonthlyScheduler();
-        }
+        public int OnExecute(CommandLineApplication app) => this.PrintSalesInvoice();
 
         private int PrintPurchaseInvoice()
         {

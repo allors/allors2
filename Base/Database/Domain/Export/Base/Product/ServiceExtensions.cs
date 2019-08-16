@@ -17,19 +17,10 @@ namespace Allors.Domain
 {
     public static partial class ServiceExtensions
     {
-        public static void AddToBasePrice(this Service @this, BasePrice basePrice)
-        {
-            @this.AddBasePrice(basePrice);
-        }
+        public static void AddToBasePrice(this Service @this, BasePrice basePrice) => @this.AddBasePrice(basePrice);
 
-        public static void RemoveFromBasePrices(this Service @this, BasePrice basePrice)
-        {
-            @this.RemoveBasePrice(basePrice);
-        }
+        public static void RemoveFromBasePrices(this Service @this, BasePrice basePrice) => @this.RemoveBasePrice(basePrice);
 
-        public static void BaseOnDerive(this Service @this, ObjectOnDerive method)
-        {
-            @this.BaseOnDeriveVirtualProductPriceComponent();
-        }
+        public static void BaseOnDerive(this Service @this, ObjectOnDerive method) => @this.BaseOnDeriveVirtualProductPriceComponent();
     }
 }

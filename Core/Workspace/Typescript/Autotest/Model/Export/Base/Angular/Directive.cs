@@ -24,10 +24,7 @@ namespace Autotest.Angular
 
         public Dictionary<Element, Directive> ComponentByElement { get; set; }
 
-        public Module DeclaringModule
-        {
-            get { return this.Project.Modules.First(v => v.DeclaredDirectives.Contains(this)); }
-        }
+        public Module DeclaringModule => this.Project.Modules.First(v => v.DeclaredDirectives.Contains(this));
 
         public Dictionary<Element, Directive[]> AttributeDirectivesByElement { get; set; }
 

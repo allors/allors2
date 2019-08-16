@@ -12,10 +12,7 @@ namespace Allors.Server.Controllers
 
     public class TestNoTreeController : Controller
     {
-        public TestNoTreeController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public TestNoTreeController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

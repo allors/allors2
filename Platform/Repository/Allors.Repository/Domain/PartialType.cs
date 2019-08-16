@@ -38,9 +38,6 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, Method> MethodByName { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

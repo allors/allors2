@@ -13,9 +13,6 @@ namespace Tests.WorkEffortOverviewTests
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Work Orders", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Work Orders", this.Driver.Title);
     }
 }

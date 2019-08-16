@@ -10,10 +10,7 @@
     {
         private readonly ISessionService allors;
 
-        public OrganisationContactRelationshipController(ISessionService allorsContext)
-        {
-            this.allors = allorsContext;
-        }
+        public OrganisationContactRelationshipController(ISessionService allorsContext) => this.allors = allorsContext;
 
         [HttpPost]
         public IActionResult Pull([FromBody] Model model)

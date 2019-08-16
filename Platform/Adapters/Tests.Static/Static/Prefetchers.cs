@@ -29,10 +29,7 @@ namespace Allors.Adapters
     {
         private readonly Dictionary<IClass, PrefetchPolicy> prefetchPolicyByClass;
 
-        public Prefetchers()
-        {
-            this.prefetchPolicyByClass = new Dictionary<IClass, PrefetchPolicy>();
-        }
+        public Prefetchers() => this.prefetchPolicyByClass = new Dictionary<IClass, PrefetchPolicy>();
 
         public PrefetchPolicy this[IClass @class]    // Indexer declaration
         {

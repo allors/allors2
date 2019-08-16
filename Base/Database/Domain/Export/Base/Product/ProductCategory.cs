@@ -23,10 +23,7 @@ namespace Allors.Domain
 
     public partial class ProductCategory
     {
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {

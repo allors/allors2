@@ -76,10 +76,7 @@ namespace Allors.Document.Xml
             }
         }
 
-        public override string ToString()
-        {
-            return this.Begin.LocalName + ": " + this.Begin.InnerText;
-        }
+        public override string ToString() => this.Begin.LocalName + ": " + this.Begin.InnerText;
 
         private void FindSiblings()
         {

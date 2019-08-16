@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class AssociationIdAttribute : RepositoryAttribute
     {
-        public AssociationIdAttribute(string value)
-        {
-            this.Value = value;
-        }
+        public AssociationIdAttribute(string value) => this.Value = value;
 
         public string Value { get; set; }
     }

@@ -26,10 +26,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         protected NpgsqlTransaction NpgsqlTransaction { get; private set; }
 
-        protected Connection(Database database)
-        {
-            this.Database = database;
-        }
+        protected Connection(Database database) => this.Database = database;
 
         internal Command CreateCommand()
         {

@@ -58,10 +58,7 @@ namespace Allors.Domain
             this.DeriveOwnerSecurity();
         }
 
-        public void CoreOnDerive(ObjectOnDerive method)
-        {
-            this.DeriveOwnerSecurity();
-        }
+        public void CoreOnDerive(ObjectOnDerive method) => this.DeriveOwnerSecurity();
 
         public void DeriveOwnerSecurity()
         {

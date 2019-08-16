@@ -65,19 +65,10 @@ namespace Allors.Workspace
 
         public Dictionary<string, object> Methods { get; }
 
-        public bool CanRead(string roleTypeName)
-        {
-            return (bool)this.Roles[$"CanRead{roleTypeName}"];
-        }
+        public bool CanRead(string roleTypeName) => (bool)this.Roles[$"CanRead{roleTypeName}"];
 
-        public bool CanWrite(string roleTypeName)
-        {
-            return (bool)this.Roles[$"CanWrite{roleTypeName}"];
-        }
+        public bool CanWrite(string roleTypeName) => (bool)this.Roles[$"CanWrite{roleTypeName}"];
 
-        public bool CanExecute(string methodTypeName)
-        {
-            return (bool)this.Methods[$"CanExecute{methodTypeName}"];
-        }
+        public bool CanExecute(string methodTypeName) => (bool)this.Methods[$"CanExecute{methodTypeName}"];
     }
 }

@@ -131,10 +131,8 @@ namespace Allors.Domain
             }
         }
 
-        public void CancelFromInvoice()
-        {
-            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).CancelledByinvoice;
-        }
+        public void CancelFromInvoice() => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).CancelledByinvoice;
+
         public void BaseDelete(DeletableDelete method)
         {
             if (this.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
@@ -147,20 +145,11 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(PurchaseInvoiceItemCancel method)
-        {
-            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(PurchaseInvoiceItemCancel method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Cancelled;
 
-        public void BaseReject(PurchaseInvoiceItemReject method)
-        {
-            this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
-        }
+        public void BaseReject(PurchaseInvoiceItemReject method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
 
-        public void Sync(Invoice invoice)
-        {
-            this.SyncedInvoice = invoice;
-        }
+        public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
 
         private SurchargeAdjustment GetSurchargeAdjustment()
         {

@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Interface)]
     public class SyncedAttribute : RepositoryAttribute
     {
-        public SyncedAttribute(bool value = true)
-        {
-            this.Value = value;
-        }
+        public SyncedAttribute(bool value = true) => this.Value = value;
 
         public bool Value { get; set; }
     }

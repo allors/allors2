@@ -38,10 +38,7 @@ namespace Allors.Meta
 
         public UnitTags UnitTag
         {
-            get
-            {
-                return this.unitTag;
-            }
+            get => this.unitTag;
 
             set
             {

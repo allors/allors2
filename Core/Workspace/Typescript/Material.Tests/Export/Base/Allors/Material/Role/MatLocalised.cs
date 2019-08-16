@@ -11,16 +11,12 @@ namespace Components
     public class MatLocalised : SelectorComponent
     {
         public MatLocalised(IWebDriver driver, RoleType roleType, params string[] scopes)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = By.XPath($".//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
-        }
 
         public MatLocalised(IWebDriver driver, By selector)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = selector;
-        }
 
         public override By Selector { get; }
 
@@ -40,10 +36,8 @@ namespace Components
     public class MatLocalised<T> : MatInput where T : Component
     {
         public MatLocalised(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

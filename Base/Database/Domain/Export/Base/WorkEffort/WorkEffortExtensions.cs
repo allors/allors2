@@ -106,15 +106,9 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method)
-        {
-            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
-        }
+        public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method) => @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
 
-        public static void BaseCancel(this WorkEffort @this, WorkEffortCancel cancel)
-        {
-            @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Cancelled;
-        }
+        public static void BaseCancel(this WorkEffort @this, WorkEffortCancel cancel) => @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Cancelled;
 
         public static void BaseReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {

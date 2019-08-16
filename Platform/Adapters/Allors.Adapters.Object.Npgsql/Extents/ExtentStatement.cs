@@ -194,15 +194,9 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal abstract ExtentStatement CreateChild(SqlExtent extent, IRoleType role);
 
-        internal string GetJoinName(IAssociationType association)
-        {
-            return association.SingularFullName + "_AC";
-        }
+        internal string GetJoinName(IAssociationType association) => association.SingularFullName + "_AC";
 
-        internal string GetJoinName(IRoleType role)
-        {
-            return role.SingularFullName + "_RC";
-        }
+        internal string GetJoinName(IRoleType role) => role.SingularFullName + "_RC";
 
         internal void UseAssociation(IAssociationType association)
         {

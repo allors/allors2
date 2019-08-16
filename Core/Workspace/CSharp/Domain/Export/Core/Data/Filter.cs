@@ -29,10 +29,7 @@ namespace Allors.Workspace.Data
 
     public class Filter : IExtent, IPredicateContainer
     {
-        public Filter(IComposite objectType)
-        {
-            this.ObjectType = objectType;
-        }
+        public Filter(IComposite objectType) => this.ObjectType = objectType;
 
         public IComposite ObjectType { get; set; }
 
@@ -40,26 +37,17 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Predicate != null && this.Predicate.HasMissingArguments(arguments);
-        }
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Predicate != null && this.Predicate.HasMissingArguments(arguments);
 
-        void IPredicateContainer.AddPredicate(IPredicate predicate)
-        {
-            this.Predicate = predicate;
-        }
+        void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Predicate = predicate;
 
-        public Extent ToJson()
-        {
-            return new Extent
+        public Extent ToJson() =>
+            new Extent
             {
                 Kind = ExtentKind.Filter,
                 ObjectType = this.ObjectType?.Id,
                 Predicate = this.Predicate?.ToJson(),
                 Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
-
-        }
     }
 }

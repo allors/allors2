@@ -18,10 +18,7 @@ namespace Allors.Domain
 {
     public static partial class ShipmentExtensions
     {
-        public static void BaseOnBuild(this Shipment @this, ObjectOnBuild method)
-        {
-            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
-        }
+        public static void BaseOnBuild(this Shipment @this, ObjectOnBuild method) => @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
 
         public static void BaseOnDerive(this Shipment @this, ObjectOnDerive method)
         {

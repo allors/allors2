@@ -28,10 +28,7 @@ namespace Allors.Workspace.Data
 
     public class Except : IExtentOperator
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
+        public Except(params IExtent[] operands) => this.Operands = operands;
 
         public IComposite ObjectType => this.Operands?[0].ObjectType;
 
@@ -39,19 +36,14 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Extent ToJson()
-        {
-            return new Extent
+        public Extent ToJson() =>
+            new Extent
             {
                 Kind = ExtentKind.Except,
                 Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
                 Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType.Id }).ToArray()
             };
-        }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Operands.Any(v => v.HasMissingArguments(arguments));
-        }
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
     }
 }

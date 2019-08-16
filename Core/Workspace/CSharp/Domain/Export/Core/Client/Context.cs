@@ -52,10 +52,7 @@
             return result;
         }
 
-        public async Task<Result> Load(params Pull[] pulls)
-        {
-            return await this.Load((IEnumerable<Pull>)pulls);
-        }
+        public async Task<Result> Load(params Pull[] pulls) => await this.Load((IEnumerable<Pull>)pulls);
 
         public async Task<PushResponse> Save()
         {
@@ -84,14 +81,8 @@
             return pushResponse;
         }
 
-        public Task<InvokeResponse> Invoke(Method method)
-        {
-            return this.database.Invoke(method);
-        }
+        public Task<InvokeResponse> Invoke(Method method) => this.database.Invoke(method);
 
-        public Task<InvokeResponse> Invoke(string service, object args)
-        {
-            return this.database.Invoke(service, args);
-        }
+        public Task<InvokeResponse> Invoke(string service, object args) => this.database.Invoke(service, args);
     }
 }

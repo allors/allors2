@@ -94,10 +94,7 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        public override void CopyTo(Array array, int index)
-        {
-            this.ToArray().CopyTo(array, index);
-        }
+        public override void CopyTo(Array array, int index) => this.ToArray().CopyTo(array, index);
 
         public override IEnumerator GetEnumerator()
         {

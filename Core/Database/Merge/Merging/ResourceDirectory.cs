@@ -39,10 +39,7 @@ namespace Allors.R1.Development.Resources
             }
         }
 
-        internal void CollectFileNames(HashSet<string> fileNames)
-        {
-            fileNames.UnionWith(this.resourceByFileName.Keys);
-        }
+        internal void CollectFileNames(HashSet<string> fileNames) => fileNames.UnionWith(this.resourceByFileName.Keys);
 
         internal void Merge(string fileName, Dictionary<string, object> dictionary)
         {

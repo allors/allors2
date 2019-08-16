@@ -31,10 +31,7 @@ namespace Allors
 
         private bool allowCompilation = true;
 
-        public PrefetchPolicyBuilder()
-        {
-            this.rules = new List<PrefetchRule>();
-        }
+        public PrefetchPolicyBuilder() => this.rules = new List<PrefetchRule>();
 
         public PrefetchPolicyBuilder WithRule(IPropertyType propertyType)
         {

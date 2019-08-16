@@ -26,10 +26,7 @@ namespace Allors.Data
 
     public class Not : ICompositePredicate
     {
-        public Not(IPredicate operand = null)
-        {
-            this.Operand = operand;
-        }
+        public Not(IPredicate operand = null) => this.Operand = operand;
 
         public IPredicate Operand { get; set; }
 
@@ -37,19 +34,14 @@ namespace Allors.Data
 
         bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operand != null && this.Operand.HasMissingArguments(arguments);
 
-        void IPredicateContainer.AddPredicate(IPredicate predicate)
-        {
-            this.Operand = predicate;
-        }
+        void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Operand = predicate;
 
-        public Predicate Save()
-        {
-            return new Predicate()
+        public Predicate Save() =>
+            new Predicate()
             {
                 Kind = PredicateKind.Not,
                 Operand = this.Operand?.Save()
             };
-        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

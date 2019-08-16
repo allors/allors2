@@ -17,12 +17,10 @@ namespace Allors.Domain
     {
         private static readonly PrefetchPolicy PrefetchPolicy;
 
-        static PermissionCache()
-        {
+        static PermissionCache() =>
             PrefetchPolicy = new PrefetchPolicyBuilder()
                 .WithRule(M.Permission.ConcreteClassPointer)
                 .Build();
-        }
 
         public PermissionCache(ISession session)
         {

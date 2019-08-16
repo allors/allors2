@@ -24,6 +24,5 @@ namespace Allors.Domain
         bool CanExecute(IMethodType methodType);
 
         bool IsPermitted(IOperandType operandType, Operations operation);
-
     }
 }

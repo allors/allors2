@@ -5151,9 +5151,6 @@ namespace Allors.Adapters
 
         protected abstract ISession CreateSession();
 
-        private IObject[] GetExtent(IComposite objectType)
-        {
-            return this.Session.Extent(objectType);
-        }
+        private IObject[] GetExtent(IComposite objectType) => this.Session.Extent(objectType);
     }
 }

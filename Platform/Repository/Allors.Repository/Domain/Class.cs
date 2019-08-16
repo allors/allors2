@@ -28,10 +28,8 @@ namespace Allors.Repository.Domain
     public class Class : Composite
     {
         public Class(Inflector.Inflector inflector, Guid id, string name)
-            : base(inflector, id, name)
-        {
+            : base(inflector, id, name) =>
             this.PartialByDomainName = new Dictionary<string, PartialClass>();
-        }
 
         public Dictionary<string, PartialClass> PartialByDomainName { get; }
 

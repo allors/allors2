@@ -65,37 +65,25 @@ namespace Allors.Workspace.Meta
         /// Gets the kind of validation.
         /// </summary>
         /// <value>The kind of validation.</value>
-        public ValidationKind Kind
-        {
-            get { return this.kind; }
-        }
+        public ValidationKind Kind => this.kind;
 
         /// <summary>
         /// Gets the validated members.
         /// </summary>
         /// <value>The validated members.</value>
-        public string[] Members
-        {
-            get { return this.members; }
-        }
+        public string[] Members => this.members;
 
         /// <summary>
         /// Gets the error message.
         /// </summary>
         /// <value>The error message.</value>
-        public string Message
-        {
-            get { return this.message; }
-        }
+        public string Message => this.message;
 
         /// <summary>
         /// Gets the object that contains the member.
         /// </summary>
         /// <value>The source.</value>
-        public object Source
-        {
-            get { return this.source; }
-        }
+        public object Source => this.source;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -103,9 +91,6 @@ namespace Allors.Workspace.Meta
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return this.message;
-        }
+        public override string ToString() => this.message;
     }
 }

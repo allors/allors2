@@ -170,10 +170,7 @@ namespace Allors.Domain
             }
         }
 
-        public void Deny(ObjectType objectType, ObjectState objectState, params OperandType[] operandTypes)
-        {
-            this.Deny(objectType, objectState, (IEnumerable<OperandType>)operandTypes);
-        }
+        public void Deny(ObjectType objectType, ObjectState objectState, params OperandType[] operandTypes) => this.Deny(objectType, objectState, (IEnumerable<OperandType>)operandTypes);
 
         public void Deny(ObjectType objectType, ObjectState objectState, IEnumerable<OperandType> operandTypes)
         {
@@ -306,25 +303,13 @@ namespace Allors.Domain
             }
         }
 
-        public void GrantAdministrator(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.AdministratorId, objectType, operations);
-        }
+        public void GrantAdministrator(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.AdministratorId, objectType, operations);
 
-        public void GrantGuest(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.GuestId, objectType, operations);
-        }
+        public void GrantGuest(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.GuestId, objectType, operations);
 
-        public void GrantCreator(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.CreatorId, objectType, operations);
-        }
+        public void GrantCreator(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.CreatorId, objectType, operations);
 
-        public void GrantOwner(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.OwnerId, objectType, operations);
-        }
+        public void GrantOwner(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.OwnerId, objectType, operations);
 
         private void CoreOnPreSetup()
         {

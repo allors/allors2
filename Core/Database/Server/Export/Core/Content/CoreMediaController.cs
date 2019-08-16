@@ -19,10 +19,7 @@ namespace Allors.Server
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected CoreMediaController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

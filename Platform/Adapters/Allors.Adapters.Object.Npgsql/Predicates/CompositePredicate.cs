@@ -82,21 +82,9 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        protected ExtentFiltered Extent
-        {
-            get
-            {
-                return this.extent;
-            }
-        }
+        protected ExtentFiltered Extent => this.extent;
 
-        protected List<Predicate> Filters
-        {
-            get
-            {
-                return this.filters;
-            }
-        }
+        protected List<Predicate> Filters => this.filters;
 
         public ICompositePredicate AddAnd()
         {

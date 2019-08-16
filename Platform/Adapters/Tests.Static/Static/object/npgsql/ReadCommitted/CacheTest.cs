@@ -29,19 +29,10 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     {
         private readonly Profile profile;
 
-        public CacheTest(Fixture fixture)
-        {
-            this.profile = new Profile(fixture.Server);
-        }
+        public CacheTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
-        protected override IDatabase CreateDatabase()
-        {
-            return this.profile.CreateDatabase();
-        }
+        protected override IDatabase CreateDatabase() => this.profile.CreateDatabase();
     }
 }

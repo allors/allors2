@@ -31,10 +31,7 @@ namespace Allors
 
     public class DomainTest : IDisposable
     {
-        public DomainTest(bool populate = true)
-        {
-            this.Setup(populate);
-        }
+        public DomainTest(bool populate = true) => this.Setup(populate);
 
         public virtual Config Config { get; } = new Config { SetupSecurity = false };
 

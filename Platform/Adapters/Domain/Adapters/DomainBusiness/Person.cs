@@ -24,25 +24,13 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        public static Person Create(ISession session)
-        {
-            return (Person)session.Create(Meta.ObjectType);
-        }
+        public static Person Create(ISession session) => (Person)session.Create(Meta.ObjectType);
 
-        public static Person[] Create(ISession session, int count)
-        {
-            return (Person[])session.Create(Meta.ObjectType, count);
-        }
+        public static Person[] Create(ISession session, int count) => (Person[])session.Create(Meta.ObjectType, count);
 
-        public static Person[] Instantiate(ISession session, string[] ids)
-        {
-            return (Person[])session.Instantiate(ids);
-        }
+        public static Person[] Instantiate(ISession session, string[] ids) => (Person[])session.Instantiate(ids);
 
-        public static Person[] Extent(ISession session)
-        {
-            return (Person[])session.Extent(Meta.ObjectType).ToArray();
-        }
+        public static Person[] Extent(ISession session) => (Person[])session.Extent(Meta.ObjectType).ToArray();
 
         public static Person Create(ISession session, string name)
         {
@@ -59,9 +47,6 @@ namespace Allors.Domain
             return person;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

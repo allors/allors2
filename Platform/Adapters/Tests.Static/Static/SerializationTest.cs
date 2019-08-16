@@ -1214,9 +1214,6 @@ namespace Allors.Adapters
             }
         }
 
-        private IObject[] GetExtent(ISession session, IComposite objectType)
-        {
-            return session.Extent(objectType);
-        }
+        private IObject[] GetExtent(ISession session, IComposite objectType) => session.Extent(objectType);
     }
 }

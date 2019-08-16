@@ -64,15 +64,13 @@ namespace Allors.Workspace.Data
 
         public Step End => this.ExistNext ? this.Next.End : this;
 
-        public Protocol.Data.Step ToJson()
-        {
-            return new Protocol.Data.Step
+        public Protocol.Data.Step ToJson() =>
+            new Protocol.Data.Step
             {
                 Include = this.Include?.ToJson(),
                 PropertyType = this.PropertyType.Id,
                 Next = this.Next.ToJson()
             };
-        }
 
         public IObjectType GetObjectType()
         {

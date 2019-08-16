@@ -30,15 +30,9 @@ namespace Allors.Adapters.Memory
         private readonly ExtentFiltered extent;
         private Predicate predicate;
 
-        internal Not(ExtentFiltered extent)
-        {
-            this.extent = extent;
-        }
+        internal Not(ExtentFiltered extent) => this.extent = extent;
 
-        internal override bool Include
-        {
-            get { return this.predicate != null && this.predicate.Include; }
-        }
+        internal override bool Include => this.predicate != null && this.predicate.Include;
 
         public ICompositePredicate AddAnd()
         {

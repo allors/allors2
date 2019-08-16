@@ -13,15 +13,9 @@ namespace Allors.Services
     {
         private readonly ConcurrentBag<WeakReference<IStateful>> statefulRefs;
 
-        public StateService()
-        {
-            this.statefulRefs = new ConcurrentBag<WeakReference<IStateful>>();
-        }
+        public StateService() => this.statefulRefs = new ConcurrentBag<WeakReference<IStateful>>();
 
-        public void Register(IStateful stateful)
-        {
-            this.statefulRefs.Add(new WeakReference<IStateful>(stateful));
-        }
+        public void Register(IStateful stateful) => this.statefulRefs.Add(new WeakReference<IStateful>(stateful));
 
         public void Clear()
         {

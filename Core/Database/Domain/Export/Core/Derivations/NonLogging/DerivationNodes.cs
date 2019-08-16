@@ -14,9 +14,6 @@ namespace Allors.Domain.NonLogging
         {
         }
 
-        protected override DerivationNodeBase CreateDerivationNode(Object derivable)
-        {
-            return new DerivationNode(derivable);
-        }
+        protected override DerivationNodeBase CreateDerivationNode(Object derivable) => new DerivationNode(derivable);
     }
 }

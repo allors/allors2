@@ -13,10 +13,8 @@ namespace Components
     public class MatFile : SelectorComponent
     {
         public MatFile(IWebDriver driver, RoleType roleType, params string[] scopes)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = By.XPath($".//a-mat-file{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
-        }
 
         public override By Selector { get; }
 
@@ -45,10 +43,8 @@ namespace Components
     public class MatFile<T> : MatFile where T : Component
     {
         public MatFile(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

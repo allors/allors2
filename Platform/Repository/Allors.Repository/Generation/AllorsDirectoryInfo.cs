@@ -38,20 +38,11 @@ namespace Allors.Repository.Generation
             }
         }
 
-        internal DirectoryInfo DirectoryInfo
-        {
-            get { return this.directoryInfo; }
-        }
+        internal DirectoryInfo DirectoryInfo => this.directoryInfo;
 
-        internal AllorsDirectoryInfo Parent
-        {
-            get { return this.parent; }
-        }
+        internal AllorsDirectoryInfo Parent => this.parent;
 
-        public string GetRelativeName(DirectoryInfo baseDirectoryInfo)
-        {
-            return this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
-        }
+        public string GetRelativeName(DirectoryInfo baseDirectoryInfo) => this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
 
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
@@ -63,10 +54,7 @@ namespace Allors.Repository.Generation
             return relativeName;
         }
 
-        public override string ToString()
-        {
-            return this.directoryInfo.FullName;
-        }
+        public override string ToString() => this.directoryInfo.FullName;
 
         private void BuildAncestors(AllorsDirectoryInfo root, List<AllorsDirectoryInfo> ancestors)
         {

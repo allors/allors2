@@ -13,18 +13,12 @@ namespace Autotest
     {
         private readonly List<string> errors;
 
-        internal ValidationLog()
-        {
-            this.errors = new List<string>();
-        }
+        internal ValidationLog() => this.errors = new List<string>();
 
         public bool HasErrors => this.Errors.Length > 0;
 
         public string[] Errors => this.errors.ToArray();
 
-        public void AddError(string message)
-        {
-            this.errors.Add(message);
-        }
+        public void AddError(string message) => this.errors.Add(message);
     }
 }

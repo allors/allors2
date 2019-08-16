@@ -275,10 +275,7 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        public override string ToString()
-        {
-            return "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
-        }
+        public override string ToString() => "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
 
         public Validation Validate()
         {
@@ -287,10 +284,7 @@ namespace Allors.Adapters.Object.Npgsql
             return validateResult;
         }
 
-        ISession IDatabase.CreateSession()
-        {
-            return this.CreateSession();
-        }
+        ISession IDatabase.CreateSession() => this.CreateSession();
 
         internal bool ContainsConcreteClass(IObjectType container, IObjectType containee)
         {
@@ -309,10 +303,7 @@ namespace Allors.Adapters.Object.Npgsql
             return concreteClasses.Contains(containee);
         }
 
-        internal Type GetDomainType(IObjectType objectType)
-        {
-            return this.ObjectFactory.GetTypeForObjectType(objectType);
-        }
+        internal Type GetDomainType(IObjectType objectType) => this.ObjectFactory.GetTypeForObjectType(objectType);
 
         internal IRoleType[] GetSortedUnitRolesByObjectType(IObjectType objectType)
         {
@@ -389,9 +380,6 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        private void ResetSchema()
-        {
-            this.mapping = null;
-        }
+        private void ResetSchema() => this.mapping = null;
     }
 }

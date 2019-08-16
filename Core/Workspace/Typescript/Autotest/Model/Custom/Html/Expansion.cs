@@ -7,9 +7,6 @@ namespace Autotest.Html
 {
     public partial class Expansion
     {
-        public override string ToString()
-        {
-            return this.SwitchValue;
-        }
+        public override string ToString() => this.SwitchValue;
     }
 }

@@ -29,6 +29,5 @@ namespace Allors.Domain
                 this.String = "Exist";
             }
         }
-
     }
 }

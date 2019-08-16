@@ -60,14 +60,8 @@ namespace Allors.Adapters.Memory
 
         public ServiceProvider ServiceProvider { get; set; }
 
-        public override IDatabase CreatePopulation()
-        {
-            return this.CreateDatabase();
-        }
+        public override IDatabase CreatePopulation() => this.CreateDatabase();
 
-        public override IDatabase CreateDatabase()
-        {
-            return new Database(this.ServiceProvider, new Configuration { ObjectFactory = this.ObjectFactory });
-        }
+        public override IDatabase CreateDatabase() => new Database(this.ServiceProvider, new Configuration { ObjectFactory = this.ObjectFactory });
     }
 }

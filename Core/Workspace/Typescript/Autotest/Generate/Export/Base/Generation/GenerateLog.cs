@@ -26,10 +26,7 @@ namespace Allors.Development.Repository.Tasks
 
     internal class GenerateLog : Log
     {
-        public GenerateLog()
-        {
-            this.ErrorOccured = false;
-        }
+        public GenerateLog() => this.ErrorOccured = false;
 
         public override void Error(object sender, string message)
         {

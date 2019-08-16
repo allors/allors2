@@ -51,8 +51,6 @@ namespace Allors.Domain
                 .WithUniqueId(InvoicedId)
                 .WithName("Invoiced")
                 .Build();
-
-
         }
     }
 }

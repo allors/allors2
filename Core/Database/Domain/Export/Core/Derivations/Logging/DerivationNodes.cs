@@ -12,14 +12,9 @@ namespace Allors.Domain.Logging
         private readonly IDerivationLog derivationLog;
 
         public DerivationNodes(DerivationBase derivation, IDerivationLog derivationLog)
-            : base(derivation)
-        {
+            : base(derivation) =>
             this.derivationLog = derivationLog;
-        }
 
-        protected override DerivationNodeBase CreateDerivationNode(Object derivable)
-        {
-            return new DerivationNode(derivable, this.derivationLog);
-        }
+        protected override DerivationNodeBase CreateDerivationNode(Object derivable) => new DerivationNode(derivable, this.derivationLog);
     }
 }

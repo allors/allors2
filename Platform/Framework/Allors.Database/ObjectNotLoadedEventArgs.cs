@@ -62,19 +62,13 @@ namespace Allors
         /// Gets the object id.
         /// </summary>
         /// <value>The object id.</value>
-        public long ObjectId
-        {
-            get { return this.objectId; }
-        }
+        public long ObjectId => this.objectId;
 
         /// <summary>
         /// Gets the object type id.
         /// </summary>
         /// <value>The object type id.</value>
-        public Guid ObjectTypeId
-        {
-            get { return this.objectTypeId; }
-        }
+        public Guid ObjectTypeId => this.objectTypeId;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -82,9 +76,6 @@ namespace Allors
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return this.objectTypeId + ":" + this.objectId;
-        }
+        public override string ToString() => this.objectTypeId + ":" + this.objectId;
     }
 }

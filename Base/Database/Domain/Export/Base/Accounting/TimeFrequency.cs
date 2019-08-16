@@ -35,9 +35,6 @@ namespace Allors.Domain
             return null;
         }
 
-        public string GetName()
-        {
-            return this.Name;
-        }
+        public string GetName() => this.Name;
     }
 }

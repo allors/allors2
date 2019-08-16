@@ -73,10 +73,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference Reference => this.reference;
 
-        public IObject GetObject()
-        {
-            return this.allorsObject ?? (this.allorsObject = this.reference.Session.Database.ObjectFactory.Create(this));
-        }
+        public IObject GetObject() => this.allorsObject ?? (this.allorsObject = this.reference.Session.Database.ObjectFactory.Create(this));
 
         public virtual void Delete()
         {
@@ -196,10 +193,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public virtual bool ExistUnitRole(IRelationType relationType)
-        {
-            return this.GetUnitRole(relationType) != null;
-        }
+        public virtual bool ExistUnitRole(IRelationType relationType) => this.GetUnitRole(relationType) != null;
 
         public virtual object GetUnitRole(IRelationType relationType)
         {
@@ -227,15 +221,9 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public virtual void RemoveUnitRole(IRelationType relationType)
-        {
-            this.SetUnitRole(relationType, null);
-        }
+        public virtual void RemoveUnitRole(IRelationType relationType) => this.SetUnitRole(relationType, null);
 
-        public virtual bool ExistCompositeRole(IRelationType relationType)
-        {
-            return this.GetCompositeRole(relationType) != null;
-        }
+        public virtual bool ExistCompositeRole(IRelationType relationType) => this.GetCompositeRole(relationType) != null;
 
         public virtual IObject GetCompositeRole(IRelationType relationType)
         {
@@ -270,10 +258,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.Roles.RemoveCompositeRole(relationType.RoleType);
         }
 
-        public virtual bool ExistCompositeRoles(IRelationType relationType)
-        {
-            return this.GetCompositeRoles(relationType).Count != 0;
-        }
+        public virtual bool ExistCompositeRoles(IRelationType relationType) => this.GetCompositeRoles(relationType).Count != 0;
 
         public virtual Allors.Extent GetCompositeRoles(IRelationType relationType)
         {
@@ -362,20 +347,11 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public virtual bool ExistAssociation(IRelationType relationType)
-        {
-            return relationType.AssociationType.IsMany ? this.ExistCompositeAssociations(relationType) : this.ExistCompositeAssociation(relationType);
-        }
+        public virtual bool ExistAssociation(IRelationType relationType) => relationType.AssociationType.IsMany ? this.ExistCompositeAssociations(relationType) : this.ExistCompositeAssociation(relationType);
 
-        public virtual object GetAssociation(IRelationType relationType)
-        {
-            return relationType.AssociationType.IsMany ? (object)this.GetCompositeAssociations(relationType) : this.GetCompositeAssociation(relationType);
-        }
+        public virtual object GetAssociation(IRelationType relationType) => relationType.AssociationType.IsMany ? (object)this.GetCompositeAssociations(relationType) : this.GetCompositeAssociation(relationType);
 
-        public virtual bool ExistCompositeAssociation(IRelationType relationType)
-        {
-            return this.GetCompositeAssociation(relationType) != null;
-        }
+        public virtual bool ExistCompositeAssociation(IRelationType relationType) => this.GetCompositeAssociation(relationType) != null;
 
         public virtual IObject GetCompositeAssociation(IRelationType relationType)
         {
@@ -386,10 +362,7 @@ namespace Allors.Adapters.Object.SqlClient
             return association?.Strategy.GetObject();
         }
 
-        public virtual bool ExistCompositeAssociations(IRelationType relationType)
-        {
-            return this.GetCompositeAssociations(relationType).Count != 0;
-        }
+        public virtual bool ExistCompositeAssociations(IRelationType relationType) => this.GetCompositeAssociations(relationType).Count != 0;
 
         public virtual Allors.Extent GetCompositeAssociations(IRelationType relationType)
         {
@@ -397,15 +370,9 @@ namespace Allors.Adapters.Object.SqlClient
             return new ExtentAssociations(this, relationType.AssociationType);
         }
 
-        public override string ToString()
-        {
-            return "[" + this.Class + ":" + this.ObjectId + "]";
-        }
+        public override string ToString() => "[" + this.Class + ":" + this.ObjectId + "]";
 
-        internal virtual void Release()
-        {
-            this.roles = null;
-        }
+        internal virtual void Release() => this.roles = null;
 
         internal int ExtentRolesGetCount(IRoleType roleType)
         {
@@ -421,10 +388,7 @@ namespace Allors.Adapters.Object.SqlClient
             return this.Roles.ExtentFirst(this.Session, roleType);
         }
 
-        internal void ExtentRolesCopyTo(IRoleType roleType, Array array, int index)
-        {
-            this.Roles.ExtentCopyTo(this.Session, roleType, array, index);
-        }
+        internal void ExtentRolesCopyTo(IRoleType roleType, Array array, int index) => this.Roles.ExtentCopyTo(this.Session, roleType, array, index);
 
         internal int ExtentIndexOf(IRoleType roleType, IObject value)
         {
@@ -456,10 +420,7 @@ namespace Allors.Adapters.Object.SqlClient
             return null;
         }
 
-        internal bool ExtentRolesContains(IRoleType roleType, IObject value)
-        {
-            return this.Roles.ExtentContains(roleType, value.Id);
-        }
+        internal bool ExtentRolesContains(IRoleType roleType, IObject value) => this.Roles.ExtentContains(roleType, value.Id);
 
         internal virtual long[] ExtentGetCompositeAssociations(IAssociationType associationType)
         {

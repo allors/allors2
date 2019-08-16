@@ -158,10 +158,7 @@ namespace Allors.Meta
             }
         }
 
-        IMetaObject IMetaPopulation.Find(Guid id)
-        {
-            return this.Find(id);
-        }
+        IMetaObject IMetaPopulation.Find(Guid id) => this.Find(id);
 
         /// <summary>
         /// Find a meta object by meta object id.
@@ -180,10 +177,7 @@ namespace Allors.Meta
             return metaObject;
         }
 
-        IClass IMetaPopulation.FindClassByName(string name)
-        {
-            return this.FindByName(name);
-        }
+        IClass IMetaPopulation.FindClassByName(string name) => this.FindByName(name);
 
         /// <summary>
         /// Find a meta object by name.
@@ -204,10 +198,7 @@ namespace Allors.Meta
             return cls;
         }
 
-        IValidationLog IMetaPopulation.Validate()
-        {
-            return this.Validate();
-        }
+        IValidationLog IMetaPopulation.Validate() => this.Validate();
 
         /// <summary>
         /// Validates this instance.
@@ -585,10 +576,7 @@ namespace Allors.Meta
             this.Stale();
         }
 
-        internal void Stale()
-        {
-            this.isStale = true;
-        }
+        internal void Stale() => this.isStale = true;
 
         private bool HasCycle(Composite subtype, HashSet<Interface> supertypes, Dictionary<Composite, List<Inheritance>> inheritancesBySubtype)
         {

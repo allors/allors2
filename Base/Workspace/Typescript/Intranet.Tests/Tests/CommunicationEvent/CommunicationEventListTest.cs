@@ -18,10 +18,7 @@ namespace Tests.CommunicationEventTests
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Communications", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Communications", this.Driver.Title);
 
         [Fact]
         public void Table()

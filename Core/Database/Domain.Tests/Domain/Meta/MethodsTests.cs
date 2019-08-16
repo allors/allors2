@@ -82,6 +82,5 @@ namespace Tests
 
             Assert.True(exceptionThrown);
         }
-
     }
 }

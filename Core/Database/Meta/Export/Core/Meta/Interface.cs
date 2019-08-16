@@ -120,10 +120,7 @@ namespace Allors.Meta
 
         public override Type ClrType => this.clrType;
 
-        internal void Bind(Dictionary<string, Type> typeByTypeName)
-        {
-            this.clrType = typeByTypeName[this.Name];
-        }
+        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
 
         /// <summary>
         /// Contains this concrete class.
@@ -188,10 +185,7 @@ namespace Allors.Meta
         /// <summary>
         /// Derive exclusive sub classes.
         /// </summary>
-        internal void DeriveExclusiveSubclass()
-        {
-            this.derivedExclusiveSubclass = this.derivedSubclasses.Count == 1 ? this.derivedSubclasses.First() : null;
-        }
+        internal void DeriveExclusiveSubclass() => this.derivedExclusiveSubclass = this.derivedSubclasses.Count == 1 ? this.derivedSubclasses.First() : null;
 
         /// <summary>
         /// Derive super types recursively.

@@ -27,36 +27,22 @@ namespace Allors.Data
 
     public class Or : ICompositePredicate
     {
-        public Or(params IPredicate[] operands)
-        {
-            this.Operands = operands;
-        }
+        public Or(params IPredicate[] operands) => this.Operands = operands;
 
         public IPredicate[] Operands { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Operands.All(v => v.ShouldTreeShake(arguments));
-        }
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.ShouldTreeShake(arguments));
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Operands.All(v => v.HasMissingArguments(arguments));
-        }
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.HasMissingArguments(arguments));
 
-        void IPredicateContainer.AddPredicate(IPredicate predicate)
-        {
-            this.Operands = this.Operands.Append(predicate).ToArray();
-        }
+        void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Operands = this.Operands.Append(predicate).ToArray();
 
-        public Predicate Save()
-        {
-            return new Predicate()
+        public Predicate Save() =>
+            new Predicate()
             {
                 Kind = PredicateKind.Or,
                 Operands = this.Operands.Select(v => v.Save()).ToArray()
             };
-        }
 
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

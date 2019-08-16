@@ -46,20 +46,11 @@ namespace Allors.Adapters.Object.Npgsql
             second.ParentOperationExtent = this;
         }
 
-        public override ICompositePredicate Filter
-        {
-            get { return null; }
-        }
+        public override ICompositePredicate Filter => null;
 
-        internal override Session Session
-        {
-            get { return this.first.Session; }
-        }
+        internal override Session Session => this.first.Session;
 
-        public override IComposite ObjectType
-        {
-            get { return this.first.ObjectType; }
-        }
+        public override IComposite ObjectType => this.first.ObjectType;
 
         internal override string BuildSql(ExtentStatement statement)
         {

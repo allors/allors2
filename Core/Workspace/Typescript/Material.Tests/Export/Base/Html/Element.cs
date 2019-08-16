@@ -11,10 +11,8 @@ namespace Components
     public class Element : SelectorComponent
     {
         public Element(IWebDriver driver, By selector)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = selector;
-        }
 
         public override By Selector { get; }
 
@@ -33,10 +31,8 @@ namespace Components
     public class Element<T> : Element where T : Component
     {
         public Element(T page, By selector)
-            : base(page.Driver, selector)
-        {
+            : base(page.Driver, selector) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

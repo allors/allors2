@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class MultiplicityAttribute : RepositoryAttribute
     {
-        public MultiplicityAttribute(Multiplicity value)
-        {
-            this.Value = value;
-        }
+        public MultiplicityAttribute(Multiplicity value) => this.Value = value;
 
         public Multiplicity Value { get; set; }
     }

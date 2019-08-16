@@ -18,10 +18,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
 {
     public class PurchaseOrderModel
     {
-        public PurchaseOrderModel(PurchaseOrder order)
-        {
-            this.OrderNumber = order.OrderNumber;
-        }
+        public PurchaseOrderModel(PurchaseOrder order) => this.OrderNumber = order.OrderNumber;
 
         public string OrderNumber { get; }
     }

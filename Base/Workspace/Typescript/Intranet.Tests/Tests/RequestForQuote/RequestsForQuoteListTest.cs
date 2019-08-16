@@ -13,9 +13,6 @@ namespace Tests.RequestsForQuoteTest
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Requests", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Requests", this.Driver.Title);
     }
 }

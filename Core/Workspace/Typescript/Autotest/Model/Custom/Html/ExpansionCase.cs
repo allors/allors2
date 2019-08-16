@@ -7,9 +7,6 @@ namespace Autotest.Html
 {
     public partial class ExpansionCase
     {
-        public override string ToString()
-        {
-            return this.Value;
-        }
+        public override string ToString() => this.Value;
     }
 }

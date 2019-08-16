@@ -20,10 +20,7 @@ namespace Allors.Server
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected CorePrintController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        protected CorePrintController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

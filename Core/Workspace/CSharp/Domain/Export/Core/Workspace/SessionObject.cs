@@ -55,10 +55,7 @@ namespace Allors.Workspace
         private Dictionary<RoleType, object> changedRoleByRoleType;
         private Dictionary<RoleType, object> roleByRoleType = new Dictionary<RoleType, object>();
 
-        protected SessionObject(Session session)
-        {
-            this.Session = session;
-        }
+        protected SessionObject(Session session) => this.Session = session;
 
         public Session Session { get; }
 

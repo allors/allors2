@@ -9,10 +9,8 @@ namespace Allors.Workspace.Domain
         public new readonly T Table;
 
         public Row(DataRowBuilder builder)
-            : base(builder)
-        {
+            : base(builder) =>
             this.Table = (T)base.Table;
-        }
 
         public new object this[DataColumn column]
         {
@@ -22,10 +20,7 @@ namespace Allors.Workspace.Domain
                 return item == DBNull.Value ? null : item;
             }
 
-            set
-            {
-                base[column] = value ?? DBNull.Value;
-            }
+            set => base[column] = value ?? DBNull.Value;
         }
     }
 }

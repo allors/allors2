@@ -10,10 +10,7 @@ namespace Autotest.Typescript
 
     public class Method : IMember
     {
-        public Method(JToken json)
-        {
-            this.Json = json;
-        }
+        public Method(JToken json) => this.Json = json;
 
         public JToken Json { get; }
 

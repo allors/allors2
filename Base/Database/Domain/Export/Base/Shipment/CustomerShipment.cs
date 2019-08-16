@@ -205,10 +205,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(CustomerShipmentCancel method)
-        {
-            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(CustomerShipmentCancel method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Cancelled;
 
         public void BaseHold(CustomerShipmentHold method)
         {
@@ -250,15 +247,9 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseSetPicked(CustomerShipmentSetPicked method)
-        {
-            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picked;
-        }
+        public void BaseSetPicked(CustomerShipmentSetPicked method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picked;
 
-        public void BaseSetPacked(CustomerShipmentSetPacked method)
-        {
-            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Packed;
-        }
+        public void BaseSetPacked(CustomerShipmentSetPacked method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Packed;
 
         public void BaseShip(CustomerShipmentShip method)
         {

@@ -22,10 +22,7 @@ namespace Allors.Adapters.Memory
 {
     internal abstract class Predicate
     {
-        internal virtual bool Include
-        {
-            get { return true; }
-        }
+        internal virtual bool Include => true;
 
         internal abstract ThreeValuedLogic Evaluate(Strategy strategy);
     }

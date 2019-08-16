@@ -35,15 +35,9 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void BaseApprove(ProductQuoteApprove method)
-        {
-            this.QuoteState = new QuoteStates(this.strategy.Session).Approved;
-        }
+        public void BaseApprove(ProductQuoteApprove method) => this.QuoteState = new QuoteStates(this.strategy.Session).Approved;
 
-        public void BaseReject(ProductQuoteReject method)
-        {
-            this.QuoteState = new QuoteStates(this.strategy.Session).Rejected;
-        }
+        public void BaseReject(ProductQuoteReject method) => this.QuoteState = new QuoteStates(this.strategy.Session).Rejected;
 
         public void BaseOrder(ProductQuoteOrder method)
         {

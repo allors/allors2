@@ -11,10 +11,8 @@ namespace Components
     public class Anchor : SelectorComponent
     {
         public Anchor(IWebDriver driver, By selector)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = selector;
-        }
 
         public Anchor(IWebDriver driver, string kind, string value, params string[] scopes)
             : base(driver)
@@ -52,10 +50,8 @@ namespace Components
     public class Anchor<T> : Anchor where T : Component
     {
         public Anchor(T page, By selector)
-            : base(page.Driver, selector)
-        {
+            : base(page.Driver, selector) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

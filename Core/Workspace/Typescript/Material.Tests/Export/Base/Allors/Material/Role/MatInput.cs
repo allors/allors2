@@ -11,16 +11,12 @@ namespace Components
     public class MatInput : SelectorComponent
     {
         public MatInput(IWebDriver driver, RoleType roleType, params string[] scopes)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = By.XPath($".//a-mat-input{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
-        }
 
         public MatInput(IWebDriver driver, By selector)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = selector;
-        }
 
         public override By Selector { get; }
 
@@ -49,10 +45,8 @@ namespace Components
     public class MatInput<T> : MatInput where T : Component
     {
         public MatInput(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

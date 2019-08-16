@@ -15,10 +15,7 @@ namespace Allors.Server.Controllers
 
     public class PeopleSheetController : Controller
     {
-        public PeopleSheetController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public PeopleSheetController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

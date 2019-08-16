@@ -18,14 +18,8 @@ namespace Allors.Services
 
         public TimeSpan? Shift { get; set; }
 
-        public DateTime Now()
-        {
-            return this.Shift.HasValue ? DateTime.UtcNow.Add(this.Shift.Value) : DateTime.UtcNow;
-        }
+        public DateTime Now() => this.Shift.HasValue ? DateTime.UtcNow.Add(this.Shift.Value) : DateTime.UtcNow;
 
-        public void Clear()
-        {
-            this.Shift = null;
-        }
+        public void Clear() => this.Shift = null;
     }
 }

@@ -51,10 +51,7 @@ namespace Allors.Adapters.Memory
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
 
-        public string Id
-        {
-            get { return this.id; }
-        }
+        public string Id => this.id;
 
         public bool IsDatabase => true;
 
@@ -72,20 +69,11 @@ namespace Allors.Adapters.Memory
 
         protected virtual Session Session => this.session ?? (this.session = new Session(this));
 
-        public ISession CreateSession()
-        {
-            return this.CreateDatabaseSession();
-        }
+        public ISession CreateSession() => this.CreateDatabaseSession();
 
-        ISession IDatabase.CreateSession()
-        {
-            return this.CreateDatabaseSession();
-        }
+        ISession IDatabase.CreateSession() => this.CreateDatabaseSession();
 
-        public ISession CreateDatabaseSession()
-        {
-            return this.Session;
-        }
+        public ISession CreateDatabaseSession() => this.Session;
 
         public void Load(XmlReader reader)
         {
@@ -106,10 +94,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public void Save(XmlWriter writer)
-        {
-            this.Session.Save(writer);
-        }
+        public void Save(XmlWriter writer) => this.Session.Save(writer);
 
         public bool ContainsConcreteClass(IComposite objectType, IObjectType concreteClass)
         {
@@ -150,10 +135,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public void CompositeRoleChecks(IStrategy strategy, IRoleType roleType)
-        {
-            this.CompositeSharedChecks(strategy, roleType, null);
-        }
+        public void CompositeRoleChecks(IStrategy strategy, IRoleType roleType) => this.CompositeSharedChecks(strategy, roleType, null);
 
         public void CompositeRoleChecks(IStrategy strategy, IRoleType roleType, IObject role)
         {

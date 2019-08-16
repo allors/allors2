@@ -13,15 +13,10 @@ namespace Allors.Domain.NonLogging
     public sealed class Derivation : DerivationBase
     {
         public Derivation(ISession session, DerivationConfig config = null)
-            : base(session, config)
-        {
+            : base(session, config) =>
             this.Validation = new Validation(this);
-        }
 
-        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation)
-        {
-            return new DerivationNodes(derivation);
-        }
+        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation) => new DerivationNodes(derivation);
 
         protected override void OnAddedDerivable(Domain.Object derivable)
         {

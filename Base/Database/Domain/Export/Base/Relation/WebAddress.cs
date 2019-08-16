@@ -29,9 +29,6 @@ namespace Allors.Domain
             }
         }
 
-        public override string ToString()
-        {
-            return this.ElectronicAddressString;
-        }
+        public override string ToString() => this.ElectronicAddressString;
     }
 }

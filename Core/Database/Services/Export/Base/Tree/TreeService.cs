@@ -21,19 +21,10 @@ namespace Allors.Services
             stateService.Register(this);
         }
 
-        public Tree Get(IComposite type)
-        {
-            return this.trees.TryGetValue(type, out var tree) ? tree : null;
-        }
+        public Tree Get(IComposite type) => this.trees.TryGetValue(type, out var tree) ? tree : null;
 
-        public void Set(IComposite type, Tree tree)
-        {
-            this.trees[type] = tree;
-        }
+        public void Set(IComposite type, Tree tree) => this.trees[type] = tree;
 
-        public void Clear()
-        {
-            this.trees = new ConcurrentDictionary<IComposite, Tree>();
-        }
+        public void Clear() => this.trees = new ConcurrentDictionary<IComposite, Tree>();
     }
 }

@@ -12,10 +12,8 @@ namespace Components
     public class MatRadioGroup : SelectorComponent
     {
         public MatRadioGroup(IWebDriver driver, RoleType roleType, params string[] scopes)
-            : base(driver)
-        {
+            : base(driver) =>
             this.Selector = By.XPath($".//a-mat-radiogroup{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
-        }
 
         public override By Selector { get; }
 
@@ -37,10 +35,8 @@ namespace Components
     public class MatRadiogroup<T> : MatRadioGroup where T : Component
     {
         public MatRadiogroup(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

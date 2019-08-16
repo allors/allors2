@@ -7,9 +7,6 @@ namespace Autotest.Html
 {
     public partial class Attribute
     {
-        public override string ToString()
-        {
-            return string.IsNullOrWhiteSpace(this.Value) ? this.Name : $"{this.Name}: {this.Value}";
-        }
+        public override string ToString() => string.IsNullOrWhiteSpace(this.Value) ? this.Name : $"{this.Name}: {this.Value}";
     }
 }

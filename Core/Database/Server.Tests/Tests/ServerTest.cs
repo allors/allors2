@@ -100,10 +100,7 @@ namespace Server.Tests
             this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", signInResponse.Token);
         }
 
-        protected void SignOut()
-        {
-            this.HttpClient.DefaultRequestHeaders.Authorization = null;
-        }
+        protected void SignOut() => this.HttpClient.DefaultRequestHeaders.Authorization = null;
 
         protected Stream GetResource(string name)
         {

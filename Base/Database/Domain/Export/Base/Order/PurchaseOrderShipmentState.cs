@@ -24,6 +24,5 @@ namespace Allors.Domain
         public bool IsPartiallyReceived => Equals(this.UniqueId, PurchaseOrderShipmentStates.PartiallyReceivedId);
 
         public bool IsReceived => Equals(this.UniqueId, PurchaseOrderShipmentStates.ReceivedId);
-
     }
 }

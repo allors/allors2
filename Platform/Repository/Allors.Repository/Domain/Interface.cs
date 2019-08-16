@@ -63,10 +63,7 @@ namespace Allors.Repository.Domain
 
         public Property[] InheritedProperties => this.InheritedPropertyByRoleName.Values.ToArray();
 
-        public override string ToString()
-        {
-            return this.SingularName;
-        }
+        public override string ToString() => this.SingularName;
 
         public Property GetImplementedProperty(Property property)
         {

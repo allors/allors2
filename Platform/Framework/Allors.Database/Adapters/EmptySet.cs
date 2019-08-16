@@ -27,110 +27,44 @@ namespace Allors.Adapters
     {
         private static readonly HashSet<T> StaticEmptySet = new HashSet<T>();
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return StaticEmptySet.GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => StaticEmptySet.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return StaticEmptySet.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => StaticEmptySet.GetEnumerator();
 
-        public void UnionWith(IEnumerable<T> other)
-        {
-            throw new System.NotSupportedException();
-        }
+        public void UnionWith(IEnumerable<T> other) => throw new System.NotSupportedException();
 
-        public void IntersectWith(IEnumerable<T> other)
-        {
-            throw new System.NotSupportedException();
-        }
+        public void IntersectWith(IEnumerable<T> other) => throw new System.NotSupportedException();
 
-        public void ExceptWith(IEnumerable<T> other)
-        {
-            throw new System.NotSupportedException();
-        }
+        public void ExceptWith(IEnumerable<T> other) => throw new System.NotSupportedException();
 
-        public void SymmetricExceptWith(IEnumerable<T> other)
-        {
-            throw new System.NotSupportedException();
-        }
+        public void SymmetricExceptWith(IEnumerable<T> other) => throw new System.NotSupportedException();
 
-        public bool IsSubsetOf(IEnumerable<T> other)
-        {
-            return StaticEmptySet.IsSubsetOf(other);
-        }
+        public bool IsSubsetOf(IEnumerable<T> other) => StaticEmptySet.IsSubsetOf(other);
 
-        public bool IsSupersetOf(IEnumerable<T> other)
-        {
-            return StaticEmptySet.IsSupersetOf(other);
-        }
+        public bool IsSupersetOf(IEnumerable<T> other) => StaticEmptySet.IsSupersetOf(other);
 
-        public bool IsProperSupersetOf(IEnumerable<T> other)
-        {
-            return StaticEmptySet.IsProperSupersetOf(other);
-        }
+        public bool IsProperSupersetOf(IEnumerable<T> other) => StaticEmptySet.IsProperSupersetOf(other);
 
-        public bool IsProperSubsetOf(IEnumerable<T> other)
-        {
-            return StaticEmptySet.IsProperSubsetOf(other);
-        }
+        public bool IsProperSubsetOf(IEnumerable<T> other) => StaticEmptySet.IsProperSubsetOf(other);
 
-        public bool Overlaps(IEnumerable<T> other)
-        {
-            return StaticEmptySet.Overlaps(other);
-        }
+        public bool Overlaps(IEnumerable<T> other) => StaticEmptySet.Overlaps(other);
 
-        public bool SetEquals(IEnumerable<T> other)
-        {
-            return StaticEmptySet.SetEquals(other);
-        }
+        public bool SetEquals(IEnumerable<T> other) => StaticEmptySet.SetEquals(other);
 
-        public bool Add(T item)
-        {
-            throw new System.NotSupportedException();
-        }
+        public bool Add(T item) => throw new System.NotSupportedException();
 
-        void ICollection<T>.Add(T item)
-        {
-            throw new System.NotSupportedException();
-        }
+        void ICollection<T>.Add(T item) => throw new System.NotSupportedException();
 
-        public void Clear()
-        {
-            throw new System.NotSupportedException();
-        }
+        public void Clear() => throw new System.NotSupportedException();
 
-        public bool Contains(T item)
-        {
-            return StaticEmptySet.Contains(item);
-        }
+        public bool Contains(T item) => StaticEmptySet.Contains(item);
 
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            StaticEmptySet.CopyTo(array, arrayIndex);
-        }
+        public void CopyTo(T[] array, int arrayIndex) => StaticEmptySet.CopyTo(array, arrayIndex);
 
-        public bool Remove(T item)
-        {
-            throw new System.NotSupportedException();
-        }
+        public bool Remove(T item) => throw new System.NotSupportedException();
 
-        public int Count
-        {
-            get
-            {
-                return StaticEmptySet.Count;
-            }
-        }
+        public int Count => StaticEmptySet.Count;
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
     }
 }

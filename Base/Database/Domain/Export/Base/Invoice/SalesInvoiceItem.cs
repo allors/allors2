@@ -154,20 +154,11 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseWriteOff()
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
-        }
+        public void BaseWriteOff() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
 
-        public void CancelFromInvoice()
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).CancelledByInvoice;
-        }
+        public void CancelFromInvoice() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).CancelledByInvoice;
 
-        public void BaseCancel()
-        {
-            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseDelete(DeletableDelete method)
         {
@@ -191,9 +182,6 @@ namespace Allors.Domain
             }
         }
 
-        public void Sync(Invoice invoice)
-        {
-            this.SyncedInvoice = invoice;
-        }
+        public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
     }
 }

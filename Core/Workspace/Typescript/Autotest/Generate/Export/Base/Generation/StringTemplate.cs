@@ -79,10 +79,7 @@ namespace Allors.Development.Repository.Generation
 
         public string Version { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         internal void Generate(Model model, DirectoryInfo outputDirectory, Log log)
         {
@@ -176,30 +173,15 @@ namespace Allors.Development.Repository.Generation
         {
             private readonly Log log;
 
-            public LogAdapter(Log log)
-            {
-                this.log = log;
-            }
+            public LogAdapter(Log log) => this.log = log;
 
-            public void CompiletimeError(TemplateMessage msg)
-            {
-                this.log.Error(msg, msg.ToString());
-            }
+            public void CompiletimeError(TemplateMessage msg) => this.log.Error(msg, msg.ToString());
 
-            public void InternalError(TemplateMessage msg)
-            {
-                this.log.Error(msg, msg.ToString());
-            }
+            public void InternalError(TemplateMessage msg) => this.log.Error(msg, msg.ToString());
 
-            public void IOError(TemplateMessage msg)
-            {
-                this.log.Error(msg, msg.ToString());
-            }
+            public void IOError(TemplateMessage msg) => this.log.Error(msg, msg.ToString());
 
-            public void RuntimeError(TemplateMessage msg)
-            {
-                this.log.Error(msg, msg.ToString());
-            }
+            public void RuntimeError(TemplateMessage msg) => this.log.Error(msg, msg.ToString());
         }
     }
 }

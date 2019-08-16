@@ -97,10 +97,7 @@ namespace Allors.Adapters.Object.Npgsql.Caching
             return objectType;
         }
 
-        public void SetObjectType(long objectId, IClass objectType)
-        {
-            this.objectTypeByObjectId[objectId] = objectType;
-        }
+        public void SetObjectType(long objectId, IClass objectType) => this.objectTypeByObjectId[objectId] = objectType;
 
         public void OnCommit(IList<long> accessedObjectIds, IList<long> changedObjectIds)
         {

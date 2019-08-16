@@ -76,11 +76,8 @@
             return vstoWorksheet;
         }
 
-        public ListObject GetVstoListObject(Microsoft.Office.Interop.Excel.ListObject interopListObject)
-        {
-            return this.ApplicationFactory.GetVstoObject(interopListObject);
-        }
-        
+        public ListObject GetVstoListObject(Microsoft.Office.Interop.Excel.ListObject interopListObject) => this.ApplicationFactory.GetVstoObject(interopListObject);
+
         public void EnsureSynchronizationContext()
         {
             if (SynchronizationContext.Current == null)

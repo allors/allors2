@@ -11,10 +11,7 @@
     {
         private readonly Dictionary<long, WorkspaceObject> workspaceObjectById = new Dictionary<long, WorkspaceObject>();
 
-        public Workspace(ObjectFactory objectFactory)
-        {
-            this.ObjectFactory = objectFactory;
-        }
+        public Workspace(ObjectFactory objectFactory) => this.ObjectFactory = objectFactory;
 
         public ObjectFactory ObjectFactory { get; }
 

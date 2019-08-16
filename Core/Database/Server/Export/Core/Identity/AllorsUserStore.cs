@@ -35,10 +35,7 @@ namespace Identity
     {
         private readonly IDatabase database;
 
-        public AllorsUserStore(IDatabaseService databaseService)
-        {
-            this.database = databaseService.Database;
-        }
+        public AllorsUserStore(IDatabaseService databaseService) => this.database = databaseService.Database;
 
         #region IUserStore
         public void Dispose()

@@ -16,18 +16,9 @@ namespace Allors.Workspace
         private readonly Dictionary<long, SessionObject> sessionObjectById = new Dictionary<long, SessionObject>();
         private readonly Dictionary<long, SessionObject> newSessionObjectById = new Dictionary<long, SessionObject>();
 
-        public Session(Workspace workspace)
-        {
-            this.workspace = workspace;
-        }
+        public Session(Workspace workspace) => this.workspace = workspace;
 
-        public bool HasChanges
-        {
-            get
-            {
-                return this.newSessionObjectById.Count > 0 || this.sessionObjectById.Values.Any(v => v.HasChanges);
-            }
-        }
+        public bool HasChanges => this.newSessionObjectById.Count > 0 || this.sessionObjectById.Values.Any(v => v.HasChanges);
 
         public SessionObject Get(long id)
         {

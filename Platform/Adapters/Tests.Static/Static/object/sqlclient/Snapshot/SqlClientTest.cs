@@ -31,9 +31,6 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public void Dispose() => this.profile.Dispose();
     }
 }

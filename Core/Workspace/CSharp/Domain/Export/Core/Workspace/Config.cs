@@ -28,9 +28,6 @@ namespace Allors.Workspace
     {
         public static readonly ObjectFactory ObjectFactory;
 
-        static Config()
-        {
-            ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
-        }
+        static Config() => ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
     }
 }

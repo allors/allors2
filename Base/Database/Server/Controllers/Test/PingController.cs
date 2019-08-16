@@ -12,9 +12,6 @@ namespace Server.Controllers.Test
     public class PingController : Controller
     {
         [HttpPost]
-        public async Task<IActionResult> Token()
-        {
-            return this.Ok("Pong");
-        }
+        public async Task<IActionResult> Token() => this.Ok("Pong");
     }
 }

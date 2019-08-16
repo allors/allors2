@@ -149,9 +149,6 @@ namespace Allors.Adapters.Object.SqlClient
             this.c4D = population.C4D;
         }
 
-        protected ISession CreateSession()
-        {
-            return this.Profile.Database.CreateSession();
-        }
+        protected ISession CreateSession() => this.Profile.Database.CreateSession();
     }
 }

@@ -85,9 +85,6 @@ namespace Allors.Repository.Domain
 
         public Method[] InheritedMethods => this.MethodByName.Values.Where(v => v.DefiningMethod != null).ToArray();
 
-        public override string ToString()
-        {
-            return this.SingularName;
-        }
+        public override string ToString() => this.SingularName;
     }
 }

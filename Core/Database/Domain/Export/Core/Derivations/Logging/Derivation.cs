@@ -21,49 +21,22 @@ namespace Allors.Domain.Logging
 
         public IDerivationLog DerivationLog { get; }
 
-        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation)
-        {
-            return new DerivationNodes(derivation, this.DerivationLog);
-        }
+        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation) => new DerivationNodes(derivation, this.DerivationLog);
 
-        protected override void OnAddedDerivable(Object derivable)
-        {
-            this.DerivationLog.AddedDerivable(derivable);
-        }
+        protected override void OnAddedDerivable(Object derivable) => this.DerivationLog.AddedDerivable(derivable);
 
-        protected override void OnAddedDependency(Object dependent, Object dependee)
-        {
-            this.DerivationLog.AddedDependency(dependent, dependee);
-        }
+        protected override void OnAddedDependency(Object dependent, Object dependee) => this.DerivationLog.AddedDependency(dependent, dependee);
 
-        protected override void OnStartedGeneration(int generation)
-        {
-            this.DerivationLog.StartedGeneration(generation);
-        }
+        protected override void OnStartedGeneration(int generation) => this.DerivationLog.StartedGeneration(generation);
 
-        protected override void OnStartedPreparation(int preparationRun)
-        {
-            this.DerivationLog.StartedPreparation(preparationRun);
-        }
+        protected override void OnStartedPreparation(int preparationRun) => this.DerivationLog.StartedPreparation(preparationRun);
 
-        protected override void OnPreDeriving(Object derivable)
-        {
-            this.DerivationLog.PreDeriving(derivable);
-        }
+        protected override void OnPreDeriving(Object derivable) => this.DerivationLog.PreDeriving(derivable);
 
-        protected override void OnPreDerived(Object derivable)
-        {
-            this.DerivationLog.PreDerived(derivable);
-        }
+        protected override void OnPreDerived(Object derivable) => this.DerivationLog.PreDerived(derivable);
 
-        protected override void OnPostDeriving(Object derivable)
-        {
-            this.DerivationLog.PostDeriving(derivable);
-        }
+        protected override void OnPostDeriving(Object derivable) => this.DerivationLog.PostDeriving(derivable);
 
-        protected override void OnPostDerived(Object derivable)
-        {
-            this.DerivationLog.PostDerived(derivable);
-        }
+        protected override void OnPostDerived(Object derivable) => this.DerivationLog.PostDerived(derivable);
     }
 }

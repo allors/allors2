@@ -15,20 +15,11 @@ namespace Allors.Workspace.Domain
     {
         public T this[int idx] => (T)this.Rows[idx];
 
-        public void Add(T row)
-        {
-            this.Rows.Add(row);
-        }
+        public void Add(T row) => this.Rows.Add(row);
 
-        public void Remove(T row)
-        {
-            this.Rows.Remove(row);
-        }
+        public void Remove(T row) => this.Rows.Remove(row);
 
-        public new T NewRow()
-        {
-            return (T)base.NewRow();
-        }
+        public new T NewRow() => (T)base.NewRow();
 
         public void FromListObject(ListObject listObject)
         {
@@ -76,14 +67,8 @@ namespace Allors.Workspace.Domain
             }
         }
 
-        protected override Type GetRowType()
-        {
-            return typeof(T);
-        }
+        protected override Type GetRowType() => typeof(T);
 
-        protected override DataRow NewRowFromBuilder(DataRowBuilder builder)
-        {
-            return (T)Activator.CreateInstance(typeof(T), builder);
-        }
+        protected override DataRow NewRowFromBuilder(DataRowBuilder builder) => (T)Activator.CreateInstance(typeof(T), builder);
     }
 }

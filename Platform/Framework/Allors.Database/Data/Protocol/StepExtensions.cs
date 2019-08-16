@@ -24,14 +24,12 @@ namespace Allors.Protocol.Data
 
     public static class StepExtensions
     {
-        public static Allors.Data.Step Load(this Step @this, ISession session)
-        {
-            return new Allors.Data.Step
+        public static Allors.Data.Step Load(this Step @this, ISession session) =>
+            new Allors.Data.Step
             {
                 PropertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null,
                 Next = @this.Next?.Load(session),
                 Include = @this.Include?.Load(session)
             };
-        }
     }
 }

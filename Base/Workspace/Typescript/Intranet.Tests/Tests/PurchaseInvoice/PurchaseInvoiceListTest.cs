@@ -13,9 +13,6 @@ namespace Tests.PurchaseInvoiceTest
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Purchase Invoices", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Purchase Invoices", this.Driver.Title);
     }
 }

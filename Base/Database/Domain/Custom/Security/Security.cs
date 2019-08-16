@@ -180,10 +180,7 @@ namespace Allors.Domain
             }
         }
 
-        public void Grantemployee(ObjectType objectType, params Operations[] operations)
-        {
-            this.Grant(Roles.EmployeeId, objectType, operations);
-        }
+        public void Grantemployee(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.EmployeeId, objectType, operations);
 
         private void CustomOnPostSetup()
         {

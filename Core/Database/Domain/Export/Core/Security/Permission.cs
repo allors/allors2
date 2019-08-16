@@ -71,10 +71,7 @@ namespace Allors.Domain
 
         public OperandType OperandType
         {
-            get
-            {
-                return (OperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
-            }
+            get => (OperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
 
             set
             {
@@ -89,41 +86,20 @@ namespace Allors.Domain
             }
         }
 
-        public bool ExistOperandType
-        {
-            get
-            {
-                return this.ExistOperandTypePointer;
-            }
-        }
+        public bool ExistOperandType => this.ExistOperandTypePointer;
 
         public Operations Operation
         {
-            get
-            {
-                return (Operations)this.OperationEnum;
-            }
+            get => (Operations)this.OperationEnum;
 
-            set
-            {
-                this.OperationEnum = (int)value;
-            }
+            set => this.OperationEnum = (int)value;
         }
 
-        public bool ExistOperation
-        {
-            get
-            {
-                return this.ExistOperationEnum;
-            }
-        }
+        public bool ExistOperation => this.ExistOperationEnum;
 
         public ObjectType ConcreteClass
         {
-            get
-            {
-                return (ObjectType)this.Strategy.Session.Database.MetaPopulation.Find(this.ConcreteClassPointer);
-            }
+            get => (ObjectType)this.Strategy.Session.Database.MetaPopulation.Find(this.ConcreteClassPointer);
 
             set
             {
@@ -138,13 +114,7 @@ namespace Allors.Domain
             }
         }
 
-        public bool ExistConcreteClass
-        {
-            get
-            {
-                return this.ConcreteClass != null;
-            }
-        }
+        public bool ExistConcreteClass => this.ConcreteClass != null;
 
         public override string ToString()
         {

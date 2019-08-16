@@ -31,10 +31,8 @@ namespace Allors.Adapters.Memory
         private And filter;
 
         internal ExtentFiltered(Session session, IComposite objectType)
-            : base(session)
-        {
+            : base(session) =>
             this.objectType = objectType;
-        }
 
         internal ExtentFiltered(StrategyExtent extent)
             : base(extent.Session)
@@ -43,15 +41,9 @@ namespace Allors.Adapters.Memory
             extent.UpgradeTo(this);
         }
 
-        public override ICompositePredicate Filter
-        {
-            get { return this.filter ?? (this.filter = new And(this)); }
-        }
+        public override ICompositePredicate Filter => this.filter ?? (this.filter = new And(this));
 
-        public override IComposite ObjectType
-        {
-            get { return this.objectType; }
-        }
+        public override IComposite ObjectType => this.objectType;
 
         internal void CheckForAssociationType(IAssociationType association)
         {

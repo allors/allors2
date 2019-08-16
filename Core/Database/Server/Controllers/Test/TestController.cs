@@ -14,20 +14,14 @@ namespace Allors.Server.Controllers
 
     public class TestController : Controller
     {
-        public TestController(IDatabaseService databaseService)
-        {
-            this.Database = databaseService.Database;
-        }
+        public TestController(IDatabaseService databaseService) => this.Database = databaseService.Database;
 
         public IDatabase Database { get; set; }
 
         private ILogger<TestController> Logger { get; set; }
 
         [HttpGet]
-        public IActionResult Ready()
-        {
-            return this.Ok("Ready");
-        }
+        public IActionResult Ready() => this.Ok("Ready");
 
         [HttpGet]
         public IActionResult Init()

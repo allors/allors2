@@ -16,9 +16,6 @@ namespace Allors.Services
 
         public long Id { get; set; }
 
-        public void Clear()
-        {
-            this.Id = 0;
-        }
+        public void Clear() => this.Id = 0;
     }
 }

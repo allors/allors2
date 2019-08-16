@@ -30,25 +30,19 @@ namespace Allors.Server
             }
         }
 
-        public static void AddVersionError(this ErrorResponse @this, IObject obj)
-        {
+        public static void AddVersionError(this ErrorResponse @this, IObject obj) =>
             @this.VersionErrors = @this.VersionErrors != null ?
-                                      new List<string>(@this.VersionErrors) { obj.Id.ToString() }.ToArray() :
-                                      new List<string> { obj.Id.ToString() }.ToArray();
-        }
+                new List<string>(@this.VersionErrors) { obj.Id.ToString() }.ToArray() :
+                new List<string> { obj.Id.ToString() }.ToArray();
 
-        public static void AddAccessError(this ErrorResponse @this, IObject obj)
-        {
+        public static void AddAccessError(this ErrorResponse @this, IObject obj) =>
             @this.AccessErrors = @this.AccessErrors != null ?
-                                     new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray() :
-                                     new List<string> { obj.Id.ToString() }.ToArray();
-        }
+                new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray() :
+                new List<string> { obj.Id.ToString() }.ToArray();
 
-        public static void AddMissingError(this ErrorResponse @this, string id)
-        {
+        public static void AddMissingError(this ErrorResponse @this, string id) =>
             @this.MissingErrors = @this.MissingErrors != null ?
-                                      new List<string>(@this.MissingErrors) { id }.ToArray() :
-                                      new List<string> { id }.ToArray();
-        }
+                new List<string>(@this.MissingErrors) { id }.ToArray() :
+                new List<string> { id }.ToArray();
     }
 }

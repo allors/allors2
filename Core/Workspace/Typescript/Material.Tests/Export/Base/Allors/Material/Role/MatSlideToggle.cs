@@ -61,10 +61,8 @@ namespace Components
     public class MatSlidetoggle<T> : MatSlideToggle where T : Component
     {
         public MatSlidetoggle(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

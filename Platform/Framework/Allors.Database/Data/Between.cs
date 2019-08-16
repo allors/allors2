@@ -28,10 +28,7 @@ namespace Allors.Data
 
     public class Between : IRolePredicate
     {
-        public Between(IRoleType roleType = null)
-        {
-            this.RoleType = roleType;
-        }
+        public Between(IRoleType roleType = null) => this.RoleType = roleType;
 
         public IRoleType RoleType { get; set; }
 
@@ -39,26 +36,18 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
-        public Predicate Save()
-        {
-            return new Predicate
+        public Predicate Save() =>
+            new Predicate
             {
                 Kind = PredicateKind.Between,
                 RoleType = this.RoleType?.Id,
                 Values = this.Values.Select(DataConvert.ToString).ToArray(),
                 Parameter = this.Parameter
             };
-        }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
-        {
-            return ((IPredicate)this).HasMissingArguments(arguments);
-        }
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
-        }
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

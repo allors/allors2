@@ -44,14 +44,12 @@ namespace Allors.Data
 
         public TreeNodes Nodes { get; }
 
-        public Protocol.Data.TreeNode Save()
-        {
-            return new Protocol.Data.TreeNode
+        public Protocol.Data.TreeNode Save() =>
+            new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray()
             };
-        }
 
         public void Resolve(IObject obj, HashSet<IObject> objects)
         {

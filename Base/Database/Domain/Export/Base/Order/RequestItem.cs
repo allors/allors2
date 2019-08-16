@@ -62,14 +62,8 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(RequestItemCancel method)
-        {
-            this.RequestItemState = new RequestItemStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(RequestItemCancel method) => this.RequestItemState = new RequestItemStates(this.Strategy.Session).Cancelled;
 
-        public void Sync(Request request)
-        {
-            this.SyncedRequest = request;
-        }
+        public void Sync(Request request) => this.SyncedRequest = request;
     }
 }

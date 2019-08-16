@@ -38,10 +38,7 @@ namespace Allors.Adapters
             }
         }
 
-        public static void CompositeRoleChecks(IStrategy strategy, IRoleType roleType)
-        {
-            CompositeSharedChecks(strategy, roleType, null);
-        }
+        public static void CompositeRoleChecks(IStrategy strategy, IRoleType roleType) => CompositeSharedChecks(strategy, roleType, null);
 
         public static void CompositeRoleChecks(IStrategy strategy, IRoleType roleType, IObject role)
         {

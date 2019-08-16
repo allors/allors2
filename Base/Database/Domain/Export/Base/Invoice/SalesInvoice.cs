@@ -480,7 +480,6 @@ namespace Allors.Domain
                 {
                     this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
                 }
-
             }
 
             this.AmountPaid = this.AdvancePayment;
@@ -668,10 +667,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseReopen(SalesInvoiceReopen method)
-        {
-            this.SalesInvoiceState = this.PreviousSalesInvoiceState;
-        }
+        public void BaseReopen(SalesInvoiceReopen method) => this.SalesInvoiceState = this.PreviousSalesInvoiceState;
 
         public void BaseCancelInvoice(SalesInvoiceCancelInvoice method)
         {

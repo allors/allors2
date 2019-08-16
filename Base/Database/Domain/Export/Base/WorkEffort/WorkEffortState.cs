@@ -28,6 +28,5 @@ namespace Allors.Domain
         public bool IsFinished => this.Equals(new WorkEffortStates(this.Strategy.Session).Finished);
 
         public bool IsCancelled => this.Equals(new WorkEffortStates(this.Strategy.Session).Cancelled);
-
     }
 }

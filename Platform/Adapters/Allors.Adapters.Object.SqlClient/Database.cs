@@ -286,10 +286,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public override string ToString()
-        {
-            return "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
-        }
+        public override string ToString() => "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
 
         public Validation Validate()
         {
@@ -298,10 +295,7 @@ namespace Allors.Adapters.Object.SqlClient
             return validateResult;
         }
 
-        ISession IDatabase.CreateSession()
-        {
-            return this.CreateSession();
-        }
+        ISession IDatabase.CreateSession() => this.CreateSession();
 
         internal bool ContainsConcreteClass(IObjectType container, IObjectType containee)
         {
@@ -320,35 +314,17 @@ namespace Allors.Adapters.Object.SqlClient
             return concreteClasses.Contains(containee);
         }
 
-        internal IEnumerable<SqlDataRecord> CreateObjectTable(IEnumerable<long> objectids)
-        {
-            return new ObjectDataRecord(this.mapping, objectids);
-        }
+        internal IEnumerable<SqlDataRecord> CreateObjectTable(IEnumerable<long> objectids) => new ObjectDataRecord(this.mapping, objectids);
 
-        internal IEnumerable<SqlDataRecord> CreateVersionedObjectTable(Dictionary<long, long> versionedObjects)
-        {
-            return new VersionedObjectDataRecord(this.mapping, versionedObjects);
-        }
+        internal IEnumerable<SqlDataRecord> CreateVersionedObjectTable(Dictionary<long, long> versionedObjects) => new VersionedObjectDataRecord(this.mapping, versionedObjects);
 
-        internal IEnumerable<SqlDataRecord> CreateObjectTable(IEnumerable<Reference> references)
-        {
-            return new CompositesRoleDataRecords(this.mapping, references);
-        }
+        internal IEnumerable<SqlDataRecord> CreateObjectTable(IEnumerable<Reference> references) => new CompositesRoleDataRecords(this.mapping, references);
 
-        internal IEnumerable<SqlDataRecord> CreateCompositeRelationTable(IEnumerable<CompositeRelation> relations)
-        {
-            return new CompositeRoleDataRecords(this.mapping, relations);
-        }
+        internal IEnumerable<SqlDataRecord> CreateCompositeRelationTable(IEnumerable<CompositeRelation> relations) => new CompositeRoleDataRecords(this.mapping, relations);
 
-        internal IEnumerable<SqlDataRecord> CreateUnitRelationTable(IRoleType roleType, IEnumerable<UnitRelation> relations)
-        {
-            return new UnitRoleDataRecords(this, roleType, relations);
-        }
+        internal IEnumerable<SqlDataRecord> CreateUnitRelationTable(IRoleType roleType, IEnumerable<UnitRelation> relations) => new UnitRoleDataRecords(this, roleType, relations);
 
-        internal Type GetDomainType(IObjectType objectType)
-        {
-            return this.ObjectFactory.GetTypeForObjectType(objectType);
-        }
+        internal Type GetDomainType(IObjectType objectType) => this.ObjectFactory.GetTypeForObjectType(objectType);
 
         internal IRoleType[] GetSortedUnitRolesByObjectType(IObjectType objectType)
         {
@@ -400,9 +376,6 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        private void ResetSchema()
-        {
-            this.mapping = null;
-        }
+        private void ResetSchema() => this.mapping = null;
     }
 }

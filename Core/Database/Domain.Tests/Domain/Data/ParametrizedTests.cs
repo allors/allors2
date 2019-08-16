@@ -125,7 +125,6 @@ namespace Tests
                 extent.Filter.AddEquals(M.Person.FirstName, "John");
 
                 Assert.Equal(extent.ToArray(), queryExtent.ToArray());
-
             }
 
             {
@@ -262,6 +261,5 @@ namespace Tests
 
             Assert.Equal(extent.ToArray(), queryExtent.ToArray());
         }
-
     }
 }

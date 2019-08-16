@@ -12,9 +12,6 @@
 
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        public virtual void OnStateChanged()
-        {
-            this.StateChanged?.Invoke(this, new EventArgs());
-        }
+        public virtual void OnStateChanged() => this.StateChanged?.Invoke(this, new EventArgs());
     }
 }

@@ -116,10 +116,7 @@ namespace Allors.Adapters.Memory
 
         private Dictionary<IAssociationType, HashSet<Strategy>> RollbackCompositesAssociationByAssociationType => this.rollbackCompositesAssociationByAssociationType ?? (this.rollbackCompositesAssociationByAssociationType = new Dictionary<IAssociationType, HashSet<Strategy>>());
 
-        public override string ToString()
-        {
-            return this.objectType.Name + " " + this.ObjectId;
-        }
+        public override string ToString() => this.objectType.Name + " " + this.ObjectId;
 
         public object GetRole(IRelationType relationType)
         {
@@ -223,10 +220,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public void RemoveUnitRole(IRelationType relationType)
-        {
-            this.SetUnitRole(relationType, null);
-        }
+        public void RemoveUnitRole(IRelationType relationType) => this.SetUnitRole(relationType, null);
 
         public bool ExistUnitRole(IRelationType relationType)
         {
@@ -389,15 +383,9 @@ namespace Allors.Adapters.Memory
             return roleStrategies != null;
         }
 
-        public object GetAssociation(IRelationType relationType)
-        {
-            return relationType.AssociationType.IsMany ? (object)this.GetCompositeAssociations(relationType) : this.GetCompositeAssociation(relationType);
-        }
+        public object GetAssociation(IRelationType relationType) => relationType.AssociationType.IsMany ? (object)this.GetCompositeAssociations(relationType) : this.GetCompositeAssociation(relationType);
 
-        public bool ExistAssociation(IRelationType relationType)
-        {
-            return relationType.AssociationType.IsMany ? this.ExistCompositeAssociations(relationType) : this.ExistCompositeAssociation(relationType);
-        }
+        public bool ExistAssociation(IRelationType relationType) => relationType.AssociationType.IsMany ? this.ExistCompositeAssociations(relationType) : this.ExistCompositeAssociation(relationType);
 
         public IObject GetCompositeAssociation(IRelationType relationType)
         {
@@ -407,10 +395,7 @@ namespace Allors.Adapters.Memory
             return strategy?.GetObject();
         }
 
-        public bool ExistCompositeAssociation(IRelationType relationType)
-        {
-            return this.GetCompositeAssociation(relationType) != null;
-        }
+        public bool ExistCompositeAssociation(IRelationType relationType) => this.GetCompositeAssociation(relationType) != null;
 
         public Allors.Extent GetCompositeAssociations(IRelationType relationType)
         {
@@ -1212,10 +1197,7 @@ namespace Allors.Adapters.Memory
 
         public class ObjectIdComparer : IComparer<Strategy>
         {
-            public int Compare(Strategy x, Strategy y)
-            {
-                return x.ObjectId.CompareTo(y.ObjectId);
-            }
+            public int Compare(Strategy x, Strategy y) => x.ObjectId.CompareTo(y.ObjectId);
         }
     }
 }

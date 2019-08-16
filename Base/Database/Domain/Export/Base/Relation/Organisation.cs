@@ -344,7 +344,6 @@ namespace Allors.Domain
             return this.ExistProfessionalServicesRelationshipsWhereProfessionalServicesProvider
                    && this.ProfessionalServicesRelationshipsWhereProfessionalServicesProvider
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
-
         }
 
         public bool BaseIsActiveSubContractor(DateTime? date)

@@ -60,20 +60,14 @@ namespace Allors
             }
         }
 
-        public void Add(IObjects objects)
-        {
-            this.objectsGraph.Add(objects);
-        }
+        public void Add(IObjects objects) => this.objectsGraph.Add(objects);
 
         /// <summary>
         /// The dependee is set up before the dependent object;
         /// </summary>
         /// <param name="dependent"></param>
         /// <param name="dependee"></param>
-        public void AddDependency(ObjectType dependent, ObjectType dependee)
-        {
-            this.objectsGraph.AddDependency(this.objectsByObjectType[dependent], this.objectsByObjectType[dependee]);
-        }
+        public void AddDependency(ObjectType dependent, ObjectType dependee) => this.objectsGraph.AddDependency(this.objectsByObjectType[dependent], this.objectsByObjectType[dependee]);
 
         private void CoreOnPrePrepare()
         {

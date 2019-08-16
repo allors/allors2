@@ -24,24 +24,12 @@ namespace Allors.Domain
 
     public partial class ClassWithoutUnitRoles
     {
-        public static ClassWithoutUnitRoles Create(ISession session)
-        {
-            return (ClassWithoutUnitRoles)session.Create(Meta.ObjectType);
-        }
+        public static ClassWithoutUnitRoles Create(ISession session) => (ClassWithoutUnitRoles)session.Create(Meta.ObjectType);
 
-        public static ClassWithoutUnitRoles[] Create(ISession session, int count)
-        {
-            return (ClassWithoutUnitRoles[])session.Create(Meta.ObjectType, count);
-        }
+        public static ClassWithoutUnitRoles[] Create(ISession session, int count) => (ClassWithoutUnitRoles[])session.Create(Meta.ObjectType, count);
 
-        public static ClassWithoutUnitRoles[] Instantiate(ISession session, string[] ids)
-        {
-            return (ClassWithoutUnitRoles[])session.Instantiate(ids);
-        }
+        public static ClassWithoutUnitRoles[] Instantiate(ISession session, string[] ids) => (ClassWithoutUnitRoles[])session.Instantiate(ids);
 
-        public static ClassWithoutUnitRoles[] Extent(ISession session)
-        {
-            return (ClassWithoutUnitRoles[])session.Extent(Meta.ObjectType).ToArray();
-        }
+        public static ClassWithoutUnitRoles[] Extent(ISession session) => (ClassWithoutUnitRoles[])session.Extent(Meta.ObjectType).ToArray();
     }
 }

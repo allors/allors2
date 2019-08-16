@@ -76,10 +76,7 @@ namespace Allors.Workspace.Meta
 
         public IObjectType ObjectType
         {
-            get
-            {
-                return this.objectType;
-            }
+            get => this.objectType;
 
             set
             {
@@ -97,13 +94,7 @@ namespace Allors.Workspace.Meta
         /// Gets the name.
         /// </summary>
         /// <value>The name .</value>
-        public override string Name
-        {
-            get
-            {
-                return this.FullName;
-            }
-        }
+        public override string Name => this.FullName;
 
         /// <summary>
         /// Gets the singular name when using <see cref="Where"/>.
@@ -198,10 +189,7 @@ namespace Allors.Workspace.Meta
         /// <returns>
         /// The <see cref="ObjectType"/>.
         /// </returns>
-        public override ObjectType GetObjectType()
-        {
-            return (ObjectType)this.ObjectType;
-        }
+        public override ObjectType GetObjectType() => (ObjectType)this.ObjectType;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

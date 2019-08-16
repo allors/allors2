@@ -10,27 +10,15 @@ namespace Components
 
     public abstract class Component
     {
-        protected Component(IWebDriver driver)
-        {
-            this.Driver = driver;
-        }
+        protected Component(IWebDriver driver) => this.Driver = driver;
 
         public IWebDriver Driver { get; }
 
-        public static string[] ByScopesExpressions(params string[] scopes)
-        {
-            return scopes.Select((v, i) => $"ancestor::*[@data-test-scope][{i + 1}]/@data-test-scope='{v}'").ToArray();
-        }
+        public static string[] ByScopesExpressions(params string[] scopes) => scopes.Select((v, i) => $"ancestor::*[@data-test-scope][{i + 1}]/@data-test-scope='{v}'").ToArray();
 
-        public string ByScopesPredicate(string[] scopes)
-        {
-            return scopes.Length > 0 ? $"[{string.Join(" and ", ByScopesExpressions(scopes))}]" : string.Empty;
-        }
+        public string ByScopesPredicate(string[] scopes) => scopes.Length > 0 ? $"[{string.Join(" and ", ByScopesExpressions(scopes))}]" : string.Empty;
 
-        public string ByScopesAnd(string[] scopes)
-        {
-            return string.Concat(ByScopesExpressions(scopes).Select(v => $" and {v}"));
-        }
+        public string ByScopesAnd(string[] scopes) => string.Concat(ByScopesExpressions(scopes).Select(v => $" and {v}"));
 
         protected void ScrollToElement(IWebElement element)
         {

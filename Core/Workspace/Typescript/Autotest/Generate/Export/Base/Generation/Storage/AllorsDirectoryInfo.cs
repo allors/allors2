@@ -42,10 +42,7 @@ namespace Allors.Development.Repository.Storage
 
         internal AllorsDirectoryInfo Parent => this.parent;
 
-        public string GetRelativeName(DirectoryInfo baseDirectoryInfo)
-        {
-            return this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
-        }
+        public string GetRelativeName(DirectoryInfo baseDirectoryInfo) => this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
 
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
@@ -53,10 +50,7 @@ namespace Allors.Development.Repository.Storage
             return relativeName ?? this.directoryInfo.FullName;
         }
 
-        public override string ToString()
-        {
-            return this.directoryInfo.FullName;
-        }
+        public override string ToString() => this.directoryInfo.FullName;
 
         private void BuildAncestors(AllorsDirectoryInfo root, List<AllorsDirectoryInfo> ancestors)
         {
@@ -70,10 +64,7 @@ namespace Allors.Development.Repository.Storage
             }
         }
 
-        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination)
-        {
-            return destination.IsAncestor(this) ? this : this.parent.GetCommonAncestor(destination);
-        }
+        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination) => destination.IsAncestor(this) ? this : this.parent.GetCommonAncestor(destination);
 
         private bool IsAncestor(AllorsDirectoryInfo ancestor)
         {

@@ -508,10 +508,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        private Strategy LoadInstantiateStrategy(long id)
-        {
-            return this.session.GetStrategy(id);
-        }
+        private Strategy LoadInstantiateStrategy(long id) => this.session.GetStrategy(id);
 
         private void CantLoadUnitRole(Guid relationTypeId)
         {

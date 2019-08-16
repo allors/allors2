@@ -29,10 +29,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void BaseOnDerive(ObjectOnDerive method)
-        {
-            this.Sync(this.Strategy.Session);
-        }
+        public void BaseOnDerive(ObjectOnDerive method) => this.Sync(this.Strategy.Session);
 
         private void Sync(ISession session)
         {

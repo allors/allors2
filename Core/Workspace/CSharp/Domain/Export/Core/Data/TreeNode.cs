@@ -43,13 +43,11 @@ namespace Allors.Workspace.Data
 
         public TreeNodes Nodes { get; }
 
-        public Protocol.Data.TreeNode ToJson()
-        {
-            return new Protocol.Data.TreeNode
+        public Protocol.Data.TreeNode ToJson() =>
+            new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
                 Nodes = this.Nodes.Select(v => v.ToJson()).ToArray()
             };
-        }
     }
 }

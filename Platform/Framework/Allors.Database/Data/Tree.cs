@@ -50,10 +50,7 @@ namespace Allors.Data
             return prefetchPolicyBuilder.Build();
         }
 
-        public Tree Add(IEnumerable<IRelationType> relationTypes)
-        {
-            return this.Add(relationTypes.Select(v => v.RoleType));
-        }
+        public Tree Add(IEnumerable<IRelationType> relationTypes) => this.Add(relationTypes.Select(v => v.RoleType));
 
         public Tree Add(IEnumerable<IRoleType> roleTypes)
         {
@@ -61,10 +58,7 @@ namespace Allors.Data
             return this;
         }
 
-        public Tree Add(IRelationType relationType)
-        {
-            return this.Add(relationType.RoleType);
-        }
+        public Tree Add(IRelationType relationType) => this.Add(relationType.RoleType);
 
         public Tree Add(IRoleType roleType)
         {
@@ -73,15 +67,9 @@ namespace Allors.Data
             return this;
         }
 
-        public Tree Add(IConcreteRoleType concreteRoleType)
-        {
-            return this.Add(concreteRoleType.RoleType);
-        }
+        public Tree Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
 
-        public Tree Add(IRelationType relationType, Tree tree)
-        {
-            return this.Add(relationType.RoleType, tree);
-        }
+        public Tree Add(IRelationType relationType, Tree tree) => this.Add(relationType.RoleType, tree);
 
         public Tree Add(IRoleType roleType, Tree tree)
         {
@@ -108,14 +96,12 @@ namespace Allors.Data
             }
         }
 
-        public Protocol.Data.Tree Save()
-        {
-            return new Protocol.Data.Tree
+        public Protocol.Data.Tree Save() =>
+            new Protocol.Data.Tree
             {
                 Composite = this.Composite.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray()
             };
-        }
 
         public string DebugView
         {

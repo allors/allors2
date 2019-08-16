@@ -26,10 +26,7 @@ namespace Allors.Repository.Generation
     {
         private readonly FileInfo fileInfo;
 
-        public AllorsFileInfo(FileInfo fileInfo)
-        {
-            this.fileInfo = fileInfo;
-        }
+        public AllorsFileInfo(FileInfo fileInfo) => this.fileInfo = fileInfo;
 
         public string GetRelativeName(DirectoryInfo baseDirectoryInfo)
         {

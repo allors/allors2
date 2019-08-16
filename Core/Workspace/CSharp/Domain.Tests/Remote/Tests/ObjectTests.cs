@@ -10,25 +10,23 @@ namespace Tests.Remote
     public class ObjectTests : RemoteTest
     {
         [Fact]
-        public void NonExistingPullController()
-        {
+        public void NonExistingPullController() =>
             AsyncContext.Run(
                 async () =>
+                {
+                    var context = new Context(this.Database, this.Workspace);
+
+                    var exceptionThrown = false;
+                    try
                     {
-                        var context = new Context(this.Database, this.Workspace);
+                        await context.Load(new { step = 0 }, "ThisIsWrong");
+                    }
+                    catch (HttpRequestException)
+                    {
+                        exceptionThrown = true;
+                    }
 
-                        var exceptionThrown = false;
-                        try
-                        {
-                            await context.Load(new { step = 0 }, "ThisIsWrong");
-                        }
-                        catch (HttpRequestException)
-                        {
-                            exceptionThrown = true;
-                        }
-
-                        Assert.True(exceptionThrown);
-                    });
-        }
+                    Assert.True(exceptionThrown);
+                });
     }
 }

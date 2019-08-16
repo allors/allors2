@@ -51,9 +51,6 @@ namespace Allors
 
         public PrefetchPolicy PrefetchPolicy { get; private set; }
 
-        public override string ToString()
-        {
-            return this.PropertyType.ToString();
-        }
+        public override string ToString() => this.PropertyType.ToString();
     }
 }

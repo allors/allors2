@@ -13,10 +13,8 @@ namespace Components
     : SelectorComponent
     {
         public MatSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = By.XPath($".//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider");
-        }
 
         public override By Selector { get; }
 
@@ -39,10 +37,8 @@ namespace Components
     public class MatSlider<T> : MatSlider where T : Component
     {
         public MatSlider(T page, RoleType roleType, params string[] scopes)
-            : base(page.Driver, roleType, scopes)
-        {
+            : base(page.Driver, roleType, scopes) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

@@ -17,9 +17,6 @@ namespace Allors.Domain
             }
         }
 
-        public int NextValue()
-        {
-            return Counters.NextValue(this.Strategy.Session, this.UniqueId);
-        }
+        public int NextValue() => Counters.NextValue(this.Strategy.Session, this.UniqueId);
     }
 }

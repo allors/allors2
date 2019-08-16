@@ -44,32 +44,17 @@ namespace Allors.Adapters.Object.SqlClient
             this.referenceAssociationInstances = new List<IAssociationType>();
         }
 
-        internal SqlExtent Extent
-        {
-            get { return this.extent; }
-        }
+        internal SqlExtent Extent => this.extent;
 
         internal abstract bool IsRoot { get; }
 
-        internal Mapping Mapping
-        {
-            get { return this.Session.Database.Mapping; }
-        }
+        internal Mapping Mapping => this.Session.Database.Mapping;
 
-        internal ExtentSort Sorter
-        {
-            get { return this.extent.Sorter; }
-        }
+        internal ExtentSort Sorter => this.extent.Sorter;
 
-        protected Session Session
-        {
-            get { return this.extent.Session; }
-        }
+        protected Session Session => this.extent.Session;
 
-        protected IObjectType Type
-        {
-            get { return this.extent.ObjectType; }
-        }
+        protected IObjectType Type => this.extent.ObjectType;
 
         internal void AddJoins(IObjectType rootClass, string alias)
         {
@@ -209,15 +194,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal abstract ExtentStatement CreateChild(SqlExtent extent, IRoleType role);
 
-        internal string GetJoinName(IAssociationType association)
-        {
-            return association.SingularFullName + "_AC";
-        }
+        internal string GetJoinName(IAssociationType association) => association.SingularFullName + "_AC";
 
-        internal string GetJoinName(IRoleType role)
-        {
-            return role.SingularFullName + "_RC";
-        }
+        internal string GetJoinName(IRoleType role) => role.SingularFullName + "_RC";
 
         internal void UseAssociation(IAssociationType association)
         {

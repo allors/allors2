@@ -50,13 +50,11 @@ namespace Allors.Workspace.Data
 
         public IObjectType ObjectType => this.Step?.GetObjectType() ?? this.Include.Composite;
 
-        public Protocol.Data.Fetch ToJson()
-        {
-            return new Protocol.Data.Fetch
+        public Protocol.Data.Fetch ToJson() =>
+            new Protocol.Data.Fetch
             {
                 Step = this.Step?.ToJson(),
                 Include = this.Include?.ToJson()
             };
-        }
     }
 }

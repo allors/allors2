@@ -34,9 +34,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseApprove(PartSpecificationApprove method)
-        {
-            this.PartSpecificationState = new PartSpecificationStates(this.Strategy.Session).Approved;
-        }
+        public void BaseApprove(PartSpecificationApprove method) => this.PartSpecificationState = new PartSpecificationStates(this.Strategy.Session).Approved;
     }
 }

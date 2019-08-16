@@ -116,20 +116,11 @@ namespace Allors.Domain
             }
         }
 
-        public bool IsModified(Object @object)
-        {
-            return this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object);
-        }
+        public bool IsModified(Object @object) => this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object);
 
-        public bool IsModified(Object @object, RelationKind kind)
-        {
-            return this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object, kind);
-        }
+        public bool IsModified(Object @object, RelationKind kind) => this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object, kind);
 
-        public bool IsCreated(Object derivable)
-        {
-            return this.ChangeSet.Created.Contains(derivable.Id);
-        }
+        public bool IsCreated(Object derivable) => this.ChangeSet.Created.Contains(derivable.Id);
 
         public bool HasChangedRole(Object derivable, RoleType roleType)
         {
@@ -205,15 +196,9 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool InDependency(Object derivable)
-        {
-            return this.inDependencies.Contains(derivable);
-        }
+        public bool InDependency(Object derivable) => this.inDependencies.Contains(derivable);
 
-        public bool IsForced(Object derivable)
-        {
-            return this.forced?.Contains(derivable) == true;
-        }
+        public bool IsForced(Object derivable) => this.forced?.Contains(derivable) == true;
 
         public void Add(Object derivable)
         {
@@ -388,10 +373,7 @@ namespace Allors.Domain
             return this.validation;
         }
 
-        internal void AddDerivedObject(Object derivable)
-        {
-            this.derivedObjects.Add(derivable);
-        }
+        internal void AddDerivedObject(Object derivable) => this.derivedObjects.Add(derivable);
 
         protected abstract DerivationNodesBase CreateDerivationGraph(DerivationBase derivation);
 

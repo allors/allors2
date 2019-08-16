@@ -28,10 +28,7 @@ namespace Allors.Data
 
     public class Except : IExtentOperator
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
+        public Except(params IExtent[] operands) => this.Operands = operands;
 
         public IComposite ObjectType => this.Operands?[0].ObjectType;
 
@@ -39,20 +36,15 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Extent Save()
-        {
-            return new Extent
+        public Extent Save() =>
+            new Extent
             {
                 Kind = ExtentKind.Except,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),
                 Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
-        }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Operands.Any(v => v.HasMissingArguments(arguments));
-        }
+        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
 
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {

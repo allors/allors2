@@ -28,10 +28,7 @@ namespace Allors.Development.Repository.Storage
     {
         private const int RetryCount = 10;
 
-        public Location(DirectoryInfo directoryInfo)
-        {
-            this.DirectoryInfo = directoryInfo;
-        }
+        public Location(DirectoryInfo directoryInfo) => this.DirectoryInfo = directoryInfo;
 
         public DirectoryInfo DirectoryInfo { get; }
 

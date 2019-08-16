@@ -29,14 +29,8 @@ namespace Allors.Services
             return null;
         }
 
-        public void Set<T>(string key, IDictionary<T, long> value)
-        {
-            this.stickies[key] = value;
-        }
+        public void Set<T>(string key, IDictionary<T, long> value) => this.stickies[key] = value;
 
-        public void Clear()
-        {
-            this.stickies = new ConcurrentDictionary<string, object>();
-        }
+        public void Clear() => this.stickies = new ConcurrentDictionary<string, object>();
     }
 }

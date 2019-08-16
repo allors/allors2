@@ -25,10 +25,7 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
-        public static void BaseOnBuild(this Request @this, ObjectOnBuild method)
-        {
-            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
-        }
+        public static void BaseOnBuild(this Request @this, ObjectOnBuild method) => @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
 
         public static void BaseOnDerive(this Request @this, ObjectOnDerive method)
         {
@@ -101,24 +98,12 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseCancel(this Request @this, RequestCancel method)
-        {
-            @this.RequestState = new RequestStates(@this.Strategy.Session).Cancelled;
-        }
+        public static void BaseCancel(this Request @this, RequestCancel method) => @this.RequestState = new RequestStates(@this.Strategy.Session).Cancelled;
 
-        public static void BaseReject(this Request @this, RequestReject method)
-        {
-            @this.RequestState = new RequestStates(@this.Strategy.Session).Rejected;
-        }
+        public static void BaseReject(this Request @this, RequestReject method) => @this.RequestState = new RequestStates(@this.Strategy.Session).Rejected;
 
-        public static void BaseSubmit(this Request @this, RequestSubmit method)
-        {
-            @this.RequestState = new RequestStates(@this.Strategy.Session).Submitted;
-        }
+        public static void BaseSubmit(this Request @this, RequestSubmit method) => @this.RequestState = new RequestStates(@this.Strategy.Session).Submitted;
 
-        public static void BaseHold(this Request @this, RequestHold method)
-        {
-            @this.RequestState = new RequestStates(@this.Strategy.Session).PendingCustomer;
-        }
+        public static void BaseHold(this Request @this, RequestHold method) => @this.RequestState = new RequestStates(@this.Strategy.Session).PendingCustomer;
     }
 }

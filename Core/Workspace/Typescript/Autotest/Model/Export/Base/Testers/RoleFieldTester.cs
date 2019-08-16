@@ -112,9 +112,6 @@ namespace Autotest.Testers
             }
         }
 
-        public override string ToString()
-        {
-            return $"{base.ToString()} Type[{this.Type}] RoleType[{this.RoleType}] NameAttributeValue[{this.NameAttributeValue}] RoleTypeAttributeValue[{this.RoleTypeAttributeValue}]";
-        }
+        public override string ToString() => $"{base.ToString()} Type[{this.Type}] RoleType[{this.RoleType}] NameAttributeValue[{this.NameAttributeValue}] RoleTypeAttributeValue[{this.RoleTypeAttributeValue}]";
     }
 }

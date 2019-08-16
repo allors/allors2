@@ -15,28 +15,19 @@ namespace Allors
     {
         private readonly ISession session;
 
-        protected ObjectsBase(ISession session)
-        {
-            this.session = session;
-        }
+        protected ObjectsBase(ISession session) => this.session = session;
 
         public abstract Composite ObjectType { get; }
 
-        public ISession Session
-        {
-            get { return this.session; }
-        }
+        public ISession Session => this.session;
 
-        public Extent<T> Extent()
-        {
-            return this.Session.Extent<T>();
-        }
+        public Extent<T> Extent() => this.Session.Extent<T>();
 
         public T FindBy(RoleType roleType, object parameter)
         {
             if (parameter == null)
             {
-                return default(T);
+                return default;
             }
 
             var extent = this.Session.Extent(this.ObjectType);
@@ -44,10 +35,7 @@ namespace Allors
             return (T)extent.First;
         }
 
-        protected virtual void CorePrepare(Setup setup)
-        {
-            setup.Add(this);
-        }
+        protected virtual void CorePrepare(Setup setup) => setup.Add(this);
 
         protected virtual void CoreSetup(Setup setup)
         {

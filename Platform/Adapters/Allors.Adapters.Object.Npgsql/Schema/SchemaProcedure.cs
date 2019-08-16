@@ -17,10 +17,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public string Definition { get; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         public bool IsDefinitionCompatible(string existingDefinition)
         {
@@ -34,9 +31,6 @@ namespace Allors.Adapters.Object.Npgsql
             return this.RemoveWhitespace(this.Definition).Equals(this.RemoveWhitespace(body));
         }
 
-        private string RemoveWhitespace(string input)
-        {
-            return new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
-        }
+        private string RemoveWhitespace(string input) => new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
     }
 }

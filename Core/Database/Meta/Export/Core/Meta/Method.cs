@@ -36,15 +36,9 @@ namespace Allors.Meta
 
         public string XmlDoc
         {
-            get
-            {
-                return this.xmlDoc;
-            }
+            get => this.xmlDoc;
 
-            set
-            {
-                this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
-            }
+            set => this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         public string XmlDocComment
@@ -67,9 +61,6 @@ namespace Allors.Meta
 
         public bool Executed { get; set; }
 
-        public virtual void Execute()
-        {
-            this.MethodInvocation.Execute(this);
-        }
+        public virtual void Execute() => this.MethodInvocation.Execute(this);
     }
 }

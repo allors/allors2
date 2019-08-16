@@ -61,40 +61,28 @@ namespace Allors
         /// </summary>
         /// <value></value>
         /// <returns>true if the <see cref="T:System.Collections.IList"></see> has a fixed size; otherwise, false.</returns>
-        public bool IsFixedSize
-        {
-            get { return true; }
-        }
+        public bool IsFixedSize => true;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Collections.IList"></see> is read-only.
         /// </summary>
         /// <value></value>
         /// <returns>true if the <see cref="T:System.Collections.IList"></see> is read-only; otherwise, false.</returns>
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         /// <summary>
         /// Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"></see> is synchronized (thread safe).
         /// </summary>
         /// <value></value>
         /// <returns>true if access to the <see cref="T:System.Collections.ICollection"></see> is synchronized (thread safe); otherwise, false.</returns>
-        public virtual bool IsSynchronized
-        {
-            get { return false; }
-        }
+        public virtual bool IsSynchronized => false;
 
         /// <summary>
         /// Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"></see>.
         /// </summary>
         /// <value></value>
         /// <returns>An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"></see>.</returns>
-        public virtual object SyncRoot
-        {
-            get { return this; }
-        }
+        public virtual object SyncRoot => this;
 
         /// <summary>
         /// Gets the object type of this extent.
@@ -108,10 +96,7 @@ namespace Allors
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <value>The <see cref="IObject"/> at the specified index</value>
         /// <returns>The object at the specified index</returns>
-        public IObject this[int index]
-        {
-            get { return this.GetItem(index); }
-        }
+        public IObject this[int index] => this.GetItem(index);
 
         /// <summary>
         /// Gets or sets the <see cref="System.Object"/> at the specified index.
@@ -121,8 +106,8 @@ namespace Allors
         /// <returns>The object at the specified index</returns>
         object IList.this[int index]
         {
-            get { return this.GetItem(index); }
-            set { throw new NotSupportedException("Extents are read only and fixed in size."); }
+            get => this.GetItem(index);
+            set => throw new NotSupportedException("Extents are read only and fixed in size.");
         }
 
         /// <summary>
@@ -164,10 +149,7 @@ namespace Allors
         /// The position into which the new element was inserted.
         /// </returns>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"></see> is read-only.-or- The <see cref="T:System.Collections.IList"></see> has a fixed size. </exception>
-        public int Add(object value)
-        {
-            throw new NotSupportedException("Extents are read only and fixed in size.");
-        }
+        public int Add(object value) => throw new NotSupportedException("Extents are read only and fixed in size.");
 
         /// <summary>
         /// Adds sorting based on the specified relation type.
@@ -189,20 +171,14 @@ namespace Allors
         /// </summary>
         /// <param name="sort">The sort specification.</param>
         /// <returns>The current extent.</returns>
-        public Extent AddSort(Sort sort)
-        {
-            return this.AddSort(sort.RoleType, sort.Direction);
-        }
+        public Extent AddSort(Sort sort) => this.AddSort(sort.RoleType, sort.Direction);
 
         /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.IList"></see>.
         /// This method is not supported.
         /// </summary>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"></see> is read-only. </exception>
-        public void Clear()
-        {
-            throw new NotSupportedException("Extents are read only and fixed in size.");
-        }
+        public void Clear() => throw new NotSupportedException("Extents are read only and fixed in size.");
 
         /// <summary>
         /// Determines whether the <see cref="T:System.Collections.IList"></see> contains a specific value.
@@ -250,10 +226,7 @@ namespace Allors
         /// <exception cref="T:System.ArgumentOutOfRangeException">index is not a valid index in the <see cref="T:System.Collections.IList"></see>. </exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"></see> is read-only.-or- The <see cref="T:System.Collections.IList"></see> has a fixed size. </exception>
         /// <exception cref="T:System.NullReferenceException">value is null reference in the <see cref="T:System.Collections.IList"></see>.</exception>
-        public void Insert(int index, object value)
-        {
-            throw new NotSupportedException("Extents are read only and fixed in size.");
-        }
+        public void Insert(int index, object value) => throw new NotSupportedException("Extents are read only and fixed in size.");
 
         /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.IList"></see>.
@@ -261,10 +234,7 @@ namespace Allors
         /// </summary>
         /// <param name="value">The <see cref="T:System.Object"></see> to remove from the <see cref="T:System.Collections.IList"></see>.</param>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"></see> is read-only.-or- The <see cref="T:System.Collections.IList"></see> has a fixed size. </exception>
-        public void Remove(object value)
-        {
-            throw new NotSupportedException("Extents are read only and fixed in size.");
-        }
+        public void Remove(object value) => throw new NotSupportedException("Extents are read only and fixed in size.");
 
         /// <summary>
         /// Removes the <see cref="T:System.Collections.IList"></see> item at the specified index.
@@ -273,10 +243,7 @@ namespace Allors
         /// <param name="index">The zero-based index of the item to remove.</param>
         /// <exception cref="T:System.ArgumentOutOfRangeException">index is not a valid index in the <see cref="T:System.Collections.IList"></see>. </exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList"></see> is read-only.-or- The <see cref="T:System.Collections.IList"></see> has a fixed size. </exception>
-        public void RemoveAt(int index)
-        {
-            throw new NotSupportedException("Extents are read only and fixed in size.");
-        }
+        public void RemoveAt(int index) => throw new NotSupportedException("Extents are read only and fixed in size.");
 
         /// <summary>
         /// Gets the extent as an array.
@@ -334,10 +301,7 @@ namespace Allors
             /// </summary>
             /// <value></value>
             /// <returns>The number of elements contained in the <see cref="T:System.Collections.ICollection"></see>.</returns>
-            public override int Count
-            {
-                get { return this.objects.Length; }
-            }
+            public override int Count => this.objects.Length;
 
             /// <summary>
             /// Gets the filter.
@@ -346,10 +310,7 @@ namespace Allors
             /// The filter is a top level AND filter. If you require an OR or a NOT filter
             /// then simply add it to this AND filter.
             /// </value>
-            public override ICompositePredicate Filter
-            {
-                get { throw new NotSupportedException("A converted extent does not support a filter"); }
-            }
+            public override ICompositePredicate Filter => throw new NotSupportedException("A converted extent does not support a filter");
 
             /// <summary>
             /// Gets the first object from the Extent.
@@ -373,20 +334,14 @@ namespace Allors
             /// Gets the object type of this extent.
             /// </summary>
             /// <value>The type of the Extent.</value>
-            public override IComposite ObjectType
-            {
-                get { return null; }
-            }
+            public override IComposite ObjectType => null;
 
             /// <summary>
             /// Adds sorting based on the specified relation type..
             /// </summary>
             /// <param name="roleType">The role type by which to sort.</param>
             /// <returns>The current extent.</returns>
-            public override Extent AddSort(IRoleType roleType)
-            {
-                throw new NotSupportedException("A converted extent does not support sorting");
-            }
+            public override Extent AddSort(IRoleType roleType) => throw new NotSupportedException("A converted extent does not support sorting");
 
             /// <summary>
             /// Adds sorting based on the specified relation type..
@@ -394,10 +349,7 @@ namespace Allors
             /// <param name="roleType">The role type by which to sort.</param>
             /// <param name="direction">The sort direction.</param>
             /// <returns>The current extent.</returns>
-            public override Extent AddSort(IRoleType roleType, SortDirection direction)
-            {
-                throw new NotSupportedException("A converted extent does not support sorting");
-            }
+            public override Extent AddSort(IRoleType roleType, SortDirection direction) => throw new NotSupportedException("A converted extent does not support sorting");
 
             /// <summary>
             /// Determines whether the <see cref="T:System.Collections.IList"></see> contains a specific value.
@@ -406,10 +358,7 @@ namespace Allors
             /// <returns>
             /// true if the <see cref="T:System.Object"></see> is found in the <see cref="T:System.Collections.IList"></see>; otherwise, false.
             /// </returns>
-            public override bool Contains(object value)
-            {
-                return this.IndexOf(value) >= 0;
-            }
+            public override bool Contains(object value) => this.IndexOf(value) >= 0;
 
             /// <summary>
             /// Copies the elements of the <see cref="T:System.Collections.ICollection"></see> to an <see cref="T:System.Array"></see>, starting at a particular <see cref="T:System.Array"></see> index.
@@ -420,10 +369,7 @@ namespace Allors
             /// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero. </exception>
             /// <exception cref="T:System.ArgumentException">array is multidimensional.-or- index is equal to or greater than the length of array.-or- The number of elements in the source <see cref="T:System.Collections.ICollection"></see> is greater than the available space from index to the end of the destination array. </exception>
             /// <exception cref="T:System.InvalidCastException">The type of the source <see cref="T:System.Collections.ICollection"></see> cannot be cast automatically to the type of the destination array. </exception>
-            public override void CopyTo(Array array, int index)
-            {
-                Array.Copy(this.objects, 0, array, 0, this.objects.Length);
-            }
+            public override void CopyTo(Array array, int index) => Array.Copy(this.objects, 0, array, 0, this.objects.Length);
 
             /// <summary>
             /// Returns an enumerator that iterates through a collection.
@@ -431,10 +377,7 @@ namespace Allors
             /// <returns>
             /// An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
             /// </returns>
-            public override IEnumerator GetEnumerator()
-            {
-                return this.objects.GetEnumerator();
-            }
+            public override IEnumerator GetEnumerator() => this.objects.GetEnumerator();
 
             /// <summary>
             /// Determines the index of a specific item in the <see cref="T:System.Collections.IList"></see>.
@@ -443,10 +386,7 @@ namespace Allors
             /// <returns>
             /// The index of value if found in the list; otherwise, -1.
             /// </returns>
-            public override int IndexOf(object value)
-            {
-                return Array.IndexOf(this.objects, (IObject)value);
-            }
+            public override int IndexOf(object value) => Array.IndexOf(this.objects, (IObject)value);
 
             /// <summary>
             /// Gets the extent as an array.
@@ -454,10 +394,7 @@ namespace Allors
             /// <returns>
             /// An array containing the objects of this extent.
             /// </returns>
-            public override IObject[] ToArray()
-            {
-                return this.objects;
-            }
+            public override IObject[] ToArray() => this.objects;
 
             /// <summary>
             /// Gets the extent as an array.
@@ -478,10 +415,7 @@ namespace Allors
             /// </summary>
             /// <param name="index">The index.</param>
             /// <returns>The item at the specified index</returns>
-            protected override IObject GetItem(int index)
-            {
-                return this.objects[index];
-            }
+            protected override IObject GetItem(int index) => this.objects[index];
         }
 
         /// <summary>
@@ -500,22 +434,13 @@ namespace Allors
             /// <param name="extent">
             /// The extent.
             /// </param>
-            public ExtentDebugView(Extent extent)
-            {
-                this.extent = extent;
-            }
+            public ExtentDebugView(Extent extent) => this.extent = extent;
 
             /// <summary>
             /// Gets the values.
             /// </summary>
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public IObject[] Values
-            {
-                get
-                {
-                    return this.extent.ToArray();
-                }
-            }
+            public IObject[] Values => this.extent.ToArray();
         }
     }
 }

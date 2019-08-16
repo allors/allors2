@@ -165,25 +165,13 @@ namespace ExcelAddIn
             }
         }
 
-        private void ApplicationOnSheetActivate(object sheet)
-        {
-            this.mediator.OnStateChanged();
-        }
+        private void ApplicationOnSheetActivate(object sheet) => this.mediator.OnStateChanged();
 
-        private void ApplicationOnWorkbookNewSheet(Workbook workbook, object sheet)
-        {
-            this.mediator.OnStateChanged();
-        }
+        private void ApplicationOnWorkbookNewSheet(Workbook workbook, object sheet) => this.mediator.OnStateChanged();
 
-        private void ApplicationOnWorkbookActivate(Workbook workbook)
-        {
-            this.mediator.OnStateChanged();
-        }
+        private void ApplicationOnWorkbookActivate(Workbook workbook) => this.mediator.OnStateChanged();
 
-        private void ApplicationOnWorkbookOpen(Workbook workbook)
-        {
-            this.mediator.OnStateChanged();
-        }
+        private void ApplicationOnWorkbookOpen(Workbook workbook) => this.mediator.OnStateChanged();
 
         private void ApplicationOnWorkbookBeforeClose(Workbook workbook, ref bool cancel)
         {
@@ -193,9 +181,6 @@ namespace ExcelAddIn
             //var xmlPart = workbook.CustomXMLParts.Add(populationXml);
         }
 
-        private void ApplicationOnWindowActivate(Workbook wb, Window wn)
-        {
-            this.mediator.OnStateChanged();
-        }
+        private void ApplicationOnWindowActivate(Workbook wb, Window wn) => this.mediator.OnStateChanged();
     }
 }

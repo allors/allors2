@@ -65,19 +65,13 @@ namespace Allors.Workspace.Meta
         /// Gets a value indicating whether this report contains errors.
         /// </summary>
         /// <value><c>true</c> if this report contains errors; otherwise, <c>false</c>.</value>
-        public bool ContainsErrors
-        {
-            get { return this.Errors.Length > 0; }
-        }
+        public bool ContainsErrors => this.Errors.Length > 0;
 
         /// <summary>
         /// Gets the validation errors.
         /// </summary>
         /// <value>The errors.</value>
-        public ValidationError[] Errors
-        {
-            get { return this.errors.ToArray(); }
-        }
+        public ValidationError[] Errors => this.errors.ToArray();
 
         /// <summary>
         /// Gets the messages.
@@ -104,10 +98,7 @@ namespace Allors.Workspace.Meta
         /// <param name="source">The source.</param>
         /// <param name="kind">The kind.</param>
         /// <param name="members">The members.</param>
-        public void AddError(string message, object source, ValidationKind kind, params string[] members)
-        {
-            this.errors.Add(new ValidationError(message, source, kind, members));
-        }
+        public void AddError(string message, object source, ValidationKind kind, params string[] members) => this.errors.Add(new ValidationError(message, source, kind, members));
 
         /// <summary>
         /// Determines whether the specified source object has errors.
@@ -133,57 +124,39 @@ namespace Allors.Workspace.Meta
         /// Adds an id.
         /// </summary>
         /// <param name="id">The id   .</param>
-        internal void AddId(Guid id)
-        {
-            this.ids.Add(id);
-        }
+        internal void AddId(Guid id) => this.ids.Add(id);
 
         /// <summary>
         /// Adds the name of the object type.
         /// </summary>
         /// <param name="type">The type .</param>
-        internal void AddObjectTypeName(string type)
-        {
-            this.objectTypeNames.Add(type);
-        }
+        internal void AddObjectTypeName(string type) => this.objectTypeNames.Add(type);
 
         /// <summary>
         /// Adds the name of the relation type.
         /// </summary>
         /// <param name="relation">The relation.</param>
-        internal void AddRelationTypeName(string relation)
-        {
-            this.relationTypeNames.Add(relation);
-        }
+        internal void AddRelationTypeName(string relation) => this.relationTypeNames.Add(relation);
 
         /// <summary>
         /// Gets a value indicating whether the id already exists.
         /// </summary>
         /// <param name="id">The id   .</param>
         /// <returns>The value indicating whether the id already exists.</returns>
-        internal bool ExistId(Guid id)
-        {
-            return this.ids.Contains(id);
-        }
+        internal bool ExistId(Guid id) => this.ids.Contains(id);
 
         /// <summary>
         /// Gets a value indicating whether the  name of the relation already exists.
         /// </summary>
         /// <param name="relationName">The name of the relation.</param>
         /// <returns>The value indicating whether the name of the relation already exists.</returns>
-        internal bool ExistRelationName(string relationName)
-        {
-            return this.relationTypeNames.Contains(relationName);
-        }
+        internal bool ExistRelationName(string relationName) => this.relationTypeNames.Contains(relationName);
 
         /// <summary>
         /// Gets a value indicating whether the name of the type already exists.
         /// </summary>
         /// <param name="typeName">The short name of the type.</param>
         /// <returns>The value indicating whether the name of the type already exists.</returns>
-        internal bool ExistObjectTypeName(string typeName)
-        {
-            return this.objectTypeNames.Contains(typeName);
-        }
+        internal bool ExistObjectTypeName(string typeName) => this.objectTypeNames.Contains(typeName);
     }
 }

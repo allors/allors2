@@ -8,10 +8,7 @@ namespace Allors.Services
 
     public partial class SessionService : ISessionService, IDisposable
     {
-        public SessionService(IDatabaseService databaseService)
-        {
-            this.Session = databaseService.Database.CreateSession();
-        }
+        public SessionService(IDatabaseService databaseService) => this.Session = databaseService.Database.CreateSession();
 
         public ISession Session { get; private set; }
 

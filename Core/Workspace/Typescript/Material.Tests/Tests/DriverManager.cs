@@ -22,10 +22,7 @@ namespace Tests
 
         public string DownloadPath { get; private set; }
 
-        public void Dispose()
-        {
-            this.Stop();
-        }
+        public void Dispose() => this.Stop();
 
         public void Start()
         {
@@ -113,7 +110,6 @@ namespace Tests
                         {
                             throw new Exception("Can not stop driver of type " + this.Driver.GetType().Name);
                         }
-
                     }
                 }
             }

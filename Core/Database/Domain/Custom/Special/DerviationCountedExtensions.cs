@@ -9,9 +9,6 @@ namespace Allors.Domain
 {
     public static partial class DerivationCountedExtensions
     {
-        public static void CustomOnDerive(this DerivationCounted @this, ObjectOnDerive method)
-        {
-            @this.DerivationCount += 1;
-        }
+        public static void CustomOnDerive(this DerivationCounted @this, ObjectOnDerive method) => @this.DerivationCount += 1;
     }
 }

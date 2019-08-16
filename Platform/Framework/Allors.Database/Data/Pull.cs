@@ -39,9 +39,8 @@ namespace Allors.Data
 
         public Result[] Results { get; set; }
 
-        public Protocol.Data.Pull Save()
-        {
-            return new Protocol.Data.Pull
+        public Protocol.Data.Pull Save() =>
+            new Protocol.Data.Pull
             {
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),
@@ -49,6 +48,5 @@ namespace Allors.Data
                 Object = this.Object?.Id.ToString(),
                 Results = this.Results?.Select(v => v.Save()).ToArray()
             };
-        }
     }
 }

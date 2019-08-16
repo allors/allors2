@@ -38,12 +38,10 @@ namespace Allors.Domain
             public SalesInvoice SalesInvoice = null;
         }
 
-        public PriceComponent[] CurrentPriceComponents(DateTime date)
-        {
-            return this.Extent()
+        public PriceComponent[] CurrentPriceComponents(DateTime date) =>
+            this.Extent()
                 .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date))
                 .ToArray();
-        }
 
         public static bool BaseIsApplicable(IsApplicable isApplicable)
         {

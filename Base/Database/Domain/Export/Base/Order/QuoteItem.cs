@@ -100,29 +100,14 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(QuoteItemCancel method)
-        {
-            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(QuoteItemCancel method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
 
-        public void BaseReject(QuoteItemReject method)
-        {
-            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Rejected;
-        }
+        public void BaseReject(QuoteItemReject method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Rejected;
 
-        public void BaseOrder(QuoteItemOrder method)
-        {
-            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
-        }
+        public void BaseOrder(QuoteItemOrder method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
 
-        public void BaseSubmit(QuoteItemSubmit method)
-        {
-            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
-        }
+        public void BaseSubmit(QuoteItemSubmit method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
 
-        public void Sync(Quote quote)
-        {
-            this.SyncedQuote = quote;
-        }
+        public void Sync(Quote quote) => this.SyncedQuote = quote;
     }
 }

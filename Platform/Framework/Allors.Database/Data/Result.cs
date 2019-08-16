@@ -34,9 +34,8 @@ namespace Allors.Data
 
         public int? Take { get; set; }
 
-        public Protocol.Data.Result Save()
-        {
-            return new Protocol.Data.Result
+        public Protocol.Data.Result Save() =>
+            new Protocol.Data.Result
             {
                 FetchRef = this.FetchRef,
                 Fetch = this.Fetch?.Save(),
@@ -44,7 +43,6 @@ namespace Allors.Data
                 Skip = this.Skip,
                 Take = this.Take
             };
-        }
 
         public override string ToString()
         {

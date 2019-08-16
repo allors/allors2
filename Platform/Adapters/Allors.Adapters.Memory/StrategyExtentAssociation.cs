@@ -42,43 +42,19 @@ namespace Allors.Adapters.Memory
             this.associationType = associationType;
         }
 
-        public override int Count
-        {
-            get { return this.GetStrategies().Count; }
-        }
+        public override int Count => this.GetStrategies().Count;
 
-        public override ICompositePredicate Filter
-        {
-            get { throw new NotSupportedException(); }
-        }
+        public override ICompositePredicate Filter => throw new NotSupportedException();
 
-        public override IObject First
-        {
-            get
-            {
-                return this.GetStrategies().Select(strategy => strategy.GetObject()).FirstOrDefault();
-            }
-        }
+        public override IObject First => this.GetStrategies().Select(strategy => strategy.GetObject()).FirstOrDefault();
 
-        public override IComposite ObjectType
-        {
-            get { return this.associationType.ObjectType; }
-        }
+        public override IComposite ObjectType => this.associationType.ObjectType;
 
-        internal override Session Session
-        {
-            get { return this.roleStrategy.MemorySession; }
-        }
+        internal override Session Session => this.roleStrategy.MemorySession;
 
-        public override Allors.Extent AddSort(IRoleType roleType)
-        {
-            throw new NotSupportedException();
-        }
+        public override Allors.Extent AddSort(IRoleType roleType) => throw new NotSupportedException();
 
-        public override Allors.Extent AddSort(IRoleType roleType, SortDirection direction)
-        {
-            throw new NotSupportedException();
-        }
+        public override Allors.Extent AddSort(IRoleType roleType, SortDirection direction) => throw new NotSupportedException();
 
         public override bool Contains(object value)
         {
@@ -181,9 +157,6 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        private List<Strategy> GetStrategies()
-        {
-            return this.roleStrategy.GetStrategies(this.associationType);
-        }
+        private List<Strategy> GetStrategies() => this.roleStrategy.GetStrategies(this.associationType);
     }
 }

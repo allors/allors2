@@ -25,10 +25,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
         }
 
-        protected override Command CreateCommand(Mapping mapping, SqlCommand sqlCommand)
-        {
-            return new DefaultCommand(mapping, sqlCommand);
-        }
+        protected override Command CreateCommand(Mapping mapping, SqlCommand sqlCommand) => new DefaultCommand(mapping, sqlCommand);
 
         #region Events
         protected override void OnCreatingSqlConnection()

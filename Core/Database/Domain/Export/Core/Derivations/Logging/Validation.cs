@@ -11,14 +11,8 @@ namespace Allors.Domain.Logging
     {
         private readonly IDerivationLog derivationLog;
 
-        public Validation(IDerivation derivation, IDerivationLog derivationLog) : base(derivation)
-        {
-            this.derivationLog = derivationLog;
-        }
+        public Validation(IDerivation derivation, IDerivationLog derivationLog) : base(derivation) => this.derivationLog = derivationLog;
 
-        protected override void OnAddedError(IDerivationError derivationError)
-        {
-            this.derivationLog.AddedError(derivationError);
-        }
+        protected override void OnAddedError(IDerivationError derivationError) => this.derivationLog.AddedError(derivationError);
     }
 }

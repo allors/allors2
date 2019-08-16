@@ -5,10 +5,7 @@
 
     public partial class Commands
     {
-        private void OnError(Exception e)
-        {
-            e.Handle();
-        }
+        private void OnError(Exception e) => e.Handle();
 
         public async Task PeopleNew()
         {

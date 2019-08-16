@@ -75,13 +75,7 @@ namespace Allors.Workspace.Meta
 
         #endregion
 
-        IEnumerable<IClass> IInterface.Subclasses
-        {
-            get
-            {
-                return this.Subclasses;
-            }
-        }
+        IEnumerable<IClass> IInterface.Subclasses => this.Subclasses;
 
         /// <summary>
         /// Gets the subclasses.
@@ -96,21 +90,9 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public override IEnumerable<Class> Classes
-        {
-            get
-            {
-                return this.Subclasses;
-            }
-        }
+        public override IEnumerable<Class> Classes => this.Subclasses;
 
-        IEnumerable<IComposite> IInterface.Subtypes
-        {
-            get
-            {
-                return this.Subtypes;
-            }
-        }
+        IEnumerable<IComposite> IInterface.Subtypes => this.Subtypes;
 
         /// <summary>
         /// Gets the sub types.
@@ -201,10 +183,7 @@ namespace Allors.Workspace.Meta
         /// <summary>
         /// Derive exclusive sub classes.
         /// </summary>
-        internal void DeriveExclusiveSubclass()
-        {
-            this.derivedExclusiveSubclass = this.derivedSubclasses.Count == 1 ? this.derivedSubclasses.First() : null;
-        }
+        internal void DeriveExclusiveSubclass() => this.derivedExclusiveSubclass = this.derivedSubclasses.Count == 1 ? this.derivedSubclasses.First() : null;
 
         /// <summary>
         /// Derive super types recursively.
@@ -226,17 +205,8 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public override Type ClrType
-        {
-            get
-            {
-                return this.clrType;
-            }
-        }
+        public override Type ClrType => this.clrType;
 
-        internal void Bind(Dictionary<string, Type> typeByTypeName)
-        {
-            this.clrType = typeByTypeName[this.Name];
-        }
+        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
     }
 }

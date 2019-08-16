@@ -394,10 +394,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseConfirm(OrderConfirm method)
-        {
-            this.PurchaseOrderState = this.NeedsApprovalLevel1 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseConfirm(OrderConfirm method) => this.PurchaseOrderState = this.NeedsApprovalLevel1 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
 
         public void BaseReject(OrderReject method)
         {
@@ -408,10 +405,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseHold(OrderHold method)
-        {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).OnHold;
-        }
+        public void BaseHold(OrderHold method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).OnHold;
 
         public void BaseApprove(OrderApprove method)
         {
@@ -430,20 +424,11 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseReopen(OrderReopen method)
-        {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
-        }
+        public void BaseReopen(OrderReopen method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
 
-        public void BaseContinue(OrderContinue method)
-        {
-            this.PurchaseOrderState = this.PreviousPurchaseOrderState;
-        }
+        public void BaseContinue(OrderContinue method) => this.PurchaseOrderState = this.PreviousPurchaseOrderState;
 
-        public void BaseSend(PurchaseOrderSend method)
-        {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Sent;
-        }
+        public void BaseSend(PurchaseOrderSend method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Sent;
 
         public void BaseQuickReceive(PurchaseOrderQuickReceive method)
         {

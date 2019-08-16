@@ -14,10 +14,7 @@ namespace Allors.Services
 
         private string userName;
 
-        public UserService(IHttpContextAccessor httpContextAccessor = null)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-        }
+        public UserService(IHttpContextAccessor httpContextAccessor = null) => this.httpContextAccessor = httpContextAccessor;
 
         public string UserName
         {

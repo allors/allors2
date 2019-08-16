@@ -87,10 +87,7 @@ namespace Allors.Domain
                 this.objectId = user.Id.ToString();
             }
 
-            public User GetUser(ISession session)
-            {
-                return (User)session.Instantiate(this.objectId);
-            }
+            public User GetUser(ISession session) => (User)session.Instantiate(this.objectId);
         }
     }
 }

@@ -73,15 +73,9 @@ namespace BaseExcelAddIn.Base
             this.labelErrorMessage.Visible = false;
         }
 
-        private void TextBoxUser_TextChanged(object sender, EventArgs e)
-        {
-            this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
-        }
+        private void TextBoxUser_TextChanged(object sender, EventArgs e) => this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
 
-        private void TextBoxPassword_TextChanged(object sender, EventArgs e)
-        {
-            this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
-        }
+        private void TextBoxPassword_TextChanged(object sender, EventArgs e) => this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
 
         private void ButtonTogglePassword_Click(object sender, EventArgs e)
         {

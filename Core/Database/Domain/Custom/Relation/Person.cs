@@ -16,10 +16,7 @@ namespace Allors.Domain
     /// </summary>
     public partial class Person
     {
-        public static Extent<Person> ExtentByLastName(ISession session)
-        {
-            return session.Extent<Person>().AddSort(M.Person.LastName);
-        }
+        public static Extent<Person> ExtentByLastName(ISession session) => session.Extent<Person>().AddSort(M.Person.LastName);
 
         public override string ToString()
         {

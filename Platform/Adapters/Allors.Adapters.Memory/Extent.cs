@@ -35,10 +35,7 @@ namespace Allors.Adapters.Memory
 
         private List<Strategy> strategies;
 
-        protected Extent(Session session)
-        {
-            this.session = session;
-        }
+        protected Extent(Session session) => this.session = session;
 
         public override int Count
         {
@@ -60,10 +57,7 @@ namespace Allors.Adapters.Memory
 
         public Extent Parent
         {
-            get
-            {
-                return this.parent;
-            }
+            get => this.parent;
 
             set
             {
@@ -76,26 +70,17 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        internal Session Session
-        {
-            get { return this.session; }
-        }
+        internal Session Session => this.session;
 
-        internal ExtentSort Sorter
-        {
-            get { return this.sorter; }
-        }
+        internal ExtentSort Sorter => this.sorter;
 
         protected List<Strategy> Strategies
         {
-            get { return this.strategies; }
-            set { this.strategies = value; }
+            get => this.strategies;
+            set => this.strategies = value;
         }
 
-        public override Allors.Extent AddSort(IRoleType roleType)
-        {
-            return this.AddSort(roleType, SortDirection.Ascending);
-        }
+        public override Allors.Extent AddSort(IRoleType roleType) => this.AddSort(roleType, SortDirection.Ascending);
 
         public override Allors.Extent AddSort(IRoleType roleType, SortDirection direction)
         {
@@ -112,10 +97,7 @@ namespace Allors.Adapters.Memory
             return this;
         }
 
-        public override bool Contains(object value)
-        {
-            return this.IndexOf(value) >= 0;
-        }
+        public override bool Contains(object value) => this.IndexOf(value) >= 0;
 
         public override void CopyTo(Array array, int index)
         {

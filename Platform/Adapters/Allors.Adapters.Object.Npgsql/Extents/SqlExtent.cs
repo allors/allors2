@@ -47,10 +47,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal new IObject this[int index] => this.GetItem(index);
 
-        public override Allors.Extent AddSort(IRoleType roleType)
-        {
-            return this.AddSort(roleType, SortDirection.Ascending);
-        }
+        public override Allors.Extent AddSort(IRoleType roleType) => this.AddSort(roleType, SortDirection.Ascending);
 
         public override Allors.Extent AddSort(IRoleType roleType, SortDirection direction)
         {
@@ -78,10 +75,7 @@ namespace Allors.Adapters.Object.Npgsql
             return false;
         }
 
-        public override void CopyTo(Array array, int index)
-        {
-            this.ToArray().CopyTo(array, index);
-        }
+        public override void CopyTo(Array array, int index) => this.ToArray().CopyTo(array, index);
 
         public override IEnumerator GetEnumerator()
         {
@@ -121,10 +115,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.ParentOperationExtent?.FlushCache();
         }
 
-        internal IObject InternalGetItem(int index)
-        {
-            return this.GetItem(index);
-        }
+        internal IObject InternalGetItem(int index) => this.GetItem(index);
 
         protected override IObject GetItem(int index)
         {

@@ -7,9 +7,6 @@ namespace Autotest.Angular
 {
     public partial class Route
     {
-        public override string ToString()
-        {
-            return this.Path;
-        }
+        public override string ToString() => this.Path;
     }
 }

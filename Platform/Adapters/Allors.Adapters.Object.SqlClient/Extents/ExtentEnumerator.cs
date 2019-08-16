@@ -27,10 +27,7 @@ namespace Allors.Adapters.Object.SqlClient
     {
         private readonly IEnumerator enumerator;
 
-        internal ExtentEnumerator(IEnumerable<Reference> references)
-        {
-            this.enumerator = references.GetEnumerator();
-        }
+        internal ExtentEnumerator(IEnumerable<Reference> references) => this.enumerator = references.GetEnumerator();
 
         public object Current
         {
@@ -46,14 +43,8 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public bool MoveNext()
-        {
-            return this.enumerator.MoveNext();
-        }
+        public bool MoveNext() => this.enumerator.MoveNext();
 
-        public void Reset()
-        {
-            this.enumerator.Reset();
-        }
+        public void Reset() => this.enumerator.Reset();
     }
 }

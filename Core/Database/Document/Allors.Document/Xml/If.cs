@@ -13,9 +13,6 @@ namespace Allors.Document.Xml
     {
         public string text;
 
-        public If(string text)
-        {
-            this.text = text.Trim();
-        }
+        public If(string text) => this.text = text.Trim();
     }
 }

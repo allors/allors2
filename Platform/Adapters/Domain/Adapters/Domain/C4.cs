@@ -24,38 +24,20 @@ namespace Allors.Domain
 
     public partial class C4
     {
-        public static C4 Create(ISession session)
-        {
-            return (C4)session.Create(Meta.ObjectType);
-        }
+        public static C4 Create(ISession session) => (C4)session.Create(Meta.ObjectType);
 
-        public static C4[] Create(ISession session, int count)
-        {
-            return (C4[])session.Create(Meta.ObjectType, count);
-        }
+        public static C4[] Create(ISession session, int count) => (C4[])session.Create(Meta.ObjectType, count);
 
-        public static C4 Instantiate(ISession session, long id)
-        {
-            return (C4)session.Instantiate(id);
-        }
+        public static C4 Instantiate(ISession session, long id) => (C4)session.Instantiate(id);
 
-        public static C4[] Instantiate(ISession session, string[] ids)
-        {
-            return (C4[])session.Instantiate(ids);
-        }
+        public static C4[] Instantiate(ISession session, string[] ids) => (C4[])session.Instantiate(ids);
 
-        public static C4[] Extent(ISession session)
-        {
-            return (C4[])session.Extent(Meta.ObjectType).ToArray();
-        }
+        public static C4[] Extent(ISession session) => (C4[])session.Extent(Meta.ObjectType).ToArray();
 
         public void AnS1234Method()
         {
         }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

@@ -9,9 +9,6 @@ namespace Allors.Domain
 {
     public partial class Third
     {
-        public void CustomOnDerive(ObjectOnDerive method)
-        {
-            this.IsDerived = true;
-        }
+        public void CustomOnDerive(ObjectOnDerive method) => this.IsDerived = true;
     }
 }

@@ -7,9 +7,6 @@ namespace Autotest.Angular
 {
     public partial class Template
     {
-        public override string ToString()
-        {
-            return this.Url;
-        }
+        public override string ToString() => this.Url;
     }
 }

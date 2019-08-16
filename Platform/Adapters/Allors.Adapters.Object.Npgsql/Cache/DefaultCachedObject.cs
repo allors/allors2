@@ -36,14 +36,8 @@ namespace Allors.Adapters.Object.Npgsql.Caching
 
         public long Version { get; }
 
-        public bool TryGetValue(IRoleType roleType, out object value)
-        {
-            return this.roleByRoleType.TryGetValue(roleType, out value);
-        }
+        public bool TryGetValue(IRoleType roleType, out object value) => this.roleByRoleType.TryGetValue(roleType, out value);
 
-        public void SetValue(IRoleType roleType, object value)
-        {
-            this.roleByRoleType[roleType] = value;
-        }
+        public void SetValue(IRoleType roleType, object value) => this.roleByRoleType[roleType] = value;
     }
 }

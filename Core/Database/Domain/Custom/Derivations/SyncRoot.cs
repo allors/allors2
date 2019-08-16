@@ -9,10 +9,7 @@ namespace Allors.Domain
 {
     public partial class SyncRoot
     {
-        public void CustomOnDerive(ObjectOnDerive method)
-        {
-            this.Sync();
-        }
+        public void CustomOnDerive(ObjectOnDerive method) => this.Sync();
 
         private void Sync()
         {

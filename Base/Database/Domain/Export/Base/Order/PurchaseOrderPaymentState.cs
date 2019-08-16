@@ -24,6 +24,5 @@ namespace Allors.Domain
         public bool IsPartiallyPaid => Equals(this.UniqueId, PurchaseOrderPaymentStates.PartiallyPaidId);
 
         public bool IsPaid => Equals(this.UniqueId, PurchaseOrderPaymentStates.PaidId);
-
     }
 }

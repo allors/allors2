@@ -17,10 +17,7 @@ namespace Allors.Domain
 
         public Sticky<string, Country> CountryByIsoCode => this.countryByIsoCode ?? (this.countryByIsoCode = new Sticky<string, Country>(this.Session, M.Country.IsoCode));
 
-        protected override void CorePrepare(Setup setup)
-        {
-            setup.AddDependency(this.ObjectType, M.Currency.ObjectType);
-        }
+        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Currency.ObjectType);
 
         protected override void CoreSetup(Setup setup)
         {
@@ -33,7 +30,7 @@ namespace Allors.Domain
                     "004"
                 },
                 {
-                    "Åland Islands",
+                    "Ã…land Islands",
                     "AX",
                     "ALA",
                     "248"
@@ -351,7 +348,7 @@ namespace Allors.Domain
                     "188"
                 },
                 {
-                    "Côte d'Ivoire",
+                    "CÃ´te d'Ivoire",
                     "CI",
                     "CIV",
                     "384"
@@ -369,7 +366,7 @@ namespace Allors.Domain
                     "192"
                 },
                 {
-                    "Curaçao",
+                    "CuraÃ§ao",
                     "CW",
                     "CUW",
                     "531"
@@ -1107,7 +1104,7 @@ namespace Allors.Domain
                     "634"
                 },
                 {
-                    "Réunion",
+                    "RÃ©union",
                     "RE",
                     "REU",
                     "638"
@@ -1131,7 +1128,7 @@ namespace Allors.Domain
                     "646"
                 },
                 {
-                    "Saint Barthélemy",
+                    "Saint BarthÃ©lemy",
                     "BL",
                     "BLM",
                     "652"
@@ -1543,7 +1540,6 @@ namespace Allors.Domain
                 var currency = currencies.CurrencyByCode[entry.Value];
                 country.Currency = currency;
             }
-
         }
 
         protected override void CoreSecure(Security config)

@@ -31,31 +31,16 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     {
         private readonly Profile profile;
 
-        public LifeCycleTest(Fixture fixture)
-        {
-            this.profile = new Profile(fixture.Server);
-        }
+        public LifeCycleTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
 
-        protected override void SwitchDatabase()
-        {
-            this.profile.SwitchDatabase();
-        }
+        protected override void SwitchDatabase() => this.profile.SwitchDatabase();
 
-        protected override IDatabase CreatePopulation()
-        {
-            return this.profile.CreateDatabase();
-        }
+        protected override IDatabase CreatePopulation() => this.profile.CreateDatabase();
 
-        protected override ISession CreateSession()
-        {
-            return this.profile.CreateSession();
-        }
+        protected override ISession CreateSession() => this.profile.CreateSession();
     }
 }

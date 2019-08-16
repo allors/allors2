@@ -13,26 +13,11 @@ namespace Allors.Adapters.Object.Npgsql
             this.columnByLowercaseColumnName = new Dictionary<string, SchemaTableTypeColumn>();
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name => this.name;
 
-        public Dictionary<string, SchemaTableTypeColumn> ColumnByLowercaseColumnName
-        {
-            get
-            {
-                return this.columnByLowercaseColumnName;
-            }
-        }
+        public Dictionary<string, SchemaTableTypeColumn> ColumnByLowercaseColumnName => this.columnByLowercaseColumnName;
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         public SchemaTableTypeColumn GetColumn(string columnName)
         {

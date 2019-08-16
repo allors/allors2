@@ -360,10 +360,7 @@ namespace Allors.Domain
             this.OnCancelOrReject();
         }
 
-        public void BaseConfirm(OrderItemConfirm method)
-        {
-            this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseConfirm(OrderItemConfirm method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseReject(OrderItemReject method)
         {
@@ -371,20 +368,11 @@ namespace Allors.Domain
             this.OnCancelOrReject();
         }
 
-        public void BaseApprove(OrderItemApprove method)
-        {
-            this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
-        public void BaseContinue(SalesOrderItemContinue method)
-        {
-            this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseContinue(SalesOrderItemContinue method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
-        public void Sync(Order order)
-        {
-            this.SyncedOrder = order;
-        }
+        public void Sync(Order order) => this.SyncedOrder = order;
 
         internal void DecreasePendingShipmentQuantity(decimal diff)
         {

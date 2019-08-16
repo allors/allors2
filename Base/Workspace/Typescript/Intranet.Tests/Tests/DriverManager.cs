@@ -17,10 +17,7 @@ namespace Tests
 
         public string DownloadPath { get; private set; }
 
-        public void Dispose()
-        {
-            this.Stop();
-        }
+        public void Dispose() => this.Stop();
 
         public void Start()
         {

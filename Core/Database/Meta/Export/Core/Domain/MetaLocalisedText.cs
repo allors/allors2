@@ -22,9 +22,6 @@ namespace Allors.Meta
 {
     public partial class MetaLocalisedText
     {
-        internal override void CoreExtend()
-        {
-            this.Locale.IsRequiredOverride = true;
-        }
+        internal override void CoreExtend() => this.Locale.IsRequiredOverride = true;
     }
 }

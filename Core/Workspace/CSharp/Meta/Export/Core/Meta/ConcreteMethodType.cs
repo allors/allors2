@@ -41,33 +41,15 @@ namespace Allors.Workspace.Meta
             this.methodType = methodType;
         }
 
-        public MethodType MethodType
-        {
-            get
-            {
-                return this.methodType;
-            }
-        }
+        public MethodType MethodType => this.methodType;
 
-        public Class Class
-        {
-            get
-            {
-                return this.@class;
-            }
-        }
+        public Class Class => this.@class;
 
         public IList<Action<object, object>> Actions
         {
-            get
-            {
-                return this.actions;
-            }
+            get => this.actions;
 
-            set
-            {
-                this.actions = value;
-            }
+            set => this.actions = value;
         }
 
         public void Bind(List<Domain> sortedDomains, MethodInfo[] extensionMethods, Dictionary<Type, Dictionary<MethodInfo, Action<object, object>>> actionByMethodInfoByType)

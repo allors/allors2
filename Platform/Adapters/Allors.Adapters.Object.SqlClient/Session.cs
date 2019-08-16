@@ -142,10 +142,7 @@ namespace Allors.Adapters.Object.SqlClient
             return domainObjects;
         }
 
-        public IObject Instantiate(IObject obj)
-        {
-            return this.Instantiate(obj.Strategy.ObjectId);
-        }
+        public IObject Instantiate(IObject obj) => this.Instantiate(obj.Strategy.ObjectId);
 
         public IObject Instantiate(string objectId)
         {
@@ -184,15 +181,9 @@ namespace Allors.Adapters.Object.SqlClient
             return reference.Strategy;
         }
 
-        public IObject[] Instantiate(IEnumerable<string> objectIdStrings)
-        {
-            return objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
-        }
+        public IObject[] Instantiate(IEnumerable<string> objectIdStrings) => objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
 
-        public IObject[] Instantiate(IEnumerable<IObject> objects)
-        {
-            return objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
-        }
+        public IObject[] Instantiate(IEnumerable<IObject> objects) => objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
 
         public IObject[] Instantiate(IEnumerable<long> objectIds)
         {
@@ -257,25 +248,13 @@ namespace Allors.Adapters.Object.SqlClient
             return allorsObjects;
         }
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)
-        {
-            this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
-        }
+        public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects) => this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects)
-        {
-            this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
-        }
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IObject> objects) => this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies)
-        {
-            this.Prefetch(prefetchPolicy, strategies.Select(v => v.ObjectId));
-        }
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies) => this.Prefetch(prefetchPolicy, strategies.Select(v => v.ObjectId));
 
-        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIdStrings)
-        {
-            this.Prefetch(prefetchPolicy, objectIdStrings.Select(long.Parse));
-        }
+        public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<string> objectIdStrings) => this.Prefetch(prefetchPolicy, objectIdStrings.Select(long.Parse));
 
         public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<long> objectIds)
         {
@@ -302,30 +281,15 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public Extent<T> Extent<T>() where T : IObject
-        {
-            return this.Extent((IComposite)this.Database.ObjectFactory.GetObjectTypeForType(typeof(T)));
-        }
+        public Extent<T> Extent<T>() where T : IObject => this.Extent((IComposite)this.Database.ObjectFactory.GetObjectTypeForType(typeof(T)));
 
-        public Allors.Extent Extent(IComposite type)
-        {
-            return new ExtentFiltered(this, type);
-        }
+        public Allors.Extent Extent(IComposite type) => new ExtentFiltered(this, type);
 
-        public Allors.Extent Union(Allors.Extent firstOperand, Allors.Extent secondOperand)
-        {
-            return new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Union);
-        }
+        public Allors.Extent Union(Allors.Extent firstOperand, Allors.Extent secondOperand) => new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Union);
 
-        public Allors.Extent Intersect(Allors.Extent firstOperand, Allors.Extent secondOperand)
-        {
-            return new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Intersect);
-        }
+        public Allors.Extent Intersect(Allors.Extent firstOperand, Allors.Extent secondOperand) => new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Intersect);
 
-        public Allors.Extent Except(Allors.Extent firstOperand, Allors.Extent secondOperand)
-        {
-            return new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Except);
-        }
+        public Allors.Extent Except(Allors.Extent firstOperand, Allors.Extent secondOperand) => new ExtentOperation(((Extent)firstOperand).ContainedInExtent, ((Extent)secondOperand).ContainedInExtent, ExtentOperations.Except);
 
         public void Commit()
         {
@@ -432,10 +396,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public void Dispose()
-        {
-            this.Rollback();
-        }
+        public void Dispose() => this.Rollback();
 
         public T Create<T>() where T : IObject
         {
@@ -443,10 +404,7 @@ namespace Allors.Adapters.Object.SqlClient
             return (T)this.Create(objectType);
         }
 
-        public override string ToString()
-        {
-            return "Session[id=" + this.GetHashCode() + "] " + this.Database;
-        }
+        public override string ToString() => "Session[id=" + this.GetHashCode() + "] " + this.Database;
 
         internal Reference GetAssociation(Strategy roleStrategy, IAssociationType associationType)
         {
@@ -469,10 +427,7 @@ namespace Allors.Adapters.Object.SqlClient
             associationByRole[roleStrategy.Reference] = previousAssociation;
         }
 
-        internal Reference[] GetOrCreateReferencesForExistingObjects(IEnumerable<long> objectIds)
-        {
-            return this.State.GetOrCreateReferencesForExistingObjects(objectIds, this);
-        }
+        internal Reference[] GetOrCreateReferencesForExistingObjects(IEnumerable<long> objectIds) => this.State.GetOrCreateReferencesForExistingObjects(objectIds, this);
 
         internal long[] GetAssociations(Strategy roleStrategy, IAssociationType associationType)
         {
@@ -523,10 +478,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal void AddReferenceWithoutVersionOrExistsKnown(Reference reference)
-        {
-            this.State.ReferencesWithoutVersions.Add(reference);
-        }
+        internal void AddReferenceWithoutVersionOrExistsKnown(Reference reference) => this.State.ReferencesWithoutVersions.Add(reference);
 
         internal void GetVersionAndExists()
         {

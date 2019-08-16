@@ -34,24 +34,12 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseClose(RequirementClose method)
-        {
-            this.RequirementState = new RequirementStates(this.Strategy.Session).Closed;
-        }
+        public void BaseClose(RequirementClose method) => this.RequirementState = new RequirementStates(this.Strategy.Session).Closed;
 
-        public void BaseReopen(RequirementReopen method)
-        {
-            this.RequirementState = new RequirementStates(this.Strategy.Session).Active;
-        }
+        public void BaseReopen(RequirementReopen method) => this.RequirementState = new RequirementStates(this.Strategy.Session).Active;
 
-        public void BaseCancel(RequirementCancel method)
-        {
-            this.RequirementState = new RequirementStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(RequirementCancel method) => this.RequirementState = new RequirementStates(this.Strategy.Session).Cancelled;
 
-        public void BaseHold(RequirementHold method)
-        {
-            this.RequirementState = new RequirementStates(this.Strategy.Session).OnHold;
-        }
+        public void BaseHold(RequirementHold method) => this.RequirementState = new RequirementStates(this.Strategy.Session).OnHold;
     }
 }

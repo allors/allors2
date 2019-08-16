@@ -362,10 +362,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseConfirm(PurchaseInvoiceConfirm method)
-        {
-            this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;
-        }
+        public void BaseConfirm(PurchaseInvoiceConfirm method) => this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;
 
         public void BaseCancel(PurchaseInvoiceCancel method)
         {

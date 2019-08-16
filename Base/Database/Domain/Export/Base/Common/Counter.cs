@@ -22,9 +22,6 @@ namespace Allors.Domain
 {
     public partial class Counter
     {
-        public int NextElfProefValue()
-        {
-            return Counters.NextElfProefValue(this.Strategy.Session, this.UniqueId);
-        }
+        public int NextElfProefValue() => Counters.NextElfProefValue(this.Strategy.Session, this.UniqueId);
     }
 }

@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class RoleIdAttribute : RepositoryAttribute
     {
-        public RoleIdAttribute(string value)
-        {
-            this.Value = value;
-        }
+        public RoleIdAttribute(string value) => this.Value = value;
 
         public string Value { get; set; }
     }

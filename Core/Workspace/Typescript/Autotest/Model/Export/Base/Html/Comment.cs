@@ -27,10 +27,7 @@ namespace Autotest.Html
 
         public Scope InScope { get; set; }
 
-        public void BaseLoad()
-        {
-            this.Value = this.Json["value"]?.Value<string>();
-        }
+        public void BaseLoad() => this.Value = this.Json["value"]?.Value<string>();
 
         public void SetInScope(Scope scope)
         {

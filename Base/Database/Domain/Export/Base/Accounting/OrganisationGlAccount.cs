@@ -22,11 +22,9 @@ namespace Allors.Domain
 
     public partial class OrganisationGlAccount
     {
-        public bool IsNeutralAccount()
-        {
-            return !this.IsBankAccount() && !this.IsCashAccount() && !this.IsCostAccount() && !this.IsCostAccount()
-                   && !this.IsCreditorAccount() && !this.IsDebtorAccount() && !this.IsInventoryAccount();
-        }
+        public bool IsNeutralAccount() =>
+            !this.IsBankAccount() && !this.IsCashAccount() && !this.IsCostAccount() && !this.IsCostAccount()
+            && !this.IsCreditorAccount() && !this.IsDebtorAccount() && !this.IsInventoryAccount();
 
         public bool IsBankAccount()
         {
@@ -56,35 +54,17 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool IsDebtorAccount()
-        {
-            return false;
-        }
+        public bool IsDebtorAccount() => false;
 
-        public bool IsCreditorAccount()
-        {
-            return false;
-        }
+        public bool IsCreditorAccount() => false;
 
-        public bool IsInventoryAccount()
-        {
-            return false;
-        }
+        public bool IsInventoryAccount() => false;
 
-        public bool IsTurnOverAccount()
-        {
-            return false;
-        }
+        public bool IsTurnOverAccount() => false;
 
-        public bool IsCostAccount()
-        {
-            return false;
-        }
+        public bool IsCostAccount() => false;
 
-        public bool IsCashAccount()
-        {
-            return false;
-        }
+        public bool IsCashAccount() => false;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
@@ -106,6 +86,5 @@ namespace Allors.Domain
                 this.InternalOrganisation = internalOrganisations.First();
             }
         }
-
     }
 }

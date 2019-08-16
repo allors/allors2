@@ -27,10 +27,7 @@ namespace Allors.Workspace.Data
 
     public class Equals : IPropertyPredicate
     {
-        public Equals(IPropertyType propertyType = null)
-        {
-            this.PropertyType = propertyType;
-        }
+        public Equals(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         /// <inheritdoc/>
         public IPropertyType PropertyType { get; set; }
@@ -41,9 +38,8 @@ namespace Allors.Workspace.Data
 
         public string Parameter { get; set; }
 
-        public Predicate ToJson()
-        {
-            return new Predicate
+        public Predicate ToJson() =>
+            new Predicate
             {
                 Kind = PredicateKind.Equals,
                 PropertyType = this.PropertyType.Id,
@@ -51,16 +47,9 @@ namespace Allors.Workspace.Data
                 Value = DataConvert.ToString(this.Value),
                 Parameter = this.Parameter
             };
-        }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
-        {
-            return ((IPredicate)this).HasMissingArguments(arguments);
-        }
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
-        }
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

@@ -293,9 +293,6 @@ namespace Tests
             return permissions.First;
         }
 
-        private Permission FindPermission(RoleType roleType, Operations operation)
-        {
-            return this.FindPermission(roleType.AssociationType.ObjectType, roleType, operation);
-        }
+        private Permission FindPermission(RoleType roleType, Operations operation) => this.FindPermission(roleType.AssociationType.ObjectType, roleType, operation);
     }
 }

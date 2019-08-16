@@ -124,20 +124,11 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(PickListCancel method)
-        {
-            this.PickListState = new PickListStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(PickListCancel method) => this.PickListState = new PickListStates(this.Strategy.Session).Cancelled;
 
-        public void BaseHold(PickListHold method)
-        {
-            this.PickListState = new PickListStates(this.Strategy.Session).OnHold;
-        }
+        public void BaseHold(PickListHold method) => this.PickListState = new PickListStates(this.Strategy.Session).OnHold;
 
-        public void BaseContinue(PickListContinue method)
-        {
-            this.PickListState = new PickListStates(this.Strategy.Session).Created;
-        }
+        public void BaseContinue(PickListContinue method) => this.PickListState = new PickListStates(this.Strategy.Session).Created;
 
         public void BaseSetPicked(PickListSetPicked method)
         {

@@ -13,9 +13,6 @@ namespace Tests.SalesOrderTest
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Sales Orders", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Sales Orders", this.Driver.Title);
     }
 }

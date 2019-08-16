@@ -28,10 +28,8 @@ namespace Allors.Domain
         }
 
         public AccessControlListFactory(User user, Func<IObject, User, IAccessControlList> factory)
-            : this(user)
-        {
+            : this(user) =>
             this.factory = factory;
-        }
 
         public IAccessControlList Create(IObject allorsObject)
         {

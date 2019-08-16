@@ -18,10 +18,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class RequestModel
     {
-        public RequestModel(Request request)
-        {
-            this.Number = request?.RequestNumber;
-        }
+        public RequestModel(Request request) => this.Number = request?.RequestNumber;
 
         public string Number { get; }
     }

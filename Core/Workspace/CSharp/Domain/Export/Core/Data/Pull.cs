@@ -40,9 +40,8 @@ namespace Allors.Workspace.Data
 
         public Result[] Results { get; set; }
 
-        public Protocol.Data.Pull ToJson()
-        {
-            return new Protocol.Data.Pull
+        public Protocol.Data.Pull ToJson() =>
+            new Protocol.Data.Pull
             {
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.ToJson(),
@@ -50,6 +49,5 @@ namespace Allors.Workspace.Data
                 Object = this.Object?.Id.ToString(),
                 Results = this.Results?.Select(v => v.ToJson()).ToArray()
             };
-        }
     }
 }

@@ -12,10 +12,8 @@ namespace Components
     public class Button : SelectorComponent
     {
         public Button(IWebDriver driver, params By[] selectors)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = selectors.Length == 1 ? selectors[0] : new ByChained(selectors);
-        }
 
         public Button(IWebDriver driver, string kind, string value, params string[] scopes)
             : base(driver)
@@ -47,10 +45,8 @@ namespace Components
     public class Button<T> : Button where T : Component
     {
         public Button(T page, params By[] selectors)
-            : base(page.Driver, selectors)
-        {
+            : base(page.Driver, selectors) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

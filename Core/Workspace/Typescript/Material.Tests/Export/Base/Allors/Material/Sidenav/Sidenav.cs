@@ -11,10 +11,8 @@ namespace Tests
     public partial class Sidenav : SelectorComponent
     {
         public Sidenav(IWebDriver driver)
-        : base(driver)
-        {
+        : base(driver) =>
             this.Selector = By.CssSelector("mat-sidenav");
-        }
 
         public override By Selector { get; }
 
@@ -55,19 +53,10 @@ namespace Tests
             link.Click();
         }
 
-        private Element Group(string name)
-        {
-            return new Element(this.Driver, new ByChained(this.Selector, By.XPath($".//span[contains(text(), '{name}')]")));
-        }
+        private Element Group(string name) => new Element(this.Driver, new ByChained(this.Selector, By.XPath($".//span[contains(text(), '{name}')]")));
 
-        private Anchor Link(string href)
-        {
-            return new Anchor(this.Driver, this.ByHref(href));
-        }
+        private Anchor Link(string href) => new Anchor(this.Driver, this.ByHref(href));
 
-        private By ByHref(string href)
-        {
-            return new ByChained(this.Selector, By.CssSelector($"a[href='{href}']"));
-        }
+        private By ByHref(string href) => new ByChained(this.Selector, By.CssSelector($"a[href='{href}']"));
     }
 }

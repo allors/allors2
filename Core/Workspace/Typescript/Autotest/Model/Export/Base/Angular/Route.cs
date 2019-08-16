@@ -95,9 +95,6 @@ namespace Autotest.Angular
             }
         }
 
-        private IEnumerable<Route> Flatten(IEnumerable<Route> routes)
-        {
-            return routes.SelectMany(v => this.Flatten(v.Children)).Concat(routes);
-        }
+        private IEnumerable<Route> Flatten(IEnumerable<Route> routes) => routes.SelectMany(v => this.Flatten(v.Children)).Concat(routes);
     }
 }

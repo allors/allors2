@@ -47,9 +47,6 @@ namespace Allors.Repository.Domain
 
         public Dictionary<string, Attribute[]> AttributesByName { get; }
 
-        public override string ToString()
-        {
-            return $"{this.DefiningType.SingularName}.{this.Name}()";
-        }
+        public override string ToString() => $"{this.DefiningType.SingularName}.{this.Name}()";
     }
 }

@@ -47,9 +47,6 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
             this.profile = new Profile(this.connectionFactory, this.cacheFactory);
         }
 
-        public void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public void Dispose() => this.profile.Dispose();
     }
 }

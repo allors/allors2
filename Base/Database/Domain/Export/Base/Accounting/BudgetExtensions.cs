@@ -25,14 +25,8 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseClose(this Budget @this, BudgetClose method)
-        {
-            @this.BudgetState = new BudgetStates(@this.Strategy.Session).Closed;
-        }
+        public static void BaseClose(this Budget @this, BudgetClose method) => @this.BudgetState = new BudgetStates(@this.Strategy.Session).Closed;
 
-        public static void BaseReopen(this Budget @this, BudgetReopen method)
-        {
-            @this.BudgetState = new BudgetStates(@this.Strategy.Session).Opened;
-        }
+        public static void BaseReopen(this Budget @this, BudgetReopen method) => @this.BudgetState = new BudgetStates(@this.Strategy.Session).Opened;
     }
 }

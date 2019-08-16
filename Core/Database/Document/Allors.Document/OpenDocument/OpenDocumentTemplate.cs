@@ -88,10 +88,7 @@ namespace Allors.Document.OpenDocument
             }
         }
 
-        public static string InferArguments(Type fromType)
-        {
-            return string.Join(",", fromType.GetProperties().Select(v => v.Name));
-        }
+        public static string InferArguments(Type fromType) => string.Join(",", fromType.GetProperties().Select(v => v.Name));
 
         public byte[] Render(IDictionary<string, object> model, IDictionary<string, byte[]> imageByName = null)
         {
@@ -106,10 +103,8 @@ namespace Allors.Document.OpenDocument
         private readonly PropertyInfo[] properties;
 
         public OpenDocumentTemplate(byte[] document, char leftDelimiter = DefaultLeftDelimiter, char rightDelimiter = DefaultRightDelimiter)
-            : base(document, OpenDocumentTemplate.InferArguments(typeof(T)), leftDelimiter, rightDelimiter)
-        {
+            : base(document, OpenDocumentTemplate.InferArguments(typeof(T)), leftDelimiter, rightDelimiter) =>
             this.properties = typeof(T).GetProperties();
-        }
 
 
         public byte[] Render(T model, Dictionary<string, byte[]> imageByName = null)

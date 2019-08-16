@@ -63,22 +63,13 @@ namespace Allors.Workspace.Data
         public object this[string key] => this.keyValuePairs.FirstOrDefault(v => v.Key == key).Value;
 
         /// <inheritdoc/>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
-        {
-            return this.keyValuePairs.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => this.keyValuePairs.GetEnumerator();
 
         /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.keyValuePairs.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this.keyValuePairs.GetEnumerator();
 
         /// <inheritdoc/>
-        public bool ContainsKey(string key)
-        {
-            return this.keyValuePairs.Any(v => v.Key.Equals(key));
-        }
+        public bool ContainsKey(string key) => this.keyValuePairs.Any(v => v.Key.Equals(key));
 
         /// <inheritdoc/>
         public bool TryGetValue(string key, out object value)

@@ -51,10 +51,8 @@ namespace Components
     public class MatTableRow<T> : MatTableRow where T : Component
     {
         public MatTableRow(T page, IWebElement element)
-            : base(page.Driver, element)
-        {
+            : base(page.Driver, element) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

@@ -11,15 +11,9 @@ namespace Allors.Domain
 
     public static partial class DateTimeFactory
     {
-        public static DateTime CreateDate(int year, int month, int day)
-        {
-            return new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
-        }
+        public static DateTime CreateDate(int year, int month, int day) => new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
 
-        public static DateTime CreateDateTime(int year, int month, int day, int hour, int min, int sec, int milliSec)
-        {
-            return new DateTime(year, month, day, hour, min, sec, milliSec, DateTimeKind.Utc);
-        }
+        public static DateTime CreateDateTime(int year, int month, int day, int hour, int min, int sec, int milliSec) => new DateTime(year, month, day, hour, min, sec, milliSec, DateTimeKind.Utc);
 
         public static DateTime CreateDate(DateTime dateTime)
         {

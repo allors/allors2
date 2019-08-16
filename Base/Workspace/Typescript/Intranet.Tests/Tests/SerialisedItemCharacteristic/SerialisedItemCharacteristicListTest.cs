@@ -13,9 +13,6 @@ namespace Tests.SerialisedItemCharacteristicTest
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Product Characteristics", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Product Characteristics", this.Driver.Title);
     }
 }

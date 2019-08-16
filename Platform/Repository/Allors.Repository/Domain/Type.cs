@@ -35,9 +35,6 @@ namespace Allors.Repository.Domain
 
         public string SingularName { get; }
 
-        public override string ToString()
-        {
-            return this.SingularName;
-        }
+        public override string ToString() => this.SingularName;
     }
 }

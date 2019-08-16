@@ -32,9 +32,6 @@ namespace Allors.Adapters.Memory
 
         protected override IProfile Profile => this.profile;
 
-        public override void Dispose()
-        {
-            this.profile.Dispose();
-        }
+        public override void Dispose() => this.profile.Dispose();
     }
 }

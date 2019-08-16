@@ -30,10 +30,8 @@ namespace Components
     public class MatTableCell<T> : MatTableCell where T : Component
     {
         public MatTableCell(T page, IWebElement element)
-            : base(page.Driver, element)
-        {
+            : base(page.Driver, element) =>
             this.Page = page;
-        }
 
         public T Page { get; }
 

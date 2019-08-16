@@ -29,33 +29,22 @@ namespace Allors.Workspace.Data
     {
         public string Parameter { get; set; }
 
-        public Instanceof(IComposite objectType = null)
-        {
-            this.ObjectType = objectType;
-        }
+        public Instanceof(IComposite objectType = null) => this.ObjectType = objectType;
 
         public IComposite ObjectType { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 
-        public Predicate ToJson()
-        {
-            return new Predicate
+        public Predicate ToJson() =>
+            new Predicate
             {
                 Kind = PredicateKind.Instanceof,
                 ObjectType = this.ObjectType?.Id,
                 PropertyType = this.PropertyType?.Id
             };
-        }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
-        {
-            return ((IPredicate)this).HasMissingArguments(arguments);
-        }
+        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            return this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
-        }
+        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

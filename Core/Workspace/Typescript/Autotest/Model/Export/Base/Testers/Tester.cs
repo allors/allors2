@@ -7,10 +7,7 @@ namespace Autotest.Testers
 
     public abstract partial class Tester
     {
-        protected Tester(Element element)
-        {
-            this.Element = element;
-        }
+        protected Tester(Element element) => this.Element = element;
 
         public Element Element { get; }
 
@@ -49,9 +46,6 @@ namespace Autotest.Testers
             }
         }
 
-        public override string ToString()
-        {
-            return $"Template[{this.Element.Template.Url}] Element[{this.Element.Name}]";
-        }
+        public override string ToString() => $"Template[{this.Element.Template.Url}] Element[{this.Element.Name}]";
     }
 }

@@ -35,10 +35,7 @@ namespace Allors.Adapters.Object.SqlClient.Debug
         {
         }
 
-        public override string ToString()
-        {
-            return $"[{this.Executions.Count}x] {this.SqlCommand.CommandText}";
-        }
+        public override string ToString() => $"[{this.Executions.Count}x] {this.SqlCommand.CommandText}";
 
         protected override void OnExecuting()
         {

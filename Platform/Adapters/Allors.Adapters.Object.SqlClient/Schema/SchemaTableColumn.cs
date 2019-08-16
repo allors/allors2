@@ -21,37 +21,13 @@ namespace Allors.Adapters.Object.SqlClient
             this.numericScale = numericScale;
         }
 
-        public SchemaTable Table
-        {
-            get
-            {
-                return this.table;
-            }
-        }
+        public SchemaTable Table => this.table;
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public string Name => this.name;
 
-        public string LowercaseName
-        {
-            get
-            {
-                return this.lowercaseName;
-            }
-        }
+        public string LowercaseName => this.lowercaseName;
 
-        public string DataType
-        {
-            get
-            {
-                return this.dataType;
-            }
-        }
+        public string DataType => this.dataType;
 
         public string SqlType
         {
@@ -79,33 +55,12 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public int? CharacterMaximumLength
-        {
-            get
-            {
-                return this.characterMaximumLength;
-            }
-        }
+        public int? CharacterMaximumLength => this.characterMaximumLength;
 
-        public int? NumericPrecision
-        {
-            get
-            {
-                return this.numericPrecision;
-            }
-        }
+        public int? NumericPrecision => this.numericPrecision;
 
-        public int? NumericScale
-        {
-            get
-            {
-                return this.numericScale;
-            }
-        }
+        public int? NumericScale => this.numericScale;
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

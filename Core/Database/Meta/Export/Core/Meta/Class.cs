@@ -119,10 +119,7 @@ namespace Allors.Meta
 
         public override IEnumerable<Composite> WorkspaceSubtypes => this.Workspace ? Array.Empty<Composite>() : new[] { this };
 
-        public override bool IsAssignableFrom(IComposite objectType)
-        {
-            return this.Equals(objectType);
-        }
+        public override bool IsAssignableFrom(IComposite objectType) => this.Equals(objectType);
 
         public void DeriveConcreteRoleTypes(HashSet<RoleType> sharedRoleTypes)
         {
@@ -176,9 +173,6 @@ namespace Allors.Meta
             this.concreteMethodTypes = this.concreteMethodTypeByMethodType.Values.ToArray();
         }
 
-        internal void Bind(Dictionary<string, Type> typeByTypeName)
-        {
-            this.clrType = typeByTypeName[this.Name];
-        }
+        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
     }
 }

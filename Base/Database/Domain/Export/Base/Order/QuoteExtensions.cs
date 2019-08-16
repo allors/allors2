@@ -64,19 +64,10 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseApprove(this Quote @this, QuoteApprove method)
-        {
-            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
-        }
+        public static void BaseApprove(this Quote @this, QuoteApprove method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
 
-        public static void BaseReject(this Quote @this, QuoteReject method)
-        {
-            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
-        }
+        public static void BaseReject(this Quote @this, QuoteReject method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
 
-        public static void BaseCancel(this Quote @this, QuoteCancel method)
-        {
-            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Cancelled;
-        }
+        public static void BaseCancel(this Quote @this, QuoteCancel method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Cancelled;
     }
 }

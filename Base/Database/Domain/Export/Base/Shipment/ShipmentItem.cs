@@ -75,9 +75,6 @@ namespace Allors.Domain
             }
         }
 
-        public void Sync(Shipment shipment)
-        {
-            this.SyncedShipment = shipment;
-        }
+        public void Sync(Shipment shipment) => this.SyncedShipment = shipment;
     }
 }

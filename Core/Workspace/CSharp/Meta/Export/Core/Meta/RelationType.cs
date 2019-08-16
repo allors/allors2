@@ -55,10 +55,7 @@ namespace Allors.Workspace.Meta
 
         public bool Workspace
         {
-            get
-            {
-                return this.workspace;
-            }
+            get => this.workspace;
             set
             {
                 this.MetaPopulation.AssertUnlocked();
@@ -69,15 +66,9 @@ namespace Allors.Workspace.Meta
 
         public string XmlDoc
         {
-            get
-            {
-                return this.xmlDoc;
-            }
+            get => this.xmlDoc;
 
-            set
-            {
-                this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
-            }
+            set => this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         public string XmlDocComment
@@ -96,10 +87,7 @@ namespace Allors.Workspace.Meta
 
         public bool IsDerived
         {
-            get
-            {
-                return this.isDerived;
-            }
+            get => this.isDerived;
 
             set
             {
@@ -111,10 +99,7 @@ namespace Allors.Workspace.Meta
 
         public bool IsSynced
         {
-            get
-            {
-                return this.isSynced;
-            }
+            get => this.isSynced;
 
             set
             {
@@ -126,10 +111,7 @@ namespace Allors.Workspace.Meta
 
         public Multiplicity AssignedMultiplicity
         {
-            get
-            {
-                return this.assignedMultiplicity;
-            }
+            get => this.assignedMultiplicity;
 
             set
             {
@@ -150,10 +132,7 @@ namespace Allors.Workspace.Meta
 
         public bool IsIndexed
         {
-            get
-            {
-                return this.isIndexed;
-            }
+            get => this.isIndexed;
 
             set
             {

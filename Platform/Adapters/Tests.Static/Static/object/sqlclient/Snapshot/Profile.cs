@@ -108,10 +108,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
             return database;
         }
 
-        public override IDatabase CreatePopulation()
-        {
-            return new Allors.Adapters.Memory.Database(this.ServiceProvider, new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory });
-        }
+        public override IDatabase CreatePopulation() => new Allors.Adapters.Memory.Database(this.ServiceProvider, new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory });
 
         public override IDatabase CreateDatabase()
         {

@@ -48,10 +48,7 @@ namespace Allors.Domain
             return string.Concat(this.SalesInvoiceNumberPrefix, salesInvoiceNumber).Replace("{year}", year.ToString());
         }
 
-        public string DeriveNextTemporaryInvoiceNumber()
-        {
-            return this.SalesInvoiceTemporaryCounter.NextValue().ToString();
-        }
+        public string DeriveNextTemporaryInvoiceNumber() => this.SalesInvoiceTemporaryCounter.NextValue().ToString();
 
         // TODO: Cascading delete
         // public override void RemovePaymentMethod(PaymentMethod value)

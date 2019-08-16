@@ -85,10 +85,7 @@ namespace Tests
 
         public Sidenav Sidenav => new MainComponent(this.Driver).Sidenav;
 
-        public virtual void Dispose()
-        {
-            this.DriverManager.Stop();
-        }
+        public virtual void Dispose() => this.DriverManager.Stop();
 
         public DashboardComponent Login(string userName = "administrator")
         {

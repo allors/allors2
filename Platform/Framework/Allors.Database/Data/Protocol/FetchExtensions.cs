@@ -22,13 +22,11 @@ namespace Allors.Protocol.Data
 {
     public static class FetchExtensions
     {
-        public static Allors.Data.Fetch Load(this Fetch @this, ISession session)
-        {
-            return new Allors.Data.Fetch(session.Database.MetaPopulation)
+        public static Allors.Data.Fetch Load(this Fetch @this, ISession session) =>
+            new Allors.Data.Fetch(session.Database.MetaPopulation)
             {
                 Step = @this.Step?.Load(session),
                 Include = @this.Include?.Load(session)
             };
-        }
     }
 }

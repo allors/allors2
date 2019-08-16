@@ -63,7 +63,6 @@ namespace Allors.Domain
             return this.ExistSalesRepRelationshipsWhereSalesRepresentative
                    && this.SalesRepRelationshipsWhereSalesRepresentative
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
-
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

@@ -14,10 +14,7 @@ namespace Allors.Domain
     {
         private readonly IValidation validation;
 
-        public DerivationException(IValidation validation)
-        {
-            this.validation = validation;
-        }
+        public DerivationException(IValidation validation) => this.validation = validation;
 
         public IValidation Validation => this.validation;
 

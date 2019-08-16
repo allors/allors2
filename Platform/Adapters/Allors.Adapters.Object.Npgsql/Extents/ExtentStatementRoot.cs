@@ -46,10 +46,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal override bool IsRoot => true;
 
-        public override string ToString()
-        {
-            return this.sql.ToString();
-        }
+        public override string ToString() => this.sql.ToString();
 
         internal override string AddParameter(object obj)
         {
@@ -69,25 +66,13 @@ namespace Allors.Adapters.Object.Npgsql
             return this.paramInvocationNameByParamValue[obj];
         }
 
-        internal override void Append(string part)
-        {
-            this.sql.Append(part);
-        }
+        internal override void Append(string part) => this.sql.Append(part);
 
-        internal override string CreateAlias()
-        {
-            return "alias" + (this.aliasIndex++);
-        }
+        internal override string CreateAlias() => "alias" + (this.aliasIndex++);
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association)
-        {
-            return new ExtentStatementChild(this, extent, association);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association) => new ExtentStatementChild(this, extent, association);
 
-        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role)
-        {
-            return new ExtentStatementChild(this, extent, role);
-        }
+        internal override ExtentStatement CreateChild(SqlExtent extent, IRoleType role) => new ExtentStatementChild(this, extent, role);
 
         internal Command CreateDbCommand(string alias)
         {

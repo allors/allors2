@@ -41,10 +41,7 @@ namespace Allors.Adapters.Object.Npgsql.Debug
         {
         }
 
-        public override string ToString()
-        {
-            return $"{this.Commands.Count} commands with {this.Executions.Count()} executions.";
-        }
+        public override string ToString() => $"{this.Commands.Count} commands with {this.Executions.Count()} executions.";
 
         protected override Command CreateCommand(Mapping mapping, NpgsqlCommand sqlCommand)
         {

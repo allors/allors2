@@ -46,7 +46,6 @@ namespace Allors.Domain
                     break;
                 }
             }
-
         }
     }
 }

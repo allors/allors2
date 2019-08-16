@@ -26,14 +26,10 @@ namespace Allors.Server
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly Dictionary<string, object> valueByName = new Dictionary<string, object>();
 
-        public PullResponseBuilder(User user)
-        {
-            this.user = user;
-        }
+        public PullResponseBuilder(User user) => this.user = user;
 
-        public PullResponse Build()
-        {
-            return new PullResponse
+        public PullResponse Build() =>
+            new PullResponse
             {
                 UserSecurityHash = this.user.SecurityHash(),
                 Objects = this.objects.Select(x => new[] { x.Id.ToString(), x.Strategy.ObjectVersion.ToString() }).ToArray(),
@@ -41,7 +37,6 @@ namespace Allors.Server
                 NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
                 NamedValues = this.valueByName,
             };
-        }
 
         public void AddObject(string name, IObject @object, bool full = false)
         {

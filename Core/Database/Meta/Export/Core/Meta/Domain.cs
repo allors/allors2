@@ -45,10 +45,7 @@ namespace Allors.Meta
 
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
+            get => this.name;
 
             set
             {
@@ -58,13 +55,7 @@ namespace Allors.Meta
             }
         }
 
-        public IEnumerable<Domain> DirectSuperdomains
-        {
-            get
-            {
-                return this.directSuperdomains;
-            }
-        }
+        public IEnumerable<Domain> DirectSuperdomains => this.directSuperdomains;
 
         public IEnumerable<Domain> Superdomains
         {
@@ -138,10 +129,7 @@ namespace Allors.Meta
             return this.IdAsString;
         }
 
-        internal void Bind()
-        {
-            this.directSuperdomains = this.directSuperdomains.ToArray();
-        }
+        internal void Bind() => this.directSuperdomains = this.directSuperdomains.ToArray();
 
         internal void DeriveSuperdomains(HashSet<Domain> sharedDomains)
         {

@@ -42,10 +42,7 @@ namespace Allors.Meta
 
         public bool Workspace
         {
-            get
-            {
-                return this.workspace;
-            }
+            get => this.workspace;
             set
             {
                 this.MetaPopulation.AssertUnlocked();
@@ -57,15 +54,9 @@ namespace Allors.Meta
 
         public string XmlDoc
         {
-            get
-            {
-                return this.xmlDoc;
-            }
+            get => this.xmlDoc;
 
-            set
-            {
-                this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
-            }
+            set => this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         public string XmlDocComment
@@ -84,10 +75,7 @@ namespace Allors.Meta
 
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
+            get => this.name;
 
             set
             {
@@ -97,20 +85,11 @@ namespace Allors.Meta
             }
         }
 
-        public string FullName
-        {
-            get
-            {
-                return this.ObjectType != null ? this.ObjectType.Name + this.name : this.Name;
-            }
-        }
+        public string FullName => this.ObjectType != null ? this.ObjectType.Name + this.name : this.Name;
 
         public Composite ObjectType
         {
-            get
-            {
-                return this.objectType;
-            }
+            get => this.objectType;
 
             set
             {
@@ -123,13 +102,7 @@ namespace Allors.Meta
         /// <summary>
         /// Gets the display name.
         /// </summary>
-        public override string DisplayName
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        public override string DisplayName => this.name;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -137,10 +110,7 @@ namespace Allors.Meta
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return this.name;
-        }
+        public override string ToString() => this.name;
 
         /// <summary>
         /// Gets the validation name.

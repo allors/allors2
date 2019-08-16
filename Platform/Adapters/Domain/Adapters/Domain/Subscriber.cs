@@ -27,8 +27,8 @@ namespace Allors.Domain
 
         public string Message
         {
-            get { return message; }
-            set { message = value; }
+            get => message;
+            set => message = value;
         }
     }
 }

@@ -423,10 +423,7 @@ namespace Identity.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetAuthenticatorWarning()
-        {
-            return View(nameof(ResetAuthenticator));
-        }
+        public IActionResult ResetAuthenticatorWarning() => View(nameof(ResetAuthenticator));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -494,14 +491,12 @@ namespace Identity.Controllers
             return result.ToString().ToLowerInvariant();
         }
 
-        private string GenerateQrCodeUri(string email, string unformattedKey)
-        {
-            return string.Format(
+        private string GenerateQrCodeUri(string email, string unformattedKey) =>
+            string.Format(
                 AuthenicatorUriFormat,
                 _urlEncoder.Encode("Identity"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
-        }
 
         #endregion
     }

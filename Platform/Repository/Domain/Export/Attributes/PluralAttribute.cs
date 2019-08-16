@@ -26,10 +26,7 @@ namespace Allors.Repository.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property)]
     public class PluralAttribute : RepositoryAttribute
     {
-        public PluralAttribute(string value)
-        {
-            this.Value = value;
-        }
+        public PluralAttribute(string value) => this.Value = value;
 
         public string Value { get; set; }
     }

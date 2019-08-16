@@ -29,9 +29,6 @@ namespace Allors.Adapters.Object.Npgsql.Caching
     {
         public IClass[] ExcludedClasses { get; set; }
 
-        public ICache CreateCache()
-        {
-            return new DefaultCache(this.ExcludedClasses);
-        }
+        public ICache CreateCache() => new DefaultCache(this.ExcludedClasses);
     }
 }

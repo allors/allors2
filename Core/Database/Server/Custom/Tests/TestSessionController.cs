@@ -12,10 +12,7 @@ namespace Allors.Server.Controllers
 
     public class TestSessionController : Controller
     {
-        public TestSessionController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public TestSessionController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

@@ -50,33 +50,15 @@ namespace Allors.Workspace.Meta
         {
         }
 
-        public bool ExistPropertyType
-        {
-            get
-            {
-                return this.PropertyType != null;
-            }
-        }
+        public bool ExistPropertyType => this.PropertyType != null;
 
         public PropertyType PropertyType { get; set; }
 
-        public bool ExistNext
-        {
-            get
-            {
-                return this.Next != null;
-            }
-        }
+        public bool ExistNext => this.Next != null;
 
         public Path Next { get; set; }
 
-        public Path End
-        {
-            get
-            {
-                return this.ExistNext ? this.Next.End : this;
-            }
-        }
+        public Path End => this.ExistNext ? this.Next.End : this;
 
         public string Name
         {
@@ -100,10 +82,7 @@ namespace Allors.Workspace.Meta
             return path != null;
         }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
 
         public ObjectType GetObjectType()
         {

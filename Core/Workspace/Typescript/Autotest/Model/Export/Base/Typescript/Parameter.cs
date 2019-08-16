@@ -9,10 +9,7 @@ namespace Autotest.Typescript
 
     public class Parameter
     {
-        public Parameter(JToken json)
-        {
-            this.Json = json;
-        }
+        public Parameter(JToken json) => this.Json = json;
 
         public JToken Json { get; }
 

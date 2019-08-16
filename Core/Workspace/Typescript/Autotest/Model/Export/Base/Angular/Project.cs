@@ -45,10 +45,7 @@ namespace Autotest.Angular
 
         public Provider[] Providers { get; set; }
 
-        public Route FindRouteForFullPath(string fullPath)
-        {
-            return this.MainModule.FlattenedRoutes.FirstOrDefault(v => v.FullPaths.Contains(fullPath));
-        }
+        public Route FindRouteForFullPath(string fullPath) => this.MainModule.FlattenedRoutes.FirstOrDefault(v => v.FullPaths.Contains(fullPath));
 
         private void BaseLoad(JObject jsonProject)
         {

@@ -17,9 +17,6 @@ namespace Tests.CatalogueTests
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Catalogues", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Catalogues", this.Driver.Title);
     }
 }

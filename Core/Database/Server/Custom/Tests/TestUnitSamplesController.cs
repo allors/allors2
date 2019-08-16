@@ -15,10 +15,7 @@ namespace Allors.Server.Controllers
 
     public class TestUnitSamplesController : Controller
     {
-        public TestUnitSamplesController(ISessionService sessionService)
-        {
-            this.Session = sessionService.Session;
-        }
+        public TestUnitSamplesController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 

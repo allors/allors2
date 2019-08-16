@@ -30,15 +30,9 @@ namespace Allors.Repository.Generation
 
         private readonly DirectoryInfo directoryInfo;
 
-        public Location(DirectoryInfo directoryInfo)
-        {
-            this.directoryInfo = directoryInfo;
-        }
+        public Location(DirectoryInfo directoryInfo) => this.directoryInfo = directoryInfo;
 
-        public DirectoryInfo DirectoryInfo
-        {
-            get { return this.directoryInfo; }
-        }
+        public DirectoryInfo DirectoryInfo => this.directoryInfo;
 
         public void Save(string fileName, string fileContents)
         {

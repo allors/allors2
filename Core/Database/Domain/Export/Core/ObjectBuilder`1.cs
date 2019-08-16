@@ -16,10 +16,7 @@ namespace Allors
         private bool built;
         private Exception exception;
 
-        protected ObjectBuilder(ISession session)
-        {
-            this.session = session;
-        }
+        protected ObjectBuilder(ISession session) => this.session = session;
 
         ~ObjectBuilder()
         {
@@ -33,20 +30,11 @@ namespace Allors
 
         protected ISession DatabaseSession => this.session;
 
-        public override void Dispose()
-        {
-            this.Build();
-        }
+        public override void Dispose() => this.Build();
 
-        public override string ToString()
-        {
-            return "Builder for " + typeof(T).Name;
-        }
+        public override string ToString() => "Builder for " + typeof(T).Name;
 
-        public override IObject DefaultBuild()
-        {
-            return this.Build();
-        }
+        public override IObject DefaultBuild() => this.Build();
 
         public virtual T Build()
         {

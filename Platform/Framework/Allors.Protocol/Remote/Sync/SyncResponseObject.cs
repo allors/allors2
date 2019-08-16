@@ -41,9 +41,6 @@ namespace Allors.Protocol.Remote.Sync
 
         public string[][] Methods { get; set; }
 
-        public override string ToString()
-        {
-            return $"{this.T} [{this.I}:{this.V}]";
-        }
+        public override string ToString() => $"{this.T} [{this.I}:{this.V}]";
     }
 }

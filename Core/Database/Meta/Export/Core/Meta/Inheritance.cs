@@ -40,10 +40,7 @@ namespace Allors.Meta
 
         public Composite Subtype
         {
-            get
-            {
-                return this.subtype;
-            }
+            get => this.subtype;
 
             set
             {
@@ -55,10 +52,7 @@ namespace Allors.Meta
 
         public Interface Supertype
         {
-            get
-            {
-                return this.supertype;
-            }
+            get => this.supertype;
 
             set
             {
@@ -90,10 +84,7 @@ namespace Allors.Meta
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return (this.Subtype != null ? this.Subtype.Name : string.Empty) + "::" + (this.Supertype != null ? this.Supertype.Name : string.Empty);
-        }
+        public override string ToString() => (this.Subtype != null ? this.Subtype.Name : string.Empty) + "::" + (this.Supertype != null ? this.Supertype.Name : string.Empty);
 
         /// <summary>
         /// Validates this instance.

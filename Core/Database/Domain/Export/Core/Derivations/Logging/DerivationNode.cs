@@ -12,24 +12,13 @@ namespace Allors.Domain.Logging
         private readonly IDerivationLog derivationLog;
 
         public DerivationNode(Object derivable, IDerivationLog derivationLog)
-            : base(derivable)
-        {
+            : base(derivable) =>
             this.derivationLog = derivationLog;
-        }
 
-        protected override void OnCycle(Object root, Object derivable)
-        {
-            this.derivationLog.Cycle(root, derivable);
-        }
+        protected override void OnCycle(Object root, Object derivable) => this.derivationLog.Cycle(root, derivable);
 
-        protected override void OnDeriving(Object derivable)
-        {
-            this.derivationLog.Deriving(derivable);
-        }
+        protected override void OnDeriving(Object derivable) => this.derivationLog.Deriving(derivable);
 
-        protected override void OnDerived(Object derivable)
-        {
-            this.derivationLog.Derived(derivable);
-        }
+        protected override void OnDerived(Object derivable) => this.derivationLog.Derived(derivable);
     }
 }

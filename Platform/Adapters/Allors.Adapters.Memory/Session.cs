@@ -156,10 +156,7 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        public void Dispose()
-        {
-            this.Rollback();
-        }
+        public void Dispose() => this.Rollback();
 
         public T Create<T>() where T : IObject
         {
@@ -213,25 +210,13 @@ namespace Allors.Adapters.Memory
             return strategy?.GetObject();
         }
 
-        public IStrategy InstantiateStrategy(long objectId)
-        {
-            return this.InstantiateMemoryStrategy(objectId);
-        }
+        public IStrategy InstantiateStrategy(long objectId) => this.InstantiateMemoryStrategy(objectId);
 
-        public IObject[] Instantiate(IEnumerable<string> objectIdStrings)
-        {
-            return objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
-        }
+        public IObject[] Instantiate(IEnumerable<string> objectIdStrings) => objectIdStrings != null ? this.Instantiate(objectIdStrings.Select(long.Parse)) : EmptyObjects;
 
-        public IObject[] Instantiate(IEnumerable<IObject> objects)
-        {
-            return objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
-        }
+        public IObject[] Instantiate(IEnumerable<IObject> objects) => objects != null ? this.Instantiate(objects.Select(v => v.Id)) : EmptyObjects;
 
-        public IObject[] Instantiate(IEnumerable<long> objectIds)
-        {
-            return objectIds != null ? objectIds.Select(v => this.InstantiateMemoryStrategy(v)?.GetObject()).Where(v => v != null).ToArray() : EmptyObjects;
-        }
+        public IObject[] Instantiate(IEnumerable<long> objectIds) => objectIds != null ? objectIds.Select(v => this.InstantiateMemoryStrategy(v)?.GetObject()).Where(v => v != null).ToArray() : EmptyObjects;
 
         public void Prefetch(PrefetchPolicy prefetchPolicy, params IObject[] objects)
         {
@@ -282,10 +267,7 @@ namespace Allors.Adapters.Memory
             return this.Extent(compositeType);
         }
 
-        public virtual Allors.Extent Extent(IComposite objectType)
-        {
-            return new ExtentFiltered(this, objectType);
-        }
+        public virtual Allors.Extent Extent(IComposite objectType) => new ExtentFiltered(this, objectType);
 
         public virtual Allors.Extent Union(Allors.Extent firstOperand, Allors.Extent secondOperand)
         {
@@ -321,15 +303,9 @@ namespace Allors.Adapters.Memory
             return strategy.GetObject();
         }
 
-        internal void Init()
-        {
-            this.Reset();
-        }
+        internal void Init() => this.Reset();
 
-        internal Type GetTypeForObjectType(IObjectType objectType)
-        {
-            return this.database.ObjectFactory.GetTypeForObjectType(objectType);
-        }
+        internal Type GetTypeForObjectType(IObjectType objectType) => this.database.ObjectFactory.GetTypeForObjectType(objectType);
 
         internal virtual Strategy InsertStrategy(IClass objectType, long objectId, long objectVersion)
         {
@@ -359,10 +335,7 @@ namespace Allors.Adapters.Memory
             this.strategiesByObjectType = new Dictionary<IObjectType, HashSet<Strategy>>();
         }
 
-        internal virtual Strategy InstantiateMemoryStrategy(long objectId)
-        {
-            return this.GetStrategy(objectId);
-        }
+        internal virtual Strategy InstantiateMemoryStrategy(long objectId) => this.GetStrategy(objectId);
 
         internal Strategy GetStrategy(IObject obj)
         {

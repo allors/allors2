@@ -75,9 +75,6 @@ namespace Allors.Adapters.Object.SqlClient
             return this.Include;
         }
 
-        internal override void Setup(ExtentStatement statement)
-        {
-            statement.UseAssociation(this.association);
-        }
+        internal override void Setup(ExtentStatement statement) => statement.UseAssociation(this.association);
     }
 }

@@ -43,39 +43,21 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal CommandType CommandType
         {
-            get
-            {
-                return this.SqlCommand.CommandType;
-            }
+            get => this.SqlCommand.CommandType;
 
-            set
-            {
-                this.SqlCommand.CommandType = value;
-            }
+            set => this.SqlCommand.CommandType = value;
         }
 
         internal string CommandText
         {
-            get
-            {
-                return this.SqlCommand.CommandText;
-            }
+            get => this.SqlCommand.CommandText;
 
-            set
-            {
-                this.SqlCommand.CommandText = value;
-            }
+            set => this.SqlCommand.CommandText = value;
         }
 
-        public void Dispose()
-        {
-            this.SqlCommand.Dispose();
-        }
+        public void Dispose() => this.SqlCommand.Dispose();
 
-        internal SqlParameter CreateParameter()
-        {
-            return this.SqlCommand.CreateParameter();
-        }
+        internal SqlParameter CreateParameter() => this.SqlCommand.CreateParameter();
 
         internal void AddInParameter(string parameterName, object value)
         {

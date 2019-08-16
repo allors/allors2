@@ -103,25 +103,13 @@ namespace Allors.Domain
             @this.AddSecurityToken(@this.Owner?.OwnerSecurityToken);
         }
 
-        public static void BaseDelete(this CommunicationEvent @this, DeletableDelete method)
-        {
-            @this.RemoveWorkEfforts();
-        }
+        public static void BaseDelete(this CommunicationEvent @this, DeletableDelete method) => @this.RemoveWorkEfforts();
 
-        public static void BaseClose(this CommunicationEvent @this, CommunicationEventClose method)
-        {
-            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
-        }
+        public static void BaseClose(this CommunicationEvent @this, CommunicationEventClose method) => @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
 
-        public static void BaseReopen(this CommunicationEvent @this, CommunicationEventReopen method)
-        {
-            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Scheduled;
-        }
+        public static void BaseReopen(this CommunicationEvent @this, CommunicationEventReopen method) => @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Scheduled;
 
-        public static void BaseCancel(this CommunicationEvent @this, CommunicationEventCancel method)
-        {
-            @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Cancelled;
-        }
+        public static void BaseCancel(this CommunicationEvent @this, CommunicationEventCancel method) => @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Cancelled;
 
         private static void DeriveOwnerSecurity(this CommunicationEvent @this)
         {

@@ -728,25 +728,13 @@ namespace Allors.Domain
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
         }
 
-        public void BaseHold(OrderHold method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
-        }
+        public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 
-        public void BaseApprove(OrderApprove method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
-        public void BaseContinue(OrderContinue method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseContinue(OrderContinue method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
-        public void BaseComplete(OrderComplete method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-        }
+        public void BaseComplete(OrderComplete method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
 
         public void BaseShip(SalesOrderShip method)
         {

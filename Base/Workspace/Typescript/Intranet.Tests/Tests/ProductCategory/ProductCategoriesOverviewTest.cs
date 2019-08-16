@@ -13,9 +13,6 @@ namespace Tests.ProductCategoryTest
         }
 
         [Fact]
-        public void Title()
-        {
-            Assert.Equal("Categories", this.Driver.Title);
-        }
+        public void Title() => Assert.Equal("Categories", this.Driver.Title);
     }
 }

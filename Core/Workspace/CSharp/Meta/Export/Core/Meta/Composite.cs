@@ -44,15 +44,9 @@ namespace Allors.Workspace.Meta
 
         public string XmlDoc
         {
-            get
-            {
-                return this.xmlDoc;
-            }
+            get => this.xmlDoc;
 
-            set
-            {
-                this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
-            }
+            set => this.xmlDoc = !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         public string XmlDocComment
@@ -71,10 +65,7 @@ namespace Allors.Workspace.Meta
 
         public bool AssignedIsSynced
         {
-            get
-            {
-                return this.assignedIsSynced;
-            }
+            get => this.assignedIsSynced;
 
             set
             {
@@ -215,13 +206,7 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public IEnumerable<AssociationType> ExclusiveAssociationTypes
-        {
-            get
-            {
-                return this.AssociationTypes.Where(associationType => this.Equals(associationType.RoleType.ObjectType)).ToArray();
-            }
-        }
+        public IEnumerable<AssociationType> ExclusiveAssociationTypes => this.AssociationTypes.Where(associationType => this.Equals(associationType.RoleType.ObjectType)).ToArray();
 
         IEnumerable<IRoleType> IComposite.RoleTypes => this.RoleTypes;
 
@@ -398,15 +383,9 @@ namespace Allors.Workspace.Meta
             this.derivedAssociationTypes = new LazySet<AssociationType>(associations);
         }
 
-        internal void DeriveWorkspace()
-        {
-            this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
-        }
+        internal void DeriveWorkspace() => this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
 
-        internal void DeriveIsSynced()
-        {
-            this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
-        }
+        internal void DeriveIsSynced() => this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
 
         /// <summary>
         /// Derive super types recursively.
@@ -426,13 +405,7 @@ namespace Allors.Workspace.Meta
         }
 
         // TODO: Added for Workspace.Meta
-        public IEnumerable<MethodType> DefinedMethods
-        {
-            get
-            {
-                return this.MetaPopulation.MethodTypes.Where(m => this.Equals(m.ObjectType));
-            }
-        }
+        public IEnumerable<MethodType> DefinedMethods => this.MetaPopulation.MethodTypes.Where(m => this.Equals(m.ObjectType));
 
         public IEnumerable<MethodType> InheritedMethods => this.MethodTypes.Except(this.DefinedMethods);
 

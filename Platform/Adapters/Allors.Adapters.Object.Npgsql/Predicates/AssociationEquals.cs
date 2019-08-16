@@ -61,9 +61,6 @@ namespace Allors.Adapters.Object.Npgsql
             return this.Include;
         }
 
-        internal override void Setup(ExtentStatement statement)
-        {
-            statement.UseAssociation(this.association);
-        }
+        internal override void Setup(ExtentStatement statement) => statement.UseAssociation(this.association);
     }
 }

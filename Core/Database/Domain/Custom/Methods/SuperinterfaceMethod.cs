@@ -10,41 +10,23 @@ namespace Allors.Domain
 {
     public partial class C1
     {
-        public void CoreSuperinterfaceMethod(S1SuperinterfaceMethod method)
-        {
-            method.Value += "C1Core";
-        }
+        public void CoreSuperinterfaceMethod(S1SuperinterfaceMethod method) => method.Value += "C1Core";
 
-        public void CustomSuperinterfaceMethod(S1SuperinterfaceMethod method)
-        {
-            method.Value += "C1Custom";
-        }
+        public void CustomSuperinterfaceMethod(S1SuperinterfaceMethod method) => method.Value += "C1Custom";
     }
 
     public static partial class I1Extensions
     {
-        public static void CoreSuperinterfaceMethod(this I1 @this, S1SuperinterfaceMethod method)
-        {
-            method.Value += "I1Core";
-        }
+        public static void CoreSuperinterfaceMethod(this I1 @this, S1SuperinterfaceMethod method) => method.Value += "I1Core";
 
-        public static void CustomSuperinterfaceMethod(this I1 @this, S1SuperinterfaceMethod method)
-        {
-            method.Value += "I1Custom";
-        }
+        public static void CustomSuperinterfaceMethod(this I1 @this, S1SuperinterfaceMethod method) => method.Value += "I1Custom";
     }
 
     public static partial class S1Extensions
     {
-        public static void CoreSuperinterfaceMethod(this S1 @this, S1SuperinterfaceMethod method)
-        {
-            method.Value += "S1Core";
-        }
+        public static void CoreSuperinterfaceMethod(this S1 @this, S1SuperinterfaceMethod method) => method.Value += "S1Core";
 
-        public static void CustomSuperinterfaceMethod(this S1 @this, S1SuperinterfaceMethod method)
-        {
-            method.Value += "S1Custom";
-        }
+        public static void CustomSuperinterfaceMethod(this S1 @this, S1SuperinterfaceMethod method) => method.Value += "S1Custom";
     }
 
     public partial class S1SuperinterfaceMethod

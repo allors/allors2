@@ -7,9 +7,6 @@ namespace Autotest.Angular
 {
     public partial class Provider
     {
-        public override string ToString()
-        {
-            return this.TokenIdentifier?.ToString() ?? this.TokenValue;
-        }
+        public override string ToString() => this.TokenIdentifier?.ToString() ?? this.TokenValue;
     }
 }

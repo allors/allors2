@@ -35,10 +35,7 @@ namespace Allors.Adapters.Object.Npgsql.Debug
         {
         }
 
-        public override string ToString()
-        {
-            return $"[{this.Executions.Count}x] {this.NpgsqlCommand.CommandText}";
-        }
+        public override string ToString() => $"[{this.Executions.Count}x] {this.NpgsqlCommand.CommandText}";
 
         protected override void OnExecuting()
         {

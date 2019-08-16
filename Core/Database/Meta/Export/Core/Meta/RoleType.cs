@@ -269,10 +269,7 @@ namespace Allors.Meta
         /// <returns>
         /// The role value.
         /// </returns>
-        public override object Get(IStrategy strategy)
-        {
-            return strategy.GetRole(this.RelationType);
-        }
+        public override object Get(IStrategy strategy) => strategy.GetRole(this.RelationType);
 
         /// <summary>
         /// Set the value of the role on this object.
@@ -283,10 +280,7 @@ namespace Allors.Meta
         /// <param name="value">
         /// The role value.
         /// </param>
-        public void Set(IStrategy strategy, object value)
-        {
-            strategy.SetRole(this.RelationType, value);
-        }
+        public void Set(IStrategy strategy, object value) => strategy.SetRole(this.RelationType, value);
 
         /// <summary>
         /// Get the object type.
@@ -294,10 +288,7 @@ namespace Allors.Meta
         /// <returns>
         /// The <see cref="ObjectType"/>.
         /// </returns>
-        public override ObjectType GetObjectType()
-        {
-            return this.ObjectType;
-        }
+        public override ObjectType GetObjectType() => this.ObjectType;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

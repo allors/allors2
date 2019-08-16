@@ -15,18 +15,16 @@ namespace Autotest
 
         public MenuItem[] MenuItems { get; set; }
 
-        public void BaseLoad(JArray jsonArray)
-        {
+        public void BaseLoad(JArray jsonArray) =>
             this.MenuItems = jsonArray?.Cast<JObject>()
                 .Select(v =>
+                {
+                    var child = new MenuItem
                     {
-                        var child = new MenuItem
-                        {
-                            Menu = this,
-                        };
-                        child.Load(v);
-                        return child;
-                    }).ToArray();
-        }
+                        Menu = this,
+                    };
+                    child.Load(v);
+                    return child;
+                }).ToArray();
     }
 }

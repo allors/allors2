@@ -34,9 +34,8 @@ namespace Allors.Workspace.Data
 
         public int? Take { get; set; }
 
-        public Protocol.Data.Result ToJson()
-        {
-            return new Protocol.Data.Result
+        public Protocol.Data.Result ToJson() =>
+            new Protocol.Data.Result
             {
                 FetchRef = this.FetchRef,
                 Fetch = this.Fetch?.ToJson(),
@@ -44,6 +43,5 @@ namespace Allors.Workspace.Data
                 Skip = this.Skip,
                 Take = this.Take
             };
-        }
     }
 }

@@ -36,10 +36,7 @@ namespace Allors.Workspace.Meta
 
         public string SingularName
         {
-            get
-            {
-                return this.singularName;
-            }
+            get => this.singularName;
 
             set
             {

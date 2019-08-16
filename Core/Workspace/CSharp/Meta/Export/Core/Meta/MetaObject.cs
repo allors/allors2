@@ -29,10 +29,7 @@ namespace Allors.Workspace.Meta
     {
         private Guid id;
 
-        protected MetaObjectBase(MetaPopulation metaPopulation)
-        {
-            this.MetaPopulation = metaPopulation;
-        }
+        protected MetaObjectBase(MetaPopulation metaPopulation) => this.MetaPopulation = metaPopulation;
 
         IMetaPopulation IMetaObject.MetaPopulation => this.MetaPopulation;
 
@@ -44,10 +41,7 @@ namespace Allors.Workspace.Meta
         /// <value>The meta object id.</value>
         public Guid Id
         {
-            get
-            {
-                return this.id;
-            }
+            get => this.id;
 
             set
             {

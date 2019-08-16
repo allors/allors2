@@ -27,19 +27,10 @@ namespace Allors.Workspace.Meta
 
         public Interface ObjectType => this.Interface;
 
-        public static implicit operator Interface(MetaInterface metaInterface)
-        {
-            return metaInterface.Interface;
-        }
+        public static implicit operator Interface(MetaInterface metaInterface) => metaInterface.Interface;
 
-        public static implicit operator Composite(MetaInterface metaInterface)
-        {
-            return metaInterface.Interface;
-        }
+        public static implicit operator Composite(MetaInterface metaInterface) => metaInterface.Interface;
 
-        public static implicit operator ObjectType(MetaInterface metaInterface)
-        {
-            return metaInterface.Interface;
-        }
+        public static implicit operator ObjectType(MetaInterface metaInterface) => metaInterface.Interface;
     }
 }

@@ -27,6 +27,5 @@ namespace Allors.Domain
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
             userService.UserName = user?.UserName;
         }
-
     }
 }

@@ -109,7 +109,7 @@ namespace Allors.Domain
             var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
 
-            var bank = new BankBuilder(this.Session).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
+            var bank = new BankBuilder(this.Session).WithCountry(belgium).WithName("ING BelgiÃ«").WithBic("BBRUBEBB").Build();
 
             var ownBankAccount = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("BE23 3300 6167 6391")
@@ -225,10 +225,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenActiveSupplierRelationship_WhenDeriving_ThenInternalOrganisationSuppliersContainsSupplier()
-        {
-            Assert.Contains(this.supplier, this.InternalOrganisation.ActiveSuppliers);
-        }
+        public void GivenActiveSupplierRelationship_WhenDeriving_ThenInternalOrganisationSuppliersContainsSupplier() => Assert.Contains(this.supplier, this.InternalOrganisation.ActiveSuppliers);
 
         [Fact]
         public void GivenSupplierRelationshipToCome_WhenDeriving_ThenInternalOrganisationSuppliersDosNotContainSupplier()

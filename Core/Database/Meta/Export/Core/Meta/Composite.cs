@@ -65,10 +65,7 @@ namespace Allors.Meta
 
         public bool AssignedIsSynced
         {
-            get
-            {
-                return this.assignedIsSynced;
-            }
+            get => this.assignedIsSynced;
 
             set
             {
@@ -209,13 +206,7 @@ namespace Allors.Meta
             }
         }
 
-        public IEnumerable<AssociationType> ExclusiveAssociationTypes
-        {
-            get
-            {
-                return this.AssociationTypes.Where(associationType => this.Equals(associationType.RoleType.ObjectType)).ToArray();
-            }
-        }
+        public IEnumerable<AssociationType> ExclusiveAssociationTypes => this.AssociationTypes.Where(associationType => this.Equals(associationType.RoleType.ObjectType)).ToArray();
 
         IEnumerable<IRoleType> IComposite.RoleTypes => this.RoleTypes;
 
@@ -553,15 +544,9 @@ namespace Allors.Meta
             this.derivedAssociationTypes = new LazySet<AssociationType>(associations);
         }
 
-        internal void DeriveWorkspace()
-        {
-            this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
-        }
+        internal void DeriveWorkspace() => this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
 
-        internal void DeriveIsSynced()
-        {
-            this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
-        }
+        internal void DeriveIsSynced() => this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
 
         /// <summary>
         /// Derive super types recursively.

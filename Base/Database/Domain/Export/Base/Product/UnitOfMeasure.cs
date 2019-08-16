@@ -17,9 +17,6 @@ namespace Allors.Domain
 {
     public partial class UnitOfMeasure
     {
-        public string GetName()
-        {
-            return this.Name;
-        }
+        public string GetName() => this.Name;
     }
 }

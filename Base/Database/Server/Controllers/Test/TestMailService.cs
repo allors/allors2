@@ -7,10 +7,7 @@ namespace Allors
 
     public class TestMailService : IMailService
     {
-        public TestMailService()
-        {
-            this.Sent = new List<EmailMessage>();
-        }
+        public TestMailService() => this.Sent = new List<EmailMessage>();
 
         public List<EmailMessage> Sent { get; }
 
