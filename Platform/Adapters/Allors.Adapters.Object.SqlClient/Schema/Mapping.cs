@@ -47,7 +47,7 @@ namespace Allors.Adapters.Object.SqlClient
         public const SqlDbType SqlDbTypeForObject = SqlDbType.BigInt;
         public const SqlDbType SqlDbTypeForVersion = SqlDbType.BigInt;
         public const SqlDbType SqlDbTypeForCount = SqlDbType.Int;
-        
+
         public readonly Dictionary<IRoleType, string> ParamNameByRoleType;
 
         internal static readonly string ParamNameForObject = string.Format(ParamFormat, ColumnNameForObject);
@@ -91,7 +91,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal string ProcedureNameForGetVersion;
         internal string ProcedureNameForUpdateVersion;
-        
+
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectsByClass;
@@ -100,7 +100,7 @@ namespace Allors.Adapters.Object.SqlClient
         internal readonly Dictionary<IClass, string> ProcedureNameForGetUnitRolesByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForPrefetchUnitRolesByClass;
         internal readonly Dictionary<IClass, Dictionary<IRelationType, string>> ProcedureNameForSetUnitRoleByRelationTypeByClass;
-        
+
         internal readonly Dictionary<IRelationType, string> ProcedureNameForGetRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForPrefetchRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForSetRoleByRelationType;
@@ -153,7 +153,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.TableTypeNameForUniqueRelation = database.SchemaName + "." + "_t_u";
             this.TableTypeNameForBinaryRelation = database.SchemaName + "." + "_t_bi";
             this.TableTypeNamePrefixForDecimalRelation = database.SchemaName + "." + "_t_de";
-            
+
             this.TableTypeColumnNameForObject = "_o";
             this.TableTypeColumnNameForVersion = "_c";
             this.TableTypeColumnNameForAssociation = "_a";
@@ -569,7 +569,7 @@ END";
             this.ProcedureNameForCreateObjectByClass.Add(@class, name);
 
             // CreateObject
-            var definition =  $@"
+            var definition = $@"
 CREATE PROCEDURE {name} 
     {ParamNameForClass} {SqlTypeForClass}
 AS
@@ -1060,7 +1060,7 @@ END";
 
             this.ProcedureDefinitionByName.Add(name, definition);
         }
-        
+
         private void ClearCompositeRole(IRoleType roleType, IClass @class)
         {
             var relationType = roleType.RelationType;
@@ -1328,7 +1328,7 @@ END";
 
             this.ProcedureDefinitionByName.Add(name, definition);
         }
-        
+
         private void UpdateVersionIds()
         {
             this.ProcedureNameForUpdateVersion = this.Database.SchemaName + "." + ProcedurePrefixForUpdateVersion;

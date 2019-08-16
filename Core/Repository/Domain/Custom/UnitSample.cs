@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4e501cd6-807c-4f10-b60b-acd1d80042cd")]
     #endregion
-    public partial class UnitSample: Object 
+    public partial class UnitSample : Object
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -31,7 +31,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime AllorsDateTime { get; set; }
-        
+
         #region Allors
         [Id("5a788ebe-65e9-4d5e-853a-91bb4addabb5")]
         [AssociationId("7620281d-3d8a-470a-9258-7a6d1b818b46")]
@@ -39,7 +39,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public bool AllorsBoolean { get; set; }
-        
+
         #region Allors
         [Id("74a35820-ef8c-4373-9447-6215ee8279c0")]
         [AssociationId("e5f7a565-372a-42ed-8da5-ffe6dd599f70")]
@@ -47,7 +47,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public double AllorsDouble { get; set; }
-        
+
         #region Allors
         [Id("b817ba76-876e-44ea-8e5a-51d552d4045e")]
         [AssociationId("80683240-71d5-4329-abd0-87c367b44fec")]
@@ -55,7 +55,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public int AllorsInteger { get; set; }
-        
+
         #region Allors
         [Id("c724c733-972a-411c-aecb-e865c2628a90")]
         [AssociationId("e4917fda-a605-4f6f-8f63-579ec688b629")]
@@ -64,7 +64,7 @@ namespace Allors.Repository
         [Workspace]
         [Size(256)]
         public string AllorsString { get; set; }
-        
+
         #region Allors
         [Id("ed58ae4c-24e0-4dd1-8b1c-0909df1e0fcd")]
         [AssociationId("f117e164-ce37-4c12-a79e-38cda962adae")]
@@ -72,7 +72,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public Guid AllorsUnique { get; set; }
-        
+
         #region Allors
         [Id("f746da51-ea2d-4e22-9ecb-46d4dbc1b084")]
         [AssociationId("3936ee9b-3bd6-44de-9340-4047749a6c2c")]
@@ -149,20 +149,20 @@ namespace Allors.Repository
         public decimal RequiredDecimal { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

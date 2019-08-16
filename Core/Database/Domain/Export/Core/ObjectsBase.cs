@@ -21,7 +21,7 @@
 namespace Allors
 {
     using Allors.Meta;
-    
+
     using Allors.Domain;
 
     public abstract partial class ObjectsBase<T> : IObjects where T : IObject
@@ -47,7 +47,7 @@ namespace Allors
 
         public T FindBy(RoleType roleType, object parameter)
         {
-            if(parameter == null)
+            if (parameter == null)
             {
                 return default(T);
             }

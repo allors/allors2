@@ -25,9 +25,9 @@ namespace Allors.Repository
 
         public string InternalComment { get; set; }
         public Currency Currency { get; set; }
-        
-        
-        
+
+
+
         public string CustomerReference { get; set; }
         public Fee Fee { get; set; }
         public decimal TotalExVat { get; set; }
@@ -36,21 +36,21 @@ namespace Allors.Repository
         public decimal TotalSurcharge { get; set; }
         public OrderItem[] ValidOrderItems { get; set; }
         public string OrderNumber { get; set; }
-        
+
         public decimal TotalDiscount { get; set; }
         public string Message { get; set; }
-        
+
         public DateTime EntryDate { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public OrderKind OrderKind { get; set; }
         public decimal TotalIncVat { get; set; }
-        
+
         public VatRegime VatRegime { get; set; }
-        
+
         public decimal TotalShippingAndHandling { get; set; }
         public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
         public DateTime OrderDate { get; set; }
-        
+
         public DateTime DeliveryDate { get; set; }
         public decimal TotalBasePrice { get; set; }
         public decimal TotalFee { get; set; }
@@ -311,7 +311,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ShipmentMethod ShipmentMethod { get; set; }
-        
+
         #region Allors
         [Id("DEF7B6D8-0704-4CE0-80A4-3B1E23671B20")]
         [AssociationId("13C6727C-DF28-4E64-94BF-D57BD4CF01D7")]
@@ -362,7 +362,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public Store Store { get; set; }
-        
+
         #region Allors
         [Id("AF9225E8-CE1A-4FEE-9D05-476D2810C9CF")]
         [AssociationId("D614AA16-1119-44F8-B566-571DD9BFA665")]
@@ -402,7 +402,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public SalesOrderItem[] SalesOrderItems { get; set; }
-        
+
         #region Allors
         [Id("C440AF2E-CB6A-4614-B0D8-9D09DFD5E568")]
         [AssociationId("0611384B-1B81-4A9E-9301-E1521B24434F")]
@@ -441,7 +441,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

@@ -204,7 +204,7 @@ namespace Allors.Domain
         public static string NextPurchaseInvoiceNumber(this InternalOrganisation @this, int year)
         {
             var purchaseInvoiceNumber = @this.PurchaseInvoiceCounter.NextValue();
-            return string.Concat(@this.ExistPurchaseInvoiceNumberPrefix ? @this.PurchaseInvoiceNumberPrefix.Replace("{year}", year.ToString()): string.Empty, purchaseInvoiceNumber);
+            return string.Concat(@this.ExistPurchaseInvoiceNumberPrefix ? @this.PurchaseInvoiceNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, purchaseInvoiceNumber);
         }
 
         public static string NextQuoteNumber(this InternalOrganisation @this, int year)
@@ -228,7 +228,7 @@ namespace Allors.Domain
         public static string NextPurchaseOrderNumber(this InternalOrganisation @this, int year)
         {
             var purchaseOrderNumber = @this.PurchaseOrderCounter.NextValue();
-            return string.Concat(@this.ExistPurchaseOrderNumberPrefix? @this.PurchaseOrderNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, purchaseOrderNumber);
+            return string.Concat(@this.ExistPurchaseOrderNumberPrefix ? @this.PurchaseOrderNumberPrefix.Replace("{year}", year.ToString()) : string.Empty, purchaseOrderNumber);
         }
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this)

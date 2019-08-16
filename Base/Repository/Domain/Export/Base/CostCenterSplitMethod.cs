@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("cabc3b20-0456-47d9-a030-6df1d1f8ea9e")]
     #endregion
-    public partial class CostCenterSplitMethod : Enumeration 
+    public partial class CostCenterSplitMethod : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -28,20 +28,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

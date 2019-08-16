@@ -45,13 +45,13 @@ namespace Tests
         public void RoleEquals()
         {
             var filter = new Filter(M.Person.ObjectType)
-                            {
-                                Predicate = new Equals
-                                                {
-                                                    PropertyType = M.Person.FirstName,
-                                                    Value = "John"
-                                                }
-                            };
+            {
+                Predicate = new Equals
+                {
+                    PropertyType = M.Person.FirstName,
+                    Value = "John"
+                }
+            };
 
             var queryExtent = filter.Build(this.Session);
 
@@ -66,10 +66,10 @@ namespace Tests
         {
             // select from Person where FirstName='John' and LastName='Doe'
             var filter = new Filter(M.Person.ObjectType)
-                             {
-                                 Predicate = new And
-                                                 {
-                                                     Operands = new IPredicate[]
+            {
+                Predicate = new And
+                {
+                    Operands = new IPredicate[]
                                                                     {
                                                                         new Equals
                                                                             {
@@ -82,8 +82,8 @@ namespace Tests
                                                                                 Value = "Doe"
                                                                             }
                                                                     }
-                                                 }
-                             };
+                }
+            };
 
             var queryExtent = filter.Build(this.Session);
 

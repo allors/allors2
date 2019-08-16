@@ -41,7 +41,8 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal SqlParameterCollection Parameters => this.SqlCommand.Parameters;
 
-        internal CommandType CommandType {
+        internal CommandType CommandType
+        {
             get
             {
                 return this.SqlCommand.CommandType;
@@ -53,7 +54,8 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal string CommandText {
+        internal string CommandText
+        {
             get
             {
                 return this.SqlCommand.CommandText;
@@ -167,7 +169,7 @@ namespace Allors.Adapters.Object.SqlClient
             sqlParameter.SqlDbType = SqlDbType.Structured;
             sqlParameter.TypeName = this.Mapping.TableTypeNameForObject;
             sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-            sqlParameter.Value = new ObjectDataRecord(this.Mapping, objectIds);;
+            sqlParameter.Value = new ObjectDataRecord(this.Mapping, objectIds); ;
 
             this.Parameters.Add(sqlParameter);
         }
@@ -192,7 +194,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             this.Parameters.Add(sqlParameter);
         }
-        
+
         internal object ExecuteScalar()
         {
             this.OnExecuting();

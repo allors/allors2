@@ -5,11 +5,11 @@ namespace Allors.Repository
     #region Allors
     [Id("2cc9bde1-80da-4159-bb20-219074266101")]
     #endregion
-    public partial class Dependee : Object, DerivationCounted 
+    public partial class Dependee : Object, DerivationCounted
     {
         #region inherited properties
         public int DerivationCount { get; set; }
-        
+
         #endregion
 
         #region Allors
@@ -46,20 +46,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

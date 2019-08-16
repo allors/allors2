@@ -57,7 +57,7 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public GeneralLedgerAccountType GeneralLedgerAccountType { get; set; }
-        
+
         #region Allors
         [Id("2e6545f8-5fcf-4129-99f6-1f41280cd02d")]
         [AssociationId("559a7346-4ec8-449c-ae3a-2e9360933196")]
@@ -194,20 +194,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

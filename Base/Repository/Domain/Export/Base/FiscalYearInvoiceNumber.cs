@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("341fa885-0161-406b-89e6-08b1c92cd3b3")]
     #endregion
-    public partial class FiscalYearInvoiceNumber : Object 
+    public partial class FiscalYearInvoiceNumber : Object
     {
         #region inherited properties
         #endregion
@@ -40,20 +40,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

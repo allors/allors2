@@ -85,7 +85,7 @@ namespace Tests.PartyRelationshipTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new Employments(this.Session).Extent().ToArray();
 
             this.organisationListPage.Table.DefaultAction(employer);

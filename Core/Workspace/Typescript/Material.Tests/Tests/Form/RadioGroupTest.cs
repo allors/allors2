@@ -7,7 +7,7 @@ namespace Tests
     using Allors.Meta;
 
     using Components;
-    
+
 
     using Xunit;
 
@@ -22,7 +22,7 @@ namespace Tests
             this.Login();
             this.page = this.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         [Trait("Category", "Investigate")]
         public void Initial()

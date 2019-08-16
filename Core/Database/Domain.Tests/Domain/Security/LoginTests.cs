@@ -26,7 +26,7 @@ namespace Tests
     using Allors;
     using global::Allors.Domain;
     using Xunit;
-    
+
     public class LoginTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

@@ -34,7 +34,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public Person AutocompleteOptions { get; set; }
-        
+
         #region Allors
         [Id("46964F62-AF12-4450-83DA-C695C4A0ECE8")]
         [AssociationId("4E112908-E5B4-448C-B6A6-58094165522B")]
@@ -141,21 +141,21 @@ namespace Allors.Repository
         public string TextArea { get; set; }
 
         #region inherited methods
-        
-        public void OnBuild(){}
 
-        public void OnPostBuild(){}
+        public void OnBuild() { }
+
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

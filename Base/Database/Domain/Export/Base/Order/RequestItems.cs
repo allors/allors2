@@ -22,7 +22,7 @@ namespace Allors.Domain
     {
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var draft = new RequestItemStates(this.Session).Draft;
             var cancelled = new RequestItemStates(this.Session).Cancelled;

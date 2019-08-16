@@ -59,7 +59,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Required]
         public Media Media { get; set; }
-        
+
         #region Allors
         [Id("3BC9EEAE-717F-4030-88ED-68057B14ACEC")]
         [AssociationId("8B04F22C-48EC-469F-BBD0-1136AF8325A3")]
@@ -70,22 +70,22 @@ namespace Allors.Repository
         public string Arguments { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

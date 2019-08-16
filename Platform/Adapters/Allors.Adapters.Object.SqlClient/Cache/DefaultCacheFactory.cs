@@ -27,7 +27,7 @@ namespace Allors.Adapters.Object.SqlClient.Caching
     /// </summary>
     public sealed class DefaultCacheFactory : ICacheFactory
     {
-        public IClass[] ExcludedClasses { get; set; } 
+        public IClass[] ExcludedClasses { get; set; }
 
         public ICache CreateCache()
         {

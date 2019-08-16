@@ -146,7 +146,7 @@ namespace Allors.Adapters
             {
                 init();
                 var population = new TestPopulation(this.Session);
-                
+
                 var schemaExtent = new Protocol.Data.Extent
                 {
                     Kind = Protocol.Data.ExtentKind.Filter,
@@ -176,9 +176,9 @@ namespace Allors.Adapters
                 var population = new TestPopulation(this.Session);
 
                 var extent = new Filter(M.C1.ObjectType)
-                                 {
-                                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
-                                 };
+                {
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                };
 
 
                 var schemaExtent = extent.Save();
@@ -194,7 +194,7 @@ namespace Allors.Adapters
                 Assert.Equal("pString", predicate.Parameter);
             }
         }
-        
+
         [Fact]
         public void ScratchPad()
         {

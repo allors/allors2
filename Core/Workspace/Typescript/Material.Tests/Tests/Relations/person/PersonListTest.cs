@@ -5,7 +5,7 @@ namespace Tests.Relations
     using Allors.Domain;
     using Allors.Meta;
 
-    
+
 
     using Xunit;
 

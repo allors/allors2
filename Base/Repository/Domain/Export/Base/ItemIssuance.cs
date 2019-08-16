@@ -51,7 +51,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public PickListItem PickListItem { get; set; }
-        
+
         #region Allors
         [Id("72872b29-69e3-4408-ad61-80201c46421b")]
         [AssociationId("f191b03b-fb03-4c5b-9455-57d241160e3b")]
@@ -61,26 +61,26 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
-       
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
 
         #endregion
     }

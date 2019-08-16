@@ -83,7 +83,7 @@ namespace Allors
         /// Gets the meta domain of this population.
         /// </summary>
         IMetaPopulation MetaPopulation { get; }
-        
+
         /// <summary>
         /// Gets the service provider.
         /// </summary>

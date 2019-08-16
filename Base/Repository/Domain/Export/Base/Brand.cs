@@ -16,7 +16,7 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("2A45A70B-ECF0-441E-AD89-52FC123BC79E")]
         [AssociationId("12157031-C8EA-4047-8FD5-969FF6B07C4C")]
@@ -55,7 +55,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

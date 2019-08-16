@@ -89,7 +89,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ProductCategory[] Descendants { get; set; }
-        
+
         #region Allors
         [Id("8af8b1b1-a711-4e98-a6a0-2948f2d1f315")]
         [AssociationId("042e65b2-6df9-4e76-91bd-7766e935cbfe")]
@@ -99,7 +99,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Name { get; set; }
-        
+
         #region Allors
         [Id("0FB2F768-8313-450C-94AE-5F9C52B758E8")]
         [AssociationId("A9401345-9CBB-4CD7-A792-57EAEC1C5F53")]

@@ -37,11 +37,11 @@ namespace Allors.Repository.Roslyn
             var log = new StringWriter();
             var analyzerManager = new AnalyzerManager(
                 new AnalyzerManagerOptions
-                    {
-                        LogWriter = log
-                    });
-            
-            var projectAnalyzer = analyzerManager.GetProject(projectPath);            
+                {
+                    LogWriter = log
+                });
+
+            var projectAnalyzer = analyzerManager.GetProject(projectPath);
             var workspace = projectAnalyzer.GetWorkspace();
             var solution = workspace.CurrentSolution;
             var project = solution.Projects.First();

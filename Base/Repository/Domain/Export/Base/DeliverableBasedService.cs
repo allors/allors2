@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("98fc5441-2037-4134-b143-a9797af9d7f1")]
     #endregion
-    public partial class DeliverableBasedService : Service 
+    public partial class DeliverableBasedService : Service
     {
         #region inherited properties
 
@@ -66,20 +66,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

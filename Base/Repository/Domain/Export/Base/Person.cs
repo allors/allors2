@@ -3,7 +3,7 @@ namespace Allors.Repository
     using System;
     using Attributes;
 
-    public partial class Person : Party, Deletable, Versioned 
+    public partial class Person : Party, Deletable, Versioned
     {
         #region inherited properties
         public Locale Locale { get; set; }
@@ -287,7 +287,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Passport[] Passports { get; set; }
-        
+
         #region Allors
         [Id("f15d6344-e4f4-4b79-a1af-c6a7417af844")]
         [AssociationId("13d296f7-0118-48dc-9f60-cbbdee324ad7")]
@@ -297,7 +297,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public MaritalStatus MaritalStatus { get; set; }
-        
+
         #region Allors
         [Id("f92c5c86-c32a-41e0-99ff-2d94a8d6ccfa")]
         [AssociationId("0ff499d5-300f-483c-b722-757787c1f4b3")]
@@ -307,7 +307,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Media Picture { get; set; }
-        
+
         #region Allors
         [Id("fefb8dc2-cfe5-4078-b3a9-8c4622047c34")]
         [AssociationId("7ecef213-f2db-4f79-8bf3-fc0979f81420")]
@@ -316,7 +316,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string SocialSecurityNumber { get; set; }
-        
+
         #region Allors
         [Id("ffda06c0-7dff-42fa-abd5-1ed6fa8c43da")]
         [AssociationId("8dabd93a-badc-40f3-96af-f97c1b61d262")]
@@ -365,10 +365,10 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Workspace]
-        public ContactMechanism[] CurrentOrganisationContactMechanisms{ get; set; }
+        public ContactMechanism[] CurrentOrganisationContactMechanisms { get; set; }
 
         #region inherited methods
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

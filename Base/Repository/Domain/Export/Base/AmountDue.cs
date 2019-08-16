@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public PaymentMethod PaymentMethod { get; set; }
-        
+
         #region Allors
         [Id("39d2f4f2-0c16-40f5-990b-38bad15fae99")]
         [AssociationId("cada8a73-b732-4789-aa7b-a4caeaea20e2")]
@@ -47,7 +47,7 @@ namespace Allors.Repository
         [RoleId("6b0f0eed-a757-4668-97bb-9d82ed4ff983")]
         #endregion
         public DateTime BlockedForDunning { get; set; }
-        
+
         #region Allors
         [Id("43193cac-15ad-4a1a-8945-f4ecb7d93291")]
         [AssociationId("96a1c683-052a-446e-8d82-c1943caaf53f")]
@@ -56,7 +56,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal AmountVat { get; set; }
-        
+
         #region Allors
         [Id("5cb888fd-bcff-4eef-8ad6-efab3434364d")]
         [AssociationId("3c54dbfa-3dbd-419c-b341-4a127bd1387b")]
@@ -65,14 +65,14 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public BankAccount BankAccount { get; set; }
-        
+
         #region Allors
         [Id("90b4eaea-21cd-4a04-a64b-3c3dce0718d9")]
         [AssociationId("87f05475-29aa-4cb7-a5d9-865a47995cd6")]
         [RoleId("71271fdc-4a24-4650-a57a-9cbc2973cc04")]
         #endregion
         public DateTime ReconciliationDate { get; set; }
-        
+
         #region Allors
         [Id("953877d2-055c-4274-afa5-91fd425b5449")]
         [AssociationId("9e20dc87-aa15-4854-b0d4-1ecefb22621e")]
@@ -80,21 +80,21 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string InvoiceNumber { get; set; }
-        
+
         #region Allors
         [Id("98ec45be-fea4-4df7-91fb-6643edf74784")]
         [AssociationId("102ff721-0f77-4e05-9252-974b0e2a1505")]
         [RoleId("e422bd7e-2998-4022-88cf-8de0a84621c4")]
         #endregion
         public int DunningStep { get; set; }
-        
+
         #region Allors
         [Id("a40ae239-df13-47e1-8fa2-cfcb4946b966")]
         [AssociationId("3fca92c6-8996-4f5b-867a-7ad209f8e44e")]
         [RoleId("8d211ac4-115f-47e4-be98-784ca9f7409a")]
         #endregion
         public int SubAccountNumber { get; set; }
-        
+
         #region Allors
         [Id("a6693763-e246-4ae8-bd37-74313d32883b")]
         [AssociationId("e74e0621-56ec-4bf9-920d-919b8cebd2f9")]
@@ -102,7 +102,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string TransactionNumber { get; set; }
-        
+
         #region Allors
         [Id("acedb9ed-b0de-464f-86ec-621022938ad7")]
         [AssociationId("7a8823ee-ce46-4f99-8b15-217476244273")]
@@ -111,7 +111,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public DebitCreditConstant Side { get; set; }
-        
+
         #region Allors
         [Id("b0570264-3211-4444-a69f-1cdb2eb6e783")]
         [AssociationId("8586c543-e997-48e1-8302-a5ef7e1ad6ab")]
@@ -120,21 +120,21 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public Currency Currency { get; set; }
-        
+
         #region Allors
         [Id("d227669f-8052-4962-8ccf-a775355691f1")]
         [AssociationId("a0b14293-269d-46d3-b297-a149a5090b1d")]
         [RoleId("a6620318-c985-4e60-bdea-204993e65217")]
         #endregion
         public bool BlockedForPayment { get; set; }
-        
+
         #region Allors
         [Id("def3c00e-f065-48e5-97a2-22497f1800b3")]
         [AssociationId("278bb3d9-da67-44ca-a78b-8c047da3b2d4")]
         [RoleId("3b867d6f-f7e7-4223-99cf-052ac43e139b")]
         #endregion
         public DateTime DateLastReminder { get; set; }
-        
+
         #region Allors
         [Id("e9b2fc3f-c6ed-4e67-a634-9ee78f824ad8")]
         [AssociationId("7d7e867b-e22e-4ca9-8751-e8af845fc206")]
@@ -142,7 +142,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string YourReference { get; set; }
-        
+
         #region Allors
         [Id("edad9c25-ef5e-4326-aba6-535deb6a8a7e")]
         [AssociationId("deeaff94-26ec-4dbf-815b-c3105024459e")]
@@ -150,7 +150,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string OurReference { get; set; }
-        
+
         #region Allors
         [Id("f027183b-d8a1-4909-bedc-5d16a62d6bc2")]
         [AssociationId("bc7040ea-f230-42e5-ab35-458a0d3fc52e")]
@@ -158,31 +158,31 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string ReconciliationNumber { get; set; }
-        
+
         #region Allors
         [Id("f18c665b-4f88-4e97-950c-08a38d9f0d93")]
         [AssociationId("8707951a-3285-44a9-b3d8-7c51cc9977ec")]
         [RoleId("9caf74b7-48c5-4d1b-81fb-15bc22518156")]
         #endregion
         public DateTime DueDate { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

@@ -23,7 +23,7 @@ namespace Allors.Domain
 
             foreach (GeneralLedgerAccount generalLedgerAccount in this.GeneralLedgerAccounts)
             {
-                derivation.AddDependency(this, generalLedgerAccount);                
+                derivation.AddDependency(this, generalLedgerAccount);
             }
         }
     }

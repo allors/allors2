@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("3b73eea7-6455-4fe5-87c0-99c852f57e6b")]
     #endregion
-    public partial class VatCalculationMethod : Enumeration 
+    public partial class VatCalculationMethod : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -28,20 +28,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

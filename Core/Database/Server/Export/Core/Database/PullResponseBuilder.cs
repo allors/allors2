@@ -50,7 +50,7 @@ namespace Allors.Server
             return new PullResponse
             {
                 UserSecurityHash = this.user.SecurityHash(),
-                Objects = this.objects.Select(x => new[] {x.Id.ToString(), x.Strategy.ObjectVersion.ToString()}).ToArray(),
+                Objects = this.objects.Select(x => new[] { x.Id.ToString(), x.Strategy.ObjectVersion.ToString() }).ToArray(),
                 NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
                 NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
                 NamedValues = this.valueByName,
@@ -114,7 +114,7 @@ namespace Allors.Server
                 }
 
                 var inputList = collection as IList<IObject> ?? collection.ToArray();
-                
+
                 // Prefetch
                 if (tree != null && inputList.Count > 0)
                 {

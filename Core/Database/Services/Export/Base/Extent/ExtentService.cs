@@ -26,9 +26,9 @@
                 using (var session = this.databaseService.Database.CreateSession())
                 {
                     var filter = new Filter(M.PreparedExtent.Class)
-                                     {
-                                         Predicate = new Equals(M.PreparedExtent.UniqueId.RoleType) { Value = id }
-                                     };
+                    {
+                        Predicate = new Equals(M.PreparedExtent.UniqueId.RoleType) { Value = id }
+                    };
 
                     var preparedExtent = (PreparedExtent)filter.Build(session).First;
                     if (preparedExtent != null)

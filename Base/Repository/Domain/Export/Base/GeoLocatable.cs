@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("93960be2-f676-4e7f-9efb-f99c92303059")]
     #endregion
-	public partial interface GeoLocatable : UniquelyIdentifiable, Object
+    public partial interface GeoLocatable : UniquelyIdentifiable, Object
     {
         #region Allors
         [Id("b0aba482-63eb-4482-a232-3863f089f4d9")]

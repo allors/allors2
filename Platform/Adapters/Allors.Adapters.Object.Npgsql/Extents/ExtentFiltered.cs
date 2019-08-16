@@ -128,7 +128,7 @@ namespace Allors.Adapters.Object.Npgsql
             var objectIds = new List<long>();
 
             var alias = this.BuildSql(statement);
-            
+
             using (var command = statement.CreateDbCommand(alias))
             {
                 if (command != null)
@@ -140,7 +140,7 @@ namespace Allors.Adapters.Object.Npgsql
                             var objectId = this.session.State.GetObjectIdForExistingObject(reader.GetValue(0).ToString());
                             objectIds.Add(objectId);
                         }
-}
+                    }
                 }
             }
 

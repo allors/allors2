@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class DesiredProductFeatureTests : DomainTest
     {
         [Fact]
@@ -44,7 +44,7 @@ namespace Allors.Domain
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
-            
+
             builder.WithRequired(false);
             builder.Build();
 

@@ -4,7 +4,7 @@
     using System.Linq;
 
     using Protocol.Remote.Pull;
-    
+
     public class Result
     {
         public Result(Session session, PullResponse response)

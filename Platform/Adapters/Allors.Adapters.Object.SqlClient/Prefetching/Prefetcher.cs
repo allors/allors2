@@ -729,8 +729,8 @@ namespace Allors.Adapters.Object.SqlClient
 
             foreach (var association in associations)
             {
-                if (this.Session.State.ModifiedRolesByReference != null && 
-                    this.Session.State.ModifiedRolesByReference.TryGetValue(association, out var roles) && 
+                if (this.Session.State.ModifiedRolesByReference != null &&
+                    this.Session.State.ModifiedRolesByReference.TryGetValue(association, out var roles) &&
                     roles.TryGetUnitRole(roleType, out var modifiedRole))
                 {
                     continue;
@@ -759,8 +759,8 @@ namespace Allors.Adapters.Object.SqlClient
 
             foreach (var association in associations)
             {
-                if (this.Session.State.ModifiedRolesByReference != null && 
-                    this.Session.State.ModifiedRolesByReference.TryGetValue(association, out var roles) && 
+                if (this.Session.State.ModifiedRolesByReference != null &&
+                    this.Session.State.ModifiedRolesByReference.TryGetValue(association, out var roles) &&
                     roles.TryGetCompositeRole(roleType, out var modifiedRole))
                 {
                     if (modifiedRole != null)

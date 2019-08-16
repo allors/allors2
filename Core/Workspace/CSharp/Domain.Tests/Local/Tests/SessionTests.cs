@@ -109,7 +109,7 @@ namespace Tests.Local
 
             Assert.False(session.HasChanges);
         }
-        
+
         [Fact]
         public void UnitSave()
         {
@@ -552,9 +552,9 @@ namespace Tests.Local
             var newId = mathijs.NewId.Value;
 
             saveResponse = new PushResponse
-                               {
-                                   NewObjects = new[] { new PushResponseNewObject { I = "10000", NI = newId.ToString() } }
-                               };
+            {
+                NewObjects = new[] { new PushResponseNewObject { I = "10000", NI = newId.ToString() } }
+            };
 
             session.PushResponse(saveResponse);
 

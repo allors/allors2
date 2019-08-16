@@ -1787,7 +1787,7 @@ namespace Allors.Adapters
                         from1 = C1.Create(this.Session);
                         to1 = C1.Create(this.Session);
                         to2 = C1.Create(this.Session);
-                        
+
                         from1.AddC1C1many2many(to1);
 
                         Assert.Contains(to1, from1.C1C1many2manies);
@@ -1803,7 +1803,7 @@ namespace Allors.Adapters
                         this.Session.Commit();
 
                         from1.RemoveC1C1many2many(to1);
-                       
+
                         this.Session.Rollback();
 
                         Assert.Contains(to1, from1.C1C1many2manies);
@@ -1826,7 +1826,7 @@ namespace Allors.Adapters
         [Fact]
         public void I1_I12many2many()
         {
-                       foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
 
@@ -3564,7 +3564,7 @@ namespace Allors.Adapters
         [Fact]
         public void C3_C4many2many()
         {
-                      foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
 

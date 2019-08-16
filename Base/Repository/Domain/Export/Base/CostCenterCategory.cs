@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("11214660-3c3a-42e9-8f12-f475d823da64")]
     #endregion
-    public partial class CostCenterCategory : UniquelyIdentifiable 
+    public partial class CostCenterCategory : UniquelyIdentifiable
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -60,20 +60,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

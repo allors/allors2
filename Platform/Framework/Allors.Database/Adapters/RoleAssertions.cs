@@ -23,7 +23,7 @@ namespace Allors.Adapters
     using System;
     using Allors.Meta;
 
-    public static class RoleAssertions 
+    public static class RoleAssertions
     {
         public static void UnitRoleChecks(IStrategy strategy, IRoleType roleType)
         {

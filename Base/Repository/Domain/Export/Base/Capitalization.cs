@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a0a753be-15ca-49e2-8f5f-f956fa132f49")]
     #endregion
-    public partial class Capitalization : InternalAccountingTransaction 
+    public partial class Capitalization : InternalAccountingTransaction
     {
         #region inherited properties
         public InternalOrganisation InternalOrganisation { get; set; }
@@ -34,20 +34,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

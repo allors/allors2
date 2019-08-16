@@ -42,7 +42,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var reasons = new InventoryTransactionReasons(this.Session);
 
@@ -81,7 +81,7 @@ namespace Allors.Domain
             // The Delivered state should create a Consumption (which Decreases the Reservation)
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
-            
+
             // The Cancelled state should cancel any existing Consumption and Reservation
             this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
             this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Consumption);

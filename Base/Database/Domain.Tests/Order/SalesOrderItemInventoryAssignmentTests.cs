@@ -25,7 +25,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using Xunit;
-        
+
     public class SalesOrderItemInventoryAssignmentTests : DomainTest
     {
         private readonly InventoryTransactionReasons reasons;
@@ -134,14 +134,14 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.salesOrderItem.ReservedFromNonSerialisedInventoryItem = (NonSerialisedInventoryItem) this.part.InventoryItemsWherePart.Single(v => v.Facility.Equals(facility2));
+            this.salesOrderItem.ReservedFromNonSerialisedInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.Single(v => v.Facility.Equals(facility2));
 
             this.Session.Derive();
 
             Assert.True(salesOrderItem.SalesOrderItemState.InProcess);
             Assert.Equal(2, salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.Count);
 
-            var previousInventoryItem = (NonSerialisedInventoryItem) this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
+            var previousInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
             var currentInventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
 
             Assert.Equal(11, previousInventoryItem.QuantityOnHand);

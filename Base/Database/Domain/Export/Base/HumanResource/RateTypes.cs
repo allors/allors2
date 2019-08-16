@@ -41,7 +41,7 @@ namespace Allors.Domain
         //public RateType OvertimePay => this.Cache[OvertimePayId];
 
         //public RateType AveragePayRate => this.Cache[AveragePayRateId];
-        
+
         //public RateType HighestPayRate => this.Cache[HighestPayRateId];
 
         //public RateType LowestPayRate => this.Cache[LowestPayRateId];
@@ -50,7 +50,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -60,14 +60,14 @@ namespace Allors.Domain
                 .WithUniqueId(StandardRateId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new RateTypeBuilder(this.Session)
                 .WithName("Overtime Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overuren tarief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OvertimeRateId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new RateTypeBuilder(this.Session)
                 .WithName("Weekend Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend tarief").WithLocale(dutchLocale).Build())
@@ -102,14 +102,14 @@ namespace Allors.Domain
             //    .WithUniqueId(AveragePayRateId)
             //    .WithIsActive(true)
             //    .Build();
-            
+
             //new RateTypeBuilder(this.Session)
             //    .WithName("Highest Pay Rate")
             //    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoogste bezoldiging").WithLocale(dutchLocale).Build())
             //    .WithUniqueId(HighestPayRateId)
             //    .WithIsActive(true)
             //    .Build();
-            
+
             //new RateTypeBuilder(this.Session)
             //    .WithName("Lowest Pay Rate")
             //    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laagste bezoldiging").WithLocale(dutchLocale).Build())

@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var created = new PurchaseOrderItemStates(this.Session).Created;
             var onHold = new PurchaseOrderItemStates(this.Session).OnHold;
@@ -55,7 +55,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, quickReceive);
             config.Deny(this.ObjectType, awaitingApproval, cancel, quickReceive);
             config.Deny(this.ObjectType, inProcess, delete, quickReceive);
-            config.Deny(this.ObjectType, completed, delete);    
+            config.Deny(this.ObjectType, completed, delete);
             config.Deny(this.ObjectType, partiallyReceived, delete, cancel, reject, quickReceive);
             config.Deny(this.ObjectType, received, delete, cancel, reject, quickReceive);
 

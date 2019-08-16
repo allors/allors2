@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("962e5149-546b-4b18-ab09-e4de59b709ff")]
     #endregion
-    public partial class PerformanceReviewItem : Commentable, DelegatedAccessControlledObject 
+    public partial class PerformanceReviewItem : Commentable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public string Comment { get; set; }
@@ -45,20 +45,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void DelegateAccess() { }
 
         #endregion

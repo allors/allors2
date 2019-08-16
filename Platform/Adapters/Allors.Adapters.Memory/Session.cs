@@ -185,7 +185,7 @@ namespace Allors.Adapters.Memory
 
             return allorsObjects;
         }
-        
+
         public IObject Instantiate(string objectIdString)
         {
             if (objectIdString == null)

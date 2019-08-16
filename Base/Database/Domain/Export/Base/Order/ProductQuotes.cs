@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var created = new QuoteStates(this.Session).Created;
             var approved = new QuoteStates(this.Session).Approved;

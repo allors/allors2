@@ -32,7 +32,7 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.UnitSellingPrice = assignment.UnitSellingPrice;
             this.SellingPrice = Math.Round(assignment.Quantity * assignment.UnitSellingPrice, 2);
         }
-        
+
         public string Name { get; }
 
         public int Quantity { get; }

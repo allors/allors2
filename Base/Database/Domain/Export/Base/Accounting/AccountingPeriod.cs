@@ -46,7 +46,7 @@ namespace Allors.Domain
             var stringBuilder = new StringBuilder();
             if (this.ExistFromDate)
             {
-                stringBuilder.AppendFormat("{0:d}", this.FromDate);                
+                stringBuilder.AppendFormat("{0:d}", this.FromDate);
             }
 
             if (this.ExistThroughDate)
@@ -81,7 +81,7 @@ namespace Allors.Domain
             else
             {
                 newMonth.FromDate = mostRecentMonth.FromDate;
-                newMonth.ThroughDate = mostRecentMonth.ThroughDate;                
+                newMonth.ThroughDate = mostRecentMonth.ThroughDate;
             }
 
             if (newMonth.PeriodNumber == 4 || newMonth.PeriodNumber == 7 || newMonth.PeriodNumber == 10)

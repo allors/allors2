@@ -120,7 +120,7 @@ namespace Allors.Adapters.Memory
         public override void CopyTo(Array array, int index)
         {
             this.Evaluate();
-            
+
             var i = index;
             foreach (var strategy in this.strategies)
             {

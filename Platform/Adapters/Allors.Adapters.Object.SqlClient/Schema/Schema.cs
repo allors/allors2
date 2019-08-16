@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.SqlClient
     public class Schema
     {
         public readonly bool Exists;
-        
+
         private readonly Dictionary<string, SchemaTable> tableByName;
         private readonly Dictionary<string, SchemaTableType> tableTypeByName;
         private readonly Dictionary<string, SchemaProcedure> procedureByName;

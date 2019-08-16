@@ -42,7 +42,7 @@ namespace Allors.Domain
         public IObject Association { get; }
 
         public RoleType RoleType { get; }
-        
+
         public IObject Role { get; }
 
         public AssociationType AssociationType { get; }
@@ -98,7 +98,7 @@ namespace Allors.Domain
                 {
                     return this.Association.Strategy.Class.Name + "." + this.RoleType.Name;
                 }
-                
+
                 return this.Association.Strategy.Class.Name;
             }
             else

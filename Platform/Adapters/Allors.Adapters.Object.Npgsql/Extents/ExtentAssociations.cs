@@ -133,7 +133,7 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 return this.upgrade.ToArray();
             }
-            
+
             var clrType = this.strategy.Session.Database.GetDomainType(this.ObjectType);
             return this.ToArray(clrType);
         }

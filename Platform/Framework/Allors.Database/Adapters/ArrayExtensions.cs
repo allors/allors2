@@ -22,7 +22,7 @@ namespace Allors.Adapters
 {
     using System;
 
-    public static class ArrayExtensions 
+    public static class ArrayExtensions
     {
         public static T[] Add<T>(this T[] source, T item)
         {

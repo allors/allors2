@@ -27,27 +27,27 @@ namespace Allors.Repository
         [RoleId("3f37f82c-3f7a-4d4c-b775-4ff09c105f92")]
         #endregion
         public bool IsDerived { get; set; }
-        
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

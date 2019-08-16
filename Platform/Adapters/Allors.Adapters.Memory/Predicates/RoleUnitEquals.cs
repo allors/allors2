@@ -44,7 +44,7 @@ namespace Allors.Adapters.Memory
                 {
                     this.equals = (int)equals;
                 }
-                else 
+                else
                 {
                     throw new Exception("Role Object Type " + roleType.ObjectType.SingularName + " doesn't support enumerations.");
                 }

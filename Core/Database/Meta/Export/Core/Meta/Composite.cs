@@ -63,7 +63,7 @@ namespace Allors.Meta
             }
         }
 
-        public bool AssignedIsSynced 
+        public bool AssignedIsSynced
         {
             get
             {
@@ -78,7 +78,7 @@ namespace Allors.Meta
             }
         }
 
-        public bool IsSynced 
+        public bool IsSynced
         {
             get
             {
@@ -86,7 +86,7 @@ namespace Allors.Meta
                 return this.isSynced;
             }
         }
-        
+
         protected Composite(MetaPopulation metaPopulation)
             : base(metaPopulation)
         {
@@ -193,7 +193,7 @@ namespace Allors.Meta
                 return this.derivedSupertypes;
             }
         }
-        
+
         IEnumerable<IAssociationType> IComposite.AssociationTypes => this.AssociationTypes;
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Allors.Meta
                     .Except(new[] { this }).ToArray();
             }
         }
-        
+
         public IEnumerable<Interface> WorkspaceSupertypes
         {
             get
@@ -444,7 +444,7 @@ namespace Allors.Meta
         /// True if this contains the concrete class.
         /// </returns>
         public abstract bool IsAssignableFrom(IComposite objectType);
-        
+
         /// <summary>
         /// Derive direct super type derivations.
         /// </summary>
@@ -498,7 +498,7 @@ namespace Allors.Meta
 
             this.derivedMethodTypes = new LazySet<MethodType>(methodTypes);
         }
-        
+
         /// <summary>
         /// Derive role types.
         /// </summary>
@@ -525,7 +525,7 @@ namespace Allors.Meta
 
             this.derivedRoleTypes = new LazySet<RoleType>(roleTypes);
         }
-        
+
         /// <summary>
         /// Derive association types.
         /// </summary>
@@ -534,7 +534,7 @@ namespace Allors.Meta
         internal void DeriveAssociationTypes(HashSet<AssociationType> associations, Dictionary<ObjectType, HashSet<AssociationType>> relationTypesByRoleObjectType)
         {
             associations.Clear();
-            
+
             HashSet<AssociationType> classAssociationTypes;
             if (relationTypesByRoleObjectType.TryGetValue(this, out classAssociationTypes))
             {

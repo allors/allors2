@@ -54,7 +54,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         public Guid ConcreteClassPointer { get; set; }
-        
+
         #region Allors
         [Id("9d73d437-4918-4f20-b9a7-3ce23a04bd7b")]
         [AssociationId("891734d6-4855-4b33-8b3b-f46fd6103149")]
@@ -67,22 +67,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
 
         #endregion
     }

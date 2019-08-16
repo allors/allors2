@@ -27,7 +27,7 @@
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }
@@ -36,7 +36,7 @@
 
         public void OnPostDerive() { }
 
-        public void Delete() {}
+        public void Delete() { }
 
         #endregion
     }

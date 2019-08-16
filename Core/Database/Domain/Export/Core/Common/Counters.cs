@@ -29,9 +29,9 @@ namespace Allors.Domain
     public partial class Counters
     {
         private UniquelyIdentifiableSticky<Counter> sticky;
-        
+
         private UniquelyIdentifiableSticky<Counter> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Counter>(this.Session));
-        
+
         public static int NextValue(ISession session, Guid counterId)
         {
             int NextValue(Counter counter)

@@ -106,7 +106,7 @@ namespace Allors.Meta
                 return this.derivedSubtypes;
             }
         }
-        
+
         public override Class ExclusiveSubclass
         {
             get

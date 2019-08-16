@@ -176,7 +176,7 @@ namespace Allors.Domain
             this.BillToContactMechanism = this.BillToContactMechanism ?? this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
             this.BillToEndCustomerContactMechanism = this.BillToEndCustomerContactMechanism ?? this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
             this.ShipToEndCustomerAddress = this.ShipToEndCustomerAddress ?? this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToCustomer?.GeneralCorrespondence as PostalAddress;
-            this.ShipFromAddress = this.ShipFromAddress?? this.TakenBy?.ShippingAddress;
+            this.ShipFromAddress = this.ShipFromAddress ?? this.TakenBy?.ShippingAddress;
             this.ShipToAddress = this.ShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
             this.ShipmentMethod = this.ShipmentMethod ?? this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             this.PaymentMethod = this.PaymentMethod ?? this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
@@ -387,7 +387,7 @@ namespace Allors.Domain
             // SalesOrderItem States
             foreach (var salesOrderItem in validOrderItems)
             {
-                if (this.SalesOrderState.InProcess && 
+                if (this.SalesOrderState.InProcess &&
                     (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
                 {
                     salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
@@ -981,7 +981,7 @@ namespace Allors.Domain
                     })).ToArray();
 
             var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
-            
+
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesOrderItem.AssignedUnitPrice.HasValue)
             {

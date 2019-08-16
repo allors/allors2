@@ -63,7 +63,7 @@ namespace Allors.Workspace.Meta
         }
 
         public bool Workspace => this.RelationType.Workspace;
-        
+
         public IObjectType ObjectType
         {
             get
@@ -240,7 +240,7 @@ namespace Allors.Workspace.Meta
                 this.MetaPopulation.Stale();
             }
         }
-        
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>
@@ -266,7 +266,7 @@ namespace Allors.Workspace.Meta
 
             return -1;
         }
-        
+
         /// <summary>
         /// Get the object type.
         /// </summary>

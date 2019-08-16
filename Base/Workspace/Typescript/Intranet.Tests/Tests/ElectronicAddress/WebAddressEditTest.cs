@@ -22,7 +22,7 @@ namespace Tests.ElectronicAddressTests
     public class WebAddressEditTest : Test
     {
         private readonly PersonListComponent personListPage;
-        
+
         public WebAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
@@ -55,7 +55,7 @@ namespace Tests.ElectronicAddressTests
             Assert.Equal(after.Length, before.Length + 1);
 
             var contactMechanism = after.Except(before).First();
-            
+
             Assert.Equal("wwww.allors.com", contactMechanism.ElectronicAddressString);
             Assert.Equal("description", contactMechanism.Description);
         }

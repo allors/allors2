@@ -79,7 +79,7 @@ namespace Allors.Domain
                 this.PrintDocument.Media.FileName = $"{this.QuoteNumber}.odt";
             }
         }
-        
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -300,7 +300,7 @@ namespace Allors.Domain
                 }
             }
         }
-        
+
         private SalesOrder OrderThis()
         {
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)

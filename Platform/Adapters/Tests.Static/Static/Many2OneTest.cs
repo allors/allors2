@@ -50,7 +50,7 @@ namespace Allors.Adapters
         [Fact]
         public void C1_C1many2one()
         {
-                       foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
 
@@ -1813,7 +1813,7 @@ namespace Allors.Adapters
         [Fact]
         public void C1_C2many2one()
         {
-                       foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
 
@@ -3103,11 +3103,11 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public void I1_I12many2one()
         {
-           foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
 
@@ -4867,7 +4867,7 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public void RelationChecks()
         {

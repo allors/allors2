@@ -25,7 +25,7 @@ namespace Tests.NonUnifiedGood
         public void Create()
         {
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
-            
+
             var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
             nonUnifiedGoodCreate

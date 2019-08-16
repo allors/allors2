@@ -42,12 +42,12 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.Between,
-                           RoleType = this.RoleType?.Id,
-                           Values = this.Values.Select(DataConvert.ToString).ToArray(),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.Between,
+                RoleType = this.RoleType?.Id,
+                Values = this.Values.Select(DataConvert.ToString).ToArray(),
+                Parameter = this.Parameter
+            };
         }
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)

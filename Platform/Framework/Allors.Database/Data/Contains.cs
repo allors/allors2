@@ -38,12 +38,12 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.Contains,
-                           PropertyType = this.PropertyType?.Id,
-                           Object = this.Object?.Id.ToString(),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.Contains,
+                PropertyType = this.PropertyType?.Id,
+                Object = this.Object?.Id.ToString(),
+                Parameter = this.Parameter
+            };
         }
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)

@@ -22,7 +22,7 @@ namespace Allors.Protocol.Data
 {
     using System;
 
-    public class Extent 
+    public class Extent
     {
         public string Kind { get; set; }
 

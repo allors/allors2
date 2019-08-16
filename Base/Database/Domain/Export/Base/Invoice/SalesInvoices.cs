@@ -29,7 +29,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var notPaid = new SalesInvoiceStates(this.Session).NotPaid;
             var paid = new SalesInvoiceStates(this.Session).Paid;

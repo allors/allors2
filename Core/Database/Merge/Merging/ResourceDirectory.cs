@@ -26,7 +26,7 @@ namespace Allors.R1.Development.Resources
 
     internal class ResourceDirectory
     {
-        private readonly Dictionary<string, ResourceFile> resourceByFileName = new Dictionary<string, ResourceFile>();         
+        private readonly Dictionary<string, ResourceFile> resourceByFileName = new Dictionary<string, ResourceFile>();
 
         internal ResourceDirectory(DirectoryInfo directory)
         {

@@ -23,7 +23,7 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             var supplier = order.TakenViaSupplier;
             var contactPerson = order.BillToContactPerson;
             var contactMechanisam = order.BillToContactMechanism;
-            
+
             var billTo = supplier;
             var billToOrganisation = billTo as Organisation;
             if (billTo != null)

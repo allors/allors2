@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using Allors.Domain;
     using Xunit;
-    
+
     public abstract class UnitTest : Adapters.UnitTest
     {
         [Fact]

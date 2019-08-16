@@ -45,13 +45,13 @@ namespace Allors
         /// </summary>
         /// <value>The object id.</value>
         long ObjectId { get; }
-        
+
         /// <summary>
         /// Gets the <see cref="Allors.ObjectId"/>.
         /// </summary>
         /// <value>The object id.</value>
         long ObjectVersion { get; }
-        
+
         /// <summary>
         /// Gets a value indicating whether this instance is deleted.
         /// </summary>
@@ -73,7 +73,7 @@ namespace Allors
         /// </summary>
         /// <returns>The allors object.</returns>
         IObject GetObject();
-        
+
         /// <summary>
         /// Deletes this instance.
         /// </summary>

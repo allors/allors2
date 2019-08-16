@@ -75,7 +75,7 @@ namespace Allors.Workspace.Meta
 
         #endregion
 
-        IEnumerable<IClass> IInterface.Subclasses 
+        IEnumerable<IClass> IInterface.Subclasses
         {
             get
             {
@@ -124,7 +124,7 @@ namespace Allors.Workspace.Meta
                 return this.derivedSubtypes;
             }
         }
-        
+
         public override Class ExclusiveSubclass
         {
             get

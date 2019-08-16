@@ -30,7 +30,7 @@ namespace Allors.Adapters.Memory
         private readonly Dictionary<IObjectType, object> concreteClassesByObjectType;
 
         private readonly string id;
-        
+
         private Session session;
 
         public Database(IServiceProvider serviceProvider, Configuration configuration)
@@ -50,7 +50,7 @@ namespace Allors.Adapters.Memory
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
-        
+
         public string Id
         {
             get { return this.id; }
@@ -71,7 +71,7 @@ namespace Allors.Adapters.Memory
         internal bool IsLoading { get; private set; }
 
         protected virtual Session Session => this.session ?? (this.session = new Session(this));
-        
+
         public ISession CreateSession()
         {
             return this.CreateDatabaseSession();
@@ -86,7 +86,7 @@ namespace Allors.Adapters.Memory
         {
             return this.Session;
         }
-        
+
         public void Load(XmlReader reader)
         {
             this.Init();

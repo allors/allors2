@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("da504b46-2fd0-4500-ae23-61fa73151077")]
     #endregion
-    public partial class TimeAndMaterialsService : Service 
+    public partial class TimeAndMaterialsService : Service
     {
         #region inherited properties
 
@@ -68,20 +68,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

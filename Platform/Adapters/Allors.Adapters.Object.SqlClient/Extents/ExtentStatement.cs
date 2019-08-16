@@ -169,7 +169,7 @@ namespace Allors.Adapters.Object.SqlClient
         internal bool AddWhere(IObjectType rootClass, string alias)
         {
             var useWhere = !this.Extent.ObjectType.ExistExclusiveClass;
-            
+
             if (useWhere)
             {
                 this.Append(" WHERE ( ");

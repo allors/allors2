@@ -30,7 +30,7 @@ namespace Allors.Repository.Attributes
         {
             this.Value = value;
         }
-        
+
         public int Value { get; set; }
     }
 }

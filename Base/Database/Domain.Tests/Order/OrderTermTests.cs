@@ -21,11 +21,11 @@
 
 namespace Allors.Domain
 {
-    
+
 
     using Xunit;
 
-    
+
     public class OrderTermTests : DomainTest
     {
         [Fact]

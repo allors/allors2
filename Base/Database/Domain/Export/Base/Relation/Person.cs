@@ -36,7 +36,7 @@ namespace Allors.Domain
                 return false;
             }
 
-            return this.ExistEmploymentsWhereEmployee 
+            return this.ExistEmploymentsWhereEmployee
                    && this.EmploymentsWhereEmployee
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
@@ -63,7 +63,7 @@ namespace Allors.Domain
             return this.ExistSalesRepRelationshipsWhereSalesRepresentative
                    && this.SalesRepRelationshipsWhereSalesRepresentative
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
-          
+
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -73,7 +73,7 @@ namespace Allors.Domain
             this.Strategy.Session.Prefetch(this.PrefetchPolicy);
 
             this.PartyName = this.DerivePartyName();
-            
+
             this.VatRegime = new VatRegimes(this.strategy.Session).PrivatePerson;
 
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
@@ -85,11 +85,11 @@ namespace Allors.Domain
             this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
                 .Except(this.CurrentOrganisationContactRelationships)
                 .ToArray();
-            
+
             this.CurrentPartyContactMechanisms = this.PartyContactMechanisms
                 .Where(v => v.FromDate > this.strategy.Session.Now() || (v.ExistThroughDate && v.ThroughDate < this.strategy.Session.Now()))
                 .ToArray();
-            
+
             this.InactivePartyContactMechanisms = this.PartyContactMechanisms
                     .Except(this.CurrentPartyContactMechanisms).ToArray();
 

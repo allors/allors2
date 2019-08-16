@@ -31,7 +31,7 @@ namespace Allors.Workspace.Meta
         /// Gets the operand name.
         /// </summary>
         public abstract string Name { get; }
-        
+
         /// <summary>
         /// Get the object type.
         /// </summary>

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("66bd584c-37c4-4969-874b-7a459195fd25")]
     #endregion
-    public partial class DeliverableOrderItem : EngagementItem 
+    public partial class DeliverableOrderItem : EngagementItem
     {
         #region inherited properties
         public QuoteItem QuoteItem { get; set; }
@@ -50,20 +50,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void DelegateAccess() { }
 
         #endregion

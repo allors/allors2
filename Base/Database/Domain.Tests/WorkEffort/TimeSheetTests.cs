@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using System.Linq;
     using Xunit;
-    
+
     public class TimeSheetTests : DomainTest
     {
         [Fact]

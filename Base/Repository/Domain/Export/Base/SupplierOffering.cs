@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public RatingType Rating { get; set; }
-        
+
         #region Allors
         [Id("74895df9-e416-41cb-ab36-24694dc63334")]
         [AssociationId("b81877b2-f7cd-4951-b02e-e60722ca0d72")]
@@ -84,7 +84,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Ordinal Preference { get; set; }
-        
+
         #region Allors
         [Id("b4cdcc85-583a-49e7-ba35-8985936c7f64")]
         [AssociationId("2133d78d-9f26-46bf-b706-e01e032402df")]
@@ -94,7 +94,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal MinimalOrderQuantity { get; set; }
-        
+
         #region Allors
         [Id("459274A7-2A3C-45DF-B1B8-14171A279AE4")]
         [AssociationId("E1C11BF6-451B-4AC5-84B1-D330DC6B9B36")]
@@ -104,7 +104,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public int QuantityIncrements { get; set; }
-        
+
         #region Allors
         [Id("d2de1e9e-196f-43d7-903e-566a4858bc02")]
         [AssociationId("a78c953d-0feb-463a-a7c6-e00640db9e44")]
@@ -115,7 +115,7 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Party Supplier { get; set; }
-        
+
         #region Allors
         [Id("d741765d-d17e-4e6a-88fd-9eee70c82bcf")]
         [AssociationId("3e237d3b-6d44-4afd-a248-f9d15e7822d7")]
@@ -145,20 +145,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

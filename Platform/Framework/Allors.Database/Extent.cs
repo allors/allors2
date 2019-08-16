@@ -312,7 +312,7 @@ namespace Allors
             /// The objects.
             /// </summary>
             private readonly IObject[] objects;
-            
+
             /// <summary>
             /// Initializes a new instance of the AllorsExtentConverted class.
             /// </summary>

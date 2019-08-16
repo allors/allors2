@@ -176,7 +176,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalShippingAndHandling { get; set; }
-       
+
         #region Allors
         [Id("982949e0-87ac-400c-8830-a779b75e10ad")]
         [AssociationId("0892c266-1b04-4d66-b344-1e29ddf09bd4")]
@@ -227,7 +227,7 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Message { get; set; }
-        
+
         #region Allors
         [Id("c2ecfd15-7662-45b4-99bd-9093ca108d23")]
         [AssociationId("32efeb84-a275-4b14-ba1f-aa99ba1bc776")]

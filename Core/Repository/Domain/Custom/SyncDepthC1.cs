@@ -5,13 +5,13 @@ namespace Allors.Repository
     #region Allors
     [Id("4EA6AD12-C1FB-4661-B4F7-72B81435DD70")]
     #endregion
-    public partial class SyncDepthC1 : SyncDepthI1 
+    public partial class SyncDepthC1 : SyncDepthI1
     {
         #region inherited properties
         public int DerivationCount { get; set; }
 
         public SyncDepth2 SyncDepth2 { get; set; }
-        
+
         public int Value { get; set; }
 
         #endregion
@@ -22,20 +22,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

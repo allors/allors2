@@ -23,5 +23,5 @@ namespace Allors.Protocol.Remote.Sync
     public class SyncRequest
     {
         public string[] Objects { get; set; }
-}
+    }
 }

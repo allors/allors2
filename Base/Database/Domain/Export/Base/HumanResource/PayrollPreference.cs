@@ -21,7 +21,7 @@ namespace Allors.Domain
     {
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;   
+            var derivation = method.Derivation;
 
             derivation.Validation.AssertAtLeastOne(this, M.PayrollPreference.Amount, M.PayrollPreference.Percentage);
             derivation.Validation.AssertExistsAtMostOne(this, M.PayrollPreference.Amount, M.PayrollPreference.Percentage);

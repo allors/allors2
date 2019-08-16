@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             Assert.True(salesRep.BaseIsActiveEmployee(this.Session.Now()));
         }
-        
+
         [Fact]
         public void GivenPerson_WhenActiveContactRelationship_ThenPersonCurrentOrganisationContactRelationshipsContainsPerson()
         {
@@ -187,7 +187,7 @@ namespace Allors.Domain
             Assert.Contains(contactMechanism2, contact.CurrentOrganisationContactMechanisms);
         }
     }
-    
+
     public class PersonSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

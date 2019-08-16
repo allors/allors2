@@ -31,7 +31,7 @@ namespace Allors.Adapters
         public static bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
         public static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-        
+
         // Smoke
         private const int DefaultNumberOfRuns = 2;
         private const int DefaultLargeArraySize = 10;
@@ -51,7 +51,7 @@ namespace Allors.Adapters
 
             int largeArraySize;
             LargeArraySize = int.TryParse(Environment.GetEnvironmentVariable("LargeArraySize"), out largeArraySize) ? largeArraySize : DefaultLargeArraySize;
-            
+
             bool extraMarkers;
             ExtraMarkers = bool.TryParse(Environment.GetEnvironmentVariable("ExtraMarkers"), out extraMarkers) ? extraMarkers : DefaultExtraMarkers;
 

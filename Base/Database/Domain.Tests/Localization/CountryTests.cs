@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class CountryTests : DomainTest
     {
         [Fact]

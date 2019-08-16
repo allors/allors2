@@ -178,7 +178,7 @@ namespace Allors.Adapters.Object.Npgsql
             var objectParameter = this.GetParameter(this.Mapping.ObjectArrayParam.InvocationName);
             objectParameter.Value = objectIds.ToArray();
         }
-        
+
         internal void AddUnitRoleArrayParameter(IRoleType roleType, ICollection<UnitRelation> relations)
         {
             var objectParameter = this.CreateParameter();

@@ -17,7 +17,8 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class IncoTermTypes {
+    public partial class IncoTermTypes
+    {
         private static readonly Guid ExwId = new Guid("08F45D13-4354-494E-889E-BD84F73749D8");
         private static readonly Guid FcaId = new Guid("689D7B46-6DE5-4276-AF1B-F9A8A3DEB7CF");
         private static readonly Guid CptId = new Guid("CAF35B5B-7156-45D0-95E3-26632D0D4BF7");
@@ -58,7 +59,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 

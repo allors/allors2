@@ -24,7 +24,7 @@ namespace Allors.Domain
         internal static readonly Guid ShippedId = new Guid("E91BAA87-DF5F-4a6c-B380-B683AD17AE18");
 
         private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> stateCache;
-        
+
         public SalesOrderItemShipmentState NotShipped => this.StateCache[NotShippedId];
 
         public SalesOrderItemShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new SalesOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(NotShippedId)

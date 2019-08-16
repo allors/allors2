@@ -39,10 +39,10 @@ namespace Allors.Adapters.Memory
         {
             get
             {
-                var markers = new List<Action> 
-                { 
-                    () => { }, 
-                    () => this.Session.Commit() 
+                var markers = new List<Action>
+                {
+                    () => { },
+                    () => this.Session.Commit()
                 };
 
                 if (Settings.ExtraMarkers)

@@ -81,7 +81,7 @@ namespace Allors.Adapters
         public abstract IDatabase CreatePopulation();
 
         public abstract IDatabase CreateDatabase();
-        
+
         internal ISession CreateSession()
         {
             return this.database.CreateSession();

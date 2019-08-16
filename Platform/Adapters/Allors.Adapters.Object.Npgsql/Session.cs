@@ -266,7 +266,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.Prefetch(prefetchPolicy, objects.Select(x => x.Strategy.ObjectId));
         }
-        
+
         public void Prefetch(PrefetchPolicy prefetchPolicy, IEnumerable<IStrategy> strategies)
         {
             this.Prefetch(prefetchPolicy, strategies.Select(v => v.ObjectId));
@@ -371,7 +371,7 @@ namespace Allors.Adapters.Object.Npgsql
                     this.State.AssociationsByRoleByAssociationType = new Dictionary<IAssociationType, Dictionary<Reference, long[]>>();
 
                     this.State.ChangeSet = new ChangeSet();
-                    
+
                     this.Database.Cache.OnCommit(accessed, changed);
 
                     this.Prefetcher.ResetCommands();
@@ -421,7 +421,7 @@ namespace Allors.Adapters.Object.Npgsql
                     this.State.ChangeSet = new ChangeSet();
 
                     this.Database.Cache.OnRollback(accessed);
-                    
+
                     this.Prefetcher.ResetCommands();
                     this.Commands.ResetCommands();
                 }

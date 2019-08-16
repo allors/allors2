@@ -230,7 +230,7 @@ namespace Allors.Domain
 
             Facility facility = null;
             if (facilityName != null)
-            { 
+            {
                 facility = new FacilityBuilder(session)
                     .WithName(facilityName)
                     .WithFacilityType(new FacilityTypes(session).Warehouse)

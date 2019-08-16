@@ -26,5 +26,5 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         ProductIdentificationType ProductIdentificationType { get; set; }
-   }
+    }
 }

@@ -29,7 +29,7 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.AmountOfTime = timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m);
             this.BillingAmount = timeEntries.Sum(v => v.BillingAmount);
             this.Cost = timeEntries.Sum(v => v.Cost);
-            
+
             // Round
             this.BillingRate = Math.Round(this.BillingRate, 2);
             this.AmountOfTime = Math.Round(this.AmountOfTime, 2);

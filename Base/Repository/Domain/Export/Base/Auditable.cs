@@ -2,7 +2,7 @@
 {
     using System;
     using Attributes;
-    
+
     #region Allors
     [Id("6C726DED-C081-46D7-8DCF-F0A376943531")]
     #endregion

@@ -84,7 +84,7 @@ namespace Allors.Server.Controllers
                                         }
                                     }
                                 }
-                                
+
                                 return this.Ok(response.Build());
                             }
                         });

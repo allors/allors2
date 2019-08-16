@@ -21,7 +21,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public BillToModel(ProductQuote quote)
         {
             var contactMechanisam = quote.FullfillContactMechanism;
-            
+
             if (contactMechanisam is PostalAddress postalAddress)
             {
                 this.Address = postalAddress.Address1;

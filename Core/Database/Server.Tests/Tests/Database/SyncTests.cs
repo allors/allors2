@@ -22,12 +22,12 @@ namespace Server.Tests
             var uri = new Uri(@"Database/Sync", UriKind.Relative);
 
             var syncRequest = new SyncRequest
-                                  {
-                                      Objects = new[] { person.Id.ToString() }
-                                  };
+            {
+                Objects = new[] { person.Id.ToString() }
+            };
             var response = await this.PostAsJsonAsync(uri, syncRequest);
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
-            
+
             Assert.Single(syncResponse.Objects);
             var syncObject = syncResponse.Objects[0];
 
@@ -45,13 +45,13 @@ namespace Server.Tests
 
             var organisation = new OrganisationBuilder(this.Session).Build();
             this.Session.Commit();
-            
+
             var uri = new Uri(@"Database/Sync", UriKind.Relative);
 
             var syncRequest = new SyncRequest
-                                  {
-                                      Objects = new[] { organisation.Id.ToString() }
-                                  };
+            {
+                Objects = new[] { organisation.Id.ToString() }
+            };
             var response = await this.PostAsJsonAsync(uri, syncRequest);
 
             organisation.Strategy.Delete();
@@ -60,7 +60,7 @@ namespace Server.Tests
 
             response = await this.PostAsJsonAsync(uri, syncRequest);
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
-            
+
             Assert.Empty(syncResponse.Objects);
         }
     }

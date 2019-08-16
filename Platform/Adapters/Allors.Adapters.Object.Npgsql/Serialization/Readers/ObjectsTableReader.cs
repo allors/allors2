@@ -41,7 +41,7 @@ namespace Allors.Adapters.Object.Npgsql
                 switch (columnName.ToLowerInvariant())
                 {
                     case Mapping.ColumnNameForObject:
-                        this.getValueFuncs[i] = current => current.Key; 
+                        this.getValueFuncs[i] = current => current.Key;
                         break;
                     case Mapping.ColumnNameForClass:
                         this.getValueFuncs[i] = current => current.Value.Id;
@@ -49,7 +49,7 @@ namespace Allors.Adapters.Object.Npgsql
                     case Mapping.ColumnNameForVersion:
                         this.getValueFuncs[i] = current => objectVersionByObjectId[current.Key];
                         break;
-                    default: 
+                    default:
                         throw new Exception("Unknown column name " + columnName);
                 }
             }

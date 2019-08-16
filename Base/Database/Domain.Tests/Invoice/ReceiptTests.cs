@@ -31,7 +31,7 @@ namespace Allors.Domain
         private Part finishedGood;
         private Good good;
         private Organisation billToCustomer;
-        
+
         public ReceiptTests()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -133,7 +133,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.Session)
                 .WithLastName("customer")
-                
+
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session)

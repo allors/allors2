@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7979a17c-0829-46df-a0d4-1b01775cfaac")]
     #endregion
-    public partial interface Localised : Object 
+    public partial interface Localised : Object
     {
         #region Allors
         [Id("8c005a4e-5ffe-45fd-b279-778e274f4d83")]

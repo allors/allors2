@@ -1,6 +1,6 @@
 namespace Allors.Repository
 {
-    public partial class Currency : IUnitOfMeasure 
+    public partial class Currency : IUnitOfMeasure
     {
         #region inherited properties
         public string Abbreviation { get; set; }

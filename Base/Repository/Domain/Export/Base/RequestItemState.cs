@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("498BDEC2-FD25-40C1-B0E7-CE393E2F12D9")]
     #endregion
-    public partial class RequestItemState : ObjectState 
+    public partial class RequestItemState : ObjectState
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -25,20 +25,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

@@ -40,7 +40,7 @@ namespace Allors.Domain
             this.supplier = new OrganisationBuilder(this.Session)
                 .WithName("supplier")
                 .WithLocale(new Locales(this.Session).EnglishGreatBritain)
-                
+
                 .Build();
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)

@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("00022659-5830-4A1F-A463-C135D5B65992")]
     #endregion
-    public partial class PhoneCommunicationVersion : CommunicationEventVersion 
+    public partial class PhoneCommunicationVersion : CommunicationEventVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -81,7 +81,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

@@ -50,7 +50,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -60,7 +60,7 @@ namespace Allors.Domain
                 .WithUniqueId(SkuId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ProductIdentificationTypeBuilder(this.Session)
                 .WithName("ISBN")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ISBN").WithLocale(dutchLocale).Build())

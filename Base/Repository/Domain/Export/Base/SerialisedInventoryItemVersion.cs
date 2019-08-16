@@ -52,7 +52,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public SerialisedItem SerialisedItem { get; set; }
-        
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -61,7 +61,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

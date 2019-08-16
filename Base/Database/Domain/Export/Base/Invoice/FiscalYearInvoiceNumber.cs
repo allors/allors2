@@ -20,9 +20,9 @@ namespace Allors.Domain
         public int DeriveNextSalesInvoiceNumber()
         {
             this.NextSalesInvoiceNumber = this.ExistNextSalesInvoiceNumber ? this.NextSalesInvoiceNumber : 1;
-            int salesInvoiceNumber = this.NextSalesInvoiceNumber; 
+            int salesInvoiceNumber = this.NextSalesInvoiceNumber;
             this.NextSalesInvoiceNumber++;
-            
+
             return salesInvoiceNumber;
         }
 

@@ -5,7 +5,7 @@ namespace Allors.Domain
     using Allors;
     using Allors.Domain;
     using Xunit;
-   
+
     public class PurchaseOrderApproverLevel1Tests : DomainTest
     {
         [Fact]

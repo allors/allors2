@@ -154,7 +154,7 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         string Message { get; set; }
-        
+
         #region Allors
         [Id("5368A2C3-9ADF-46A3-9AC0-9C4A03DEAF9A")]
         #endregion

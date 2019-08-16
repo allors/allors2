@@ -115,7 +115,7 @@ namespace Allors.Domain
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
@@ -163,7 +163,7 @@ namespace Allors.Domain
                 .WithPrice(1)
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);

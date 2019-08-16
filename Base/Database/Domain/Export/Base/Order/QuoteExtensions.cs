@@ -36,7 +36,7 @@ namespace Allors.Domain
             if (!@this.ExistIssuer)
             {
                 var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
-                
+
                 if (internalOrganisations.Count() == 1)
                 {
                     @this.Issuer = internalOrganisations.First();

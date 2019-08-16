@@ -24,7 +24,7 @@ namespace Allors.Domain
     using System;
     using Xunit;
 
-    
+
     public class ExternalAccountingTransactionTests : DomainTest
     {
         [Fact]
@@ -32,7 +32,7 @@ namespace Allors.Domain
         {
             var partyFrom = new OrganisationBuilder(this.Session).WithName("party from").Build();
             var partyTo = new OrganisationBuilder(this.Session).WithName("party to").Build();
-            
+
             this.Session.Derive();
             this.Session.Commit();
 

@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.Npgsql.Debug
 {
     using System;
 
-    public class DebugExecution 
+    public class DebugExecution
     {
         public DebugExecution(DebugCommand debugCommand)
         {

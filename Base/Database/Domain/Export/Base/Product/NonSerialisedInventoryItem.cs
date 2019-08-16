@@ -42,7 +42,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            
+
             if (!this.ExistName)
             {
                 this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.NonSerialisedInventoryItemState?.Name}";
@@ -198,7 +198,7 @@ namespace Allors.Domain
             Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
-            var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new [] { this.Part };
+            var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new[] { this.Part };
 
             if (goods != null)
             {

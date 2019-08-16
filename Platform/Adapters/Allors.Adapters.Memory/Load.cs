@@ -177,7 +177,7 @@ namespace Allors.Adapters.Memory
 
                                     if (objectType is IClass)
                                     {
-                                        this.session.InsertStrategy((IClass) objectType, objectId, objectVersion);
+                                        this.session.InsertStrategy((IClass)objectType, objectId, objectVersion);
                                     }
                                     else
                                     {
@@ -346,7 +346,7 @@ namespace Allors.Adapters.Memory
                                     this.session.MemoryDatabase.UnitRoleChecks(strategy, relationType.RoleType);
                                     if (this.reader.IsEmptyElement)
                                     {
-                                        var unitType = (IUnit) relationType.RoleType.ObjectType;
+                                        var unitType = (IUnit)relationType.RoleType.ObjectType;
                                         switch (unitType.UnitTag)
                                         {
                                             case UnitTags.String:
@@ -359,7 +359,7 @@ namespace Allors.Adapters.Memory
                                     }
                                     else
                                     {
-                                        var unitType = (IUnit) relationType.RoleType.ObjectType;
+                                        var unitType = (IUnit)relationType.RoleType.ObjectType;
                                         var unitTypeTag = unitType.UnitTag;
 
                                         var unit = Serialization.ReadString(value, unitTypeTag);
@@ -436,7 +436,7 @@ namespace Allors.Adapters.Memory
                                         var roleIdString = long.Parse(roleIdStringArray[0]);
                                         var role = this.LoadInstantiateStrategy(roleIdString);
                                         if (role == null || !this.session.MemoryDatabase.ContainsConcreteClass(
-                                                (IComposite) relationType.RoleType.ObjectType,
+                                                (IComposite)relationType.RoleType.ObjectType,
                                                 role.UncheckedObjectType))
                                         {
                                             this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, roleIdStringArray[0]);
@@ -464,7 +464,7 @@ namespace Allors.Adapters.Memory
                                             var role = this.LoadInstantiateStrategy(roleId);
                                             if (role == null ||
                                                 !this.session.MemoryDatabase.ContainsConcreteClass(
-                                                    (IComposite) relationType.RoleType.ObjectType,
+                                                    (IComposite)relationType.RoleType.ObjectType,
                                                     role.UncheckedObjectType))
                                             {
                                                 this.session.MemoryDatabase.OnRelationNotLoaded(relationType.Id, associationId, roleId.ToString());

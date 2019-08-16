@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6a082a25-a8f2-4acd-a1a3-ba4461b729f1")]
     #endregion
-    public partial class Person :  System.Object, Named 
+    public partial class Person : System.Object, Named
     {
         #region inherited properties
         public string Name { get; set; }

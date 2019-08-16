@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7fec090e-3d4a-4ec7-895f-4b30d01f59bb")]
     #endregion
-    public partial class PickListItem : DelegatedAccessControlledObject, Deletable 
+    public partial class PickListItem : DelegatedAccessControlledObject, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -35,7 +35,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
-        
+
         #region Allors
         [Id("f32d100b-a6e8-4cb2-98b4-c06264789c76")]
         [AssociationId("3b75e3a8-7580-4f07-bf75-ae7541a00609")]
@@ -45,26 +45,26 @@ namespace Allors.Repository
         [Scale(2)]
         [Required]
         public decimal QuantityPicked { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         public void DelegateAccess() { }
         #endregion
     }

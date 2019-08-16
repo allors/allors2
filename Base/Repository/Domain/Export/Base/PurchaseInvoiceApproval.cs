@@ -46,7 +46,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Required]
-        public PurchaseInvoice PurchaseInvoice{ get; set; }
+        public PurchaseInvoice PurchaseInvoice { get; set; }
 
         #region inherited methods
 
@@ -64,7 +64,7 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
 
 
         public void Approve() { }

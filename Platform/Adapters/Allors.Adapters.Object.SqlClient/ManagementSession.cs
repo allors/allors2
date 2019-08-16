@@ -17,7 +17,7 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
-   
+
     internal class ManagementSession : IDisposable
     {
         internal ManagementSession(Database database, IConnectionFactory connectionFactory)
@@ -25,7 +25,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.Database = database;
             this.Connection = connectionFactory.Create(database);
         }
-        
+
         ~ManagementSession()
         {
             this.Dispose();
@@ -39,7 +39,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             this.Rollback();
         }
-        
+
         internal void Commit()
         {
             this.Connection.Commit();

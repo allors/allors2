@@ -28,7 +28,7 @@ namespace Allors.Domain
     public static partial class ObjectExtensions
     {
         private static readonly ConcurrentDictionary<string, RoleType[]> RequiredRoleTypesByClassName = new ConcurrentDictionary<string, RoleType[]>();
-        private static readonly ConcurrentDictionary<string, RoleType[]> UniqueRoleTypesByClassName = new ConcurrentDictionary<string, RoleType[]>(); 
+        private static readonly ConcurrentDictionary<string, RoleType[]> UniqueRoleTypesByClassName = new ConcurrentDictionary<string, RoleType[]>();
 
         public static void CoreOnPreDerive(this Object @this, ObjectOnPreDerive method)
         {

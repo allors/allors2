@@ -27,7 +27,7 @@ namespace Tests
 
     using Xunit;
 
-    
+
     public class CurrencyTests : DomainTest
     {
         [Fact]

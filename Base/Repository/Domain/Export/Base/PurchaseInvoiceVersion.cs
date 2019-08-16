@@ -23,13 +23,13 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         public string InternalComment { get; set; }
-        
+
         public Currency Currency { get; set; }
         public string Description { get; set; }
         public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-        
+
         public Fee Fee { get; set; }
-        
+
         public string CustomerReference { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public decimal AmountPaid { get; set; }
@@ -38,20 +38,20 @@ namespace Allors.Repository
         public decimal TotalIncVat { get; set; }
         public decimal TotalSurcharge { get; set; }
         public decimal TotalBasePrice { get; set; }
-        
+
         public DateTime InvoiceDate { get; set; }
         public DateTime EntryDate { get; set; }
-        
+
         public decimal TotalShippingAndHandling { get; set; }
-        
+
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
         public decimal TotalExVat { get; set; }
         public SalesTerm[] SalesTerms { get; set; }
-        
+
         public string InvoiceNumber { get; set; }
         public string Message { get; set; }
         public VatRegime VatRegime { get; set; }
-        
+
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
         public Guid DerivationId { get; set; }
@@ -238,7 +238,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public PurchaseInvoiceType PurchaseInvoiceType { get; set; }
-        
+
         #region Allors
         [Id("B3EEBEFD-F12E-4A70-A0DD-A58C89491C03")]
         [AssociationId("592E9F43-C799-48CA-BE4F-B7272D11037B")]
@@ -263,7 +263,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

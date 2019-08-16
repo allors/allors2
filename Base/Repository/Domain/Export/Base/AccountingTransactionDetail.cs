@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("e41be1b2-715b-4bc0-b095-ac23d9950ee4")]
     #endregion
-    public partial class AccountingTransactionDetail : DelegatedAccessControlledObject 
+    public partial class AccountingTransactionDetail : DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -32,7 +32,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public OrganisationGlAccountBalance OrganisationGlAccountBalance { get; set; }
-        
+
         #region Allors
         [Id("9b5a3978-9859-432a-939b-73838c2bb3b2")]
         [AssociationId("bc276111-7fc2-4ae0-a3d8-ac9af05229b2")]
@@ -42,7 +42,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Amount { get; set; }
-        
+
         #region Allors
         [Id("d04a0632-e5ec-4a06-bc57-413cf58d2086")]
         [AssociationId("e874eb66-e9d3-4bb5-bac0-b322d3db4fd5")]
@@ -50,20 +50,20 @@ namespace Allors.Repository
         #endregion
         [Required]
         public bool Debit { get; set; }
-        
+
         #region inherited methods
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void DelegateAccess() { }
 
         #endregion

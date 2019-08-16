@@ -81,7 +81,7 @@ namespace Tests
             this.page.Chips.Add("jane", "jane@doe.org");
 
             this.page.SAVE.Click();
-            
+
             this.page.Chips.Remove("jane@doe.org");
 
             this.page.SAVE.Click();

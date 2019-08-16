@@ -39,7 +39,7 @@ namespace Allors.Domain
             var validation = this.Session.Derive(false);
 
             Assert.True(validation.HasErrors);
-            
+
             this.Session.Rollback();
 
             builder.WithSubject("Website communication");

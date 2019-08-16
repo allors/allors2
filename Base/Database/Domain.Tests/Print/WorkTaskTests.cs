@@ -106,7 +106,7 @@ namespace Allors.Domain.Print
             Assert.Equal(3, model.TimeEntries.Length);
             Assert.Single(model.TimeEntriesByBillingRate);
         }
-        
+
         private Part CreatePart(string id) =>
             new NonUnifiedPartBuilder(this.Session)
             .WithProductIdentification(new PartNumberBuilder(this.Session)

@@ -39,7 +39,7 @@
                         I = "3",
                         V = "1003",
                         T = "Person",
-                        Roles = new[] 
+                        Roles = new[]
                         {
                             new object[] { "FirstName", "rw", "Martien" },
                             new object[] { "MiddleName", "rw", "van" },
@@ -51,7 +51,7 @@
                         I = "101",
                         V = "1101",
                         T = "Organisation",
-                        Roles = new[] 
+                        Roles = new[]
                         {
                             new object[] { "Name", "rw", "Acme" },
                             new object[] { "Owner", "rw", "1" },

@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class BankTests : DomainTest
     {
         [Fact]
@@ -57,7 +57,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
-        
+
         [Fact]
         public void GivenBankWithBic_WhenDeriving_ThenFirstfourCharactersMustBeAlphabetic()
         {

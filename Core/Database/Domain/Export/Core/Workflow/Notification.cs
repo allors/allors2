@@ -38,10 +38,10 @@ namespace Allors.Domain
         public void CoreOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-          
+
             derivation.AddDependency(this.NotificationListWhereNotification, this);
         }
-        
+
         public void CoreOnDerive(ObjectOnDerive method)
         {
             if (!this.ExistSecurityTokens)

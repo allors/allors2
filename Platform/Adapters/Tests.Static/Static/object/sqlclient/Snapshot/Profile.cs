@@ -53,10 +53,10 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
         {
             get
             {
-                var markers = new List<Action> 
-                { 
-                    () => { }, 
-                    () => this.Session.Commit(), 
+                var markers = new List<Action>
+                {
+                    () => { },
+                    () => this.Session.Commit(),
                 };
 
                 if (Settings.ExtraMarkers)
@@ -92,12 +92,12 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
             var configuration = new SqlClient.Configuration
-                                    {
-                                        ObjectFactory = this.CreateObjectFactory(metaPopulation),
-                                        ConnectionString = this.ConnectionString,
-                                        ConnectionFactory = this.connectionFactory,
-                                        CacheFactory = this.cacheFactory
-                                    };
+            {
+                ObjectFactory = this.CreateObjectFactory(metaPopulation),
+                ConnectionString = this.ConnectionString,
+                ConnectionFactory = this.connectionFactory,
+                CacheFactory = this.cacheFactory
+            };
             var database = new Database(this.ServiceProvider, configuration);
 
             if (init)

@@ -2,7 +2,7 @@ namespace Allors.Repository
 {
     using Allors.Repository.Attributes;
 
-    public partial class Singleton : Object 
+    public partial class Singleton : Object
     {
         #region inherited properties
         #endregion
@@ -22,7 +22,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         public AccessControl OperationsAccessControl { get; set; }
-        
+
         #region Allors
         [Id("74bb8158-a222-429d-8421-3b508de5d516")]
         [AssociationId("be102333-b04a-4942-a7e2-9ef303d39bff")]
@@ -30,7 +30,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         public AccessControl ProcurementAccessControl { get; set; }
-        
+
         #region inherited methods
         #endregion
     }

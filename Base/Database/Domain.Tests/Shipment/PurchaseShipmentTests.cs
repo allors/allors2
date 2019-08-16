@@ -144,7 +144,7 @@ namespace Allors.Domain
                 .Build();
 
             this.InternalOrganisation.AddPartyContactMechanism(shippingAddress);
-            
+
             this.Session.Derive();
 
             var order = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();

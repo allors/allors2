@@ -27,12 +27,12 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class InternalOrganisationTests : DomainTest
     {
         private OwnBankAccount ownBankAccount;
         private WebAddress billingAddress;
-        
+
         public InternalOrganisationTests()
         {
             this.ownBankAccount = this.Session.Extent<OwnBankAccount>().First;
@@ -255,7 +255,7 @@ namespace Allors.Domain
 
             Assert.True(this.InternalOrganisation.ExistDefaultCollectionMethod);
         }
-        
+
         private void InstantiateObjects(ISession session)
         {
             this.ownBankAccount = (OwnBankAccount)session.Instantiate(this.ownBankAccount);
@@ -281,9 +281,9 @@ namespace Allors.Domain
                 .WithInternalOrganisation(internalOrganisation)
                 .WithCustomer(nike)
                 .Build();
-            
+
             this.Session.Derive();
-            
+
             Assert.True(this.InternalOrganisation.ExistCustomerRelationshipsWhereInternalOrganisation);
             Assert.True(this.InternalOrganisation.ExistActiveCustomers);
             Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);

@@ -26,7 +26,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class PartTests : DomainTest
     {
         [Fact]
@@ -53,7 +53,7 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive();
-            
+
             Assert.Single(finishedGood.InventoryItemsWherePart);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), finishedGood.InventoryItemsWherePart.First.Facility);
         }

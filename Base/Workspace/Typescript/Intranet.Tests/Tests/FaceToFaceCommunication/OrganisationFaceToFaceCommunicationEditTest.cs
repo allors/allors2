@@ -95,7 +95,7 @@ namespace Tests.FaceToFaceCommunicationTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
             this.organisationListPage.Table.DefaultAction(organisation);

@@ -36,7 +36,7 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
 
@@ -46,7 +46,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

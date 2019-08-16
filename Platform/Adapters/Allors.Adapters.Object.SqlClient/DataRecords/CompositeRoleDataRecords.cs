@@ -30,7 +30,7 @@ namespace Allors.Adapters.Object.SqlClient
     {
         private readonly Mapping mapping;
         private readonly IEnumerable<CompositeRelation> relations;
- 
+
         internal CompositeRoleDataRecords(Mapping mapping, IEnumerable<CompositeRelation> relations)
         {
             this.mapping = mapping;
@@ -41,7 +41,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             var metaData = new[]
             {
-                new SqlMetaData(this.mapping.TableTypeColumnNameForAssociation, SqlDbType.BigInt), 
+                new SqlMetaData(this.mapping.TableTypeColumnNameForAssociation, SqlDbType.BigInt),
                 new SqlMetaData(this.mapping.TableTypeColumnNameForRole, SqlDbType.BigInt)
             };
             var sqlDataRecord = new SqlDataRecord(metaData);

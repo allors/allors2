@@ -53,7 +53,7 @@ namespace Allors.Domain
             if (!this.ExistInternalOrganisation)
             {
                 var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
-               
+
                 if (internalOrganisations.Count() == 1)
                 {
                     this.InternalOrganisation = internalOrganisations.Single();

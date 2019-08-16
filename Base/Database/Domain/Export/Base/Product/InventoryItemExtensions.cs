@@ -47,7 +47,7 @@ namespace Allors.Domain
                 @this.Facility = @this.Part.DefaultFacility;
             }
 
-            Party owner = (Organisation) @this.Facility.Owner;
+            Party owner = (Organisation)@this.Facility.Owner;
             if (@this is SerialisedInventoryItem item)
             {
                 owner = item.SerialisedItem?.OwnedBy;

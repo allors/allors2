@@ -56,7 +56,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             var serialisedStates = new SerialisedInventoryItemStates(this.Session);
@@ -113,7 +113,7 @@ namespace Allors.Domain
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
-            
+
             new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Shrinkage")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkrimping").WithLocale(dutchLocale).Build())
@@ -126,7 +126,7 @@ namespace Allors.Domain
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
-            
+
             new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Unknown")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onbekend").WithLocale(dutchLocale).Build())
@@ -139,7 +139,7 @@ namespace Allors.Domain
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
-            
+
             new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("State change")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Status update").WithLocale(dutchLocale).Build())

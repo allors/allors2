@@ -287,7 +287,7 @@ namespace Allors.Document.OpenDocument
                         break;
 
                     // TODO: Other XmlNodeTypes
-                    
+
                     // Ignore the following XmlNodeTypes
                     case XmlNodeType.EndElement:
                         break;

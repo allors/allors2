@@ -42,11 +42,11 @@ namespace Allors.Data
         public Extent Save()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Intersect,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                           Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
-                       };
+            {
+                Kind = ExtentKind.Intersect,
+                Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            };
         }
 
         bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)

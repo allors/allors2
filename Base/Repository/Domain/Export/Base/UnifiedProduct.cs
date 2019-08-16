@@ -57,7 +57,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         LocalisedText[] LocalisedDescriptions { get; set; }
-        
+
         #region Allors
         [Id("D88189C8-735E-4A5A-B46F-AEFF4F1F0501")]
         [AssociationId("93F47711-09D1-45FE-9FCD-20C0AF122484")]

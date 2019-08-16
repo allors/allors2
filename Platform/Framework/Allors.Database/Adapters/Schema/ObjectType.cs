@@ -7,7 +7,7 @@
     {
         [XmlAttribute("i")]
         public Guid Id;
-        
+
         [XmlText]
         public string Objects;
     }

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5835aca6-214b-41cf-aefe-e361dda026d7")]
     #endregion
-    public partial class OneTimeCharge : PriceComponent 
+    public partial class OneTimeCharge : PriceComponent
     {
         #region inherited properties
 
@@ -66,20 +66,20 @@ namespace Allors.Repository
         #endregion
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

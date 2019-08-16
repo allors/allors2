@@ -22,7 +22,7 @@ namespace Allors.Protocol.Data
 {
     using Allors.Meta;
 
-    public static class TreeExtensions 
+    public static class TreeExtensions
     {
         public static Allors.Data.Tree Load(this Tree @this, ISession session)
         {

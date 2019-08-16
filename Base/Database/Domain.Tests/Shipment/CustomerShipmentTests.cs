@@ -21,7 +21,7 @@
 
 namespace Allors.Domain
 {
-  using Meta;
+    using Meta;
     using Xunit;
 
     public class CustomerShipmentTests : DomainTest

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6b56e13b-d075-40f1-8e33-a9a4c6cadb96")]
     #endregion
-    public partial class AccountingPeriod : Budget, Versioned 
+    public partial class AccountingPeriod : Budget, Versioned
     {
         #region inherited properties
 
@@ -73,7 +73,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         public bool Active { get; set; }
-        
+
         #region Allors
         [Id("babffef0-47ad-44ad-9a55-ffefb0fec783")]
         [AssociationId("b490215a-8185-40c8-bb31-087906d10911")]
@@ -81,7 +81,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         public int PeriodNumber { get; set; }
-        
+
         #region Allors
         [Id("d776c4f4-9408-4083-8eb4-a4f940f6066f")]
         [AssociationId("8789a4bf-fd21-48d1-ae0b-26ebd100c0ea")]
@@ -117,24 +117,24 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
+        public void Reopen() { }
 
         #endregion
     }

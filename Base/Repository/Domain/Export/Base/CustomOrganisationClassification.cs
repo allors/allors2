@@ -3,11 +3,11 @@ namespace Allors.Repository
     using System;
 
     using Attributes;
-    
+
     #region Allors
     [Id("DE43963D-3505-4B29-8F1F-C24E517D9497")]
     #endregion
-    public partial class CustomOrganisationClassification : OrganisationClassification 
+    public partial class CustomOrganisationClassification : OrganisationClassification
     {
         #region inherited properties
         public string Name { get; set; }
@@ -22,23 +22,23 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
-    
+
         #endregion
 
     }

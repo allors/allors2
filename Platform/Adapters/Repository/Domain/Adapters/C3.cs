@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("2a9b5a77-6065-4f2a-bbc3-655426f0f97b")]
     #endregion
-    public partial class C3 :  System.Object, I3, I23, I34 
+    public partial class C3 : System.Object, I3, I23, I34
     {
         #region inherited properties
         public C4[] I3C4many2manies { get; set; }

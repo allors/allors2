@@ -96,7 +96,7 @@ namespace Allors.Meta
         public override bool ExistClass => true;
 
         public override Class ExclusiveSubclass => this;
-        
+
         public override Type ClrType => this.clrType;
 
         public IEnumerable<ConcreteRoleType> WorkspaceConcreteRoleTypes
@@ -123,7 +123,7 @@ namespace Allors.Meta
         {
             return this.Equals(objectType);
         }
-       
+
         public void DeriveConcreteRoleTypes(HashSet<RoleType> sharedRoleTypes)
         {
             sharedRoleTypes.Clear();

@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class ContactMechanismTests : DomainTest
     {
         [Fact]

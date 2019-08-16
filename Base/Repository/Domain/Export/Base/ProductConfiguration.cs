@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("23503dae-02ff-4dae-950e-d699dcb12a3c")]
     #endregion
-    public partial class ProductConfiguration : ProductAssociation 
+    public partial class ProductConfiguration : ProductAssociation
     {
         #region inherited properties
         public string Comment { get; set; }
@@ -64,20 +64,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

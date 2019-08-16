@@ -24,7 +24,7 @@ namespace Allors.Adapters
     using System;
     using System.Xml;
     using Allors.Meta;
-    
+
     /// <summary>
     /// Xml tag definitions and utility methods for Xml Serialization.
     /// An <see cref="IDatabase"/> is serialized to a <see cref="XmlDocument"/> 
@@ -47,7 +47,7 @@ namespace Allors.Adapters
         /// The current <see cref="Serialization#Version"/> of the serialization schema.
         /// </summary>
         public const int VersionCurrent = 1;
-        
+
         /// <summary>
         /// This attribute holds the <see cref="ObjectId"/> of the association of a relation. 
         /// Attribute of the <see cref="Serialization#ChangedRelations"/> element.
@@ -111,7 +111,7 @@ namespace Allors.Adapters
         /// Child element of the <see cref="Serialization#Allors"/> element.
         /// </summary>
         public const string Workspace = "workspace";
-        
+
         /// <summary>
         /// This element holds a relation.
         /// Child element of the <see cref="Serialization#RelationType"/> element.

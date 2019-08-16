@@ -107,7 +107,7 @@ namespace Allors.Adapters.Object.Npgsql
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
-        
+
         public IServiceProvider ServiceProvider { get; }
 
         public IConnectionFactory ConnectionFactory
@@ -308,7 +308,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             return concreteClasses.Contains(containee);
         }
-        
+
         internal Type GetDomainType(IObjectType objectType)
         {
             return this.ObjectFactory.GetTypeForObjectType(objectType);

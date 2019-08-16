@@ -18,19 +18,19 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
-        
+
         public SecurityToken[] SecurityTokens { get; set; }
-        
+
         public Guid UniqueId { get; set; }
-        
+
         public Part Part { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public Lot Lot { get; set; }
-        
+
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        
+
         public Facility Facility { get; set; }
 
         public User CreatedBy { get; set; }
@@ -128,20 +128,20 @@ namespace Allors.Repository
         public int Quantity { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

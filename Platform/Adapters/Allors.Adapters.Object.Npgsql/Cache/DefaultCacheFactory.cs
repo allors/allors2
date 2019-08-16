@@ -27,7 +27,7 @@ namespace Allors.Adapters.Object.Npgsql.Caching
     /// </summary>
     public sealed class DefaultCacheFactory : ICacheFactory
     {
-        public IClass[] ExcludedClasses { get; set; } 
+        public IClass[] ExcludedClasses { get; set; }
 
         public ICache CreateCache()
         {

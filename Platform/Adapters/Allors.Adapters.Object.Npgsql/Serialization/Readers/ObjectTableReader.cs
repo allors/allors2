@@ -142,13 +142,13 @@ namespace Allors.Adapters.Object.Npgsql
         }
 
         public override int FieldCount { get; }
-        
+
         public override bool Read()
         {
             var result = this.enumerator.MoveNext();
             return result;
         }
-        
+
         public override object GetValue(int i)
         {
             var current = this.enumerator.Current;
@@ -156,7 +156,7 @@ namespace Allors.Adapters.Object.Npgsql
             var value = getFunction(current);
             return value;
         }
-        
+
         #region Not Supported
 
         public override bool GetBoolean(int ordinal)

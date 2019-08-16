@@ -3289,7 +3289,7 @@ namespace Allors.Adapters
                     MetaC1.Instance.C1C1many2one,
                     MetaC1.Instance.C1C1one2manies,
                     MetaC1.Instance.C1C1many2manies);
-            
+
                 StrategyAssert.AssociationsExistExclusive(
                     toProxy,
                     MetaC1.Instance.C1WhereC1C1one2one,
@@ -3997,7 +3997,7 @@ namespace Allors.Adapters
                 init();
 
                 var obj = this.Session.Create<C1>();
-                
+
                 Assert.Equal(0, obj.Strategy.ObjectVersion);
 
                 this.Session.Commit();
@@ -4006,7 +4006,7 @@ namespace Allors.Adapters
                 {
                     Assert.Equal(0, session2.Instantiate(obj).Strategy.ObjectVersion);
                 }
-                
+
                 Assert.Equal(0, obj.Strategy.ObjectVersion);
 
                 obj.C1AllorsString = "Changed";
@@ -4205,7 +4205,7 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public virtual void CreateManyPopulations()
         {
@@ -4655,7 +4655,7 @@ namespace Allors.Adapters
                     }
 
                     Assert.Empty(c1A.C1C2one2manies);
-                    
+
                     this.Session.Prefetch(prefetchPolicy, c1A);
                     if (twice)
                     {
@@ -4879,7 +4879,7 @@ namespace Allors.Adapters
 
                     this.Session.Commit();
 
-                    this.Session.Prefetch(new IPropertyType[] { C2.Meta.C1WhereC1C2one2one}, c2A);
+                    this.Session.Prefetch(new IPropertyType[] { C2.Meta.C1WhereC1C2one2one }, c2A);
                     if (twice)
                     {
                         this.Session.Prefetch(new IPropertyType[] { C2.Meta.C1WhereC1C2one2one }, c2A);
@@ -4968,7 +4968,7 @@ namespace Allors.Adapters
                     {
                         this.Session.Prefetch(new IPropertyType[] { C2.Meta.C1sWhereC1C2many2many }, new[] { c2a.Strategy.ObjectId });
                     }
-                    
+
                     Assert.Contains(c1a, c2a.C1sWhereC1C2many2many);
 
                     this.Session.Commit();

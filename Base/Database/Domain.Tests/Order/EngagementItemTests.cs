@@ -21,12 +21,12 @@
 
 namespace Allors.Domain
 {
-    
 
-    
+
+
     using Xunit;
 
-    
+
     public class EngagementItemTests : DomainTest
     {
         [Fact]

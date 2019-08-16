@@ -22,7 +22,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             config.GrantOwner(this.ObjectType, Operations.Read, Operations.Write, Operations.Execute);
         }

@@ -18,23 +18,23 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
-        
+
         #region Allors
         [Id("615C6C58-513A-456F-A0CE-E472D173DCB0")]
         [AssociationId("089D3E5D-6A3C-4B94-9162-65DEE526AA1F")]

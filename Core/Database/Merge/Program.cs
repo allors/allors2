@@ -11,7 +11,7 @@
         {
             var directoryInfos = args.Select(v => new DirectoryInfo(v)).ToArray();
 
-            var inputDirectories = directoryInfos.Take(directoryInfos.Length-1).ToArray();
+            var inputDirectories = directoryInfos.Take(directoryInfos.Length - 1).ToArray();
             var outputDirectory = directoryInfos.Last();
             var resources = new Resources(inputDirectories, outputDirectory);
             resources.Merge();

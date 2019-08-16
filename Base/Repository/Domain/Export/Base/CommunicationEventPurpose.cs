@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8e3fd781-f0b5-4e02-b1f6-6364d0559273")]
     #endregion
-    public partial class CommunicationEventPurpose : Enumeration 
+    public partial class CommunicationEventPurpose : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -28,20 +28,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

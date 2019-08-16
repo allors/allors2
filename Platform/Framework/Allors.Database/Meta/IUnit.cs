@@ -32,7 +32,7 @@ namespace Allors.Meta
         bool IsFloat { get; }
 
         bool IsInteger { get; }
-        
+
         bool IsString { get; }
 
         bool IsUnique { get; }

@@ -36,7 +36,7 @@ namespace Allors.Domain
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
-            
+
             this.Session.Rollback();
 
             builder.WithIban("NL50RABO0109546784");

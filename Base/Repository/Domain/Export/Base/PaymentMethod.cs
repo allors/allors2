@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f34d5b9b-b940-4885-9744-754dd0eae08d")]
     #endregion
-	public partial interface PaymentMethod : UniquelyIdentifiable, Object
+    public partial interface PaymentMethod : UniquelyIdentifiable, Object
     {
         #region Allors
         [Id("0b16fdbc-c535-45a5-8be9-7b1d2c12337a")]

@@ -10,7 +10,7 @@
     public class Workspace
     {
         private readonly Dictionary<long, WorkspaceObject> workspaceObjectById = new Dictionary<long, WorkspaceObject>();
-        
+
         public Workspace(ObjectFactory objectFactory)
         {
             this.ObjectFactory = objectFactory;
@@ -23,15 +23,15 @@
             var userSecurityHash = response.UserSecurityHash;
 
             var requireLoadIds = new SyncRequest
-                                     {
-                                         Objects = response.Objects.Where(v =>
-                                                 {
-                                                     var id = long.Parse(v[0]);
-                                                     var version = long.Parse(v[1]);
-                                                     this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
-                                                     return workspaceObject == null || !workspaceObject.Version.Equals(version) || !workspaceObject.UserSecurityHash.Equals(userSecurityHash);
-                                                 }).Select(v => v[0]).ToArray()
-                                     };
+            {
+                Objects = response.Objects.Where(v =>
+                        {
+                            var id = long.Parse(v[0]);
+                            var version = long.Parse(v[1]);
+                            this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
+                            return workspaceObject == null || !workspaceObject.Version.Equals(version) || !workspaceObject.UserSecurityHash.Equals(userSecurityHash);
+                        }).Select(v => v[0]).ToArray()
+            };
 
             return requireLoadIds;
         }

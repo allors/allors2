@@ -23,7 +23,7 @@ namespace Allors.Domain.Print.PurchaseOrderModel
         public Model(PurchaseOrder order)
         {
             this.Order = new OrderModel(order);
-            
+
             this.OrderedBy = new OrderedByModel((Organisation)order.OrderedBy);
             this.TakenVia = new TakenViaModel(order);
             this.ShipTo = new ShipToModel(order);

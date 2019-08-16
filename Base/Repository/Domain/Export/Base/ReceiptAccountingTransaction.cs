@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1a5195d6-8fff-4590-afe1-3f50c4fa0c67")]
     #endregion
-    public partial class ReceiptAccountingTransaction : ExternalAccountingTransaction 
+    public partial class ReceiptAccountingTransaction : ExternalAccountingTransaction
     {
         #region inherited properties
         public Party FromParty { get; set; }
@@ -47,20 +47,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

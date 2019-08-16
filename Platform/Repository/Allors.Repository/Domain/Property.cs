@@ -31,7 +31,7 @@ namespace Allors.Repository.Domain
         private readonly Inflector.Inflector inflector;
 
         private readonly string name;
-        
+
         public Property(Inflector.Inflector inflector, Composite definingType, string name)
         {
             this.AttributeByName = new Dictionary<string, Attribute>();
@@ -116,8 +116,8 @@ namespace Allors.Repository.Domain
         }
 
         public string RoleName => this.name;
-       
-        public string RoleSingularName 
+
+        public string RoleSingularName
         {
             get
             {

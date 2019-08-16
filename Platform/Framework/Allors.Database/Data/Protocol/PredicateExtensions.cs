@@ -26,7 +26,7 @@ namespace Allors.Protocol.Data
     using Allors.Data;
     using Allors.Meta;
 
-    public static class PredicateExtensions 
+    public static class PredicateExtensions
     {
         public static IPredicate Load(this Predicate @this, ISession session)
         {

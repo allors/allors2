@@ -1,4 +1,4 @@
- //------------------------------------------------------------------------------------------------- 
+//------------------------------------------------------------------------------------------------- 
 // <copyright file="ProductCategoryTests.cs" company="Allors bvba">
 // Copyright 2002-2009 Allors bvba.
 // 
@@ -74,7 +74,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
             Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
@@ -135,7 +135,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
             Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
@@ -273,7 +273,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.False(productCategory1.ExistProductCategoriesWhereDescendant);
             Assert.False(productCategory2.ExistProductCategoriesWhereDescendant);
@@ -361,7 +361,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.Equal(2, productCategory1.Children.Count);
             Assert.Contains(productCategory11, productCategory1.Children);
@@ -512,7 +512,7 @@ namespace Allors.Domain
                 .WithPrimaryParent(productCategory12)
                 .WithProduct(good122)
                 .Build();
-            
+
             this.Session.Derive();
 
             Assert.Equal(6, productCategory1.AllProducts.Count);

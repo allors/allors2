@@ -92,7 +92,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Location { get; set; }
-        
+
         #region Versioning
         #region Allors
         [Id("4339C173-EEAA-4B11-8E54-D96C98B2AF01")]
@@ -118,31 +118,31 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
-
-
+        public void Reopen() { }
 
 
-        public void Delete(){}
+
+
+        public void Delete() { }
 
 
         #endregion

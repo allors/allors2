@@ -252,7 +252,7 @@ namespace Allors.Adapters
             this.C4B.S1234AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 4, DateTimeKind.Utc);
             this.C4C.S1234AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 5, DateTimeKind.Utc);
             this.C4D.S1234AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 5, DateTimeKind.Utc);
-            
+
             // Float
             this.C1B.C1AllorsDouble = 1;
             this.C1C.C1AllorsDouble = 2;
@@ -528,7 +528,7 @@ namespace Allors.Adapters
             this.C2A.AddI12I34many2many(this.C4B);
             this.C2A.AddI12I34many2many(this.C4C);
             this.C2A.AddI12I34many2many(this.C4D);
-            
+
             this.C1B.AddS1234C2many2many(this.C2B);
             this.C1C.AddS1234C2many2many(this.C2B);
             this.C1C.AddS1234C2many2many(this.C2C);
@@ -547,7 +547,7 @@ namespace Allors.Adapters
             this.C1D.AddC1I12many2many(this.C2B);
             this.C1D.AddC1I12many2many(this.C2C);
             this.C1D.AddC1I12many2many(this.C2D);
-            
+
             this.C1B.AddS1234many2many(this.C1B);
             this.C1B.AddS1234many2many(this.C1A);
             this.C1C.AddS1234many2many(this.C2B);

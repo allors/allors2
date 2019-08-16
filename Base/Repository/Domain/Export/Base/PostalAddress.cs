@@ -34,7 +34,7 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("c83eb0ff-8503-4f2a-9280-f8e46b382b6a")]
         [AssociationId("2976fdd4-19c4-4913-8875-1bf413da02fd")]
@@ -108,26 +108,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Country Country { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
 
 
         #endregion

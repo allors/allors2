@@ -76,10 +76,10 @@ namespace Allors.Workspace
                 .ToArray();
 
             var extensionMethods = (from type in assembly.ExportedTypes
-                where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
-                from method in type.GetTypeInfo().DeclaredMethods
-                where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
-                select method).ToArray();
+                                    where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
+                                    from method in type.GetTypeInfo().DeclaredMethods
+                                    where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
+                                    select method).ToArray();
 
 
             this.MetaPopulation = metaPopulation;

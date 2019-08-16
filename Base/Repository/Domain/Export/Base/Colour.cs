@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8bae9154-ec37-4139-b52c-6c3df860fb20")]
     #endregion
-    public partial class Colour : Enumeration, ProductFeature 
+    public partial class Colour : Enumeration, ProductFeature
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -39,20 +39,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

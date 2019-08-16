@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d35c33c3-ca15-4b70-b20d-c51ed068626a")]
     #endregion
-    public partial class ShipmentItem : Deletable, DelegatedAccessControlledObject 
+    public partial class ShipmentItem : Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -58,7 +58,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Part Part { get; set; }
-        
+
         #region Allors
         [Id("19c691ae-f849-451e-ac7e-ea84f4a9b51a")]
         [AssociationId("9a57f102-0b43-4f10-af75-c808c718c8b7")]
@@ -67,7 +67,7 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         public string ContentsDescription { get; set; }
-        
+
         #region Allors
         [Id("6b3ab563-a19b-4d92-be3a-ddf3046d5b18")]
         [AssociationId("d41aeb48-bd41-40b2-bbc4-f4dd096a6c5f")]
@@ -77,7 +77,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Document[] Documents { get; set; }
-      
+
         #region Allors
         [Id("b5d35e87-f741-4600-9838-4419b127681d")]
         [AssociationId("797743d0-c0e9-4a75-9180-4e05eb55423f")]
@@ -87,7 +87,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ShipmentItem[] InResponseToShipmentItems { get; set; }
-        
+
         #region Allors
         [Id("b8ca6fae-0866-4806-9ffd-64d5d2b978f9")]
         [AssociationId("2a9e81f6-6009-4706-a0d0-cd180cb825e6")]
@@ -97,7 +97,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public InventoryItem[] InventoryItems { get; set; }
-        
+
         #region Allors
         [Id("b9bfaea8-e5f0-4b0e-955f-df28ed63e8e3")]
         [AssociationId("7da8c058-92b7-4fd7-9eaf-7b7fb94f62cf")]
@@ -131,22 +131,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         public void DelegateAccess() { }
 
         #endregion

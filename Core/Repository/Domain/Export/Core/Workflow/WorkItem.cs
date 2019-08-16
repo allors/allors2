@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("fbea29c6-6109-4163-a088-9f0b4deac896")]
     #endregion
-    public partial interface WorkItem : Object 
+    public partial interface WorkItem : Object
     {
         #region Allors
         [Id("7e6d392b-00e7-4095-8525-d9f4ef8cfaa3")]

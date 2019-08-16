@@ -117,8 +117,8 @@ namespace Allors.Adapters
             throw new System.NotSupportedException();
         }
 
-        public int Count 
-        { 
+        public int Count
+        {
             get
             {
                 return StaticEmptySet.Count;

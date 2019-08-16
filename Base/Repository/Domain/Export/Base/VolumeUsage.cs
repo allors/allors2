@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c219edcd-71dc-4f0b-afee-4b06f3d785be")]
     #endregion
-    public partial class VolumeUsage : DeploymentUsage 
+    public partial class VolumeUsage : DeploymentUsage
     {
         #region inherited properties
         public TimeFrequency Frequency { get; set; }
@@ -50,20 +50,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

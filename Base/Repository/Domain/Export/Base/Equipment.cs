@@ -8,7 +8,7 @@ namespace Allors.Repository
     [Id("da852ff9-0c87-4fa6-a93a-90d97d28029c")]
     #endregion
     [Plural("Equipments")]
-    public partial class Equipment : FixedAsset 
+    public partial class Equipment : FixedAsset
     {
         #region inherited properties
         public string Name { get; set; }
@@ -38,24 +38,24 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

@@ -14,7 +14,7 @@ namespace Components
         }
 
         public override By Selector { get; }
-        
+
         public void Select(string value)
         {
             this.Driver.WaitForAngular();

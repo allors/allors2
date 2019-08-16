@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b6c168d6-3d5c-4f5f-b6c6-d348600f1483")]
     #endregion
-    public partial class ManufacturingConfiguration : InventoryItemConfiguration 
+    public partial class ManufacturingConfiguration : InventoryItemConfiguration
     {
         #region inherited properties
         public InventoryItem InventoryItem { get; set; }
@@ -25,24 +25,24 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

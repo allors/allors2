@@ -22,7 +22,7 @@ namespace Allors.Protocol.Data
 {
     using System;
 
-    public class Result 
+    public class Result
     {
         public Guid? FetchRef { get; set; }
 

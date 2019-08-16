@@ -34,7 +34,7 @@ namespace Allors.Adapters.Object.SqlClient
         internal readonly Reference Reference;
 
         private ICachedObject cachedObject;
-        
+
         private Dictionary<IRoleType, object> originalRoleByRoleType;
         private Dictionary<IRoleType, object> modifiedRoleByRoleType;
         private Dictionary<IRoleType, CompositesRole> modifiedCompositesRoleByRoleType;
@@ -60,16 +60,16 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        internal Dictionary<IRoleType, object> ModifiedRoleByRoleType => 
+        internal Dictionary<IRoleType, object> ModifiedRoleByRoleType =>
             this.modifiedRoleByRoleType ?? (this.modifiedRoleByRoleType = new Dictionary<IRoleType, object>());
 
-        private Dictionary<IRoleType, object> OriginalRoleByRoleType => 
+        private Dictionary<IRoleType, object> OriginalRoleByRoleType =>
             this.originalRoleByRoleType ?? (this.originalRoleByRoleType = new Dictionary<IRoleType, object>());
 
-        private HashSet<IRoleType> RequireFlushRoles => 
+        private HashSet<IRoleType> RequireFlushRoles =>
             this.requireFlushRoles ?? (this.requireFlushRoles = new HashSet<IRoleType>());
 
-        private Dictionary<IRoleType, CompositesRole> ModifiedRolesByRoleType => 
+        private Dictionary<IRoleType, CompositesRole> ModifiedRolesByRoleType =>
             this.modifiedCompositesRoleByRoleType ?? (this.modifiedCompositesRoleByRoleType = new Dictionary<IRoleType, CompositesRole>());
 
         internal bool TryGetUnitRole(IRoleType roleType, out object role)
@@ -373,7 +373,7 @@ namespace Allors.Adapters.Object.SqlClient
                     else
                     {
                         var roles = this.ModifiedRolesByRoleType[flushRole];
-                        roles.Flush(flush, this, flushRole);                        
+                        roles.Flush(flush, this, flushRole);
                     }
                 }
             }

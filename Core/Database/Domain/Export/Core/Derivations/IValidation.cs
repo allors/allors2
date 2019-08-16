@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Allors.Meta;
 
-    public interface IValidation 
+    public interface IValidation
     {
         IDerivation Derivation { get; }
 

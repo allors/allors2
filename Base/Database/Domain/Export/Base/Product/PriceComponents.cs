@@ -200,7 +200,7 @@ namespace Allors.Domain
                     orderValueValid = true;
                 }
             }
-            
+
             if ((withGeographicBoundary && !geographicBoundaryValid) ||
                 (withPartyClassification && !partyClassificationValid) ||
                 (withProductCategory && !productCategoryValid) ||

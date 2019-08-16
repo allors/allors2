@@ -27,10 +27,10 @@ namespace Server.Tests
         public async void CorrectUserAndPassword()
         {
             var args = new AuthenticationTokenRequest
-                            {
-                                UserName = "Jane",
-                                Password = "p@ssw0rd"
-                            };
+            {
+                UserName = "Jane",
+                Password = "p@ssw0rd"
+            };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
@@ -44,10 +44,10 @@ namespace Server.Tests
         public async void NonExistingUser()
         {
             var args = new AuthenticationTokenRequest
-                            {
-                                UserName = "Jeff",
-                                Password = "p@ssw0rd"
-                            };
+            {
+                UserName = "Jeff",
+                Password = "p@ssw0rd"
+            };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
@@ -60,10 +60,10 @@ namespace Server.Tests
         public async void EmptyStringPassword()
         {
             var args = new AuthenticationTokenRequest
-                            {
-                                UserName = "John",
-                                Password = ""
-                            };
+            {
+                UserName = "John",
+                Password = ""
+            };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
@@ -76,9 +76,9 @@ namespace Server.Tests
         public async void NoPassword()
         {
             var args = new AuthenticationTokenRequest
-                            {
-                                UserName = "John"
-                            };
+            {
+                UserName = "John"
+            };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);

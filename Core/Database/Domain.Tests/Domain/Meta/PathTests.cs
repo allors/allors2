@@ -134,7 +134,7 @@ namespace Tests
 
             var result = (C1)fetch.Get(c2A, acls);
             Assert.Equal(result, c1A);
-            
+
             result = (C1)fetch.Get(c2B, acls);
             Assert.Equal(result, c1B);
         }

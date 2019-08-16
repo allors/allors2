@@ -133,7 +133,7 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 return this.upgrade.ToArray();
             }
-            
+
             var clrType = this.strategy.Session.Database.GetDomainType(this.ObjectType);
             return this.ToArray(clrType);
         }

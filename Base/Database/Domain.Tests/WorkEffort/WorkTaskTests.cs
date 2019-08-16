@@ -155,7 +155,7 @@ namespace Allors.Domain
 
             // Assert
             Assert.Equal(today, workOrder.ActualStart);
-            Assert.Equal(laterToday,workOrder.ActualCompletion);
+            Assert.Equal(laterToday, workOrder.ActualCompletion);
 
             //// Re-arrange
             var timeEntryYesterday = new TimeEntryBuilder(this.Session)

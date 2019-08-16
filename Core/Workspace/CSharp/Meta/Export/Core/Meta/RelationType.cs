@@ -96,19 +96,19 @@ namespace Allors.Workspace.Meta
 
         public bool IsDerived
         {
-            get 
+            get
             {
                 return this.isDerived;
             }
 
-            set 
+            set
             {
                 this.MetaPopulation.AssertUnlocked();
                 this.isDerived = value;
                 this.MetaPopulation.Stale();
             }
         }
-        
+
         public bool IsSynced
         {
             get
@@ -124,7 +124,7 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public Multiplicity AssignedMultiplicity 
+        public Multiplicity AssignedMultiplicity
         {
             get
             {
@@ -139,7 +139,7 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public Multiplicity Multiplicity 
+        public Multiplicity Multiplicity
         {
             get
             {
@@ -234,7 +234,7 @@ namespace Allors.Workspace.Meta
         /// </summary>
         /// <value>The name of the reverse.</value>
         public string ReverseName => this.RoleType.SingularName + this.AssociationType.SingularName;
-        
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>

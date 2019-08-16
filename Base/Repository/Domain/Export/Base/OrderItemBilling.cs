@@ -46,7 +46,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal Amount { get; set; }
-        
+
         #region Allors
         [Id("cfff23f0-1f3c-48a1-b4a7-85bc2254dbff")]
         [AssociationId("ed09cee4-3c01-4a2a-ab3d-6f9e8de16466")]
@@ -59,19 +59,19 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
         public void Delete() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

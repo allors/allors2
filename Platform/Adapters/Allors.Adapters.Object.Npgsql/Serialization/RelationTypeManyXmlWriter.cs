@@ -43,7 +43,7 @@ namespace Allors.Adapters.Object.Npgsql
         /// The <see cref="xmlWriter"/>.
         /// </summary>
         private readonly XmlWriter xmlWriter;
-        
+
         /// <summary>
         /// At least one role was written.
         /// </summary>

@@ -73,7 +73,7 @@ namespace Allors.Workspace.Meta
                 }
             }
         }
-        
+
         public IObjectType ObjectType
         {
             get

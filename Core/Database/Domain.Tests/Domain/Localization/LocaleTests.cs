@@ -26,7 +26,7 @@ namespace Tests
 
     using Xunit;
 
-    
+
     public class LocaleTests : DomainTest
     {
         [Fact]
@@ -73,7 +73,7 @@ namespace Tests
 
             var builder = new LocaleBuilder(this.Session);
             builder.Build();
-            
+
             Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithLanguage(dutch).Build();

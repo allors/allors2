@@ -22,23 +22,23 @@ namespace Allors.Domain
 
     public partial class UnifiedGood
     {
-        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering && 
-                                    !this.ExistEngagementItemsWhereProduct && 
-                                    !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed && 
-                                    !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit && 
-                                    !this.ExistQuoteItemsWhereProduct && 
-                                    !this.ExistShipmentItemsWhereGood && 
-                                    !this.ExistWorkEffortGoodStandardsWhereGood && 
-                                    !this.ExistMarketingPackageWhereProductsUsedIn && 
-                                    !this.ExistMarketingPackagesWhereProduct && 
-                                    !this.ExistOrganisationGlAccountsWhereProduct && 
-                                    !this.ExistProductConfigurationsWhereProductsUsedIn && 
-                                    !this.ExistProductConfigurationsWhereProduct && 
-                                    !this.ExistRequestItemsWhereProduct && 
-                                    !this.ExistSalesInvoiceItemsWhereProduct && 
-                                    !this.ExistSalesOrderItemsWhereProduct && 
-                                    !this.ExistWorkEffortTypesWhereProductToProduce && 
-                                    !this.ExistEngagementItemsWhereProduct && 
+        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering &&
+                                    !this.ExistEngagementItemsWhereProduct &&
+                                    !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed &&
+                                    !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit &&
+                                    !this.ExistQuoteItemsWhereProduct &&
+                                    !this.ExistShipmentItemsWhereGood &&
+                                    !this.ExistWorkEffortGoodStandardsWhereGood &&
+                                    !this.ExistMarketingPackageWhereProductsUsedIn &&
+                                    !this.ExistMarketingPackagesWhereProduct &&
+                                    !this.ExistOrganisationGlAccountsWhereProduct &&
+                                    !this.ExistProductConfigurationsWhereProductsUsedIn &&
+                                    !this.ExistProductConfigurationsWhereProduct &&
+                                    !this.ExistRequestItemsWhereProduct &&
+                                    !this.ExistSalesInvoiceItemsWhereProduct &&
+                                    !this.ExistSalesOrderItemsWhereProduct &&
+                                    !this.ExistWorkEffortTypesWhereProductToProduce &&
+                                    !this.ExistEngagementItemsWhereProduct &&
                                     !this.ExistProductWhereVariant;
 
         public void BaseOnBuild(ObjectOnBuild method)

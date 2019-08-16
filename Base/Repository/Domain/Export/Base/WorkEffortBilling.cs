@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("15c8c72b-f551-41b0-86c8-80f02424ec4c")]
     #endregion
-    public partial class WorkEffortBilling : Object 
+    public partial class WorkEffortBilling : Object
     {
         #region inherited properties
         #endregion
@@ -40,25 +40,25 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public InvoiceItem InvoiceItem { get; set; }
-        
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

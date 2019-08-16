@@ -4,7 +4,7 @@ namespace Allors.Repository
 
     using Allors.Repository.Attributes;
 
-    public partial class AutomatedAgent : Party, Versioned 
+    public partial class AutomatedAgent : Party, Versioned
     {
         #region inherited properties
 

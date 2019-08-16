@@ -51,7 +51,7 @@ namespace Tests
             this.page.File.Upload("logo.png");
 
             this.page.SAVE.Click();
-            
+
             this.page.File.Remove();
 
             this.page.SAVE.Click();

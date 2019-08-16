@@ -160,10 +160,10 @@ namespace Allors.Domain
             // TODO:
             //if (derivation.ChangeSet.Associations.Contains(this.Id))
             //{
-                if (this.ExistPurchaseOrderWherePurchaseOrderItem)
-                {
-                    derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
-                }
+            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
+            {
+                derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
+            }
             //}
         }
 
@@ -215,7 +215,7 @@ namespace Allors.Domain
                 else
                 {
                     this.PurchaseOrderItemShipmentState = this.QuantityReceived < this.QuantityOrdered ?
-                        purchaseOrderItemShipmentStates.PartiallyReceived:
+                        purchaseOrderItemShipmentStates.PartiallyReceived :
                         purchaseOrderItemShipmentStates.Received;
                 }
 

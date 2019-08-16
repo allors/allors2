@@ -9,7 +9,7 @@ namespace Tests.Remote
 
     using Xunit;
 
-  public class UnitSamplesTests : RemoteTest
+    public class UnitSamplesTests : RemoteTest
     {
         [Fact]
         public void Null()
@@ -54,7 +54,7 @@ namespace Tests.Remote
                        Assert.True(unitSample.ExistAllorsInteger);
                        Assert.True(unitSample.ExistAllorsString);
                        Assert.True(unitSample.ExistAllorsUnique);
-                       
+
                        Assert.Equal(new byte[] { 1, 2, 3 }, unitSample.AllorsBinary);
                        Assert.True(unitSample.AllorsBoolean);
                        Assert.Equal(new DateTime(1973, 3, 27, 0, 0, 0, DateTimeKind.Utc), unitSample.AllorsDateTime);

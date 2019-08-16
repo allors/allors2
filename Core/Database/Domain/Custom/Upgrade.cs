@@ -21,12 +21,12 @@ namespace Allors
         public void Execute()
         {
         }
-        
+
         private void Derive(Extent extent)
         {
             var derivation = new Domain.NonLogging.Derivation(this.session, new DerivationConfig());
             derivation.Add(extent.Cast<Domain.Object>());
-            
+
             var validation = derivation.Derive();
             if (validation.HasErrors)
             {

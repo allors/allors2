@@ -2,7 +2,7 @@ namespace src.app.auth
 {
     using Components;
 
-    public partial class LoginComponent 
+    public partial class LoginComponent
     {
         public void Login(string userName = "administrator")
         {

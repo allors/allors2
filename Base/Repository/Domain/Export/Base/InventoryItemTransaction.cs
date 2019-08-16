@@ -53,7 +53,7 @@ namespace Allors.Repository
         [AssociationId("416923C5-26C1-49BB-88E3-D6A67EFE9828")]
         [RoleId("8C43D427-697E-48AE-A60A-02699C93413B")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]        
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public SerialisedItem SerialisedItem { get; set; }
 
@@ -171,20 +171,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

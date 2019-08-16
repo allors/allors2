@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6bfa631c-80f4-495f-bb9a-0d3351390d64")]
     #endregion
-	public partial interface ExternalAccountingTransaction : AccountingTransaction 
+    public partial interface ExternalAccountingTransaction : AccountingTransaction
     {
 
 

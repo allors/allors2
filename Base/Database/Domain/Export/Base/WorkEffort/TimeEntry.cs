@@ -151,7 +151,7 @@ namespace Allors.Domain
             }
             else if (this.ExistAssignedAmountOfTime)
             {
-                minutes = (decimal) this.TimeFrequency.ConvertToFrequency((decimal)this.AssignedAmountOfTime, frequencies.Minute);
+                minutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.AssignedAmountOfTime, frequencies.Minute);
 
                 var timeSpan = TimeSpan.FromMinutes((double)minutes);
                 this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;

@@ -72,7 +72,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public string LastName { get; set; }
-        
+
         #region Allors
         [Id("eb18bb28-da9c-47b4-a091-2f8f2303dcb6")]
         [AssociationId("e3a4d7b2-c5f1-4101-9aab-a0135d37a5a5")]
@@ -81,23 +81,23 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public string MiddleName { get; set; }
-        
+
         #region inherited methods
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

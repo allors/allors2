@@ -21,7 +21,7 @@
 
 namespace Allors.Workspace.Meta
 {
-    public abstract partial class MetaInterface 
+    public abstract partial class MetaInterface
     {
         public abstract Interface Interface { get; }
 

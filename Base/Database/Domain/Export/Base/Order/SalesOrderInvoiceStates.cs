@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new SalesOrderInvoiceStateBuilder(this.Session)
                 .WithUniqueId(NotInvoicedId)

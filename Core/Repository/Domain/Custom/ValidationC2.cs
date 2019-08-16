@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c7563dd3-77b2-43ff-92f9-a4f98db36acf")]
     #endregion
-    public partial class ValidationC2 : Object, ValidationI12 
+    public partial class ValidationC2 : Object, ValidationI12
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -20,20 +20,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

@@ -26,9 +26,9 @@
                 using (var session = this.databaseService.Database.CreateSession())
                 {
                     var filter = new Filter(M.PreparedFetch.Class)
-                                     {
-                                         Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id }
-                                     };
+                    {
+                        Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id }
+                    };
 
                     var preparedFetch = (PreparedFetch)filter.Build(session).First;
                     if (preparedFetch != null)

@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(SerialisedId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InventoryItemKindBuilder(this.Session)
                 .WithName("Non serialised")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zonder serienummer").WithLocale(dutchLocale).Build())

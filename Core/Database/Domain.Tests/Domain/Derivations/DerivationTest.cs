@@ -28,7 +28,7 @@ namespace Tests
     using Allors.Domain.NonLogging;
 
     using Xunit;
-    
+
     public class DerivationTest : DomainTest
     {
         [Fact]
@@ -54,7 +54,7 @@ namespace Tests
             var dependee = new DependeeBuilder(this.Session).Build();
 
             dependent.Dependee = dependee;
-            
+
             this.Session.Commit();
 
             dependee.Counter = 10;
@@ -88,7 +88,7 @@ namespace Tests
             Assert.Equal(11, dependee.Subcounter);
             Assert.Equal(11, subdependee.Subcounter);
         }
-        
+
         [Fact]
         public void Deleted()
         {

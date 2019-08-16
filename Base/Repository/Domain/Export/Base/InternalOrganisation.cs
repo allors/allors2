@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c81441c8-9ac9-440e-a926-c96230b2701f")]
     #endregion
-    public partial interface InternalOrganisation: Party
+    public partial interface InternalOrganisation : Party
     {
         #region inherited properties
 
@@ -416,7 +416,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         Organisation[] CurrentSuppliers { get; set; }
-        
+
         #region Allors
         [Id("0ac44c21-6a2c-4162-9d77-fe1b16b60b73")]
         [AssociationId("4d61b711-7aab-4162-bb31-74db09f666fe")]

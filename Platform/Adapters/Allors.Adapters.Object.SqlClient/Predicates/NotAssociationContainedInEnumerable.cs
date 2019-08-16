@@ -40,7 +40,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.enumerable = enumerable;
         }
         internal override bool IsNotFilter => true;
-        
+
         internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
             var schema = statement.Mapping;

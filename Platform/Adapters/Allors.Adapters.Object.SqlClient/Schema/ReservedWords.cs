@@ -29,7 +29,7 @@ namespace Allors.Adapters.Object.SqlClient
     {
         internal static readonly HashSet<string> Names;
 
-        internal static readonly string[] Current = 
+        internal static readonly string[] Current =
         {
                                              "ADD", "ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUTHORIZATION", "BACKUP",
                                              "BEGIN", "BETWEEN", "BREAK", "BROWSE", "BULK", "BY", "CASCADE", "CASE",
@@ -59,7 +59,7 @@ namespace Allors.Adapters.Object.SqlClient
                                              "WITH", "WRITETEXT"
                                          };
 
-        internal static readonly string[] Future = 
+        internal static readonly string[] Future =
         {
                                                      "ABSOLUTE", "ACTION", "ADMIN", "AFTER", "AGGREGATE", "ALIAS",
                                                      "ALLOCATE", "ARE", "ARRAY", "ASENSITIVE", "ASSERTION", "ASYMMETRIC",
@@ -70,7 +70,7 @@ namespace Allors.Adapters.Object.SqlClient
                                                      "CONSTRAINTS", "CONSTRUCTOR", "CORR", "CORRESPONDING", "COVAR_POP",
                                                      "COVAR_SAMP", "CUBE", "CUME_DIST", "CURRENT_CATALOG",
                                                      "CURRENT_DEFAULT_TRANSFORM_GROUP", "CURRENT_PATH", "CURRENT_ROLE",
-                                                     "CURRENT_SCHEMA", "CURRENT_TRANSFORM_GROUP_FOR_TYPE", "CYCLE", "DATA", 
+                                                     "CURRENT_SCHEMA", "CURRENT_TRANSFORM_GROUP_FOR_TYPE", "CYCLE", "DATA",
                                                      "DATE", "DAY", "DEC", "DECIMAL", "DEFERRABLE", "DEFERRED", "DEPTH",
                                                      "DEREF", "DESCRIBE", "DESCRIPTOR", "DESTROY", "DESTRUCTOR",
                                                      "DETERMINISTIC", "DICTIONARY", "DIAGNOSTICS", "DISCONNECT", "DOMAIN",
@@ -103,7 +103,7 @@ namespace Allors.Adapters.Object.SqlClient
                                                      "TEMPORARY", "TERMINATE", "THAN", "TIME", "TIMESTAMP",
                                                      "TIMEZONE_HOUR", "TIMEZONE_MINUTE", "TRAILING", "TRANSLATE_REGEX",
                                                      "TRANSLATION", "TREAT", "TRUE", "UESCAPE", "UNDER", "UNKNOWN",
-                                                     "UNNEST", "USAGE", "USING", "VALUE", "VAR_POP", "VAR_SAMP", "VARCHAR", 
+                                                     "UNNEST", "USAGE", "USING", "VALUE", "VAR_POP", "VAR_SAMP", "VARCHAR",
                                                      "VARIABLE", "WHENEVER", "WIDTH_BUCKET", "WITHOUT", "WINDOW",
                                                      "WITHIN", "WORK", "WRITE", "XMLAGG", "XMLATTRIBUTES", "XMLBINARY",
                                                      "XMLCAST", "XMLCOMMENT", "XMLCONCAT", "XMLDOCUMENT", "XMLELEMENT",

@@ -514,7 +514,7 @@ line2")
                 .WithOrderedBy(allors)
                 .WithTakenViaSupplier(acme)
                 .WithPurchaseOrderItem(purchaseOrderItem1)
-                .WithCustomerReference("reference 123" )
+                .WithCustomerReference("reference 123")
                 .WithFacility(facility)
                 .Build();
 

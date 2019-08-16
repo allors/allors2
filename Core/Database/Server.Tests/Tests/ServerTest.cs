@@ -68,7 +68,7 @@ namespace Server.Tests
                 ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
                 ObjectFactory = this.ObjectFactory,
             });
-           
+
             this.HttpClientHandler = new HttpClientHandler();
             this.HttpClient = new HttpClient(this.HttpClientHandler)
             {

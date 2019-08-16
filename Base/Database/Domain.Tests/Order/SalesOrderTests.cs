@@ -1638,7 +1638,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.Locale);
         }
-        
+
         [Fact]
         public void GivenSalesOrderWithShippingAndHandlingAmount_WhenDeriving_ThenOrderTotalsMustIncludeShippingAndHandlingAmount()
         {
@@ -1797,7 +1797,7 @@ namespace Allors.Domain
         public void GivenSalesOrderWithoutShipFromAddress_WhenDeriving_ThenUseTakenByShipFromAddress()
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
-            
+
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -2764,7 +2764,7 @@ namespace Allors.Domain
 
             Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item2, order.DerivedVatClause);
         }
-   }
+    }
 
     public class SalesOrderSecurityTests : DomainTest
     {

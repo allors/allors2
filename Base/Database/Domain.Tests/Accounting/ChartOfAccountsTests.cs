@@ -24,7 +24,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class ChartOfAccountsTests : DomainTest
     {
         [Fact]

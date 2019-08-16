@@ -23,7 +23,7 @@ namespace Allors.Protocol.Data
     using System;
     using System.Collections.Generic;
 
-    public class Pull 
+    public class Pull
     {
         public Guid? ExtentRef { get; set; }
 

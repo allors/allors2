@@ -35,13 +35,13 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new SalesOrderItemInvoiceStateBuilder(this.Session)
                 .WithUniqueId(NotInvoicedId)
                 .WithName("Not Invoiced")
                 .Build();
-            
+
             new SalesOrderItemInvoiceStateBuilder(this.Session)
                 .WithUniqueId(PartiallyInvoicedId)
                 .WithName("Partially Invoiced")

@@ -67,7 +67,7 @@ namespace Allors.Domain
 
             // Manage Security
             var singleton = session.GetSingleton();
-            var securityTokens = new HashSet<SecurityToken> {singleton.DefaultSecurityToken};
+            var securityTokens = new HashSet<SecurityToken> { singleton.DefaultSecurityToken };
             var ownerSecurityTokens = participantSet.Where(v => v.ExistOwnerSecurityToken).Select(v => v.OwnerSecurityToken);
             securityTokens.UnionWith(ownerSecurityTokens);
             @this.SecurityTokens = securityTokens.ToArray();

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A5627D2B-3E75-41B7-86BB-642C12714471")]
     #endregion
-	public partial interface OrderAdjustmentVersion : Version 
+    public partial interface OrderAdjustmentVersion : Version
     {
 
         #region Allors

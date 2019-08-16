@@ -26,11 +26,11 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;
-    
+
     public class PermissionTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
-        
+
         //[Fact]
         //public void SyncMethod()
         //{

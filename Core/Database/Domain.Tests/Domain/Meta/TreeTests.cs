@@ -32,7 +32,7 @@ namespace Tests
     using Allors.Meta;
 
     using Xunit;
-    
+
     public class TreeTests : DomainTest
     {
         [Fact]

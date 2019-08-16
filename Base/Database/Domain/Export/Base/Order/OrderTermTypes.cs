@@ -41,7 +41,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -58,21 +58,21 @@ namespace Allors.Domain
                 .WithUniqueId(DaysCancellationWithoutPenaltyId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Percentage Penalty Non Performance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage toeslag slechte (non performance)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentagePenaltyNonPerformanceId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Days Within Which Deliverary Must Occur")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen waarbinnen levering moet gebeuren").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysWithinWhichDeliveraryMustOccurId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Non returnable sales item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet retourneerbaat item").WithLocale(belgianLocale).Build())

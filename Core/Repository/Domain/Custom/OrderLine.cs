@@ -14,7 +14,7 @@
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("7022167A-046E-45B3-A14E-AE0290C0F1D6")]
         [AssociationId("39DC23C3-9F36-48AE-94E6-8401FBAF8A4F")]
@@ -43,7 +43,7 @@
         [Workspace]
         public OrderLineVersion[] AllVersions { get; set; }
         #endregion
-        
+
         #region inherited methods
 
         public void OnBuild()
@@ -56,7 +56,7 @@
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive()

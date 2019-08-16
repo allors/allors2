@@ -42,7 +42,7 @@ namespace Allors.Workspace.Meta
         public IRelationType RelationType => this.RoleType.RelationType;
 
         public Class Class { get; }
-        
+
         public static implicit operator RoleType(ConcreteRoleType concreteRoleType)
         {
             return (RoleType)concreteRoleType.RoleType;

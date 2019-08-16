@@ -35,12 +35,12 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(billToCustomer)
-                
+
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(shipToCustomer)
-                
+
                 .Build();
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");

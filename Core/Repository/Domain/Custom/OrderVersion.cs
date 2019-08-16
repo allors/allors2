@@ -20,7 +20,7 @@
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("88BE9AFA-122A-469B-BD47-388ECC835EAB")]
         [AssociationId("D8E59DF6-DC0C-4CAE-B0F2-402B2D927C5F")]
@@ -46,7 +46,7 @@
         #endregion
         [Derived]
         public decimal Amount { get; set; }
-      
+
         #region inherited methods
 
         public void OnBuild()
@@ -59,7 +59,7 @@
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive()

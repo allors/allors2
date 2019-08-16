@@ -64,7 +64,7 @@ namespace Allors.Adapters.Memory
         {
             get { return this.associationType.ObjectType; }
         }
-        
+
         internal override Session Session
         {
             get { return this.roleStrategy.MemorySession; }

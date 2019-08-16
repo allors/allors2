@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ca008b8d-584e-4aa5-a759-895b634defc5")]
     #endregion
-    public partial class OwnBankAccount : PaymentMethod, FinancialAccount 
+    public partial class OwnBankAccount : PaymentMethod, FinancialAccount
     {
         #region inherited properties
 
@@ -52,20 +52,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

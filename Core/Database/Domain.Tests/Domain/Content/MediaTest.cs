@@ -27,7 +27,7 @@ namespace Tests
     using Allors.Domain;
 
     using Xunit;
-   
+
     public class MediaTest : ContentTests
     {
         [Fact]

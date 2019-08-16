@@ -83,7 +83,7 @@ namespace Allors.Domain
                 var newVersion = (Version)Allors.ObjectBuilder.Build(session, versionClass);
                 newVersion.DerivationId = derivation.Id;
                 newVersion.DerivationTimeStamp = derivation.TimeStamp;
-                
+
                 foreach (var versionRoleType in versionClass.RoleTypes.Where(v => versionTypeRegex.IsMatch(v.AssociationType.ObjectType.Name)))
                 {
                     var versionedRoleType = versionedClass.RoleTypes.FirstOrDefault(v => v.Name.Equals(versionRoleType.Name));

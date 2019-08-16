@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("228fa79f-afa7-418c-968e-8c0d38fb3ad2")]
     #endregion
-	public partial interface ILT32Unit : Object 
+    public partial interface ILT32Unit : Object
     {
         #region Allors
         [Id("6822f677-7249-4c28-9b9c-18b21ba6f597")]

@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9ec7e136-815c-4726-9991-e95a3ec9e092")]
     #endregion
-    public partial class Two : Object, Shared 
+    public partial class Two : Object, Shared
     {
         #region inherited properties
         #endregion
@@ -18,27 +18,27 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Shared Shared { get; set; }
-        
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

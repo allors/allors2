@@ -25,7 +25,7 @@ namespace Allors.Adapters
     public interface IRoleCache
     {
         bool TryGetUnit(long associationId, object cacheId, IRoleType roleType, out object role);
-       
+
         void SetUnit(long associationId, object cacheId, IRoleType roleType, object role);
 
         bool TryGetComposite(long associationId, object cacheId, IRoleType roleType, out long? roleId);

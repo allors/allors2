@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Allors;
 
-    public partial class ClassWithoutUnitRoles 
+    public partial class ClassWithoutUnitRoles
     {
         public static ClassWithoutUnitRoles Create(ISession session)
         {

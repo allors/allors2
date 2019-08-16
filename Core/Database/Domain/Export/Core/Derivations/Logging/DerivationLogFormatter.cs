@@ -91,8 +91,8 @@ namespace Allors.Domain.Logging
 
         private static object FormatDerivable(Object derivable)
         {
-            var info =  $"{derivable.Strategy.Class.Name}: {derivable}";
-            return $"[{info, 80}]";
+            var info = $"{derivable.Strategy.Class.Name}: {derivable}";
+            return $"[{info,80}]";
         }
     }
 }

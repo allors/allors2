@@ -40,7 +40,7 @@ namespace Allors.Data
             }
         }
 
-        public bool IsOne 
+        public bool IsOne
         {
             get
             {
@@ -52,7 +52,7 @@ namespace Allors.Data
                 return this.ExistNext ? this.Next.IsOne : this.PropertyType.IsOne;
             }
         }
-        
+
         public Tree Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }

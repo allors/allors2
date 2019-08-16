@@ -21,9 +21,9 @@ namespace Autotest
                 .Select(v =>
                     {
                         var child = new MenuItem
-                                        {
-                                            Menu = this,
-                                        };
+                        {
+                            Menu = this,
+                        };
                         child.Load(v);
                         return child;
                     }).ToArray();

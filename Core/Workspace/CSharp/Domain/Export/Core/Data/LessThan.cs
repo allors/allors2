@@ -41,12 +41,12 @@ namespace Allors.Workspace.Data
         public Predicate ToJson()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.LessThan,
-                           RoleType = this.RoleType?.Id,
-                           Value = DataConvert.ToString(this.Value),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.LessThan,
+                RoleType = this.RoleType?.Id,
+                Value = DataConvert.ToString(this.Value),
+                Parameter = this.Parameter
+            };
         }
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)

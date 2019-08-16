@@ -59,7 +59,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         private Command getVersion;
         private Command updateVersions;
-        
+
         internal Commands(Session session, Connection connection)
         {
             this.session = session;
@@ -482,8 +482,8 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 var id = this.session.State.GetObjectIdForExistingObject(result.ToString());
 
-                associationObject = associationType.ObjectType.ExistExclusiveClass ? 
-                                        this.session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.session) : 
+                associationObject = associationType.ObjectType.ExistExclusiveClass ?
+                                        this.session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.session) :
                                         this.session.State.GetOrCreateReferenceForExistingObject(id, this.session);
             }
 

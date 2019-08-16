@@ -94,7 +94,7 @@ WHERE lower(ROUTINE_NAME) = '" + procedure.ToLower() + @"'";
                 connection.Open();
                 using (var command = connection.CreateCommand())
                 {
-                    var sql = 
+                    var sql =
 @"select count(*) 
 from information_schema.constraint_column_usage 
 where lower(table_name) = '" + table.ToLowerInvariant() + "' and lower(constraint_name) = '" + table.ToLowerInvariant() + "_pk'";

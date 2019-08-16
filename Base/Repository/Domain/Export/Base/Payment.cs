@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9f20a35c-d814-4690-a96f-2bcd25f6c6a2")]
     #endregion
-	public partial interface Payment : Commentable, UniquelyIdentifiable, Deletable, Object
+    public partial interface Payment : Commentable, UniquelyIdentifiable, Deletable, Object
     {
 
 

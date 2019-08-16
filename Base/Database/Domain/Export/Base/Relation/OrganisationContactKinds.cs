@@ -38,7 +38,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new OrganisationContactKindBuilder(this.Session).WithDescription("General contact").WithUniqueId(GeneralContactId).Build();
             new OrganisationContactKindBuilder(this.Session).WithDescription("Sales contact").WithUniqueId(SalesContactId).Build();

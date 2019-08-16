@@ -47,7 +47,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         ObjectState[] LastObjectStates { get; set; }
-        
+
         #region Allors
         [Id("52962C45-8A3E-4136-A968-C333CBE12685")]
         [AssociationId("B49A45EE-302E-4893-BEAD-88764D0774FF")]

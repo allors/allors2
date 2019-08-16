@@ -248,10 +248,10 @@ namespace Tests
         public void AndNestedContainsWithoutArguments()
         {
             var filter = new Filter(M.Organisation.ObjectType)
-                             {
-                                 Predicate = new And
-                                                 {
-                                                     Operands = new IPredicate[]
+            {
+                Predicate = new And
+                {
+                    Operands = new IPredicate[]
                                                                     {
                                                                         new ContainedIn
                                                                             {
@@ -266,8 +266,8 @@ namespace Tests
                                                                                              }
                                                                             }
                                                                     }
-                                                 }
-                             };
+                }
+            };
 
             var arguments = new Dictionary<string, object>();
             var queryExtent = filter.Build(this.Session, arguments);

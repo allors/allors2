@@ -154,7 +154,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal bool AddWhere(IObjectType rootClass, string alias)
         {
             var useWhere = !this.Extent.ObjectType.ExistExclusiveClass;
-            
+
             if (useWhere)
             {
                 this.Append(" WHERE ( ");

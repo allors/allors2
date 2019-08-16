@@ -57,7 +57,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
             var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
@@ -71,7 +71,7 @@ namespace Allors.Domain
                 .WithUniqueId(CoContractorId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("Private Person")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("particulier").WithLocale(dutchLocale).Build())
@@ -79,7 +79,7 @@ namespace Allors.Domain
                 .WithUniqueId(PrivatePersonId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("VAT Assessable 21%")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW-plichtig 21%").WithLocale(dutchLocale).Build())
@@ -87,7 +87,7 @@ namespace Allors.Domain
                 .WithUniqueId(AssessableId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("Export")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Export").WithLocale(dutchLocale).Build())
@@ -95,7 +95,7 @@ namespace Allors.Domain
                 .WithUniqueId(ExportId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("Intracommunautair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(dutchLocale).Build())
@@ -103,7 +103,7 @@ namespace Allors.Domain
                 .WithUniqueId(IntraCommunautairId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("Service B2B: Not VAT assessable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Service B2B: Niet BTW-plichtig").WithLocale(dutchLocale).Build())
@@ -111,7 +111,7 @@ namespace Allors.Domain
                 .WithUniqueId(ServiceB2BId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new VatRegimeBuilder(this.Session)
                 .WithName("Exempt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrijgesteld").WithLocale(dutchLocale).Build())

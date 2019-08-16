@@ -37,7 +37,7 @@ namespace Allors.Protocol.Data
         public const string Contains = "Contains";
 
         public const string ContainedIn = "ContainedIn";
-        
+
         public const string Between = "Between";
 
         public const string GreaterThan = "GreaterThan";

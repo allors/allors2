@@ -28,7 +28,7 @@ namespace Tests
     public class AccessControlListTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
-        
+
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
         {

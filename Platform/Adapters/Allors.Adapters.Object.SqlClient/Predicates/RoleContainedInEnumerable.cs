@@ -50,7 +50,7 @@ namespace Allors.Adapters.Object.SqlClient
                 inStatement.Append(",");
                 inStatement.Append(inObject.Id);
             }
-            
+
             if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
             {
                 // TODO: in combination with NOT gives error

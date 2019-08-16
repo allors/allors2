@@ -38,7 +38,7 @@ namespace Allors.Document.Xml
                                                                    };
 
         private static readonly Regex Regex = new Regex(@"(\w+)(.*)", RegexOptions.IgnoreCase);
-        
+
         public For(int index, string text)
         {
             this.Index = index;

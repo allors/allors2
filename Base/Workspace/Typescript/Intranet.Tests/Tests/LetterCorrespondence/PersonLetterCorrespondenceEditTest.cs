@@ -133,7 +133,7 @@ namespace Tests.LetterCorrespondenceTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new LetterCorrespondences(this.Session).Extent().ToArray();
 
             var postalAddress = (PostalAddress)person.PartyContactMechanisms.First(v => v.ContactMechanism.GetType().Name == typeof(PostalAddress).Name).ContactMechanism;

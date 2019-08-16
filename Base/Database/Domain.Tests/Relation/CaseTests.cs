@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class CaseTests : DomainTest
     {
         [Fact]
@@ -32,7 +32,7 @@ namespace Allors.Domain
             var complaint = new CaseBuilder(this.Session).WithDescription("Complaint").Build();
 
             this.Session.Derive();
-            
+
             Assert.Equal(new CaseStates(this.Session).Opened, complaint.CaseState);
             Assert.Equal(complaint.LastCaseState, complaint.CaseState);
         }

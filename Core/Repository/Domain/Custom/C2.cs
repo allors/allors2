@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("72c07e8a-03f5-4da8-ab37-236333d4f74e")]
     #endregion
-    public partial class C2 : Object, DerivationCounted, I2 
+    public partial class C2 : Object, DerivationCounted, I2
     {
         #region inherited properties
 
@@ -300,7 +300,7 @@ namespace Allors.Repository
         [Workspace]
         #endregion
         public C1[] C2C1Many2Manies { get; set; }
-        
+
         #region Allors
         [Id("770eb33c-c8ef-4629-a3a0-20decd92ff62")]
         [AssociationId("de757393-f81a-413c-897b-a47efd48cc79")]
@@ -413,20 +413,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

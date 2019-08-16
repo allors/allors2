@@ -3,10 +3,10 @@ namespace Allors.Domain
     using Allors;
     using Allors.Domain;
     using Xunit;
-   
+
     public class ProductQuoteApproverTests : DomainTest
     {
-        
+
 
         [Fact]
         public void UserGroup()

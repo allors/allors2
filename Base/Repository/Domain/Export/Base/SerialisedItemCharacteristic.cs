@@ -55,7 +55,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }
@@ -65,7 +65,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
-        
+
         #endregion
     }
 }

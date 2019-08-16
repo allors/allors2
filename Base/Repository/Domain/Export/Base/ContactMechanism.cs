@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b033f9c9-c799-485c-a199-914a9e9119d9")]
     #endregion
-	public partial interface ContactMechanism : Auditable, Deletable 
+    public partial interface ContactMechanism : Auditable, Deletable
     {
         #region Allors
         [Id("3c4ab373-8ff4-44ef-a97d-d8a27513f69c")]

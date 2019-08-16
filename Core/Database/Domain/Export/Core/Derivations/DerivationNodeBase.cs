@@ -88,7 +88,7 @@ namespace Allors.Domain
         }
 
         protected abstract void OnCycle(Object root, Object derivable);
-        
+
         protected abstract void OnDeriving(Object derivable);
 
         protected abstract void OnDerived(Object derivable);

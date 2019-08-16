@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Allors;
 
-    public partial class GT32 
+    public partial class GT32
     {
         public static GT32 Create(ISession session)
         {

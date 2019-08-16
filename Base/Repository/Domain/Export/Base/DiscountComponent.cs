@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c0b927c4-7197-4295-8edf-057b6b4b3a6a")]
     #endregion
-    public partial class DiscountComponent : PriceComponent 
+    public partial class DiscountComponent : PriceComponent
     {
         #region inherited properties
 
@@ -75,20 +75,20 @@ namespace Allors.Repository
         public decimal Percentage { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

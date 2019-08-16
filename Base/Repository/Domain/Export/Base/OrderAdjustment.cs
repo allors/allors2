@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c5578565-c07a-4dc1-8381-41955db364e2")]
     #endregion
-	public partial interface OrderAdjustment : Deletable, Object
+    public partial interface OrderAdjustment : Deletable, Object
     {
         #region Allors
         [Id("4e7cbdda-9f19-44dd-bbef-6cab5d92a8a3")]

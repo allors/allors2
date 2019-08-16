@@ -32,7 +32,7 @@ namespace Components
                 return cells.Select(v => new MatTableCell(this.Driver, v)).ToArray();
             }
         }
-        
+
         protected IWebElement TableCell(string name)
         {
             this.Driver.WaitForAngular();

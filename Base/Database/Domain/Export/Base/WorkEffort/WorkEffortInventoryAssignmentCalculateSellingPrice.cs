@@ -2,6 +2,6 @@ namespace Allors.Domain
 {
     public partial class WorkEffortInventoryAssignmentCalculateSellingPrice
     {
-        public decimal? Result{ get; set; }
+        public decimal? Result { get; set; }
     }
 }

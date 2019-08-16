@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d60cc44a-6491-4982-9b2d-99891e382a21")]
     #endregion
-    public partial class SubContractorRelationship : PartyRelationship 
+    public partial class SubContractorRelationship : PartyRelationship
     {
         #region inherited properties
 
@@ -48,22 +48,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
 
     }

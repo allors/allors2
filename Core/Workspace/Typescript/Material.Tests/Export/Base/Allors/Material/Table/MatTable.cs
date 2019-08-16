@@ -46,7 +46,7 @@ namespace Components
             var row = this.TableRowElement(obj);
             return new MatTableRow(this.Driver, row);
         }
-        
+
         public void DefaultAction(IObject obj)
         {
             var row = this.FindRow(obj);

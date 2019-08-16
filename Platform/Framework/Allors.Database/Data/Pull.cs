@@ -38,7 +38,7 @@ namespace Allors.Data
         public Arguments Arguments { get; set; }
 
         public Result[] Results { get; set; }
-        
+
         public Protocol.Data.Pull Save()
         {
             return new Protocol.Data.Pull

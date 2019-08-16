@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class CreditCardTests : DomainTest
     {
         [Fact]
@@ -90,7 +90,7 @@ namespace Allors.Domain
                 .WithNameOnCard("M.E. van Knippenberg")
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
-            
+
             Assert.True(this.Session.Derive(false).HasErrors);
         }
     }

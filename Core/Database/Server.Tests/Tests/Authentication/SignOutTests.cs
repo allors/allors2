@@ -18,15 +18,15 @@ namespace Server.Tests
             new PersonBuilder(this.Session).WithUserName("Jane").WithUserPasswordHash(hash).Build();
             this.Session.Commit();
         }
-                
+
         [Fact]
         public async void Successful()
         {
             var args = new AuthenticationTokenRequest
-                            {
-                                UserName = "Jane",
-                                Password = "p@ssw0rd"
-                            };
+            {
+                UserName = "Jane",
+                Password = "p@ssw0rd"
+            };
 
             var signInUri = new Uri("Authentication/Token", UriKind.Relative);
             await this.PostAsJsonAsync(signInUri, args);

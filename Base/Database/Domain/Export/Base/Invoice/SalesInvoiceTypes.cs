@@ -32,8 +32,8 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
-           
+
+
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new SalesInvoiceTypeBuilder(this.Session)
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(SalesInvoiceId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new SalesInvoiceTypeBuilder(this.Session)
                 .WithName("Credit Note")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit Nota").WithLocale(dutchLocale).Build())

@@ -111,7 +111,7 @@ namespace Tests.EmailCommunicationTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new EmailCommunications(this.Session).Extent().ToArray();
 
             this.organisationListPage.Table.DefaultAction(organisation);

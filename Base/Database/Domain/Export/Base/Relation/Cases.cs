@@ -25,5 +25,5 @@ namespace Allors.Domain
 
             setup.AddDependency(this.ObjectType, M.CaseState);
         }
-   }
+    }
 }

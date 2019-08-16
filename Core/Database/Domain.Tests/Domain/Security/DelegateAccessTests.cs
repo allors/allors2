@@ -45,7 +45,7 @@ namespace Tests
             Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
         }
-        
+
         [Fact]
         public void DelegateAccessReturnsNoTokens()
         {

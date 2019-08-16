@@ -47,7 +47,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var reasons = new InventoryTransactionReasons(this.Session);
 

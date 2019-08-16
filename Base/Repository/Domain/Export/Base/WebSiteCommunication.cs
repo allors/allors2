@@ -85,7 +85,7 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         #endregion
-        
+
         #region Versioning
         #region Allors
         [Id("B75445E9-5742-4463-B0B2-8A140F22A0B3")]
@@ -111,31 +111,31 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
-
-
+        public void Reopen() { }
 
 
-        public void Delete(){}
+
+
+        public void Delete() { }
 
 
         #endregion

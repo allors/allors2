@@ -41,7 +41,7 @@ namespace Allors.Domain
             }
 
             this.Parties = new[] { this.Customer };
-    
+
             if (!this.ExistCustomer | !this.ExistSalesRepresentative)
             {
                 this.Delete();

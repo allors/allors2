@@ -24,7 +24,7 @@ namespace Allors.Domain
     using System;
 
     using Xunit;
-    
+
     public class CommunicationEventTests : DomainTest
     {
         [Fact]
@@ -93,7 +93,7 @@ namespace Allors.Domain
             Assert.Equal(new CommunicationEventStates(this.Session).InProgress, communication.CommunicationEventState);
 
             communication.Close();
-            
+
             this.Session.Derive();
 
             Assert.Equal(new CommunicationEventStates(this.Session).Completed, communication.CommunicationEventState);
@@ -167,7 +167,7 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive();
-            
+
             Assert.Equal(4, communication.PartiesWhereCommunicationEvent.Count);
             Assert.Contains(owner, communication.PartiesWhereCommunicationEvent);
             Assert.Contains(participant1, communication.PartiesWhereCommunicationEvent);

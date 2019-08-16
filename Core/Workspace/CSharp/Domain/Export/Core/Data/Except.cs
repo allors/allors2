@@ -42,11 +42,11 @@ namespace Allors.Workspace.Data
         public Extent ToJson()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Except,
-                           Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
-                           Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType.Id}).ToArray()
-                       };
+            {
+                Kind = ExtentKind.Except,
+                Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType.Id }).ToArray()
+            };
         }
 
         bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)

@@ -81,7 +81,7 @@ namespace Allors.Adapters.Memory
 
         public Extent Extent
         {
-            get 
+            get
             {
                 this.Upgrade();
                 return this.extent;

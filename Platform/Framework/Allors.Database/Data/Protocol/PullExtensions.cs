@@ -25,19 +25,19 @@ namespace Allors.Protocol.Data
     using Allors.Data;
     using Allors.Meta;
 
-    public static class PullExtensions 
+    public static class PullExtensions
     {
         public static Allors.Data.Pull Load(this Data.Pull @this, ISession session)
         {
             var pull = new Allors.Data.Pull
-                           {
-                               ExtentRef = @this.ExtentRef,
-                               Extent = @this.Extent?.Load(session),
-                               ObjectType = @this.ObjectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null,
-                               Object = @this.Object != null ? session.Instantiate(@this.Object) : null,
-                               Results = @this.Results?.Select(v => v.Load(session)).ToArray(),
-                               Arguments = @this.Arguments != null ? new Arguments(@this.Arguments) : null
-                           };
+            {
+                ExtentRef = @this.ExtentRef,
+                Extent = @this.Extent?.Load(session),
+                ObjectType = @this.ObjectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null,
+                Object = @this.Object != null ? session.Instantiate(@this.Object) : null,
+                Results = @this.Results?.Select(v => v.Load(session)).ToArray(),
+                Arguments = @this.Arguments != null ? new Arguments(@this.Arguments) : null
+            };
 
             return pull;
         }

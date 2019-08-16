@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("22bc5b67-8015-49c5-bc47-6f9e7e678943")]
     #endregion
-    public partial class BankAccount : FinancialAccount 
+    public partial class BankAccount : FinancialAccount
     {
         #region inherited properties
         public FinancialAccountTransaction[] FinancialAccountTransactions { get; set; }
@@ -32,7 +32,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string NameOnAccount { get; set; }
-        
+
         #region Allors
         [Id("93447a57-a049-4eaa-98ec-6fec60bdb64c")]
         [AssociationId("68e37671-a29b-44fa-9f19-2efe76a409f3")]
@@ -41,7 +41,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         public ContactMechanism[] ContactMechanisms { get; set; }
-        
+
         #region Allors
         [Id("a7d242b4-4d39-4254-beb2-914eb556f7b7")]
         [AssociationId("2911fab2-a04f-4afc-961d-4fac26f01ae3")]
@@ -50,7 +50,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public Currency Currency { get; set; }
-        
+
         #region Allors
         [Id("ac2d58e5-ad74-4afe-b9f0-aeb9dfdcd4b3")]
         [AssociationId("55e4252b-7543-4384-8fe5-65aff3648744")]
@@ -60,7 +60,7 @@ namespace Allors.Repository
         [Unique]
         [Size(256)]
         public string Iban { get; set; }
-        
+
         #region Allors
         [Id("b06a858d-a8ee-41b8-a747-7fd46336ae4f")]
         [AssociationId("00656807-27c8-4803-a1e3-aad812af2f9e")]
@@ -68,7 +68,7 @@ namespace Allors.Repository
         #endregion
         [Size(256)]
         public string Branch { get; set; }
-        
+
         #region Allors
         [Id("ecaedf71-98a2-425d-8046-cc8865fdbe73")]
         [AssociationId("9174bacb-3955-462a-a53f-ec251466da1b")]
@@ -81,20 +81,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

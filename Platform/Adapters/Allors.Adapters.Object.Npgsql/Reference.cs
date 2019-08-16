@@ -31,9 +31,9 @@ namespace Allors.Adapters.Object.Npgsql
         private const long UnknownVersion = -1;
 
         [FlagsAttribute]
-        public enum Flags: byte
+        public enum Flags : byte
         {
-            MaskIsNew  = 1,
+            MaskIsNew = 1,
             MaskExists = 2,
             MaskExistsKnown = 4,
         }
@@ -134,7 +134,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             get
             {
-                var isUnknown = this.version == UnknownVersion; 
+                var isUnknown = this.version == UnknownVersion;
                 return isUnknown;
             }
         }
@@ -159,7 +159,7 @@ namespace Allors.Adapters.Object.Npgsql
                 this.FlagExists = value;
             }
         }
-        
+
         internal bool ExistsKnown
         {
             get
@@ -230,7 +230,7 @@ namespace Allors.Adapters.Object.Npgsql
                 strategy.Release();
             }
         }
-      
+
         public virtual Strategy CreateStrategy()
         {
             return new Strategy(this);

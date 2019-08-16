@@ -191,7 +191,7 @@ namespace Tests
 
             middle.Counter += 1;
             right.Counter += 1;
-            
+
             derivation = new Derivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
@@ -201,7 +201,7 @@ namespace Tests
             Assert.Equal(9, right.DerivationCount);
 
             middle.Counter += 1;
-            
+
             derivation = new Derivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
@@ -236,7 +236,7 @@ namespace Tests
             {
                 derivation.Derive();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 errorThrown = true;
             }
@@ -264,7 +264,7 @@ namespace Tests
             {
                 derivation.Derive();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 errorThrown = true;
             }

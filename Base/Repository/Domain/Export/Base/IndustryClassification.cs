@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("da27b432-85e4-4c83-bdb0-64cefb347e8a")]
     #endregion
-    public partial class IndustryClassification : OrganisationClassification 
+    public partial class IndustryClassification : OrganisationClassification
     {
         #region inherited properties
         public string Name { get; set; }
@@ -22,20 +22,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
 

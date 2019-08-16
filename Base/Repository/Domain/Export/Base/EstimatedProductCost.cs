@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c8df7ac5-4e6f-4add-981f-f0d9a8c14e24")]
     #endregion
-	public partial interface EstimatedProductCost : Period, Deletable, Object
+    public partial interface EstimatedProductCost : Period, Deletable, Object
     {
         #region Allors
         [Id("2a8f919f-19f0-4b33-b8b8-26937d49d298")]

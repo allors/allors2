@@ -53,12 +53,12 @@ namespace Allors.Workspace.Data
         public Extent ToJson()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Filter,
-                           ObjectType = this.ObjectType?.Id,
-                           Predicate = this.Predicate?.ToJson(),
-                           Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
-                       };
+            {
+                Kind = ExtentKind.Filter,
+                ObjectType = this.ObjectType?.Id,
+                Predicate = this.Predicate?.ToJson(),
+                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            };
 
         }
     }

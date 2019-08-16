@@ -40,7 +40,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.enumerable = enumerable;
         }
         internal override bool IsNotFilter => true;
-        
+
         internal override bool BuildWhere(ExtentStatement statement, string alias)
         {
             var schema = statement.Mapping;

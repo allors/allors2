@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a6f772e6-8f2c-4180-bbf9-2e5ab0f0efc8")]
     #endregion
-    public partial class ProfessionalServicesRelationship: PartyRelationship
+    public partial class ProfessionalServicesRelationship : PartyRelationship
     {
         #region inherited properties
         public DateTime FromDate { get; set; }
@@ -42,22 +42,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

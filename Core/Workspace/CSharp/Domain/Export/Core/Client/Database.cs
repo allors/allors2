@@ -15,7 +15,7 @@
     using Protocol.Remote.Pull;
     using Protocol.Remote.Push;
     using Protocol.Remote.Sync;
-    
+
     public class Database
     {
         public Database(HttpClient httpClient)
@@ -76,16 +76,16 @@
         public async Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
         {
             var invokeRequest = new InvokeRequest
-                                    {
-                                        I = methods.Select(v => new Invocation
-                                                                   {
-                                                                       I = v.Object.Id.ToString(),
-                                                                       V = v.Object.Version.ToString(),
-                                                                       M = v.Name,
-                                                                   }).ToArray(),
-                                        O = options
-                                    }; 
-                
+            {
+                I = methods.Select(v => new Invocation
+                {
+                    I = v.Object.Id.ToString(),
+                    V = v.Object.Version.ToString(),
+                    M = v.Name,
+                }).ToArray(),
+                O = options
+            };
+
 
             var uri = new Uri("Database/Invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);

@@ -25,7 +25,7 @@ namespace Allors.Domain
     public interface IAccessControlList
     {
         User User { get; }
-        
+
         bool CanRead(IPropertyType propertyType);
 
         bool CanRead(ConcreteRoleType propertyType);

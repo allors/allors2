@@ -45,7 +45,7 @@ namespace Allors.Repository
         [Workspace]
         [Required]
         public User User { get; set; }
-        
+
         #region Allors
         [Id("f4e05932-89c0-4f40-b4b2-f241ac42d8a0")]
         [AssociationId("d1f61b05-8f54-47b6-87dd-fd7b66ef0b50")]
@@ -67,23 +67,23 @@ namespace Allors.Repository
         public Task Task { get; set; }
 
         #region inherited methods
-        
-        public void OnBuild(){}
 
-        public void OnPostBuild(){}
+        public void OnBuild() { }
+
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

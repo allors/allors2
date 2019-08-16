@@ -53,7 +53,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new PurchaseInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)

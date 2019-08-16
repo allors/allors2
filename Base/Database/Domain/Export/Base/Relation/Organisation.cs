@@ -49,7 +49,7 @@ namespace Allors.Domain
                 {
                     this.QuoteCounter = new CounterBuilder(session).Build();
                 }
-                
+
                 if (!this.ExistPurchaseInvoiceCounter)
                 {
                     this.PurchaseInvoiceCounter = new CounterBuilder(session).Build();
@@ -341,10 +341,10 @@ namespace Allors.Domain
                 return false;
             }
 
-            return this.ExistProfessionalServicesRelationshipsWhereProfessionalServicesProvider 
+            return this.ExistProfessionalServicesRelationshipsWhereProfessionalServicesProvider
                    && this.ProfessionalServicesRelationshipsWhereProfessionalServicesProvider
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
-           
+
         }
 
         public bool BaseIsActiveSubContractor(DateTime? date)
@@ -354,7 +354,7 @@ namespace Allors.Domain
                 return false;
             }
 
-            return this.ExistSubContractorRelationshipsWhereContractor 
+            return this.ExistSubContractorRelationshipsWhereContractor
                    && this.SubContractorRelationshipsWhereContractor
                         .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
@@ -369,7 +369,7 @@ namespace Allors.Domain
             return this.ExistSupplierRelationshipsWhereSupplier && this.SupplierRelationshipsWhereSupplier
                        .Any(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
-        
+
         public void BaseDelete(DeletableDelete method)
         {
             if (this.IsDeletable)

@@ -16,7 +16,7 @@ namespace Components
         }
 
         public override By Selector { get; }
-        
+
         public string Value
         {
             get

@@ -9,7 +9,7 @@ namespace Tests
     using Allors.Domain;
 
     using Components;
-    
+
 
     using Xunit;
 

@@ -78,13 +78,13 @@ namespace Allors.Workspace
         public PushRequest PushRequest()
         {
             var data = new PushRequest
-                           {
-                               NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
-                               Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray()
-                           };
+            {
+                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
+                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray()
+            };
             return data;
         }
-        
+
         public void PushResponse(PushResponse pushResponse)
         {
             if (pushResponse.NewObjects != null && pushResponse.NewObjects.Length > 0)
@@ -97,10 +97,10 @@ namespace Allors.Workspace
                     var newSessionObject = this.newSessionObjectById[newId];
 
                     var loadResponse = new SyncResponse
-                                           {
-                                               UserSecurityHash = "#",
-                                               // This should trigger a load on next check
-                                               Objects =
+                    {
+                        UserSecurityHash = "#",
+                        // This should trigger a load on next check
+                        Objects =
                                                    new[]
                                                        {
                                                            new SyncResponseObject
@@ -114,7 +114,7 @@ namespace Allors.Workspace
                                                                    Methods = new string[0][]
                                                                }
                                                        }
-                                           };
+                    };
 
                     this.newSessionObjectById.Remove(newId);
                     newSessionObject.NewId = null;

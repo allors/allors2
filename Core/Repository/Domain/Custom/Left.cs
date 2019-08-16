@@ -13,7 +13,7 @@
         public int DerivationCount { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("C86BBB90-F678-4627-B651-657F86B2D2EB")]
         [AssociationId("8A14211A-5FAC-45DE-A628-31A7C1C024E1")]
@@ -30,7 +30,7 @@
         #endregion
         [Required]
         public int Counter { get; set; }
-        
+
 
         #region Allors
         [Id("8C454674-AE11-4305-A055-55A915139F16")]
@@ -56,7 +56,7 @@
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive()

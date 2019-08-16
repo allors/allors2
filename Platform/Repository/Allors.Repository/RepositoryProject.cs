@@ -32,7 +32,7 @@ namespace Allors.Repository.Roslyn
 
     using Document = Microsoft.CodeAnalysis.Document;
 
-    internal class RepositoryProject 
+    internal class RepositoryProject
     {
         public Project Project { get; }
 

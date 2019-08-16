@@ -79,7 +79,7 @@ namespace Allors.Domain
         }
 
         public InvoiceItem[] InvoiceItems => this.SalesInvoiceItems;
-        
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesInvoiceState)
@@ -466,7 +466,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (validInvoiceItems.Any() && !this.SalesInvoiceState.Equals(salesInvoiceStates.ReadyForPosting) )
+            if (validInvoiceItems.Any() && !this.SalesInvoiceState.Equals(salesInvoiceStates.ReadyForPosting))
             {
                 if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsPaid))
                 {
@@ -615,7 +615,7 @@ namespace Allors.Domain
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
-                    .WithBilledFrom((Organisation) this.BilledFrom)
+                    .WithBilledFrom((Organisation)this.BilledFrom)
                     .WithBilledFromContactPerson(this.BilledFromContactPerson)
                     .WithBilledTo((InternalOrganisation)this.BillToCustomer)
                     .WithBilledToContactPerson(this.BillToContactPerson)

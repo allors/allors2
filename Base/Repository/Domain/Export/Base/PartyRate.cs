@@ -50,7 +50,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal Cost { get; set; }
-        
+
         #region Allors
         [Id("5563FC19-D342-4254-A4A7-9CBD41B43868")]
         [AssociationId("32E4468D-CECE-4647-9189-53B1FACA5E18")]
@@ -87,7 +87,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

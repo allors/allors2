@@ -18,7 +18,7 @@ namespace Components
         public Composite Composite { get; set; }
 
         public override By Selector { get; }
-        
+
         public Class[] Classes
         {
             get
@@ -42,7 +42,7 @@ namespace Components
             this.Anchor(By.CssSelector("[mat-fab]")).Click();
 
             if ((@class != null) && (this.Classes.Count() > 1))
-            { 
+            {
                 this.Button(By.CssSelector($"button[data-allors-class='{@class.Name}']")).Click();
             }
         }

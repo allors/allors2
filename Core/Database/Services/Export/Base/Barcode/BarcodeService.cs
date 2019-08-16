@@ -98,7 +98,7 @@ namespace Allors.Services
                 default:
                     throw new ArgumentException();
             }
-            
+
             var barcodeWriter = new ZXing.ImageSharp.BarcodeWriter<Rgba32>
             {
                 Format = barcodeFormat

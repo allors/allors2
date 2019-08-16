@@ -35,11 +35,11 @@
                 {
                     var token = user.CreateToken(this.Configuration);
                     var response = new AuthenticationTokenResponse
-                                       {
-                                           Authenticated = true,
-                                           UserId = user.Id,
-                                           Token = token
-                                       };
+                    {
+                        Authenticated = true,
+                        UserId = user.Id,
+                        Token = token
+                    };
                     return this.Ok(response);
                 }
             }

@@ -18,7 +18,7 @@ namespace Allors.Domain
     public partial class PurchaseOrderItemPaymentState
     {
         public bool IsNotPaid => Equals(this.UniqueId, PurchaseOrderItemPaymentStates.NotPaidId);
-        
+
         public bool IsPartiallyPaid => Equals(this.UniqueId, PurchaseOrderItemPaymentStates.PartiallyPaidId);
 
         public bool IsPaid => Equals(this.UniqueId, PurchaseOrderItemPaymentStates.PaidId);

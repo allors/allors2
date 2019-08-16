@@ -73,12 +73,12 @@ namespace Allors.Data
         public Extent Save()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Filter,
-                           ObjectType = this.ObjectType?.Id,
-                           Predicate = this.Predicate?.Save(),
-                           Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
-                       };
+            {
+                Kind = ExtentKind.Filter,
+                ObjectType = this.ObjectType?.Id,
+                Predicate = this.Predicate?.Save(),
+                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            };
 
         }
     }

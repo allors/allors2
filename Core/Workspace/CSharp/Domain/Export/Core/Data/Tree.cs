@@ -37,7 +37,7 @@ namespace Allors.Workspace.Data
         public IComposite Composite { get; }
 
         public TreeNodes Nodes { get; }
-        
+
         public Tree Add(IEnumerable<IRelationType> relationTypes)
         {
             return this.Add(relationTypes.Select(v => v.RoleType));

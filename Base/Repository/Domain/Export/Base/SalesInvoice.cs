@@ -18,13 +18,13 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public string InternalComment { get; set; }
-        
+
         public Currency Currency { get; set; }
         public string Description { get; set; }
         public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-        
+
         public Fee Fee { get; set; }
-        
+
         public string CustomerReference { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public decimal AmountPaid { get; set; }
@@ -33,20 +33,20 @@ namespace Allors.Repository
         public decimal TotalIncVat { get; set; }
         public decimal TotalSurcharge { get; set; }
         public decimal TotalBasePrice { get; set; }
-        
+
         public DateTime InvoiceDate { get; set; }
         public DateTime EntryDate { get; set; }
-        
+
         public decimal TotalShippingAndHandling { get; set; }
-        
+
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
         public decimal TotalExVat { get; set; }
         public SalesTerm[] SalesTerms { get; set; }
-        
+
         public string InvoiceNumber { get; set; }
         public string Message { get; set; }
         public VatRegime VatRegime { get; set; }
-        
+
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
         public InvoiceItem[] ValidInvoiceItems { get; set; }
@@ -366,7 +366,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Person[] SalesReps { get; set; }
-        
+
         #region Allors
         [Id("89557826-c9d1-4aa1-8789-79fb425cdb87")]
         [AssociationId("7d157e5a-efbb-453e-bd95-27a9b0ab305f")]
@@ -376,7 +376,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public SalesInvoiceItem[] SalesInvoiceItems { get; set; }
-        
+
         #region Allors
         [Id("ed091c3c-1f38-498a-8ca5-ca8b8ddfc5c4")]
         [AssociationId("2531dbb0-e34e-41c2-b6e2-95e3a39cf54d")]
@@ -427,7 +427,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public decimal AdvancePayment{ get; set; }
+        public decimal AdvancePayment { get; set; }
 
         #region Allors
         [Id("17ED2D23-0D51-4F04-BBD4-572318E91D82")]
@@ -522,7 +522,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

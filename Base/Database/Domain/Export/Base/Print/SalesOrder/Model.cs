@@ -25,7 +25,7 @@ namespace Allors.Domain.Print.SalesOrderModel
             var session = order.Strategy.Session;
 
             this.Order = new OrderModel(order);
-            
+
             this.TakenBy = new TakenByModel((Organisation)order.TakenBy);
             this.BillTo = new BillToModel(order);
             this.ShipTo = new ShipToModel(order);

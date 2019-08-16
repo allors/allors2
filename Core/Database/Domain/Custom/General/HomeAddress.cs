@@ -31,7 +31,7 @@ namespace Allors.Domain
         public void CustomOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            
+
             derivation.Validation.AssertExists(this, M.HomeAddress.Street);
             derivation.Validation.AssertNonEmptyString(this, M.HomeAddress.Street);
         }

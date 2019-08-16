@@ -44,8 +44,8 @@ namespace Allors.Domain
             }
             else
             {
-                 numberString += ' ' + this.ContactNumber;
-                 return numberString;
+                numberString += ' ' + this.ContactNumber;
+                return numberString;
             }
         }
     }

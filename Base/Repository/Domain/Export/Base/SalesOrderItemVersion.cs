@@ -15,7 +15,7 @@ namespace Allors.Repository
         public decimal QuantityOrdered { get; set; }
         public string Description { get; set; }
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
-        
+
         public decimal TotalOrderAdjustment { get; set; }
         public QuoteItem QuoteItem { get; set; }
         public DateTime AssignedDeliveryDate { get; set; }
@@ -39,7 +39,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        
+
 
         public VatRegime VatRegime { get; set; }
 
@@ -49,25 +49,25 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-        
+
 
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
 
-        
+
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-        
+
 
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
 
-        
+
 
         public decimal TotalDiscount { get; set; }
 
@@ -79,7 +79,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        
+
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -187,7 +187,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public SerialisedItemState NewSerialisedItemState { get; set; }
-        
+
         #region Allors
         [Id("17BB3EF6-6368-436D-A7C4-5AD55889E2B7")]
         [AssociationId("2FAA1278-84B1-4391-A90D-12CA1E335F77")]
@@ -220,7 +220,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress ShipToAddress { get; set; }
-        
+
         #region Allors
         [Id("2BE18BDC-27ED-4E1B-8F7C-58CBF8E58ED3")]
         [AssociationId("51EBB5B8-A0DD-4C6A-B3BD-68FAA2330EDF")]
@@ -307,7 +307,7 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityPendingShipment { get; set; }
-        
+
         #region Allors
         [Id("F79B3A47-46AE-4098-A4C4-21D098621F52")]
         [AssociationId("CC858C83-8DE5-4ED8-B151-65E2E1D81DB0")]
@@ -348,7 +348,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

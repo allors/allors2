@@ -127,7 +127,7 @@ namespace Allors.Adapters
             {
                 init();
                 this.Populate();
-                
+
                 Company acme = Company.Create(this.Session, "Acme");
                 Company acne = Company.Create(this.Session, "Acne");
 

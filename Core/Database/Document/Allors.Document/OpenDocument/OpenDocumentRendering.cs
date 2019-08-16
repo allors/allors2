@@ -47,7 +47,7 @@ namespace Allors.Document.OpenDocument
             var errorBuffer = new ErrorBuffer();
 
             var template = this.templateGroup.GetInstanceOf(MainTemplateName);
-            
+
             foreach (var kvp in this.model)
             {
                 template.Add(kvp.Key, kvp.Value);
@@ -86,7 +86,7 @@ namespace Allors.Document.OpenDocument
                 {
                     var documentElement = manifest.DocumentElement;
                     var elements = documentElement.ChildNodes.OfType<XmlElement>().ToArray();
-                    
+
                     var debugExistingElements = elements.Select(
                         v =>
                             {
@@ -99,7 +99,7 @@ namespace Allors.Document.OpenDocument
                     {
                         var manifestNs = element.GetNamespaceOfPrefix("manifest");
                         var fullPath = element.GetAttribute("full-path", manifestNs);
-                        
+
                         foreach (var image in this.images?.Where(v => v.OriginalFullPath.Equals(fullPath)))
                         {
                             var newElement = (XmlElement)element.Clone();

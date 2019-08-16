@@ -26,7 +26,7 @@ namespace Allors.Adapters.Memory
         private readonly ExtentOperationType operationType;
         private readonly Extent secondOperand;
 
-        public ExtentOperation(Session session, Extent firstOperand,  Extent secondOperand,  ExtentOperationType operationType)
+        public ExtentOperation(Session session, Extent firstOperand, Extent secondOperand, ExtentOperationType operationType)
             : base(session)
         {
             if (!firstOperand.ObjectType.Equals(secondOperand.ObjectType))

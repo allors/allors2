@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("cb6a8e8a-04a6-437b-b952-f502cca2a2db")]
     #endregion
-    public partial class EstimatedMaterialCost : EstimatedProductCost 
+    public partial class EstimatedMaterialCost : EstimatedProductCost
     {
         #region inherited properties
         public decimal Cost { get; set; }
@@ -31,20 +31,20 @@ namespace Allors.Repository
         #endregion
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
 

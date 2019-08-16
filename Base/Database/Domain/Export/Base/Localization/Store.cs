@@ -158,7 +158,7 @@ namespace Allors.Domain
             {
                 this.DefaultCollectionMethod = this.InternalOrganisation.DefaultCollectionMethod;
 
-                if (!this.ExistCollectionMethods|| !this.CollectionMethods.Contains(this.DefaultCollectionMethod))
+                if (!this.ExistCollectionMethods || !this.CollectionMethods.Contains(this.DefaultCollectionMethod))
                 {
                     this.AddCollectionMethod(this.DefaultCollectionMethod);
                 }

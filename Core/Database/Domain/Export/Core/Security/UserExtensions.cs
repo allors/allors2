@@ -37,7 +37,7 @@ namespace Allors.Domain
                 @this.NormalizedUserName = @this.UserName?.ToUpperInvariant();
             }
         }
-        
+
         public static void SetPassword(this User @this, string clearTextPassword)
         {
             var securityService = @this.Strategy.Session.ServiceProvider.GetRequiredService<IPasswordService>();

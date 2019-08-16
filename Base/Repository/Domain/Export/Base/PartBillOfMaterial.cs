@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d204e616-039c-40c8-81cc-18f3a7345d99")]
     #endregion
-	public partial interface PartBillOfMaterial : Commentable, Period, Object
+    public partial interface PartBillOfMaterial : Commentable, Period, Object
     {
 
 

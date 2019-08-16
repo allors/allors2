@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("3277910f-c4ee-40b6-8028-21f879e8da04")]
     #endregion
-    public partial class AccountingTransactionType : Enumeration 
+    public partial class AccountingTransactionType : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -23,24 +23,24 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

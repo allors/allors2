@@ -35,7 +35,7 @@ namespace Allors.Domain
 
             foreach (ServiceEntry serviceEntry in this.WorkEffort.ServiceEntriesWhereWorkEffort)
             {
-                 derivation.AddDependency(serviceEntry, this);   
+                derivation.AddDependency(serviceEntry, this);
             }
         }
 

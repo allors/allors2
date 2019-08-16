@@ -50,7 +50,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)

@@ -29,7 +29,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class OrganisationTests : DomainTest
     {
         [Fact]

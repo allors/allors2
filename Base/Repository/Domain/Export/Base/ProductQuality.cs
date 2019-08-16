@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d14fa0d2-8743-4d3c-8109-2ab9161cb310")]
     #endregion
-    public partial class ProductQuality : ProductFeature, Enumeration 
+    public partial class ProductQuality : ProductFeature, Enumeration
     {
         #region inherited properties
         public EstimatedProductCost[] EstimatedProductCosts { get; set; }
@@ -40,20 +40,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

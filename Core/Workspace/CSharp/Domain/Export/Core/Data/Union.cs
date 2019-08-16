@@ -47,10 +47,10 @@ namespace Allors.Workspace.Data
         public Extent ToJson()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Union,
-                           Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
-                           Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            {
+                Kind = ExtentKind.Union,
+                Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
         }
     }

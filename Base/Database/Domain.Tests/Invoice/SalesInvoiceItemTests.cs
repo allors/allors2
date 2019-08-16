@@ -266,7 +266,7 @@ namespace Allors.Domain
             salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
             this.Session.Derive();
-                
+
             Assert.Equal(salesInvoice.VatRegime, invoiceItem.VatRegime);
         }
 
@@ -314,7 +314,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             this.InstantiateObjects(this.Session);
 
             const decimal quantity = 3;
@@ -365,7 +365,7 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(9.45m, item1.TotalVat);
             Assert.Equal(54.45m, item1.TotalIncVat);
-            
+
             Assert.Equal(30, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
@@ -542,7 +542,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var price = this.currentGood1BasePrice.Price?? 0;
+            var price = this.currentGood1BasePrice.Price ?? 0;
             var amount = Math.Round((price * percentage) / 100, 2);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
@@ -1830,7 +1830,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
-            var salesrep2  = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
             var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")

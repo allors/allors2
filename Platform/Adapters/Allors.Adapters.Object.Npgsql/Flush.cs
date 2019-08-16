@@ -201,7 +201,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             foreach (var roleObjectId in added)
             {
-                relations.Add(new CompositeRelation(association.ObjectId, roleObjectId)); 
+                relations.Add(new CompositeRelation(association.ObjectId, roleObjectId));
             }
 
             if (relations.Count > BatchSize)

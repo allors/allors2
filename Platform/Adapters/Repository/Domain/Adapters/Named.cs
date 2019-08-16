@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("fcaa52e3-4a90-4981-b45d-d158e2589506")]
     #endregion
-	public partial interface Named : Object 
+    public partial interface Named : Object
     {
 
 

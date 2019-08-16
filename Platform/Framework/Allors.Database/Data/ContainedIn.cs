@@ -77,13 +77,13 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.ContainedIn,
-                           PropertyType = this.PropertyType?.Id,
-                           Extent = this.Extent?.Save(),
-                           Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.ContainedIn,
+                PropertyType = this.PropertyType?.Id,
+                Extent = this.Extent?.Save(),
+                Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
+                Parameter = this.Parameter
+            };
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

@@ -2,6 +2,6 @@ namespace Allors.Domain
 {
     public partial class WorkEffortInvoice
     {
-        public bool? Result{ get; set; }
+        public bool? Result { get; set; }
     }
 }

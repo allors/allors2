@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6D38838C-CA7A-4ACC-B240-E4A1F3AE2DC9")]
     #endregion
-    public partial class QuoteItemVersion : Version 
+    public partial class QuoteItemVersion : Version
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -168,7 +168,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public RequestItem RequestItem { get; set; }
-        
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -177,7 +177,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

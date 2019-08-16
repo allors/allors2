@@ -13,7 +13,7 @@ namespace Allors.Meta
             this.FirstName.RelationType.Workspace = true;
             this.LastName.RelationType.Workspace = true;
             this.MiddleName.RelationType.Workspace = true;
-            
+
             var person = this;
             this.AngularHome = new Tree(person.Class)
                     .Add(person.Photo);

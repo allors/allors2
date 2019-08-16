@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(DebitId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Credit")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit").WithLocale(dutchLocale).Build())

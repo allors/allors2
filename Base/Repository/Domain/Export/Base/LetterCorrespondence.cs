@@ -94,7 +94,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress PostalAddress { get; set; }
-        
+
         #region Versioning
         #region Allors
         [Id("9A42BAF7-D2CA-46D6-95E2-28198DA719FA")]
@@ -120,31 +120,31 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
-
-
+        public void Reopen() { }
 
 
-        public void Delete(){}
+
+
+        public void Delete() { }
 
 
         #endregion

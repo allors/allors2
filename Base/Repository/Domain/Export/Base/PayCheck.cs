@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ef5fb351-2f0f-454a-b7b2-104af42b2c72")]
     #endregion
-    public partial class PayCheck : Payment 
+    public partial class PayCheck : Payment
     {
         #region inherited properties
         public decimal Amount { get; set; }
@@ -48,20 +48,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
 

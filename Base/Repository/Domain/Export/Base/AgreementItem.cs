@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8ba98e1b-1d4d-46b1-bf27-bb2bf53501fd")]
     #endregion
-    public partial interface AgreementItem : DelegatedAccessControlledObject 
+    public partial interface AgreementItem : DelegatedAccessControlledObject
     {
         #region Allors
         [Id("3ad6eaac-8cc3-4738-9a5b-617386e296c8")]
@@ -14,7 +14,7 @@ namespace Allors.Repository
         #endregion
         [Size(-1)]
         string Text { get; set; }
-        
+
         #region Allors
         [Id("49d6363c-6006-4850-8a96-d87b9336ae59")]
         [AssociationId("aab2420d-b105-4328-a71c-c2cdce2712a3")]
@@ -23,7 +23,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         Addendum[] Addenda { get; set; }
-        
+
         #region Allors
         [Id("4bd76d2c-383e-460f-a597-4283addcbef8")]
         [AssociationId("a8ea8f52-bbe2-4723-85c6-8277904c3d93")]
@@ -32,7 +32,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         AgreementItem[] Children { get; set; }
-        
+
         #region Allors
         [Id("9431dbfa-c620-445a-914f-8f12d4734b8b")]
         [AssociationId("b31b913d-82cc-418d-8167-df26ce483473")]
@@ -41,7 +41,7 @@ namespace Allors.Repository
         [Required]
         [Size(-1)]
         string Description { get; set; }
-        
+
         #region Allors
         [Id("cfa9c54b-4e9f-4bd2-897d-baf8fb32fa9c")]
         [AssociationId("08518361-7f3d-4a44-9377-f407d6946668")]

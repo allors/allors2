@@ -38,10 +38,10 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
-            
+
             new SkillLevelBuilder(this.Session)
                 .WithName("Beginner")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Starter").WithLocale(dutchLocale).Build())
@@ -55,14 +55,14 @@ namespace Allors.Domain
                 .WithUniqueId(IntermediateId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new SkillLevelBuilder(this.Session)
                 .WithName("Advanced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ervaren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AdvancedId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new SkillLevelBuilder(this.Session)
                 .WithName("Expert")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(dutchLocale).Build())

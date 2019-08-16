@@ -32,7 +32,7 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertExists(this, this.Meta.Bank);
                 derivation.Validation.AssertExists(this, this.Meta.Currency);
-                derivation.Validation.AssertExists(this, this.Meta.NameOnAccount);                
+                derivation.Validation.AssertExists(this, this.Meta.NameOnAccount);
             }
 
             this.DeriveIban(derivation);

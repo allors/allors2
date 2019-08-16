@@ -29,7 +29,7 @@ namespace Tests
     using Allors.Domain;
 
     using Xunit;
-    
+
     public class DerivationLogTests : DomainTest
     {
         [Fact]
@@ -48,5 +48,5 @@ namespace Tests
 
             Assert.True(this.Session.Derive(false).HasErrors);
         }
-   }
+    }
 }

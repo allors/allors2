@@ -134,7 +134,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Workspace]
-        PartyRelationship[] InactivePartyRelationships{ get; set; }
+        PartyRelationship[] InactivePartyRelationships { get; set; }
 
         #region Allors
         [Id("59500ed1-2de5-45ff-bec7-275c1941d153")]
@@ -471,6 +471,6 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        bool CollectiveWorkEffortInvoice{ get; set; }
+        bool CollectiveWorkEffortInvoice { get; set; }
     }
 }

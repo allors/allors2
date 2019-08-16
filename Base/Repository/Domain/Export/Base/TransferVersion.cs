@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("827E2A7D-2FEF-4511-9EA4-9D2A3BF76153")]
     #endregion
-    public partial class TransferVersion : ShipmentVersion 
+    public partial class TransferVersion : ShipmentVersion
     {
         #region inherited properties
 
@@ -67,21 +67,21 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
-   }
+    }
 }

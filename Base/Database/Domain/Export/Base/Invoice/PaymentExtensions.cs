@@ -40,7 +40,7 @@ namespace Allors.Domain
             }
         }
 
-        public static  void BaseOnDerive(this Payment @this, ObjectOnDerive method)
+        public static void BaseOnDerive(this Payment @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 

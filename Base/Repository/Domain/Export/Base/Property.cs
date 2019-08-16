@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("dc54aafb-f0f2-4f72-8a81-d5b2fc792b86")]
     #endregion
-    public partial class Property : FixedAsset 
+    public partial class Property : FixedAsset
     {
         #region inherited properties
         public string Name { get; set; }
@@ -42,20 +42,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

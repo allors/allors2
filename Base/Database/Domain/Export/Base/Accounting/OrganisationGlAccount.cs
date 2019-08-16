@@ -108,4 +108,4 @@ namespace Allors.Domain
         }
 
     }
-    }
+}

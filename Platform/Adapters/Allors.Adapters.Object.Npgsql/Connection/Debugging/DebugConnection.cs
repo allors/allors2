@@ -28,7 +28,7 @@ namespace Allors.Adapters.Object.Npgsql.Debug
     {
         public List<DebugCommand> Commands { get; } = new List<DebugCommand>();
 
-        public IEnumerable<DebugExecution> Executions => 
+        public IEnumerable<DebugExecution> Executions =>
             from command in this.Commands
             from execution in command.Executions
             orderby execution.Begin

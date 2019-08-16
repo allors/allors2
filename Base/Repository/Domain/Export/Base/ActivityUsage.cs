@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ded168ad-b674-47ab-855c-46b3e1939e32")]
     #endregion
-    public partial class ActivityUsage : DeploymentUsage 
+    public partial class ActivityUsage : DeploymentUsage
     {
         #region inherited properties
 
@@ -50,20 +50,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

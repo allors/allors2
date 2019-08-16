@@ -16,7 +16,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime SupportDiscontinuationDate { get; set; }
-        
+
         #region Allors
         [Id("0b283eb9-2972-47ae-80d8-1a7aa8f77673")]
         [AssociationId("aa3ccdc9-7286-4a82-912a-dd2e53c7410b")]

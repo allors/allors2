@@ -24,12 +24,12 @@ namespace Allors.Domain
     using System;
     using Meta;
     using Xunit;
-    
+
     public class OrganisationContactRelationshipTests : DomainTest
     {
         private Person contact;
         private OrganisationContactRelationship organisationContactRelationship;
-        
+
         public OrganisationContactRelationshipTests()
         {
             this.contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();

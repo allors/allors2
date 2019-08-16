@@ -22,7 +22,7 @@ namespace Allors.Repository
         public decimal QuantityOrdered { get; set; }
         public string Description { get; set; }
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
-        
+
         public decimal TotalOrderAdjustment { get; set; }
         public QuoteItem QuoteItem { get; set; }
         public DateTime AssignedDeliveryDate { get; set; }
@@ -41,27 +41,27 @@ namespace Allors.Repository
         public decimal TotalDiscountAsPercentage { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public decimal UnitVat { get; set; }
-        
+
         public VatRegime VatRegime { get; set; }
         public decimal TotalVat { get; set; }
         public decimal UnitSurcharge { get; set; }
         public decimal UnitDiscount { get; set; }
-        
+
         public VatRate VatRate { get; set; }
         public decimal AssignedUnitPrice { get; set; }
-        
+
         public decimal UnitBasePrice { get; set; }
         public decimal UnitPrice { get; set; }
-        
+
         public decimal TotalIncVat { get; set; }
         public decimal TotalSurchargeAsPercentage { get; set; }
-        
+
         public decimal TotalDiscount { get; set; }
         public decimal TotalSurcharge { get; set; }
         public VatRegime AssignedVatRegime { get; set; }
         public decimal TotalBasePrice { get; set; }
         public decimal TotalExVat { get; set; }
-        
+
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public User CreatedBy { get; set; }
@@ -239,7 +239,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public OrderItem[] OrderedWithFeatures { get; set; }
-        
+
         #region Allors
         [Id("C0E36C78-95CD-4842-AFAA-137882E65214")]
         [AssociationId("51C60757-8EAE-4628-BFEE-1EA18C2117BC")]
@@ -402,7 +402,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         [Workspace]
-        public decimal QuantityCommittedOut{ get; set; }
+        public decimal QuantityCommittedOut { get; set; }
 
         #region Allors
         [Id("911abda0-2eb0-477e-80be-e9e7d358205e")]
@@ -424,7 +424,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Party AssignedShipToParty { get; set; }
-        
+
         #region Allors
         [Id("e8980105-2c4d-41de-bd67-802a8c0720f1")]
         [AssociationId("8b747457-bf7a-4274-b245-d04607b2a5ba")]
@@ -481,30 +481,30 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Reject(){}
+        public void Reject() { }
 
-        public void Confirm(){}
+        public void Confirm() { }
 
-        public void Approve(){}
+        public void Approve() { }
 
-        public void Delete(){}
+        public void Delete() { }
         public void DelegateAccess() { }
 
         #endregion

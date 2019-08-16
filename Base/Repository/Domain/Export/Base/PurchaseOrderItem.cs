@@ -22,7 +22,7 @@ namespace Allors.Repository
         public decimal QuantityOrdered { get; set; }
         public string Description { get; set; }
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
-        
+
         public decimal TotalOrderAdjustment { get; set; }
         public QuoteItem QuoteItem { get; set; }
         public DateTime AssignedDeliveryDate { get; set; }
@@ -44,7 +44,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        
+
 
         public VatRegime VatRegime { get; set; }
 
@@ -54,25 +54,25 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-        
+
 
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
 
-        
+
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-        
+
 
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
 
-        
+
 
         public decimal TotalDiscount { get; set; }
 
@@ -84,7 +84,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        
+
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -274,30 +274,30 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Reject(){}
+        public void Reject() { }
 
-        public void Confirm(){}
+        public void Confirm() { }
 
-        public void Approve(){}
+        public void Approve() { }
 
-        public void Delete(){}
+        public void Delete() { }
         public void DelegateAccess() { }
         #endregion
 

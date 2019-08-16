@@ -176,7 +176,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-      
+
         private void ReadUnitRelations(RelationTypeUnit xmlRelationTypeUnit, IRelationType relationType, Dictionary<long, object> roleByObjectId)
         {
             foreach (var xmlRelation in xmlRelationTypeUnit.Relations)

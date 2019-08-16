@@ -35,10 +35,10 @@ namespace Allors.Services
         public void Send(EmailMessage emailMesssage)
         {
             var message = new MimeMessage
-                                      {
-                                          Subject = emailMesssage.Subject,
-                                          Body = new TextPart("html") { Text = emailMesssage.Body }
-                                      };
+            {
+                Subject = emailMesssage.Subject,
+                Body = new TextPart("html") { Text = emailMesssage.Body }
+            };
 
             var sender = emailMesssage.Sender?.UserEmail ?? this.DefaultSender;
             var senderName = emailMesssage.Sender?.UserName ?? this.DefaultSenderName;
@@ -55,7 +55,7 @@ namespace Allors.Services
             {
                 message.To.Add(new MimeKit.MailboxAddress(recipient.UserEmail));
             }
-            
+
             using (var client = new SmtpClient())
             {
                 client.Connect("smtp");

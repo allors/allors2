@@ -25,7 +25,7 @@ namespace Allors.Domain
     using Xunit;
     using Resources;
 
-    
+
     public class PurchaseInvoiceTests : DomainTest
     {
         [Fact]

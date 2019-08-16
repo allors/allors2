@@ -23,12 +23,12 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public Model(ProductQuote quote)
         {
             this.Quote = new QuoteModel(quote);
-            
+
             this.Request = new RequestModel(quote.Request);
             this.Issuer = new IssuerModel((Organisation)quote.Issuer);
             this.BillTo = new BillToModel(quote);
             this.Receiver = new ReceiverModel(quote);
-            
+
             this.QuoteItems = quote.QuoteItems.Select(v => new QuoteItemModel(v)).ToArray();
 
         }

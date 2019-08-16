@@ -21,7 +21,7 @@
 
 namespace Allors.Domain
 {
-    public partial interface I2 
+    public partial interface I2
     {
     }
 }

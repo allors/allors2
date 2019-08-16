@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("27b45d45-459a-43cb-87b0-f8842ec56445")]
     #endregion
-	public partial interface FinancialAccount : Object
+    public partial interface FinancialAccount : Object
     {
 
 

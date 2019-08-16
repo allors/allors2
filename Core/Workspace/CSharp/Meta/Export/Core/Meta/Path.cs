@@ -23,7 +23,7 @@ namespace Allors.Workspace.Meta
     using System;
     using System.Linq;
     using System.Text;
-    
+
     public class Path
     {
         public Path()

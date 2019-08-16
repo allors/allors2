@@ -66,14 +66,14 @@ namespace Allors.Server
                     var result = await this.SignInManager.CheckPasswordSignInAsync(user, request.Password, false);
                     if (result.Succeeded)
                     {
-                        
+
                         var token = user.CreateToken(this.Configuration);
                         var response = new AuthenticationTokenResponse
-                                           {
-                                               Authenticated = true,
-                                               UserId = user.Id,
-                                               Token = token
-                                           };
+                        {
+                            Authenticated = true,
+                            UserId = user.Id,
+                            Token = token
+                        };
                         return this.Ok(response);
                     }
                 }
@@ -81,6 +81,6 @@ namespace Allors.Server
 
             return this.Ok(new { Authenticated = false });
         }
-      
+
     }
 }

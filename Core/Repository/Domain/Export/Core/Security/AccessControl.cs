@@ -56,7 +56,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         public User[] Subjects { get; set; }
-        
+
         #region Allors
         [Id("69a9dae8-678d-4c1c-a464-2e5aa5caf39e")]
         [AssociationId("ec79e57d-be81-430a-b12f-08ffd1e94af3")]
@@ -66,7 +66,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public Role Role { get; set; }
-        
+
         #region Allors
         [Id("5e218f37-3b07-4002-87a4-7581a53f01ba")]
         [AssociationId("be94d5f0-df53-4118-987a-11bce8593a1b")]
@@ -76,7 +76,7 @@ namespace Allors.Repository
         [Indexed]
         [Derived]
         public Permission[] EffectivePermissions { get; set; }
-        
+
         #region Allors
         [Id("50ecae85-e5a9-467e-99a3-78703d954b2f")]
         [AssociationId("01590aea-d75c-45be-af4b-bf56545a4008")]
@@ -90,22 +90,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
 
         #endregion
     }

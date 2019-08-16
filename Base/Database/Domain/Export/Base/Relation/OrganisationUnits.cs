@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -45,14 +45,14 @@ namespace Allors.Domain
                 .WithUniqueId(DepartmentId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OrganisationUnitBuilder(this.Session)
                 .WithName("Division")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Divisie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DivisionId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OrganisationUnitBuilder(this.Session)
                 .WithName("Subsidiary")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dochtermaatschappij").WithLocale(dutchLocale).Build())

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ca0f0654-3974-4e5e-a57e-593216c05e16")]
     #endregion
-	public partial interface DeploymentUsage : Commentable, Period, Object
+    public partial interface DeploymentUsage : Commentable, Period, Object
     {
 
 

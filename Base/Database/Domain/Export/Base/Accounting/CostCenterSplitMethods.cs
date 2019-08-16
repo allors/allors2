@@ -32,8 +32,8 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
-            
+
+
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new DebitCreditConstantBuilder(this.Session)
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(Topid)
                 .WithIsActive(true)
                 .Build();
-            
+
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Use bottom level´s cost center GL-account")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van laagste niveau").WithLocale(dutchLocale).Build())

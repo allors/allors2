@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7fd1760c-ee1f-4d04-8a93-dfebc82757c1")]
     #endregion
-    public partial class Amortization : InternalAccountingTransaction 
+    public partial class Amortization : InternalAccountingTransaction
     {
         #region inherited properties
 
@@ -30,24 +30,24 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

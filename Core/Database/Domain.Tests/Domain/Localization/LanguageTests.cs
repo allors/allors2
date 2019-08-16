@@ -25,7 +25,7 @@ namespace Tests
     using Allors.Meta;
 
     using Xunit;
-    
+
     public class LanguageTests : DomainTest
     {
         [Fact]
@@ -35,13 +35,13 @@ namespace Tests
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
-               
+
             builder.WithIsoCode("XX").Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithLocale(new Locales(this.Session).FindBy(M.Locale.Name, Locales.EnglishGreatBritainName)).WithText("XXX)").Build());
-        
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
     }

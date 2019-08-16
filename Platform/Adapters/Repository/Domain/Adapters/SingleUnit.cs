@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c3e82ab0-f586-4913-acb0-838ffd6701f8")]
     #endregion
-    public partial class SingleUnit :  System.Object 
+    public partial class SingleUnit : System.Object
     {
         #region inherited properties
         #endregion

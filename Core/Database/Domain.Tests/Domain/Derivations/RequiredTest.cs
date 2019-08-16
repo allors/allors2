@@ -29,7 +29,7 @@ namespace Tests
     using Allors.Domain;
 
     using Xunit;
-    
+
     public class RequiredTest : DomainTest
     {
         [Fact]
@@ -52,7 +52,7 @@ namespace Tests
             Assert.True(units.ExistRequiredDouble);
             Assert.True(units.ExistRequiredInteger);
             Assert.True(units.ExistRequiredUnique);
-           
+
             Assert.Equal(false, units.RequiredBoolean);
             Assert.True(units.RequiredDateTime > before && units.RequiredDateTime < after);
             Assert.Equal(0m, units.RequiredDecimal);

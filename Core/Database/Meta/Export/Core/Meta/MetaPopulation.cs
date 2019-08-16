@@ -137,7 +137,7 @@ namespace Allors.Meta
                 return this.derivedComposites;
             }
         }
-        
+
         public IEnumerable<Composite> SortedComposites => this.Composites.OrderBy(v => v.Name);
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Allors.Meta
 
             return metaObject;
         }
-        
+
         IClass IMetaPopulation.FindClassByName(string name)
         {
             return this.FindByName(name);
@@ -452,7 +452,7 @@ namespace Allors.Meta
                         type.DeriveRoleTypes(sharedRoleTypes, roleTypesByAssociationObjectType);
 
                     }
-                    
+
                     // AssociationTypes
                     foreach (var type in this.derivedComposites)
                     {
@@ -496,7 +496,7 @@ namespace Allors.Meta
                     {
                         composite.DeriveWorkspace();
                     }
-                    
+
                     // MetaPopulation
                     this.derivedClassByLowercaseName = new Dictionary<string, Class>();
                     foreach (var cls in this.classes)
@@ -541,7 +541,7 @@ namespace Allors.Meta
         {
             this.classes.Add(@class);
             this.metaObjectById.Add(@class.Id, @class);
-            
+
             this.Stale();
         }
 

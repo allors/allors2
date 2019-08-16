@@ -50,10 +50,10 @@ namespace Allors.Domain
             foreach (User user in usersWithPassword)
             {
                 records.Add(new Credentials.Record
-                                 {
-                                     UserName = user.UserName,
-                                     PasswordHash = user.UserPasswordHash
-                                 });
+                {
+                    UserName = user.UserName,
+                    PasswordHash = user.UserPasswordHash
+                });
             }
 
             var credentials = new Credentials { Records = records.ToArray() };
@@ -88,7 +88,7 @@ namespace Allors.Domain
                 public string PasswordHash { get; set; }
             }
         }
-        
+
         private class CachedUser
         {
             public readonly string UserId;

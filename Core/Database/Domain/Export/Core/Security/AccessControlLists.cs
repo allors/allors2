@@ -178,7 +178,7 @@ namespace Allors.Domain
                 {
                     return false;
                 }
-                
+
                 if (this.permissionIdByOperationByOperandTypeId.TryGetValue(operandType.Id, out var permissionIdByOperation))
                 {
                     if (permissionIdByOperation.TryGetValue(operation, out var permissionId))

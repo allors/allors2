@@ -47,7 +47,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
                     {
                         this.Address = $"\n{generalAddress.Address3}";
                     }
- 
+
                     this.City = generalAddress.Locality;
                     this.State = generalAddress.Region;
                     this.PostalCode = generalAddress.PostalCode;

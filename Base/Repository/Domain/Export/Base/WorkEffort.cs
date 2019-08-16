@@ -102,7 +102,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        Party Customer{ get; set; }
+        Party Customer { get; set; }
 
         #region Allors
         [Id("2C866A1C-AC26-468A-B01F-5A0D8FFF7513")]

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("aad26d12-9e80-410c-ab99-57064bd3dd2e")]
     #endregion
-    public partial class Event : Object 
+    public partial class Event : Object
     {
         #region inherited properties
         #endregion
@@ -104,20 +104,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

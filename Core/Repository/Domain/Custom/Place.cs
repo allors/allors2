@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("268f63d2-17da-4f29-b0d0-76db611598c6")]
     #endregion
-    public partial class Place : Object 
+    public partial class Place : Object
     {
         #region inherited properties
         #endregion
@@ -39,20 +39,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

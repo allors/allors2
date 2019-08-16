@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("D9881B21-DE74-4C4B-8306-B4C10FF7D0F1")]
     #endregion
-    public partial class VatClause: Enumeration
+    public partial class VatClause : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }

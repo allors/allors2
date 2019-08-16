@@ -53,10 +53,10 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Fetch ToJson()
         {
             return new Protocol.Data.Fetch
-                       {
-                           Step = this.Step?.ToJson(),
-                           Include = this.Include?.ToJson()
-                       };
+            {
+                Step = this.Step?.ToJson(),
+                Include = this.Include?.ToJson()
+            };
         }
     }
 }

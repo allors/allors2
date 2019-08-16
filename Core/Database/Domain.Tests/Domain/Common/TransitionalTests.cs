@@ -27,7 +27,7 @@ namespace Tests
     using Allors.Domain;
 
     using Xunit;
-    
+
     public class TransitionalTests : DomainTest
     {
         [Fact]
@@ -62,7 +62,7 @@ namespace Tests
             Assert.Equal(1, order.LastObjectStates.Count);
             Assert.Contains(initial, order.LastObjectStates);
             Assert.False(order.ExistPreviousObjectStates);
-            
+
             order.OrderState = confirmed;
 
             this.Session.Derive(true);

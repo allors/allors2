@@ -43,7 +43,7 @@ namespace Allors.Repository
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
-        
+
         public Document[] Documents { get; set; }
 
         public Person ShipFromContactPerson { get; set; }
@@ -110,7 +110,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

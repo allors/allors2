@@ -25,7 +25,7 @@ namespace Allors.Domain
         protected override void CustomSecure(Security config)
         {
             var defaultSecurityToken = this.Instance.DefaultSecurityToken;
-            
+
             if (!this.Instance.ExistSalesAccessControl)
             {
                 this.Instance.SalesAccessControl = new AccessControlBuilder(this.Session)

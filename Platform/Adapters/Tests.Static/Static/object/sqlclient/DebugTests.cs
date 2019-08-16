@@ -29,7 +29,7 @@ namespace Allors.Adapters.Object.SqlClient
     using Allors.Domain;
 
     using Xunit;
-    
+
     public abstract class DebugTests
     {
         #region Population
@@ -146,7 +146,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(2, connection.Commands.Count);
                     Assert.Equal(2, connection.Executions.Count());
                 }
-                
+
                 this.InvalidateCache();
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
@@ -164,7 +164,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-        
+
         [Fact]
         public void ExtentRole()
         {
@@ -255,7 +255,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-        
+
         [Fact]
         public void PrefetchOneClass()
         {
@@ -371,7 +371,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
 
                 this.InvalidateCache();
-                
+
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
                 {
@@ -393,7 +393,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-        
+
         protected void Populate()
         {
             using (var session = this.Database.CreateSession())
@@ -431,7 +431,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private void InvalidateCache()
         {
-            var method = this.Database.GetType().GetProperty("Cache",  BindingFlags.Instance | BindingFlags.NonPublic);
+            var method = this.Database.GetType().GetProperty("Cache", BindingFlags.Instance | BindingFlags.NonPublic);
             var cache = (ICache)method.GetValue(this.Database);
             cache.Invalidate();
         }

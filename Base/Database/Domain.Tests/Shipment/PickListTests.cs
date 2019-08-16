@@ -41,7 +41,7 @@ namespace Allors.Domain
 
             Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
         }
-        
+
         [Fact]
         public void GivenPickList_WhenPicked_ThenInventoryIsAdjustedAndOrderItemsQuantityPickedIsSet()
         {

@@ -111,14 +111,14 @@ namespace Allors.Domain
                 .WithUniqueId(HeadQuartersId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Sales Office")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoops bureau").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesOfficeId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Home Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Thuis adres").WithLocale(dutchLocale).Build())
@@ -132,14 +132,14 @@ namespace Allors.Domain
                 .WithUniqueId(GeneralCorrespondenceId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("General Phone Number")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen telefoonnummer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GeneralPhoneNumberId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("General Fax Number")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen fax nummer").WithLocale(dutchLocale).Build())
@@ -153,84 +153,84 @@ namespace Allors.Domain
                 .WithUniqueId(GeneralEmailId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Billing Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Factuuradres").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingAddressId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Internet Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internet adres").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternetAddressId)
                 .WithIsActive(true)
                 .Build();
-           
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Order Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ander adres").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OrderAddressId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Shipping Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verzendadres").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingAddressId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Billing Inquiries Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie vragen telefoon").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingInquiriesPhoneId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Order Inquiries Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Order vragen telefoon").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OrderInquiriesPhoneId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Shipping Inquiries Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Transport vragen telefoon").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingInquiriesPhoneId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Billing Inquiries Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie vragen fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingInquiriesFaxId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Order Inquiries Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Order vragen fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OrderInquiriesFaxId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Shipping Inquiries Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Transport vragen fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingInquiriesFaxId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Personal Email Address")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Persoonlijk email adres").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PersonalEmailAddressId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Cellphone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel nummer").WithLocale(dutchLocale).Build())

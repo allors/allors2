@@ -243,7 +243,7 @@ namespace Allors.Adapters
                         Assert.True(exceptionThrown);
 
                         mark();
-                        
+
                         Assert.False(values.ExistC1AllorsDateTime);
                     }
 
@@ -1659,7 +1659,7 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public void AllorsSmallStringWeakReference()
         {

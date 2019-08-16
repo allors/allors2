@@ -207,7 +207,7 @@ namespace Allors.Domain
 
             // Re-arrange
             CreateInventoryTransaction(15, varianceReasons.Unknown, finishedGood);
-            
+
             // Act
             this.Session.Derive(true);
             this.Session.Commit();
@@ -239,7 +239,7 @@ namespace Allors.Domain
 
             // Re-arrange
             CreateInventoryTransaction(85, varianceReasons.Unknown, finishedGood);
-            
+
             // Act
             this.Session.Derive();
             this.Session.Commit();
@@ -296,7 +296,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
-            
+
             this.Session.Derive();
 
             var order = CreateSalesOrder(customer, customer, this.Session.Now(), false);
@@ -314,7 +314,7 @@ namespace Allors.Domain
             Assert.Equal(0, salesItem.QuantityPendingShipment);
             Assert.Equal(10, salesItem.QuantityReserved);
             Assert.Equal(5, salesItem.QuantityShortFalled);
-            
+
             // Rearrange
             CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
 

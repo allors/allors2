@@ -50,7 +50,7 @@ namespace Allors.Development.Repository.Generation
         private const string ObjectTypeKey = "objectType";
         private const string RelationTypeKey = "relationType";
         private const string MethodTypeKey = "methodType";
-        
+
         private readonly FileInfo fileInfo;
 
         internal StringTemplate(FileInfo fileInfo)
@@ -62,7 +62,7 @@ namespace Allors.Development.Repository.Generation
             {
                 throw new Exception("Template file not found: " + fileInfo.FullName);
             }
-            
+
             TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
 
             this.Id = Render(templateGroup, TemplateId) != null ? new Guid(Render(templateGroup, TemplateId)) : Guid.Empty;
@@ -105,7 +105,7 @@ namespace Allors.Development.Repository.Generation
                 TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
 
                 templateGroup.ErrorManager = new ErrorManager(new LogAdapter(log));
-                
+
                 var configurationTemplate = templateGroup.GetInstanceOf(TemplateConfiguration);
                 configurationTemplate.Add(MetaKey, metaPopulation);
 

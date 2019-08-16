@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("52458d42-94ee-4757-bcfb-bc9c45ed6dc6")]
     #endregion
-    public partial class Deposit : FinancialAccountTransaction 
+    public partial class Deposit : FinancialAccountTransaction
     {
         #region inherited properties
         public string Description { get; set; }
@@ -36,20 +36,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

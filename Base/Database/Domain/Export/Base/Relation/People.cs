@@ -23,7 +23,7 @@ namespace Allors.Domain
         protected override void BaseSetup(Setup setup)
         {
             var internalOrganisations = new Organisations(this.Session).InternalOrganisations();
-            
+
             var users = new Users(this.Session).Extent();
 
             foreach (Person person in users)
@@ -47,7 +47,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 

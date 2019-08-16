@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("52ee223f-14e7-46e7-8e24-c6fdf19fa5d1")]
     #endregion
-    public partial class CostOfGoodsSoldMethod : Enumeration 
+    public partial class CostOfGoodsSoldMethod : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }
@@ -28,20 +28,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

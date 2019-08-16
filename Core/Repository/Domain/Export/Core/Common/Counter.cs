@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0568354f-e3d9-439e-baac-b7dce31b956a")]
     #endregion
-    public partial class Counter : UniquelyIdentifiable 
+    public partial class Counter : UniquelyIdentifiable
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -59,7 +59,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive()

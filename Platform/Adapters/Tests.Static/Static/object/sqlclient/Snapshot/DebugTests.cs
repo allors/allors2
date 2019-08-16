@@ -30,7 +30,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Xunit;
 
-    
+
     public class DebugTests : Allors.Adapters.Object.SqlClient.DebugTests, IDisposable
     {
         private readonly Profile profile;

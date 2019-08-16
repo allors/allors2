@@ -35,7 +35,7 @@ namespace Allors.Domain
             if (!@this.ExistRecipient)
             {
                 var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
-                
+
                 if (internalOrganisations.Count() == 1)
                 {
                     @this.Recipient = internalOrganisations.Single();
@@ -79,7 +79,7 @@ namespace Allors.Domain
             {
                 @this.RequestState = new RequestStates(session).Submitted;
 
-                if (@this.ExistEmailAddress 
+                if (@this.ExistEmailAddress
                     && @this.Originator.PartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(EmailAddress).Name).FirstOrDefault(v => ((EmailAddress)v.ContactMechanism).ElectronicAddressString.Equals(@this.EmailAddress)) == null)
                 {
                     @this.Originator.AddPartyContactMechanism(
@@ -89,7 +89,7 @@ namespace Allors.Domain
                         .Build());
                 }
 
-                if (@this.ExistTelephoneNumber 
+                if (@this.ExistTelephoneNumber
                     && @this.Originator.PartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(TelecommunicationsNumber).Name).FirstOrDefault(v => ((TelecommunicationsNumber)v.ContactMechanism).ContactNumber.Equals(@this.TelephoneNumber)) == null)
                 {
                     @this.Originator.AddPartyContactMechanism(

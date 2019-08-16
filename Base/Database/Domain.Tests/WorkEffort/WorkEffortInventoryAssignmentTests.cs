@@ -24,7 +24,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using Xunit;
-        
+
     public class WorkEffortInventoryAssignmentTests : DomainTest
     {
         [Fact]
@@ -436,7 +436,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Act
-            inventoryAssignment.InventoryItem= part2.InventoryItemsWherePart.First;
+            inventoryAssignment.InventoryItem = part2.InventoryItemsWherePart.First;
             inventoryAssignment.Quantity = 5;
 
             workEffort.Complete();

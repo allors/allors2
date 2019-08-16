@@ -21,10 +21,10 @@
 
 namespace Allors
 {
-   using System.Collections.Generic;
+    using System.Collections.Generic;
 
-   using Allors.Adapters;
-   using Allors.Meta;
+    using Allors.Adapters;
+    using Allors.Meta;
 
     public static partial class IChangeSetExtensions
     {

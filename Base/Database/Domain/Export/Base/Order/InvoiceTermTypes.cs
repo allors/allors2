@@ -44,7 +44,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 

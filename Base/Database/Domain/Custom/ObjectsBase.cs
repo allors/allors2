@@ -22,7 +22,7 @@ namespace Allors
 {
     using Allors.Domain;
 
-    public abstract partial class ObjectsBase<T> 
+    public abstract partial class ObjectsBase<T>
     {
         protected virtual void CustomPrepare(Setup setup)
         {

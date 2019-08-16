@@ -25,7 +25,7 @@ namespace Allors.Domain
     using System;
     using System.Linq;
     using Xunit;
-    
+
     public class TimeEntryTests : DomainTest
     {
         [Fact]
@@ -72,7 +72,7 @@ namespace Allors.Domain
             //// Re-arrange
             var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             new EmploymentBuilder(this.Session).WithEmployee(worker).WithEmployer(internalOrganisation).Build();
-            
+
             derivation = this.Session.Derive(false);
 
             worker.TimeSheetWhereWorker.AddTimeEntry(timeEntry);

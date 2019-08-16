@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class LetterCorrespondenceTests : DomainTest
     {
         [Fact]
@@ -60,7 +60,7 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive();
-            
+
             Assert.Equal(3, communication.InvolvedParties.Count);
             Assert.Contains(owner, communication.InvolvedParties);
             Assert.Contains(originator, communication.InvolvedParties);

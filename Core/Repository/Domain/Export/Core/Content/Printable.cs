@@ -16,7 +16,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
         PrintDocument PrintDocument { get; set; }
-        
+
         #region Allors
         [Id("55903F87-8D6B-4D99-9E0D-C3B74064C81F")]
         #endregion

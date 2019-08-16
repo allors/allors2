@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b83205c5-261f-4d9d-9789-55966ae8d61b")]
     #endregion
-    public partial class ProfessionalPlacement : EngagementItem 
+    public partial class ProfessionalPlacement : EngagementItem
     {
         #region inherited properties
         public QuoteItem QuoteItem { get; set; }
@@ -41,20 +41,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void DelegateAccess() { }
 
         #endregion

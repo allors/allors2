@@ -107,7 +107,7 @@ namespace Allors.Adapters.Object.SqlClient
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
-        
+
         public IServiceProvider ServiceProvider { get; }
 
         public IConnectionFactory ConnectionFactory

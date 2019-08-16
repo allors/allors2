@@ -34,7 +34,7 @@ namespace Tests.OrganisationTests
 
             this.Session.Derive();
             this.Session.Commit();
-            
+
             var before = new Organisations(this.Session).Extent().ToArray();
 
             var organisationCreate = this.organisationListPage.CreateOrganisation();

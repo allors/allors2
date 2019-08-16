@@ -32,7 +32,7 @@ namespace Tests
         {
             var builder = new CountryBuilder(this.Session);
             builder.Build();
-            
+
             Assert.True(this.Session.Derive(false).HasErrors);
 
             builder.WithIsoCode("XX").Build();

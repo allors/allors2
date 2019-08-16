@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class SalesRepRelationships
     {
         public static Person SalesRep(Party customer, ProductCategory productCategory, DateTime date)

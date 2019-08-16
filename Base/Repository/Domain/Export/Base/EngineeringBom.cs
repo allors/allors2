@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("14a85148-0d92-4869-8a94-b102f047931f")]
     #endregion
-    public partial class EngineeringBom : PartBillOfMaterial 
+    public partial class EngineeringBom : PartBillOfMaterial
     {
         #region inherited properties
         public Part Part { get; set; }
@@ -36,20 +36,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

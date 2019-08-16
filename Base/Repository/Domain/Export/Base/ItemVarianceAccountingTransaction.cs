@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4af573b7-a87f-400c-97e4-80bda17376e0")]
     #endregion
-    public partial class ItemVarianceAccountingTransaction : AccountingTransaction 
+    public partial class ItemVarianceAccountingTransaction : AccountingTransaction
     {
         #region inherited properties
         public AccountingTransactionDetail[] AccountingTransactionDetails { get; set; }
@@ -32,20 +32,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

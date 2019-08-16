@@ -21,9 +21,9 @@ namespace Allors.Domain
     {
         internal static List<string> euMemberStates = new List<string>
             {
-                "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES", 
-                "FR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL", 
-                "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE", "UK", 
+                "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES",
+                "FR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL",
+                "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE", "UK",
             };
 
         internal static Dictionary<string, IbanData> IbanDataByCountry = new Dictionary<string, IbanData>

@@ -25,7 +25,7 @@ namespace Tests
     using global::Allors.Domain;
 
     using Xunit;
-    
+
     public class InitTest : DomainTest
     {
         [Fact]
@@ -41,7 +41,7 @@ namespace Tests
 
             Assert.Contains(person, allors.Employees);
             Assert.DoesNotContain(person, acme.Employees);
-            
+
             allors.RemoveManager();
             acme.Manager = person;
 

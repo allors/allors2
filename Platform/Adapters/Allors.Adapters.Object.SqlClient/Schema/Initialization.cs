@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient
     {
         private readonly Database database;
         private readonly Mapping mapping;
-        
+
         private Validation validation;
 
         internal Initialization(Database database)
@@ -167,7 +167,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                     foreach (var dictionaryEntry in this.mapping.TableTypeDefinitionByName)
                     {
                         var definition = dictionaryEntry.Value;
-                        
+
                         using (var command = new SqlCommand(definition, connection))
                         {
                             command.ExecuteNonQuery();
@@ -272,7 +272,7 @@ CREATE SCHEMA " + this.database.SchemaName;
                             command.ExecuteNonQuery();
                         }
                     }
-                    
+
                     foreach (var @class in this.mapping.Database.MetaPopulation.Classes)
                     {
                         var tableName = this.mapping.TableNameForObjectByClass[@class];
@@ -352,7 +352,7 @@ $@"CREATE TABLE {tableName}(
                 }
             }
         }
-        
+
         private void CreateProcedures()
         {
             using (var connection = new SqlConnection(this.database.ConnectionString))
@@ -424,7 +424,7 @@ $@"CREATE TABLE {tableName}(
                                         }
                                     }
                                 }
-                                
+
                                 var associationType = relationType.AssociationType;
                                 if (roleType.ObjectType.IsUnit)
                                 {

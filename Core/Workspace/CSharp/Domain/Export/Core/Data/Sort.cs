@@ -22,7 +22,7 @@ using Allors.Workspace.Meta;
 
 namespace Allors.Workspace.Data
 {
-    public class Sort 
+    public class Sort
     {
         public Sort(IRoleType roleType = null)
         {
@@ -30,7 +30,7 @@ namespace Allors.Workspace.Data
         }
 
         public IRoleType RoleType { get; set; }
-        
+
         public bool Descending { get; set; }
     }
 }

@@ -3,7 +3,7 @@ namespace Tests.Local
     using Allors.Protocol.Remote.Pull;
 
     using Xunit;
-    
+
     public class WorkspaceTests : LocalTest
     {
         [Fact]
@@ -29,16 +29,16 @@ namespace Tests.Local
             this.Workspace.Sync(Fixture.loadData);
 
             var required = new PullResponse
-                               {
-                                   UserSecurityHash = "#",
-                                   Objects =
+            {
+                UserSecurityHash = "#",
+                Objects =
                                        new[]
                                            {
                                                 new[] { "1", "1001" },
                                                 new[] { "2", "1002" },
                                                 new[] { "3", "1004" }
                                            }
-                               };
+            };
 
             var requireLoad = this.Workspace.Diff(required);
 
@@ -51,16 +51,16 @@ namespace Tests.Local
             this.Workspace.Sync(Fixture.loadData);
 
             var required = new PullResponse
-                               {
-                                   UserSecurityHash = "def",
-                                   Objects =
+            {
+                UserSecurityHash = "def",
+                Objects =
                                        new[]
                                            {
                                                 new[] { "1", "1001" },
                                                 new[] { "2", "1002" },
                                                 new[] { "3", "1004" }
                                            }
-                               };
+            };
 
             var requireLoad = this.Workspace.Diff(required);
 

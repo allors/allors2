@@ -41,7 +41,7 @@ namespace Allors.Domain
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
-            
+
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
             Assert.Equal(0, partyFinancial.AmountDue);
         }
@@ -68,7 +68,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
-                
+
                 .WithFromDate(this.Session.Now().AddDays(1))
                 .Build();
 
@@ -85,7 +85,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
-                
+
                 .WithFromDate(this.Session.Now().AddDays(-10))
                 .WithThroughDate(this.Session.Now().AddDays(-1))
                 .Build();

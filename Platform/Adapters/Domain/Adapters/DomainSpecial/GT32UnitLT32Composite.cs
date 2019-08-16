@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Allors;
 
-    public partial class GT32UnitLT32Composite 
+    public partial class GT32UnitLT32Composite
     {
         public static GT32UnitLT32Composite Create(ISession session)
         {

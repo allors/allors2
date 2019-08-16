@@ -60,10 +60,10 @@ namespace Allors.Data
         public Protocol.Data.Fetch Save()
         {
             return new Protocol.Data.Fetch
-                       {
-                           Step = this.Step?.Save(),
-                           Include = this.Include?.Save()
-                       };
+            {
+                Step = this.Step?.Save(),
+                Include = this.Include?.Save()
+            };
         }
 
         private static IPropertyType Resolve(IComposite composite, string propertyName)

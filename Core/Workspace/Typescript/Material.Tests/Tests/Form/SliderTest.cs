@@ -8,7 +8,7 @@ namespace Tests
     using Allors.Domain;
 
     using Components;
-    
+
 
     using Xunit;
 
@@ -23,7 +23,7 @@ namespace Tests
             this.Login();
             this.page = this.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         public void Initial()
         {

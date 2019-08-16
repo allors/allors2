@@ -54,7 +54,7 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Language Language { get; set; }
-        
+
         #region Allors
         [Id("ea778b77-2929-4ab4-ad99-bf2f970401a9")]
         [AssociationId("bb5904f5-feb0-47eb-903a-0351d55f0d8c")]
@@ -65,24 +65,24 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Country Country { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

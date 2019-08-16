@@ -21,7 +21,7 @@ namespace Tests
             this.Login();
             this.page = this.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         public void Initial()
         {

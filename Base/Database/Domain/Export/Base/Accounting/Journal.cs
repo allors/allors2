@@ -60,7 +60,7 @@ namespace Allors.Domain
             }
             else
             {
-                if (this.ExistJournalType &&this.JournalType.Equals(new JournalTypes(this.Strategy.Session).Bank))
+                if (this.ExistJournalType && this.JournalType.Equals(new JournalTypes(this.Strategy.Session).Bank))
                 {
                     // initial derivation of ContraAccount, PreviousContraAccount does not exist yet.
                     if (this.ExistContraAccount)

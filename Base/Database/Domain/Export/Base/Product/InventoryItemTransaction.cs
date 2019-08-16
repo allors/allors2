@@ -179,8 +179,8 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.Reason, message);
                 }
 
-                if (this.Quantity == 1 
-                    && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem 
+                if (this.Quantity == 1
+                    && this.SerialisedItem.ExistSerialisedInventoryItemsWhereSerialisedItem
                     && this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem.Any(v => v.Quantity == 1)
                     && this.Reason.IncreasesQuantityOnHand == true)
                 {

@@ -57,7 +57,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Name { get; set; }
-        
+
         #region Allors
         [Id("f091b264-e6b1-4a57-bbfb-8225cbe8190c")]
         [AssociationId("6650af3b-f537-4c2f-afff-6773552315cd")]
@@ -79,24 +79,24 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string NativeName { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

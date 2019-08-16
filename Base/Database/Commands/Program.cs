@@ -51,7 +51,7 @@ namespace Commands
             services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
 
             var serviceProvider = services.BuildServiceProvider();
-          
+
             try
             {
                 var app = new CommandLineApplication<Commands>();

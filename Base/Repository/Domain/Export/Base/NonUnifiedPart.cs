@@ -56,7 +56,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPostDerive() { }
@@ -67,5 +67,5 @@ namespace Allors.Repository
 
         public void OnPreDerive() { }
         #endregion inheritedMethods
-   }
+    }
 }

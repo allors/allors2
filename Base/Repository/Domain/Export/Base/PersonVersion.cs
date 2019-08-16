@@ -7,7 +7,7 @@ namespace Allors.Repository
     [Id("E42FCDBF-5DEF-4743-BDE8-4028AC6A00A5")]
     #endregion
 
-    public partial class PersonVersion : PartyVersion 
+    public partial class PersonVersion : PartyVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -288,7 +288,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

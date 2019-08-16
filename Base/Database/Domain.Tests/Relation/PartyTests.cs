@@ -29,7 +29,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class PartyTests : DomainTest
     {
         [Fact]
@@ -64,7 +64,7 @@ namespace Allors.Domain
             Assert.Contains(salesRep2, organisation.CurrentSalesReps);
 
             salesRepRelationship1.ThroughDate = DateTimeFactory.CreateDate(2010, 12, 31);
-            
+
             this.Session.Derive();
 
             Assert.Single(organisation.CurrentSalesReps);

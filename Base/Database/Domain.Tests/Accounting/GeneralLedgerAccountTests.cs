@@ -25,7 +25,7 @@ namespace Allors.Domain
     using Xunit;
     using Resources;
 
-    
+
     public class GeneralLedgerAccountTests : DomainTest
     {
         [Fact]
@@ -46,7 +46,7 @@ namespace Allors.Domain
             builder.WithAccountNumber("0001");
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors); 
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
@@ -152,9 +152,9 @@ namespace Allors.Domain
                 .Build();
 
             var derivationLog = this.Session.Derive(false);
-            
+
             var expectedMessage = ErrorMessages.NotACostCenterAccount;
-            
+
             Assert.Equal(derivationLog.Errors[0].Message, expectedMessage);
         }
 

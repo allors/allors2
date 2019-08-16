@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("96a64894-e444-4df4-9289-1b121842ac73")]
     #endregion
-    public partial class UtilizationCharge : PriceComponent 
+    public partial class UtilizationCharge : PriceComponent
     {
         #region inherited properties
 
@@ -85,20 +85,20 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

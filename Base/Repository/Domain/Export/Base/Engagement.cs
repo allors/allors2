@@ -42,7 +42,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal MaximumAmount { get; set; }
-        
+
         #region Allors
         [Id("4afffb12-3a70-4903-af99-ed814fd6a444")]
         [AssociationId("1bf53c71-0b09-4053-8bab-73d783fdfd62")]
@@ -96,7 +96,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public ContactMechanism TakenViaContactMechanism { get; set; }
-        
+
         #region Allors
         [Id("9bc7fbff-11dd-434e-91ff-7cef4e225bb3")]
         [AssociationId("950e4e27-42a4-4feb-bc7c-88a1045f6cc6")]
@@ -105,7 +105,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EstimatedAmount { get; set; }
-        
+
         #region Allors
         [Id("d9df5d5e-e0cc-4c9e-9e0a-dc5423561774")]
         [AssociationId("4fec3a1a-28d4-4984-a82a-aee949ba79d5")]
@@ -150,20 +150,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

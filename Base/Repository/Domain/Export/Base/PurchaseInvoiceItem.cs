@@ -29,7 +29,7 @@ namespace Allors.Repository
 
         public string Message { get; set; }
 
-        
+
 
         public decimal AmountPaid { get; set; }
 
@@ -52,7 +52,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        
+
 
         public VatRegime VatRegime { get; set; }
 
@@ -62,25 +62,25 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-        
+
 
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
 
-        
+
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-        
+
 
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
 
-        
+
 
         public decimal TotalDiscount { get; set; }
 
@@ -92,7 +92,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        
+
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -207,20 +207,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         public void DelegateAccess() { }

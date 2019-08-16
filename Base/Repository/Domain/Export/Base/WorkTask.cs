@@ -140,7 +140,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }
@@ -152,7 +152,7 @@ namespace Allors.Repository
         public void Complete() { }
 
         public void Invoice() { }
-        
+
         public void Cancel() { }
 
         public void Reopen() { }

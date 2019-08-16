@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(EnforcedSequenceId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceSequenceBuilder(this.Session)
                 .WithName("Restart each fiscal year (no gaps, reset to '1' each year")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'").WithLocale(dutchLocale).Build())

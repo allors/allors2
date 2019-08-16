@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a71e670c-f089-4ec1-8295-dda8e7b62a19")]
     #endregion
-    public partial class RecurringCharge : PriceComponent 
+    public partial class RecurringCharge : PriceComponent
     {
         #region inherited properties
 
@@ -76,20 +76,20 @@ namespace Allors.Repository
         public TimeFrequency Frequency { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

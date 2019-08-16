@@ -34,7 +34,7 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         public string BodyTemplate { get; set; }
-        
+
         #region Allors
         [Id("f05fc608-5dcd-4d7d-b472-5b84c2a195a4")]
         [AssociationId("c00233a0-c9a2-4c01-88fc-9ea5eb7fd564")]
@@ -47,20 +47,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

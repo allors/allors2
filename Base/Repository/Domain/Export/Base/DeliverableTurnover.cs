@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("48733d8e-506a-4add-a230-907221ca7a9a")]
     #endregion
-    public partial class DeliverableTurnover : ServiceEntry 
+    public partial class DeliverableTurnover : ServiceEntry
     {
         #region inherited properties
         public EngagementItem EngagementItem { get; set; }
@@ -42,17 +42,17 @@ namespace Allors.Repository
         public decimal Amount { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnInit(){}
+        public void OnInit() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
 

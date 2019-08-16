@@ -73,7 +73,7 @@ namespace Allors.Server
                     T = x.Strategy.Class.Name,
                     Roles = this.GetRoles(x, accessControlLists),
                     Methods = this.GetMethods(x, accessControlLists),
-                }).ToArray() 
+                }).ToArray()
             };
         }
 

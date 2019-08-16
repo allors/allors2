@@ -61,7 +61,7 @@ namespace Allors.Repository.Generation
             {
                 throw new Exception("Template file not found: " + fileInfo.FullName);
             }
-            
+
             TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
 
             this.Id = Render(templateGroup, TemplateId) != null ? new Guid(Render(templateGroup, TemplateId)) : Guid.Empty;
@@ -90,7 +90,7 @@ namespace Allors.Repository.Generation
             TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
 
             templateGroup.ErrorManager = new ErrorManager(new LogAdapter());
-                
+
             var configurationTemplate = templateGroup.GetInstanceOf(TemplateConfiguration);
             configurationTemplate.Add(RepositoryKey, repository);
 

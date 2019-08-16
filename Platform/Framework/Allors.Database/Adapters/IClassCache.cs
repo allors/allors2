@@ -25,7 +25,7 @@ namespace Allors.Adapters
     public interface IClassCache
     {
         bool TryGet(long objectId, out IClass @class);
-       
+
         void Set(long objectId, IClass @class);
 
         void Invalidate();

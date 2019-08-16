@@ -29,9 +29,9 @@ namespace Allors.Adapters.Memory
     {
         private static readonly EmptySet<IRoleType> EmptyRoleTypeSet = new EmptySet<IRoleType>();
         private static readonly EmptySet<IAssociationType> EmptyAssociationTypeSet = new EmptySet<IAssociationType>();
-        
+
         private readonly HashSet<long> created;
-        private readonly HashSet<long> deleted; 
+        private readonly HashSet<long> deleted;
 
         private readonly HashSet<long> associations;
         private readonly HashSet<long> roles;
@@ -61,7 +61,7 @@ namespace Allors.Adapters.Memory
         public IDictionary<long, ISet<IRoleType>> RoleTypesByAssociation => this.roleTypesByAssociation;
 
         public IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole => this.associationTypesByRole;
-        
+
         internal void OnCreated(long objectId)
         {
             this.created.Add(objectId);

@@ -51,7 +51,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public bool NeedsApproval{ get; set; }
+        public bool NeedsApproval { get; set; }
 
         #region Allors
         [Id("EC58B25E-D84A-402D-873B-A48E1E59365D")]
@@ -72,22 +72,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

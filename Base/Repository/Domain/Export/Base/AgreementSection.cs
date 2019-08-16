@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("e31d6dd2-b5b2-4fd8-949f-0df688ed2e9b")]
     #endregion
-    public partial class AgreementSection : AgreementItem 
+    public partial class AgreementSection : AgreementItem
     {
         #region inherited properties
         public string Text { get; set; }
@@ -27,20 +27,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void DelegateAccess() { }
 
         #endregion

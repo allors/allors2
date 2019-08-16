@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     public partial class Requirements
     {
-       protected override void BasePrepare(Setup setup)
+        protected override void BasePrepare(Setup setup)
         {
             base.BasePrepare(setup);
 
@@ -28,7 +28,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var createdState = new WorkEffortStates(this.Session).Created;
             var cancelledState = new WorkEffortStates(this.Session).Cancelled;

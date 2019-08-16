@@ -44,7 +44,7 @@ namespace Allors.Domain
 
             builder.WithRateType(new RateTypes(this.Session).StandardRate);
             builder.Build();
-            
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
     }

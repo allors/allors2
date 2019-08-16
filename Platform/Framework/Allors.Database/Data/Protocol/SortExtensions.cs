@@ -22,15 +22,15 @@ namespace Allors.Protocol.Data
 {
     using Allors.Meta;
 
-    public static class SortExtensions 
+    public static class SortExtensions
     {
         public static Allors.Data.Sort Load(this Sort @this, ISession session)
         {
             return new Allors.Data.Sort
-                       {
-                           Descending = @this.Descending,
-                           RoleType = @this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.RoleType.Value) : null
-                       };
+            {
+                Descending = @this.Descending,
+                RoleType = @this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.RoleType.Value) : null
+            };
         }
     }
 }

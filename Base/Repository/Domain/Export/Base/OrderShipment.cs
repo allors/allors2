@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("00be6409-1ca0-491e-b0a1-3d53e17005f6")]
     #endregion
-    public partial class OrderShipment : Deletable 
+    public partial class OrderShipment : Deletable
     {
         #region inherited properties
         #endregion
@@ -20,7 +20,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public OrderItem OrderItem { get; set; }
-        
+
         #region Allors
         [Id("b55bbdb8-af05-4008-a6a7-b4eea78096bd")]
         [AssociationId("a4d6f79e-c204-44ca-b7db-3a0a3eacff69")]
@@ -45,22 +45,22 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

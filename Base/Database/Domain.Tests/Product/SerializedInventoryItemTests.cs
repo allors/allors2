@@ -24,7 +24,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
     using System.Linq;
-    
+
     public class SerialisedInventoryItemTests : DomainTest
     {
         [Fact]
@@ -176,7 +176,7 @@ namespace Allors.Domain
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
                 .WithPart(part)
-                .Build();        
+                .Build();
 
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new NonUnifiedPartBuilder(this.Session)

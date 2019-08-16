@@ -27,7 +27,7 @@ namespace Allors.Services
         Policy PullPolicy { get; }
 
         Policy SyncPolicy { get; }
-         
+
         Policy PushPolicy { get; }
 
         Policy InvokePolicy { get; }

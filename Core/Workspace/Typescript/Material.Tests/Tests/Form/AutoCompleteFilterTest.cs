@@ -8,7 +8,7 @@ namespace Tests
     using Allors.Meta;
 
     using Components;
-    
+
 
     using Xunit;
 

@@ -19,7 +19,7 @@ using System;
 namespace Allors.Domain
 {
     using Allors.Meta;
-    
+
     public partial class FaceToFaceCommunication
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =

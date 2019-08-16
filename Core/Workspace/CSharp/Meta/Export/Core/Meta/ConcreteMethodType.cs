@@ -40,7 +40,7 @@ namespace Allors.Workspace.Meta
             this.@class = @class;
             this.methodType = methodType;
         }
-        
+
         public MethodType MethodType
         {
             get
@@ -75,7 +75,7 @@ namespace Allors.Workspace.Meta
             this.actions = new List<Action<object, object>>();
 
             var interfaces = new List<Interface>(this.Class.Supertypes);
-            
+
             interfaces.Sort(
                 (a, b) =>
                 {

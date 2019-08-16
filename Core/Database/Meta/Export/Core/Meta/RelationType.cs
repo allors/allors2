@@ -96,19 +96,19 @@ namespace Allors.Meta
 
         public bool IsDerived
         {
-            get 
+            get
             {
                 return this.isDerived;
             }
 
-            set 
+            set
             {
                 this.MetaPopulation.AssertUnlocked();
                 this.isDerived = value;
                 this.MetaPopulation.Stale();
             }
         }
-        
+
         public bool IsSynced
         {
             get
@@ -124,7 +124,7 @@ namespace Allors.Meta
             }
         }
 
-        public Multiplicity AssignedMultiplicity 
+        public Multiplicity AssignedMultiplicity
         {
             get
             {
@@ -139,7 +139,7 @@ namespace Allors.Meta
             }
         }
 
-        public Multiplicity Multiplicity 
+        public Multiplicity Multiplicity
         {
             get
             {
@@ -234,7 +234,7 @@ namespace Allors.Meta
         /// </summary>
         /// <value>The name of the reverse.</value>
         public string ReverseName => this.RoleType.SingularName + this.AssociationType.SingularName;
-        
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>
@@ -351,8 +351,8 @@ namespace Allors.Meta
         {
             get
             {
-                return this.AssociationType.ObjectType.IsInterface ? 
-                           this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() : 
+                return this.AssociationType.ObjectType.IsInterface ?
+                           this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() :
                            Array.Empty<ConcreteRoleType>();
             }
         }

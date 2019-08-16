@@ -28,7 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal BillingRate { get; set; }
-        
+
         #region Allors
         [Id("1df6f7fe-6cb9-4c1b-b664-e7ee1e2cec6f")]
         [AssociationId("62d1d3a9-cda9-4036-8cf9-eb0d58bbc29e")]
@@ -75,20 +75,20 @@ namespace Allors.Repository
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

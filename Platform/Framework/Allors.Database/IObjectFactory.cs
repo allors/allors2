@@ -63,7 +63,7 @@ namespace Allors
         /// The <see cref="IObjectType"/>.
         /// </returns>
         IObjectType GetObjectTypeForType(Guid objectTypeId);
-        
+
         /// <summary>
         /// Gets the Type for the specified IObjectType
         /// </summary>

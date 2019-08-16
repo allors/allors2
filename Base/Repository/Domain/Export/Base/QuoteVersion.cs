@@ -56,7 +56,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         QuoteTerm[] QuoteTerms { get; set; }
-        
+
         #region Allors
         [Id("BFB459E5-E28A-4EE7-ABAD-06A06919C4C4")]
         [AssociationId("42614E17-7058-4D90-BF4D-484F7EF81CCC")]

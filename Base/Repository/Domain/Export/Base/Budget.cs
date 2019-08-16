@@ -49,7 +49,7 @@ namespace Allors.Repository
         [Required]
         [Size(-1)]
         string Description { get; set; }
-        
+
         #region Allors
         [Id("1c3dd3b4-b514-4a42-965f-d3200325d78c")]
         [AssociationId("dccc1ed1-0cac-4e25-a7ee-5848af5b390e")]
@@ -58,7 +58,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         BudgetRevision[] BudgetRevisions { get; set; }
-        
+
         #region Allors
         [Id("494d04ef-aafc-4482-a5c2-4ec9fa93d158")]
         [AssociationId("eda25f81-bba9-4e23-9074-4e22338ace23")]

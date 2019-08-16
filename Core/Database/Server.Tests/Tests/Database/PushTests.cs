@@ -19,9 +19,9 @@ namespace Server.Tests
             var uri = new Uri(@"Database/Push", UriKind.Relative);
 
             var pushRequest = new PushRequest
-                                  {
-                                      NewObjects = new[] { new PushRequestNewObject { T = "Build", NI = "-1" }, }
-                                  };
+            {
+                NewObjects = new[] { new PushRequestNewObject { T = "Build", NI = "-1" }, }
+            };
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             var pushResponse = await this.ReadAsAsync<PushResponse>(response);
 
@@ -52,10 +52,10 @@ namespace Server.Tests
             var uri = new Uri(@"Database/Push", UriKind.Relative);
 
             var pushRequest = new PushRequest
-                                  {
-                                      Objects = new[] { new PushRequestObject { 
-                                                                                  I = organisationId, 
-                                                                                  V = organisationVersion, 
+            {
+                Objects = new[] { new PushRequestObject {
+                                                                                  I = organisationId,
+                                                                                  V = organisationVersion,
                                                                                   Roles = new[]
                                                                                       {
                                                                                           new PushRequestRole
@@ -66,7 +66,7 @@ namespace Server.Tests
                                                                                       }
                                                                                   },
                                                           }
-                                  };
+            };
             var response = await this.PostAsJsonAsync(uri, pushRequest);
 
             Assert.True(response.IsSuccessStatusCode);

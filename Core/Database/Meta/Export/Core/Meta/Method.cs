@@ -33,7 +33,7 @@ namespace Allors.Meta
             this.Executed = false;
             this.@object = @object;
         }
-        
+
         public string XmlDoc
         {
             get

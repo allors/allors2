@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("3a5dcec7-308f-48c7-afee-35d38415aa0b")]
     #endregion
-    public partial class Organisation : Object, Deletable, UniquelyIdentifiable 
+    public partial class Organisation : Object, Deletable, UniquelyIdentifiable
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -110,7 +110,7 @@ namespace Allors.Repository
         [Workspace]
         #endregion
         public Person Manager { get; set; }
-        
+
         #region Allors
         [Id("2cc74901-cda5-4185-bcd8-d51c745a8437")]
         [AssociationId("896a4589-4caf-4cd2-8365-c4200b12f519")]
@@ -148,7 +148,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string Size { get; set; }
-        
+
         #region Allors
         [Id("D3DB6E8C-9C10-47BA-92B1-45F5DDFFA5CC")]
         [AssociationId("4955AC7F-F840-4F24-B44C-C2D3937D2D44")]
@@ -190,27 +190,27 @@ namespace Allors.Repository
         public Data[] ManyDatas { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
-        
+
         [Id("1869873F-F2F0-4D03-A0F9-7DC73491C117")]
         [Workspace]
-        public void JustDoIt(){}
+        public void JustDoIt() { }
 
         [Id("2CD2FF48-93FC-4C7D-BF2F-3F411D0DF7C3")]
         [Workspace]

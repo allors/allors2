@@ -39,7 +39,7 @@ namespace Allors.Workspace.Data
         public Arguments Arguments { get; set; }
 
         public Result[] Results { get; set; }
-        
+
         public Protocol.Data.Pull ToJson()
         {
             return new Protocol.Data.Pull

@@ -25,7 +25,7 @@ namespace Components
 
         public string ByScopesAnd(string[] scopes)
         {
-            return string.Concat(ByScopesExpressions(scopes).Select(v=>$" and {v}"));
+            return string.Concat(ByScopesExpressions(scopes).Select(v => $" and {v}"));
         }
 
         protected void ScrollToElement(IWebElement element)

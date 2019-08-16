@@ -102,7 +102,7 @@ namespace Allors.Adapters.Object.Npgsql
                         var associationStrategy = this.Session.State.GetOrCreateReferenceForExistingObject(association, this.Session).Strategy;
                         if (roleType.IsMany)
                         {
-                            associationStrategy.RemoveCompositeRole(relationType, this.GetObject()); 
+                            associationStrategy.RemoveCompositeRole(relationType, this.GetObject());
                         }
                         else
                         {
@@ -140,8 +140,8 @@ namespace Allors.Adapters.Object.Npgsql
                 return this.ExistUnitRole(relationType);
             }
 
-            return relationType.RoleType.IsMany 
-                ? this.ExistCompositeRoles(relationType) 
+            return relationType.RoleType.IsMany
+                ? this.ExistCompositeRoles(relationType)
                 : this.ExistCompositeRole(relationType);
         }
 
@@ -298,11 +298,11 @@ namespace Allors.Adapters.Object.Npgsql
         public virtual void RemoveCompositeRole(IRelationType relationType, IObject roleObject)
         {
             this.AssertExist();
-            
+
             if (roleObject != null)
             {
                 RoleAssertions.CompositeRolesChecks(this, relationType.RoleType, roleObject);
-                
+
                 var role = (Strategy)roleObject.Strategy;
                 this.Roles.RemoveCompositeRole(relationType.RoleType, role);
             }

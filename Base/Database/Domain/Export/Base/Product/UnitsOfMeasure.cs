@@ -147,7 +147,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -164,7 +164,7 @@ namespace Allors.Domain
                 .WithUniqueId(PairId)
                 .WithIsActive(true)
                 .Build();
-           
+
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("piece")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("stuk").WithLocale(dutchLocale).Build())
@@ -194,7 +194,7 @@ namespace Allors.Domain
                 .WithUniqueId(CentimeterId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())

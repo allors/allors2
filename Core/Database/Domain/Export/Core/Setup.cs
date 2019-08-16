@@ -77,7 +77,7 @@ namespace Allors
         {
             this.objectsGraph.Add(objects);
         }
-        
+
         /// <summary>
         /// The dependee is set up before the dependent object;
         /// </summary>

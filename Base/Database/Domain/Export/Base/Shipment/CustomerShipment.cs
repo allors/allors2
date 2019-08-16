@@ -155,7 +155,7 @@ namespace Allors.Domain
             foreach (ShipmentPackage shipmentPackage in this.ShipmentPackages)
             {
                 derivation.AddDependency(this, shipmentPackage);
-            }                
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -516,7 +516,7 @@ namespace Allors.Domain
 
                 if (pendingPickList != null)
                 {
-                    pendingPickList.OnDerive(x=>x.WithDerivation(derivation));
+                    pendingPickList.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
         }
@@ -565,7 +565,7 @@ namespace Allors.Domain
 
             return charges;
         }
-        
+
         public void BaseOnDeriveQuantityDecreased(ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
         {
             var remainingCorrection = correction;
@@ -692,14 +692,14 @@ namespace Allors.Domain
                     }
                 }
 
-                if ((this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Created) || 
+                if ((this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Created) ||
                     this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed)) &&
                     this.ShipToParty.ExistPickListsWhereShipToParty)
                 {
                     var isPicked = true;
                     foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
                     {
-                        if (this.Store.Equals(pickList.Store) && 
+                        if (this.Store.Equals(pickList.Store) &&
                             !pickList.IsNegativePickList &&
                             !pickList.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                         {
@@ -738,12 +738,12 @@ namespace Allors.Domain
                     || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed))
                 {
                     if (this.ShipmentValue < this.Store.ShipmentThreshold && !this.ReleasedManually)
-                    {                      
+                    {
                         this.PutOnHold();
                     }
                 }
 
-                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).OnHold) && 
+                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).OnHold) &&
                     !this.HeldManually &&
                     ((this.ShipmentValue >= this.Store.ShipmentThreshold) || this.ReleasedManually))
                 {

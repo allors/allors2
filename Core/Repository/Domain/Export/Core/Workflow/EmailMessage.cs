@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ab20998b-62b1-4064-a7b9-cc9416edf77a")]
     #endregion
-    public partial class EmailMessage : Object 
+    public partial class EmailMessage : Object
     {
         #region inherited properties
         #endregion
@@ -67,7 +67,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         public User Sender { get; set; }
-        
+
         #region Allors
         [Id("d115bcfb-55e5-4ed8-8a21-f8e4dd5f903d")]
         [AssociationId("55c3f9b5-1a80-419d-93cc-6c19925e350e")]
@@ -110,20 +110,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

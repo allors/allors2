@@ -123,7 +123,7 @@ namespace Tests
 
             this.Session = database.CreateSession();
         }
-        
+
         public ServiceProvider ServiceProvider { get; set; }
 
         public ILogger Logger { get; set; }

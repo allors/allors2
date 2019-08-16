@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b5d151c7-0b18-4280-80d1-77b46162dba8")]
     #endregion
-    public partial class OperatingBudget : Budget, Versioned 
+    public partial class OperatingBudget : Budget, Versioned
     {
         #region inherited properties
 
@@ -82,24 +82,24 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
+        public void Reopen() { }
         #endregion
     }
 }

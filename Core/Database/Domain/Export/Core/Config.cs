@@ -25,7 +25,7 @@ namespace Allors
     public partial class Config
     {
         public DirectoryInfo DataPath { get; set; }
-        
+
         public bool SetupSecurity { get; set; } = true;
 
         public bool Demo { get; set; } = false;

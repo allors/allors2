@@ -34,7 +34,7 @@ namespace Allors.Adapters.Memory
         {
             this.profile.Dispose();
         }
-        
+
         protected override ISession CreateSession()
         {
             return this.profile.CreateSession();

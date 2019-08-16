@@ -41,7 +41,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new CarrierBuilder(this.Session).WithName("GLS").WithUniqueId(GlsId).Build();
             new CarrierBuilder(this.Session).WithName("UPS").WithUniqueId(UpsId).Build();

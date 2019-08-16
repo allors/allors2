@@ -109,7 +109,7 @@ namespace Allors.Domain
 
             builder.WithBillToCustomer(customer);
             builder.Build();
-            
+
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
@@ -132,7 +132,7 @@ namespace Allors.Domain
         {
             var customer = new OrganisationBuilder(this.Session)
                 .WithName("customer")
-                
+
                 .Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -348,7 +348,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
-                
+
                 .WithFromDate(this.Session.Now())
                 .Build();
 
@@ -365,8 +365,8 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee).WithAssignedUnitPrice(1).Build())
                 .Build();
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             Assert.Contains(salesrep, invoice.SalesReps);
         }
 
@@ -430,7 +430,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
-            this.Session.Derive(); 
+            this.Session.Derive();
 
             Assert.Equal(billingAddress.ContactMechanism, invoice.BillToContactMechanism);
         }
@@ -794,8 +794,8 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             Assert.Single(invoice.Customers);
             Assert.Equal(customer, invoice.Customers.First);
         }
@@ -820,8 +820,8 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.ShipToCustomer).Build();
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             Assert.Equal(2, invoice.Customers.Count);
             Assert.Contains(billToCustomer, invoice.Customers);
             Assert.Contains(shipToCustomer, invoice.Customers);
@@ -1082,7 +1082,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenBillngForOrderItemsConfirmedAndConfirmed_ThenInvoiceIsCreated()
         {
             var store = this.Session.Extent<Store>().First;
-            store.IsAutomaticallyShipped= true;
+            store.IsAutomaticallyShipped = true;
             store.IsImmediatelyPicked = true;
             store.BillingProcess = new BillingProcesses(this.Session).BillingForOrderItems;
 

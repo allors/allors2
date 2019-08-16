@@ -42,7 +42,7 @@ namespace Allors.Domain
         {
             if (!this.ExistPurchaseInvoiceItemState)
             {
-                this.PurchaseInvoiceItemState= new PurchaseInvoiceItemStates(this.Strategy.Session).Received;
+                this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Received;
             }
 
             if (this.ExistPart && !this.ExistInvoiceItemType)
@@ -74,8 +74,8 @@ namespace Allors.Domain
 
             if (this.ExistAssignedUnitPrice)
             {
-                this.UnitBasePrice = this.AssignedUnitPrice??  0;
-                this.UnitPrice = this.AssignedUnitPrice?? 0;
+                this.UnitBasePrice = this.AssignedUnitPrice ?? 0;
+                this.UnitPrice = this.AssignedUnitPrice ?? 0;
 
                 var discountAdjustment = this.GetDiscountAdjustment();
 

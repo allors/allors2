@@ -15,7 +15,7 @@ namespace Components
         }
 
         public override By Selector { get; }
-        
+
         public DateTime? Value
         {
             get

@@ -31,7 +31,7 @@ namespace Allors.Domain
             var country = new Countries(this.Session).CountryByIsoCode["BE"];
 
             new PostalAddressBuilder(this.Session).Build();
- 
+
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             new PostalAddressBuilder(this.Session).WithAddress1("address1").WithPostalAddressBoundary(country).Build();
 
-            Assert.False(this.Session.Derive(false).HasErrors);        
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
     }
 }

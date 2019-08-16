@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("F54CE592-6935-401C-B341-198FD2E7888D")]
     #endregion
-    public partial class ShipmentItemBilling : Object 
+    public partial class ShipmentItemBilling : Object
     {
         #region inherited properties
         #endregion
@@ -52,20 +52,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

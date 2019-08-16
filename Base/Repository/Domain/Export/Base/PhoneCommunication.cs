@@ -101,7 +101,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public TelecommunicationsNumber PhoneNumber { get; set; }
-        
+
         #region Versioning
         #region Allors
         [Id("89C3C1EC-F87F-4417-A0B3-0699FAF0BA53")]
@@ -127,31 +127,31 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
-        public void Close(){}
+        public void Close() { }
 
-        public void Reopen(){}
-
-
+        public void Reopen() { }
 
 
-        public void Delete(){}
+
+
+        public void Delete() { }
 
 
         #endregion

@@ -35,18 +35,18 @@ namespace Allors.Data
         public IRoleType RoleType { get; set; }
 
         public object Value { get; set; }
-       
+
         public string Parameter { get; set; }
 
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.GreaterThan,
-                           RoleType = this.RoleType?.Id,
-                           Value = DataConvert.ToString(this.Value),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.GreaterThan,
+                RoleType = this.RoleType?.Id,
+                Value = DataConvert.ToString(this.Value),
+                Parameter = this.Parameter
+            };
         }
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)

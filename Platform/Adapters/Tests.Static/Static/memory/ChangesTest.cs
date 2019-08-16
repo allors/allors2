@@ -22,7 +22,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
     using Adapters;
-    
+
     public class ChangesTest : Adapters.ChangesTest, IDisposable
     {
         private readonly Profile profile = new Profile();

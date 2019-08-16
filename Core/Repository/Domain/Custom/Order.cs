@@ -129,7 +129,7 @@ namespace Allors.Repository
         [RoleId("cf1629aa-2aa0-4dc3-9873-fbf3008352ac")]
         #endregion
         public decimal Amount { get; set; }
-        
+
         #region Allors
         [Id("B8F02B30-51A3-44CD-85A3-1E1E13DBC0A4")]
         [AssociationId("17D327FA-FFF5-40FC-AD7C-E2A57ACA7878")]
@@ -180,20 +180,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

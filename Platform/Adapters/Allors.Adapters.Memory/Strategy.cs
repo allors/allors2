@@ -46,7 +46,7 @@ namespace Allors.Adapters.Memory
         private Dictionary<IRoleType, HashSet<Strategy>> rollbackCompositesRoleByRoleType;
         private Dictionary<IAssociationType, Strategy> rollbackCompositeAssociationByAssociationType;
         private Dictionary<IAssociationType, HashSet<Strategy>> rollbackCompositesAssociationByAssociationType;
-        
+
         // TODO: move to a BitFlag
         private bool isDeleted;
         private bool isDeletedOnRollback;
@@ -564,7 +564,7 @@ namespace Allors.Adapters.Memory
                     ++this.version;
                 }
             }
-            
+
             this.rollbackUnitRoleByRoleType = null;
             this.rollbackCompositeRoleByRoleType = null;
             this.rollbackCompositesRoleByRoleType = null;
@@ -1003,7 +1003,7 @@ namespace Allors.Adapters.Memory
             if (previousRole != null)
             {
                 this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole.Id, null);
-                
+
                 var previousRoleStrategy = this.session.GetStrategy(previousRole);
                 var associationType = roleType.AssociationType;
                 previousRoleStrategy.Backup(associationType);

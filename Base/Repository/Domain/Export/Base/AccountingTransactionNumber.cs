@@ -20,14 +20,14 @@ namespace Allors.Repository
         [RoleId("e2178198-6bbd-4caa-9402-40137b2bd529")]
         #endregion
         public int Number { get; set; }
-        
+
         #region Allors
         [Id("e01605b0-ba04-4775-ad15-cac1281cec9e")]
         [AssociationId("75523554-b713-433b-8916-c70278649b52")]
         [RoleId("dcaeed3f-1bbe-40a0-aacc-9c26db3f984f")]
         #endregion
         public int Year { get; set; }
-        
+
         #region Allors
         [Id("f3bcec3b-b08e-4eab-812e-bb5b31fe6a4d")]
         [AssociationId("e447318b-ab6a-4259-8fb0-fb0ae81b15f7")]
@@ -36,24 +36,24 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public AccountingTransactionType AccountingTransactionType { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

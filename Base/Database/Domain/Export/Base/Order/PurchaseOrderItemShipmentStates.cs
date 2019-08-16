@@ -24,7 +24,7 @@ namespace Allors.Domain
         internal static readonly Guid ReceivedId = new Guid("AD66619F-BB48-42AF-B019-3E4028AD7B6B");
 
         private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> stateCache;
-        
+
         public PurchaseOrderItemShipmentState NotReceived => this.StateCache[NotReceivedId];
 
         public PurchaseOrderItemShipmentState PartiallyReceived => this.StateCache[PartiallyReceivedId];
@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             new PurchaseOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(NotReceivedId)

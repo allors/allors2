@@ -51,7 +51,7 @@ namespace Allors.Meta
             this.actions = new List<Action<object, object>>();
 
             var interfaces = new List<Interface>(this.Class.Supertypes);
-            
+
             interfaces.Sort(
                 (a, b) =>
                 {

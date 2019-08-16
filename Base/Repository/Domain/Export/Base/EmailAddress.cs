@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f4b7ea51-eac4-479b-92e8-5109cfeceb77")]
     #endregion
-    public partial class EmailAddress : ElectronicAddress 
+    public partial class EmailAddress : ElectronicAddress
     {
         #region inherited properties
         public string ElectronicAddressString { get; set; }
@@ -35,22 +35,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
 
     }

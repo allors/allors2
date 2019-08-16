@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a53f1aed-0e3f-4c3c-9600-dc579cccf893")]
     #endregion
-    public partial class SecurityToken : Deletable 
+    public partial class SecurityToken : Deletable
     {
         #region inherited properties
         #endregion
@@ -46,22 +46,22 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

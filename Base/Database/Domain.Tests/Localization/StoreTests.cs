@@ -27,7 +27,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class StoreTests : DomainTest
     {
         [Fact]
@@ -59,7 +59,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithSalesInvoiceCounter( new CounterBuilder(this.Session).Build() ).Build();
+            builder.WithSalesInvoiceCounter(new CounterBuilder(this.Session).Build()).Build();
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

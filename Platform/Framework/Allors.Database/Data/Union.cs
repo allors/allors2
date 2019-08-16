@@ -58,10 +58,10 @@ namespace Allors.Data
         public Extent Save()
         {
             return new Extent
-                       {
-                           Kind = ExtentKind.Union,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                           Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            {
+                Kind = ExtentKind.Union,
+                Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
         }
     }

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("d402d086-0d7a-4e98-bcb1-8f8e1cfabb99")]
     #endregion
-    public partial class EmploymentAgreement : Agreement 
+    public partial class EmploymentAgreement : Agreement
     {
         #region inherited properties
         public DateTime AgreementDate { get; set; }
@@ -40,20 +40,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

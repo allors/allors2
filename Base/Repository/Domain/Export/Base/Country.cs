@@ -25,7 +25,7 @@ namespace Allors.Repository
 
     using Attributes;
 
-    public partial class Country : GeographicBoundary, CityBound 
+    public partial class Country : GeographicBoundary, CityBound
     {
         #region inherited properties
 
@@ -58,7 +58,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public int IbanLength { get; set; }
-        
+
         #region Allors
         [Id("6553ee71-66dd-45f2-9de9-5656b011d2fc")]
         [AssociationId("0a5662c3-1f60-41d5-a703-638480cb3c15")]
@@ -66,7 +66,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public bool EuMemberState { get; set; }
-        
+
         #region Allors
         [Id("7f0adb03-db73-44f2-a4a2-ece00f4908a2")]
         [AssociationId("081e6909-c744-4795-b587-82bbf938b5fe")]
@@ -75,7 +75,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string TelephoneCode { get; set; }
-        
+
         #region Allors
         [Id("a2aa65d7-e0ef-4f6f-a194-9aeb49a1d898")]
         [AssociationId("86d7d9a6-77fd-491b-b563-86b8d0c76ee4")]
@@ -84,7 +84,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string IbanRegex { get; set; }
-        
+
         #region Allors
         [Id("b829da1c-2eb7-495b-a4a9-98e335cd87f9")]
         [AssociationId("a0377434-67ae-4ab4-90b3-99fb6bc2bf90")]
@@ -94,7 +94,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public VatForm VatForm { get; set; }
-        
+
         #region Allors
         [Id("c231ce68-bf03-4122-8699-c3c6473ab90a")]
         [AssociationId("153203db-be9a-4722-aab3-7163de779a2a")]
@@ -103,7 +103,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string UriExtension { get; set; }
-        
+
         #region inherited methods
 
         #endregion

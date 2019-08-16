@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6c28f40a-1826-4110-83c8-7eaefc797f1a")]
     #endregion
-    public partial class SalesRepRelationship : Commentable, PartyRelationship 
+    public partial class SalesRepRelationship : Commentable, PartyRelationship
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -85,22 +85,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

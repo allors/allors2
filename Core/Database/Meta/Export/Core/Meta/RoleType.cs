@@ -233,7 +233,7 @@ namespace Allors.Meta
                 this.MetaPopulation.Stale();
             }
         }
-        
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>

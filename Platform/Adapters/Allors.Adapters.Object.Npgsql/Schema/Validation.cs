@@ -21,7 +21,7 @@ namespace Allors.Adapters.Object.Npgsql
             this.Database = database;
             this.mapping = database.Mapping;
             this.Schema = new Schema(database);
-            
+
             this.MissingTableNames = new HashSet<string>();
             this.InvalidTables = new HashSet<SchemaTable>();
 
@@ -33,8 +33,8 @@ namespace Allors.Adapters.Object.Npgsql
 
             this.Validate();
 
-            this.IsValid = 
-                this.MissingTableNames.Count == 0 & 
+            this.IsValid =
+                this.MissingTableNames.Count == 0 &
                 this.InvalidTables.Count == 0 &
                 this.MissingTableTypeNames.Count == 0 &
                 this.InvalidTableTypes.Count == 0 &
@@ -48,7 +48,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public Schema Schema { get; }
 
-        public string Message 
+        public string Message
         {
             get
             {
@@ -131,7 +131,7 @@ namespace Allors.Adapters.Object.Npgsql
                 this.ValidateColumn(objectsTable, Mapping.ColumnNameForClass, Mapping.SqlTypeForClass);
                 this.ValidateColumn(objectsTable, Mapping.ColumnNameForVersion, Mapping.SqlTypeForVersion);
             }
-            
+
             // Object Tables
             foreach (var @class in this.Database.MetaPopulation.Classes)
             {
@@ -193,7 +193,7 @@ namespace Allors.Adapters.Object.Npgsql
                 var associationType = relationType.AssociationType;
                 var roleType = relationType.RoleType;
 
-                if (!roleType.ObjectType.IsUnit && 
+                if (!roleType.ObjectType.IsUnit &&
                     ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
                 {
                     var tableName = this.mapping.TableNameForRelationByRelationType[relationType];
@@ -217,7 +217,7 @@ namespace Allors.Adapters.Object.Npgsql
                     }
                 }
             }
-            
+
             // Procedures Tables
             foreach (var dictionaryEntry in this.mapping.ProcedureDefinitionByName)
             {
@@ -241,7 +241,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // TODO: Primary Keys and Indeces
         }
-        
+
         private void ValidateColumn(SchemaTable table, string columnName, string sqlType)
         {
             var objectColumn = table.GetColumn(columnName);

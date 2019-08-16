@@ -78,10 +78,10 @@ namespace Allors
                 .ToArray();
 
             var extensionMethods = (from type in this.Assembly.ExportedTypes
-                where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
-                from method in type.GetTypeInfo().DeclaredMethods
-                where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
-                select method).ToArray();
+                                    where type.GetTypeInfo().IsSealed && !type.GetTypeInfo().IsGenericType && !type.IsNested
+                                    from method in type.GetTypeInfo().DeclaredMethods
+                                    where method.IsStatic && method.IsDefined(typeof(ExtensionAttribute), false)
+                                    select method).ToArray();
 
 
             this.MetaPopulation = metaPopulation;
@@ -94,7 +94,7 @@ namespace Allors
             }
 
             metaPopulation.Bind(types, extensionMethods);
-            
+
             this.typeByObjectType = new Dictionary<IObjectType, Type>();
             this.objectTypeByType = new Dictionary<Type, IObjectType>();
             this.objectTypeByObjectTypeId = new Dictionary<Guid, IObjectType>();

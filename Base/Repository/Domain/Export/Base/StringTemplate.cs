@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0c50c02a-cc9c-4617-8530-15a24d4ac969")]
     #endregion
-    public partial class StringTemplate : UniquelyIdentifiable, Localised 
+    public partial class StringTemplate : UniquelyIdentifiable, Localised
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -39,20 +39,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

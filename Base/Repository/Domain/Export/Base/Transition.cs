@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("a7e490c0-ce29-4298-97c4-519904bb755a")]
     #endregion
-    public partial class Transition : Object 
+    public partial class Transition : Object
     {
         #region inherited properties
         #endregion
@@ -36,20 +36,20 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

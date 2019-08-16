@@ -29,7 +29,7 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         #endregion
-        
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -38,7 +38,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

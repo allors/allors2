@@ -33,10 +33,10 @@ namespace Allors.Adapters
 
     public enum Zero2Four
     {
-        Zero = 0, 
-        One = 1, 
-        Two = 2, 
-        Three = 3, 
+        Zero = 0,
+        One = 1,
+        Two = 2,
+        Three = 3,
         Four = 4
     }
 
@@ -3426,7 +3426,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
-                
+
                 // Different Classes
                 firstExtent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 secondExtent = this.Session.Extent(MetaC2.Instance.ObjectType);
@@ -7167,7 +7167,7 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public void NotRoleOne2ManyContains()
         {
@@ -8866,7 +8866,7 @@ namespace Allors.Adapters
         [Fact]
         public void OrContainedIn()
         {
-           foreach (var init in this.Inits)
+            foreach (var init in this.Inits)
             {
                 init();
                 this.Populate();
@@ -9420,7 +9420,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
-                
+
                 // Super Interface
 
                 // Greater Than 0
@@ -9877,7 +9877,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
-                
+
                 // Less Than 2
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsInteger, 2);
@@ -10064,7 +10064,7 @@ namespace Allors.Adapters
                 // Greater Than 1
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 1);
-                
+
                 Assert.Equal(2, extent.Count);
                 this.AssertC1(extent, false, false, true, true);
                 this.AssertC2(extent, false, false, false, false);
@@ -13714,7 +13714,7 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
-                this.AssertC4(extent, false, false, false, false); 
+                this.AssertC4(extent, false, false, false, false);
 
                 // Equal 1
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
@@ -13724,8 +13724,8 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, true, false, false);
                 this.AssertC3(extent, false, true, false, false);
-                this.AssertC4(extent, false, true, false, false); 
-                
+                this.AssertC4(extent, false, true, false, false);
+
                 // Equal 2
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsDecimal, 2);
@@ -13734,7 +13734,7 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, false, true, true);
                 this.AssertC2(extent, false, false, true, true);
                 this.AssertC3(extent, false, false, true, true);
-                this.AssertC4(extent, false, false, true, true); 
+                this.AssertC4(extent, false, false, true, true);
 
                 // Class - Wrong RelationType
                 // Equal 0
@@ -14473,7 +14473,7 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, false, true, true);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
-                this.AssertC4(extent, false, false, false, false); 
+                this.AssertC4(extent, false, false, false, false);
 
                 // Interface
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
@@ -14493,7 +14493,7 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, true, true, true);
                 this.AssertC2(extent, false, true, true, true);
                 this.AssertC3(extent, false, true, true, true);
-                this.AssertC4(extent, false, false, false, false); 
+                this.AssertC4(extent, false, false, false, false);
 
                 // TODO: wrong relation
             }
@@ -14856,7 +14856,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, true, false);
                 this.AssertC3(extent, false, false, false, false);
                 this.AssertC4(extent, false, false, false, false);
-               
+
                 // Super Interface
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddExists(MetaS1234.Instance.S1234C2one2manies);
@@ -14866,7 +14866,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, true, false);
                 this.AssertC4(extent, false, false, false, false);
- 
+
                 // Class - Wrong RelationType
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
 
@@ -15440,7 +15440,7 @@ namespace Allors.Adapters
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, true, true);
                 this.AssertC4(extent, false, false, false, false);
- 
+
                 // Interface
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddExists(MetaI12.Instance.I12C2one2one);
@@ -16037,7 +16037,7 @@ namespace Allors.Adapters
                 Assert.True(exception);
             }
         }
-        
+
         [Fact]
         public void RoleStringExist()
         {
@@ -16265,7 +16265,7 @@ namespace Allors.Adapters
                 this.AssertC1(extent, false, false, true, true);
                 this.AssertC2(extent, false, false, true, true);
                 this.AssertC3(extent, false, false, true, true);
-                this.AssertC4(extent, false, false, true, true); 
+                this.AssertC4(extent, false, false, true, true);
 
                 // Class - Wrong RelationType
 
@@ -17143,12 +17143,12 @@ namespace Allors.Adapters
             this.c1B = population.C1B;
             this.c1C = population.C1C;
             this.c1D = population.C1D;
-            
+
             this.c2A = population.C2A;
             this.c2B = population.C2B;
             this.c2C = population.C2C;
             this.c2D = population.C2D;
-            
+
             this.c3A = population.C3A;
             this.c3B = population.C3B;
             this.c3C = population.C3C;

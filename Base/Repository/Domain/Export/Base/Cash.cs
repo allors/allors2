@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("87fbf592-45a1-4ef2-85ca-f47d4c51abca")]
     #endregion
-    public partial class Cash : PaymentMethod 
+    public partial class Cash : PaymentMethod
     {
         #region inherited properties
 
@@ -49,20 +49,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

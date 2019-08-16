@@ -23,7 +23,7 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
+
     public class AgreementTermTest : DomainTest
     {
         [Fact]
@@ -60,7 +60,7 @@ namespace Allors.Domain
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
-            
+
             builder.WithDescription("Incentive");
             incentive = builder.Build();
 

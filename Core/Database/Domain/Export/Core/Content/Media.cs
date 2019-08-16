@@ -28,7 +28,7 @@ namespace Allors.Domain
     public partial class Media
     {
         public string TypeExtension => this.Type?.Split('/').LastOrDefault();
-        
+
         public void CoreOnDerive(ObjectOnDerive method)
         {
             this.Revision = Guid.NewGuid();

@@ -24,7 +24,7 @@ namespace Allors.Domain.Print.WorkTaskModel
         public WorkTaskModel(WorkTask workTask)
         {
             this.Number = workTask.WorkEffortNumber;
-            this.Name= workTask.Name;
+            this.Name = workTask.Name;
             this.Description = workTask.Description;
             this.WorkDone = workTask.WorkDone;
 
@@ -71,8 +71,8 @@ namespace Allors.Domain.Print.WorkTaskModel
         }
 
         public string Number { get; }
-        public string Name{ get; }
-        public string Description{ get; }
+        public string Name { get; }
+        public string Description { get; }
         public string WorkDone { get; }
         public string Purpose { get; }
         public string Date { get; }
@@ -81,10 +81,10 @@ namespace Allors.Domain.Print.WorkTaskModel
         public string ContactTelephone { get; }
         public string PaymentTerms { get; }
         public string Facility { get; }
-        public decimal TotalLabour{ get; }
-        public decimal TotalParts{ get; }
+        public decimal TotalLabour { get; }
+        public decimal TotalParts { get; }
         public decimal TotalOther { get; }
-        public decimal Total{ get; }
+        public decimal Total { get; }
         public string SalesRep { get; }
     }
 }

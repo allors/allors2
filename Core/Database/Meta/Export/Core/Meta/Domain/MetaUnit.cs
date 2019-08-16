@@ -21,7 +21,7 @@
 
 namespace Allors.Meta
 {
-    public abstract partial class MetaUnit 
+    public abstract partial class MetaUnit
     {
         public abstract Unit Unit { get; }
 

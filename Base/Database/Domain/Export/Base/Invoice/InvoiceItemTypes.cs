@@ -68,7 +68,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -78,56 +78,56 @@ namespace Allors.Domain
                 .WithUniqueId(FeeId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Discount")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Korting").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DiscountId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Interest Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InterestChargeId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Miscellaneous Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MiscChargeId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Promotion")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoopbevordering ").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PromotionId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Shipping & Handling")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bezorgkosten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingAndHandlingId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Surcharge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SurchargeId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Warranty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Garantie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarrantyId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Product Feature")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product onderdeel").WithLocale(dutchLocale).Build())
@@ -148,7 +148,7 @@ namespace Allors.Domain
                 .WithUniqueId(ProductItemId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Time")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tijd").WithLocale(dutchLocale).Build())

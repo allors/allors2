@@ -53,7 +53,7 @@ namespace Allors.Domain
                 return this.value(source);
             }
 
-            var localisedValue  = this.localisedValues(source).FirstOrDefault(v => v.Locale.Equals(this.locale));
+            var localisedValue = this.localisedValues(source).FirstOrDefault(v => v.Locale.Equals(this.locale));
             return localisedValue != null ? localisedValue.Text : this.value(source);
         }
     }

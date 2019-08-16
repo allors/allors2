@@ -22,7 +22,7 @@ namespace Allors.Domain
 {
     using Allors;
 
-    public partial class C3 
+    public partial class C3
     {
         public static C3 Create(ISession session)
         {

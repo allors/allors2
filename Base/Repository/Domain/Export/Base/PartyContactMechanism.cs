@@ -2,12 +2,12 @@ namespace Allors.Repository
 {
     using System;
     using Attributes;
-    
+
     //TODO: Rename to ContactMechanism
     #region Allors
     [Id("ca633037-ba1e-4304-9f2c-3353c287474b")]
     #endregion
-    public partial class PartyContactMechanism : Commentable, Auditable, Period, Deletable 
+    public partial class PartyContactMechanism : Commentable, Auditable, Period, Deletable
     {
         #region inherited properties
         public string Comment { get; set; }
@@ -73,22 +73,22 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

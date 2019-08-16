@@ -65,8 +65,8 @@ namespace Allors.Domain
 
         private object CreateSubject()
         {
-            return this.TemplateType.IsOpenDocumentTemplate ? 
-                       new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments) : 
+            return this.TemplateType.IsOpenDocumentTemplate ?
+                       new OpenDocumentTemplate(this.Media.MediaContent.Data, this.Arguments) :
                        null;
         }
     }

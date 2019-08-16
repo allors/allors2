@@ -315,7 +315,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Workspace]
-        public PurchaseOrder PurchaseOrder{ get; set; }
+        public PurchaseOrder PurchaseOrder { get; set; }
 
         #region Allors
         [Id("56FBFE00-2480-476C-86C0-140D419C33DE")]
@@ -356,23 +356,23 @@ namespace Allors.Repository
         [RoleId("FCC0A100-7E70-4A5C-B763-EEC6916F189B")]
         #endregion
         [Workspace]
-        public DateTime ExpectedReturnDate{ get; set; }
+        public DateTime ExpectedReturnDate { get; set; }
 
         #region inherited methods
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
         #endregion

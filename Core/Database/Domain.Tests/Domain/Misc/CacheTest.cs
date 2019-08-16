@@ -25,7 +25,7 @@ namespace Tests
     using Xunit;
 
     using global::Allors.Domain;
-    
+
     public class CacheTest : DomainTest
     {
         [Fact]

@@ -34,7 +34,7 @@ namespace Tests.CommunicationEventTests
 
             Assert.Equal("meeting", cell.Element.Text);
         }
-        
+
         [Fact]
         public void Create()
         {

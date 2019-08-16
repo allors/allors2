@@ -23,7 +23,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
         public Model(PurchaseInvoice invoice)
         {
             this.Invoice = new InvoiceModel(invoice);
-            
+
             this.BilledTo = new BilledToModel((Organisation)invoice.BilledTo);
             this.BilledFrom = new BilledFromModel(invoice);
             this.ShipTo = new ShipToModel(invoice);

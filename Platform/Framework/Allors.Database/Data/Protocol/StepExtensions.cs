@@ -22,16 +22,16 @@ namespace Allors.Protocol.Data
 {
     using Allors.Meta;
 
-    public static class StepExtensions 
+    public static class StepExtensions
     {
         public static Allors.Data.Step Load(this Step @this, ISession session)
         {
             return new Allors.Data.Step
-                       {
-                           PropertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null,
-                           Next = @this.Next?.Load(session),
-                           Include = @this.Include?.Load(session)
-                       };
+            {
+                PropertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null,
+                Next = @this.Next?.Load(session),
+                Include = @this.Include?.Load(session)
+            };
         }
     }
 }

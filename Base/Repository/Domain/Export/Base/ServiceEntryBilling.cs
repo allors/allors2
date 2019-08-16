@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("2be4075a-c7e3-4a38-a045-7910f85b3e46")]
     #endregion
-    public partial class ServiceEntryBilling : Object 
+    public partial class ServiceEntryBilling : Object
     {
         #region inherited properties
         #endregion
@@ -19,7 +19,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public ServiceEntry ServiceEntry { get; set; }
-        
+
         #region Allors
         [Id("a8c707fb-98c1-43b1-99a3-9464cb25ea5f")]
         [AssociationId("284bf54c-8305-4892-ad00-f4975e155522")]
@@ -29,25 +29,25 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public InvoiceItem InvoiceItem { get; set; }
-        
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

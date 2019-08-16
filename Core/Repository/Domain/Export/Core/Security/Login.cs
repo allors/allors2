@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("ad7277a8-eda4-4128-a990-b47fe43d120a")]
     #endregion
-    public partial class Login : Deletable 
+    public partial class Login : Deletable
     {
         #region inherited properties
         #endregion
@@ -48,7 +48,7 @@ namespace Allors.Repository
         [Indexed]
         [Size(256)]
         public string Provider { get; set; }
-        
+
         #region Allors
         [Id("c2d950ad-39d3-40f1-8817-11a026e9890b")]
         [AssociationId("e8091111-9f92-41a9-b4b1-4e8f277ea575")]
@@ -57,29 +57,29 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public User User { get; set; }
-        
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
-        public void Delete(){}
+        public void Delete() { }
         #endregion
     }
 }

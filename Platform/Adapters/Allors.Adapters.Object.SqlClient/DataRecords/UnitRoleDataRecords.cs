@@ -34,7 +34,7 @@ namespace Allors.Adapters.Object.SqlClient
         private readonly Database database;
         private readonly IRoleType roleType;
         private readonly IEnumerable<UnitRelation> relations;
- 
+
         internal UnitRoleDataRecords(Database database, IRoleType roleType, IEnumerable<UnitRelation> relations)
         {
             this.database = database;

@@ -20,7 +20,7 @@
 
 namespace Allors.Domain
 {
-    public partial interface IGT32Composite     
+    public partial interface IGT32Composite
     {
     }
 }

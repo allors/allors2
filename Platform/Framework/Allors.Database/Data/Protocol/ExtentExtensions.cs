@@ -26,7 +26,7 @@ namespace Allors.Protocol.Data
     using Allors.Data;
     using Allors.Meta;
 
-    public static class ExtentExtensions 
+    public static class ExtentExtensions
     {
         /// <summary>
         /// Loads an <see cref="Allors.Extent"/> based on this <see cref="Extent"/>.
@@ -54,9 +54,9 @@ namespace Allors.Protocol.Data
 
                     var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(@this.ObjectType.Value);
                     extent = new Filter(objectType)
-                                 {
-                                     Predicate = @this.Predicate?.Load(session)
-                                 };
+                    {
+                        Predicate = @this.Predicate?.Load(session)
+                    };
 
                     break;
 

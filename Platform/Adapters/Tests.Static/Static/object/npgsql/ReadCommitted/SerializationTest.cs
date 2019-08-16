@@ -33,7 +33,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
         {
             this.profile = new Profile(fixture.Server);
         }
-        
+
         protected override IProfile Profile => this.profile;
 
         public override void Dispose()

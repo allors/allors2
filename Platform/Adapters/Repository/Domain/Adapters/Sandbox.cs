@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("73970b0f-1ff4-4d39-aad8-fdbfbaae472f")]
     #endregion
-    public partial class Sandbox :  System.Object 
+    public partial class Sandbox : System.Object
     {
         #region inherited properties
         #endregion
@@ -18,7 +18,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         #endregion
         public Sandbox[] InvisibleManies { get; set; }
-        
+
         #region Allors
         [Id("122b0376-8d1a-4d46-b8a0-9f4ea94c9e96")]
         [AssociationId("0d1e81f3-9025-42f3-b7a6-e2da3268667c")]
@@ -26,7 +26,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         public Sandbox InvisibleOne { get; set; }
-        
+
         #region Allors
         [Id("5eec5096-d8ba-424e-988f-b50828fc7b51")]
         [AssociationId("3db5ada7-52b4-47fa-bf55-d7641b1e9202")]
@@ -41,7 +41,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string Test { get; set; }
-        
+
         #region Allors
         [Id("a0dac9fc-2d19-429b-a522-46425a01ab78")]
         [AssociationId("62ea1fd2-c269-4145-8bfa-d4edffc7c17d")]

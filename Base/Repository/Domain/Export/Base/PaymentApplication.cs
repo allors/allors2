@@ -44,7 +44,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Invoice Invoice { get; set; }
-        
+
         #region Allors
         [Id("deb07a2f-6344-4888-bd1a-97413e82700a")]
         [AssociationId("1c722ac2-b579-4707-8e27-0b0a23510293")]
@@ -54,24 +54,24 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public BillingAccount BillingAccount { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
         public void Delete() { }
 
         #endregion

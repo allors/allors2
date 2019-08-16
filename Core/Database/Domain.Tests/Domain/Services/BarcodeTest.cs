@@ -27,7 +27,7 @@ namespace Tests
     using Microsoft.Extensions.DependencyInjection;
 
     using Xunit;
-    
+
     public class BarcodeTest : DomainTest
     {
         [Fact]

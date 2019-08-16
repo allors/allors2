@@ -35,7 +35,7 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
-        
+
         #region Allors
         [Id("62009cef-7424-4ec0-8953-e92b3cd6639d")]
         [AssociationId("323173ee-385c-4f74-8b78-ff05735460f8")]
@@ -68,7 +68,7 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public string Name { get; set; }
-        
+
         #region Allors
         [Id("8236a702-a76d-4bb5-9afd-acacb1508261")]
         [AssociationId("9b682612-50f9-43f3-abde-4d0cb5156f0d")]
@@ -78,24 +78,24 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
-        
+
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

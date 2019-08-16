@@ -48,7 +48,7 @@ namespace Allors.Adapters.Object.SqlClient
                 sqlDataRecord.SetInt64(0, objectId);
                 yield return sqlDataRecord;
             }
-    }
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {

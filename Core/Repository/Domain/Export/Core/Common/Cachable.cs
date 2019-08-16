@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("B17AFC19-9E91-4631-B6D8-43B32A65E0A0")]
     #endregion
-    public partial interface Cachable : Object 
+    public partial interface Cachable : Object
     {
         #region Allors
         [Id("EF6F1F4C-5B62-49DC-9D05-0F02973ACCB3")]

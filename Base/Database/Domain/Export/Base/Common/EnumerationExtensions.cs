@@ -25,5 +25,5 @@ namespace Allors.Domain
                 @this.IsActive = true;
             }
         }
-   }
+    }
 }

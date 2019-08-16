@@ -73,7 +73,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.Parties = new Party[] { this.Employee, this.Employer};
+            this.Parties = new Party[] { this.Employee, this.Employer };
         }
     }
 }

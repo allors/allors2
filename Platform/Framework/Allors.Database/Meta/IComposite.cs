@@ -32,7 +32,7 @@ namespace Allors.Meta
         IEnumerable<IInterface> DirectSupertypes { get; }
 
         IEnumerable<IInterface> Supertypes { get; }
-       
+
         bool ExistSupertype(IInterface @interface);
 
         bool ExistAssociationType(IAssociationType association);
@@ -40,7 +40,7 @@ namespace Allors.Meta
         bool ExistRoleType(IRoleType roleType);
 
         bool IsAssignableFrom(IComposite objectType);
-        
+
         bool ExistClass { get; }
 
         IEnumerable<IClass> Classes { get; }
@@ -49,7 +49,7 @@ namespace Allors.Meta
 
         IClass ExclusiveClass { get; }
 
-        bool IsSynced { get;}
+        bool IsSynced { get; }
 
         bool AssignedIsSynced { get; set; }
     }

@@ -22,7 +22,7 @@ namespace Allors.Data
 {
     using Allors.Meta;
 
-    public class Sort 
+    public class Sort
     {
         public Sort(IRoleType roleType = null)
         {
@@ -30,7 +30,7 @@ namespace Allors.Data
         }
 
         public IRoleType RoleType { get; set; }
-        
+
         public bool Descending { get; set; }
 
         public void Build(Allors.Extent extent)

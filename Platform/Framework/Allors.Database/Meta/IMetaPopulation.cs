@@ -30,7 +30,7 @@ namespace Allors.Meta
         IEnumerable<IUnit> Units { get; }
 
         IEnumerable<IComposite> Composites { get; }
-        
+
         IEnumerable<IClass> Classes { get; }
 
         IEnumerable<IInterface> Interfaces { get; }

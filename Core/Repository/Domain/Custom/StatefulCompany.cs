@@ -6,7 +6,7 @@ namespace Allors.Repository
     [Id("62859bfb-7949-4f7f-a428-658447576d0a")]
     #endregion
     [Plural("StatefulCompanies")]
-    public partial class StatefulCompany : Object 
+    public partial class StatefulCompany : Object
     {
         #region inherited properties
         #endregion
@@ -42,20 +42,20 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
     }

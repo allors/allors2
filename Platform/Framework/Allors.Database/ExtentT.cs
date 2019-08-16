@@ -50,7 +50,7 @@ namespace Allors
         {
             this.extent = extent;
         }
-        
+
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.
         /// </summary>
@@ -468,7 +468,7 @@ namespace Allors
         {
             return this.extent.ToArray(type);
         }
-        
+
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>

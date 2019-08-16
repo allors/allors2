@@ -51,7 +51,7 @@ namespace Allors.Server
             if (this.pushRequest.NewObjects != null && this.pushRequest.NewObjects.Length > 0)
             {
                 objectByNewId = this.pushRequest.NewObjects.ToDictionary(
-                    x => x.NI, 
+                    x => x.NI,
                     x =>
                         {
                             var cls = this.session.Database.MetaPopulation.FindClassByName(x.T);
@@ -112,7 +112,7 @@ namespace Allors.Server
                             countOutstandingRoles += this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId, true);
                         }
                     }
-                } 
+                }
                 while (countOutstandingRoles != previousCountOutstandingRoles);
 
                 if (countOutstandingRoles > 0)
@@ -140,7 +140,7 @@ namespace Allors.Server
             }
 
             var validation = this.session.Derive(false);
-            
+
             if (validation.HasErrors)
             {
                 pushResponse.AddDerivationErrors(validation);
@@ -173,7 +173,7 @@ namespace Allors.Server
             }
         }
 
-         private int PushRequestRoles(IList<PushRequestRole> pushRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId, bool ignore = false)
+        private int PushRequestRoles(IList<PushRequestRole> pushRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId, bool ignore = false)
         {
             var countOutstandingRoles = 0;
             foreach (var pushRequestRole in pushRequestRoles)
@@ -203,7 +203,7 @@ namespace Allors.Server
                             {
                                 role = Convert.ToInt32(role);
                             }
-                            
+
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else

@@ -23,7 +23,7 @@ namespace Allors.Repository
         #endregion
         [Size(-1)]
         public string ItemDescription { get; set; }
-        
+
         #region Allors
         [Id("2bbc4476-7a06-4c36-9985-68a60b72eacd")]
         [AssociationId("c8ca8009-f3e9-4154-a94a-9e60f6165f3a")]
@@ -93,20 +93,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

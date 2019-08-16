@@ -32,7 +32,7 @@ namespace Allors.Meta
         /// The list of errors.
         /// </summary>
         private readonly List<ValidationError> errors;
-        
+
         /// <summary>
         /// The set of all ids.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Allors.Meta
         {
             get { return this.Errors.Length > 0; }
         }
-        
+
         /// <summary>
         /// Gets the validation errors.
         /// </summary>
@@ -164,7 +164,7 @@ namespace Allors.Meta
         {
             return this.ids.Contains(id);
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the  name of the relation already exists.
         /// </summary>

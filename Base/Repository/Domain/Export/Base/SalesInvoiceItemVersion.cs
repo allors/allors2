@@ -26,7 +26,7 @@ namespace Allors.Repository
 
         public string Message { get; set; }
 
-        
+
 
         public decimal AmountPaid { get; set; }
 
@@ -46,7 +46,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        
+
 
         public VatRegime VatRegime { get; set; }
 
@@ -56,25 +56,25 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-        
+
 
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
 
-        
+
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-        
+
 
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
 
-        
+
 
         public decimal TotalDiscount { get; set; }
 
@@ -86,7 +86,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        
+
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -112,7 +112,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ProductFeature[] ProductFeatures { get; set; }
-       
+
         #region Allors
         [Id("D223A126-F816-4628-842D-469CBEBB9CB2")]
         [AssociationId("1CC67F90-460E-4FA9-A6ED-081F04F0D4DC")]
@@ -152,7 +152,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Person[] SalesReps { get; set; }
-       
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -161,7 +161,7 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-            
+
         }
 
         public void OnPreDerive() { }

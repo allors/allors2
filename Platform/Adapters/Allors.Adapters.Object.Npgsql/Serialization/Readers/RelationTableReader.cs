@@ -49,7 +49,7 @@ namespace Allors.Adapters.Object.Npgsql
                 }
             }
         }
-        
+
         public override int FieldCount => 2;
 
         public override bool Read()
@@ -66,7 +66,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         private static IEnumerator<KeyValuePair<long, object>> CreateEnumerator(Dictionary<long, object> roleByAssociationId)
         {
-            foreach(var pair in roleByAssociationId)
+            foreach (var pair in roleByAssociationId)
             {
                 var assciationId = pair.Key;
                 var role = pair.Value;

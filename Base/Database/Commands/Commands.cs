@@ -60,7 +60,7 @@ namespace Commands
             CultureInfo.CurrentCulture = new CultureInfo("en-GB");
             CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
         }
-        
+
         [Option("-i", Description = "Isolation Level (Snapshot|Serializable)")]
         public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.Snapshot;
 

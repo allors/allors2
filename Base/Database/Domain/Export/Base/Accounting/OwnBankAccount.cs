@@ -45,7 +45,7 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }
-            
+
             derivation.Validation.AssertExistsAtMostOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
         }
     }

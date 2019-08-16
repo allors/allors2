@@ -25,7 +25,7 @@ namespace Allors.Domain
     {
         protected override void BaseSecure(Security config)
         {
-            
+
 
             var created = new WorkEffortStates(this.Session).Created;
             var inProgress = new WorkEffortStates(this.Session).InProgress;

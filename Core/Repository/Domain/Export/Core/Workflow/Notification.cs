@@ -86,7 +86,7 @@ namespace Allors.Repository
         public DateTime DateCreated { get; set; }
 
         #region inherited methods
-        
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

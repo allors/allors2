@@ -48,7 +48,7 @@ namespace Allors.Adapters.Memory
 
         object IEnumerator.Current
         {
-            get 
+            get
             {
                 return this.Current;
             }

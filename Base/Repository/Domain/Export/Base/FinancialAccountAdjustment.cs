@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("12ba6843-bae1-41d1-9ef2-c19d74b0a365")]
     #endregion
-    public partial class FinancialAccountAdjustment : FinancialAccountTransaction 
+    public partial class FinancialAccountAdjustment : FinancialAccountTransaction
     {
         #region inherited properties
         public string Description { get; set; }
@@ -26,20 +26,20 @@ namespace Allors.Repository
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
         public void OnInit()
         {
-            
+
         }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         #endregion
 

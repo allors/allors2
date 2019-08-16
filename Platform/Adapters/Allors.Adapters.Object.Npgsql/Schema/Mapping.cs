@@ -80,7 +80,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal static readonly string ParamInvocationNameForAssociation = string.Format(ParamInvocationFormat, ColumnNameForAssociation);
         internal static readonly string ParamInvocationNameForCompositeRole = string.Format(ParamInvocationFormat, ColumnNameForRole);
         internal static readonly string ParamInvocationNameForCount = string.Format(ParamInvocationFormat, "count");
-        
+
         internal readonly string TableNameForObjects;
 
         internal readonly Dictionary<IClass, string> TableNameForObjectByClass;
@@ -520,12 +520,12 @@ $$;
 
             this.ProcedureDefinitionByName.Add(name, definition);
         }
-        
+
         private void GetUnitRoles(IClass @class)
         {
             var sortedUnitRoleTypes = this.Database.GetSortedUnitRolesByObjectType(@class);
             var name = this.Database.SchemaName + "." + ProcedurePrefixForGetUnits + @class.Name.ToLowerInvariant();
-            this.ProcedureNameForGetUnitRolesByClass.Add(@class,name);
+            this.ProcedureNameForGetUnitRolesByClass.Add(@class, name);
 
             // Get Unit Roles
             var definition = $@"
@@ -1190,7 +1190,7 @@ BEGIN
     RETURN {ParamNameForCompositeRole};
 END
 $$;";
-            
+
             this.ProcedureDefinitionByName.Add(name, definition);
         }
 
@@ -1305,8 +1305,8 @@ AS $$
     FROM {table}
     WHERE {ColumnNameForRole} IN (SELECT {ColumnNameForObject} FROM objects);
 $$;";
-            
-            this.ProcedureDefinitionByName.Add(name,definition);
+
+            this.ProcedureDefinitionByName.Add(name, definition);
         }
 
         private void GetCompositesAssociationRelationTable(IRelationType relationType)
@@ -1409,7 +1409,7 @@ $$;";
             var objectsType = objects.TypeName;
 
             // Get Version Ids
-            var definition = 
+            var definition =
 $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetVersion}({objectsType});
 CREATE FUNCTION {this.ProcedureNameForGetVersion}({objects} {objectsType})
     RETURNS TABLE 

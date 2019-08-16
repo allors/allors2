@@ -25,7 +25,7 @@ namespace Allors.Domain
 
     using Xunit;
     using Allors.Meta;
-    
+
     public class SalesOrderItemPricingTests : DomainTest
     {
         private ProductCategory productCategory;
@@ -53,7 +53,7 @@ namespace Allors.Domain
         private SupplierOffering goodPurchasePrice;
         private SalesOrder order;
         private VatRate vatRate21;
-        
+
         public SalesOrderItemPricingTests()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -609,7 +609,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var surcharge= Math.Round(((price - discountAmount) * surchargePercentage) / 100, 2);
+            var surcharge = Math.Round(((price - discountAmount) * surchargePercentage) / 100, 2);
             var adjustmentAmount = Math.Round(0 - discountAmount + surcharge, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);

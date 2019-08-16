@@ -32,7 +32,7 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            
+
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -42,7 +42,7 @@ namespace Allors.Domain
                 .WithUniqueId(OwnId)
                 .WithIsActive(true)
                 .Build();
-            
+
             new OwnershipBuilder(this.Session)
                 .WithName("Trading")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Handel").WithLocale(dutchLocale).Build())

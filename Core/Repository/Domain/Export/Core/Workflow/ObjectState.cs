@@ -26,7 +26,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f991813f-3146-4431-96d0-554aa2186887")]
     #endregion
-    public partial interface ObjectState : UniquelyIdentifiable 
+    public partial interface ObjectState : UniquelyIdentifiable
     {
         #region Allors
         [Id("59338f0b-40e7-49e8-ba1a-3ecebf96aebe")]
