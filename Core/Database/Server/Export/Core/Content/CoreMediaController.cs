@@ -29,11 +29,11 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public abstract partial class BaseMediaController : Controller
+    public abstract partial class CoreMediaController : Controller
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected BaseMediaController(ISessionService sessionService)
+        protected CoreMediaController(ISessionService sessionService)
         {
             this.Session = sessionService.Session;
         }

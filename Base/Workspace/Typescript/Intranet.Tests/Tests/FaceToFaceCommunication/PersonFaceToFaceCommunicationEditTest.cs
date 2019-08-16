@@ -104,7 +104,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var cell = row.FindCell("description");
             cell.Click();
 
-            var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver); ;
+            var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
+            ;
             faceToFaceCommunicationEditComponent.CommunicationEventState
                 .Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)

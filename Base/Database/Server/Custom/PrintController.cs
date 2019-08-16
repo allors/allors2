@@ -2,7 +2,7 @@ namespace Allors.Server
 {
     using Allors.Services;
 
-    public class PrintController : BasePrintController
+    public class PrintController : CorePrintController
     {
         public PrintController(ISessionService sessionService)
             : base(sessionService)

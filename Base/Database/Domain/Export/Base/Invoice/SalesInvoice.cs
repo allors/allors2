@@ -609,7 +609,8 @@ namespace Allors.Domain
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
-                salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid; ;
+                salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
+                ;
             }
 
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)

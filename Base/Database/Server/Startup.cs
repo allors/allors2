@@ -203,7 +203,8 @@
                         context.Response.ContentType = "application/json";
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
                     }
-                    else await next();
+                    else
+                        await next();
                 });
             });
 

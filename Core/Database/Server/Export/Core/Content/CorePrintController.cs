@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable Mvc.ActionNotResolved
+
 namespace Allors.Server
 {
     using System;
@@ -28,11 +30,11 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public abstract partial class BasePrintController : Controller
+    public abstract partial class CorePrintController : Controller
     {
         private const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected BasePrintController(ISessionService sessionService)
+        protected CorePrintController(ISessionService sessionService)
         {
             this.Session = sessionService.Session;
         }
