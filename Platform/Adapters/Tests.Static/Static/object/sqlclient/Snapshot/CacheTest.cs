@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
-    public class CacheTest : Allors.Adapters.CacheTest, IDisposable
+    public class CacheTest : Adapters.CacheTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

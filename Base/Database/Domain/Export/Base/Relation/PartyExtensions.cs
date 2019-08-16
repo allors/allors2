@@ -312,7 +312,7 @@ namespace Allors.Domain
 
                 // Amount Due
                 // Amount OverDue
-                foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer.Where(v => Equals(v.BilledFrom, partyFinancial.InternalOrganisation) &&
+                foreach (var salesInvoice in @this.SalesInvoicesWhereBillToCustomer.Where(v => Equals(v.BilledFrom, partyFinancial.InternalOrganisation) &&
                                                                                                         !v.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid)))
                 {
                     if (salesInvoice.AmountPaid > 0)

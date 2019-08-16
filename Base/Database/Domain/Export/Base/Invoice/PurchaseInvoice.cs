@@ -108,7 +108,7 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
             }
 
-            Organisation supplier = this.BilledFrom as Organisation;
+            var supplier = this.BilledFrom as Organisation;
             if (supplier != null)
             {
                 if (!this.BilledTo.ActiveSuppliers.Contains(supplier))
@@ -126,7 +126,7 @@ namespace Allors.Domain
             var purchaseInvoiceStates = new PurchaseInvoiceStates(this.Strategy.Session);
             var purchaseInvoiceItemStates = new PurchaseInvoiceItemStates(this.Strategy.Session);
 
-            foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
+            foreach (var invoiceItem in validInvoiceItems)
             {
                 if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
                 {
@@ -189,7 +189,7 @@ namespace Allors.Domain
                     this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
                 }
 
-                foreach (PurchaseInvoiceItem invoiceItem in validInvoiceItems)
+                foreach (var invoiceItem in validInvoiceItems)
                 {
                     if (this.AmountPaid >= this.TotalIncVat)
                     {

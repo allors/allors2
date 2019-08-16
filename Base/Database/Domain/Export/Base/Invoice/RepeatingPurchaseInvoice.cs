@@ -95,8 +95,8 @@ namespace Allors.Domain
                             (v.PurchaseOrderState.IsSent || v.PurchaseOrderState.IsCompleted) &&
                             (v.PurchaseOrderShipmentState.IsReceived || v.PurchaseOrderShipmentState.IsPartiallyReceived));
 
-            List<PurchaseOrderItem> orderItemsToBill = new List<PurchaseOrderItem>();
-            foreach (PurchaseOrder purchaseOrder in orderCandidates)
+            var orderItemsToBill = new List<PurchaseOrderItem>();
+            foreach (var purchaseOrder in orderCandidates)
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.ValidOrderItems)
                 {
@@ -117,7 +117,7 @@ namespace Allors.Domain
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
                     .Build();
 
-                foreach (PurchaseOrderItem orderItem in orderItemsToBill)
+                foreach (var orderItem in orderItemsToBill)
                 {
                     var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
                         .WithAssignedUnitPrice(orderItem.UnitPrice)

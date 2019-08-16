@@ -27,7 +27,7 @@ namespace Allors
         {
             if (parameter == null)
             {
-                return default;
+                return default(T);
             }
 
             var extent = this.Session.Extent(this.ObjectType);

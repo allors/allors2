@@ -19,8 +19,6 @@ namespace Allors.Domain
     {
         protected override void BaseSetup(Setup setup)
         {
-
-
             new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build();
             new CreditCardCompanyBuilder(this.Session).WithName("Master Card").Build();
             new CreditCardCompanyBuilder(this.Session).WithName("American Express").Build();

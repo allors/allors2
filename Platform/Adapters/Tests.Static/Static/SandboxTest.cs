@@ -151,7 +151,7 @@ namespace Allors.Adapters
                 {
                     Kind = Protocol.Data.ExtentKind.Filter,
                     ObjectType = M.C1.ObjectType.Id,
-                    Predicate = new Protocol.Data.Predicate
+                    Predicate = new Predicate
                     {
                         Kind = Protocol.Data.PredicateKind.Equals,
                         PropertyType = M.C1.C1AllorsString.Id,

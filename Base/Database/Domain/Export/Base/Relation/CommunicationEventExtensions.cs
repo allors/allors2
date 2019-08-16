@@ -199,7 +199,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (Party party in partiesToRemove)
+            foreach (var party in partiesToRemove)
             {
                 party.RemoveCommunicationEvent(@this);
             }

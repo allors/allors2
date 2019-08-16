@@ -31,12 +31,12 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
     using Xunit;
 
 
-    public class DebugTests : Allors.Adapters.Object.SqlClient.DebugTests, IDisposable
+    public class DebugTests : SqlClient.DebugTests, IDisposable
     {
         private readonly Profile profile;
 
-        private DebugConnectionFactory connectionFactory;
-        private DefaultCacheFactory cacheFactory;
+        private readonly DebugConnectionFactory connectionFactory;
+        private readonly DefaultCacheFactory cacheFactory;
 
         protected override IProfile Profile => this.profile;
 

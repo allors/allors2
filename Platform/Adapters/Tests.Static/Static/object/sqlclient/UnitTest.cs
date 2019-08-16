@@ -34,7 +34,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 // Positive
                 {
-                    C1 values = C1.Create(this.Session);
+                    var values = C1.Create(this.Session);
                     values.C1AllorsDecimal = 10.10m;
                     values.I1AllorsDecimal = 10.10m;
                     values.S1AllorsDecimal = 10.10m;
@@ -48,7 +48,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 // Negative
                 {
-                    C1 values = C1.Create(this.Session);
+                    var values = C1.Create(this.Session);
                     values.C1AllorsDecimal = -10.10m;
                     values.I1AllorsDecimal = -10.10m;
                     values.S1AllorsDecimal = -10.10m;
@@ -62,7 +62,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 // Zero
                 {
-                    C1 values = C1.Create(this.Session);
+                    var values = C1.Create(this.Session);
                     values.C1AllorsDecimal = 0m;
                     values.I1AllorsDecimal = 0m;
                     values.S1AllorsDecimal = 0m;
@@ -76,7 +76,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 // initial empty
                 {
-                    C1 values = C1.Create(this.Session);
+                    var values = C1.Create(this.Session);
 
                     decimal? value = null;
 
@@ -111,7 +111,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 // reset empty
                 {
-                    C1 values = C1.Create(this.Session);
+                    var values = C1.Create(this.Session);
                     values.C1AllorsDecimal = 10.10m;
                     values.I1AllorsDecimal = 10.10m;
                     values.S1AllorsDecimal = 10.10m;

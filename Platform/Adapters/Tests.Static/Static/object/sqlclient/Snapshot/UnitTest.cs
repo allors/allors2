@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using System;
 
-    public class UnitTest : Allors.Adapters.Object.SqlClient.UnitTest
+    public class UnitTest : SqlClient.UnitTest
     {
         private readonly Profile profile = new Profile();
 

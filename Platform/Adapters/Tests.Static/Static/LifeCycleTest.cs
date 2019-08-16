@@ -114,7 +114,7 @@ namespace Allors.Adapters
             {
                 init();
 
-                C1 c1A = C1.Create(this.Session);
+                var c1A = C1.Create(this.Session);
 
                 this.Session.Commit();
 
@@ -137,10 +137,10 @@ namespace Allors.Adapters
             {
                 init();
 
-                C1 c1A = C1.Create(this.Session);
+                var c1A = C1.Create(this.Session);
 
-                C2 c2A = C2.Create(this.Session);
-                C2 c2B = C2.Create(this.Session);
+                var c2A = C2.Create(this.Session);
+                var c2B = C2.Create(this.Session);
 
                 this.Session.Commit();
 
@@ -191,7 +191,7 @@ namespace Allors.Adapters
                 init();
 
                 // Object
-                C1 anObject = C1.Create(this.Session);
+                var anObject = C1.Create(this.Session);
 
                 anObject.Strategy.Delete();
                 Assert.True(anObject.Strategy.IsDeleted);
@@ -448,7 +448,7 @@ namespace Allors.Adapters
                 var databaseSession = this.Session as ISession;
                 if (databaseSession != null)
                 {
-                    IStrategy aStrategy = C1.Create(this.Session).Strategy;
+                    var aStrategy = C1.Create(this.Session).Strategy;
 
                     aStrategy.Delete();
                     Assert.True(aStrategy.IsDeleted);
@@ -716,9 +716,9 @@ namespace Allors.Adapters
 
                 StrategyAssert.RoleGetHasException(anObject, MetaC1.Instance.C1AllorsString);
 
-                C1 secondObject = C1.Create(this.Session);
+                var secondObject = C1.Create(this.Session);
                 secondObject.C1AllorsString = "b";
-                C1 thirdObject = C1.Create(this.Session);
+                var thirdObject = C1.Create(this.Session);
                 thirdObject.C1AllorsString = "c";
 
                 Assert.Equal(2, this.GetExtent(MetaC1.Instance.ObjectType).Length);
@@ -909,20 +909,20 @@ namespace Allors.Adapters
 
                 //// Role
 
-                C1 fromC1a = C1.Create(this.Session);
-                C1 fromC1b = C1.Create(this.Session);
-                C1 fromC1c = C1.Create(this.Session);
-                C1 fromC1d = C1.Create(this.Session);
+                var fromC1a = C1.Create(this.Session);
+                var fromC1b = C1.Create(this.Session);
+                var fromC1c = C1.Create(this.Session);
+                var fromC1d = C1.Create(this.Session);
 
-                C1 toC1a = C1.Create(this.Session);
-                C1 toC1b = C1.Create(this.Session);
-                C1 toC1c = C1.Create(this.Session);
-                C1 toC1d = C1.Create(this.Session);
+                var toC1a = C1.Create(this.Session);
+                var toC1b = C1.Create(this.Session);
+                var toC1c = C1.Create(this.Session);
+                var toC1d = C1.Create(this.Session);
 
-                C2 toC2a = C2.Create(this.Session);
-                C2 toC2b = C2.Create(this.Session);
-                C2 toC2c = C2.Create(this.Session);
-                C2 toC2d = C2.Create(this.Session);
+                var toC2a = C2.Create(this.Session);
+                var toC2b = C2.Create(this.Session);
+                var toC2c = C2.Create(this.Session);
+                var toC2d = C2.Create(this.Session);
 
                 //// C1 <-> C1
 
@@ -2660,7 +2660,7 @@ namespace Allors.Adapters
                 //// Assignment
 
                 anObject = C1.Create(this.Session);
-                C1 c1Removed = C1.Create(this.Session);
+                var c1Removed = C1.Create(this.Session);
                 c1Removed.Strategy.Delete();
                 C1[] c1RemovedArray = { c1Removed };
 
@@ -2902,11 +2902,11 @@ namespace Allors.Adapters
 
                 //// Proxy
 
-                C1 proxy = C1.Create(this.Session);
+                var proxy = C1.Create(this.Session);
                 id = proxy.Strategy.ObjectId;
                 this.Session.Commit();
 
-                C1 subject = C1.Instantiate(this.Session, id);
+                var subject = C1.Instantiate(this.Session, id);
                 subject.Strategy.Delete();
                 StrategyAssert.RoleExistHasException(proxy, MetaC1.Instance.C1AllorsString);
 
@@ -2968,7 +2968,7 @@ namespace Allors.Adapters
                 //// unit roles
 
                 anObject = C1.Create(this.Session);
-                C1 anotherObject = C1.Create(this.Session);
+                var anotherObject = C1.Create(this.Session);
                 anotherObject.C1AllorsString = "value";
                 anObject.Strategy.Delete();
                 Assert.Equal("value", anotherObject.C1AllorsString);
@@ -3095,13 +3095,13 @@ namespace Allors.Adapters
             {
                 init();
 
-                C1 anObject = C1.Create(this.Session);
+                var anObject = C1.Create(this.Session);
                 var id = anObject.Strategy.ObjectId;
-                C1 proxy = C1.Instantiate(this.Session, id);
+                var proxy = C1.Instantiate(this.Session, id);
 
-                C1 anotherObject = C1.Create(this.Session);
+                var anotherObject = C1.Create(this.Session);
                 long anotherId = anotherObject.Strategy.ObjectId;
-                C1 anotherProxy = C1.Instantiate(this.Session, anotherId);
+                var anotherProxy = C1.Instantiate(this.Session, anotherId);
 
                 Assert.Equal(anObject, proxy);
                 Assert.Equal(anotherObject, anotherProxy);
@@ -3157,7 +3157,7 @@ namespace Allors.Adapters
             {
                 init();
 
-                C1 anObject = C1.Create(this.Session);
+                var anObject = C1.Create(this.Session);
                 var id = anObject.Strategy.ObjectId;
                 var sameObject = (C1)this.Session.Instantiate(id);
 
@@ -3198,12 +3198,12 @@ namespace Allors.Adapters
 
                 //// Unit
 
-                C1 subject = C1.Create(this.Session);
+                var subject = C1.Create(this.Session);
                 id = subject.Strategy.ObjectId;
                 this.Session.Commit();
 
                 subject.C1AllorsString = "a";
-                C1 proxy = C1.Instantiate(this.Session, id);
+                var proxy = C1.Instantiate(this.Session, id);
                 proxy.C1AllorsString = "b";
                 Assert.Equal("b", subject.C1AllorsString);
                 Assert.Equal("b", proxy.C1AllorsString);
@@ -3504,7 +3504,7 @@ namespace Allors.Adapters
 
                 this.Session.Rollback();
 
-                C1 unexistingObject = (C1)this.Session.Instantiate("1000000");
+                var unexistingObject = (C1)this.Session.Instantiate("1000000");
                 Assert.Null(unexistingObject);
             }
         }
@@ -3538,7 +3538,7 @@ namespace Allors.Adapters
                     var ids = new long[run];
                     for (int i = 0; i < run; i++)
                     {
-                        C1 anObject = C1.Create(this.Session);
+                        var anObject = C1.Create(this.Session);
                         objects[i] = anObject;
                         idStrings[i] = anObject.Strategy.ObjectId.ToString();
                         ids[i] = anObject.Strategy.ObjectId;
@@ -3706,7 +3706,7 @@ namespace Allors.Adapters
 
                 //// Commit + Commit
 
-                C1 anObject = C1.Create(this.Session);
+                var anObject = C1.Create(this.Session);
                 Assert.False(anObject.Strategy.IsDeleted);
 
                 this.Session.Commit();
@@ -3818,7 +3818,7 @@ namespace Allors.Adapters
 
                 anObject = C1.Create(this.Session);
                 var id = anObject.Strategy.ObjectId;
-                C1 proxy = C1.Instantiate(this.Session, id);
+                var proxy = C1.Instantiate(this.Session, id);
                 Assert.False(proxy.Strategy.IsDeleted);
 
                 this.Session.Commit();
@@ -4084,10 +4084,10 @@ namespace Allors.Adapters
             {
                 init();
 
-                C1 c1A = C1.Create(this.Session);
-                C2 c2A = C2.Create(this.Session);
-                C2 c2B = C2.Create(this.Session);
-                C2 c2C = C2.Create(this.Session);
+                var c1A = C1.Create(this.Session);
+                var c2A = C2.Create(this.Session);
+                var c2B = C2.Create(this.Session);
+                var c2C = C2.Create(this.Session);
 
                 var c1aId = c1A.Id.ToString();
 
@@ -4134,8 +4134,8 @@ namespace Allors.Adapters
 
                 if (this.Session is ISession)
                 {
-                    C1 c1A = C1.Create(this.Session);
-                    C2 c2A = C2.Create(this.Session);
+                    var c1A = C1.Create(this.Session);
+                    var c2A = C2.Create(this.Session);
 
                     var c1AObjectId = c1A.Id;
                     var c2AObjectId = c2A.Id;

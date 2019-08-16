@@ -12,9 +12,9 @@ namespace Identity
 
     using Allors.Services;
 
-    using global::Allors;
-    using global::Allors.Domain;
-    using global::Allors.Meta;
+    using Allors;
+    using Allors.Domain;
+    using Allors.Meta;
 
     using Identity.Models;
 

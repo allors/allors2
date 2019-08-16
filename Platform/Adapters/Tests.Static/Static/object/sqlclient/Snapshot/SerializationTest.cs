@@ -28,7 +28,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Allors;
 
-    public class SerializationTest : Allors.Adapters.SerializationTest, IDisposable
+    public class SerializationTest : Adapters.SerializationTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

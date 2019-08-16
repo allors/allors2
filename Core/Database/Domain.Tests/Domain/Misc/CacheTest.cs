@@ -10,7 +10,7 @@ namespace Tests
 
     using Xunit;
 
-    using global::Allors.Domain;
+    using Allors.Domain;
 
     public class CacheTest : DomainTest
     {

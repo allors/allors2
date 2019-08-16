@@ -752,7 +752,7 @@ namespace Allors.Adapters
                     // Minimum
                     if (this.UseFloatMinimum)
                     {
-                        C1 values = C1.Create(this.Session);
+                        var values = C1.Create(this.Session);
                         values.C1AllorsDouble = double.MinValue;
                         values.I1AllorsDouble = double.MinValue;
                         values.S1AllorsDouble = double.MinValue;
@@ -884,7 +884,7 @@ namespace Allors.Adapters
                 init();
                 if (this.Session is ISession)
                 {
-                    C1 c1 = C1.Create(this.Session);
+                    var c1 = C1.Create(this.Session);
                     var c1Id = c1.Id.ToString();
 
                     c1.C1AllorsDouble = 1;
@@ -1835,9 +1835,9 @@ namespace Allors.Adapters
                 init();
                 if (this.Session is ISession)
                 {
-                    Guid unique = Guid.NewGuid();
+                    var unique = Guid.NewGuid();
 
-                    C1 c1 = C1.Create(this.Session);
+                    var c1 = C1.Create(this.Session);
                     var c1Id = c1.Id.ToString();
 
                     c1.C1AllorsUnique = unique;

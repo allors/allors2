@@ -25,7 +25,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Allors.Meta;
 
-    public class SchemaTest : Allors.Adapters.Object.SqlClient.SchemaTest, IDisposable
+    public class SchemaTest : SqlClient.SchemaTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

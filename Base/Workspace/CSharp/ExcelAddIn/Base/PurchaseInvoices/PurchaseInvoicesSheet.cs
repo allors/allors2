@@ -19,11 +19,11 @@ namespace Allors.Excel.PurchaseInvoices
 
     using Microsoft.Office.Interop.Excel;
 
-    using ListObject = Microsoft.Office.Tools.Excel.ListObject;
-    using Result = Allors.Workspace.Client.Result;
-    using Sheets = Allors.Excel.Sheets;
+    using ListObject = ListObject;
+    using Result = Workspace.Client.Result;
+    using Sheets = Sheets;
     using Task = System.Threading.Tasks.Task;
-    using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
+    using Worksheet = Worksheet;
 
     public class PurchaseInvoicesSheet : Sheet
     {
@@ -63,7 +63,7 @@ namespace Allors.Excel.PurchaseInvoices
             this.Worksheet.Name = "ALL";
             var groupByBilledTo = this.PurchaseInvoices.GroupBy(v => v.BilledTo).OrderBy(v => v.Key.PartyName);
 
-            foreach (IGrouping<InternalOrganisation, PurchaseInvoice> grouping in groupByBilledTo)
+            foreach (var grouping in groupByBilledTo)
             {
                 Microsoft.Office.Interop.Excel.Worksheet workSheet = this.Workbook.Worksheets.Add();
                 
@@ -190,7 +190,7 @@ namespace Allors.Excel.PurchaseInvoices
             format.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
             format.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.DarkSeaGreen);
 
-            foreach (PurchaseInvoiceState purchaseInvoiceState in states)
+            foreach (var purchaseInvoiceState in states)
             {
                 if (Equals(purchaseInvoiceState.UniqueId, PurchaseInvoiceStates.PaidId))
                 {
@@ -303,6 +303,6 @@ namespace Allors.Excel.PurchaseInvoices
         ;
         public Payment[] Payments { get; set; }
 
-        public Microsoft.Office.Interop.Excel.Workbook Workbook { get; set; }
+        public Workbook Workbook { get; set; }
     }
 }

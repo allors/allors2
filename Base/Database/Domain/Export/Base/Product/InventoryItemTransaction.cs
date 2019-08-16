@@ -112,7 +112,7 @@ namespace Allors.Domain
             if (possibleMatches)
             {
                 // Match on Non/SerialisedInventoryItemState
-                foreach (InventoryItem item in matchingItems)
+                foreach (var item in matchingItems)
                 {
                     if (item is NonSerialisedInventoryItem nonSerialItem)
                     {

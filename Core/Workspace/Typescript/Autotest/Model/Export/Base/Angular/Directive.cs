@@ -17,7 +17,7 @@ namespace Autotest.Angular
 
     public partial class Directive
     {
-        private static Regex[] StringRegexes = {
+        private static readonly Regex[] StringRegexes = {
             new Regex(@"^'(.*)'$"),
             new Regex(@"^""(.*)""$"),
         };

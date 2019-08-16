@@ -64,7 +64,7 @@ namespace Allors.Domain
 
             var sourceItems = this.RequestItems.Where(i => i.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)).ToArray();
 
-            foreach (RequestItem requestItem in sourceItems)
+            foreach (var requestItem in sourceItems)
             {
                 requestItem.RequestItemState = new RequestItemStates(this.Strategy.Session).Quoted;
 

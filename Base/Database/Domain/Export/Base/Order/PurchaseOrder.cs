@@ -157,7 +157,7 @@ namespace Allors.Domain
                 this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken
             };
 
-            Organisation supplier = this.TakenViaSupplier as Organisation;
+            var supplier = this.TakenViaSupplier as Organisation;
             if (supplier != null)
             {
                 if (!this.OrderedBy.ActiveSuppliers.Contains(supplier))
@@ -469,7 +469,7 @@ namespace Allors.Domain
 
                         if (orderItem.Part.InventoryItemKind.Serialised)
                         {
-                            SerialisedItem serialisedItem = orderItem.SerialisedItem;
+                            var serialisedItem = orderItem.SerialisedItem;
                             if (!orderItem.ExistSerialisedItem)
                             {
                                 serialisedItem = new SerialisedItemBuilder(session)

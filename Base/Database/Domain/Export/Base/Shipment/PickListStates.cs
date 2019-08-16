@@ -38,8 +38,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new PickListStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

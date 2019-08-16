@@ -44,14 +44,14 @@ namespace Allors.Adapters
             var database = this.CreateDatabase();
             database.Init();
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1 = C1.Create(session);
                 c1.C1AllorsString = "a";
                 session.Commit();
             }
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1 = session.Extent<C1>().First;
                 Assert.Equal("a", c1.C1AllorsString);
@@ -61,20 +61,20 @@ namespace Allors.Adapters
 
             var database2 = this.CreateDatabase();
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1 = C1.Create(session);
                 c1.C1AllorsString = "b";
                 session.Commit();
             }
 
-            using (ISession session = database2.CreateSession())
+            using (var session = database2.CreateSession())
             {
                 var c1 = session.Extent<C1>().First;
                 c1.C1AllorsString = "c";
             }
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1 = session.Extent<C1>().First;
                 Assert.Equal("c", c1.C1AllorsString);
@@ -87,7 +87,7 @@ namespace Allors.Adapters
             var database = this.CreateDatabase();
             database.Init();
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1a = C1.Create(session);
                 var c2a = C2.Create(session);
@@ -100,7 +100,7 @@ namespace Allors.Adapters
 
             database.Init();
 
-            using (ISession session = database.CreateSession())
+            using (var session = database.CreateSession())
             {
                 var c1a = C1.Create(session);
                 var c1b = C1.Create(session);

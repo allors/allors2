@@ -269,7 +269,7 @@ namespace Allors.Domain
 
             pickList.SetPicked();
 
-            var derivation = new Allors.Domain.Logging.Derivation(
+            var derivation = new Logging.Derivation(
                 this.Session,
                 new DerivationConfig
                 {

@@ -38,8 +38,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new RequestItemStateBuilder(this.Session)
                 .WithUniqueId(DraftId)
                 .WithName("Anonymous")

@@ -25,7 +25,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using Adapters;
 
-    public class SqlClientTest : Allors.Adapters.Object.SqlClient.SqlClientTest, IDisposable
+    public class SqlClientTest : SqlClient.SqlClientTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

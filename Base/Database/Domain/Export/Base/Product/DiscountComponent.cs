@@ -19,7 +19,6 @@ namespace Allors.Domain
 
     public partial class DiscountComponent
     {
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

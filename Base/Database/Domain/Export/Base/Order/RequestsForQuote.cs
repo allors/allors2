@@ -29,8 +29,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var anonymous = new RequestStates(this.Session).Anonymous;
             var cancelled = new RequestStates(this.Session).Cancelled;
             var quoted = new RequestStates(this.Session).Quoted;

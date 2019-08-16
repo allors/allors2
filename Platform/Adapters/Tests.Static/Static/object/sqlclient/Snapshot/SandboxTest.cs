@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Adapters;
 
-    public class SandboxTest : Allors.Adapters.SandboxTest, IDisposable
+    public class SandboxTest : Adapters.SandboxTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

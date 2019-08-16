@@ -38,8 +38,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new CommunicationEventStateBuilder(this.Session)
                 .WithName("Scheduled")
                 .WithUniqueId(ScheduledId)

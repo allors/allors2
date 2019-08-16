@@ -43,8 +43,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

@@ -35,8 +35,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new SalesOrderItemShipmentStateBuilder(this.Session)
                 .WithUniqueId(NotShippedId)
                 .WithName("Not Shipped")

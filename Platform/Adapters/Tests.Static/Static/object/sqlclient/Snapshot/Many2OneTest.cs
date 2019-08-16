@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Adapters;
 
-    public class Many2OneTest : Allors.Adapters.Many2OneTest, IDisposable
+    public class Many2OneTest : Adapters.Many2OneTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

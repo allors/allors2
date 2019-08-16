@@ -27,7 +27,7 @@ namespace Allors.Domain
             if (cache == null)
             {
                 cache = new ConcurrentDictionary<T, long>();
-                stickies.Set<T>(key, cache);
+                stickies.Set(key, cache);
             }
 
             return cache;

@@ -56,8 +56,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new PurchaseOrderItemStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

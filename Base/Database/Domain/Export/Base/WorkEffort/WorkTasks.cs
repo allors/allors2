@@ -25,8 +25,6 @@ namespace Allors.Domain
     {
         protected override void BaseSecure(Security config)
         {
-
-
             var created = new WorkEffortStates(this.Session).Created;
             var inProgress = new WorkEffortStates(this.Session).InProgress;
             var cancelled = new WorkEffortStates(this.Session).Cancelled;
@@ -123,7 +121,7 @@ namespace Allors.Domain
 
                             salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
-                            foreach (TimeEntry billableEntry in timeEntries)
+                            foreach (var billableEntry in timeEntries)
                             {
                                 new TimeEntryBillingBuilder(session)
                                     .WithTimeEntry(billableEntry)

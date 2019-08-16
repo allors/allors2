@@ -1,4 +1,4 @@
-﻿namespace Allors.Workspace.Client
+namespace Allors.Workspace.Client
 {
     using System.Collections.Generic;
 
@@ -8,6 +8,6 @@
 
         public Indexer(Dictionary<string, T> dictionary) => this.dictionary = dictionary;
 
-        public T this[string index] => this.dictionary.TryGetValue(index, out var value) ? value : default;
+        public T this[string index] => this.dictionary.TryGetValue(index, out var value) ? value : default(T);
     }
 }

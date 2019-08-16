@@ -10,7 +10,7 @@
 namespace Tests
 {
     using Allors;
-    using global::Allors.Domain;
+    using Allors.Domain;
     using Xunit;
 
     public class LoginTests : DomainTest

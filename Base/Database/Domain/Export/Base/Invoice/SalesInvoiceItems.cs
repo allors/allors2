@@ -29,8 +29,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var paid = new SalesInvoiceItemStates(this.Session).Paid;
             var writtenOff = new SalesInvoiceItemStates(this.Session).WrittenOff;
             var cancelled = new SalesInvoiceItemStates(this.Session).Cancelled;

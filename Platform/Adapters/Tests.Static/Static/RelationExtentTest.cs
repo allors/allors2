@@ -64,14 +64,14 @@ namespace Allors.Adapters
                 init();
                 this.Populate();
 
-                Company acme = Company.Create(this.Session, "Acme", 2);
-                Company acne = Company.Create(this.Session, "Acne", 1);
+                var acme = Company.Create(this.Session, "Acme", 2);
+                var acne = Company.Create(this.Session, "Acne", 1);
 
-                Person john = Person.Create(this.Session, "John", 2);
-                Person jane = Person.Create(this.Session, "Jane", 1);
+                var john = Person.Create(this.Session, "John", 2);
+                var jane = Person.Create(this.Session, "Jane", 1);
 
-                Person johny = Person.Create(this.Session, "johny", 4);
-                Person janet = Person.Create(this.Session, "Janet", 3);
+                var johny = Person.Create(this.Session, "johny", 4);
+                var janet = Person.Create(this.Session, "Janet", 3);
 
                 // Many 2 one
                 acme.Manager = john;
@@ -128,14 +128,14 @@ namespace Allors.Adapters
                 init();
                 this.Populate();
 
-                Company acme = Company.Create(this.Session, "Acme");
-                Company acne = Company.Create(this.Session, "Acne");
+                var acme = Company.Create(this.Session, "Acme");
+                var acne = Company.Create(this.Session, "Acne");
 
-                Person john = Person.Create(this.Session, "John", 2);
-                Person jane = Person.Create(this.Session, "Jane", 1);
+                var john = Person.Create(this.Session, "John", 2);
+                var jane = Person.Create(this.Session, "Jane", 1);
 
-                Person johny = Person.Create(this.Session, "Johny", 4);
-                Person janet = Person.Create(this.Session, "Janet", 3);
+                var johny = Person.Create(this.Session, "Johny", 4);
+                var janet = Person.Create(this.Session, "Janet", 3);
 
                 // One 2 Many
                 acme.AddEmployee(john);

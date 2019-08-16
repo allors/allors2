@@ -19,8 +19,6 @@ namespace Allors.Domain
     {
         protected override void BaseSetup(Setup setup)
         {
-
-
             new VatRateBuilder(this.Session).WithRate(0).Build();
             new VatRateBuilder(this.Session).WithRate(6).Build();
             new VatRateBuilder(this.Session).WithRate(12).Build();

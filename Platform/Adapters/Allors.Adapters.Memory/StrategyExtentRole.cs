@@ -60,7 +60,7 @@ namespace Allors.Adapters.Memory
         public override bool Contains(object value)
         {
             var strategies = this.GetStrategies();
-            Strategy valueStrategy = this.associationStrategy.MemorySession.InstantiateMemoryStrategy(((IObject)value).Id);
+            var valueStrategy = this.associationStrategy.MemorySession.InstantiateMemoryStrategy(((IObject)value).Id);
             return strategies.Contains(valueStrategy);
         }
 
@@ -79,14 +79,14 @@ namespace Allors.Adapters.Memory
         public override int IndexOf(object value)
         {
             this.FillObjects();
-            Strategy strategy = this.Session.InstantiateMemoryStrategy(((IObject)value).Id);
+            var strategy = this.Session.InstantiateMemoryStrategy(((IObject)value).Id);
             return this.roles.IndexOf(strategy);
         }
 
         public override IObject[] ToArray()
         {
             this.FillObjects();
-            Type clrType = this.Session.GetTypeForObjectType(this.ObjectType);
+            var clrType = this.Session.GetTypeForObjectType(this.ObjectType);
 
             if (this.roles.Count > 0)
             {
@@ -137,7 +137,7 @@ namespace Allors.Adapters.Memory
         {
             if (this.roles == null)
             {
-                List<Strategy> strategies = this.GetStrategies();
+                var strategies = this.GetStrategies();
 
                 if (strategies != null)
                 {

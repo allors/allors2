@@ -34,14 +34,14 @@ namespace Allors.Domain
 
         public static Company Create(ISession session, string name)
         {
-            Company company = Create(session);
+            var company = Create(session);
             company.Name = name;
             return company;
         }
 
         public static Company Create(ISession session, string name, int index)
         {
-            Company company = Create(session);
+            var company = Create(session);
             company.Name = name;
             company.Index = index;
             return company;

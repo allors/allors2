@@ -28,8 +28,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var createdState = new WorkEffortStates(this.Session).Created;
             var cancelledState = new WorkEffortStates(this.Session).Cancelled;
             var finishedState = new WorkEffortStates(this.Session).Completed;

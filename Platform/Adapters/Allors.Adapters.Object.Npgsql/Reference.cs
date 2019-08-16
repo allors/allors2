@@ -30,7 +30,7 @@ namespace Allors.Adapters.Object.Npgsql
         internal const long InitialVersion = 0;
         private const long UnknownVersion = -1;
 
-        [FlagsAttribute]
+        [Flags]
         public enum Flags : byte
         {
             MaskIsNew = 1,

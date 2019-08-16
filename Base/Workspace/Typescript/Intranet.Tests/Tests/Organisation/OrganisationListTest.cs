@@ -9,7 +9,7 @@ namespace Tests.OrganisationTests
     [Collection("Test collection")]
     public class OrganisationListTest : Test
     {
-        private OrganisationListComponent page;
+        private readonly OrganisationListComponent page;
 
         public OrganisationListTest(TestFixture fixture)
             : base(fixture)

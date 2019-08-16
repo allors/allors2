@@ -28,8 +28,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var created = new PurchaseInvoiceItemStates(this.Session).Created;
             var awaitingApproval = new PurchaseInvoiceItemStates(this.Session).AwaitingApproval;
             var received = new PurchaseInvoiceItemStates(this.Session).Received;

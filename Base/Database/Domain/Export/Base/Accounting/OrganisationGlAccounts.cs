@@ -19,8 +19,6 @@ namespace Allors.Domain
     {
         protected override void BaseSecure(Security config)
         {
-
-
             var write = Operations.Write;
             var closed = new BudgetStates(this.Session).Closed;
 

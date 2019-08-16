@@ -109,7 +109,7 @@ namespace Allors.Workspace.Meta
         /// </returns>
         public bool HasErrors(object source)
         {
-            foreach (ValidationError error in this.Errors)
+            foreach (var error in this.Errors)
             {
                 if (error.Source.Equals(source))
                 {

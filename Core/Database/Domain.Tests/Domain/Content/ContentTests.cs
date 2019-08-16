@@ -11,6 +11,6 @@ namespace Tests
     {
         protected static byte[] GetByteArray() => GetByteArray("Some string");
 
-        protected static byte[] GetByteArray(string v) => global::System.Text.Encoding.UTF8.GetBytes(v);
+        protected static byte[] GetByteArray(string v) => System.Text.Encoding.UTF8.GetBytes(v);
     }
 }

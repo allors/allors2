@@ -30,8 +30,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             var nonSerialisedStates = new NonSerialisedInventoryItemStates(this.Session);
             var serialisedStates = new SerialisedInventoryItemStates(this.Session);
 

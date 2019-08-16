@@ -195,7 +195,7 @@ namespace Allors.Domain
 
         public void BaseReplenishSalesOrders(IDerivation derivation)
         {
-            Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
+            var salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
             var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new[] { this.Part };
@@ -237,7 +237,7 @@ namespace Allors.Domain
 
         public void BaseDepleteSalesOrders(IDerivation derivation)
         {
-            Extent<SalesOrderItem> salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
+            var salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.Filter.AddExists(M.OrderItem.DeliveryDate);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Descending);

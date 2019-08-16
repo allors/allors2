@@ -28,8 +28,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var closed = new BudgetStates(this.Session).Closed;
             var opened = new BudgetStates(this.Session).Opened;
 

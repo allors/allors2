@@ -15,7 +15,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-
     public partial class ProductDimension
     {
         public void AddToBasePrice(BasePrice basePrice) => this.AddBasePrice(basePrice);

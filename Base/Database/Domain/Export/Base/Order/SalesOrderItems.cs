@@ -29,8 +29,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
             var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;

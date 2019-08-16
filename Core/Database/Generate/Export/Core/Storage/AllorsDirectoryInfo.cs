@@ -85,7 +85,7 @@ namespace Allors.Development.Repository.Storage
         {
             if (this.directoryInfo.Root.FullName.Equals(baseDirectory.directoryInfo.Root.FullName))
             {
-                AllorsDirectoryInfo commonAncestor = this.GetCommonAncestor(baseDirectory);
+                var commonAncestor = this.GetCommonAncestor(baseDirectory);
 
                 var ancestors = new List<AllorsDirectoryInfo>();
                 this.BuildAncestors(commonAncestor, ancestors);
@@ -94,7 +94,7 @@ namespace Allors.Development.Repository.Storage
                 baseDirectory.BuildAncestors(commonAncestor, baseAncestors);
 
                 var relativePath = new StringBuilder();
-                foreach (AllorsDirectoryInfo baseAncestor in baseAncestors)
+                foreach (var baseAncestor in baseAncestors)
                 {
                     if (relativePath.Length > 0)
                     {
@@ -106,7 +106,7 @@ namespace Allors.Development.Repository.Storage
 
                 for (int i = ancestors.Count - 1; i >= 0; --i)
                 {
-                    AllorsDirectoryInfo ancestor = ancestors[i];
+                    var ancestor = ancestors[i];
                     if (relativePath.Length > 0)
                     {
                         relativePath.Append(Path.DirectorySeparatorChar);

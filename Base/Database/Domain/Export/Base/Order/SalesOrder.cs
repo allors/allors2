@@ -480,7 +480,7 @@ namespace Allors.Domain
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
 
-                foreach (SalesOrderItem item in validOrderItems)
+                foreach (var item in validOrderItems)
                 {
                     if (!item.ExistSalesOrderItemWhereOrderedWithFeature)
                     {
@@ -568,7 +568,7 @@ namespace Allors.Domain
                 decimal totalUnitBasePrice = 0;
                 decimal totalListPrice = 0;
 
-                foreach (SalesOrderItem item1 in validOrderItems)
+                foreach (var item1 in validOrderItems)
                 {
                     if (item1.TotalExVat > 0)
                     {
@@ -622,7 +622,7 @@ namespace Allors.Domain
                 var somethingToShip = false;
                 var allItemsAvailable = true;
 
-                foreach (SalesOrderItem salesOrderItem1 in validOrderItems)
+                foreach (var salesOrderItem1 in validOrderItems)
                 {
                     if (!this.PartiallyShip && salesOrderItem1.QuantityRequestsShipping != salesOrderItem1.QuantityOrdered)
                     {
@@ -648,7 +648,7 @@ namespace Allors.Domain
             {
                 this.CanInvoice = false;
 
-                foreach (SalesOrderItem orderItem2 in validOrderItems)
+                foreach (var orderItem2 in validOrderItems)
                 {
                     var amountAlreadyInvoiced1 = orderItem2.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
 

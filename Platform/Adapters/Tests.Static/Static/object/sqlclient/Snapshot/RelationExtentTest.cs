@@ -25,7 +25,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
     using System;
     using Adapters;
 
-    public class RelationExtentTest : Allors.Adapters.RelationExtentTest, IDisposable
+    public class RelationExtentTest : Adapters.RelationExtentTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

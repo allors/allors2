@@ -67,8 +67,8 @@ namespace Allors.Adapters.Memory
             {
                 this.Strategies = new List<Strategy>();
 
-                HashSet<Strategy> allStrategies = this.Session.GetStrategiesForExtentIncludingDeleted(this.objectType);
-                foreach (Strategy strategy in allStrategies)
+                var allStrategies = this.Session.GetStrategiesForExtentIncludingDeleted(this.objectType);
+                foreach (var strategy in allStrategies)
                 {
                     if (!strategy.IsDeleted)
                     {

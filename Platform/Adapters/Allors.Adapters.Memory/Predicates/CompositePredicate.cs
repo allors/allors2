@@ -34,7 +34,7 @@ namespace Allors.Adapters.Memory
         {
             get
             {
-                foreach (Predicate filter in this.predicates)
+                foreach (var filter in this.predicates)
                 {
                     if (filter.Include)
                     {
@@ -50,7 +50,7 @@ namespace Allors.Adapters.Memory
 
         public ICompositePredicate AddAnd()
         {
-            And andFilter = new And(this.extent);
+            var andFilter = new And(this.extent);
             this.predicates.Add(andFilter);
             this.extent.Invalidate();
             return andFilter;
@@ -208,7 +208,7 @@ namespace Allors.Adapters.Memory
 
         public ICompositePredicate AddNot()
         {
-            Not notFilter = new Not(this.extent);
+            var notFilter = new Not(this.extent);
             this.predicates.Add(notFilter);
             this.extent.Invalidate();
             return notFilter;
@@ -216,7 +216,7 @@ namespace Allors.Adapters.Memory
 
         public ICompositePredicate AddOr()
         {
-            Or orFilter = new Or(this.extent);
+            var orFilter = new Or(this.extent);
             this.predicates.Add(orFilter);
             this.extent.Invalidate();
             return orFilter;

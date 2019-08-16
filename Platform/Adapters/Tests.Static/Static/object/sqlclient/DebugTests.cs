@@ -138,7 +138,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     C1[] extent = session.Extent<C1>();
 
-                    foreach (C1 c1 in extent)
+                    foreach (var c1 in extent)
                     {
                         Assert.Equal(c1.Strategy.Class, C1.Meta.ObjectType);
                     }

@@ -7,13 +7,12 @@
 
 namespace Allors.Domain
 {
-    using global::System.Collections.Generic;
+    using System.Collections.Generic;
 
     using Allors;
 
     public partial class C2
     {
-
         public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

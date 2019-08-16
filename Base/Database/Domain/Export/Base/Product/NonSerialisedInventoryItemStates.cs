@@ -41,8 +41,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new NonSerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
                 .WithName("Good")

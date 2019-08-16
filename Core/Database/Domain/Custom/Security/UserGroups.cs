@@ -8,7 +8,7 @@
 
 namespace Allors.Domain
 {
-    using global::System;
+    using System;
 
     public partial class UserGroups
     {

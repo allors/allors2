@@ -127,10 +127,10 @@ namespace Allors
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> at the specified index.
+        /// Gets or sets the <see cref="object"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
-        /// <value>The <see cref="System.Object"/> at the specified index</value>
+        /// <value>The <see cref="object"/> at the specified index</value>
         object IList.this[int index]
         {
             get => this.extent[index];

@@ -41,8 +41,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new QuoteItemStateBuilder(this.Session)
                 .WithUniqueId(DraftId)
                 .WithName("Draft")

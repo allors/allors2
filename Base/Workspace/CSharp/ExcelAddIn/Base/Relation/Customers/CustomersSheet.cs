@@ -16,8 +16,8 @@ namespace Allors.Excel.Customers
     using Microsoft.Office.Interop.Excel;
 
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
-    using Result = Allors.Workspace.Client.Result;
-    using Sheets = Allors.Excel.Sheets;
+    using Result = Workspace.Client.Result;
+    using Sheets = Sheets;
     using Task = System.Threading.Tasks.Task;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 

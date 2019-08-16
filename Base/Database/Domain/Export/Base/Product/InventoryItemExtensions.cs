@@ -53,7 +53,7 @@ namespace Allors.Domain
                 owner = item.SerialisedItem?.OwnedBy;
             }
 
-            foreach (InventoryOwnership inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))
+            foreach (var inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))
             {
                 if (!Equals(inventoryOwnership.Owner, owner))
                 {

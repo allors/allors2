@@ -29,7 +29,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Adapters;
 
-    public class Many2ManyTest : Allors.Adapters.Many2ManyTest, IDisposable
+    public class Many2ManyTest : Adapters.Many2ManyTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

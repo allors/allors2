@@ -37,7 +37,7 @@ namespace Allors.Domain
 
             foreach (Locale locale in this.Strategy.Session.GetSingleton().AdditionalLocales)
             {
-                if (existingLocalisedtexts.TryGetValue(locale, out LocalisedText localisedText))
+                if (existingLocalisedtexts.TryGetValue(locale, out var localisedText))
                 {
                     localisedText.Text = this.Value;
                     existingLocalisedtexts.Remove(locale);
@@ -52,7 +52,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (LocalisedText localisedText in existingLocalisedtexts.Values)
+            foreach (var localisedText in existingLocalisedtexts.Values)
             {
                 this.RemoveLocalisedValue(localisedText);
             }

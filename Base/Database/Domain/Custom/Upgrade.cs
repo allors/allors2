@@ -7,12 +7,12 @@ namespace Allors
     {
         private readonly ISession session;
 
-        private DirectoryInfo DataPath;
+        private readonly DirectoryInfo dataPath;
 
         public Upgrade(ISession session, DirectoryInfo dataPath)
         {
             this.session = session;
-            this.DataPath = dataPath;
+            this.dataPath = dataPath;
         }
 
         public void Execute()

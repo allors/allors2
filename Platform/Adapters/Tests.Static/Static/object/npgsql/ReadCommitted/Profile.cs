@@ -56,7 +56,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
-            var configuration = new Npgsql.Configuration
+            var configuration = new Configuration
             {
                 ObjectFactory = this.ObjectFactory,
                 ConnectionString = this.ConnectionString,
@@ -75,7 +75,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         public override IDatabase CreateDatabase()
         {
-            var configuration = new Npgsql.Configuration
+            var configuration = new Configuration
             {
                 ObjectFactory = this.ObjectFactory,
                 ConnectionString = this.ConnectionString

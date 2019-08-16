@@ -27,7 +27,7 @@ namespace Tests
         public static readonly string DatabaseInitUrl = $"{ServerUrl}/Test/Init";
         public static readonly string DatabaseTimeShiftUrl = $"{ServerUrl}/Test/TimeShift";
 
-        private static FileInfo populationFileInfo;
+        private static readonly FileInfo populationFileInfo;
         private static string population;
 
         static Test()

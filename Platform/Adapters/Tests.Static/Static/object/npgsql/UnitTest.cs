@@ -38,7 +38,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             // Positive
             {
-                C1 values = C1.Create(this.Session);
+                var values = C1.Create(this.Session);
                 values.C1AllorsDecimal = 10.10m;
                 values.I1AllorsDecimal = 10.10m;
                 values.S1AllorsDecimal = 10.10m;
@@ -52,7 +52,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // Negative
             {
-                C1 values = C1.Create(this.Session);
+                var values = C1.Create(this.Session);
                 values.C1AllorsDecimal = -10.10m;
                 values.I1AllorsDecimal = -10.10m;
                 values.S1AllorsDecimal = -10.10m;
@@ -67,7 +67,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // Zero
             {
-                C1 values = C1.Create(this.Session);
+                var values = C1.Create(this.Session);
                 values.C1AllorsDecimal = 0m;
                 values.I1AllorsDecimal = 0m;
                 values.S1AllorsDecimal = 0m;
@@ -82,7 +82,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // initial empty
             {
-                C1 values = C1.Create(this.Session);
+                var values = C1.Create(this.Session);
 
                 decimal? value = -1;
                 var exceptionThrown = false;
@@ -145,7 +145,7 @@ namespace Allors.Adapters.Object.Npgsql
 
             // reset empty
             {
-                C1 values = C1.Create(this.Session);
+                var values = C1.Create(this.Session);
                 values.C1AllorsDecimal = 10.10m;
                 values.I1AllorsDecimal = 10.10m;
                 values.S1AllorsDecimal = 10.10m;

@@ -68,8 +68,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new InvoiceItemTypeBuilder(this.Session)

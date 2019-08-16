@@ -197,7 +197,7 @@ namespace Allors.Domain
 
         public void Sync(PartyContactMechanism[] organisationContactMechanisms)
         {
-            foreach (PartyContactMechanism partyContactMechanism in organisationContactMechanisms)
+            foreach (var partyContactMechanism in organisationContactMechanisms)
             {
                 this.RemoveCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
 

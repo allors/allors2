@@ -47,8 +47,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new SalesInvoiceItemStateBuilder(this.Session)
                 .WithUniqueId(NotPaidId)
                 .WithName("NotPaid")

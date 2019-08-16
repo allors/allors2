@@ -17,7 +17,7 @@ namespace Tests.EmailCommunicationTests
     [Collection("Test collection")]
     public class PersonEmailCommunicationEditTest : Test
     {
-        private PersonListComponent personListPage;
+        private readonly PersonListComponent personListPage;
 
         public PersonEmailCommunicationEditTest(TestFixture fixture)
             : base(fixture)

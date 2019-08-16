@@ -154,7 +154,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SerialisedItemCharacteristic characteristic in characteristicsToDelete)
+            foreach (var characteristic in characteristicsToDelete)
             {
                 this.RemoveSerialisedItemCharacteristic(characteristic);
             }

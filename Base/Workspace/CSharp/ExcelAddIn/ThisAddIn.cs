@@ -29,12 +29,12 @@ namespace ExcelAddIn
             }
         }
 
-        private async void ThisAddIn_Startup(object sender, System.EventArgs @event)
+        private async void ThisAddIn_Startup(object sender, EventArgs @event)
         {
 
         }
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
+        private void ThisAddIn_Shutdown(object sender, EventArgs e)
         {
         }
 
@@ -46,8 +46,8 @@ namespace ExcelAddIn
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+            this.Startup += new EventHandler(ThisAddIn_Startup);
+            this.Shutdown += new EventHandler(ThisAddIn_Shutdown);
         }
 
         #endregion

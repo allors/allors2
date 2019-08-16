@@ -36,8 +36,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new PurchaseOrderPaymentStateBuilder(this.Session)
                 .WithUniqueId(NotPaidId)
                 .WithName("Not Paid")

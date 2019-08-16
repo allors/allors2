@@ -66,7 +66,7 @@ namespace Allors.Excel
         {
             if (this.Host.ActiveWorkbook.Styles.Cast<Style>().All(v => v.Name != "headerStyle"))
             {
-                Style style = this.Host.ActiveWorkbook.Styles.Add("headerStyle");
+                var style = this.Host.ActiveWorkbook.Styles.Add("headerStyle");
                 style.Font.Name = "Arial";
                 style.Font.Size = 10;
                 style.Font.Bold = true;

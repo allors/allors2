@@ -15,7 +15,7 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonOverviewTest : Test
     {
-        private readonly src.allors.material.custom.relations.people.PeopleComponent people;
+        private readonly PeopleComponent people;
 
         public PersonOverviewTest(TestFixture fixture)
             : base(fixture)

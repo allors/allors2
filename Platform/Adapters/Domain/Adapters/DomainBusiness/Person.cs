@@ -34,14 +34,14 @@ namespace Allors.Domain
 
         public static Person Create(ISession session, string name)
         {
-            Person person = Create(session);
+            var person = Create(session);
             person.Name = name;
             return person;
         }
 
         public static Person Create(ISession session, string name, int index)
         {
-            Person person = Create(session);
+            var person = Create(session);
             person.Name = name;
             person.Index = index;
             return person;

@@ -8,7 +8,7 @@ namespace Tests
 {
     using Allors;
     using Allors.Meta;
-    using global::Allors.Domain;
+    using Allors.Domain;
     using Xunit;
 
     public class AccessControlListsTests : DomainTest
@@ -294,7 +294,7 @@ namespace Tests
 
         private Permission FindPermission(ObjectType objectType, RoleType roleType, Operations operation)
         {
-            Extent<Permission> permissions = this.Session.Extent<Permission>();
+            var permissions = this.Session.Extent<Permission>();
             permissions.Filter.AddEquals(M.Permission.ConcreteClassPointer, objectType.Id);
             permissions.Filter.AddEquals(M.Permission.OperandTypePointer, roleType.Id);
             permissions.Filter.AddEquals(M.Permission.OperationEnum, operation);

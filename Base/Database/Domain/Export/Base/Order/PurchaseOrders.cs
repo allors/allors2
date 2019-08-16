@@ -28,8 +28,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var created = new PurchaseOrderStates(this.Session).Created;
             var onHold = new PurchaseOrderStates(this.Session).OnHold;
             var cancelled = new PurchaseOrderStates(this.Session).Cancelled;

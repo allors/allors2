@@ -22,9 +22,9 @@ using Allors.Domain;
 
 namespace Allors
 {
-    public class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog
+    public class CustomListDerivationLog : Domain.Logging.ListDerivationLog
     {
-        public Allors.Domain.Logging.Derivation Derivation { get; set; }
+        public Domain.Logging.Derivation Derivation { get; set; }
 
         public override void AddedDerivable(Object derivable)
         {

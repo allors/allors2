@@ -9,7 +9,7 @@ namespace Tests.PersonTests
     [Collection("Test collection")]
     public class PersonListTest : Test
     {
-        private PersonListComponent page;
+        private readonly PersonListComponent page;
 
         public PersonListTest(TestFixture fixture)
             : base(fixture)

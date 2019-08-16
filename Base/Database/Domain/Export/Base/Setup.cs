@@ -24,7 +24,6 @@ namespace Allors
 
     public partial class Setup
     {
-
         public void BaseOnPrePrepare()
         {
         }

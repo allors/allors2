@@ -36,8 +36,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new PurchaseOrderShipmentStateBuilder(this.Session)
                 .WithUniqueId(NotReceivedId)
                 .WithName("Not Received")

@@ -101,7 +101,7 @@ namespace Tests.ApplicationTests
                             if (action != null)
                             {
                                 var objects = this.Session.Instantiate(table.ObjectIds);
-                                foreach (IObject @object in objects)
+                                foreach (var @object in objects)
                                 {
                                     table.Action(@object, action);
 
@@ -139,7 +139,7 @@ namespace Tests.ApplicationTests
                     if (action != null)
                     {
                         var objects = this.Session.Instantiate(table.ObjectIds);
-                        foreach (IObject @object in objects)
+                        foreach (var @object in objects)
                         {
                             listPage = (Component)navigateTo.Invoke(this.Sidenav, null);
                             table.Action(@object, action);

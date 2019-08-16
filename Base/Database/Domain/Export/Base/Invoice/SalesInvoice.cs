@@ -301,7 +301,7 @@ namespace Allors.Domain
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.Quantity));
 
             // First run to calculate price
-            foreach (SalesInvoiceItem salesInvoiceItem in validInvoiceItems)
+            foreach (var salesInvoiceItem in validInvoiceItems)
             {
                 decimal quantityOrdered = 0;
 
@@ -319,7 +319,7 @@ namespace Allors.Domain
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.TotalBasePrice));
 
             // Second run to calculate price (because of order value break)
-            foreach (SalesInvoiceItem salesInvoiceItem in validInvoiceItems)
+            foreach (var salesInvoiceItem in validInvoiceItems)
             {
                 decimal quantityOrdered = 0;
                 decimal totalBasePrice = 0;
@@ -346,7 +346,7 @@ namespace Allors.Domain
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
 
-                foreach (SalesInvoiceItem item in validInvoiceItems)
+                foreach (var item in validInvoiceItems)
                 {
                     this.TotalBasePrice += item.TotalBasePrice;
                     this.TotalDiscount += item.TotalDiscount;
@@ -431,7 +431,7 @@ namespace Allors.Domain
                 decimal totalUnitBasePrice = 0;
                 decimal totalListPrice = 0;
 
-                foreach (SalesInvoiceItem item1 in validInvoiceItems)
+                foreach (var item1 in validInvoiceItems)
                 {
                     if (item1.TotalExVat > 0)
                     {
@@ -447,7 +447,7 @@ namespace Allors.Domain
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
             var salesInvoiceStates = new SalesInvoiceStates(derivation.Session);
 
-            foreach (SalesInvoiceItem invoiceItem in validInvoiceItems)
+            foreach (var invoiceItem in validInvoiceItems)
             {
                 if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.ReadyForPosting))
                 {
@@ -503,7 +503,7 @@ namespace Allors.Domain
                     this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
                 }
 
-                foreach (SalesInvoiceItem invoiceItem in validInvoiceItems)
+                foreach (var invoiceItem in validInvoiceItems)
                 {
                     if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
                         !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))

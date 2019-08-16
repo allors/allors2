@@ -58,7 +58,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void AddJoins(IObjectType rootClass, string alias)
         {
-            foreach (IRoleType role in this.referenceRoles)
+            foreach (var role in this.referenceRoles)
             {
                 var relationType = role.RelationType;
                 var association = relationType.AssociationType;
@@ -81,7 +81,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
 
-            foreach (IRoleType role in this.referenceRoleInstances)
+            foreach (var role in this.referenceRoleInstances)
             {
                 var relationType = role.RelationType;
 
@@ -100,7 +100,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
 
-            foreach (IAssociationType association in this.referenceAssociations)
+            foreach (var association in this.referenceAssociations)
             {
                 var relationType = association.RelationType;
                 var role = relationType.RoleType;
@@ -120,7 +120,7 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
 
-            foreach (IAssociationType association in this.referenceAssociationInstances)
+            foreach (var association in this.referenceAssociationInstances)
             {
                 var relationType = association.RelationType;
                 var role = relationType.RoleType;

@@ -33,7 +33,7 @@ namespace Allors.Adapters.Memory
         {
             get
             {
-                Strategy currentStrategy = this.strategyEnumerator.Current;
+                var currentStrategy = this.strategyEnumerator.Current;
                 if (currentStrategy == null)
                 {
                     return null;

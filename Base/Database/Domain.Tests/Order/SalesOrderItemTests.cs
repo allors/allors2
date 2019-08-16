@@ -34,8 +34,8 @@ namespace Allors.Domain
         private ProductCategory ancestorProductCategory;
         private ProductCategory parentProductCategory;
         private Good good;
-        private Good variantGood;
-        private Good variantGood2;
+        private readonly Good variantGood;
+        private readonly Good variantGood2;
         private Good virtualGood;
         private Part part;
         private Colour feature1;
@@ -854,7 +854,7 @@ namespace Allors.Domain
 
             //this.Session.Derive();
 
-            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig
+            var derivation = new Logging.Derivation(this.Session, new DerivationConfig
             {
                 DerivationLogFunc = () => new CustomListDerivationLog()
             }
@@ -1652,8 +1652,8 @@ namespace Allors.Domain
         private ProductCategory ancestorProductCategory;
         private ProductCategory parentProductCategory;
         private Good good;
-        private Good variantGood;
-        private Good variantGood2;
+        private readonly Good variantGood;
+        private readonly Good variantGood2;
         private Good virtualGood;
         private Part part;
         private Colour feature1;

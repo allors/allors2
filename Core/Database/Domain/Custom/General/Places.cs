@@ -13,7 +13,7 @@ namespace Allors.Domain
     {
         public Extent<Place> ExtentByPostalCode()
         {
-            Extent<Place> places = this.Session.Extent<Place>();
+            var places = this.Session.Extent<Place>();
             places.AddSort(M.Place.PostalCode);
 
             return places;

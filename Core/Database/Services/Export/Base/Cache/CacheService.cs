@@ -28,7 +28,7 @@ namespace Allors.Services
                 return (TValue)cache;
             }
 
-            return default;
+            return default(TValue);
         }
 
         public void Set<TKey, TValue>(TValue value) => this.caches[typeof(TKey)] = value;

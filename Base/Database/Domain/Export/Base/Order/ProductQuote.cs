@@ -308,7 +308,7 @@ namespace Allors.Domain
 
             var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
 
-            foreach (QuoteItem quoteItem in quoteItems)
+            foreach (var quoteItem in quoteItems)
             {
                 quoteItem.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
 

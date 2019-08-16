@@ -54,7 +54,7 @@ namespace Allors.Domain
             var credentials = (Credentials)xmlSerializer.Deserialize(reader);
             foreach (var credential in credentials.Records)
             {
-                User user = this.FindBy(this.Meta.UserName, credential.UserName);
+                var user = this.FindBy(this.Meta.UserName, credential.UserName);
                 if (user != null)
                 {
                     user.UserPasswordHash = credential.PasswordHash;

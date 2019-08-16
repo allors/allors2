@@ -19,11 +19,8 @@ namespace Allors.Domain
 
     public partial class PurchaseOrderApprovalsLevel1
     {
-
         protected override void BaseSecure(Security config)
         {
-
-
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
             config.GrantOwner(this.ObjectType, full);
         }

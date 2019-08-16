@@ -27,7 +27,7 @@ namespace Allors.Protocol.Data
 
     public static class PullExtensions
     {
-        public static Allors.Data.Pull Load(this Data.Pull @this, ISession session)
+        public static Allors.Data.Pull Load(this Pull @this, ISession session)
         {
             var pull = new Allors.Data.Pull
             {

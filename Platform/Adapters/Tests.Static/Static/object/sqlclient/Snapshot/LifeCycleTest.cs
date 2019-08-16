@@ -28,7 +28,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Allors;
 
-    public class LifeCycleTest : Allors.Adapters.LifeCycleTest, IDisposable
+    public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

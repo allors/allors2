@@ -1369,13 +1369,13 @@ namespace Allors.Adapters
 
                 foreach (var mark in this.Markers)
                 {
-                    C1 from = C1.Create(this.Session);
-                    C1 fromAnother = C1.Create(this.Session);
+                    var from = C1.Create(this.Session);
+                    var fromAnother = C1.Create(this.Session);
 
-                    C2 to1 = C2.Create(this.Session);
-                    C2 to2 = C2.Create(this.Session);
-                    C2 to3 = C2.Create(this.Session);
-                    C2 to4 = C2.Create(this.Session);
+                    var to1 = C2.Create(this.Session);
+                    var to2 = C2.Create(this.Session);
+                    var to3 = C2.Create(this.Session);
+                    var to4 = C2.Create(this.Session);
 
                     // To 0-4-0
                     mark();

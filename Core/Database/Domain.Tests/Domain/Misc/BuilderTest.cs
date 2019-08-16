@@ -6,7 +6,7 @@
 
 namespace Tests
 {
-    using global::Allors.Domain;
+    using Allors.Domain;
 
     using Xunit;
 

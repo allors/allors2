@@ -41,8 +41,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             var created = new PickListStates(this.Session).Created;
             var onHold = new PickListStates(this.Session).OnHold;
             var picked = new PickListStates(this.Session).Picked;

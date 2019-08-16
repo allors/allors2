@@ -25,7 +25,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer && this.ExistSalesRepresentative)
             {
-                Party tempQualifier = this.Customer;
+                var tempQualifier = this.Customer;
                 tempQualifier.RemoveCurrentSalesReps();
 
                 foreach (SalesRepRelationship salesRepRelationship in tempQualifier.SalesRepRelationshipsWhereCustomer)

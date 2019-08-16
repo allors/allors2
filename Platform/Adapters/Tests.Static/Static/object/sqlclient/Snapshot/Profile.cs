@@ -27,7 +27,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Profile : Allors.Adapters.Object.SqlClient.Profile
+    public class Profile : SqlClient.Profile
     {
         private readonly Prefetchers prefetchers = new Prefetchers();
 
@@ -108,7 +108,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
             return database;
         }
 
-        public override IDatabase CreatePopulation() => new Allors.Adapters.Memory.Database(this.ServiceProvider, new Allors.Adapters.Memory.Configuration { ObjectFactory = this.ObjectFactory });
+        public override IDatabase CreatePopulation() => new Memory.Database(this.ServiceProvider, new Memory.Configuration { ObjectFactory = this.ObjectFactory });
 
         public override IDatabase CreateDatabase()
         {

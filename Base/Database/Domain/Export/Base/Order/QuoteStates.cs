@@ -41,8 +41,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             new QuoteStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

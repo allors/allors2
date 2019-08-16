@@ -135,7 +135,7 @@ namespace Allors.Adapters
 
         public static void RolesExistExclusive(IObject allorsObject, params IRoleType[] roleTypes)
         {
-            foreach (IRoleType roleType in roleTypes)
+            foreach (var roleType in roleTypes)
             {
                 if (!allorsObject.Strategy.Class.ExistRoleType(roleType))
                 {
@@ -143,7 +143,7 @@ namespace Allors.Adapters
                 }
             }
 
-            foreach (IRoleType roleType in allorsObject.Strategy.Class.RoleTypes)
+            foreach (var roleType in allorsObject.Strategy.Class.RoleTypes)
             {
                 if (Array.IndexOf(roleTypes, roleType) >= 0)
                 {

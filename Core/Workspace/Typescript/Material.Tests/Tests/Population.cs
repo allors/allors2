@@ -12,7 +12,7 @@ namespace Tests
     {
         private readonly ISession session;
 
-        private DirectoryInfo dataPath;
+        private readonly DirectoryInfo dataPath;
 
         public Population(ISession session, DirectoryInfo dataPath)
         {

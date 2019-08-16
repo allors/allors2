@@ -18,11 +18,11 @@ namespace Allors.Domain.NonLogging
 
         protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation) => new DerivationNodes(derivation);
 
-        protected override void OnAddedDerivable(Domain.Object derivable)
+        protected override void OnAddedDerivable(Object derivable)
         {
         }
 
-        protected override void OnAddedDependency(Domain.Object dependent, Domain.Object dependee)
+        protected override void OnAddedDependency(Object dependent, Object dependee)
         {
         }
 
@@ -34,7 +34,7 @@ namespace Allors.Domain.NonLogging
         {
         }
 
-        protected override void OnPreDeriving(Domain.Object derivable)
+        protected override void OnPreDeriving(Object derivable)
         {
         }
 

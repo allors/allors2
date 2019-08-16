@@ -58,7 +58,7 @@ namespace Allors.Adapters.Memory
                 {
                     case ExtentOperationType.Union:
                         this.Strategies = firstOperandStrategies;
-                        foreach (Strategy strategy in secondOperandStrategies)
+                        foreach (var strategy in secondOperandStrategies)
                         {
                             if (!this.Strategies.Contains(strategy))
                             {
@@ -69,7 +69,7 @@ namespace Allors.Adapters.Memory
                         break;
                     case ExtentOperationType.Intersect:
                         this.Strategies = new List<Strategy>();
-                        foreach (Strategy strategy in firstOperandStrategies)
+                        foreach (var strategy in firstOperandStrategies)
                         {
                             if (secondOperandStrategies.Contains(strategy))
                             {
@@ -80,7 +80,7 @@ namespace Allors.Adapters.Memory
                         break;
                     case ExtentOperationType.Except:
                         this.Strategies = firstOperandStrategies;
-                        foreach (Strategy strategy in secondOperandStrategies)
+                        foreach (var strategy in secondOperandStrategies)
                         {
                             if (this.Strategies.Contains(strategy))
                             {

@@ -8,7 +8,7 @@
 
     public class PersonController : Controller
     {
-        private ISessionService allors;
+        private readonly ISessionService allors;
 
         public PersonController(ISessionService allorsContext) => this.allors = allorsContext;
 

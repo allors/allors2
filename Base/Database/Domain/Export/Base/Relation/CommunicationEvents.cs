@@ -28,8 +28,6 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-
-
             ObjectState scheduled = new CommunicationEventStates(this.Session).Scheduled;
             ObjectState cancelled = new CommunicationEventStates(this.Session).Cancelled;
             ObjectState closed = new CommunicationEventStates(this.Session).Completed;

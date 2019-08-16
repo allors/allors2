@@ -52,7 +52,6 @@ namespace Allors.Server
                     var result = await this.SignInManager.CheckPasswordSignInAsync(user, request.Password, false);
                     if (result.Succeeded)
                     {
-
                         var token = user.CreateToken(this.Configuration);
                         var response = new AuthenticationTokenResponse
                         {

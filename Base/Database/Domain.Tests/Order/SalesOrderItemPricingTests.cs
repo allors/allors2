@@ -32,9 +32,9 @@ namespace Allors.Domain
         private ProductCategory ancestorProductCategory;
         private ProductCategory parentProductCategory;
         private Good good;
-        private Good variantGood;
-        private Good variantGood2;
-        private Good virtualGood;
+        private readonly Good variantGood;
+        private readonly Good variantGood2;
+        private readonly Good virtualGood;
         private Part part;
         private Colour feature1;
         private Colour feature2;
@@ -47,7 +47,7 @@ namespace Allors.Domain
         private PostalAddress shipToContactMechanismKiev;
         private BasePrice currentBasePriceGeoBoundary;
         private BasePrice currentGoodBasePrice;
-        private BasePrice currentVirtualGoodBasePrice;
+        private readonly BasePrice currentVirtualGoodBasePrice;
         private BasePrice currentGood1Feature1BasePrice;
         private BasePrice currentFeature2BasePrice;
         private SupplierOffering goodPurchasePrice;

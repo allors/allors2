@@ -9,7 +9,7 @@ namespace Allors.Domain
 {
     public partial class LocalisedTexts
     {
-        protected override void CoreSecure(Domain.Security config)
+        protected override void CoreSecure(Security config)
         {
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
 

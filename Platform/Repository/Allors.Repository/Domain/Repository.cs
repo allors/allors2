@@ -277,7 +277,7 @@ namespace Allors.Repository.Domain
                             domain.PartialClassBySingularName.Add(classSingularName, partialClass);
                             domain.PartialTypeBySingularName.Add(classSingularName, partialClass);
 
-                            if (!this.ClassBySingularName.TryGetValue(classSingularName, out Class @class))
+                            if (!this.ClassBySingularName.TryGetValue(classSingularName, out var @class))
                             {
                                 @class = new Class(this.inflector, id, classSingularName);
                                 this.ClassBySingularName.Add(classSingularName, @class);

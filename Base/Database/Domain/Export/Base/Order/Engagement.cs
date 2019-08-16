@@ -17,7 +17,6 @@ namespace Allors.Domain
 {
     public partial class Engagement
     {
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             if (!this.ExistBillToContactMechanism && this.ExistBillToParty)

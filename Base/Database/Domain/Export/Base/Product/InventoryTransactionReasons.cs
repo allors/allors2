@@ -56,8 +56,6 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-
-
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             var serialisedStates = new SerialisedInventoryItemStates(this.Session);
             var nonSerialisedStates = new NonSerialisedInventoryItemStates(this.Session);

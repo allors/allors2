@@ -16,7 +16,7 @@ namespace Tests.Relations
     [Collection("Test collection")]
     public class PersonListTest : Test
     {
-        private src.allors.material.custom.relations.people.PeopleComponent page;
+        private readonly PeopleComponent page;
 
         public PersonListTest(TestFixture fixture)
             : base(fixture)

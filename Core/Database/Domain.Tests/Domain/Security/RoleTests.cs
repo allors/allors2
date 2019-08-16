@@ -8,7 +8,7 @@ namespace Tests
 {
     using Allors;
     using Allors.Meta;
-    using global::Allors.Domain;
+    using Allors.Domain;
     using Xunit;
     public class RoleTests : DomainTest
     {

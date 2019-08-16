@@ -1,4 +1,4 @@
-﻿// <copyright file="Startup.cs" company="PlaceholderCompany">
+// <copyright file="Startup.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -30,33 +30,6 @@ namespace Allors.Server
 
     public class Startup
     {
-        #region CustomListDerivationLog
-        private class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog
-        {
-            public Allors.Domain.Logging.Derivation Derivation { get; set; }
-
-            public override void AddedDerivable(Object derivable)
-            {
-                base.AddedDerivable(derivable);
-
-                if (derivable.Id == 787812)
-                {
-                    var setBreakpointHere = derivable;  // Set a breakpoint here to debug why derivable was added
-                }
-            }
-
-            public override void AddedDependency(Object dependent, Object dependee)
-            {
-                base.AddedDependency(dependent, dependee);
-
-                if (dependent.Id == 787812 || dependee.Id == 787812)
-                {
-                    var setBreakpointHere = (dependent.Id == 787812) ? dependent : dependee;  // Set breakpoint here to debug why dependency was added
-                }
-            }
-        }
-        #endregion
-
         public Startup(IConfiguration configuration) => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
@@ -217,6 +190,31 @@ namespace Allors.Server
                 {
                     routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 });
+        }
+
+        private class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog
+        {
+            public Allors.Domain.Logging.Derivation Derivation { get; set; }
+
+            public override void AddedDerivable(Object derivable)
+            {
+                base.AddedDerivable(derivable);
+
+                if (derivable.Id == 787812)
+                {
+                    var setBreakpointHere = derivable;  // Set a breakpoint here to debug why derivable was added
+                }
+            }
+
+            public override void AddedDependency(Object dependent, Object dependee)
+            {
+                base.AddedDependency(dependent, dependee);
+
+                if (dependent.Id == 787812 || dependee.Id == 787812)
+                {
+                    var setBreakpointHere = (dependent.Id == 787812) ? dependent : dependee;  // Set breakpoint here to debug why dependency was added
+                }
+            }
         }
     }
 }
