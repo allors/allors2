@@ -32,9 +32,7 @@ namespace Allors.Repository
 
         public Receipt[] Receipts { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

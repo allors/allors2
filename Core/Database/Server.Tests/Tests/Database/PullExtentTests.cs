@@ -1,5 +1,6 @@
-// <copyright file="PullExtentTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="PullExtentTests.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Server.Tests
@@ -95,7 +96,6 @@ namespace Server.Tests
 
             Assert.Equal(data.Id.ToString(), dataId);
         }
-
 
         [Fact]
         public async void WithExtentRef()

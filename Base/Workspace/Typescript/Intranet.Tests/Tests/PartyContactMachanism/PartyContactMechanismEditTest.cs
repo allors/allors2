@@ -135,7 +135,6 @@ namespace Tests.PartyContactMachanismTests
 
             //Assert.Equal(after.Length, before.Length);
 
-
             ////Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 28).Date, this.editPartyContactMechanism.FromDate.ToUniversalTime().Date);
             ////Assert.Equal(DateTimeFactory.CreateDate(DateTime.Now).AddYears(1).Date, this.editPartyContactMechanism.ThroughDate.Value.ToUniversalTime().Date);
             //Assert.Equal(2, this.editPartyContactMechanism.ContactPurposes.Count);

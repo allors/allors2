@@ -18,7 +18,6 @@ namespace Allors.Repository
         #endregion
         public int AllorsInteger { get; set; }
 
-
         #region inherited methods
         #endregion
 

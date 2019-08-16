@@ -45,9 +45,7 @@ namespace Allors.Repository
 
         public State State { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

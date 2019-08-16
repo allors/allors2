@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface FinancialAccountTransaction : Object
     {
 
-
         #region Allors
         [Id("04411b65-a0a1-4e2c-9d10-a0ecfcf6c3d2")]
         [AssociationId("340a61a7-3458-47ea-b41d-4c559fd8b1d2")]
@@ -20,7 +19,6 @@ namespace Allors.Repository
 
         string Description { get; set; }
 
-
         #region Allors
         [Id("07b3745c-581c-476b-a4a9-beacaa3bd700")]
         [AssociationId("7878206b-b4f9-4ddd-b69e-a041402844dd")]
@@ -28,7 +26,6 @@ namespace Allors.Repository
         #endregion
 
         DateTime EntryDate { get; set; }
-
 
         #region Allors
         [Id("8f777804-597a-4604-a553-251e2e9d6502")]

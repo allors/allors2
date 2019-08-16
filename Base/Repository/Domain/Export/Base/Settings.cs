@@ -133,7 +133,7 @@ namespace Allors.Repository
         public Facility DefaultFacility { get; set; }
 
         /// <summary>
-        /// Gets or Sets the InventoryStrategy used by this InternalOrganisation
+        /// Gets or Sets the InventoryStrategy used by this InternalOrganisation.
         /// </summary>
         #region Allors
         [Id("78D1D6C1-1F79-4B8A-9C85-F60C1A5594E4")]

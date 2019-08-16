@@ -1,5 +1,6 @@
-// <copyright file="PersonOverviewTest.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="PersonOverviewTest.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 using src.allors.material.custom.relations.people;
@@ -8,7 +9,6 @@ namespace Tests.Relations
 {
     using Allors.Domain;
     using Allors.Meta;
-
 
     using Xunit;
 

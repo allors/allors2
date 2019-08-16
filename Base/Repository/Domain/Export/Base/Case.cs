@@ -30,7 +30,6 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-
         #endregion
 
         #region ObjectStates
@@ -40,7 +39,7 @@ namespace Allors.Repository
         [AssociationId("4233007E-1897-4BE7-A2B8-AFE5AE2F348A")]
         [RoleId("60B1D7BB-DB13-45A4-88D1-D301EEBB18E2")]
         [Indexed]
-        #endregion        
+        #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         public CaseState PreviousCaseState { get; set; }
@@ -106,7 +105,6 @@ namespace Allors.Repository
         public string Description { get; set; }
 
         #region inherited methods
-
 
         public void OnBuild() { }
 

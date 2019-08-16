@@ -25,8 +25,6 @@ namespace Allors.Repository
 
         public string Message { get; set; }
 
-
-
         public decimal AmountPaid { get; set; }
 
         public decimal Quantity { get; set; }
@@ -45,8 +43,6 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-
-
         public VatRegime VatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
@@ -55,25 +51,17 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-
-
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
-
-
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-
-
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
-
-
 
         public decimal TotalDiscount { get; set; }
 
@@ -84,8 +72,6 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalExVat { get; set; }
-
-
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 

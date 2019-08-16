@@ -45,9 +45,7 @@ namespace Allors.Repository
 
         public Person Person { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -19,7 +19,6 @@ namespace Allors.Repository
         [Scale(2)]
         decimal Cost { get; set; }
 
-
         #region Allors
         [Id("78a7ee9c-4aeb-471d-ae17-5878737f1f67")]
         [AssociationId("d4e26be2-9adc-4ded-b373-e88c7ecd7e29")]
@@ -31,7 +30,6 @@ namespace Allors.Repository
 
         Currency Currency { get; set; }
 
-
         #region Allors
         [Id("ce0f4392-cf76-49ba-a6bd-47b4e125ec61")]
         [AssociationId("acc9ae9a-8cb4-46cc-a507-db82759435d8")]
@@ -42,7 +40,6 @@ namespace Allors.Repository
 
         Organisation Organisation { get; set; }
 
-
         #region Allors
         [Id("d5e63839-7009-4582-8d9a-ac9591aa10c9")]
         [AssociationId("bfc2363f-b9ef-43ba-b5de-83104b9492ba")]
@@ -51,7 +48,6 @@ namespace Allors.Repository
         [Size(-1)]
 
         string Description { get; set; }
-
 
         #region Allors
         [Id("e7942246-0343-437e-9b92-fc2d5e6438fd")]

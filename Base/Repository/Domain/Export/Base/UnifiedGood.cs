@@ -60,7 +60,6 @@ namespace Allors.Repository
         public decimal QuantityCommittedOut { get; set; }
         public decimal QuantityExpectedIn { get; set; }
 
-
         #endregion
 
         #region inherited methods

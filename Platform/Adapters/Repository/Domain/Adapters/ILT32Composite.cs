@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial interface ILT32Composite : Object
     {
 
-
         #region Allors
         [Id("be3fc71d-66d8-411f-ab5f-4ed91e437852")]
         [AssociationId("a0cba3a2-b964-46c0-9c84-0dcf4b7e91f7")]
@@ -18,7 +17,6 @@ namespace Allors.Repository
         #endregion
         ILT32Composite Self3 { get; set; }
 
-
         #region Allors
         [Id("c03a8b50-7fd1-4304-9d45-2c699fcbee80")]
         [AssociationId("a0eb47f7-e308-4d59-b7ef-439def081e76")]
@@ -26,7 +24,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         #endregion
         ILT32Composite Self2 { get; set; }
-
 
         #region Allors
         [Id("d0eeeb45-97a6-465e-9a05-7e0fa970a969")]

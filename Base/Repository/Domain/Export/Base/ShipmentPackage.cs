@@ -54,9 +54,7 @@ namespace Allors.Repository
 
         public int SequenceNumber { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

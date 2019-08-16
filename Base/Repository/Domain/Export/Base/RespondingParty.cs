@@ -43,9 +43,7 @@ namespace Allors.Repository
 
         public Party Party { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

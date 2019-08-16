@@ -57,9 +57,7 @@ namespace Allors.Repository
 
         public CreditCard CreditCard { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

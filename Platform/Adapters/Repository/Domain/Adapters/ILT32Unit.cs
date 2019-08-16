@@ -16,7 +16,6 @@ namespace Allors.Repository
         #endregion
         string AllorsString1 { get; set; }
 
-
         #region Allors
         [Id("b2734796-7140-4830-a0de-88df7d27b6a8")]
         [AssociationId("182f98a8-db0b-4809-bb02-d1f3dea4d55f")]
@@ -24,7 +23,6 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         string AllorsString3 { get; set; }
-
 
         #region Allors
         [Id("ced16c48-6301-4652-8dcb-ed8a80ea7ce4")]

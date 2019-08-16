@@ -1,18 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="SerializationTest.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Adapters
 {
@@ -209,7 +199,6 @@ namespace Allors.Adapters
                         {
                             this.Population.Load(reader);
                         }
-
 
                         using (var session = this.Population.CreateSession())
                         {
@@ -417,7 +406,6 @@ namespace Allors.Adapters
             {
                 init();
 
-
                 var population = this.CreatePopulation();
                 var session = population.CreateSession();
 
@@ -582,7 +570,6 @@ namespace Allors.Adapters
                         Assert.Equal(c1.Strategy.ObjectVersion, otherC1.Strategy.ObjectVersion);
                     }
 
-
                     // Change
                     c1.C1AllorsString = "Changed";
 
@@ -720,7 +707,6 @@ namespace Allors.Adapters
                 }
             }
         }
-
 
         [Fact]
         public void CantLoadObjects()
@@ -895,7 +881,6 @@ namespace Allors.Adapters
             }
         }
 
-
         [Fact]
         public void CantLoadCompositeRelation()
         {
@@ -964,7 +949,6 @@ namespace Allors.Adapters
             }
         }
 
-
         [Fact]
         public void CantLoadCompositeRole()
         {
@@ -1032,7 +1016,6 @@ namespace Allors.Adapters
                 }
             }
         }
-
 
         protected abstract IDatabase CreatePopulation();
 

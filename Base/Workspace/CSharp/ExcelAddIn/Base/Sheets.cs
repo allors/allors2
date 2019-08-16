@@ -48,7 +48,7 @@ namespace Allors.Excel
             this.SheetByVstoWorksheet[worksheet] = sheet;
             return sheet;
         }
-        
+
         public SalesInvoicesOverdueSheet CreateSalesInvoicesOverdue()
         {
             var worksheet = this.Host.ActiveWorksheet;
@@ -74,7 +74,7 @@ namespace Allors.Excel
                 style.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange);
                 style.Interior.Pattern = XlPattern.xlPatternSolid;
             }
-          
+
         }
 
         private Sheet Instantiate(Worksheet worksheet)

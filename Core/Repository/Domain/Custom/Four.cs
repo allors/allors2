@@ -10,7 +10,6 @@ namespace Allors.Repository
         #region inherited properties
         #endregion
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

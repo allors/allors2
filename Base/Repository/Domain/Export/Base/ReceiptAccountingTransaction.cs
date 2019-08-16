@@ -43,9 +43,7 @@ namespace Allors.Repository
 
         public Receipt Receipt { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -40,9 +40,7 @@ namespace Allors.Repository
 
         public int Year { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -78,9 +78,7 @@ namespace Allors.Repository
 
         public bool Announcement { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

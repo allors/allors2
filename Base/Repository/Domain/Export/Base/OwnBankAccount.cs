@@ -48,9 +48,7 @@ namespace Allors.Repository
 
         public BankAccount BankAccount { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

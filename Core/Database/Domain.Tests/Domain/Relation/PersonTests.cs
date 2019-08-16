@@ -1,11 +1,11 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PersonTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+
+// <copyright file="PersonTests.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Defines the PersonTests type.
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Tests
 {
@@ -27,7 +27,6 @@ namespace Tests
             var error = log.Errors[0];
             Assert.Equal(error.RoleTypes[0], M.Person.LastName);
         }
-
 
         [Fact]
         public void Fullname()

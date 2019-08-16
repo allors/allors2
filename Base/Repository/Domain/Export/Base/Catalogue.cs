@@ -99,7 +99,6 @@ namespace Allors.Repository
         public CatScope CatScope { get; set; }
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }

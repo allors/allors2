@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="RelationTypeManyXmlWriter.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
@@ -29,7 +16,7 @@ namespace Allors.Adapters.Object.SqlClient
     using Meta;
 
     /// <summary>
-    /// Writes all relations from a <see cref="IRelationType"/> with a <see cref="IRoleType"/> with multiplicity of many 
+    /// Writes all relations from a <see cref="IRelationType"/> with a <see cref="IRoleType"/> with multiplicity of many
     /// to the <see cref="XmlWriter"/> during a <see cref="IDatabase#Save"/>.
     /// </summary>
     internal class RelationTypeManyXmlWriter : IDisposable

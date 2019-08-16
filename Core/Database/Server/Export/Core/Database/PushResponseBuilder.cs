@@ -1,8 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PushResponseBuilder.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿
+// <copyright file="PushResponseBuilder.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Server
 {
@@ -184,7 +184,7 @@ namespace Allors.Server
                                 role = Serialization.ReadString((string)role, unitType.UnitTag);
                             }
 
-                            // Json.net deserializes number to long or double, instead of int. 
+                            // Json.net deserializes number to long or double, instead of int.
                             if (unitType.IsInteger && role != null && !(role is int))
                             {
                                 role = Convert.ToInt32(role);

@@ -28,7 +28,6 @@ namespace Allors.Repository
         #endregion
         public string HouseNumber { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

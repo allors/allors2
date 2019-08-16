@@ -1,8 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DerivationService.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+
+// <copyright file="DerivationService.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Services
 {
@@ -13,7 +13,6 @@ namespace Allors.Services
         private readonly DerivationConfig config;
 
         public DerivationService(DerivationConfig config) => this.config = config;
-
 
         public IDerivation CreateDerivation(ISession session)
         {

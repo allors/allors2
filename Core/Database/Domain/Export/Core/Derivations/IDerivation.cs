@@ -1,9 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="IDerivation.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable StyleCop.SA1121
 namespace Allors.Domain
@@ -39,22 +38,22 @@ namespace Allors.Domain
         void Add(IEnumerable<Object> derivables);
 
         /// <summary>
-        /// The dependee is derived before the dependent object
+        /// The dependee is derived before the dependent object.
         /// </summary>
-        /// <param name="dependent">The dependent object</param>
-        /// <param name="dependee">The dependee object</param>
+        /// <param name="dependent">The dependent object.</param>
+        /// <param name="dependee">The dependee object.</param>
         void AddDependency(Object dependent, Object dependee);
 
         /// <summary>
-        /// Gets or sets a value indicating if this derivable object is modified. 
-        /// The object is considered modified if
+        /// Gets or sets a value indicating if this derivable object is modified.
+        /// The object is considered modified if.
         /// <ul>
         /// <li>it has been created</li>
         /// <li>it has changed roles</li>
         /// </ul>
         /// </summary>
         /// <param name="derivable">The derivable object.</param>
-        /// <returns>a value indicating if this derivable object is modified</returns>
+        /// <returns>a value indicating if this derivable object is modified.</returns>
         bool IsModified(Object derivable);
 
         bool IsModified(Object derivable, RelationKind kind);

@@ -57,9 +57,7 @@ namespace Allors.Repository
         [Workspace]
         public string ContactNumber { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -41,9 +41,7 @@ namespace Allors.Repository
 
         public PerformanceReviewItemType PerformanceReviewItemType { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -41,9 +41,7 @@ namespace Allors.Repository
 
         public FixedAsset FixedAsset { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

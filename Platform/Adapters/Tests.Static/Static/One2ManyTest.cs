@@ -1,25 +1,11 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="One2ManyTest.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Defines the Default type.
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Adapters
 {
@@ -221,7 +207,7 @@ namespace Allors.Adapters
                         Assert.Null(to4.C1WhereC1C1one2many);
                         Assert.Null(to4.C1WhereC1C1one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveC1C1one2many(to1);
                         from.RemoveC1C1one2many(to1);
                         from.AddC1C1one2many(to1);
@@ -366,7 +352,7 @@ namespace Allors.Adapters
                         Assert.False(to4.ExistC1WhereC1C1one2many);
                         Assert.False(to4.ExistC1WhereC1C1one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveC1C1one2many(to1);
                         from.RemoveC1C1one2many(to1);
                         from.AddC1C1one2many(to1);
@@ -816,7 +802,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.C1WhereC1C2one2many);
                     Assert.Null(to4.C1WhereC1C2one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1C2one2many(to1);
 
                     mark();
@@ -1148,7 +1134,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.C1WhereC1I1one2many);
                     Assert.Null(to4.C1WhereC1I1one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1I1one2many(to1);
 
                     mark();
@@ -1473,7 +1459,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.C1WhereC1I2one2many);
                     Assert.Null(to4.C1WhereC1I2one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1I2one2many(to1);
 
                     mark();
@@ -1788,7 +1774,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.C3WhereC3C4one2many);
                     Assert.Null(to4.C3WhereC3C4one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC3C4one2many(to1);
 
                     mark();
@@ -2161,7 +2147,7 @@ namespace Allors.Adapters
                         Assert.Null(to4.I1WhereI1I12one2many);
                         Assert.Null(to4.I1WhereI1I12one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2many(to1);
                         from.RemoveI1I12one2many(to1);
                         from.AddI1I12one2many(to1);
@@ -2306,7 +2292,7 @@ namespace Allors.Adapters
                         Assert.False(to4.ExistI1WhereI1I12one2many);
                         Assert.False(to4.ExistI1WhereI1I12one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2many(to1);
                         from.RemoveI1I12one2many(to1);
                         from.AddI1I12one2many(to1);
@@ -2678,7 +2664,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.I1WhereI1I1one2many);
                     Assert.Null(to4.I1WhereI1I1one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveI1I1one2many(to1);
 
                     mark();
@@ -3004,7 +2990,7 @@ namespace Allors.Adapters
                     Assert.Null(to3.I1WhereI1I2one2many);
                     Assert.Null(to4.I1WhereI1I2one2many);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveI1I2one2many(to1);
 
                     mark();
@@ -3377,7 +3363,7 @@ namespace Allors.Adapters
                         Assert.Null(to4.I1WhereI1I34one2many);
                         Assert.Null(to4.I1WhereI1I34one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I34one2many(to1);
                         from.RemoveI1I34one2many(to1);
                         from.AddI1I34one2many(to1);
@@ -3523,7 +3509,7 @@ namespace Allors.Adapters
                         Assert.False(to4.ExistI1WhereI1I34one2many);
                         Assert.False(to4.ExistI1WhereI1I34one2many);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I34one2many(to1);
                         from.RemoveI1I34one2many(to1);
                         from.AddI1I34one2many(to1);

@@ -39,9 +39,7 @@ namespace Allors.Repository
 
         public SalaryStep[] SalarySteps { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

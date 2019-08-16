@@ -157,7 +157,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }

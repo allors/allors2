@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="MailboxAddress.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -11,7 +11,7 @@ namespace Allors.Domain
     using Allors.Meta;
 
     /// <summary>
-    /// A MailboxAddress is a address in a mailbox in the postoffice
+    /// A MailboxAddress is a address in a mailbox in the postoffice.
     /// </summary>
     public partial class MailboxAddress
     {

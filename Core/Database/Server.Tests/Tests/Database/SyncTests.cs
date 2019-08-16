@@ -1,5 +1,6 @@
-// <copyright file="SyncTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="SyncTests.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Server.Tests
@@ -39,7 +40,6 @@ namespace Server.Tests
             Assert.Equal(person.GetType().Name, syncObject.T);
             Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
         }
-
 
         [Fact]
         public async void DeletedObject()

@@ -63,9 +63,7 @@ namespace Allors.Repository
 
         public EmploymentApplicationSource EmploymentApplicationSource { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

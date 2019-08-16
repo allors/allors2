@@ -12,7 +12,6 @@ namespace Allors.Repository
         #region inherited properties
         #endregion
 
-
         #region inherited methods
         #endregion
 

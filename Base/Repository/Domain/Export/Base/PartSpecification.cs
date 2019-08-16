@@ -37,7 +37,7 @@ namespace Allors.Repository
         #endregion
 
         #region ObjectStates
-        #region 
+        #region
         #region Allors
         [Id("99C34A9A-D41A-415C-A4B7-2D1931451A68")]
         [AssociationId("E2F5FF24-EA16-48BD-9000-92EA64BEF2B2")]

@@ -1,22 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="Setup.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// 
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Linq;
@@ -159,7 +145,6 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null);
-
 
             // Give Administrator access
             new EmploymentBuilder(this.session).WithEmployee(administrator).WithEmployer(allors).Build();

@@ -25,7 +25,7 @@ namespace Allors.Repository
         #endregion
 
         /// <summary>
-        /// Gets or Sets a flag to indicate if Manual Entry Is Allowed for this Transaction Reason
+        /// Gets or Sets a flag to indicate if Manual Entry Is Allowed for this Transaction Reason.
         /// </summary>
         #region Allors
         [Id("2CC54ADD-BB3C-4AE9-8970-917D84EC368F")]
@@ -77,7 +77,7 @@ namespace Allors.Repository
         public bool IncreasesQuantityOnHand { get; set; }
 
         /// <summary>
-        /// Gets or Sets the Default NonSerialisedInventoryItemState which corresponds to this InventoryTransactionReason
+        /// Gets or Sets the Default NonSerialisedInventoryItemState which corresponds to this InventoryTransactionReason.
         /// </summary>
         #region Allors
         [Id("AE9F412A-EF95-4389-BEC2-919809BB5576")]
@@ -91,7 +91,7 @@ namespace Allors.Repository
         public NonSerialisedInventoryItemState DefaultNonSerialisedInventoryItemState { get; set; }
 
         /// <summary>
-        /// Gets or Sets the Default SerialisedInventoryItemState which corresponds to this InventoryTransactionReason
+        /// Gets or Sets the Default SerialisedInventoryItemState which corresponds to this InventoryTransactionReason.
         /// </summary>
         #region Allors
         [Id("D9B698C9-E5EC-4E1E-88AB-C8E3672835FF")]
@@ -105,7 +105,6 @@ namespace Allors.Repository
         public SerialisedInventoryItemState DefaultSerialisedInventoryItemState { get; set; }
 
         #region inherited methods
-
 
         public void OnBuild() { }
 

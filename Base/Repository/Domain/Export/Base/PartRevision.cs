@@ -49,9 +49,7 @@ namespace Allors.Repository
 
         public Part Part { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

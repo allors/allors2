@@ -11,7 +11,6 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-
         public string Description { get; set; }
 
         public BudgetRevision[] BudgetRevisions { get; set; }

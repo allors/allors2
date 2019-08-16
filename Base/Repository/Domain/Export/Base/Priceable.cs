@@ -141,7 +141,6 @@ namespace Allors.Repository
         [Workspace]
         decimal TotalBasePrice { get; set; }
 
-
         #region Allors
         [Id("32792771-06c8-4805-abc4-2e2f9c37c6f3")]
         [AssociationId("8f165d5a-ad87-431f-bea6-b8531f78d731")]

@@ -18,7 +18,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Dictionary<string, SchemaTableColumn> ColumnByLowercaseColumnName => this.columnByLowercaseColumnName;
 
-
         public Schema Schema { get; }
 
         public SchemaTableColumn GetColumn(string columnName)

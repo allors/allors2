@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface ExternalAccountingTransaction : AccountingTransaction
     {
 
-
         #region Allors
         [Id("327fc2cb-9589-4e9d-b9e6-7429cbe14746")]
         [AssociationId("5fdf05a4-933c-42d9-897c-b68c6671f785")]
@@ -21,7 +20,6 @@ namespace Allors.Repository
         [Required]
 
         Party FromParty { get; set; }
-
 
         #region Allors
         [Id("681312d3-63cd-45a2-883c-4a907d379f52")]

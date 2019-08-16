@@ -19,7 +19,6 @@ namespace Allors.Repository
         #endregion
         public Two Two { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

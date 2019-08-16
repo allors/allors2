@@ -8,7 +8,7 @@ namespace Allors.Repository
     public partial interface InventoryItem : UniquelyIdentifiable, Transitional, Deletable, Versioned
     {
         /// <summary>
-        /// Gets or sets the Part for which this InventoryItem tracks inventory information
+        /// Gets or sets the Part for which this InventoryItem tracks inventory information.
         /// </summary>
         #region Allors
         [Id("BCC41DF1-D526-4C78-8F68-B32AB104AD12")]
@@ -22,7 +22,7 @@ namespace Allors.Repository
         Part Part { get; set; }
 
         /// <summary>
-        /// Gets or sets the Facility at which this InventoryItem tracks inventory information
+        /// Gets or sets the Facility at which this InventoryItem tracks inventory information.
         /// </summary>
         #region Allors
         [Id("BC234CEA-DC2E-4BDC-B911-5A12D1D6F354")]
@@ -36,7 +36,7 @@ namespace Allors.Repository
         Facility Facility { get; set; }
 
         /// <summary>
-        /// Gets or sets the UnitOfMeasure which describes the inventory tracked by this Inventory Item
+        /// Gets or sets the UnitOfMeasure which describes the inventory tracked by this Inventory Item.
         /// </summary>
         #region Allors
         [Id("D276D126-34D3-4820-884C-EC9944B5E10B")]
@@ -60,7 +60,7 @@ namespace Allors.Repository
         string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the (optional) Lot in which this InventoryItem tracks inventory information
+        /// Gets or sets the (optional) Lot in which this InventoryItem tracks inventory information.
         /// </summary>
         #region Allors
         [Id("8573F543-0EB9-4A5E-A68F-CC69CD5CF8F9")]

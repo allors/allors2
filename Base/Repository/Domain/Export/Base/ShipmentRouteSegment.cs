@@ -106,9 +106,7 @@ namespace Allors.Repository
 
         public Organisation Carrier { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

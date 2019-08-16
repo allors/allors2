@@ -44,9 +44,7 @@ namespace Allors.Repository
 
         public Skill Skill { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

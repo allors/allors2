@@ -48,9 +48,7 @@ namespace Allors.Repository
 
         public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

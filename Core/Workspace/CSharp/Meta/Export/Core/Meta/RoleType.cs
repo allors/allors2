@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="RoleType.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the RoleType type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -167,7 +154,7 @@ namespace Allors.Workspace.Meta
         /// <summary>
         /// Gets the property name.
         /// </summary>
-        /// <value>The full name</value>
+        /// <value>The full name.</value>
         public string PropertyName => this.IsMany ? this.PluralPropertyName : this.SingularPropertyName;
 
         public string SingularPropertyName => this.SingularName;

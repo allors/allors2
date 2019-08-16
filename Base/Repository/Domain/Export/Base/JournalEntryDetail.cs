@@ -41,9 +41,7 @@ namespace Allors.Repository
 
         public bool Debit { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

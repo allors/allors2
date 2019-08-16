@@ -265,7 +265,6 @@ namespace Allors.Repository
         [Workspace]
         string Message { get; set; }
 
-
         #region Allors
         [Id("141D8BBF-5EE1-4521-BFBC-34D9F69BEADA")]
         [AssociationId("EA626F7E-A89E-4BA4-A5AE-A01FF4514567")]

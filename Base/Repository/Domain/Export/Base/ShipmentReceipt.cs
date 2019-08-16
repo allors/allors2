@@ -89,9 +89,7 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal QuantityAccepted { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

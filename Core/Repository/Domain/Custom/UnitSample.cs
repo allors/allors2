@@ -83,7 +83,6 @@ namespace Allors.Repository
         [Workspace]
         public decimal AllorsDecimal { get; set; }
 
-
         #region Allors
         [Id("6E05C521-B90A-459E-931A-940B4D769C6A")]
         [AssociationId("A3EBF97C-B23A-46C5-AA34-AC81F97089A4")]

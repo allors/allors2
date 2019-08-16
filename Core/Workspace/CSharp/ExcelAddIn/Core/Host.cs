@@ -67,7 +67,7 @@
         private Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Worksheet> VstoWorksheetByInteropWorksheet { get; }
 
         private Dictionary<Microsoft.Office.Interop.Excel.Workbook, Workbook> VstoWorkbookByInteropWorkbook { get; }
-        
+
         private ApplicationFactory ApplicationFactory { get; }
 
         public Worksheet GetVstoWorksheet(Microsoft.Office.Interop.Excel.Worksheet sheet)

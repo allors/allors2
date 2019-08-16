@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="PickListTests.cs" company="Allors bvba">
-// Copyright 2002-2009 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// 
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -281,7 +268,7 @@ namespace Allors.Domain
             // this.Session.Derive();
 
             // When SalesOrder is derived 1 quantity is requested for shipping (because inventory is available and quantity ordered (5) is greater then quantity pending shipment (4)
-            // A new shipment item is created with quantity 1 and QuantityPendingShipment remains 5 
+            // A new shipment item is created with quantity 1 and QuantityPendingShipment remains 5
 
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);

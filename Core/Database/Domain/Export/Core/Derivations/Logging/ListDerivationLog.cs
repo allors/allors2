@@ -1,9 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="ListDerivationLog.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain.Logging
 {
@@ -51,7 +50,7 @@ namespace Allors.Domain.Logging
         }
 
         /// <summary>
-        /// The dependee is derived before the dependent object;
+        /// The dependee is derived before the dependent object;.
         /// </summary>
         public virtual void AddedDependency(Object dependent, Object dependee)
         {

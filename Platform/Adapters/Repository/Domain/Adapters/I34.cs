@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial interface I34 : Object
     {
 
-
         #region Allors
         [Id("37e8d764-bfeb-40d8-b7e9-d94e455dcc11")]
         [AssociationId("fd9a1d7e-913e-4fce-88b3-320ab6bbce96")]
@@ -19,14 +18,12 @@ namespace Allors.Repository
         #endregion
         decimal I34AllorsDecimal { get; set; }
 
-
         #region Allors
         [Id("4a6db64f-aeeb-4657-a24c-7997129f3efa")]
         [AssociationId("16ce6c74-b457-4a3b-b173-c7fec74b8178")]
         [RoleId("77f678c6-93ee-465a-b252-7e0530ed19ea")]
         #endregion
         bool I34AllorsBoolean { get; set; }
-
 
         #region Allors
         [Id("9b774204-37f3-4663-9162-dc801ea200f6")]
@@ -35,14 +32,12 @@ namespace Allors.Repository
         #endregion
         double I34AllorsDouble { get; set; }
 
-
         #region Allors
         [Id("cd30dada-24c5-4b94-8f58-ab1018f087ea")]
         [AssociationId("dca9ffc6-4620-4b5f-888d-35ea77ba1ad8")]
         [RoleId("0649567c-2942-4d6e-9fa5-3672f8eb77a3")]
         #endregion
         int I34AllorsInteger { get; set; }
-
 
         #region Allors
         [Id("d8125c69-1921-4e16-84bc-d3d174be7b83")]

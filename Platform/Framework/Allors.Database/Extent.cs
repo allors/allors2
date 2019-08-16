@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="Extent.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the Extent type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -94,16 +81,16 @@ namespace Allors
         /// Gets the <see cref="IObject"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
-        /// <value>The <see cref="IObject"/> at the specified index</value>
-        /// <returns>The object at the specified index</returns>
+        /// <value>The <see cref="IObject"/> at the specified index.</value>
+        /// <returns>The object at the specified index.</returns>
         public IObject this[int index] => this.GetItem(index);
 
         /// <summary>
         /// Gets or sets the <see cref="object"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
-        /// <value>The <see cref="object"/> at the specified index</value>
-        /// <returns>The object at the specified index</returns>
+        /// <value>The <see cref="object"/> at the specified index.</value>
+        /// <returns>The object at the specified index.</returns>
         object IList.this[int index]
         {
             get => this.GetItem(index);
@@ -262,7 +249,7 @@ namespace Allors
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
-        /// <returns>The item at the specified index</returns>
+        /// <returns>The item at the specified index.</returns>
         protected abstract IObject GetItem(int index);
 
         /// <summary>
@@ -414,7 +401,7 @@ namespace Allors
             /// Gets the item at the specified index.
             /// </summary>
             /// <param name="index">The index.</param>
-            /// <returns>The item at the specified index</returns>
+            /// <returns>The item at the specified index.</returns>
             protected override IObject GetItem(int index) => this.objects[index];
         }
 

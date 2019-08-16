@@ -73,7 +73,6 @@ namespace Allors.Repository
         [Scale(2)]
         decimal ProductionCapacity { get; set; }
 
-
         #region Allors
         [Id("ead0e86a-dfc7-45b0-9865-b973175c4567")]
         [AssociationId("6be614a2-0511-4ca0-9b1c-c8a3d0b0a998")]

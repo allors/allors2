@@ -105,7 +105,6 @@ namespace Allors.Repository
         #endregion
         public Media[] Pictures { get; set; }
 
-
         #region Allors
         [Id("6b626ba5-0c45-48c7-8b6b-5ea85e002d90")]
         [AssociationId("520bb966-6e8a-46a4-a3c0-18422af13cba")]

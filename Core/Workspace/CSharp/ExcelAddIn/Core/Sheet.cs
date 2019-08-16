@@ -65,7 +65,7 @@
         }
 
         public abstract Task Refresh();
-        
+
         public Worksheet WorksheetByName(string name)
         {
             var sheet = this.Sheets.Host.Application.ActiveWorkbook.Sheets
@@ -107,7 +107,7 @@
                 response.Log(this.Context.Session);
                 response.Show();
             }
-            
+
             this.OnInvoked(response);
         }
 
@@ -185,7 +185,7 @@
             var result = await this.Context.Load(p, service);
             return result.Collections["results"];
         }
-        
+
         protected ListObject FindListObject(string name)
         {
             foreach (Microsoft.Office.Interop.Excel.ListObject interopListObject in this.Worksheet.ListObjects)

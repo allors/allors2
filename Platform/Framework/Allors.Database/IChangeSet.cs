@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="IChangeSet.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the IChangeSet type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -28,7 +15,7 @@ namespace Allors
     /// A change set is created during a checkpoint
     /// and contains all changes that have
     /// occurred in a <see cref="ISession"/> either starting
-    /// from the beginning of the transaction or from a 
+    /// from the beginning of the transaction or from a
     /// previous checkpoint.
     /// </summary>
     public interface IChangeSet

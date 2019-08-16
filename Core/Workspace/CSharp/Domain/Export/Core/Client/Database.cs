@@ -80,7 +80,6 @@
                 O = options
             };
 
-
             var uri = new Uri("Database/Invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);
             response.EnsureSuccessStatusCode();

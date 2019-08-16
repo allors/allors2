@@ -54,7 +54,7 @@ namespace Allors.Excel.Customers
                 return this.listObject;
             }
         }
-        
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -78,7 +78,7 @@ namespace Allors.Excel.Customers
                 MessageBox.Show(@"Successfully saved");
             }
         }
-        
+
         private void ToListObject()
         {
             this.dataSet = new DataSet();
@@ -115,16 +115,14 @@ namespace Allors.Excel.Customers
 
                 var contacts = customer.CurrentOrganisationContactRelationships.Select(v => v.Contact);
                 row.ContactName = string.Join("\n", contacts.Select(v => $"{v?.Salutation?.Name} {v?.PartyName}"));
-               
+
                 row.TaxNumber = customer.TaxNumber;
 
                 this.dataSet.Customers.Rows.Add(row);
             }
-           
 
             this.CustomersListObject.SetDataBinding(this.dataSet, this.dataSet.Customers.TableName);
 
-            
             // Headers
             int index = -1;
             var headers = this.CustomersListObject.HeaderRowRange;
@@ -137,7 +135,7 @@ namespace Allors.Excel.Customers
             data[0, ++index] = "Land";
             data[0, ++index] = "PostCode";
             data[0, ++index] = "BTW nr Klant";
-          
+
             headers.Value2 = data;
             headers.Style = "headerStyle";
             headers.EntireColumn.AutoFit();
@@ -152,7 +150,7 @@ namespace Allors.Excel.Customers
                 var cells = range.Cells;
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
-              
+
             }
         }
 

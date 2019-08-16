@@ -1,8 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocaleTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+
+// <copyright file="LocaleTests.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Tests
 {
@@ -11,7 +11,6 @@ namespace Tests
     using Allors.Meta;
 
     using Xunit;
-
 
     public class LocaleTests : DomainTest
     {

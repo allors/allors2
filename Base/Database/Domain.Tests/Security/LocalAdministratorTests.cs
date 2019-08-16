@@ -201,7 +201,6 @@ namespace Allors.Domain
         {
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
 
-
             var localAdmin = new PersonBuilder(this.Session)
                 .WithUserName("localadmin")
                 .WithLastName("admin")
@@ -234,7 +233,6 @@ namespace Allors.Domain
         public void WorkTaskOtherInternalOrganisation()
         {
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
-
 
             var localAdmin = new PersonBuilder(this.Session)
                 .WithUserName("localadmin")

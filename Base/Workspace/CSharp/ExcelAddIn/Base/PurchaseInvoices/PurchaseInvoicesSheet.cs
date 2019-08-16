@@ -30,7 +30,7 @@ namespace Allors.Excel.PurchaseInvoices
         private const string PurchaseInvoicesListObjectName = "PurchaseInvoicesListObject";
         private ExcelAddIn.Base.PurchaseInvoices.DataSet dataSet;
         private ListObject listObject;
-        
+
         public PurchaseInvoicesSheet(Sheets sheets, Worksheet worksheet)
             : base(sheets, worksheet)
         {
@@ -55,7 +55,7 @@ namespace Allors.Excel.PurchaseInvoices
                 return this.listObject;
             }
         }
-        
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -66,7 +66,7 @@ namespace Allors.Excel.PurchaseInvoices
             foreach (var grouping in groupByBilledTo)
             {
                 Microsoft.Office.Interop.Excel.Worksheet workSheet = this.Workbook.Worksheets.Add();
-                
+
                 var toolWorksheet = Globals.Factory.GetVstoObject(workSheet);
 
                 workSheet.Name = grouping.Key.PartyName;
@@ -96,7 +96,7 @@ namespace Allors.Excel.PurchaseInvoices
                 MessageBox.Show(@"Successfully saved");
             }
         }
-        
+
         private void ToListObject()
         {
             this.dataSet = new ExcelAddIn.Base.PurchaseInvoices.DataSet();
@@ -139,7 +139,7 @@ namespace Allors.Excel.PurchaseInvoices
                 {
                     row.SetDueDateNull();
                 }
-                
+
                 var payment = GetPayment(purchaseInvoice);
                 if (payment != null)
                 {
@@ -154,7 +154,7 @@ namespace Allors.Excel.PurchaseInvoices
 
                 this.dataSet.PurchaseInvoice.Rows.Add(row);
             }
-           
+
             this.PurchaseInvoicesListObject.SetDataBinding(this.dataSet, this.dataSet.PurchaseInvoice.TableName);
 
             // Headers
@@ -256,7 +256,7 @@ namespace Allors.Excel.PurchaseInvoices
             var pull = new Pull
             {
                 Extent = new Workspace.Data.Filter(M.PurchaseInvoice.ObjectType),
-                
+
                 Results = new []
                 {
                     new Workspace.Data.Result
@@ -269,10 +269,10 @@ namespace Allors.Excel.PurchaseInvoices
                                 .Add(M.PurchaseInvoice.Currency)
                                 .Add(M.PurchaseInvoice.PurchaseInvoiceState)
                         }
-                    } , 
+                    } ,
                 }
             };
-            
+
             var result = await this.Load(pull);
             this.PurchaseInvoices = result.GetCollection<PurchaseInvoice>("PurchaseInvoices");
 

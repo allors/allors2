@@ -48,9 +48,7 @@ namespace Allors.Repository
 
         public Person SubmittedBy { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

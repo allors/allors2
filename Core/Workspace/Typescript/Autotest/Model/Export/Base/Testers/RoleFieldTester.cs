@@ -61,7 +61,6 @@ namespace Autotest.Testers
                     Console.WriteLine();
                 }
 
-
                 if (this.NameAttributeValue != null)
                 {
                     return this.NameAttributeValue;

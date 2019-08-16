@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface Payment : Commentable, UniquelyIdentifiable, Deletable, Object
     {
 
-
         #region Allors
         [Id("4c8b7a4f-f151-419e-8365-ce0da0b3a709")]
         [AssociationId("32007a7b-e849-41c3-96f5-61d253607f98")]
@@ -41,7 +40,6 @@ namespace Allors.Repository
         [Workspace]
         DateTime EffectiveDate { get; set; }
 
-
         #region Allors
         [Id("a80a1ed7-473b-493b-a9ab-23a682c6ae44")]
         [AssociationId("3e95c4c2-6164-486a-a483-e0552a142e13")]
@@ -70,7 +68,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         string ReferenceNumber { get; set; }
-
 
         #region Allors
         [Id("faafa75e-496c-4220-ae3f-ab7d1e317484")]

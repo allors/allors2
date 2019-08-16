@@ -43,9 +43,7 @@ namespace Allors.Repository
 
         public Invoice Invoice { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

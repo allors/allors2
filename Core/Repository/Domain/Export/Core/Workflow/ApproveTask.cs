@@ -24,7 +24,7 @@ namespace Allors.Repository
 
         /// <summary>
         /// The <see cref="Notification"/> that is created when this task is rejected.
-        /// </summary>        
+        /// </summary>
         #region Allors
         [Id("a7c646a2-7aaa-44ae-9240-77b3b6f2e8fa")]
         [AssociationId("2a95997a-ba81-42c0-842d-d3b9221249fe")]
@@ -37,7 +37,7 @@ namespace Allors.Repository
 
         /// <summary>
         /// The <see cref="Notification"/> that is created when this task is approved.
-        /// </summary>        
+        /// </summary>
         #region Allors
         [Id("4AF7D84E-393F-402F-8E76-044A75F77543")]
         [AssociationId("4DD209A2-1F0D-4476-8417-6E54781E2227")]

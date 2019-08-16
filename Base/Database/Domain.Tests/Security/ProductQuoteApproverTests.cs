@@ -7,7 +7,6 @@ namespace Allors.Domain
     public class ProductQuoteApproverTests : DomainTest
     {
 
-
         [Fact]
         public void UserGroup()
         {

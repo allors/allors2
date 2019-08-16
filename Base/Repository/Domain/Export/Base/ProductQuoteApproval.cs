@@ -34,7 +34,6 @@ namespace Allors.Repository
 
         public Notification RejectionNotification { get; set; }
 
-
         #endregion
 
         #region Allors
@@ -66,11 +65,9 @@ namespace Allors.Repository
 
         public void Delete() { }
 
-
         public void Approve() { }
 
         public void Reject() { }
-
 
         #endregion
     }

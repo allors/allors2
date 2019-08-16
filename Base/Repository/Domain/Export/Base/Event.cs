@@ -99,7 +99,6 @@ namespace Allors.Repository
 
         public DateTime To { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

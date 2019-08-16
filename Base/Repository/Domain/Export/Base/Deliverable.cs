@@ -35,9 +35,7 @@ namespace Allors.Repository
 
         public DeliverableType DeliverableType { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

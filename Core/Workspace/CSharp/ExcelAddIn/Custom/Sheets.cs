@@ -15,7 +15,7 @@
             this.SheetByVstoWorksheet[worksheet] = sheet;
             return sheet;
         }
-        
+
         private Sheet Instantiate(Worksheet worksheet)
         {
             var allorsType = (string)worksheet.GetCustomPropertyValue("AllorsType");

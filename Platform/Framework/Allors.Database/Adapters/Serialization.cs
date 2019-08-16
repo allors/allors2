@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="Serialization.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the Serialization type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -27,7 +14,7 @@ namespace Allors.Adapters
 
     /// <summary>
     /// Xml tag definitions and utility methods for Xml Serialization.
-    /// An <see cref="IDatabase"/> is serialized to a <see cref="XmlDocument"/> 
+    /// An <see cref="IDatabase"/> is serialized to a <see cref="XmlDocument"/>
     /// according to the Allors Serialization Xml Schema.
     /// </summary>
     public static class Serialization
@@ -49,7 +36,7 @@ namespace Allors.Adapters
         public const int VersionCurrent = 1;
 
         /// <summary>
-        /// This attribute holds the <see cref="ObjectId"/> of the association of a relation. 
+        /// This attribute holds the <see cref="ObjectId"/> of the association of a relation.
         /// Attribute of the <see cref="Serialization#ChangedRelations"/> element.
         /// </summary>
         public const string Association = "a";
@@ -131,14 +118,14 @@ namespace Allors.Adapters
         public const string Relations = "relations";
 
         /// <summary>
-        /// This element groups relations having the same <see cref="RelationType"/> and 
+        /// This element groups relations having the same <see cref="RelationType"/> and
         /// where the role's <see cref="ObjectType"/> is a composite.
         /// Child element of the <see cref="Serialization#Relations"/> element.
         /// </summary>
         public const string RelationTypeComposite = "rtc";
 
         /// <summary>
-        /// This element groups relations having the same <see cref="RelationType"/> and 
+        /// This element groups relations having the same <see cref="RelationType"/> and
         /// where the role's <see cref="ObjectType"/> is a unit.
         /// Child element of the <see cref="Serialization#Relations"/> element.
         /// </summary>
@@ -171,7 +158,7 @@ namespace Allors.Adapters
         /// </summary>
         /// <param name="value">The XML value.</param>
         /// <param name="unitTypeTag">The unit type tag.</param>
-        /// <returns>The converted value</returns>
+        /// <returns>The converted value.</returns>
         public static object ReadString(string value, UnitTags unitTypeTag)
         {
             switch (unitTypeTag)
@@ -202,7 +189,7 @@ namespace Allors.Adapters
         /// </summary>
         /// <param name="unitTypeTag">The unit type tag.</param>
         /// <param name="unit">The unit .</param>
-        /// <returns>The XML Value</returns>
+        /// <returns>The XML Value.</returns>
         public static string WriteString(UnitTags unitTypeTag, object unit)
         {
             switch (unitTypeTag)

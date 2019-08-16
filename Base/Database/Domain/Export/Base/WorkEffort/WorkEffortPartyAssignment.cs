@@ -1,18 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="WorkEffortPartyAssignment.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 using Resources;
 
@@ -23,7 +13,6 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
 
             if (this.ExistAssignmentRates)
             {

@@ -25,9 +25,7 @@ namespace Allors.Repository
 
         public DateTime RevisionDate { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

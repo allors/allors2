@@ -50,9 +50,7 @@ namespace Allors.Repository
 
         public int EstimatedQuantity { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

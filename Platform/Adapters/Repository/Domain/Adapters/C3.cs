@@ -177,7 +177,6 @@ namespace Allors.Repository
         #endregion
         public I4[] C3I4one2manies { get; set; }
 
-
         #region inherited methods
         #endregion
 

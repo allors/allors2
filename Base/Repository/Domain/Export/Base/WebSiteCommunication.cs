@@ -37,7 +37,6 @@ namespace Allors.Repository
 
         public DateTime InitialScheduledStart { get; set; }
 
-
         public CommunicationEventPurpose[] EventPurposes { get; set; }
 
         public DateTime ScheduledEnd { get; set; }
@@ -64,7 +63,6 @@ namespace Allors.Repository
         public bool SendNotification { get; set; }
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
-
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -110,7 +108,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -132,11 +129,7 @@ namespace Allors.Repository
 
         public void Reopen() { }
 
-
-
-
         public void Delete() { }
-
 
         #endregion
     }

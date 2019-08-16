@@ -82,7 +82,7 @@
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            // Enable Dual Authentication 
+            // Enable Dual Authentication
             services.AddAuthentication(option =>
                 {
                     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

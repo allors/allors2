@@ -67,9 +67,7 @@ namespace Allors.Repository
 
         public int QuantityUsed { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

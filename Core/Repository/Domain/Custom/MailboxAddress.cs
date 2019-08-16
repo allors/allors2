@@ -21,7 +21,6 @@ namespace Allors.Repository
         #endregion
         public string PoBox { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

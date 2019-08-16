@@ -34,7 +34,6 @@ namespace Allors.Repository
         #endregion
         public bool IsDerived { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

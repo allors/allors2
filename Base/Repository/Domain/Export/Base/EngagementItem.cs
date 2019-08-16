@@ -29,7 +29,6 @@ namespace Allors.Repository
 
         string Description { get; set; }
 
-
         #region Allors
         [Id("33fe3f86-8b73-4a70-b9c0-62ac27531ac3")]
         [AssociationId("24a3d499-1f30-4b0e-8a27-a42808c4b1a2")]
@@ -38,7 +37,6 @@ namespace Allors.Repository
 
         DateTime ExpectedStartDate { get; set; }
 
-
         #region Allors
         [Id("3635cb84-2d4f-4fa1-ac18-4c8a6cc129c5")]
         [AssociationId("b58461be-8138-42e1-9e4b-e095ae66fc90")]
@@ -46,7 +44,6 @@ namespace Allors.Repository
         #endregion
 
         DateTime ExpectedEndDate { get; set; }
-
 
         #region Allors
         [Id("40b24df7-6834-401a-a598-82203af63f99")]
@@ -58,7 +55,6 @@ namespace Allors.Repository
 
         WorkEffort EngagementWorkFulfillment { get; set; }
 
-
         #region Allors
         [Id("9133f59e-048d-4020-88e4-5a4bc36d663b")]
         [AssociationId("46ad58c7-3125-4307-93ae-58c386e98899")]
@@ -68,7 +64,6 @@ namespace Allors.Repository
         [Indexed]
 
         EngagementRate[] EngagementRates { get; set; }
-
 
         #region Allors
         [Id("9e1f4da4-41af-4030-b67f-79f1f49fa076")]
@@ -81,7 +76,6 @@ namespace Allors.Repository
 
         EngagementRate CurrentEngagementRate { get; set; }
 
-
         #region Allors
         [Id("b445f2d6-55a6-4cb4-9550-5be8863eddb6")]
         [AssociationId("21509869-1643-402a-a5eb-9657f1f01af9")]
@@ -91,7 +85,6 @@ namespace Allors.Repository
         [Indexed]
 
         EngagementItem[] OrderedWiths { get; set; }
-
 
         #region Allors
         [Id("c2ec3c6b-af56-4c6b-bdaf-76d3ea340bf7")]
@@ -104,7 +97,6 @@ namespace Allors.Repository
 
         Person CurrentAssignedProfessional { get; set; }
 
-
         #region Allors
         [Id("c7204c16-67b1-4e6d-b787-ce8ab9c6c111")]
         [AssociationId("d417f454-c1fa-41da-8b00-653b27d875a4")]
@@ -114,7 +106,6 @@ namespace Allors.Repository
         [Indexed]
 
         Product Product { get; set; }
-
 
         #region Allors
         [Id("dbb3d0c5-836d-477b-a42f-b260f3316458")]

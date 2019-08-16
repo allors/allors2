@@ -29,7 +29,7 @@ namespace Allors.Workspace.Domain
                 var column = this.Columns[index];
                 columnByIndex.Add(index, column);
             }
-            
+
             var listRows = listObject
                 .ListRows
                 .Cast<ListRow>()

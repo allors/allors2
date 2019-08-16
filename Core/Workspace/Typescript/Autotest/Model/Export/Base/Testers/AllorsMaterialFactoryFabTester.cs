@@ -54,7 +54,6 @@ namespace Autotest.Testers
 
         private string ObjectTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[objectType]", StringComparison.OrdinalIgnoreCase))?.Value;
 
-
         public class Factory
         {
             public AllorsMaterialFactoryFabTester Tester { get; }

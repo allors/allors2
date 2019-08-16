@@ -146,9 +146,7 @@ namespace Allors.Repository
         [Indexed]
         public OrganisationContactRelationship TakenViaOrganisationContactRelationship { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

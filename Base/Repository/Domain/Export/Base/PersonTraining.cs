@@ -31,9 +31,7 @@ namespace Allors.Repository
 
         public Training Training { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

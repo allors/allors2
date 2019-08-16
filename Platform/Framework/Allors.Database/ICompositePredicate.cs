@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="ICompositePredicate.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the ICompositePredicate type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -40,7 +27,7 @@ namespace Allors
         /// Adds a CompositePredicate that evaluates to true if all of its composed predicates evaluate to true.
         /// This predicate is ignored when there are no composed predicates.
         /// </summary>
-        /// <returns>the newly added CompositePredicate</returns>
+        /// <returns>the newly added CompositePredicate.</returns>
         ICompositePredicate AddAnd();
 
         /// <summary>
@@ -49,7 +36,7 @@ namespace Allors
         /// <param name="role">The role .</param>
         /// <param name="firstValue">The first object.</param>
         /// <param name="secondValue">The second object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddBetween(IRoleType role, object firstValue, object secondValue);
 
         /// <summary>
@@ -57,7 +44,7 @@ namespace Allors
         /// </summary>
         /// <param name="role">The role .</param>
         /// <param name="containingExtent">The extent.</param>
-        /// <returns>this CompositePredicate</returns>
+        /// <returns>this CompositePredicate.</returns>
         ICompositePredicate AddContainedIn(IRoleType role, Extent containingExtent);
 
         /// <summary>
@@ -73,7 +60,7 @@ namespace Allors
         /// </summary>
         /// <param name="association">The association.</param>
         /// <param name="containingExtent">The extent.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddContainedIn(IAssociationType association, Extent containingExtent);
 
         /// <summary>
@@ -89,7 +76,7 @@ namespace Allors
         /// </summary>
         /// <param name="role">The role .</param>
         /// <param name="containedObject">The allors object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddContains(IRoleType role, IObject containedObject);
 
         /// <summary>
@@ -97,14 +84,14 @@ namespace Allors
         /// </summary>
         /// <param name="association">The association.</param>
         /// <param name="containedObject">The allors object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddContains(IAssociationType association, IObject containedObject);
 
         /// <summary>
         /// Adds a Predicate that evaluates to true if the object under evaluation equals the allorsObject.
         /// </summary>
         /// <param name="allorsObject">The allors object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddEquals(IObject allorsObject);
 
         /// <summary>
@@ -112,7 +99,7 @@ namespace Allors
         /// </summary>
         /// <param name="roleType">The role .</param>
         /// <param name="valueOrAllorsObject">The object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddEquals(IRoleType roleType, object valueOrAllorsObject);
 
         /// <summary>
@@ -120,21 +107,21 @@ namespace Allors
         /// </summary>
         /// <param name="association">The association.</param>
         /// <param name="allorsObject">The allors object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddEquals(IAssociationType association, IObject allorsObject);
 
         /// <summary>
         /// Adds a Predicate that evaluates to true if the role of the object under evaluation exists.
         /// </summary>
         /// <param name="role">The role .</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddExists(IRoleType role);
 
         /// <summary>
         /// Adds a Predicate that evaluates to true if the association of the object under evaluation exists.
         /// </summary>
         /// <param name="assocation">The assocation.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddExists(IAssociationType assocation);
 
         /// <summary>
@@ -142,14 +129,14 @@ namespace Allors
         /// </summary>
         /// <param name="role">The role .</param>
         /// <param name="value">The object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddGreaterThan(IRoleType role, object value);
 
         /// <summary>
         /// Adds a Predicate that evaluates to true if the object under evaluation is an instance of the IObjectType.
         /// </summary>
         /// <param name="objectType">the IObjectType.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddInstanceof(IComposite objectType);
 
         /// <summary>
@@ -157,7 +144,7 @@ namespace Allors
         /// </summary>
         /// <param name="role">the RoleType .</param>
         /// <param name="objectType">the IObjectType.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddInstanceof(IRoleType role, IComposite objectType);
 
         /// <summary>
@@ -165,7 +152,7 @@ namespace Allors
         /// </summary>
         /// <param name="association">the AssociationType.</param>
         /// <param name="objectType">the IObjectType.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddInstanceof(IAssociationType association, IComposite objectType);
 
         /// <summary>
@@ -173,7 +160,7 @@ namespace Allors
         /// </summary>
         /// <param name="role">The role .</param>
         /// <param name="value">The object.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddLessThan(IRoleType role, object value);
 
         /// <summary>
@@ -181,21 +168,21 @@ namespace Allors
         /// </summary>
         /// <param name="role">The role .</param>
         /// <param name="value">The string.</param>
-        /// <returns>the composing CompositePredicate</returns>
+        /// <returns>the composing CompositePredicate.</returns>
         ICompositePredicate AddLike(IRoleType role, string value);
 
         /// <summary>
         /// Adds a CompositePredicate that evaluates to true if its composed predicate evaluates to false.
         /// This predicate is ignored when there are no composed predicates.
         /// </summary>
-        /// <returns>the newly added CompositePredicate</returns>
+        /// <returns>the newly added CompositePredicate.</returns>
         ICompositePredicate AddNot();
 
         /// <summary>
         /// Adds a CompositePredicate that evaluates to true if any of its composed predicates evaluate to true.
         /// This predicate is ignored when there are no composed predicates.
         /// </summary>
-        /// <returns>the newly added CompositePredicate</returns>
+        /// <returns>the newly added CompositePredicate.</returns>
         ICompositePredicate AddOr();
     }
 }

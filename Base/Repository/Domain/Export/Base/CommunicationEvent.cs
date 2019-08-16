@@ -262,7 +262,6 @@ namespace Allors.Repository
         [Workspace]
         DateTime RemindAt { get; set; }
 
-
         #region Allors
         [Id("F1D66D21-15CC-45C3-980C-E4179F66FD57")]
         #endregion

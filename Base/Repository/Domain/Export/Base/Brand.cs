@@ -27,7 +27,6 @@ namespace Allors.Repository
         [Workspace]
         public Media LogoImage { get; set; }
 
-
         #region Allors
         [Id("C603F7EA-5201-464A-B657-BE23D42EF6DB")]
         [AssociationId("F733AB79-19D8-4829-97BB-51E3AC79D672")]

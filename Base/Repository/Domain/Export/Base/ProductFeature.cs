@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface ProductFeature : UniquelyIdentifiable, Object
     {
 
-
         #region Allors
         [Id("4a8c511a-8146-4d6d-bc35-d8d6b8f1786d")]
         [AssociationId("31ff19c6-9916-4f4c-8d67-30649d3a07ea")]
@@ -32,7 +31,6 @@ namespace Allors.Repository
         [Workspace]
         PriceComponent[] BasePrices { get; set; }
 
-
         #region Allors
         [Id("b75855b8-c921-4d60-8ea0-650a0f574f7f")]
         [AssociationId("dd0b49c7-56f4-43ac-a470-ddc191d1c279")]
@@ -41,7 +39,6 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Description { get; set; }
-
 
         #region Allors
         [Id("badde93b-4691-435e-9ba3-e52435e9f574")]
@@ -53,7 +50,6 @@ namespace Allors.Repository
         [Workspace]
         ProductFeature[] DependentFeatures { get; set; }
 
-
         #region Allors
         [Id("ce228118-f5b2-49bb-b0cd-7e0ca8e10315")]
         [AssociationId("d90b3906-a48d-473c-85a7-baae359d58a7")]
@@ -63,7 +59,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         ProductFeature[] IncompatibleFeatures { get; set; }
-
 
         #region Allors
         [Id("efe16e22-edfb-40b1-83c0-110f874c285a")]

@@ -1,6 +1,6 @@
 ﻿// <copyright file="StringExtensions.cs" company="Allors bvba">
-// Copyright (c) Allors bvba. All Rights Reserved.
-// Licensed under the LGPL v3 license.
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Autotest
@@ -109,7 +109,6 @@ namespace Autotest
         public static string ToAlphaNumeric(this string value) => !string.IsNullOrEmpty(value) ? NonAlphaNumericRegex.Replace(value, string.Empty) : value;
 
         public static string EmptyToNull(this string value) => string.IsNullOrEmpty(value) ? null : value;
-
 
         public static string EscapeReservedKeyword(this string value) => ReservedKeywords.Contains(value) ? $"@{value}" : value;
     }

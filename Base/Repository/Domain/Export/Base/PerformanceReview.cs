@@ -80,9 +80,7 @@ namespace Allors.Repository
 
         public Position ResultingPosition { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

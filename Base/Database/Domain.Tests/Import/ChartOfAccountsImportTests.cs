@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="ChartOfAccountsImportTests.cs" company="Allors bvba">
-// Copyright 2002-2009 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// 
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -22,7 +9,6 @@
 namespace Allors.Domain
 {
     using Xunit;
-
 
     public class ChartOfAccountsImportTests : DomainTest
     {
@@ -95,7 +81,7 @@ namespace Allors.Domain
         //    var generalLedgerAccountGroups = this.DatabaseSession.Extent<GeneralLedgerAccountGroup>();
         //    generalLedgerAccountGroups.Filter.AddEquals(GeneralLedgerAccountGroups.Meta.Description, "Verworpen uitgaven");
 
-        //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)generalLedgerAccountGroups.First; 
+        //    var generalLedgerAccountGroup = (GeneralLedgerAccountGroup)generalLedgerAccountGroups.First;
         //    Assert.True(generalLedgerAccountGroup.ExistParent);
 
         //    var parent = generalLedgerAccountGroup.Parent;

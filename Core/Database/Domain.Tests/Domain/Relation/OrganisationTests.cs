@@ -1,11 +1,11 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrganisationTests.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+
+// <copyright file="OrganisationTests.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Defines the PersonTests type.
 // </summary>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Tests
 {

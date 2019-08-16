@@ -31,7 +31,6 @@ namespace Allors.Repository
 
         public ObjectState ToState { get; set; }
 
-
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

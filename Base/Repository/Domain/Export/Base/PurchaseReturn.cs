@@ -69,7 +69,6 @@ namespace Allors.Repository
 
         public PostalAddress ShipFromAddress { get; set; }
 
-
         public string HandlingInstruction { get; set; }
 
         public Store Store { get; set; }

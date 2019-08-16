@@ -64,9 +64,7 @@ namespace Allors.Repository
 
         public string CardNumber { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

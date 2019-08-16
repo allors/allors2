@@ -45,9 +45,7 @@ namespace Allors.Repository
 
         public Requirement Requirement { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

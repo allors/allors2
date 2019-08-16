@@ -1,6 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
-// <copyright file="MediaTest.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+//-------------------------------------------------------------------------------------------------
+// <copyright file="MediaTest.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -71,7 +72,6 @@ namespace Tests
             Assert.True(media.MediaContent.Data.Length > 0);
             Assert.Equal(media.MediaContent.Type, "image/png");
         }
-
 
         [Fact]
         public void BuilderWithPdfWithJpegExtension()

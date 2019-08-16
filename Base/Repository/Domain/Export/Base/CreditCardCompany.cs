@@ -26,9 +26,7 @@ namespace Allors.Repository
 
         public string Name { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -62,7 +62,6 @@ namespace Allors.Repository
         #endregion
         public string C4AllorsString { get; set; }
 
-
         #region inherited methods
         #endregion
 

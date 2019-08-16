@@ -1,9 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="UserExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -47,7 +46,7 @@ namespace Allors.Domain
         {
             var accessControls = @this.AccessControlsWhereEffectiveUser;
 
-            // TODO: Append a Salt 
+            // TODO: Append a Salt
             var idsWithVersion = string.Join(":", accessControls.OrderBy(v => v.Id).Select(v => v.Id + v.Strategy.ObjectVersion));
 
             var crypt = SHA256.Create();

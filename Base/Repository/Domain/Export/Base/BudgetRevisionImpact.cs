@@ -66,9 +66,7 @@ namespace Allors.Repository
 
         public BudgetRevision BudgetRevision { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

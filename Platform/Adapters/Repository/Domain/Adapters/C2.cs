@@ -239,7 +239,6 @@ namespace Allors.Repository
         #endregion
         public C3 C3Many2One { get; set; }
 
-
         #region inherited methods
         #endregion
 

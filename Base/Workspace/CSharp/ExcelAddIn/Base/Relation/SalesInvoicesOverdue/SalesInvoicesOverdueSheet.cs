@@ -53,7 +53,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 return this.listObject;
             }
         }
-        
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -77,7 +77,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 MessageBox.Show(@"Successfully saved");
             }
         }
-        
+
         private void ToListObject()
         {
             this.dataSet = new DataSet1();
@@ -97,8 +97,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 this.dataSet.SalesInvoices.BalanceAmountColumn.ColumnName,
                 this.dataSet.SalesInvoices.ActionsColumn.ColumnName,
                 this.dataSet.SalesInvoices.ContactsColumn.ColumnName
-               
-                
+
             );
             foreach (var salesInvoice in this.SalesInvoices)
             {
@@ -120,10 +119,9 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 row.BalanceAmount = row.InvoiceAmount - row.PaidAmount;
                 row.Actions = salesInvoice.InternalComment;
                 row.Contacts = salesInvoice.BillToContactPerson?.UserEmail;
-                
+
                 this.dataSet.SalesInvoices.Rows.Add(row);
             }
-           
 
             this.SalesInvoicesListObject.SetDataBinding(this.dataSet, this.dataSet.SalesInvoices.TableName);
 
@@ -146,7 +144,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
             data[0, ++index] = "Balance";
             data[0, ++index] = "Actions";
             data[0, ++index] = "Contacts";
-          
+
             headers.Value2 = data;
             headers.Style = "headerStyle";
             headers.EntireColumn.AutoFit();
@@ -161,7 +159,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 var cells = range.Cells;
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
-              
+
             }
         }
 
@@ -183,7 +181,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                                 .Add(M.SalesInvoice.BillToContactPerson, this.ContactTree)
                                 .Add(M.SalesInvoice.Currency)
                                 .Add(M.SalesInvoice.SalesInvoiceType)
-                               
+
                         }
                     }
                 }
@@ -191,8 +189,6 @@ namespace Allors.Excel.Relations.CustomersOverdue
             this.result = await this.Load(pull);
             this.SalesInvoices = this.result.GetCollection<SalesInvoice>("SalesInvoices");
         }
-
-        
 
         private Tree ContactTree
             => new Tree(M.Person.Class)

@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial interface InterfaceWithoutConcreteClass : Object
     {
 
-
         #region Allors
         [Id("b490715d-e318-471b-bd37-1c1e12c0314e")]
         [AssociationId("6730e78c-e678-4763-aa98-a5de1be1500c")]

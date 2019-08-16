@@ -38,9 +38,7 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

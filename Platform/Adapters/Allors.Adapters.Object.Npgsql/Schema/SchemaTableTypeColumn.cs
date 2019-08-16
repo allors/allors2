@@ -37,7 +37,6 @@ namespace Allors.Adapters.Object.Npgsql
                     return "varbinary(" + length + ")";
                 }
 
-
                 if (this.dataType.Equals("decimal"))
                 {
                     return "decimal(" + this.Precision + "," + this.scale + ")";

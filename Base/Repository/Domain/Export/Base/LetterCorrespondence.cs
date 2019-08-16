@@ -64,7 +64,6 @@ namespace Allors.Repository
         public bool SendReminder { get; set; }
         public DateTime RemindAt { get; set; }
 
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -119,7 +118,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -141,11 +139,7 @@ namespace Allors.Repository
 
         public void Reopen() { }
 
-
-
-
         public void Delete() { }
-
 
         #endregion
     }

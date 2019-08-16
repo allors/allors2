@@ -1,18 +1,9 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="BankAccount.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+
 namespace Allors.Domain
 {
     using System.Globalization;
@@ -89,10 +80,10 @@ namespace Allors.Domain
                     // ******* from wikipedia.org
                     // The checksum is a basic ISO 7064 mod 97-10 calculation where the remainder must equal 1.
                     // To validate the checksum:
-                    // 1- Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid. 
-                    // 2- Move the four initial characters to the end of the string. 
-                    // 3- Replace each letter in the string with two digits, thereby expanding the string, where A=10, B=11, ..., Z=35. 
-                    // 4- Interpret the string as a decimal integer and compute the remainder of that number on division by 97. 
+                    // 1- Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
+                    // 2- Move the four initial characters to the end of the string.
+                    // 3- Replace each letter in the string with two digits, thereby expanding the string, where A=10, B=11, ..., Z=35.
+                    // 4- Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
                     // The IBAN number can only be valid if the remainder is 1.
                     var modifiedIban = iban.ToUpper().Substring(4) + iban.Substring(0, 4);
                     modifiedIban = Regex.Replace(modifiedIban, @"\D", m => (m.Value[0] - 55).ToString(CultureInfo.InvariantCulture));

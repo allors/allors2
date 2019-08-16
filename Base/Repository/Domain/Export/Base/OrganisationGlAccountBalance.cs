@@ -45,9 +45,7 @@ namespace Allors.Repository
 
         public AccountingPeriod AccountingPeriod { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

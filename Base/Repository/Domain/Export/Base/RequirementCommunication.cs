@@ -47,9 +47,7 @@ namespace Allors.Repository
 
         public Person AssociatedProfessional { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

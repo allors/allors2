@@ -125,9 +125,7 @@ namespace Allors.Repository
 
         public Deliverable DeliverableToProduce { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

@@ -41,9 +41,7 @@ namespace Allors.Repository
 
         public string Number { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

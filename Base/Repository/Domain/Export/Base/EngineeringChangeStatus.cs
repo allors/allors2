@@ -36,9 +36,7 @@ namespace Allors.Repository
 
         public EngineeringChangeObjectState EngineeringChangeObjectState { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

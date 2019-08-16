@@ -43,9 +43,7 @@ namespace Allors.Repository
         [Scale(9)]
         public decimal ConversionFactor { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

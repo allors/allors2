@@ -35,9 +35,7 @@ namespace Allors.Repository
 
         public ProductFeature ProductFeature { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

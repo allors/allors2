@@ -46,9 +46,7 @@ namespace Allors.Repository
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

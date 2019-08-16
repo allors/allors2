@@ -122,11 +122,11 @@ WHERE routine_schema = @routineSchema";
                     //                    cmdText = @"
                     //SELECT	o.name AS table_name,
                     //		i.name AS index_name
-                    //FROM		
+                    //FROM
                     //		sys.indexes i
                     //		INNER JOIN sys.objects o ON i.object_id = o.object_id
                     //		INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
-                    //WHERE 
+                    //WHERE
                     //	i.name IS NOT NULL
                     //	AND o.type = 'U'
                     //	AND i.type = 2

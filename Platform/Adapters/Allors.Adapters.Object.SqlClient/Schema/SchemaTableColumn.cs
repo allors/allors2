@@ -40,7 +40,6 @@ namespace Allors.Adapters.Object.SqlClient
                     return "varbinary(" + length + ")";
                 }
 
-
                 if (this.dataType.Equals("decimal"))
                 {
                     return "decimal(" + this.NumericPrecision + "," + this.numericScale + ")";

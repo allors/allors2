@@ -109,9 +109,7 @@ namespace Allors.Repository
 
         public bool CloseWhenInBalance { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

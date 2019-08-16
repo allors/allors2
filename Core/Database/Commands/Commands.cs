@@ -1,8 +1,8 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Commands.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿
+// <copyright file="Commands.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Commands
 {
@@ -46,7 +46,6 @@ namespace Commands
             loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
             NLog.LogManager.LoadConfiguration("nlog.config");
         }
-
 
         [Option("-i", Description = "Isolation Level (Snapshot|Serializable)")]
         public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.Snapshot;

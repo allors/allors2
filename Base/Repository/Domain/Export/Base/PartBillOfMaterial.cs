@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface PartBillOfMaterial : Commentable, Period, Object
     {
 
-
         #region Allors
         [Id("06c3a64a-ef2c-44a0-81ee-1335842cf844")]
         [AssociationId("738ee8fd-307a-4d12-a0fc-238640386eee")]
@@ -22,7 +21,6 @@ namespace Allors.Repository
 
         Part Part { get; set; }
 
-
         #region Allors
         [Id("24de2b73-c51b-47b5-bd80-2022c0e37841")]
         [AssociationId("a6dc16b1-6c02-4060-9f64-982d09ffe5dc")]
@@ -32,7 +30,6 @@ namespace Allors.Repository
 
         string Instruction { get; set; }
 
-
         #region Allors
         [Id("ac18525c-57ef-4a11-a775-e27c397b334c")]
         [AssociationId("2a043325-46cb-4219-a580-e71efe6814b5")]
@@ -41,7 +38,6 @@ namespace Allors.Repository
         [Required]
 
         int QuantityUsed { get; set; }
-
 
         #region Allors
         [Id("eb1b2313-df9b-407d-9cf9-617d58c6f4be")]

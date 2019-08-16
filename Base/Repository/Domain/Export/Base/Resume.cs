@@ -34,9 +34,7 @@ namespace Allors.Repository
 
         public string ResumeText { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

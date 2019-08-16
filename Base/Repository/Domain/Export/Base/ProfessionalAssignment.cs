@@ -41,9 +41,7 @@ namespace Allors.Repository
 
         public EngagementItem EngagementItem { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

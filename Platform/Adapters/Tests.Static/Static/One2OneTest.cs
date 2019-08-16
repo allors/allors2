@@ -1,22 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+
 // <copyright file="One2OneTest.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
 
 namespace Allors.Adapters
 {
@@ -76,7 +62,7 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.C1WhereC1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveC1C1one2one();
                         from.RemoveC1C1one2one();
                         from.C1C1one2one = to;
@@ -105,7 +91,7 @@ namespace Allors.Adapters
                         Assert.True(to.ExistC1WhereC1C1one2one);
                         Assert.True(to.ExistC1WhereC1C1one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveC1C1one2one();
                         from.RemoveC1C1one2one();
                         from.C1C1one2one = to;
@@ -469,7 +455,7 @@ namespace Allors.Adapters
                         Assert.False(to.ExistC1WhereC1C1one2one);
                         Assert.False(to.ExistC1WhereC1C1one2one);
 
-                        // Null 
+                        // Null
                         // Set Null
                         // Get
                         Assert.Null(from.C1C1one2one);
@@ -543,7 +529,7 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.C1WhereC1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveC1C1one2one();
                         from.RemoveC1C1one2one();
                         from.Strategy.SetRole(MetaC1.Instance.C1C1one2one.RelationType, to);
@@ -599,7 +585,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.C1C2one2one);
                     Assert.Equal(from, to.C1WhereC1C2one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1C2one2one();
                     from.RemoveC1C2one2one();
                     from.C1C2one2one = to;
@@ -651,7 +637,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveC1C2one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.C1C2one2one = null;
                     mark();
@@ -691,7 +677,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.C1I1one2one);
                     Assert.Equal(from, to.C1WhereC1I1one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1I1one2one();
                     from.RemoveC1I1one2one();
                     from.C1I1one2one = to;
@@ -743,7 +729,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveC1C1one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.C1C1one2one = null;
                     mark();
@@ -783,7 +769,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.C1I2one2one);
                     Assert.Equal(from, to.C1WhereC1I2one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC1I2one2one();
                     from.RemoveC1I2one2one();
                     from.C1I2one2one = to;
@@ -835,7 +821,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveC1I2one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.C1I2one2one = null;
                     mark();
@@ -875,7 +861,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.C3C4one2one);
                     Assert.Equal(from, to.C3WhereC3C4one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveC3C4one2one();
                     from.RemoveC3C4one2one();
                     from.C3C4one2one = to;
@@ -929,7 +915,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveC3C4one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.C3C4one2one = null;
                     mark();
@@ -977,7 +963,7 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         Assert.Equal(from, to.I1WhereI1I12one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2one();
                         from.RemoveI1I12one2one();
                         from.I1I12one2one = to;
@@ -1005,7 +991,7 @@ namespace Allors.Adapters
                         Assert.True(to.ExistI1WhereI1I12one2one);
                         Assert.True(to.ExistI1WhereI1I12one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2one();
                         from.RemoveI1I12one2one();
                         from.I1I12one2one = to;
@@ -1337,7 +1323,7 @@ namespace Allors.Adapters
                         Assert.False(to.ExistI1WhereI1I12one2one);
                         Assert.False(to.ExistI1WhereI1I12one2one);
 
-                        // Null 
+                        // Null
                         // Set Null
                         // Get
                         Assert.Null(from.I1I12one2one);
@@ -1420,7 +1406,7 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         mark();
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2one();
                         mark();
                         from.RemoveI1I12one2one();
@@ -1464,7 +1450,7 @@ namespace Allors.Adapters
                         Assert.True(to.ExistI1WhereI1I12one2one);
                         mark();
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I12one2one();
                         mark();
                         from.RemoveI1I12one2one();
@@ -2006,7 +1992,7 @@ namespace Allors.Adapters
                         Assert.False(to.ExistI1WhereI1I12one2one);
                         mark();
 
-                        // Null 
+                        // Null
                         // Set Null
                         // Get
                         Assert.Null(from.I1I12one2one);
@@ -2099,7 +2085,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.I1I1one2one);
                     Assert.Equal(from, to.I1WhereI1I1one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveI1I1one2one();
                     from.RemoveI1I1one2one();
                     from.I1I1one2one = to;
@@ -2151,7 +2137,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveC1C1one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.C1C1one2one = null;
                     mark();
@@ -2204,7 +2190,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.I1I2one2one);
                     Assert.Equal(from, to.I1WhereI1I2one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveI1I2one2one();
                     from.RemoveI1I2one2one();
                     from.I1I2one2one = to;
@@ -2256,7 +2242,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveI1I2one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.I1I2one2one = null;
                     mark();
@@ -2303,7 +2289,7 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.I1WhereI1I34one2one);
                         Assert.Equal(from, to.I1WhereI1I34one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I34one2one();
                         from.RemoveI1I34one2one();
                         from.I1I34one2one = to;
@@ -2331,7 +2317,7 @@ namespace Allors.Adapters
                         Assert.True(to.ExistI1WhereI1I34one2one);
                         Assert.True(to.ExistI1WhereI1I34one2one);
 
-                        // 0-0        
+                        // 0-0
                         from.RemoveI1I34one2one();
                         from.RemoveI1I34one2one();
                         from.I1I34one2one = to;
@@ -2663,7 +2649,7 @@ namespace Allors.Adapters
                         Assert.False(to.ExistI1WhereI1I34one2one);
                         Assert.False(to.ExistI1WhereI1I34one2one);
 
-                        // Null 
+                        // Null
                         // Set Null
                         // Get
                         Assert.Null(from.I1I34one2one);
@@ -2740,7 +2726,7 @@ namespace Allors.Adapters
                     Assert.Equal(to, from.I3I4one2one);
                     Assert.Equal(from, to.I3WhereI3I4one2one);
 
-                    // 0-0        
+                    // 0-0
                     from.RemoveI3I4one2one();
                     from.RemoveI3I4one2one();
                     from.I3I4one2one = to;
@@ -2792,7 +2778,7 @@ namespace Allors.Adapters
 
                     fromAnother.RemoveI3I4one2one();
 
-                    // Null 
+                    // Null
                     // Set Null
                     from.I3I4one2one = null;
                     mark();

@@ -48,9 +48,7 @@ namespace Allors.Repository
 
         public Position Position { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

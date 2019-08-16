@@ -16,14 +16,12 @@ namespace Allors.Repository
         #endregion
         string S2AllorsString { get; set; }
 
-
         #region Allors
         [Id("1f5a6afe-f458-43db-bea0-8c90074b5abf")]
         [AssociationId("3370eb80-a77b-448b-9653-d9de382481c3")]
         [RoleId("a4da55d6-e7ac-4889-8479-0bd1a41c6817")]
         #endregion
         int S2AllorsInteger { get; set; }
-
 
         #region Allors
         [Id("74dd2b7b-e647-4967-9838-46c701baf3a7")]
@@ -32,14 +30,12 @@ namespace Allors.Repository
         #endregion
         double S2AllorsDouble { get; set; }
 
-
         #region Allors
         [Id("9a191c76-bd05-498f-91da-33184c72fe90")]
         [AssociationId("6dadca9c-e6b0-42be-b29d-ba40b19f4e4a")]
         [RoleId("bd759535-1681-455f-b140-2dcfea268b0a")]
         #endregion
         bool S2AllorsBoolean { get; set; }
-
 
         #region Allors
         [Id("9d70a5f5-ed72-4ba3-98ac-e50752f8fb79")]
@@ -49,7 +45,6 @@ namespace Allors.Repository
         [Scale(2)]
         #endregion
         decimal S2AllorsDecimal { get; set; }
-
 
         #region Allors
         [Id("a305d91a-5fe1-467d-9f24-6cce5dd30b1d")]

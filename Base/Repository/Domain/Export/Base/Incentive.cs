@@ -22,9 +22,7 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 
@@ -42,7 +40,6 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
-
 
         #endregion
 

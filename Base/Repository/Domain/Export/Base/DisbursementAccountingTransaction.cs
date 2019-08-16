@@ -43,9 +43,7 @@ namespace Allors.Repository
 
         public Disbursement Disbursement { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

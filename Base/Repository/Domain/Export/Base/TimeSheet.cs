@@ -15,7 +15,7 @@ namespace Allors.Repository
         #endregion
 
         /// <summary>
-        /// Gets or sets the Person for whom this TimeSheet records TimeEntries
+        /// Gets or sets the Person for whom this TimeSheet records TimeEntries.
         /// </summary>
         #region Allors
         [Id("6623E301-C36F-4F57-A5B7-B52A3C10E846")]

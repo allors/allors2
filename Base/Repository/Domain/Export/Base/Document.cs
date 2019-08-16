@@ -17,7 +17,6 @@ namespace Allors.Repository
 
         string Name { get; set; }
 
-
         #region Allors
         [Id("6f6ef875-2b0b-4a03-8b2e-bf242b48c843")]
         [AssociationId("de6d7bb7-0e38-4ed0-b881-8c1cf99dc101")]
@@ -27,7 +26,6 @@ namespace Allors.Repository
 
         string Description { get; set; }
 
-
         #region Allors
         [Id("d579e6e7-6791-4b9b-bf20-43ab1a701866")]
         [AssociationId("771bee4a-2e75-4826-8b15-43bfa140830b")]
@@ -36,7 +34,6 @@ namespace Allors.Repository
         [Size(-1)]
 
         string Text { get; set; }
-
 
         #region Allors
         [Id("e97710fe-8def-44a8-8516-18d4eae8433b")]

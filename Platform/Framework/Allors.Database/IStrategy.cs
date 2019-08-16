@@ -1,20 +1,7 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="IStrategy.cs" company="Allors bvba">
-// Copyright 2002-2017 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the Lesser General Public Licence v3 (LGPL)
-//   b) the Allors License
-// 
-// The LGPL License is included in the file lgpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Platform is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the IStrategy type.</summary>
 //-------------------------------------------------------------------------------------------------
@@ -83,7 +70,7 @@ namespace Allors
         /// Gets a value indicating whether the composite role exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c>. </returns>
         bool ExistRole(IRelationType relationType);
 
         /// <summary>
@@ -110,7 +97,7 @@ namespace Allors
         /// Gets a value indicating whether the unit role exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the unit role exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the unit role exists; otherwise,<c>false</c>. </returns>
         bool ExistUnitRole(IRelationType relationType);
 
         /// <summary>
@@ -137,7 +124,7 @@ namespace Allors
         /// Gets a value indicating whether the composite role exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c>. </returns>
         bool ExistCompositeRole(IRelationType relationType);
 
         /// <summary>
@@ -164,7 +151,7 @@ namespace Allors
         /// Gets a value indicating whether the composite roles exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the composite role exists; otherwise,<c>false</c>. </returns>
         bool ExistCompositeRoles(IRelationType relationType);
 
         /// <summary>
@@ -205,7 +192,7 @@ namespace Allors
         /// Gets a value indicating whether the association exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the association exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the association exists; otherwise,<c>false</c>. </returns>
         bool ExistAssociation(IRelationType relationType);
 
         /// <summary>
@@ -219,7 +206,7 @@ namespace Allors
         /// Gets a value indicating whether the composite association exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the composite association exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the composite association exists; otherwise,<c>false</c>. </returns>
         bool ExistCompositeAssociation(IRelationType relationType);
 
         /// <summary>
@@ -233,7 +220,7 @@ namespace Allors
         /// Gets a value indicating whether the composite associations exists.
         /// </summary>
         /// <param name="relationType">The relation type.</param>
-        /// <returns><c>true</c>if the composite associations exists; otherwise,<c>false</c> </returns>
+        /// <returns><c>true</c>if the composite associations exists; otherwise,<c>false</c>. </returns>
         bool ExistCompositeAssociations(IRelationType relationType);
 
         /// <summary>

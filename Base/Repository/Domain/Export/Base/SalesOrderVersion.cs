@@ -26,8 +26,6 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
         public Currency Currency { get; set; }
 
-
-
         public string CustomerReference { get; set; }
         public Fee Fee { get; set; }
         public decimal TotalExVat { get; set; }

@@ -1,5 +1,6 @@
-﻿// <copyright file="AccountController.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="AccountController.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 using System;
@@ -418,7 +419,6 @@ namespace Identity.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPasswordConfirmation() => View();
-
 
         [HttpGet]
         public IActionResult AccessDenied() => View();

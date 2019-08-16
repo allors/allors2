@@ -21,7 +21,7 @@ namespace Allors.Repository
         #endregion
 
         /// <summary>
-        /// Gets or Sets the Part to which this InventoryItemTransaction applies
+        /// Gets or Sets the Part to which this InventoryItemTransaction applies.
         /// </summary>
         #region Allors
         [Id("F851D977-7D58-4105-AB4A-74CFD5298D2D")]
@@ -46,7 +46,7 @@ namespace Allors.Repository
         public InventoryTransactionReason Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets the Serial Number for this InventoryItemTransaction (required if Part.InventoryItemKind.IsSerialised)
+        /// Gets or sets the Serial Number for this InventoryItemTransaction (required if Part.InventoryItemKind.IsSerialised).
         /// </summary>
         #region Allors
         [Id("AFC2C5F2-4E00-4FB8-836F-C2B6A5A292A0")]
@@ -169,7 +169,6 @@ namespace Allors.Repository
         public SerialisedInventoryItemState SerialisedInventoryItemState { get; set; }
 
         #region inherited methods
-
 
         public void OnBuild() { }
 

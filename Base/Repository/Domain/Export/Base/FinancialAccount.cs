@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface FinancialAccount : Object
     {
 
-
         #region Allors
         [Id("f90475c7-4a2d-42fd-bafd-96557c217c19")]
         [AssociationId("5566f06a-feb0-45f0-9a84-673b758b6af9")]

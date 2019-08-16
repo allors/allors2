@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial interface ISandbox : Object
     {
 
-
         #region Allors
         [Id("38361bff-62b3-4607-8291-cfdaeedbd36d")]
         [AssociationId("f5403207-14c6-422e-9139-92e1c46ea15b")]
@@ -18,7 +17,6 @@ namespace Allors.Repository
         #endregion
         string InvisibleValue { get; set; }
 
-
         #region Allors
         [Id("796ab057-88a0-4d71-bc4a-2673a209161b")]
         [AssociationId("34a3ba9b-6ba6-4cbd-977b-bb22b0ea7c10")]
@@ -26,7 +24,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         #endregion
         ISandbox[] InvisibleManies { get; set; }
-
 
         #region Allors
         [Id("dba5deb2-880d-47f4-adae-0b3125ff1379")]

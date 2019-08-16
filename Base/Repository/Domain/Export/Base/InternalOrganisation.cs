@@ -514,7 +514,7 @@ namespace Allors.Repository
         Template WorkTaskTemplate { get; set; }
 
         /// <summary>
-        /// Gets or sets the WorkEffortCounter to be used to populate the WorkEfforNumber for WorkEffort objects
+        /// Gets or sets the WorkEffortCounter to be used to populate the WorkEfforNumber for WorkEffort objects.
         /// </summary>
         #region Allors
         [Id("72BA7C7A-9EA5-4327-86AF-ED77041E19AE")]
@@ -527,7 +527,7 @@ namespace Allors.Repository
         Counter WorkEffortCounter { get; set; }
 
         /// <summary>
-        /// Gets or sets the WorkEffortPrefix to be used before the WorkEfforNumber for WorkEffort objects
+        /// Gets or sets the WorkEffortPrefix to be used before the WorkEfforNumber for WorkEffort objects.
         /// </summary>
         #region Allors
         [Id("DFA0E963-7F13-41C0-B1CC-3BEBE1F951F1")]

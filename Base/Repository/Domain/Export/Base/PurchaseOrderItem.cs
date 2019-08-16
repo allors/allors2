@@ -9,7 +9,7 @@ namespace Allors.Repository
     #endregion
     public partial class PurchaseOrderItem : OrderItem, Versioned
     {
-        #region inherited properties        
+        #region inherited properties
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }
@@ -44,8 +44,6 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-
-
         public VatRegime VatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
@@ -54,25 +52,17 @@ namespace Allors.Repository
 
         public decimal UnitDiscount { get; set; }
 
-
-
         public VatRate VatRate { get; set; }
 
         public decimal AssignedUnitPrice { get; set; }
-
-
 
         public decimal UnitBasePrice { get; set; }
 
         public decimal UnitPrice { get; set; }
 
-
-
         public decimal TotalIncVat { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
-
-
 
         public decimal TotalDiscount { get; set; }
 
@@ -83,8 +73,6 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalExVat { get; set; }
-
-
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
@@ -272,7 +260,6 @@ namespace Allors.Repository
         public bool CanInvoice { get; set; }
 
         #region inherited methods
-
 
         public void OnBuild() { }
 

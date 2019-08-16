@@ -21,11 +21,11 @@ namespace Allors.Repository
         [Workspace]
         public string Name { get; set; }
 
-        /* SerialisedInventoryItemState InventoryStrategy Items 
+        /* SerialisedInventoryItemState InventoryStrategy Items
          ******************************************************/
 
         /// <summary>
-        /// The SerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
+        /// The SerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy.
         /// </summary>
         #region Allors
         [Id("6E36E878-B821-4A74-B722-B834E8204D18")]
@@ -38,7 +38,7 @@ namespace Allors.Repository
         public SerialisedInventoryItemState[] AvailableToPromiseSerialisedStates { get; set; }
 
         /// <summary>
-        /// The SerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
+        /// The SerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy.
         /// </summary>
         #region Allors
         [Id("9D87E54C-5EB5-4014-84E8-9957126430CA")]
@@ -50,11 +50,11 @@ namespace Allors.Repository
         [Workspace]
         public SerialisedInventoryItemState[] OnHandSerialisedStates { get; set; }
 
-        /* NonSerialisedInventoryItemState InventoryStrategy Items 
+        /* NonSerialisedInventoryItemState InventoryStrategy Items
          *********************************************************/
 
         /// <summary>
-        /// The NonSerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
+        /// The NonSerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy.
         /// </summary>
         #region Allors
         [Id("2F90BA87-BEEC-4BB6-BF49-45A622B22BD4")]
@@ -67,7 +67,7 @@ namespace Allors.Repository
         public NonSerialisedInventoryItemState[] AvailableToPromiseNonSerialisedStates { get; set; }
 
         /// <summary>
-        /// The NonSerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
+        /// The NonSerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy.
         /// </summary>
         #region Allors
         [Id("F20911A6-B1A6-46E8-955B-4286DE54D806")]

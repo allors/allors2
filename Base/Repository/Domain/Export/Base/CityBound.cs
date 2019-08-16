@@ -10,7 +10,6 @@ namespace Allors.Repository
     public partial interface CityBound : Object
     {
 
-
         #region Allors
         [Id("7723a00d-8764-40e2-99a8-a790401689b5")]
         [AssociationId("bb222d51-4e32-4182-8c45-8ce6db2f2cea")]

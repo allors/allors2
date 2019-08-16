@@ -105,9 +105,7 @@ namespace Allors.Repository
 
         public DateTime ActualThroughDate { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

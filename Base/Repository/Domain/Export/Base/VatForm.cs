@@ -34,9 +34,7 @@ namespace Allors.Repository
 
         public VatReturnBox[] VatReturnBoxes { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

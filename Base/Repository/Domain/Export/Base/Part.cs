@@ -8,7 +8,7 @@ namespace Allors.Repository
     public partial interface Part : UnifiedProduct
     {
         /// <summary>
-        /// Gets or sets the Default Facility where this Part is stored
+        /// Gets or sets the Default Facility where this Part is stored.
         /// </summary>
         #region Allors
         [Id("23EC834E-849F-4CEF-9E22-BE73CCEC18FF")]

@@ -75,9 +75,7 @@ namespace Allors.Repository
 
         public GeographicBoundary GeographicBoundary { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

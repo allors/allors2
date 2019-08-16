@@ -24,7 +24,6 @@ namespace Allors.Repository
         public ShipmentState ShipmentState { get; set; }
         public ShipmentMethod ShipmentMethod { get; set; }
 
-
         public ShipmentPackage[] ShipmentPackages { get; set; }
 
         public string ShipmentNumber { get; set; }
@@ -66,7 +65,6 @@ namespace Allors.Repository
         #endregion
 
         #region inherited methods
-
 
         public void OnBuild() { }
 

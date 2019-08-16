@@ -36,9 +36,7 @@ namespace Allors.Repository
 
         public bool ScheduleManually { get; set; }
 
-
         #region inherited methods
-
 
         public void OnBuild() { }
 

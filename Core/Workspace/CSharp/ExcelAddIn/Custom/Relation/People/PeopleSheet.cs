@@ -51,7 +51,7 @@
                 return this.listObject;
             }
         }
-        
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -75,7 +75,7 @@
                 MessageBox.Show(@"Successfully saved");
             }
         }
-        
+
         private void ToListObject()
         {
             this.dataSet = new DataSet();
